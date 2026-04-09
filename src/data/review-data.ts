@@ -1,4 +1,4 @@
-import { THE_FOOL, THE_MAGICIAN, THE_HIGH_PRIESTESS, type ArcanoData, type QuizQuestion } from "./tarot-data";
+import { getArcanoById, ARCANOS_MAIORES, type ArcanoData, type QuizQuestion } from "./tarot-data";
 
 /** Flashcard for symbol ↔ meaning association */
 export interface Flashcard {
@@ -9,14 +9,27 @@ export interface Flashcard {
   category: "symbol" | "archetype" | "light-shadow" | "keyword" | "cabala";
 }
 
+/** Quick review summary for an arcano */
+export interface QuickReviewSummary {
+  arcanoId: number;
+  name: string;
+  numeral: string;
+  keyword: string;
+  light: string;
+  shadow: string;
+  lesson: string;
+  practicalApplication: string;
+  fixationPhrase: string;
+}
+
 /** A daily challenge — short, timed micro-review */
 export interface DailyChallenge {
   id: string;
-  date: string; // ISO date string
+  date: string;
   type: "flashcard-set" | "quick-quiz" | "association";
   title: string;
   subtitle: string;
-  items: string[]; // flashcard or quiz IDs
+  items: string[];
   xpReward: number;
 }
 
@@ -25,9 +38,9 @@ export interface ReviewItem {
   id: string;
   type: "flashcard" | "quiz";
   arcanoId: number;
-  easeFactor: number; // 2.5 default, adjusts based on performance
-  interval: number; // days until next review
-  nextReview: string; // ISO date
+  easeFactor: number;
+  interval: number;
+  nextReview: string;
   repetitions: number;
   lastAnswer?: "correct" | "incorrect" | "hard";
 }
@@ -37,7 +50,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
   const cards: Flashcard[] = [];
   const prefix = `fc-${arcano.id}`;
 
-  // Keywords
   arcano.keywords.forEach((kw, i) => {
     cards.push({
       id: `${prefix}-kw-${i}`,
@@ -48,7 +60,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
     });
   });
 
-  // Archetype
   cards.push({
     id: `${prefix}-arch`,
     arcanoId: arcano.id,
@@ -57,7 +68,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
     category: "archetype",
   });
 
-  // Light
   cards.push({
     id: `${prefix}-light`,
     arcanoId: arcano.id,
@@ -66,7 +76,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
     category: "light-shadow",
   });
 
-  // Shadow
   cards.push({
     id: `${prefix}-shadow`,
     arcanoId: arcano.id,
@@ -75,7 +84,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
     category: "light-shadow",
   });
 
-  // Essence
   cards.push({
     id: `${prefix}-essence`,
     arcanoId: arcano.id,
@@ -84,7 +92,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
     category: "symbol",
   });
 
-  // Symbolism
   if (arcano.layers.deepDive.symbolism) {
     cards.push({
       id: `${prefix}-symbols`,
@@ -95,7 +102,6 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
     });
   }
 
-  // Cabala
   if (arcano.layers.deepDive.cabala) {
     cards.push({
       id: `${prefix}-cabala`,
@@ -109,20 +115,81 @@ function generateFlashcards(arcano: ArcanoData): Flashcard[] {
   return cards;
 }
 
-const ALL_ARCANOS = [THE_FOOL, THE_MAGICIAN, THE_HIGH_PRIESTESS];
+/** Generate quick review summary from arcano data */
+function generateQuickReview(arcano: ArcanoData): QuickReviewSummary {
+  // Extract first keyword as the main keyword
+  const keyword = arcano.keywords.slice(0, 3).join(" · ");
+
+  // Extract a concise light description (first sentence)
+  const lightFull = arcano.layers.main.light;
+  const light = lightFull.split(".").slice(0, 2).join(".") + ".";
+
+  // Extract a concise shadow description
+  const shadowFull = arcano.layers.main.shadow;
+  const shadow = shadowFull.split(".").slice(0, 2).join(".") + ".";
+
+  // Lesson = practicalApplication or essence summary
+  const lessonSection = arcano.lessonSections.find(s => s.id === "licao");
+  const lesson = lessonSection
+    ? lessonSection.content.split(".").slice(0, 2).join(".") + "."
+    : arcano.layers.main.essence.split(".").slice(0, 2).join(".") + ".";
+
+  // Practical application
+  const practical = arcano.layers.main.practicalApplication.split(".").slice(0, 2).join(".") + ".";
+
+  // Fixation phrase: voice intro (already concise)
+  const fixation = arcano.firstPersonIntro;
+
+  return {
+    arcanoId: arcano.id,
+    name: arcano.name,
+    numeral: arcano.numeral,
+    keyword,
+    light,
+    shadow,
+    lesson,
+    practicalApplication: practical,
+    fixationPhrase: fixation,
+  };
+}
+
+// Load all 22 arcanos
+function loadAllArcanos(): ArcanoData[] {
+  const arcanos: ArcanoData[] = [];
+  for (let i = 0; i <= 21; i++) {
+    const a = getArcanoById(i);
+    if (a) arcanos.push(a);
+  }
+  return arcanos;
+}
+
+const ALL_ARCANOS = loadAllArcanos();
 
 export const ALL_FLASHCARDS: Flashcard[] = ALL_ARCANOS.flatMap(generateFlashcards);
 
 export const ALL_REVIEW_QUIZZES: QuizQuestion[] = ALL_ARCANOS.flatMap(a => a.quiz);
+
+export const ALL_QUICK_REVIEWS: QuickReviewSummary[] = ALL_ARCANOS.map(generateQuickReview);
 
 /** Get flashcards for a specific arcano */
 export function getFlashcardsForArcano(arcanoId: number): Flashcard[] {
   return ALL_FLASHCARDS.filter(f => f.arcanoId === arcanoId);
 }
 
+/** Get quick review for a specific arcano */
+export function getQuickReview(arcanoId: number): QuickReviewSummary | undefined {
+  return ALL_QUICK_REVIEWS.find(r => r.arcanoId === arcanoId);
+}
+
 /** Get arcano name by id */
 export function getArcanoName(arcanoId: number): string {
   return ALL_ARCANOS.find(a => a.id === arcanoId)?.name ?? `Arcano ${arcanoId}`;
+}
+
+/** Get arcano numeral by id */
+export function getArcanoNumeral(arcanoId: number): string {
+  const summary = ARCANOS_MAIORES.find(a => a.id === arcanoId);
+  return summary?.numeral ?? String(arcanoId);
 }
 
 /** Generate a daily challenge based on date */
