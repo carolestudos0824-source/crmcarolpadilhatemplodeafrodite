@@ -416,10 +416,161 @@ export const THE_MAGICIAN: ArcanoData = {
   unlocked: false,
 };
 
+export const THE_HIGH_PRIESTESS: ArcanoData = {
+  id: 2,
+  name: "A Sacerdotisa",
+  numeral: "II",
+  subtitle: "O Véu do Mistério",
+  keywords: ["Intuição", "Mistério", "Silêncio", "Sabedoria Oculta", "Receptividade"],
+  archetype: "A Guardiã do Véu, a Mestra Silenciosa, a Sacerdotisa Lunar — aquela que conhece os segredos sem precisar revelá-los.",
+  firstPersonIntro:
+    "Eu sou a Sacerdotisa. Sou o silêncio que fala, o véu entre o visível e o invisível. Em mim mora a intuição, o mistério e a sabedoria que não se ensina — se sente. Eu não dou respostas. Eu ensino a ouvir.",
+  voiceText: `Eu sou a Sacerdotisa.\nSou o silêncio que fala, o véu entre o visível e o invisível.\nEm mim mora a intuição, o mistério e a sabedoria que não se ensina — se sente.\nEu guardo os segredos do inconsciente, as memórias da alma.\nNa minha luz, eu trago intuição profunda, paciência e sabedoria interior.\nNa minha sombra, eu viro frieza, isolamento e segredos destrutivos.\nEu não dou respostas.\nEu ensino a ouvir.`,
+  cardImage: "/assets/the-high-priestess-card.jpg",
+  lessonSections: [
+    { id: "essencia", title: "Essência", icon: "✦", content: "A Sacerdotisa é o Arcano II — o portal entre o consciente e o inconsciente, entre o que se sabe e o que se intui. Ela não age; ela percebe. Não fala; escuta. É a guardiã do conhecimento oculto, da sabedoria que habita o silêncio. Sentada entre as duas colunas — Boaz (força) e Jachin (estabelecimento) — ela representa o equilíbrio entre polaridades: luz e sombra, razão e intuição, revelado e velado. Quando a Sacerdotisa aparece, ela convida a parar, silenciar e escutar o que já se sabe por dentro." },
+    { id: "simbolos", title: "Símbolos Centrais", icon: "◎", content: "As duas colunas B e J representam as polaridades do Templo de Salomão — dualidade que a Sacerdotisa equilibra sem escolher lados. O véu entre as colunas, adornado com romãs e palmeiras, separa o mundo visível do invisível — e só os iniciados passam. A lua crescente a seus pés simboliza o ciclo, a feminilidade e o domínio sobre as marés emocionais. O rolo da Torá em suas mãos (parcialmente oculto) representa a sabedoria que não se revela por completo — há sempre mais a descobrir. A cruz solar em seu peito une o divino masculino e feminino." },
+    { id: "luz", title: "Luz", icon: "☀", accent: "gold", content: "Na luz, a Sacerdotisa é intuição afinada, paciência profunda, conexão com o inconsciente e sabedoria que vem do silêncio. É aquele momento em que você 'simplesmente sabe' sem precisar de provas. Quando encontrada na luz, indica que a resposta não está fora — está dentro. É hora de meditar, contemplar e confiar na voz interior. Ela é a mestra que ensina sem palavras." },
+    { id: "sombra", title: "Sombra", icon: "☾", accent: "plum", content: "Na sombra, a Sacerdotisa se torna frieza emocional, isolamento excessivo, passividade paralisante e segredos que corroem. É guardar informações por poder, usar o silêncio como arma, ou se desconectar do mundo sob a desculpa da espiritualidade. Na sombra, ela pergunta: você está em contato com sua intuição ou está usando o mistério para evitar a vulnerabilidade?" },
+    { id: "licao", title: "Lição Iniciática", icon: "⟡", content: "A lição da Sacerdotisa é aprender que nem tudo precisa ser dito, feito ou explicado. Ela nos ensina que há uma sabedoria no silêncio, que a paciência é uma forma de poder, e que a intuição é tão válida quanto a razão. A Sacerdotisa nos convida a desenvolver a escuta interior — aquela voz sutil que fala antes do pensamento, que sente antes da análise." },
+    { id: "amor", title: "A Sacerdotisa no Amor", icon: "♡", accent: "wine", content: "No amor, a Sacerdotisa indica uma fase de introspecção, mistério e conexão profunda não-verbal. Pode representar uma atração magnética e silenciosa, um amor que se desenvolve nas entrelinhas, ou a necessidade de ouvir o coração antes de agir. Na sombra amorosa, avisa sobre frieza emocional, jogos de poder pelo silêncio, ou guardar sentimentos que precisam ser expressos." },
+    { id: "trabalho", title: "A Sacerdotisa no Trabalho", icon: "◈", content: "No trabalho, a Sacerdotisa fala de pesquisa, estudo, planejamento silencioso e conhecimento especializado. É a fase de observar antes de agir, de estudar o cenário antes de se posicionar. Indica que há informações ocultas ou não reveladas que precisam ser consideradas. Na sombra profissional, alerta sobre passividade excessiva, guardar conhecimento por insegurança ou perder oportunidades por esperar demais." },
+    { id: "espiritualidade", title: "A Sacerdotisa na Espiritualidade", icon: "❋", content: "Na espiritualidade, a Sacerdotisa é a mestra interior — a conexão com o divino feminino, com os ciclos lunares e com a sabedoria ancestral. Ela representa o desenvolvimento da intuição, a prática da meditação e a disposição para acessar dimensões mais sutis da consciência. Na Cabala, corresponde à letra Gimel (ג), o camelo que atravessa o deserto — o caminho entre Keter (a Coroa) e Tiferet (a Beleza), a ponte entre o divino e o humano." },
+  ],
+  layers: {
+    main: {
+      essence:
+        "Eu sou o silêncio que fala, o véu entre o visível e o invisível. Sentada entre as duas colunas — Boaz e Jachin — eu represento o equilíbrio entre polaridades. Não ajo; percebo. Não falo; escuto. Sou a guardiã do conhecimento oculto, da sabedoria que habita o silêncio.",
+      light:
+        "Na minha luz, eu falo de intuição afinada, paciência profunda e sabedoria interior. Sou aquele momento em que você 'simplesmente sabe' sem precisar de provas. Quando me encontra na luz, a resposta não está fora — está dentro de você. É hora de silenciar e confiar.",
+      shadow:
+        "Na minha sombra, eu aviso sobre frieza emocional, isolamento e segredos que corroem. Torno-me passividade paralisante, o silêncio usado como arma, a desconexão disfarçada de espiritualidade. Quando me encontra na sombra, pergunte: estou ouvindo minha intuição ou estou me escondendo?",
+      practicalApplication:
+        "Quando apareço em uma leitura, posso indicar intuição, segredos, paciência ou passividade. Tudo depende do contexto. Pergunte-se: 'O que meu silêncio interior está tentando me dizer? Há algo que sei mas não estou admitindo?' Eu convido a escutar antes de agir — não por medo, mas por sabedoria.",
+    },
+    deepDive: {
+      text: "A Sacerdotisa é o Arcano II — o segundo passo na Jornada do Louco. Se O Louco é o potencial e O Mago é a ação, a Sacerdotisa é a reflexão. Ela nos ensina que entre o impulso e a ação existe um espaço sagrado: o espaço da contemplação. Na tradição hermética, ela é associada à Lua e ao princípio feminino receptivo — o contraponto necessário ao princípio masculino ativo do Mago.",
+      symbolism: "As duas colunas B (Boaz) e J (Jachin) são as colunas do Templo de Salomão, representando força e estabilidade. A Sacerdotisa senta entre elas, em equilíbrio perfeito. O véu com romãs (fertilidade, abundância) e palmeiras (vitória, triunfo) separa o mundo profano do sagrado. A lua crescente a seus pés mostra seu domínio sobre os ciclos naturais e as marés emocionais.",
+      cabala: "Na Cabala, a Sacerdotisa corresponde à letra Gimel (ג), que significa 'camelo'. O camelo é o animal que atravessa o deserto — um símbolo de perseverança e da capacidade de sustentar a vida em territórios áridos. O caminho de Gimel conecta Keter (a Coroa divina) a Tiferet (a Beleza e o equilíbrio), representando a transmissão da sabedoria divina para o coração humano.",
+      history: "Historicamente, a Sacerdotisa foi chamada de 'A Papisa' — uma referência à lendária Papa Joana, que teria governado a Igreja disfarçada de homem. Nas cartas de tarô mais antigas, ela aparecia com a tiara papal. Com o tempo, a tradição esotérica transformou-a na Grande Sacerdotisa dos mistérios, guardiã do templo interior e do conhecimento oculto. Pamela Colman Smith a desenhou com serenidade absoluta, cercada de símbolos lunares e aquáticos.",
+    },
+    extras: [
+      {
+        id: "sacerdotisa-extra-1",
+        title: "A Sacerdotisa e o Divino Feminino",
+        type: "text",
+        description: "Como o arquétipo da Sacerdotisa se conecta ao feminino sagrado",
+        content: "A Sacerdotisa é talvez a carta mais profundamente conectada ao Divino Feminino no Tarô. Ela representa não a feminilidade social ou cultural, mas o princípio feminino universal: a receptividade, a intuição, a gestação silenciosa, os ciclos naturais. Em uma era que valoriza a ação constante e a produtividade, a Sacerdotisa nos lembra que há poder no silêncio, na espera, na observação. Ela é a contraparte necessária do Mago: ele age, ela contempla; ele manifesta, ela concebe; ele fala, ela escuta.",
+      },
+      {
+        id: "sacerdotisa-extra-2",
+        title: "Meditação Guiada — O Templo Interior",
+        type: "audio",
+        description: "15 minutos de meditação com a energia da Sacerdotisa",
+        url: "#",
+        duration: "15 min",
+      },
+      {
+        id: "sacerdotisa-extra-3",
+        title: "Artigo: Lua, Ciclos e Feminino na Tradição Esotérica",
+        type: "pdf",
+        description: "A relação entre a Sacerdotisa, a Lua e os ciclos femininos",
+        url: "#",
+      },
+    ],
+    exercise: {
+      instruction:
+        "Escolha um momento de silêncio absoluto — sem música, sem telas, sem estímulos. Sente-se confortavelmente e feche os olhos. Respire lentamente por 5 minutos. Depois, pergunte mentalmente: 'O que eu já sei mas não estou admitindo?' Espere. Não force uma resposta — deixe que ela surja. Anote a primeira impressão que vier, por mais sutil que seja. Essa é a voz da sua Sacerdotisa interior.",
+      type: "meditation",
+      duration: "15 min",
+    },
+  },
+  quiz: [
+    {
+      id: "sacerdotisa-q1",
+      type: "multiple-choice",
+      question: "Qual é o número associado ao arcano A Sacerdotisa?",
+      options: ["0", "I", "II", "III"],
+      correctIndex: 2,
+      explanation: "A Sacerdotisa é o arcano número II — o portal entre o consciente e o inconsciente.",
+    },
+    {
+      id: "sacerdotisa-q2",
+      type: "multiple-choice",
+      question: "O que as colunas B e J na carta da Sacerdotisa representam?",
+      options: [
+        "Bem e mal",
+        "As colunas do Templo de Salomão (Boaz e Jachin)",
+        "Masculino e feminino",
+        "Passado e futuro",
+      ],
+      correctIndex: 1,
+      explanation: "As colunas B (Boaz = força) e J (Jachin = estabelecimento) são as colunas do Templo de Salomão, representando as polaridades que a Sacerdotisa equilibra.",
+    },
+    {
+      id: "sacerdotisa-q3",
+      type: "multiple-choice",
+      question: "Qual é o aspecto SOMBRA da Sacerdotisa?",
+      options: [
+        "Imprudência e falta de limites",
+        "Frieza emocional e segredos destrutivos",
+        "Manipulação e charlatanismo",
+        "Excesso de ação sem reflexão",
+      ],
+      correctIndex: 1,
+      explanation: "Na sombra, a Sacerdotisa se torna frieza emocional, isolamento excessivo e segredos que corroem — o silêncio usado como arma.",
+    },
+    {
+      id: "sacerdotisa-tf1",
+      type: "true-false",
+      question: "A Sacerdotisa corresponde à letra hebraica Beth (ב) na Cabala.",
+      options: ["Verdadeiro", "Falso"],
+      correctIndex: 1,
+      explanation: "A Sacerdotisa corresponde à letra Gimel (ג), que significa 'camelo'. Beth corresponde ao Mago.",
+    },
+    {
+      id: "sacerdotisa-q4",
+      type: "multiple-choice",
+      question: "O que a lua crescente aos pés da Sacerdotisa simboliza?",
+      options: [
+        "Tempo passando rapidamente",
+        "Domínio sobre os ciclos e as marés emocionais",
+        "Iluminação espiritual completa",
+        "Início de uma nova fase material",
+      ],
+      correctIndex: 1,
+      explanation: "A lua crescente simboliza o domínio da Sacerdotisa sobre os ciclos naturais, a feminilidade e as marés emocionais.",
+    },
+    {
+      id: "sacerdotisa-tf2",
+      type: "true-false",
+      question: "A Sacerdotisa convida a agir imediatamente diante de um dilema.",
+      options: ["Verdadeiro", "Falso"],
+      correctIndex: 1,
+      explanation: "A Sacerdotisa convida ao silêncio e à contemplação — escutar antes de agir, não por medo, mas por sabedoria.",
+    },
+    {
+      id: "sacerdotisa-q5",
+      type: "multiple-choice",
+      question: "Quando a Sacerdotisa aparece no amor, na sua luz, ela indica:",
+      options: [
+        "Ação impulsiva e declarações ousadas",
+        "Mistério, conexão profunda e introspecção",
+        "Fim definitivo de um relacionamento",
+        "Dependência emocional e ciúmes",
+      ],
+      correctIndex: 1,
+      explanation: "Na luz, a Sacerdotisa no amor indica mistério, conexão profunda não-verbal e a necessidade de ouvir o coração antes de agir.",
+    },
+  ],
+  unlocked: false,
+};
+
 /** Registry: lookup full arcano data by ID */
 export const ARCANOS_REGISTRY: Record<number, ArcanoData> = {
   0: THE_FOOL,
   1: THE_MAGICIAN,
+  2: THE_HIGH_PRIESTESS,
 };
 
 /** Get arcano data by ID, returns undefined if not yet created */
