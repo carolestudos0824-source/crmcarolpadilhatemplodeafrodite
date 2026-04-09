@@ -137,6 +137,14 @@ const LessonPage = () => {
               keywords={arcano.keywords}
               cardImage={arcano.cardImage}
             />
+
+            {/* Archetype */}
+            <p className="text-center text-sm font-accent italic leading-relaxed max-w-md mx-auto"
+              style={{ color: "hsl(230 20% 25% / 0.70)" }}
+            >
+              {arcano.archetype}
+            </p>
+
             <div className="divider-gold" />
             <ArcanoVoice text={arcano.voiceText} arcanoName={arcano.name} />
             <div className="flex flex-col items-center gap-3 pt-2">
