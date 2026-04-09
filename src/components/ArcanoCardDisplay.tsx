@@ -44,7 +44,7 @@ export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage
           }}
         >
           <img
-            src={foolCardImage}
+            src={cardImage}
             alt={name}
             className="w-full h-full object-cover"
           />
