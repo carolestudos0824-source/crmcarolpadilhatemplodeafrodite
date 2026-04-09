@@ -1,3 +1,7 @@
+import { type LessonSection } from "@/data/fool-lesson-content";
+
+export type { LessonSection };
+
 export interface ExtraMaterial {
   id: string;
   title: string;
@@ -40,6 +44,9 @@ export interface ArcanoData {
   subtitle: string;
   keywords: string[];
   firstPersonIntro: string;
+  voiceText: string;
+  lessonSections: LessonSection[];
+  cardImage: string;
   layers: LessonLayer;
   quiz: QuizQuestion[];
   unlocked: boolean;
