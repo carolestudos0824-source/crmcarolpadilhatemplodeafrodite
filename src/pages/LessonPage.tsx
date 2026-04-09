@@ -1,41 +1,41 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { THE_FOOL } from "@/data/tarot-data";
+import { FOOL_VOICE_TEXT, FOOL_LESSON_SECTIONS } from "@/data/fool-lesson-content";
 import { useProgress } from "@/hooks/use-progress";
-import { ArcanoGuide } from "@/components/ArcanoGuide";
-import { QuizSection } from "@/components/QuizSection";
+import { ArcanoCardDisplay } from "@/components/ArcanoCardDisplay";
+import { ArcanoVoice } from "@/components/ArcanoVoice";
+import { LessonSections } from "@/components/LessonSections";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
 import { ExerciseSection } from "@/components/ExerciseSection";
-import { LibrarySection } from "@/components/LibrarySection";
-import { ArrowLeft } from "lucide-react";
+import { QuizSection } from "@/components/QuizSection";
+import { ArrowLeft, BookOpen, Sparkles, Eye } from "lucide-react";
+import mysticBg from "@/assets/mystic-bg.jpg";
 
-type LessonPhase = "guided" | "deepdive" | "extras" | "exercise" | "quiz" | "complete";
-
-const PHASE_LABELS: Record<LessonPhase, string> = {
-  guided: "Aula com o Arcano",
-  deepdive: "Aprofundamento",
-  extras: "Biblioteca",
-  exercise: "Exercício",
-  quiz: "Quiz",
-  complete: "Concluído",
-};
+type LessonPhase = "intro" | "lesson" | "deepdive" | "exercise" | "quiz" | "complete";
 
 const LessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addXP, completeLesson, completeQuiz, earnBadge } = useProgress();
-  const [phase, setPhase] = useState<LessonPhase>("guided");
+  const [phase, setPhase] = useState<LessonPhase>("intro");
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
+  const [showSymbols, setShowSymbols] = useState(false);
 
   const arcano = THE_FOOL;
-  const phases: LessonPhase[] = ["guided", "deepdive", "extras", "exercise", "quiz"];
-  const currentPhaseIndex = phases.indexOf(phase);
 
-  const handleGuideComplete = () => {
+  const phaseSteps: LessonPhase[] = ["intro", "lesson", "deepdive", "exercise", "quiz"];
+  const currentIdx = phaseSteps.indexOf(phase);
+
+  const handleStartLesson = () => {
+    addXP(10);
+    earnBadge("first-step");
+    setPhase("lesson");
+  };
+
+  const handleLessonComplete = () => {
     addXP(25);
     completeLesson(`arcano-${arcano.id}`);
-    earnBadge("first-step");
-    // Show choice: go deeper or quiz
     setPhase("quiz");
   };
 
@@ -49,151 +49,232 @@ const LessonPage = () => {
     completeQuiz(`quiz-arcano-${arcano.id}`);
     earnBadge("fool-complete");
     if (score === total) earnBadge("quiz-master");
+    setPhase("complete");
   };
 
-  const canSkipToQuiz = phase === "deepdive" || phase === "extras" || phase === "exercise";
-
   return (
-    <div className="min-h-screen bg-background">
-      <div className="fixed inset-0 bg-mystic-glow pointer-events-none" />
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background */}
+      <div className="fixed inset-0 z-0">
+        <img src={mysticBg} alt="" className="w-full h-full object-cover" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, hsl(36 33% 97% / 0.88), hsl(36 33% 97% / 0.82), hsl(36 33% 97% / 0.92))",
+          }}
+        />
+      </div>
 
-      {/* Top bar */}
-      <header className="relative z-10 border-b border-gold">
-        <div className="container max-w-4xl py-3 flex items-center gap-4">
+      {/* Header */}
+      <header
+        className="relative z-10 backdrop-blur-md"
+        style={{
+          background: "hsl(36 33% 97% / 0.85)",
+          borderBottom: "1px solid hsl(36 45% 58% / 0.15)",
+        }}
+      >
+        <div className="container max-w-3xl py-3 px-4 flex items-center gap-4">
           <button
             onClick={() => navigate("/")}
-            className="text-muted-foreground hover:text-primary transition-colors"
+            className="transition-colors hover:scale-105 duration-200"
+            style={{ color: "hsl(230 10% 40%)" }}
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
-            <span className="font-heading text-xs text-primary tracking-wider">{arcano.numeral}</span>
-            <span className="font-heading text-sm text-foreground">{arcano.name}</span>
+            <span
+              className="font-heading text-xs tracking-[0.2em]"
+              style={{ color: "hsl(36 40% 42%)" }}
+            >
+              {arcano.numeral}
+            </span>
+            <span
+              className="font-heading text-sm"
+              style={{ color: "hsl(230 25% 15%)" }}
+            >
+              {arcano.name}
+            </span>
           </div>
           <div className="flex-1" />
-          <div className="flex gap-1">
-            {phases.map((p, i) => (
+          {/* Progress dots */}
+          <div className="flex gap-1.5">
+            {phaseSteps.map((p, i) => (
               <div
                 key={p}
-                className={`h-1.5 w-6 rounded-full transition-all duration-500 ${
-                  i <= currentPhaseIndex ? "bg-primary" : "bg-muted"
-                }`}
-                title={PHASE_LABELS[p]}
+                className="h-1.5 w-5 rounded-full transition-all duration-500"
+                style={{
+                  background:
+                    i <= currentIdx
+                      ? "hsl(36 45% 58%)"
+                      : "hsl(36 25% 82% / 0.6)",
+                }}
               />
             ))}
           </div>
         </div>
       </header>
 
-      <main className="relative z-10 container max-w-4xl px-4 py-6">
-        {/* Phase label */}
-        {phase !== "guided" && (
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-xs font-heading text-muted-foreground tracking-widest uppercase">
-              {PHASE_LABELS[phase]}
-            </span>
-            {canSkipToQuiz && (
+      <main className="relative z-10 container max-w-3xl px-4 py-8">
+        {/* ====== INTRO PHASE ====== */}
+        {phase === "intro" && (
+          <div className="space-y-10" style={{ animation: "fade-up 0.6s ease-out" }}>
+            {/* Card display */}
+            <ArcanoCardDisplay
+              name={arcano.name}
+              numeral={arcano.numeral}
+              subtitle={arcano.subtitle}
+              keywords={arcano.keywords}
+            />
+
+            {/* Divider */}
+            <div className="divider-gold" />
+
+            {/* Voice of the Arcano */}
+            <ArcanoVoice text={FOOL_VOICE_TEXT} arcanoName={arcano.name} />
+
+            {/* Action buttons */}
+            <div className="flex flex-col items-center gap-3 pt-2">
               <button
-                onClick={() => setPhase("quiz")}
-                className="text-xs text-primary hover:text-primary/80 transition-colors font-heading tracking-wider"
+                onClick={handleStartLesson}
+                className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
+                  color: "hsl(36 33% 97%)",
+                  boxShadow:
+                    "0 4px 20px hsl(36 45% 58% / 0.2), 0 0 40px hsl(42 70% 80% / 0.08)",
+                }}
               >
-                Ir direto ao Quiz →
+                <span className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  Começar a Lição
+                </span>
               </button>
+
+              <button
+                onClick={() => setShowSymbols(!showSymbols)}
+                className="flex items-center gap-2 text-xs font-heading tracking-wider transition-colors duration-200"
+                style={{ color: "hsl(230 10% 45%)" }}
+              >
+                <Eye className="w-3.5 h-3.5" />
+                {showSymbols ? "Ocultar símbolos" : "Ver símbolos"}
+              </button>
+            </div>
+
+            {/* Symbols preview (optional) */}
+            {showSymbols && (
+              <div
+                className="rounded-xl p-5"
+                style={{
+                  background: "hsl(38 30% 95% / 0.8)",
+                  border: "1px solid hsl(36 45% 58% / 0.15)",
+                  animation: "fade-up 0.3s ease-out",
+                }}
+              >
+                <h4
+                  className="font-heading text-sm tracking-wider mb-3"
+                  style={{ color: "hsl(36 40% 42%)" }}
+                >
+                  ◎ Símbolos do Arcano
+                </h4>
+                <p className="text-sm leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>
+                  {FOOL_LESSON_SECTIONS.find((s) => s.id === "simbolos")?.content}
+                </p>
+              </div>
             )}
           </div>
         )}
 
-        {/* Immersive Guided Experience */}
-        {phase === "guided" && (
-          <ArcanoGuide arcano={arcano} onComplete={handleGuideComplete} />
-        )}
-
-        {/* After guided lesson — choice panel */}
-        {phase === "quiz" && (
-          <div className="space-y-8">
-            {/* Optional sections CTA */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        {/* ====== LESSON PHASE ====== */}
+        {phase === "lesson" && (
+          <div className="space-y-8" style={{ animation: "fade-up 0.5s ease-out" }}>
+            {/* Phase label */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4" style={{ color: "hsl(36 40% 42%)" }} />
+                <span
+                  className="text-xs font-heading tracking-[0.2em] uppercase"
+                  style={{ color: "hsl(36 40% 42%)" }}
+                >
+                  Lição do Arcano
+                </span>
+              </div>
               <button
-                onClick={() => setPhase("deepdive")}
-                className="card-mystic p-4 text-left hover:glow-gold transition-all duration-300 group"
+                onClick={() => setPhase("quiz")}
+                className="text-xs font-heading tracking-wider transition-colors"
+                style={{ color: "hsl(36 45% 58%)" }}
               >
-                <span className="text-lg mb-1 block">🔮</span>
-                <h4 className="font-heading text-sm text-foreground group-hover:text-primary transition-colors">
-                  Aprofundar
-                </h4>
-                <p className="text-xs text-muted-foreground mt-1">Simbolismo, cabala e história</p>
-              </button>
-              <button
-                onClick={() => setPhase("extras")}
-                className="card-mystic p-4 text-left hover:glow-gold transition-all duration-300 group"
-              >
-                <span className="text-lg mb-1 block">📚</span>
-                <h4 className="font-heading text-sm text-foreground group-hover:text-primary transition-colors">
-                  Biblioteca
-                </h4>
-                <p className="text-xs text-muted-foreground mt-1">Materiais extras e leituras</p>
-              </button>
-              <button
-                onClick={() => setPhase("exercise")}
-                className="card-mystic p-4 text-left hover:glow-gold transition-all duration-300 group"
-              >
-                <span className="text-lg mb-1 block">✍️</span>
-                <h4 className="font-heading text-sm text-foreground group-hover:text-primary transition-colors">
-                  Exercício
-                </h4>
-                <p className="text-xs text-muted-foreground mt-1">Reflexão e prática</p>
+                Ir ao Quiz →
               </button>
             </div>
 
-            {/* Quiz */}
-            <div className="animate-fade-up">
-              <h2 className="font-heading text-2xl text-gradient-gold text-center mb-8">
-                Quiz de Fixação
-              </h2>
-              <div className="card-mystic p-6">
-                <QuizSection questions={arcano.quiz} onComplete={handleQuizComplete} />
-              </div>
-              <div className="flex justify-center mt-8">
+            {/* Lesson sections */}
+            <LessonSections sections={FOOL_LESSON_SECTIONS} />
+
+            {/* Navigation after lesson */}
+            <div className="flex flex-col items-center gap-3 pt-4">
+              <button
+                onClick={handleLessonComplete}
+                className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
+                  color: "hsl(36 33% 97%)",
+                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
+                }}
+              >
+                Concluir Lição ✦
+              </button>
+
+              <div className="flex gap-4 mt-2">
                 <button
-                  onClick={() => navigate("/")}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  onClick={() => setPhase("deepdive")}
+                  className="text-xs font-heading tracking-wider transition-colors"
+                  style={{ color: "hsl(230 10% 45%)" }}
                 >
-                  Voltar ao mapa
+                  🔮 Aprofundar
+                </button>
+                <button
+                  onClick={() => setPhase("exercise")}
+                  className="text-xs font-heading tracking-wider transition-colors"
+                  style={{ color: "hsl(230 10% 45%)" }}
+                >
+                  ✍️ Exercício
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Deep Dive */}
+        {/* ====== DEEP DIVE PHASE ====== */}
         {phase === "deepdive" && (
-          <div className="space-y-6">
+          <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
+            <div className="flex items-center justify-between">
+              <span
+                className="text-xs font-heading tracking-[0.2em] uppercase"
+                style={{ color: "hsl(36 40% 42%)" }}
+              >
+                Aprofundamento
+              </span>
+              <button
+                onClick={() => setPhase("quiz")}
+                className="text-xs font-heading tracking-wider"
+                style={{ color: "hsl(36 45% 58%)" }}
+              >
+                Ir ao Quiz →
+              </button>
+            </div>
+
             <DeepDiveSection {...arcano.layers.deepDive} />
-            <div className="flex flex-col items-center gap-3 pt-4">
-              <button
-                onClick={() => setPhase("quiz")}
-                className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-heading text-sm tracking-wider hover:glow-gold transition-all duration-300 hover:scale-105"
-              >
-                Ir ao Quiz
-              </button>
-              <button
-                onClick={() => setPhase("extras")}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Ver materiais extras →
-              </button>
-            </div>
-          </div>
-        )}
 
-        {/* Extras */}
-        {phase === "extras" && (
-          <div className="space-y-6">
-            <LibrarySection materials={arcano.layers.extras} cardName={arcano.name} />
             <div className="flex flex-col items-center gap-3 pt-4">
               <button
                 onClick={() => setPhase("quiz")}
-                className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-heading text-sm tracking-wider hover:glow-gold transition-all duration-300 hover:scale-105"
+                className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
+                  color: "hsl(36 33% 97%)",
+                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
+                }}
               >
                 Ir ao Quiz
               </button>
@@ -201,9 +282,25 @@ const LessonPage = () => {
           </div>
         )}
 
-        {/* Exercise */}
+        {/* ====== EXERCISE PHASE ====== */}
         {phase === "exercise" && (
-          <div className="space-y-6">
+          <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
+            <div className="flex items-center justify-between">
+              <span
+                className="text-xs font-heading tracking-[0.2em] uppercase"
+                style={{ color: "hsl(36 40% 42%)" }}
+              >
+                Exercício
+              </span>
+              <button
+                onClick={() => setPhase("quiz")}
+                className="text-xs font-heading tracking-wider"
+                style={{ color: "hsl(36 45% 58%)" }}
+              >
+                Ir ao Quiz →
+              </button>
+            </div>
+
             <ExerciseSection
               instruction={arcano.layers.exercise.instruction}
               type={arcano.layers.exercise.type}
@@ -211,14 +308,93 @@ const LessonPage = () => {
               onComplete={handleExerciseComplete}
               completed={exerciseCompleted}
             />
+
             <div className="flex justify-center pt-2">
               <button
                 onClick={() => setPhase("quiz")}
-                className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-heading text-sm tracking-wider hover:glow-gold transition-all duration-300 hover:scale-105"
+                className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
+                  color: "hsl(36 33% 97%)",
+                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
+                }}
               >
                 Ir ao Quiz
               </button>
             </div>
+          </div>
+        )}
+
+        {/* ====== QUIZ PHASE ====== */}
+        {phase === "quiz" && (
+          <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
+            <div className="text-center mb-6">
+              <h2
+                className="font-heading text-2xl text-gradient-gold-warm mb-1"
+              >
+                Quiz de Fixação
+              </h2>
+              <p className="text-xs" style={{ color: "hsl(230 10% 45%)" }}>
+                Teste o que você aprendeu com {arcano.name}
+              </p>
+            </div>
+
+            <div
+              className="rounded-xl p-6"
+              style={{
+                background: "hsl(38 30% 95% / 0.85)",
+                border: "1px solid hsl(36 45% 58% / 0.15)",
+                boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)",
+              }}
+            >
+              <QuizSection questions={arcano.quiz} onComplete={handleQuizComplete} />
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                onClick={() => navigate("/")}
+                className="text-sm transition-colors"
+                style={{ color: "hsl(230 10% 45%)" }}
+              >
+                Voltar ao mapa
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ====== COMPLETE PHASE ====== */}
+        {phase === "complete" && (
+          <div
+            className="text-center py-12 space-y-6"
+            style={{ animation: "fade-up 0.6s ease-out" }}
+          >
+            <div
+              className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-3xl"
+              style={{
+                background: "linear-gradient(135deg, hsl(36 45% 58% / 0.15), hsl(42 70% 80% / 0.1))",
+                border: "2px solid hsl(36 45% 58% / 0.3)",
+                animation: "glow-breathe 3s ease-in-out infinite",
+              }}
+            >
+              ✦
+            </div>
+            <h2 className="font-heading text-2xl text-gradient-gold">
+              Lição Completa
+            </h2>
+            <p className="text-sm" style={{ color: "hsl(230 20% 30%)" }}>
+              Você completou a jornada com {arcano.name}.
+            </p>
+            <button
+              onClick={() => navigate("/")}
+              className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
+              style={{
+                background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
+                color: "hsl(36 33% 97%)",
+                boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
+              }}
+            >
+              Voltar à Jornada
+            </button>
           </div>
         )}
       </main>
