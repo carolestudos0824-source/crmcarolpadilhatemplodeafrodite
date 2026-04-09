@@ -222,6 +222,19 @@ export const THE_FOOL: ArcanoData = {
   unlocked: true,
 };
 
+/** Registry: lookup full arcano data by ID */
+export const ARCANOS_REGISTRY: Record<number, ArcanoData> = {
+  0: THE_FOOL,
+  // Add more arcanos here as they are created:
+  // 1: THE_MAGICIAN,
+  // 2: THE_HIGH_PRIESTESS,
+};
+
+/** Get arcano data by ID, returns undefined if not yet created */
+export function getArcanoById(id: number): ArcanoData | undefined {
+  return ARCANOS_REGISTRY[id];
+}
+
 export const ARCANOS_MAIORES: Pick<ArcanoData, "id" | "name" | "numeral" | "subtitle" | "unlocked">[] = [
   { id: 0, name: "O Louco", numeral: "0", subtitle: "O Início da Jornada", unlocked: true },
   { id: 1, name: "O Mago", numeral: "I", subtitle: "O Poder da Vontade", unlocked: false },
