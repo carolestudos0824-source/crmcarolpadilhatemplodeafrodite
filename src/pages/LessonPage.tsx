@@ -97,7 +97,7 @@ const LessonPage = () => {
       >
         <div className="container max-w-3xl py-3 px-4 flex items-center gap-4">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/module/arcanos-maiores")}
             className="transition-colors hover:scale-105 duration-200"
             style={{ color: "hsl(230 10% 40%)" }}
           >
