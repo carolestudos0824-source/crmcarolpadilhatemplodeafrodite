@@ -1,4 +1,5 @@
 import { type LessonSection } from "@/data/fool-lesson-content";
+import { getArcanoAsLegacy } from "./arcanos/index";
 
 export type { LessonSection };
 
@@ -567,16 +568,17 @@ export const THE_HIGH_PRIESTESS: ArcanoData = {
   unlocked: false,
 };
 
-/** Registry: lookup full arcano data by ID */
-export const ARCANOS_REGISTRY: Record<number, ArcanoData> = {
+/** Registry: lookup full arcano data by ID — legacy hardcoded entries */
+const ARCANOS_REGISTRY_LEGACY: Record<number, ArcanoData> = {
   0: THE_FOOL,
   1: THE_MAGICIAN,
   2: THE_HIGH_PRIESTESS,
 };
 
-/** Get arcano data by ID, returns undefined if not yet created */
+/** Get arcano data by ID — uses editorial registry with legacy fallback */
 export function getArcanoById(id: number): ArcanoData | undefined {
-  return ARCANOS_REGISTRY[id];
+  if (ARCANOS_REGISTRY_LEGACY[id]) return ARCANOS_REGISTRY_LEGACY[id];
+  return getArcanoAsLegacy(id, true);
 }
 
 export interface ArcanoSummary {
