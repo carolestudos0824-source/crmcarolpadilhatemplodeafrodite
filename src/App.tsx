@@ -8,6 +8,7 @@ import Index from "./pages/Index.tsx";
 import LessonPage from "./pages/LessonPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import SymbolLibraryPage from "./pages/SymbolLibraryPage.tsx";
+import PremiumPage from "./pages/PremiumPage.tsx";
 import ReviewPage from "./pages/ReviewPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
