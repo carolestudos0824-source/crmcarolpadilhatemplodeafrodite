@@ -16,43 +16,52 @@ interface BadgeDisplayProps {
 
 export function BadgeDisplay({ badges }: BadgeDisplayProps) {
   return (
-    <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+    <div className="flex flex-wrap justify-center gap-5 md:gap-7">
       {badges.map((badge) => {
         const symbol = BADGE_SYMBOLS[badge.id] || badge.icon;
         return (
           <div
             key={badge.id}
-            className={`group flex flex-col items-center gap-2 w-[68px] transition-all duration-500 ${
-              badge.earned ? "opacity-100" : "opacity-50"
+            className={`group flex flex-col items-center gap-2.5 w-[72px] transition-all duration-500 ${
+              badge.earned ? "opacity-100" : "opacity-60"
             }`}
             title={badge.description}
           >
-            {/* Badge circle */}
-            <div className={`relative w-14 h-14 rounded-full transition-all duration-500 ${
+            {/* Badge circle — richer, more precious */}
+            <div className={`relative w-[60px] h-[60px] rounded-full transition-all duration-500 ${
               badge.earned
-                ? "shadow-[0_0_18px_hsl(340_42%_30%/0.2),0_0_40px_hsl(36_45%_58%/0.12)]"
+                ? "shadow-[0_0_20px_hsl(36_45%_58%/0.25),0_4px_15px_hsl(340_42%_30%/0.12)]"
                 : ""
             }`}>
-              <div className={`absolute inset-0 rounded-full border-2 ${
-                badge.earned ? "border-primary/50" : "border-muted-foreground/20"
-              }`} />
-              <div className={`absolute inset-[3px] rounded-full border ${
-                badge.earned ? "border-secondary/30" : "border-transparent"
-              }`} />
-              <div className={`absolute inset-[5px] rounded-full flex items-center justify-center ${
+              {/* Outer ring */}
+              <div className={`absolute inset-0 rounded-full ${
                 badge.earned
-                  ? "bg-gradient-to-br from-parchment to-ivory"
-                  : "bg-muted/70"
-              }`}>
-                <span className={`text-lg ${
-                  badge.earned ? "text-secondary" : "text-muted-foreground/30"
+                  ? "border-2 border-primary/50"
+                  : "border border-muted-foreground/25"
+              }`} />
+              {/* Inner ring */}
+              <div className={`absolute inset-[3px] rounded-full ${
+                badge.earned
+                  ? "border border-secondary/30"
+                  : "border border-transparent"
+              }`} />
+              {/* Core */}
+              <div className={`absolute inset-[6px] rounded-full flex items-center justify-center ${
+                badge.earned
+                  ? "bg-gradient-to-br from-ivory via-parchment to-primary/10"
+                  : "bg-muted/60"
+              }`} style={badge.earned ? {
+                boxShadow: "inset 0 1px 3px hsl(36 45% 58% / 0.15), inset 0 -1px 2px hsl(340 42% 30% / 0.08)"
+              } : undefined}>
+                <span className={`text-xl leading-none ${
+                  badge.earned ? "text-secondary" : "text-muted-foreground/35"
                 }`}>
                   {symbol}
                 </span>
               </div>
             </div>
             <span className={`text-[9px] font-body text-center leading-tight tracking-wider uppercase ${
-              badge.earned ? "text-foreground/70" : "text-muted-foreground/40"
+              badge.earned ? "text-foreground/75" : "text-muted-foreground/45"
             }`}>
               {badge.name}
             </span>

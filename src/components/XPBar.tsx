@@ -11,35 +11,44 @@ export function XPBar({ xp, level }: XPBarProps) {
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2.5 shrink-0">
-        <div className="w-9 h-9 rounded-full border border-secondary/30 flex items-center justify-center bg-secondary/10 glow-crimson">
-          <Star className="w-4 h-4 text-secondary fill-secondary/30" />
+        <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{
+          border: "1.5px solid hsl(340 42% 30% / 0.35)",
+          background: "linear-gradient(135deg, hsl(340 42% 30% / 0.12), hsl(36 45% 58% / 0.08))",
+          boxShadow: "0 0 15px hsl(340 42% 30% / 0.1), inset 0 1px 2px hsl(36 45% 58% / 0.1)"
+        }}>
+          <Star className="w-4.5 h-4.5 text-secondary fill-secondary/30" />
         </div>
         <div className="flex flex-col">
-          <span className="text-[10px] text-muted-foreground tracking-wider uppercase leading-none">Nível</span>
-          <span className="text-base font-heading text-secondary tracking-wide">{level}</span>
+          <span className="text-[10px] text-foreground/50 tracking-wider uppercase leading-none font-body">Nível</span>
+          <span className="text-lg font-heading text-secondary tracking-wide leading-tight">{level}</span>
         </div>
       </div>
       <div className="flex-1 relative">
-        <div className="h-2.5 bg-muted rounded-full overflow-hidden border border-border">
+        <div className="h-3 rounded-full overflow-hidden" style={{
+          background: "hsl(36 20% 88%)",
+          border: "1px solid hsl(36 25% 82% / 0.8)",
+          boxShadow: "inset 0 1px 3px hsl(230 25% 10% / 0.06)"
+        }}>
           <div
             className="h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
             style={{
-              width: `${Math.max(xpInLevel, 2)}%`,
-              background: "linear-gradient(90deg, hsl(340 42% 30%), hsl(36 45% 58%), hsl(42 70% 80%))",
+              width: `${Math.max(xpInLevel, 3)}%`,
+              background: "linear-gradient(90deg, hsl(340 42% 30%), hsl(36 45% 52%), hsl(42 65% 72%))",
+              boxShadow: "0 1px 4px hsl(36 45% 58% / 0.3)"
             }}
           >
             <div
               className="absolute inset-0 w-1/3 h-full"
               style={{
-                background: "linear-gradient(90deg, transparent, hsl(42 70% 80% / 0.6), transparent)",
+                background: "linear-gradient(90deg, transparent, hsl(42 70% 80% / 0.7), transparent)",
                 animation: "progress-shine 2.5s ease-in-out infinite",
               }}
             />
           </div>
         </div>
       </div>
-      <span className="text-xs text-foreground/70 font-body tabular-nums shrink-0">
-        {xpInLevel}<span className="text-muted-foreground/60">/100</span> <span className="text-primary font-heading">XP</span>
+      <span className="text-sm text-foreground/80 font-body tabular-nums shrink-0">
+        {xpInLevel}<span className="text-foreground/40">/100</span> <span className="text-primary font-heading">XP</span>
       </span>
     </div>
   );
