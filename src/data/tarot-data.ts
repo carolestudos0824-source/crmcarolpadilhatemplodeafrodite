@@ -471,6 +471,7 @@ export const DEFAULT_PROGRESS: UserProgress = {
   completedLessons: [],
   completedQuizzes: [],
   completedExercises: [],
+  completedModules: [],
   badges: [
     { id: "first-step", name: "Primeiro Passo", description: "Começou a Jornada do Louco", icon: "✦", earned: false },
     { id: "fool-complete", name: "O Louco Revelado", description: "Completou a lição do Louco", icon: "🃏", earned: false },
@@ -480,5 +481,6 @@ export const DEFAULT_PROGRESS: UserProgress = {
     { id: "streak-7", name: "Devoto do Tarô", description: "7 dias consecutivos de estudo", icon: "💫", earned: false },
     { id: "library-explorer", name: "Exploradora", description: "Acessou 3 materiais extras", icon: "📚", earned: false },
   ],
-  currentModule: 0,
+  currentModule: "fundamentos",
+};
 };
