@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw } from "lucide-react";
 import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
+import OnboardingPage from "./OnboardingPage";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
 import mysticBg from "@/assets/mystic-bg.jpg";
@@ -17,7 +18,11 @@ const CATEGORY_LABELS: Record<ModuleCategory, string> = {
 
 const ModulesPage = () => {
   const navigate = useNavigate();
-  const { progress } = useProgress();
+  const { progress, completeOnboarding } = useProgress();
+
+  if (!progress.onboardingCompleted) {
+    return <OnboardingPage onComplete={completeOnboarding} />;
+  }
 
   const grouped = MODULES.reduce<Record<ModuleCategory, LearningModule[]>>((acc, mod) => {
     if (!acc[mod.category]) acc[mod.category] = [];
