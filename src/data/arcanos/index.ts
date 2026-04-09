@@ -52,11 +52,6 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
 // ─── Placeholders para arcanos ainda não escritos ───
 
 const ARCANOS_PENDENTES: [number, string, string, string, string][] = [
-  [11, "A Força",            "XI",    "O Poder Interior",        "a-forca"],
-  [12, "O Enforcado",        "XII",   "A Rendição Sagrada",      "o-enforcado"],
-  [13, "A Morte",            "XIII",  "A Grande Transformação",  "a-morte"],
-  [14, "A Temperança",       "XIV",   "A Alquimia Interior",     "a-temperanca"],
-  [15, "O Diabo",            "XV",    "As Correntes da Ilusão",  "o-diabo"],
   [16, "A Torre",            "XVI",   "A Revelação Súbita",      "a-torre"],
   [17, "A Estrela",          "XVII",  "A Esperança Renovada",    "a-estrela"],
   [18, "A Lua",              "XVIII", "O Caminho da Intuição",   "a-lua"],
@@ -114,6 +109,6 @@ export function getCompleteArcanos(): ArcanoMaiorEditorial[] {
 }
 
 // Re-exports
-export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE, OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA };
+export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE, OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA, A_FORCA, O_ENFORCADO, A_MORTE, A_TEMPERANCA, O_DIABO };
 export { validateArcano, createEmptyArcano, editorialToLegacy } from "../arcano-editorial";
 export type { ArcanoMaiorEditorial } from "../arcano-editorial";
