@@ -577,10 +577,7 @@ const ARCANOS_REGISTRY_LEGACY: Record<number, ArcanoData> = {
 
 /** Get arcano data by ID — uses editorial registry with legacy fallback */
 export function getArcanoById(id: number): ArcanoData | undefined {
-  // Prefer legacy hardcoded data for 0-2 (richer extras/layers)
   if (ARCANOS_REGISTRY_LEGACY[id]) return ARCANOS_REGISTRY_LEGACY[id];
-  // For 3-21, convert from editorial format
-  const { getArcanoAsLegacy } = require("./arcanos/index");
   return getArcanoAsLegacy(id, true);
 }
 
