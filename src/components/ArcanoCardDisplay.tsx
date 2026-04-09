@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import foolCardImage from "@/assets/the-fool-card.jpg";
 
 interface ArcanoCardDisplayProps {
   name: string;
   numeral: string;
   subtitle: string;
   keywords: string[];
+  cardImage: string;
 }
 
-export function ArcanoCardDisplay({ name, numeral, subtitle, keywords }: ArcanoCardDisplayProps) {
+export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage }: ArcanoCardDisplayProps) {
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function ArcanoCardDisplay({ name, numeral, subtitle, keywords }: ArcanoC
           }}
         >
           <img
-            src={foolCardImage}
+            src={cardImage}
             alt={name}
             className="w-full h-full object-cover"
           />

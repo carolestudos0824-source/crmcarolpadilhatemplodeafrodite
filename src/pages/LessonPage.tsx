@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { THE_FOOL } from "@/data/tarot-data";
-import { FOOL_VOICE_TEXT, FOOL_LESSON_SECTIONS } from "@/data/fool-lesson-content";
+import { getArcanoById } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import { ArcanoCardDisplay } from "@/components/ArcanoCardDisplay";
 import { ArcanoVoice } from "@/components/ArcanoVoice";
@@ -22,7 +21,27 @@ const LessonPage = () => {
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   const [showSymbols, setShowSymbols] = useState(false);
 
-  const arcano = THE_FOOL;
+  const arcanoId = parseInt(id || "0", 10);
+  const arcano = getArcanoById(arcanoId);
+
+  if (!arcano) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
+        <div className="text-center space-y-4">
+          <p className="font-heading text-lg" style={{ color: "hsl(230 25% 15%)" }}>
+            Arcano não encontrado
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm font-heading tracking-wider"
+            style={{ color: "hsl(36 45% 58%)" }}
+          >
+            Voltar à Jornada
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const phaseSteps: LessonPhase[] = ["intro", "lesson", "deepdive", "exercise", "quiz"];
   const currentIdx = phaseSteps.indexOf(phase);
@@ -51,6 +70,8 @@ const LessonPage = () => {
     if (score === total) earnBadge("quiz-master");
     setPhase("complete");
   };
+
+  const symbolsSection = arcano.lessonSections.find((s) => s.id === "simbolos");
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -83,31 +104,21 @@ const LessonPage = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
-            <span
-              className="font-heading text-xs tracking-[0.2em]"
-              style={{ color: "hsl(36 40% 42%)" }}
-            >
+            <span className="font-heading text-xs tracking-[0.2em]" style={{ color: "hsl(36 40% 42%)" }}>
               {arcano.numeral}
             </span>
-            <span
-              className="font-heading text-sm"
-              style={{ color: "hsl(230 25% 15%)" }}
-            >
+            <span className="font-heading text-sm" style={{ color: "hsl(230 25% 15%)" }}>
               {arcano.name}
             </span>
           </div>
           <div className="flex-1" />
-          {/* Progress dots */}
           <div className="flex gap-1.5">
             {phaseSteps.map((p, i) => (
               <div
                 key={p}
                 className="h-1.5 w-5 rounded-full transition-all duration-500"
                 style={{
-                  background:
-                    i <= currentIdx
-                      ? "hsl(36 45% 58%)"
-                      : "hsl(36 25% 82% / 0.6)",
+                  background: i <= currentIdx ? "hsl(36 45% 58%)" : "hsl(36 25% 82% / 0.6)",
                 }}
               />
             ))}
@@ -116,24 +127,18 @@ const LessonPage = () => {
       </header>
 
       <main className="relative z-10 container max-w-3xl px-4 py-8">
-        {/* ====== INTRO PHASE ====== */}
+        {/* INTRO */}
         {phase === "intro" && (
           <div className="space-y-10" style={{ animation: "fade-up 0.6s ease-out" }}>
-            {/* Card display */}
             <ArcanoCardDisplay
               name={arcano.name}
               numeral={arcano.numeral}
               subtitle={arcano.subtitle}
               keywords={arcano.keywords}
+              cardImage={arcano.cardImage}
             />
-
-            {/* Divider */}
             <div className="divider-gold" />
-
-            {/* Voice of the Arcano */}
-            <ArcanoVoice text={FOOL_VOICE_TEXT} arcanoName={arcano.name} />
-
-            {/* Action buttons */}
+            <ArcanoVoice text={arcano.voiceText} arcanoName={arcano.name} />
             <div className="flex flex-col items-center gap-3 pt-2">
               <button
                 onClick={handleStartLesson}
@@ -141,8 +146,7 @@ const LessonPage = () => {
                 style={{
                   background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
                   color: "hsl(36 33% 97%)",
-                  boxShadow:
-                    "0 4px 20px hsl(36 45% 58% / 0.2), 0 0 40px hsl(42 70% 80% / 0.08)",
+                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2), 0 0 40px hsl(42 70% 80% / 0.08)",
                 }}
               >
                 <span className="flex items-center gap-2">
@@ -150,19 +154,18 @@ const LessonPage = () => {
                   Começar a Lição
                 </span>
               </button>
-
-              <button
-                onClick={() => setShowSymbols(!showSymbols)}
-                className="flex items-center gap-2 text-xs font-heading tracking-wider transition-colors duration-200"
-                style={{ color: "hsl(230 10% 45%)" }}
-              >
-                <Eye className="w-3.5 h-3.5" />
-                {showSymbols ? "Ocultar símbolos" : "Ver símbolos"}
-              </button>
+              {symbolsSection && (
+                <button
+                  onClick={() => setShowSymbols(!showSymbols)}
+                  className="flex items-center gap-2 text-xs font-heading tracking-wider transition-colors duration-200"
+                  style={{ color: "hsl(230 10% 45%)" }}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  {showSymbols ? "Ocultar símbolos" : "Ver símbolos"}
+                </button>
+              )}
             </div>
-
-            {/* Symbols preview (optional) */}
-            {showSymbols && (
+            {showSymbols && symbolsSection && (
               <div
                 className="rounded-xl p-5"
                 style={{
@@ -171,47 +174,32 @@ const LessonPage = () => {
                   animation: "fade-up 0.3s ease-out",
                 }}
               >
-                <h4
-                  className="font-heading text-sm tracking-wider mb-3"
-                  style={{ color: "hsl(36 40% 42%)" }}
-                >
+                <h4 className="font-heading text-sm tracking-wider mb-3" style={{ color: "hsl(36 40% 42%)" }}>
                   ◎ Símbolos do Arcano
                 </h4>
                 <p className="text-sm leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>
-                  {FOOL_LESSON_SECTIONS.find((s) => s.id === "simbolos")?.content}
+                  {symbolsSection.content}
                 </p>
               </div>
             )}
           </div>
         )}
 
-        {/* ====== LESSON PHASE ====== */}
+        {/* LESSON */}
         {phase === "lesson" && (
           <div className="space-y-8" style={{ animation: "fade-up 0.5s ease-out" }}>
-            {/* Phase label */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4" style={{ color: "hsl(36 40% 42%)" }} />
-                <span
-                  className="text-xs font-heading tracking-[0.2em] uppercase"
-                  style={{ color: "hsl(36 40% 42%)" }}
-                >
+                <span className="text-xs font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>
                   Lição do Arcano
                 </span>
               </div>
-              <button
-                onClick={() => setPhase("quiz")}
-                className="text-xs font-heading tracking-wider transition-colors"
-                style={{ color: "hsl(36 45% 58%)" }}
-              >
+              <button onClick={() => setPhase("quiz")} className="text-xs font-heading tracking-wider transition-colors" style={{ color: "hsl(36 45% 58%)" }}>
                 Ir ao Quiz →
               </button>
             </div>
-
-            {/* Lesson sections */}
-            <LessonSections sections={FOOL_LESSON_SECTIONS} />
-
-            {/* Navigation after lesson */}
+            <LessonSections sections={arcano.lessonSections} />
             <div className="flex flex-col items-center gap-3 pt-4">
               <button
                 onClick={handleLessonComplete}
@@ -224,20 +212,11 @@ const LessonPage = () => {
               >
                 Concluir Lição ✦
               </button>
-
               <div className="flex gap-4 mt-2">
-                <button
-                  onClick={() => setPhase("deepdive")}
-                  className="text-xs font-heading tracking-wider transition-colors"
-                  style={{ color: "hsl(230 10% 45%)" }}
-                >
+                <button onClick={() => setPhase("deepdive")} className="text-xs font-heading tracking-wider transition-colors" style={{ color: "hsl(230 10% 45%)" }}>
                   🔮 Aprofundar
                 </button>
-                <button
-                  onClick={() => setPhase("exercise")}
-                  className="text-xs font-heading tracking-wider transition-colors"
-                  style={{ color: "hsl(230 10% 45%)" }}
-                >
+                <button onClick={() => setPhase("exercise")} className="text-xs font-heading tracking-wider transition-colors" style={{ color: "hsl(230 10% 45%)" }}>
                   ✍️ Exercício
                 </button>
               </div>
@@ -245,62 +224,29 @@ const LessonPage = () => {
           </div>
         )}
 
-        {/* ====== DEEP DIVE PHASE ====== */}
+        {/* DEEP DIVE */}
         {phase === "deepdive" && (
           <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
             <div className="flex items-center justify-between">
-              <span
-                className="text-xs font-heading tracking-[0.2em] uppercase"
-                style={{ color: "hsl(36 40% 42%)" }}
-              >
-                Aprofundamento
-              </span>
-              <button
-                onClick={() => setPhase("quiz")}
-                className="text-xs font-heading tracking-wider"
-                style={{ color: "hsl(36 45% 58%)" }}
-              >
-                Ir ao Quiz →
-              </button>
+              <span className="text-xs font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>Aprofundamento</span>
+              <button onClick={() => setPhase("quiz")} className="text-xs font-heading tracking-wider" style={{ color: "hsl(36 45% 58%)" }}>Ir ao Quiz →</button>
             </div>
-
             <DeepDiveSection {...arcano.layers.deepDive} />
-
-            <div className="flex flex-col items-center gap-3 pt-4">
-              <button
-                onClick={() => setPhase("quiz")}
-                className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
-                style={{
-                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
-                  color: "hsl(36 33% 97%)",
-                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
-                }}
-              >
+            <div className="flex justify-center pt-4">
+              <button onClick={() => setPhase("quiz")} className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)" }}>
                 Ir ao Quiz
               </button>
             </div>
           </div>
         )}
 
-        {/* ====== EXERCISE PHASE ====== */}
+        {/* EXERCISE */}
         {phase === "exercise" && (
           <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
             <div className="flex items-center justify-between">
-              <span
-                className="text-xs font-heading tracking-[0.2em] uppercase"
-                style={{ color: "hsl(36 40% 42%)" }}
-              >
-                Exercício
-              </span>
-              <button
-                onClick={() => setPhase("quiz")}
-                className="text-xs font-heading tracking-wider"
-                style={{ color: "hsl(36 45% 58%)" }}
-              >
-                Ir ao Quiz →
-              </button>
+              <span className="text-xs font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>Exercício</span>
+              <button onClick={() => setPhase("quiz")} className="text-xs font-heading tracking-wider" style={{ color: "hsl(36 45% 58%)" }}>Ir ao Quiz →</button>
             </div>
-
             <ExerciseSection
               instruction={arcano.layers.exercise.instruction}
               type={arcano.layers.exercise.type}
@@ -308,91 +254,37 @@ const LessonPage = () => {
               onComplete={handleExerciseComplete}
               completed={exerciseCompleted}
             />
-
             <div className="flex justify-center pt-2">
-              <button
-                onClick={() => setPhase("quiz")}
-                className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
-                style={{
-                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
-                  color: "hsl(36 33% 97%)",
-                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
-                }}
-              >
+              <button onClick={() => setPhase("quiz")} className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)" }}>
                 Ir ao Quiz
               </button>
             </div>
           </div>
         )}
 
-        {/* ====== QUIZ PHASE ====== */}
+        {/* QUIZ */}
         {phase === "quiz" && (
           <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
             <div className="text-center mb-6">
-              <h2
-                className="font-heading text-2xl text-gradient-gold-warm mb-1"
-              >
-                Quiz de Fixação
-              </h2>
-              <p className="text-xs" style={{ color: "hsl(230 10% 45%)" }}>
-                Teste o que você aprendeu com {arcano.name}
-              </p>
+              <h2 className="font-heading text-2xl text-gradient-gold-warm mb-1">Quiz de Fixação</h2>
+              <p className="text-xs" style={{ color: "hsl(230 10% 45%)" }}>Teste o que você aprendeu com {arcano.name}</p>
             </div>
-
-            <div
-              className="rounded-xl p-6"
-              style={{
-                background: "hsl(38 30% 95% / 0.85)",
-                border: "1px solid hsl(36 45% 58% / 0.15)",
-                boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)",
-              }}
-            >
+            <div className="rounded-xl p-6" style={{ background: "hsl(38 30% 95% / 0.85)", border: "1px solid hsl(36 45% 58% / 0.15)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)" }}>
               <QuizSection questions={arcano.quiz} onComplete={handleQuizComplete} />
             </div>
-
             <div className="flex justify-center">
-              <button
-                onClick={() => navigate("/")}
-                className="text-sm transition-colors"
-                style={{ color: "hsl(230 10% 45%)" }}
-              >
-                Voltar ao mapa
-              </button>
+              <button onClick={() => navigate("/")} className="text-sm transition-colors" style={{ color: "hsl(230 10% 45%)" }}>Voltar ao mapa</button>
             </div>
           </div>
         )}
 
-        {/* ====== COMPLETE PHASE ====== */}
+        {/* COMPLETE */}
         {phase === "complete" && (
-          <div
-            className="text-center py-12 space-y-6"
-            style={{ animation: "fade-up 0.6s ease-out" }}
-          >
-            <div
-              className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-3xl"
-              style={{
-                background: "linear-gradient(135deg, hsl(36 45% 58% / 0.15), hsl(42 70% 80% / 0.1))",
-                border: "2px solid hsl(36 45% 58% / 0.3)",
-                animation: "glow-breathe 3s ease-in-out infinite",
-              }}
-            >
-              ✦
-            </div>
-            <h2 className="font-heading text-2xl text-gradient-gold">
-              Lição Completa
-            </h2>
-            <p className="text-sm" style={{ color: "hsl(230 20% 30%)" }}>
-              Você completou a jornada com {arcano.name}.
-            </p>
-            <button
-              onClick={() => navigate("/")}
-              className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
-              style={{
-                background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
-                color: "hsl(36 33% 97%)",
-                boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
-              }}
-            >
+          <div className="text-center py-12 space-y-6" style={{ animation: "fade-up 0.6s ease-out" }}>
+            <div className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-3xl" style={{ background: "linear-gradient(135deg, hsl(36 45% 58% / 0.15), hsl(42 70% 80% / 0.1))", border: "2px solid hsl(36 45% 58% / 0.3)", animation: "glow-breathe 3s ease-in-out infinite" }}>✦</div>
+            <h2 className="font-heading text-2xl text-gradient-gold">Lição Completa</h2>
+            <p className="text-sm" style={{ color: "hsl(230 20% 30%)" }}>Você completou a jornada com {arcano.name}.</p>
+            <button onClick={() => navigate("/")} className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)" }}>
               Voltar à Jornada
             </button>
           </div>
