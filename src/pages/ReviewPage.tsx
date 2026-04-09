@@ -373,6 +373,28 @@ const ReviewPage = () => {
           </div>
         )}
 
+        {/* Quick Review — all 22 arcanos */}
+        <section>
+          <div className="flex items-center justify-center mb-3">
+            <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50" loading="lazy" width={800} height={512} />
+          </div>
+          <h2 className="text-[9px] font-heading tracking-[0.35em] uppercase mb-1 text-center" style={{ color: "hsl(36 42% 40%)" }}>
+            ✦ Revisão Rápida
+          </h2>
+          <p className="text-[10px] font-accent italic text-center mb-4" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+            Resumo padronizado dos 22 Arcanos Maiores
+          </p>
+          <div className="space-y-2.5">
+            {ALL_QUICK_REVIEWS.map(review => (
+              <QuickReviewCard
+                key={review.arcanoId}
+                review={review}
+                isStudied={studiedArcanoIds.includes(review.arcanoId)}
+              />
+            ))}
+          </div>
+        </section>
+
         <div className="flex items-center justify-center pt-4 pb-10">
           <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-40" loading="lazy" width={800} height={512} />
         </div>
