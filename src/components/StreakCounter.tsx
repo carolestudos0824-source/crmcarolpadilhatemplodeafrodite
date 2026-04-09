@@ -5,11 +5,17 @@ interface StreakCounterProps {
 }
 
 export function StreakCounter({ streak }: StreakCounterProps) {
+  const isActive = streak > 0;
+
   return (
-    <div className="flex items-center gap-2 bg-muted px-4 py-2 rounded-full">
-      <Flame className={`w-5 h-5 ${streak > 0 ? "text-secondary" : "text-muted-foreground"}`} />
-      <span className="text-sm font-medium text-foreground">
-        {streak} {streak === 1 ? "dia" : "dias"}
+    <div className="flex items-center gap-1.5">
+      <Flame
+        className={`w-4 h-4 transition-colors ${
+          isActive ? "text-secondary" : "text-muted-foreground/30"
+        }`}
+      />
+      <span className={`text-xs font-body tabular-nums ${isActive ? "text-foreground/80" : "text-muted-foreground/40"}`}>
+        {streak}
       </span>
     </div>
   );
