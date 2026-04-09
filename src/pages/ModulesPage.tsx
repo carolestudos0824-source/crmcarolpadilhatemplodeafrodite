@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Lock, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
+import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw } from "lucide-react";
 import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import { XPBar } from "@/components/XPBar";
