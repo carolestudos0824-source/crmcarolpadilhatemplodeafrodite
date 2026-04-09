@@ -14,6 +14,9 @@ import type { ArcanoData } from "../tarot-data";
 import { O_LOUCO } from "./0-o-louco";
 import { O_MAGO } from "./1-o-mago";
 import { A_SACERDOTISA } from "./2-a-sacerdotisa";
+import { A_IMPERATRIZ } from "./3-a-imperatriz";
+import { O_IMPERADOR } from "./4-o-imperador";
+import { O_HIEROFANTE } from "./5-o-hierofante";
 
 // ─── Registry Editorial ───
 
@@ -21,14 +24,14 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   0: O_LOUCO,
   1: O_MAGO,
   2: A_SACERDOTISA,
+  3: A_IMPERATRIZ,
+  4: O_IMPERADOR,
+  5: O_HIEROFANTE,
 };
 
 // ─── Placeholders para arcanos ainda não escritos ───
 
 const ARCANOS_PENDENTES: [number, string, string, string, string][] = [
-  [3,  "A Imperatriz",       "III",   "A Abundância Criativa",   "a-imperatriz"],
-  [4,  "O Imperador",        "IV",    "A Estrutura e a Ordem",   "o-imperador"],
-  [5,  "O Hierofante",       "V",     "A Tradição Sagrada",      "o-hierofante"],
   [6,  "Os Enamorados",      "VI",    "A Escolha do Coração",    "os-enamorados"],
   [7,  "O Carro",            "VII",   "A Vontade em Movimento",  "o-carro"],
   [8,  "A Justiça",          "VIII",  "O Equilíbrio Kármico",    "a-justica"],
@@ -96,6 +99,6 @@ export function getCompleteArcanos(): ArcanoMaiorEditorial[] {
 }
 
 // Re-exports
-export { O_LOUCO, O_MAGO, A_SACERDOTISA };
+export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE };
 export { validateArcano, createEmptyArcano, editorialToLegacy } from "../arcano-editorial";
 export type { ArcanoMaiorEditorial } from "../arcano-editorial";
