@@ -20,41 +20,35 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden">
       {/* Full artistic background */}
       <div className="fixed inset-0 z-0">
-        <img
-          src={mysticBg}
-          alt=""
-          className="w-full h-full object-cover"
-          width={1920}
-          height={1080}
-        />
+        <img src={mysticBg} alt="" className="w-full h-full object-cover" width={1920} height={1080} />
         <div className="absolute inset-0" style={{
-          background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.12) 0%, hsl(36 33% 97% / 0.06) 30%, hsl(36 33% 97% / 0.10) 70%, hsl(36 33% 97% / 0.25) 100%)"
+          background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.10) 0%, hsl(36 33% 97% / 0.05) 30%, hsl(36 33% 97% / 0.08) 70%, hsl(36 33% 97% / 0.22) 100%)"
         }} />
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b" style={{
-        borderColor: "hsl(36 45% 58% / 0.30)",
-        background: "linear-gradient(180deg, hsl(36 33% 97% / 0.92) 0%, hsl(38 30% 94% / 0.88) 100%)",
-        backdropFilter: "blur(24px)",
-        boxShadow: "0 4px 30px hsl(36 45% 58% / 0.12), 0 1px 0 hsl(36 45% 58% / 0.18) inset"
+      <header className="relative z-10" style={{
+        borderBottom: "1px solid hsl(36 45% 50% / 0.35)",
+        background: "linear-gradient(180deg, hsl(36 33% 96% / 0.94) 0%, hsl(38 28% 93% / 0.92) 100%)",
+        backdropFilter: "blur(28px)",
+        boxShadow: "0 6px 36px hsl(36 45% 50% / 0.10), 0 1px 0 hsl(36 45% 58% / 0.20) inset"
       }}>
         <div className="container max-w-3xl py-5 px-6">
           {/* Top row */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex flex-col">
               <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{
-                color: "hsl(340 42% 30% / 0.85)"
+                color: "hsl(340 42% 28%)"
               }}>
-                <span style={{ color: "hsl(36 45% 48%)" }}>✦</span>
+                <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
                 Arcanos Maiores
-                <span style={{ color: "hsl(36 45% 48%)" }}>✦</span>
+                <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
               </span>
               <h1 className="font-heading text-2xl md:text-3xl tracking-wide" style={{
-                background: "linear-gradient(135deg, hsl(340 42% 24%), hsl(36 38% 32%), hsl(36 45% 48%))",
+                background: "linear-gradient(135deg, hsl(340 42% 22%), hsl(36 35% 28%), hsl(36 45% 44%))",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                filter: "drop-shadow(0 1px 3px hsl(36 45% 58% / 0.25))"
+                filter: "drop-shadow(0 1px 2px hsl(36 45% 50% / 0.20))"
               }}>
                 A Jornada do Louco
               </h1>
@@ -64,9 +58,9 @@ const Index = () => {
               <button
                 onClick={() => navigate("/admin")}
                 className="text-[10px] tracking-wider uppercase font-body transition-colors duration-300"
-                style={{ color: "hsl(230 10% 40% / 0.6)" }}
-                onMouseEnter={e => e.currentTarget.style.color = "hsl(340 42% 30%)"}
-                onMouseLeave={e => e.currentTarget.style.color = "hsl(230 10% 40% / 0.6)"}
+                style={{ color: "hsl(230 10% 35% / 0.55)" }}
+                onMouseEnter={e => e.currentTarget.style.color = "hsl(340 42% 28%)"}
+                onMouseLeave={e => e.currentTarget.style.color = "hsl(230 10% 35% / 0.55)"}
               >
                 Admin
               </button>
@@ -76,7 +70,7 @@ const Index = () => {
           {/* XP Bar */}
           <div className="relative">
             <div className="absolute -top-2 left-0 right-0 h-px" style={{
-              background: "linear-gradient(90deg, transparent, hsl(36 45% 58% / 0.30), transparent)"
+              background: "linear-gradient(90deg, transparent, hsl(36 45% 50% / 0.28), transparent)"
             }} />
             <XPBar xp={progress.xp} level={progress.level} />
           </div>
@@ -88,28 +82,28 @@ const Index = () => {
         {/* Conquistas */}
         <section className="mb-10">
           <div className="flex items-center justify-center mb-3">
-            <img src={ornamentDivider} alt="" className="w-36 h-auto opacity-70" loading="lazy" width={800} height={512} />
+            <img src={ornamentDivider} alt="" className="w-36 h-auto opacity-65" loading="lazy" width={800} height={512} />
           </div>
           <h2 className="font-accent text-base tracking-[0.25em] uppercase italic text-center mb-5" style={{
-            color: "hsl(340 42% 28%)",
-            textShadow: "0 1px 3px hsl(340 42% 30% / 0.15)"
+            color: "hsl(340 42% 24%)",
+            textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
           }}>
             Conquistas
           </h2>
           <div className="relative rounded-2xl overflow-hidden" style={{
-            background: "linear-gradient(145deg, hsl(38 30% 94% / 0.90), hsl(36 33% 96% / 0.82))",
-            backdropFilter: "blur(20px)",
-            border: "1px solid hsl(36 45% 58% / 0.30)",
-            boxShadow: "0 8px 40px hsl(36 45% 58% / 0.10), 0 1px 0 hsl(36 45% 58% / 0.15) inset, 0 -1px 0 hsl(36 45% 58% / 0.08) inset, 0 0 0 1px hsl(36 45% 58% / 0.05) inset"
+            background: "linear-gradient(145deg, hsl(38 28% 93% / 0.92), hsl(36 33% 95% / 0.88))",
+            backdropFilter: "blur(24px)",
+            border: "1px solid hsl(36 45% 50% / 0.32)",
+            boxShadow: "0 8px 40px hsl(36 45% 50% / 0.10), 0 1px 0 hsl(36 45% 58% / 0.18) inset, 0 -1px 0 hsl(36 45% 50% / 0.08) inset"
           }}>
             {/* Corner ornaments */}
-            <div className="absolute top-3 left-3 w-5 h-5 border-t-[1.5px] border-l-[1.5px] rounded-tl-sm" style={{ borderColor: "hsl(36 45% 50% / 0.35)" }} />
-            <div className="absolute top-3 right-3 w-5 h-5 border-t-[1.5px] border-r-[1.5px] rounded-tr-sm" style={{ borderColor: "hsl(36 45% 50% / 0.35)" }} />
-            <div className="absolute bottom-3 left-3 w-5 h-5 border-b-[1.5px] border-l-[1.5px] rounded-bl-sm" style={{ borderColor: "hsl(36 45% 50% / 0.35)" }} />
-            <div className="absolute bottom-3 right-3 w-5 h-5 border-b-[1.5px] border-r-[1.5px] rounded-br-sm" style={{ borderColor: "hsl(36 45% 50% / 0.35)" }} />
-            {/* Subtle inner glow */}
+            <div className="absolute top-3 left-3 w-5 h-5 border-t-[1.5px] border-l-[1.5px] rounded-tl-sm" style={{ borderColor: "hsl(36 45% 45% / 0.40)" }} />
+            <div className="absolute top-3 right-3 w-5 h-5 border-t-[1.5px] border-r-[1.5px] rounded-tr-sm" style={{ borderColor: "hsl(36 45% 45% / 0.40)" }} />
+            <div className="absolute bottom-3 left-3 w-5 h-5 border-b-[1.5px] border-l-[1.5px] rounded-bl-sm" style={{ borderColor: "hsl(36 45% 45% / 0.40)" }} />
+            <div className="absolute bottom-3 right-3 w-5 h-5 border-b-[1.5px] border-r-[1.5px] rounded-br-sm" style={{ borderColor: "hsl(36 45% 45% / 0.40)" }} />
+            {/* Inner glow */}
             <div className="absolute inset-0 pointer-events-none" style={{
-              background: "radial-gradient(ellipse at 50% 0%, hsl(42 70% 80% / 0.08) 0%, transparent 60%)"
+              background: "radial-gradient(ellipse at 50% 0%, hsl(42 70% 78% / 0.10) 0%, transparent 55%)"
             }} />
             <div className="p-6 md:p-8">
               <BadgeDisplay badges={progress.badges} />
@@ -120,11 +114,11 @@ const Index = () => {
         {/* Journey Map */}
         <section>
           <div className="flex items-center justify-center mb-3">
-            <img src={ornamentDivider} alt="" className="w-36 h-auto opacity-70" loading="lazy" width={800} height={512} />
+            <img src={ornamentDivider} alt="" className="w-36 h-auto opacity-65" loading="lazy" width={800} height={512} />
           </div>
           <h2 className="font-accent text-base tracking-[0.25em] uppercase italic text-center mb-6" style={{
-            color: "hsl(340 42% 28%)",
-            textShadow: "0 1px 3px hsl(340 42% 30% / 0.15)"
+            color: "hsl(340 42% 24%)",
+            textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
           }}>
             Mapa da Jornada
           </h2>
