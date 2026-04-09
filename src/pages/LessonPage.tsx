@@ -66,7 +66,7 @@ const LessonPage = () => {
   const handleQuizComplete = (score: number, total: number) => {
     addXP(score * 10);
     completeQuiz(`quiz-arcano-${arcano.id}`);
-    earnBadge("fool-complete");
+    if (arcano.id === 0) earnBadge("fool-complete");
     if (score === total) earnBadge("quiz-master");
     setPhase("complete");
   };
