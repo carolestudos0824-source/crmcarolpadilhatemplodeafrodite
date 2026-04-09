@@ -6,54 +6,61 @@
 
 @layer base {
   :root {
-    --background: 240 10% 5%;
-    --foreground: 40 15% 88%;
+    --background: 36 33% 97%;
+    --foreground: 230 25% 10%;
 
-    --card: 240 8% 8%;
-    --card-foreground: 40 15% 88%;
+    --card: 38 30% 95%;
+    --card-foreground: 230 25% 10%;
 
-    --popover: 240 8% 10%;
-    --popover-foreground: 40 15% 88%;
+    --popover: 36 33% 96%;
+    --popover-foreground: 230 25% 10%;
 
-    --primary: 40 60% 55%;
-    --primary-foreground: 240 10% 4%;
+    --primary: 36 45% 58%;
+    --primary-foreground: 36 33% 97%;
 
-    --secondary: 355 55% 40%;
-    --secondary-foreground: 40 20% 95%;
+    --secondary: 340 42% 30%;
+    --secondary-foreground: 36 33% 97%;
 
-    --muted: 240 6% 12%;
-    --muted-foreground: 40 10% 55%;
+    --muted: 36 20% 90%;
+    --muted-foreground: 230 10% 40%;
 
-    --accent: 40 45% 40%;
-    --accent-foreground: 40 20% 95%;
+    --accent: 340 35% 25%;
+    --accent-foreground: 36 33% 97%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 40 15% 15%;
-    --input: 240 6% 14%;
-    --ring: 40 60% 55%;
+    --border: 36 25% 82%;
+    --input: 36 20% 88%;
+    --ring: 36 45% 58%;
 
     --radius: 0.75rem;
 
-    --gold: 40 60% 55%;
-    --gold-light: 40 50% 68%;
-    --gold-dark: 40 45% 35%;
-    --gold-muted: 40 30% 25%;
-    --crimson: 355 55% 40%;
-    --crimson-light: 355 45% 50%;
-    --mystic-bg: 240 10% 5%;
-    --mystic-surface: 240 8% 8%;
-    --mystic-elevated: 240 7% 11%;
+    --gold: 36 45% 58%;
+    --gold-light: 38 40% 72%;
+    --gold-dark: 36 40% 42%;
+    --gold-muted: 36 25% 50%;
+    --crimson: 340 42% 30%;
+    --crimson-light: 340 38% 42%;
+    --wine: 340 42% 30%;
+    --plum: 325 35% 18%;
+    --midnight: 230 25% 10%;
+    --parchment: 36 33% 97%;
+    --ivory: 38 30% 94%;
+    --moonlight: 42 70% 80%;
 
-    --sidebar-background: 240 8% 6%;
-    --sidebar-foreground: 40 15% 88%;
-    --sidebar-primary: 40 60% 55%;
-    --sidebar-primary-foreground: 240 10% 4%;
-    --sidebar-accent: 240 8% 12%;
-    --sidebar-accent-foreground: 40 15% 88%;
-    --sidebar-border: 40 15% 12%;
-    --sidebar-ring: 40 60% 55%;
+    --mystic-bg: 36 33% 97%;
+    --mystic-surface: 38 30% 95%;
+    --mystic-elevated: 36 25% 92%;
+
+    --sidebar-background: 325 35% 12%;
+    --sidebar-foreground: 36 33% 92%;
+    --sidebar-primary: 36 45% 58%;
+    --sidebar-primary-foreground: 230 25% 10%;
+    --sidebar-accent: 325 30% 16%;
+    --sidebar-accent-foreground: 36 33% 92%;
+    --sidebar-border: 36 20% 25%;
+    --sidebar-ring: 36 45% 58%;
   }
 }
 
@@ -74,65 +81,66 @@
 @layer utilities {
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(40 55% 50%), hsl(40 45% 65%), hsl(40 55% 50%));
+    background-image: linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%), hsl(38 40% 65%));
   }
 
   .text-gradient-gold-warm {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(40 40% 45%), hsl(35 50% 55%), hsl(40 45% 65%));
+    background-image: linear-gradient(135deg, hsl(340 42% 30%), hsl(36 40% 42%), hsl(36 45% 58%));
   }
 
   .border-gold {
-    border-color: hsl(40 55% 50% / 0.15);
+    border-color: hsl(36 45% 58% / 0.2);
   }
 
   .border-gold-strong {
-    border-color: hsl(40 55% 50% / 0.3);
+    border-color: hsl(36 45% 58% / 0.4);
   }
 
   .bg-mystic-glow {
-    background: radial-gradient(ellipse at 50% 30%, hsl(40 55% 50% / 0.04) 0%, transparent 60%);
+    background: radial-gradient(ellipse at 70% 10%, hsl(42 70% 80% / 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, hsl(340 42% 30% / 0.04) 0%, transparent 50%);
   }
 
   .bg-mystic-deep {
     background: 
-      radial-gradient(ellipse at 20% 50%, hsl(355 50% 35% / 0.03) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, hsl(40 55% 50% / 0.04) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, hsl(260 30% 20% / 0.06) 0%, transparent 50%);
+      radial-gradient(ellipse at 20% 50%, hsl(340 42% 30% / 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, hsl(42 70% 80% / 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, hsl(230 25% 10% / 0.03) 0%, transparent 50%);
   }
 
   .card-mystic {
     @apply bg-card border rounded-xl;
-    border-color: hsl(40 55% 50% / 0.12);
+    border-color: hsl(36 45% 58% / 0.2);
     box-shadow: 
-      0 0 40px hsl(40 55% 50% / 0.03),
-      inset 0 1px 0 hsl(40 55% 50% / 0.06);
+      0 4px 20px hsl(36 45% 58% / 0.06),
+      inset 0 1px 0 hsl(36 45% 58% / 0.1);
   }
 
   .card-mystic-active {
     @apply bg-card border rounded-xl;
-    border-color: hsl(40 55% 50% / 0.25);
+    border-color: hsl(340 42% 30% / 0.3);
     box-shadow: 
-      0 0 50px hsl(40 55% 50% / 0.06),
-      0 0 100px hsl(40 55% 50% / 0.03),
-      inset 0 1px 0 hsl(40 55% 50% / 0.1);
+      0 8px 30px hsl(36 45% 58% / 0.1),
+      0 0 60px hsl(42 70% 80% / 0.06),
+      inset 0 1px 0 hsl(36 45% 58% / 0.15);
   }
 
   .glow-gold {
-    box-shadow: 0 0 20px hsl(40 55% 50% / 0.12), 0 0 60px hsl(40 55% 50% / 0.06);
+    box-shadow: 0 0 15px hsl(36 45% 58% / 0.15), 0 0 40px hsl(42 70% 80% / 0.06);
   }
 
   .glow-gold-strong {
-    box-shadow: 0 0 25px hsl(40 55% 50% / 0.18), 0 0 80px hsl(40 55% 50% / 0.08);
+    box-shadow: 0 0 20px hsl(36 45% 58% / 0.2), 0 0 60px hsl(42 70% 80% / 0.1);
   }
 
   .glow-crimson {
-    box-shadow: 0 0 20px hsl(355 50% 35% / 0.2), 0 0 60px hsl(355 50% 35% / 0.08);
+    box-shadow: 0 0 20px hsl(340 42% 30% / 0.15), 0 0 50px hsl(340 42% 30% / 0.06);
   }
 
   .divider-gold {
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsl(40 55% 50% / 0.2), transparent);
+    background: linear-gradient(90deg, transparent, hsl(36 45% 58% / 0.3), transparent);
   }
 
   .bg-surface-elevated {
@@ -148,11 +156,11 @@
   background: hsl(var(--mystic-bg));
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(40 55% 50% / 0.15);
+  background: hsl(36 45% 58% / 0.2);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(40 55% 50% / 0.25);
+  background: hsl(36 45% 58% / 0.35);
 }
 
 @keyframes float {
@@ -186,11 +194,16 @@
 }
 
 @keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 20px hsl(40 55% 50% / 0.1), 0 0 60px hsl(40 55% 50% / 0.04); }
-  50% { box-shadow: 0 0 30px hsl(40 55% 50% / 0.18), 0 0 80px hsl(40 55% 50% / 0.08); }
+  0%, 100% { box-shadow: 0 0 15px hsl(36 45% 58% / 0.1), 0 0 40px hsl(42 70% 80% / 0.05); }
+  50% { box-shadow: 0 0 25px hsl(36 45% 58% / 0.2), 0 0 60px hsl(42 70% 80% / 0.1); }
 }
 
 @keyframes progress-shine {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(200%); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.8; }
 }
