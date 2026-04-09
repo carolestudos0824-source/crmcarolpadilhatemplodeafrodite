@@ -17,6 +17,11 @@ import { A_SACERDOTISA } from "./2-a-sacerdotisa";
 import { A_IMPERATRIZ } from "./3-a-imperatriz";
 import { O_IMPERADOR } from "./4-o-imperador";
 import { O_HIEROFANTE } from "./5-o-hierofante";
+import { OS_ENAMORADOS } from "./6-os-enamorados";
+import { O_CARRO } from "./7-o-carro";
+import { A_JUSTICA } from "./8-a-justica";
+import { O_EREMITA } from "./9-o-eremita";
+import { A_RODA_DA_FORTUNA } from "./10-a-roda-da-fortuna";
 
 // ─── Registry Editorial ───
 
@@ -27,6 +32,11 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   3: A_IMPERATRIZ,
   4: O_IMPERADOR,
   5: O_HIEROFANTE,
+  6: OS_ENAMORADOS,
+  7: O_CARRO,
+  8: A_JUSTICA,
+  9: O_EREMITA,
+  10: A_RODA_DA_FORTUNA,
 };
 
 // ─── Placeholders para arcanos ainda não escritos ───
