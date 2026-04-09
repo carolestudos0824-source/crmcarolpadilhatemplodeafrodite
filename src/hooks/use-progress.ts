@@ -31,12 +31,11 @@ export function useProgress() {
   const completeLesson = useCallback((lessonId: string) => {
     setProgress((prev) => {
       if (prev.completedLessons.includes(lessonId)) return prev;
-      const updated = {
+      return {
         ...prev,
         completedLessons: [...prev.completedLessons, lessonId],
         lastActive: new Date().toISOString(),
       };
-      return updated;
     });
   }, []);
 
@@ -83,5 +82,52 @@ export function useProgress() {
     });
   }, []);
 
-  return { progress, addXP, completeLesson, completeQuiz, completeExercise, earnBadge, updateStreak };
+  /** Check if a specific arcano is completed (lesson + quiz) */
+  const isArcanoCompleted = useCallback((arcanoId: number): boolean => {
+    return (
+      progress.completedLessons.includes(`arcano-${arcanoId}`) &&
+      progress.completedQuizzes.includes(`quiz-arcano-${arcanoId}`)
+    );
+  }, [progress.completedLessons, progress.completedQuizzes]);
+
+  /** Check if a specific arcano is unlocked (first one or previous completed) */
+  const isArcanoUnlocked = useCallback((arcanoId: number): boolean => {
+    if (arcanoId === 0) return true;
+    return isArcanoCompleted(arcanoId - 1);
+  }, [isArcanoCompleted]);
+
+  /** Get the current arcano (first unlocked but not completed) */
+  const getCurrentArcanoId = useCallback((): number => {
+    for (let i = 0; i <= 21; i++) {
+      if (isArcanoUnlocked(i) && !isArcanoCompleted(i)) return i;
+    }
+    return 21;
+  }, [isArcanoUnlocked, isArcanoCompleted]);
+
+  /** Count completed arcanos */
+  const completedCount = progress.completedLessons.filter(l => l.startsWith("arcano-")).length;
+
+  /** Overall journey percentage */
+  const journeyProgress = Math.round((completedCount / 22) * 100);
+
+  const resetProgress = useCallback(() => {
+    setProgress({ ...DEFAULT_PROGRESS });
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
+
+  return {
+    progress,
+    addXP,
+    completeLesson,
+    completeQuiz,
+    completeExercise,
+    earnBadge,
+    updateStreak,
+    isArcanoCompleted,
+    isArcanoUnlocked,
+    getCurrentArcanoId,
+    completedCount,
+    journeyProgress,
+    resetProgress,
+  };
 }
