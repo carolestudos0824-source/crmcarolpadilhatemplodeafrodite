@@ -1,18 +1,46 @@
+export interface ExtraMaterial {
+  id: string;
+  title: string;
+  type: "text" | "audio" | "pdf" | "video" | "link";
+  description: string;
+  content?: string; // for text type
+  url?: string; // for audio/pdf/video/link
+  duration?: string; // for audio/video
+}
+
+export interface LessonLayer {
+  /** Short, gamified main content — required to advance */
+  main: {
+    essence: string;
+    light: string;
+    shadow: string;
+    practicalApplication: string;
+  };
+  /** Optional deeper content — NOT required to advance */
+  deepDive: {
+    text: string;
+    symbolism?: string;
+    history?: string;
+    cabala?: string;
+  };
+  /** Extra materials — library items per card */
+  extras: ExtraMaterial[];
+  /** Reflective exercise */
+  exercise: {
+    instruction: string;
+    type: "reflection" | "journaling" | "meditation" | "practice";
+    duration?: string;
+  };
+}
+
 export interface ArcanoData {
   id: number;
   name: string;
   numeral: string;
   subtitle: string;
   keywords: string[];
-  essence: string;
-  light: string;
-  shadow: string;
-  practicalApplication: string;
   firstPersonIntro: string;
-  deepDive: {
-    text: string;
-    exercise: string;
-  };
+  layers: LessonLayer;
   quiz: QuizQuestion[];
   unlocked: boolean;
 }
@@ -32,6 +60,7 @@ export interface UserProgress {
   lastActive: string;
   completedLessons: string[];
   completedQuizzes: string[];
+  completedExercises: string[];
   badges: Badge[];
   currentModule: number;
 }
@@ -45,26 +74,84 @@ export interface Badge {
   earnedAt?: string;
 }
 
+export interface LearningModule {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  order: number;
+  unlocked: boolean;
+  cards: number[]; // arcano IDs
+}
+
+export const MODULES: LearningModule[] = [
+  { id: "fundamentos", name: "Fundamentos do Tarô", description: "A base de tudo", icon: "📖", order: 0, unlocked: true, cards: [] },
+  { id: "arcanos-maiores", name: "Arcanos Maiores", description: "A Jornada do Louco", icon: "🃏", order: 1, unlocked: true, cards: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] },
+  { id: "copas", name: "Naipe de Copas", description: "Emoções e relacionamentos", icon: "💧", order: 2, unlocked: false, cards: [] },
+  { id: "paus", name: "Naipe de Paus", description: "Ação e criatividade", icon: "🔥", order: 3, unlocked: false, cards: [] },
+  { id: "espadas", name: "Naipe de Espadas", description: "Mente e conflitos", icon: "⚔️", order: 4, unlocked: false, cards: [] },
+  { id: "ouros", name: "Naipe de Ouros", description: "Material e prosperidade", icon: "💎", order: 5, unlocked: false, cards: [] },
+  { id: "combinacoes", name: "Combinações", description: "Leitura integrada", icon: "🔗", order: 6, unlocked: false, cards: [] },
+  { id: "tiragens", name: "Tiragens", description: "Métodos de leitura", icon: "🎴", order: 7, unlocked: false, cards: [] },
+  { id: "amor", name: "Amor e Relacionamentos", description: "Foco temático", icon: "❤️", order: 8, unlocked: false, cards: [] },
+  { id: "pratica", name: "Prática Guiada", description: "Exercícios reais", icon: "✨", order: 9, unlocked: false, cards: [] },
+];
+
 export const THE_FOOL: ArcanoData = {
   id: 0,
   name: "O Louco",
   numeral: "0",
   subtitle: "O Início da Jornada",
   keywords: ["Liberdade", "Espontaneidade", "Novo Começo", "Inocência", "Aventura"],
-  essence:
-    "Eu sou o sopro antes da primeira palavra, o passo antes do caminho existir. Não sou o início — sou a coragem de iniciar. Carrego tudo o que preciso em minha trouxa: nada além de fé e curiosidade. O abismo à minha frente não me assusta, pois ainda não aprendi a ter medo.",
-  light:
-    "Em minha luz, sou a liberdade absoluta. Sou o salto de fé que você dá quando decide mudar de vida, largar o emprego seguro, declarar amor sem garantias. Sou a criança que pergunta 'por quê?' sem parar, porque cada resposta abre uma nova porta. Quando me encontra em sua luz, você está pronto para começar algo novo sem a necessidade de saber exatamente onde vai chegar.",
-  shadow:
-    "Na minha sombra, torno-me imprudência disfarçada de coragem. Sou a fuga travestida de liberdade, a irresponsabilidade que se finge de espontaneidade. Quando me encontra na sombra, talvez esteja evitando compromissos, pulando de projeto em projeto sem terminar nenhum, ou tomando riscos sem reflexão alguma.",
-  practicalApplication:
-    "Quando O Louco aparece em uma leitura, pergunte-se: 'Onde estou me segurando demais? Que primeiro passo estou adiando?' Se está na posição de conselho, O Louco convida a agir com fé — não cegamente, mas com a confiança de quem sabe que a jornada é mais importante que o destino.",
   firstPersonIntro:
     "Olá, viajante! Eu sou O Louco — o zero, o vazio fértil, o nada que contém tudo. Antes de me julgar pelo nome, saiba: não sou insano, sou livre. Livre de expectativas, livre de medos aprendidos, livre de mapas que outros desenharam. Você me encontra aqui, no precipício entre o mundo conhecido e o desconhecido, pronto para dar o primeiro passo de uma jornada que mudará tudo. Vem comigo?",
-  deepDive: {
-    text: "O Louco é o Arcano número 0 — e esse zero é significativo. Ele não está no início nem no fim; está em toda parte e em lugar nenhum. Na tradição do Tarot de Marselha, O Louco é o único Arcano Maior sem número fixo, podendo ser colocado antes do Mago (como potencial puro) ou depois do Mundo (como renascimento). Na Cabala, O Louco corresponde à letra hebraica Aleph (א), o sopro silencioso, a respiração primordial. Está ligado ao caminho entre Keter (a Coroa, a unidade divina) e Chokmah (a Sabedoria). É a faísca que desce do mais alto para iniciar toda a criação. Simbolicamente, sua trouxa representa o karma — as experiências que carregamos sem saber conscientemente. O cachorro que o acompanha pode ser tanto um guia instintivo quanto uma advertência. O precipício não é queda: é fé.",
-    exercise:
-      "Encontre um momento de silêncio. Feche os olhos e imagine-se à beira de um precipício seguro, com um horizonte infinito à frente. Pergunte a si mesmo: 'Se eu não tivesse medo, o que eu faria agora?' Anote a primeira coisa que vier à mente, sem censurar. Esse é o chamado do Louco para você hoje.",
+  layers: {
+    main: {
+      essence:
+        "Eu sou o sopro antes da primeira palavra, o passo antes do caminho existir. Não sou o início — sou a coragem de iniciar. Carrego tudo o que preciso em minha trouxa: nada além de fé e curiosidade. O abismo à minha frente não me assusta, pois ainda não aprendi a ter medo.",
+      light:
+        "Em minha luz, sou a liberdade absoluta. Sou o salto de fé que você dá quando decide mudar de vida, largar o emprego seguro, declarar amor sem garantias. Sou a criança que pergunta 'por quê?' sem parar, porque cada resposta abre uma nova porta. Quando me encontra em sua luz, você está pronto para começar algo novo sem a necessidade de saber exatamente onde vai chegar.",
+      shadow:
+        "Na minha sombra, torno-me imprudência disfarçada de coragem. Sou a fuga travestida de liberdade, a irresponsabilidade que se finge de espontaneidade. Quando me encontra na sombra, talvez esteja evitando compromissos, pulando de projeto em projeto sem terminar nenhum, ou tomando riscos sem reflexão alguma.",
+      practicalApplication:
+        "Quando O Louco aparece em uma leitura, pergunte-se: 'Onde estou me segurando demais? Que primeiro passo estou adiando?' Se está na posição de conselho, O Louco convida a agir com fé — não cegamente, mas com a confiança de quem sabe que a jornada é mais importante que o destino.",
+    },
+    deepDive: {
+      text: "O Louco é o Arcano número 0 — e esse zero é significativo. Ele não está no início nem no fim; está em toda parte e em lugar nenhum. Na tradição do Tarot de Marselha, O Louco é o único Arcano Maior sem número fixo, podendo ser colocado antes do Mago (como potencial puro) ou depois do Mundo (como renascimento).",
+      symbolism: "A trouxa representa o karma — experiências que carregamos sem saber conscientemente. O cachorro que o acompanha pode ser tanto um guia instintivo quanto uma advertência. O precipício não é queda: é fé. As montanhas ao fundo representam os desafios que ficaram para trás — ou os que virão.",
+      cabala: "Na Cabala, O Louco corresponde à letra hebraica Aleph (א), o sopro silencioso, a respiração primordial. Está ligado ao caminho entre Keter (a Coroa, a unidade divina) e Chokmah (a Sabedoria). É a faísca que desce do mais alto para iniciar toda a criação.",
+      history: "Historicamente, O Louco era visto como o bobo da corte — alguém que podia dizer verdades incômodas ao rei sem punição. Nas cartas de tarô mais antigas, ele aparecia como um mendigo ou um vagabundo, mas ao longo dos séculos foi transformado em um símbolo de liberdade espiritual.",
+    },
+    extras: [
+      {
+        id: "fool-extra-1",
+        title: "O Louco no Tarot de Marselha vs. Rider-Waite",
+        type: "text",
+        description: "Comparação entre as duas tradições mais influentes",
+        content: "No Tarot de Marselha, O Louco aparece sendo perseguido por um animal que morde suas roupas — um aviso para prestar atenção. Já no Rider-Waite, criado por Arthur Edward Waite e ilustrado por Pamela Colman Smith, o tom é mais otimista: o jovem caminha alegremente à beira do precipício, com um pequeno cão branco como companheiro fiel. As flores em sua mão representam a apreciação da beleza, e a montanha branca ao fundo simboliza as alturas espirituais que o aguardam.",
+      },
+      {
+        id: "fool-extra-2",
+        title: "Meditação Guiada — O Salto de Fé",
+        type: "audio",
+        description: "10 minutos de meditação com a energia do Louco",
+        url: "#",
+        duration: "10 min",
+      },
+      {
+        id: "fool-extra-3",
+        title: "Artigo: O Arquétipo do Louco na Psicologia Junguiana",
+        type: "pdf",
+        description: "Como Carl Jung interpretava a figura do Louco",
+        url: "#",
+      },
+    ],
+    exercise: {
+      instruction:
+        "Encontre um momento de silêncio. Feche os olhos e imagine-se à beira de um precipício seguro, com um horizonte infinito à frente. Pergunte a si mesmo: 'Se eu não tivesse medo, o que eu faria agora?' Anote a primeira coisa que vier à mente, sem censurar. Esse é o chamado do Louco para você hoje.",
+      type: "reflection",
+      duration: "10 min",
+    },
   },
   quiz: [
     {
@@ -72,16 +159,14 @@ export const THE_FOOL: ArcanoData = {
       question: "Qual é o número associado ao arcano O Louco?",
       options: ["I", "0", "XXII", "XIII"],
       correctIndex: 1,
-      explanation:
-        "O Louco é o arcano número 0 — representando o potencial puro, o vazio fértil antes de qualquer manifestação.",
+      explanation: "O Louco é o arcano número 0 — representando o potencial puro, o vazio fértil antes de qualquer manifestação.",
     },
     {
       id: "fool-q2",
       question: "Na Cabala, a qual letra hebraica O Louco corresponde?",
       options: ["Beth (ב)", "Aleph (א)", "Gimel (ג)", "Daleth (ד)"],
       correctIndex: 1,
-      explanation:
-        "Aleph (א) é o sopro silencioso, a respiração primordial — conectando O Louco ao caminho entre Keter e Chokmah.",
+      explanation: "Aleph (א) é o sopro silencioso, a respiração primordial — conectando O Louco ao caminho entre Keter e Chokmah.",
     },
     {
       id: "fool-q3",
@@ -93,16 +178,14 @@ export const THE_FOOL: ArcanoData = {
         "Conexão espiritual profunda",
       ],
       correctIndex: 1,
-      explanation:
-        "Na sombra, O Louco se torna imprudência — fuga travestida de liberdade, irresponsabilidade fingindo espontaneidade.",
+      explanation: "Na sombra, O Louco se torna imprudência — fuga travestida de liberdade, irresponsabilidade fingindo espontaneidade.",
     },
     {
       id: "fool-q4",
       question: "O que a trouxa do Louco simboliza?",
       options: ["Riqueza material", "Conhecimento acadêmico", "Karma e experiências inconscientes", "Medo do desconhecido"],
       correctIndex: 2,
-      explanation:
-        "A trouxa representa o karma — experiências que carregamos sem saber conscientemente, bagagem da alma.",
+      explanation: "A trouxa representa o karma — experiências que carregamos sem saber conscientemente, bagagem da alma.",
     },
     {
       id: "fool-q5",
@@ -114,8 +197,7 @@ export const THE_FOOL: ArcanoData = {
         "Esperar o momento perfeito",
       ],
       correctIndex: 2,
-      explanation:
-        "O Louco convida a agir com fé — não cegamente, mas com a confiança de que a jornada importa mais que o destino.",
+      explanation: "O Louco convida a agir com fé — não cegamente, mas com a confiança de que a jornada importa mais que o destino.",
     },
   ],
   unlocked: true,
@@ -153,12 +235,15 @@ export const DEFAULT_PROGRESS: UserProgress = {
   lastActive: new Date().toISOString(),
   completedLessons: [],
   completedQuizzes: [],
+  completedExercises: [],
   badges: [
     { id: "first-step", name: "Primeiro Passo", description: "Começou a Jornada do Louco", icon: "✦", earned: false },
     { id: "fool-complete", name: "O Louco Revelado", description: "Completou a lição do Louco", icon: "🃏", earned: false },
     { id: "quiz-master", name: "Mestre do Quiz", description: "Acertou 100% em um quiz", icon: "⭐", earned: false },
+    { id: "deep-diver", name: "Mergulho Profundo", description: "Explorou todo o aprofundamento", icon: "🔮", earned: false },
     { id: "streak-3", name: "Chama Constante", description: "3 dias consecutivos de estudo", icon: "🔥", earned: false },
     { id: "streak-7", name: "Devoto do Tarô", description: "7 dias consecutivos de estudo", icon: "💫", earned: false },
+    { id: "library-explorer", name: "Exploradora", description: "Acessou 3 materiais extras", icon: "📚", earned: false },
   ],
   currentModule: 0,
 };

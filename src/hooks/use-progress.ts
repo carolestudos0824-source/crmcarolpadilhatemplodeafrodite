@@ -50,6 +50,16 @@ export function useProgress() {
     });
   }, []);
 
+  const completeExercise = useCallback((exerciseId: string) => {
+    setProgress((prev) => {
+      if (prev.completedExercises.includes(exerciseId)) return prev;
+      return {
+        ...prev,
+        completedExercises: [...prev.completedExercises, exerciseId],
+      };
+    });
+  }, []);
+
   const earnBadge = useCallback((badgeId: string) => {
     setProgress((prev) => ({
       ...prev,
@@ -73,5 +83,5 @@ export function useProgress() {
     });
   }, []);
 
-  return { progress, addXP, completeLesson, completeQuiz, earnBadge, updateStreak };
+  return { progress, addXP, completeLesson, completeQuiz, completeExercise, earnBadge, updateStreak };
 }
