@@ -7,7 +7,6 @@ interface JourneyMapProps {
   progress: UserProgress;
 }
 
-// Arcano symbols for visual richness
 const ARCANO_SYMBOLS: Record<number, string> = {
   0: "☽", 1: "✧", 2: "◈", 3: "❋", 4: "◆", 5: "✦", 6: "♡", 7: "⚡",
   8: "∞", 9: "☆", 10: "◎", 11: "⚖", 12: "△", 13: "✝", 14: "☾",
@@ -18,33 +17,25 @@ export function JourneyMap({ progress }: JourneyMapProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="relative max-w-2xl mx-auto pb-20">
-      {/* Decorative top element */}
-      <div className="flex flex-col items-center mb-10 opacity-40">
-        <div className="w-px h-8 bg-gradient-to-b from-transparent to-primary/30" />
-        <Sparkles className="w-3 h-3 text-primary/50" />
+    <div className="relative max-w-2xl mx-auto pb-16">
+      {/* Decorative top */}
+      <div className="flex flex-col items-center mb-8 opacity-50">
+        <div className="w-px h-6 bg-gradient-to-b from-transparent to-primary/40" />
+        <Sparkles className="w-3.5 h-3.5 text-primary/60" />
       </div>
 
-      {/* Central path with ornamental line */}
-      <div className="absolute left-1/2 top-20 bottom-20 -translate-x-px w-px">
+      {/* Central path */}
+      <div className="absolute left-1/2 top-16 bottom-16 -translate-x-px w-px">
         <div className="w-full h-full" style={{
           background: `repeating-linear-gradient(to bottom, 
-            hsl(40 55% 50% / 0.15) 0px, 
-            hsl(40 55% 50% / 0.15) 4px, 
+            hsl(40 60% 55% / 0.25) 0px, 
+            hsl(40 60% 55% / 0.25) 4px, 
             transparent 4px, 
             transparent 12px)`,
         }} />
-        {/* Ornamental dots along the path */}
-        {ARCANOS_MAIORES.map((_, i) => (
-          <div
-            key={i}
-            className="absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary/10"
-            style={{ top: `${(i / ARCANOS_MAIORES.length) * 100}%` }}
-          />
-        ))}
       </div>
 
-      <div className="relative space-y-1">
+      <div className="relative space-y-0">
         {ARCANOS_MAIORES.map((arcano, index) => {
           const isCompleted = progress.completedLessons.includes(`arcano-${arcano.id}`);
           const isUnlocked = arcano.unlocked || isCompleted || progress.completedLessons.includes(`arcano-${arcano.id - 1}`);
@@ -55,61 +46,58 @@ export function JourneyMap({ progress }: JourneyMapProps) {
           return (
             <div
               key={arcano.id}
-              className={`relative flex items-center py-2 ${side === "left" ? "flex-row" : "flex-row-reverse"}`}
+              className={`relative flex items-center py-3 ${side === "left" ? "flex-row" : "flex-row-reverse"}`}
               style={{
                 animation: "fade-up 0.6s ease-out both",
                 animationDelay: `${index * 70}ms`,
               }}
             >
-              {/* Arcano Card */}
-              <div className={`flex-1 ${side === "left" ? "pr-12 md:pr-16" : "pl-12 md:pl-16"}`}>
+              {/* Card */}
+              <div className={`flex-1 ${side === "left" ? "pr-10 md:pr-14" : "pl-10 md:pl-14"}`}>
                 <button
                   onClick={() => isUnlocked && navigate(`/lesson/${arcano.id}`)}
                   disabled={!isUnlocked}
-                  className={`w-full group relative transition-all duration-700 ${
+                  className={`w-full group relative transition-all duration-500 ${
                     side === "left" ? "text-right" : "text-left"
                   }`}
                 >
                   <div
-                    className={`relative overflow-hidden rounded-2xl transition-all duration-700 ${
+                    className={`relative overflow-hidden rounded-xl transition-all duration-500 ${
                       isCurrent
-                        ? "bg-gradient-to-br from-card via-card to-primary/[0.03] border border-primary/20 hover:border-primary/35 hover:scale-[1.015] cursor-pointer"
+                        ? "card-mystic-active hover:scale-[1.02] cursor-pointer"
                         : isCompleted
-                        ? "bg-card/30 border border-primary/[0.06] cursor-pointer hover:bg-card/50 hover:border-primary/12"
-                        : "bg-muted/10 border border-transparent cursor-not-allowed"
+                        ? "bg-card/60 border border-primary/12 cursor-pointer hover:bg-card/80 hover:border-primary/20"
+                        : "bg-muted/20 border border-border/30 cursor-not-allowed"
                     }`}
                     style={isCurrent ? { animation: "glow-breathe 5s ease-in-out infinite" } : undefined}
                   >
-                    {/* Inner glow layer for current */}
+                    {/* Inner glow for current */}
                     {isCurrent && (
-                      <>
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-secondary/[0.02] pointer-events-none" />
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/[0.03] rounded-full blur-3xl pointer-events-none" />
-                      </>
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.06] via-transparent to-secondary/[0.03] pointer-events-none" />
                     )}
 
                     <div className="relative z-10 p-5 md:p-6">
-                      {/* Top row: symbol + numeral */}
-                      <div className={`flex items-center gap-2 mb-2.5 ${side === "left" ? "justify-end" : "justify-start"}`}>
+                      {/* Numeral + symbol */}
+                      <div className={`flex items-center gap-2 mb-2 ${side === "left" ? "justify-end" : "justify-start"}`}>
                         <span className={`text-[10px] font-heading tracking-[0.4em] uppercase ${
-                          isCurrent ? "text-primary/60" : isCompleted ? "text-primary/25" : "text-muted-foreground/15"
+                          isCurrent ? "text-primary/80" : isCompleted ? "text-primary/40" : "text-muted-foreground/25"
                         }`}>
                           {arcano.numeral}
                         </span>
-                        <span className={`text-xs ${
-                          isCurrent ? "text-primary/40" : isCompleted ? "text-primary/15" : "text-muted-foreground/10"
+                        <span className={`text-sm ${
+                          isCurrent ? "text-primary/60" : isCompleted ? "text-primary/25" : "text-muted-foreground/15"
                         }`}>
                           {symbol}
                         </span>
                       </div>
 
                       {/* Name */}
-                      <h3 className={`font-heading tracking-wide leading-tight mb-1 transition-all duration-500 ${
+                      <h3 className={`font-heading tracking-wide leading-tight mb-1.5 transition-all duration-500 ${
                         isCurrent
-                          ? "text-base md:text-lg text-gradient-gold-warm"
+                          ? "text-lg md:text-xl text-gradient-gold-warm"
                           : isCompleted
-                          ? "text-sm md:text-base text-foreground/60"
-                          : "text-sm text-muted-foreground/20"
+                          ? "text-base text-foreground/70"
+                          : "text-sm text-muted-foreground/30"
                       }`}>
                         {arcano.name}
                       </h3>
@@ -117,36 +105,36 @@ export function JourneyMap({ progress }: JourneyMapProps) {
                       {/* Subtitle */}
                       <p className={`font-accent italic leading-relaxed ${
                         isCurrent
-                          ? "text-xs md:text-sm text-foreground/40"
+                          ? "text-sm text-foreground/55"
                           : isCompleted
-                          ? "text-xs text-muted-foreground/35"
-                          : "text-xs text-muted-foreground/10"
+                          ? "text-xs text-foreground/40"
+                          : "text-xs text-muted-foreground/15"
                       }`}>
                         {arcano.subtitle}
                       </p>
 
-                      {/* Completed indicator */}
+                      {/* Completed */}
                       {isCompleted && (
-                        <div className={`flex items-center gap-1.5 mt-2.5 ${side === "left" ? "justify-end" : "justify-start"}`}>
-                          <div className="w-4 h-px bg-primary/20" />
-                          <span className="text-[9px] tracking-[0.2em] uppercase text-primary/30 font-body">Completo</span>
+                        <div className={`flex items-center gap-1.5 mt-3 ${side === "left" ? "justify-end" : "justify-start"}`}>
+                          <Check className="w-3 h-3 text-primary/50" />
+                          <span className="text-[9px] tracking-[0.2em] uppercase text-primary/45 font-body">Completo</span>
                         </div>
                       )}
 
-                      {/* Current indicator */}
+                      {/* Current */}
                       {isCurrent && (
-                        <div className={`flex items-center gap-2 mt-3 ${side === "left" ? "justify-end" : "justify-start"}`}>
-                          <div className="w-5 h-px bg-gradient-to-r from-primary/40 to-transparent" />
-                          <span className="text-[9px] tracking-[0.3em] uppercase text-primary/50 font-body animate-pulse-gold">
+                        <div className={`flex items-center gap-2 mt-3.5 ${side === "left" ? "justify-end" : "justify-start"}`}>
+                          <div className="w-6 h-px bg-gradient-to-r from-primary/50 to-transparent" />
+                          <span className="text-[10px] tracking-[0.3em] uppercase text-primary/70 font-heading"
+                            style={{ animation: "pulse-gold 2.5s ease-in-out infinite" }}>
                             Iniciar
                           </span>
                         </div>
                       )}
                     </div>
 
-                    {/* Bottom decorative line */}
                     {isCurrent && (
-                      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
                     )}
                   </div>
                 </button>
@@ -154,59 +142,50 @@ export function JourneyMap({ progress }: JourneyMapProps) {
 
               {/* Center Node */}
               <div className="absolute left-1/2 -translate-x-1/2 z-10">
-                {/* Outer ring for current */}
                 {isCurrent && (
                   <div
-                    className="absolute inset-0 -m-2 rounded-full border border-primary/15"
+                    className="absolute inset-0 -m-2.5 rounded-full border border-primary/25"
                     style={{ animation: "glow-breathe 4s ease-in-out infinite" }}
                   />
                 )}
                 <div
-                  className={`relative w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center border transition-all duration-700 ${
+                  className={`relative w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
                     isCurrent
-                      ? "border-primary/40 bg-gradient-to-br from-primary/15 to-primary/5"
+                      ? "border-primary/50 bg-gradient-to-br from-primary/20 to-primary/8"
                       : isCompleted
-                      ? "border-primary/15 bg-primary/[0.04]"
-                      : "border-border/50 bg-muted/30"
+                      ? "border-primary/25 bg-primary/8"
+                      : "border-border/60 bg-muted/40"
                   }`}
                   style={isCurrent ? {
-                    boxShadow: "0 0 20px hsl(40 55% 50% / 0.12), 0 0 50px hsl(40 55% 50% / 0.05)",
+                    boxShadow: "0 0 25px hsl(40 60% 55% / 0.2), 0 0 60px hsl(40 60% 55% / 0.08)",
                     animation: "glow-breathe 4s ease-in-out infinite",
                   } : undefined}
                 >
                   {isCompleted ? (
-                    <Check className="w-3.5 h-3.5 text-primary/50" />
+                    <Check className="w-4 h-4 text-primary/60" />
                   ) : isUnlocked ? (
-                    <span className="text-sm text-primary/70" style={{ lineHeight: 1 }}>{symbol}</span>
+                    <span className="text-base text-primary/80" style={{ lineHeight: 1 }}>{symbol}</span>
                   ) : (
-                    <Lock className="w-3 h-3 text-muted-foreground/15" />
+                    <Lock className="w-3.5 h-3.5 text-muted-foreground/25" />
                   )}
                 </div>
               </div>
 
-              {/* Connector line from node to card */}
+              {/* Connector line */}
               <div className={`absolute top-1/2 -translate-y-px h-px ${
                 side === "left"
-                  ? "right-1/2 left-auto mr-[22px] md:mr-[23px]"
-                  : "left-1/2 ml-[22px] md:ml-[23px]"
+                  ? "right-1/2 left-auto mr-[24px] md:mr-[25px]"
+                  : "left-1/2 ml-[24px] md:ml-[25px]"
               }`}
-                style={{
-                  width: "calc(50% - 70px)",
-                }}
+                style={{ width: "calc(50% - 60px)" }}
               >
                 <div className={`w-full h-px ${
                   isCurrent
-                    ? "bg-gradient-to-r from-primary/20 to-primary/5"
+                    ? "bg-primary/25"
                     : isCompleted
-                    ? "bg-primary/8"
-                    : "bg-border/20"
-                }`}
-                  style={side === "left" ? {
-                    background: isCurrent
-                      ? "linear-gradient(to left, hsl(40 55% 50% / 0.2), hsl(40 55% 50% / 0.05))"
-                      : undefined,
-                  } : undefined}
-                />
+                    ? "bg-primary/12"
+                    : "bg-border/30"
+                }`} />
               </div>
 
               {/* Spacer */}
@@ -216,10 +195,10 @@ export function JourneyMap({ progress }: JourneyMapProps) {
         })}
       </div>
 
-      {/* Decorative bottom element */}
-      <div className="flex flex-col items-center mt-10 opacity-30">
-        <Sparkles className="w-3 h-3 text-primary/40" />
-        <div className="w-px h-8 bg-gradient-to-t from-transparent to-primary/20" />
+      {/* Decorative bottom */}
+      <div className="flex flex-col items-center mt-8 opacity-40">
+        <Sparkles className="w-3.5 h-3.5 text-primary/50" />
+        <div className="w-px h-6 bg-gradient-to-t from-transparent to-primary/30" />
       </div>
     </div>
   );

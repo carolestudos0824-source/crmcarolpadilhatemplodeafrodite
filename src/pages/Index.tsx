@@ -26,10 +26,10 @@ const Index = () => {
           {/* Top row */}
           <div className="flex items-center justify-between mb-5">
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground font-body mb-1">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-primary/60 font-body mb-1">
                 Arcanos Maiores
               </span>
-              <h1 className="font-heading text-2xl md:text-3xl text-gradient-gold-warm tracking-wide">
+              <h1 className="font-heading text-3xl md:text-4xl text-gradient-gold-warm tracking-wide">
                 A Jornada do Louco
               </h1>
             </div>
@@ -37,7 +37,7 @@ const Index = () => {
               <StreakCounter streak={progress.streak} />
               <button
                 onClick={() => navigate("/admin")}
-                className="text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors tracking-wider uppercase"
+                className="text-[10px] text-muted-foreground/40 hover:text-muted-foreground transition-colors tracking-wider uppercase"
               >
                 Admin
               </button>
@@ -51,9 +51,9 @@ const Index = () => {
       <main className="relative z-10 container max-w-3xl py-10 px-6">
         {/* Conquistas */}
         <section className="mb-14">
-          <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-6">
             <div className="divider-gold flex-1" />
-            <h2 className="font-accent text-sm text-muted-foreground tracking-[0.25em] uppercase italic">
+            <h2 className="font-accent text-sm text-primary/70 tracking-[0.25em] uppercase italic">
               Conquistas
             </h2>
             <div className="divider-gold flex-1" />
@@ -65,7 +65,7 @@ const Index = () => {
         <section>
           <div className="flex items-center gap-3 mb-8">
             <div className="divider-gold flex-1" />
-            <h2 className="font-accent text-sm text-muted-foreground tracking-[0.25em] uppercase italic">
+            <h2 className="font-accent text-sm text-primary/70 tracking-[0.25em] uppercase italic">
               Mapa da Jornada
             </h2>
             <div className="divider-gold flex-1" />
