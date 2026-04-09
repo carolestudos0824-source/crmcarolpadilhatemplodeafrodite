@@ -56,6 +56,7 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",
           dark: "hsl(var(--gold-dark))",
+          muted: "hsl(var(--gold-muted))",
         },
         crimson: {
           DEFAULT: "hsl(var(--crimson))",
