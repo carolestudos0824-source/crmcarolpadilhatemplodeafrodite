@@ -24,7 +24,7 @@ const AdminPage = () => {
 
       <header className="relative z-10 border-b border-gold">
         <div className="container max-w-5xl py-3 flex items-center gap-4">
-          <button onClick={() => navigate("/")} className="text-muted-foreground hover:text-primary transition-colors">
+          <button onClick={() => navigate("/app")} className="text-muted-foreground hover:text-primary transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <h1 className="font-heading text-lg text-gradient-gold tracking-wider">Painel Administrativo</h1>
