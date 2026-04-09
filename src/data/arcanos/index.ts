@@ -22,6 +22,11 @@ import { O_CARRO } from "./7-o-carro";
 import { A_JUSTICA } from "./8-a-justica";
 import { O_EREMITA } from "./9-o-eremita";
 import { A_RODA_DA_FORTUNA } from "./10-a-roda-da-fortuna";
+import { A_FORCA } from "./11-a-forca";
+import { O_ENFORCADO } from "./12-o-enforcado";
+import { A_MORTE } from "./13-a-morte";
+import { A_TEMPERANCA } from "./14-a-temperanca";
+import { O_DIABO } from "./15-o-diabo";
 
 // ─── Registry Editorial ───
 
@@ -37,16 +42,16 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   8: A_JUSTICA,
   9: O_EREMITA,
   10: A_RODA_DA_FORTUNA,
+  11: A_FORCA,
+  12: O_ENFORCADO,
+  13: A_MORTE,
+  14: A_TEMPERANCA,
+  15: O_DIABO,
 };
 
 // ─── Placeholders para arcanos ainda não escritos ───
 
 const ARCANOS_PENDENTES: [number, string, string, string, string][] = [
-  [11, "A Força",            "XI",    "O Poder Interior",        "a-forca"],
-  [12, "O Enforcado",        "XII",   "A Rendição Sagrada",      "o-enforcado"],
-  [13, "A Morte",            "XIII",  "A Grande Transformação",  "a-morte"],
-  [14, "A Temperança",       "XIV",   "A Alquimia Interior",     "a-temperanca"],
-  [15, "O Diabo",            "XV",    "As Correntes da Ilusão",  "o-diabo"],
   [16, "A Torre",            "XVI",   "A Revelação Súbita",      "a-torre"],
   [17, "A Estrela",          "XVII",  "A Esperança Renovada",    "a-estrela"],
   [18, "A Lua",              "XVIII", "O Caminho da Intuição",   "a-lua"],
@@ -104,6 +109,6 @@ export function getCompleteArcanos(): ArcanoMaiorEditorial[] {
 }
 
 // Re-exports
-export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE, OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA };
+export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE, OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA, A_FORCA, O_ENFORCADO, A_MORTE, A_TEMPERANCA, O_DIABO };
 export { validateArcano, createEmptyArcano, editorialToLegacy } from "../arcano-editorial";
 export type { ArcanoMaiorEditorial } from "../arcano-editorial";
