@@ -334,7 +334,7 @@ const ReviewPage = () => {
                         background: "hsl(38 28% 94% / 0.90)"
                       }}>
                         <span className="font-heading text-xs" style={{ color: "hsl(36 42% 40%)" }}>
-                          {id === 0 ? "0" : id === 1 ? "I" : "II"}
+                          {getArcanoNumeral(id)}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
