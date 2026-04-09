@@ -70,8 +70,9 @@ export interface UserProgress {
   completedLessons: string[];
   completedQuizzes: string[];
   completedExercises: string[];
+  completedModules: string[];
   badges: Badge[];
-  currentModule: number;
+  currentModule: string;
 }
 
 export interface Badge {
