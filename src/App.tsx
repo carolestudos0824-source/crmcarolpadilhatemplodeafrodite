@@ -7,6 +7,7 @@ import ModulesPage from "./pages/ModulesPage.tsx";
 import Index from "./pages/Index.tsx";
 import LessonPage from "./pages/LessonPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
+import SymbolLibraryPage from "./pages/SymbolLibraryPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<ModulesPage />} />
           <Route path="/module/arcanos-maiores" element={<Index />} />
           <Route path="/lesson/:id" element={<LessonPage />} />
+          <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
