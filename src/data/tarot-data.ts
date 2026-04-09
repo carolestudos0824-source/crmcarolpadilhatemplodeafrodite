@@ -111,6 +111,7 @@ export const THE_FOOL: ArcanoData = {
   numeral: "0",
   subtitle: "O Início da Jornada",
   keywords: ["Liberdade", "Coragem", "Travessia", "Impulso", "Desapego"],
+  archetype: "O Buscador, o Viajante, o Inocente Sábio — aquele que caminha sem mapa, guiado pela fé no desconhecido.",
   firstPersonIntro:
     "Eu sou o Louco. Sou o primeiro passo antes da certeza. Sou o impulso que nasce antes da garantia. Em mim existe liberdade, abertura, risco e movimento. Eu não prometo segurança. Eu ensino travessia.",
   voiceText: `Eu sou o Louco.\nSou o primeiro passo antes da certeza.\nSou o impulso que nasce antes da garantia.\nEm mim existe liberdade, abertura, risco e movimento.\nEu apareço quando a vida pede travessia.\nNa minha luz, eu trago coragem, espontaneidade e começo.\nNa minha sombra, eu viro imprudência, fuga e instabilidade.\nEu não prometo segurança.\nEu ensino o salto.`,
