@@ -483,4 +483,3 @@ export const DEFAULT_PROGRESS: UserProgress = {
   ],
   currentModule: "fundamentos",
 };
-};
