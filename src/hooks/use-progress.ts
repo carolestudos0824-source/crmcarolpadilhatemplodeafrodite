@@ -8,7 +8,8 @@ export function useProgress() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return { ...DEFAULT_PROGRESS, ...parsed, completedModules: parsed.completedModules || [] };
       } catch {
         return { ...DEFAULT_PROGRESS };
       }
