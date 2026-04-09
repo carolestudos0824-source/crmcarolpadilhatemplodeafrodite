@@ -246,12 +246,160 @@ export const THE_FOOL: ArcanoData = {
   unlocked: true,
 };
 
+export const THE_MAGICIAN: ArcanoData = {
+  id: 1,
+  name: "O Mago",
+  numeral: "I",
+  subtitle: "O Poder da Vontade",
+  keywords: ["Vontade", "Manifestação", "Domínio", "Ação Consciente", "Poder Criativo"],
+  archetype: "O Canal, o Alquimista, o Manifestador — aquele que conecta o céu à terra e transforma intenção em realidade.",
+  firstPersonIntro:
+    "Eu sou o Mago. Sou a vontade que se torna ação. Sou a ponte entre o invisível e o visível. Em mim, pensamento vira gesto, desejo vira forma. Eu não espero que o mundo mude — eu o transformo.",
+  voiceText: `Eu sou o Mago.\nSou a vontade que se torna ação.\nSou a ponte entre o invisível e o visível.\nEm mim, pensamento vira gesto, desejo vira forma.\nEu domino os quatro elementos — fogo, água, ar e terra.\nNa minha luz, eu trago maestria, foco e poder criativo.\nNa minha sombra, eu viro manipulação, ilusão e engano.\nEu não espero que o mundo mude.\nEu o transformo.`,
+  cardImage: "/assets/the-magician-card.jpg",
+  lessonSections: [
+    { id: "essencia", title: "Essência", icon: "✦", content: "O Mago é o Arcano I — a primeira manifestação consciente da vontade. Enquanto O Louco é potencial puro, O Mago é o potencial canalizado. Ele é o momento em que a intenção se torna ação, em que o desejo ganha forma. Com uma mão apontando para o céu e outra para a terra, ele é o canal perfeito entre o divino e o material. Quando O Mago aparece, ele diz: você tem tudo o que precisa — agora use." },
+    { id: "simbolos", title: "Símbolos Centrais", icon: "◎", content: "A mesa diante dele contém os quatro elementos: a espada (ar/mente), o cálice (água/emoções), o bastão (fogo/vontade) e o pentáculo (terra/matéria). O lemniscata (∞) sobre sua cabeça representa domínio infinito e consciência eterna. A mão direita erguida com a varinha canaliza energia cósmica; a mão esquerda aponta para baixo, manifestando-a na terra. As rosas vermelhas representam paixão e desejo; os lírios brancos, pureza de intenção." },
+    { id: "luz", title: "Luz", icon: "☀", accent: "gold", content: "Na luz, O Mago é maestria, concentração, habilidade e poder de realização. É a capacidade de transformar ideias em projetos concretos, sonhos em planos, intenções em resultados. Quando encontrado na luz, indica que você tem todos os recursos necessários — internos e externos — para manifestar o que deseja. É o momento de agir com clareza e propósito." },
+    { id: "sombra", title: "Sombra", icon: "☾", accent: "plum", content: "Na sombra, O Mago se torna manipulação, charlatanismo, uso do poder para enganar. É a inteligência a serviço do ego, a habilidade usada para controlar os outros, a eloquência que seduz sem verdade. Na sombra, ele pergunta: você está usando seus dons para criar ou para dominar? Está sendo autêntico ou está performando uma versão falsa de si?" },
+    { id: "licao", title: "Lição Iniciática", icon: "⟡", content: "A lição do Mago é aprender que poder verdadeiro vem do alinhamento entre intenção, ação e verdade interior. Ele nos ensina que manifestar não é forçar — é canalizar. Que dominar os elementos não é controlá-los, mas compreendê-los e trabalhar com eles. O Mago nos convida a reconhecer nossos recursos, alinhar nosso propósito e agir com maestria consciente." },
+    { id: "amor", title: "O Mago no Amor", icon: "♡", accent: "wine", content: "No amor, O Mago indica comunicação magnética, atração consciente e poder de conquista. Pode representar alguém carismático que sabe exatamente o que dizer, uma fase de encantamento mútuo, ou a capacidade de criar a relação que deseja. Na sombra amorosa, avisa sobre sedução manipuladora, promessas vazias, alguém que usa charme como ferramenta de controle." },
+    { id: "trabalho", title: "O Mago no Trabalho", icon: "◈", content: "No trabalho, O Mago fala de competência, iniciativa e domínio técnico. É a energia do empreendedor que transforma uma ideia em negócio, do profissional que domina suas ferramentas. Indica que você tem tudo o que precisa para realizar o projeto. Na sombra profissional, alerta sobre vender uma imagem que não corresponde à realidade, prometer mais do que pode entregar." },
+    { id: "espiritualidade", title: "O Mago na Espiritualidade", icon: "❋", content: "Na espiritualidade, O Mago é o praticante consciente — aquele que compreende as leis do universo e trabalha com elas. Ele representa o domínio das práticas esotéricas, a capacidade de ritualizar com intenção e a compreensão de que 'como acima, assim abaixo'. Na Cabala, corresponde à letra Beth (ב), a casa — o primeiro ato de criação, a estrutura que abriga o espírito." },
+  ],
+  layers: {
+    main: {
+      essence:
+        "Eu sou a vontade que se torna ação. Sou a ponte entre o invisível e o visível. Enquanto O Louco é potencial puro, eu sou o potencial canalizado — o momento em que a intenção ganha forma. Com uma mão no céu e outra na terra, eu conecto o divino ao material.",
+      light:
+        "Na minha luz, eu falo de maestria, foco, habilidade e poder de realização. Sou a capacidade de transformar ideias em projetos concretos, sonhos em planos, intenções em resultados. Quando me encontra na luz, você tem todos os recursos — agora é hora de agir com clareza e propósito.",
+      shadow:
+        "Na minha sombra, eu aviso sobre manipulação, charlatanismo e uso do poder para enganar. Torno-me a inteligência a serviço do ego, a habilidade usada para controlar. Quando me encontra na sombra, pergunte: estou usando meus dons para criar ou para dominar?",
+      practicalApplication:
+        "Quando apareço em uma leitura, posso indicar habilidade, domínio, iniciativa ou manipulação. Tudo depende do contexto. Pergunte-se: 'Que ferramentas já tenho e não estou usando? Minha intenção está alinhada com minha ação?' Eu convido a agir com maestria — não com força bruta, mas com a precisão de quem conhece seus recursos.",
+    },
+    deepDive: {
+      text: "O Mago é o Arcano I — o primeiro número, a primeira manifestação. Se O Louco é o zero (potencial), O Mago é o um (ação). Na tradição hermética, ele é chamado de 'O Magus' e representa o domínio da vontade sobre a matéria. A frase 'como acima, assim abaixo', atribuída à Tábua de Esmeralda de Hermes Trismegisto, é a essência deste arcano.",
+      symbolism: "Os quatro objetos sobre a mesa — espada, cálice, bastão e pentáculo — representam os quatro elementos e os quatro naipes do Tarô. Eles mostram que O Mago tem domínio sobre todas as dimensões da experiência humana: mente (ar), emoções (água), vontade (fogo) e matéria (terra). O lemniscata (∞) sobre sua cabeça indica que este domínio não é temporário — é um ciclo eterno de criação.",
+      cabala: "Na Cabala, O Mago corresponde à letra Beth (ב), que significa 'casa'. É o primeiro ato de criação — Deus criou uma casa (o universo) para habitar. O caminho de Beth conecta Keter (a Coroa) a Binah (o Entendimento), representando a descida da vontade divina para a estrutura da compreensão.",
+      history: "Nas cartas mais antigas do Tarô, O Mago aparecia como um prestidigitador de feira — alguém que fazia truques de mão para o público. Com o tempo, a tradição esotérica elevou sua figura ao de um verdadeiro adepto, alguém que compreende e domina as forças ocultas da natureza. A versão de Pamela Colman Smith no Rider-Waite transformou definitivamente o charlatão em iniciado.",
+    },
+    extras: [
+      {
+        id: "mago-extra-1",
+        title: "O Mago como Arquétipo do Manifestador",
+        type: "text",
+        description: "Como a energia do Mago se manifesta na vida contemporânea",
+        content: "Na vida moderna, O Mago se manifesta como o empreendedor visionário, o artista que transforma inspiração em obra, o terapeuta que canaliza energia de cura. É qualquer pessoa que compreende que entre o desejo e a realização existe um processo — e que domina esse processo com maestria. O Mago nos lembra que manifestar não é magia no sentido infantil: é alinhamento entre vontade, conhecimento e ação.",
+      },
+      {
+        id: "mago-extra-2",
+        title: "Meditação Guiada — A Mesa dos Elementos",
+        type: "audio",
+        description: "12 minutos de meditação com a energia do Mago",
+        url: "#",
+        duration: "12 min",
+      },
+      {
+        id: "mago-extra-3",
+        title: "Artigo: Hermes Trismegisto e a Tábua de Esmeralda",
+        type: "pdf",
+        description: "As raízes herméticas do Mago no Tarô",
+        url: "#",
+      },
+    ],
+    exercise: {
+      instruction:
+        "Escolha um objetivo que você deseja manifestar. Pegue quatro objetos que representem os elementos: algo cortante (ar/mente), um copo com água (emoções), uma vela (fogo/vontade) e uma pedra ou moeda (terra/matéria). Coloque-os diante de você. Feche os olhos e visualize seu objetivo tomando forma enquanto toca cada objeto. Escreva depois: 'Que ferramentas já tenho para manifestar isso?'",
+      type: "practice",
+      duration: "15 min",
+    },
+  },
+  quiz: [
+    {
+      id: "mago-q1",
+      type: "multiple-choice",
+      question: "Qual é o número associado ao arcano O Mago?",
+      options: ["0", "I", "II", "III"],
+      correctIndex: 1,
+      explanation: "O Mago é o arcano número I — a primeira manifestação consciente da vontade, o potencial do Louco agora canalizado em ação.",
+    },
+    {
+      id: "mago-q2",
+      type: "multiple-choice",
+      question: "Quais são os quatro objetos sobre a mesa do Mago?",
+      options: [
+        "Livro, chave, espelho e coroa",
+        "Espada, cálice, bastão e pentáculo",
+        "Rosa, lírio, serpente e pomba",
+        "Anel, cetro, globo e manto",
+      ],
+      correctIndex: 1,
+      explanation: "Os quatro objetos representam os quatro elementos: espada (ar), cálice (água), bastão (fogo) e pentáculo (terra) — os quatro naipes do Tarô.",
+    },
+    {
+      id: "mago-q3",
+      type: "multiple-choice",
+      question: "O que o lemniscata (∞) sobre a cabeça do Mago simboliza?",
+      options: [
+        "Tempo limitado",
+        "Dualidade entre bem e mal",
+        "Domínio infinito e consciência eterna",
+        "O ciclo das estações",
+      ],
+      correctIndex: 2,
+      explanation: "O lemniscata (∞) representa o domínio infinito — a maestria que transcende o tempo e conecta O Mago à consciência eterna.",
+    },
+    {
+      id: "mago-tf1",
+      type: "true-false",
+      question: "Na Cabala, O Mago corresponde à letra Aleph (א).",
+      options: ["Verdadeiro", "Falso"],
+      correctIndex: 1,
+      explanation: "O Mago corresponde à letra Beth (ב), que significa 'casa' — o primeiro ato de criação. Aleph corresponde ao Louco.",
+    },
+    {
+      id: "mago-q4",
+      type: "multiple-choice",
+      question: "Qual é o aspecto SOMBRA do Mago?",
+      options: [
+        "Falta de habilidade",
+        "Preguiça e inação",
+        "Manipulação e charlatanismo",
+        "Medo do desconhecido",
+      ],
+      correctIndex: 2,
+      explanation: "Na sombra, O Mago se torna manipulação — o uso da inteligência e do carisma para enganar, controlar ou dominar.",
+    },
+    {
+      id: "mago-tf2",
+      type: "true-false",
+      question: "A frase 'como acima, assim abaixo' está associada ao Mago.",
+      options: ["Verdadeiro", "Falso"],
+      correctIndex: 0,
+      explanation: "Sim! Esta frase da Tábua de Esmeralda de Hermes Trismegisto é a essência do Mago — a conexão entre o plano divino e o material.",
+    },
+    {
+      id: "mago-q5",
+      type: "multiple-choice",
+      question: "Quando O Mago aparece no amor, na sua luz, ele indica:",
+      options: [
+        "Fim de um relacionamento",
+        "Comunicação magnética e atração consciente",
+        "Solidão necessária",
+        "Dependência emocional",
+      ],
+      correctIndex: 1,
+      explanation: "Na luz, O Mago no amor indica comunicação magnética, atração consciente e poder de conquista — a capacidade de criar a relação que deseja.",
+    },
+  ],
+  unlocked: false,
+};
+
 /** Registry: lookup full arcano data by ID */
 export const ARCANOS_REGISTRY: Record<number, ArcanoData> = {
   0: THE_FOOL,
-  // Add more arcanos here as they are created:
-  // 1: THE_MAGICIAN,
-  // 2: THE_HIGH_PRIESTESS,
+  1: THE_MAGICIAN,
 };
 
 /** Get arcano data by ID, returns undefined if not yet created */
