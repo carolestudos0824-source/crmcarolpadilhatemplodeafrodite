@@ -40,7 +40,7 @@ const SymbolLibraryPage = () => {
       }}>
         <div className="container max-w-3xl py-4 px-6">
           <div className="flex items-center gap-3 mb-3">
-            <button onClick={() => navigate("/")} className="transition-all hover:scale-105 duration-200" style={{ color: "hsl(230 10% 40%)" }}>
+            <button onClick={() => navigate("/app")} className="transition-all hover:scale-105 duration-200" style={{ color: "hsl(230 10% 40%)" }}>
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
