@@ -37,8 +37,11 @@ export function JourneyMap({ progress }: JourneyMapProps) {
 
       <div className="relative space-y-0">
         {ARCANOS_MAIORES.map((arcano, index) => {
-          const isCompleted = progress.completedLessons.includes(`arcano-${arcano.id}`);
-          const isUnlocked = arcano.unlocked || isCompleted || progress.completedLessons.includes(`arcano-${arcano.id - 1}`);
+          const isCompleted = progress.completedLessons.includes(`arcano-${arcano.id}`) && progress.completedQuizzes.includes(`quiz-arcano-${arcano.id}`);
+          const isUnlocked = arcano.id === 0 || (
+            progress.completedLessons.includes(`arcano-${arcano.id - 1}`) &&
+            progress.completedQuizzes.includes(`quiz-arcano-${arcano.id - 1}`)
+          );
           const isCurrent = isUnlocked && !isCompleted;
           const side = index % 2 === 0 ? "left" : "right";
           const symbol = ARCANO_SYMBOLS[arcano.id] || "◇";
