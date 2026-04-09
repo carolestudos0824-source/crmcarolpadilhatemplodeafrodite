@@ -178,6 +178,7 @@ export const THE_FOOL: ArcanoData = {
   quiz: [
     {
       id: "fool-q1",
+      type: "multiple-choice",
       question: "Qual é o número associado ao arcano O Louco?",
       options: ["I", "0", "XXII", "XIII"],
       correctIndex: 1,
@@ -185,6 +186,7 @@ export const THE_FOOL: ArcanoData = {
     },
     {
       id: "fool-q2",
+      type: "multiple-choice",
       question: "Na Cabala, a qual letra hebraica O Louco corresponde?",
       options: ["Beth (ב)", "Aleph (א)", "Gimel (ג)", "Daleth (ד)"],
       correctIndex: 1,
@@ -192,6 +194,7 @@ export const THE_FOOL: ArcanoData = {
     },
     {
       id: "fool-q3",
+      type: "multiple-choice",
       question: "Qual é o aspecto SOMBRA do Louco?",
       options: [
         "Coragem para novos começos",
@@ -203,14 +206,32 @@ export const THE_FOOL: ArcanoData = {
       explanation: "Na sombra, O Louco se torna imprudência — fuga travestida de liberdade, irresponsabilidade fingindo espontaneidade.",
     },
     {
+      id: "fool-tf1",
+      type: "true-false",
+      question: "O Louco representa o final da Jornada dos Arcanos Maiores.",
+      options: ["Verdadeiro", "Falso"],
+      correctIndex: 1,
+      explanation: "O Louco é o início (0) e o eterno viajante — ele pode aparecer em qualquer ponto, mas simboliza o começo da jornada.",
+    },
+    {
       id: "fool-q4",
+      type: "multiple-choice",
       question: "O que a trouxa do Louco simboliza?",
       options: ["Riqueza material", "Conhecimento acadêmico", "Karma e experiências inconscientes", "Medo do desconhecido"],
       correctIndex: 2,
       explanation: "A trouxa representa o karma — experiências que carregamos sem saber conscientemente, bagagem da alma.",
     },
     {
+      id: "fool-tf2",
+      type: "true-false",
+      question: "O cachorro na carta do Louco representa perigo iminente.",
+      options: ["Verdadeiro", "Falso"],
+      correctIndex: 1,
+      explanation: "O cachorro é o instinto protetor e a lealdade — ele alerta, não ameaça. Representa nossa intuição animal.",
+    },
+    {
       id: "fool-q5",
+      type: "multiple-choice",
       question: "Quando O Louco aparece como conselho em uma leitura, ele convida a:",
       options: [
         "Planejar cada detalhe antes de agir",
