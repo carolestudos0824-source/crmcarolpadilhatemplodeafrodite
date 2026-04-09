@@ -11,6 +11,7 @@ import AdminPage from "./pages/AdminPage.tsx";
 import SymbolLibraryPage from "./pages/SymbolLibraryPage.tsx";
 import PremiumPage from "./pages/PremiumPage.tsx";
 import ReviewPage from "./pages/ReviewPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
           <Route path="/premium" element={<PremiumPage />} />
+          <Route path="/perfil" element={<ProfilePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

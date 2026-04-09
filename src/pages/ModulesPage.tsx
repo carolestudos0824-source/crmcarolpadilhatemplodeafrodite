@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw, Crown } from "lucide-react";
+import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw, Crown, User } from "lucide-react";
 import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import OnboardingPage from "./OnboardingPage";
@@ -75,8 +75,11 @@ const ModulesPage = () => {
             </div>
             <div className="flex items-center gap-3">
               <StreakCounter streak={progress.streak} />
-              <button onClick={() => navigate("/admin")} className="text-[10px] tracking-wider uppercase font-body transition-colors duration-300" style={{ color: "hsl(230 10% 35% / 0.55)" }}>
-                Admin
+              <button onClick={() => navigate("/perfil")} className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105" style={{
+                background: "hsl(36 45% 58% / 0.10)",
+                border: "1px solid hsl(36 45% 58% / 0.20)",
+              }}>
+                <User className="w-4 h-4" style={{ color: "hsl(340 42% 26%)" }} />
               </button>
             </div>
           </div>
