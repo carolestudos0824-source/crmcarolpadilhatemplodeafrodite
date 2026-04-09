@@ -111,6 +111,10 @@ export function useProgress() {
   /** Overall journey percentage */
   const journeyProgress = Math.round((completedCount / 22) * 100);
 
+  const completeOnboarding = useCallback(() => {
+    setProgress((prev) => ({ ...prev, onboardingCompleted: true }));
+  }, []);
+
   const resetProgress = useCallback(() => {
     setProgress({ ...DEFAULT_PROGRESS });
     localStorage.removeItem(STORAGE_KEY);
@@ -129,6 +133,7 @@ export function useProgress() {
     getCurrentArcanoId,
     completedCount,
     journeyProgress,
+    completeOnboarding,
     resetProgress,
   };
 }
