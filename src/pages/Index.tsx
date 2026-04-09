@@ -37,22 +37,27 @@ const Index = () => {
         <div className="container max-w-3xl py-5 px-6">
           {/* Top row */}
           <div className="flex items-center justify-between mb-4">
-            <div className="flex flex-col">
-              <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{
-                color: "hsl(340 42% 28%)"
-              }}>
-                <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
-                Arcanos Maiores
-                <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
-              </span>
-              <h1 className="font-heading text-2xl md:text-3xl tracking-wide" style={{
-                background: "linear-gradient(135deg, hsl(340 42% 22%), hsl(36 35% 28%), hsl(36 45% 44%))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                filter: "drop-shadow(0 1px 2px hsl(36 45% 50% / 0.20))"
-              }}>
-                A Jornada do Louco
-              </h1>
+            <div className="flex items-center gap-3">
+              <button onClick={() => navigate("/")} className="transition-colors hover:scale-105 duration-200" style={{ color: "hsl(230 10% 40%)" }}>
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <div className="flex flex-col">
+                <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{
+                  color: "hsl(340 42% 28%)"
+                }}>
+                  <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
+                  Arcanos Maiores
+                  <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
+                </span>
+                <h1 className="font-heading text-2xl md:text-3xl tracking-wide" style={{
+                  background: "linear-gradient(135deg, hsl(340 42% 22%), hsl(36 35% 28%), hsl(36 45% 44%))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  filter: "drop-shadow(0 1px 2px hsl(36 45% 50% / 0.20))"
+                }}>
+                  A Jornada do Louco
+                </h1>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <StreakCounter streak={progress.streak} />
