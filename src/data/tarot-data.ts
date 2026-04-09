@@ -43,6 +43,7 @@ export interface ArcanoData {
   numeral: string;
   subtitle: string;
   keywords: string[];
+  archetype: string;
   firstPersonIntro: string;
   voiceText: string;
   lessonSections: LessonSection[];
