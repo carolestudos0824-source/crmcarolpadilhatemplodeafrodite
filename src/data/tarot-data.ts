@@ -56,6 +56,7 @@ export interface ArcanoData {
 export interface QuizQuestion {
   id: string;
   question: string;
+  type: "multiple-choice" | "true-false";
   options: string[];
   correctIndex: number;
   explanation: string;
