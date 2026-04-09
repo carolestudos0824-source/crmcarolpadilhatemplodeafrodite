@@ -1,4 +1,5 @@
 import { type LessonSection } from "@/data/fool-lesson-content";
+import { getArcanoAsLegacy } from "./arcanos/index";
 
 export type { LessonSection };
 
