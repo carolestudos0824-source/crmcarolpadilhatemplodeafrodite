@@ -32,7 +32,7 @@ const LessonPage = () => {
             Arcano não encontrado
           </p>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/module/arcanos-maiores")}
             className="text-sm font-heading tracking-wider"
             style={{ color: "hsl(36 45% 58%)" }}
           >
@@ -97,7 +97,7 @@ const LessonPage = () => {
       >
         <div className="container max-w-3xl py-3 px-4 flex items-center gap-4">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/module/arcanos-maiores")}
             className="transition-colors hover:scale-105 duration-200"
             style={{ color: "hsl(230 10% 40%)" }}
           >
@@ -281,7 +281,7 @@ const LessonPage = () => {
               <QuizSection questions={arcano.quiz} onComplete={handleQuizComplete} />
             </div>
             <div className="flex justify-center">
-              <button onClick={() => navigate("/")} className="text-sm transition-colors" style={{ color: "hsl(230 10% 45%)" }}>Voltar ao mapa</button>
+              <button onClick={() => navigate("/module/arcanos-maiores")} className="text-sm transition-colors" style={{ color: "hsl(230 10% 45%)" }}>Voltar ao mapa</button>
             </div>
           </div>
         )}
@@ -292,7 +292,7 @@ const LessonPage = () => {
             <div className="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-3xl" style={{ background: "linear-gradient(135deg, hsl(36 45% 58% / 0.15), hsl(42 70% 80% / 0.1))", border: "2px solid hsl(36 45% 58% / 0.3)", animation: "glow-breathe 3s ease-in-out infinite" }}>✦</div>
             <h2 className="font-heading text-2xl text-gradient-gold">Lição Completa</h2>
             <p className="text-sm" style={{ color: "hsl(230 20% 30%)" }}>Você completou a jornada com {arcano.name}.</p>
-            <button onClick={() => navigate("/")} className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)" }}>
+            <button onClick={() => navigate("/module/arcanos-maiores")} className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)" }}>
               Voltar à Jornada
             </button>
           </div>

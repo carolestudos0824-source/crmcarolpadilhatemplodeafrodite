@@ -70,8 +70,9 @@ export interface UserProgress {
   completedLessons: string[];
   completedQuizzes: string[];
   completedExercises: string[];
+  completedModules: string[];
   badges: Badge[];
-  currentModule: number;
+  currentModule: string;
 }
 
 export interface Badge {
@@ -83,28 +84,47 @@ export interface Badge {
   earnedAt?: string;
 }
 
+export type ModuleCategory = "foundation" | "major-arcana" | "minor-arcana" | "advanced" | "practice";
+
 export interface LearningModule {
   id: string;
   name: string;
+  subtitle: string;
   description: string;
   icon: string;
+  symbol: string;
   order: number;
-  unlocked: boolean;
-  cards: number[]; // arcano IDs
+  category: ModuleCategory;
+  totalLessons: number;
+  prerequisiteModuleId?: string;
+  route: string;
 }
 
 export const MODULES: LearningModule[] = [
-  { id: "fundamentos", name: "Fundamentos do Tarô", description: "A base de tudo", icon: "📖", order: 0, unlocked: true, cards: [] },
-  { id: "arcanos-maiores", name: "Arcanos Maiores", description: "A Jornada do Louco", icon: "🃏", order: 1, unlocked: true, cards: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] },
-  { id: "copas", name: "Naipe de Copas", description: "Emoções e relacionamentos", icon: "💧", order: 2, unlocked: false, cards: [] },
-  { id: "paus", name: "Naipe de Paus", description: "Ação e criatividade", icon: "🔥", order: 3, unlocked: false, cards: [] },
-  { id: "espadas", name: "Naipe de Espadas", description: "Mente e conflitos", icon: "⚔️", order: 4, unlocked: false, cards: [] },
-  { id: "ouros", name: "Naipe de Ouros", description: "Material e prosperidade", icon: "💎", order: 5, unlocked: false, cards: [] },
-  { id: "combinacoes", name: "Combinações", description: "Leitura integrada", icon: "🔗", order: 6, unlocked: false, cards: [] },
-  { id: "tiragens", name: "Tiragens", description: "Métodos de leitura", icon: "🎴", order: 7, unlocked: false, cards: [] },
-  { id: "amor", name: "Amor e Relacionamentos", description: "Foco temático", icon: "❤️", order: 8, unlocked: false, cards: [] },
-  { id: "pratica", name: "Prática Guiada", description: "Exercícios reais", icon: "✨", order: 9, unlocked: false, cards: [] },
+  { id: "fundamentos",      name: "Fundamentos do Tarô",   subtitle: "A Base de Tudo",            description: "História, estrutura e linguagem simbólica do Tarô",                 icon: "📖", symbol: "◈",  order: 0,  category: "foundation",    totalLessons: 8,  route: "/module/fundamentos" },
+  { id: "arcanos-maiores",   name: "Arcanos Maiores",       subtitle: "A Jornada do Louco",        description: "Os 22 arquétipos universais da jornada da alma",                    icon: "🃏", symbol: "✦",  order: 1,  category: "major-arcana",  totalLessons: 22, route: "/module/arcanos-maiores",  prerequisiteModuleId: "fundamentos" },
+  { id: "copas",             name: "Naipe de Copas",        subtitle: "O Elemento Água",           description: "Emoções, relacionamentos, intuição e o mundo interior",             icon: "💧", symbol: "☽",  order: 2,  category: "minor-arcana",  totalLessons: 14, route: "/module/copas",           prerequisiteModuleId: "arcanos-maiores" },
+  { id: "paus",              name: "Naipe de Paus",         subtitle: "O Elemento Fogo",           description: "Ação, criatividade, paixão e força vital",                         icon: "🔥", symbol: "⚡", order: 3,  category: "minor-arcana",  totalLessons: 14, route: "/module/paus",            prerequisiteModuleId: "arcanos-maiores" },
+  { id: "espadas",           name: "Naipe de Espadas",      subtitle: "O Elemento Ar",             description: "Mente, conflitos, verdade e comunicação",                          icon: "⚔️", symbol: "△",  order: 4,  category: "minor-arcana",  totalLessons: 14, route: "/module/espadas",         prerequisiteModuleId: "arcanos-maiores" },
+  { id: "ouros",             name: "Naipe de Ouros",        subtitle: "O Elemento Terra",          description: "Material, prosperidade, corpo e manifestação",                     icon: "💎", symbol: "◆",  order: 5,  category: "minor-arcana",  totalLessons: 14, route: "/module/ouros",           prerequisiteModuleId: "arcanos-maiores" },
+  { id: "combinacoes",       name: "Combinações",           subtitle: "A Arte da Síntese",         description: "Como ler cartas em conjunto e criar narrativas integradas",         icon: "🔗", symbol: "∞",  order: 6,  category: "advanced",      totalLessons: 10, route: "/module/combinacoes",     prerequisiteModuleId: "copas" },
+  { id: "tiragens",          name: "Tiragens",              subtitle: "Os Métodos de Leitura",     description: "Cruz Celta, Ferradura, Três Cartas e outros layouts clássicos",     icon: "🎴", symbol: "◎",  order: 7,  category: "advanced",      totalLessons: 8,  route: "/module/tiragens",       prerequisiteModuleId: "combinacoes" },
+  { id: "amor",              name: "Amor e Relacionamentos",subtitle: "O Tarô do Coração",         description: "Leituras temáticas focadas em amor, vínculo e conexão",             icon: "❤️", symbol: "♡",  order: 8,  category: "practice",      totalLessons: 6,  route: "/module/amor",           prerequisiteModuleId: "tiragens" },
+  { id: "pratica",           name: "Prática Guiada",        subtitle: "O Tarô Vivo",               description: "Exercícios reais de leitura com feedback e orientação",             icon: "✨", symbol: "★",  order: 9,  category: "practice",      totalLessons: 10, route: "/module/pratica",         prerequisiteModuleId: "tiragens" },
 ];
+
+/** Get module by ID */
+export function getModuleById(id: string): LearningModule | undefined {
+  return MODULES.find(m => m.id === id);
+}
+
+/** Check if module is unlocked based on progress — fundamentos and arcanos-maiores start unlocked */
+export function isModuleUnlocked(moduleId: string, completedModules: string[]): boolean {
+  const mod = getModuleById(moduleId);
+  if (!mod) return false;
+  if (!mod.prerequisiteModuleId) return true;
+  return completedModules.includes(mod.prerequisiteModuleId);
+}
 
 export const THE_FOOL: ArcanoData = {
   id: 0,
@@ -451,6 +471,7 @@ export const DEFAULT_PROGRESS: UserProgress = {
   completedLessons: [],
   completedQuizzes: [],
   completedExercises: [],
+  completedModules: [],
   badges: [
     { id: "first-step", name: "Primeiro Passo", description: "Começou a Jornada do Louco", icon: "✦", earned: false },
     { id: "fool-complete", name: "O Louco Revelado", description: "Completou a lição do Louco", icon: "🃏", earned: false },
@@ -460,5 +481,5 @@ export const DEFAULT_PROGRESS: UserProgress = {
     { id: "streak-7", name: "Devoto do Tarô", description: "7 dias consecutivos de estudo", icon: "💫", earned: false },
     { id: "library-explorer", name: "Exploradora", description: "Acessou 3 materiais extras", icon: "📚", earned: false },
   ],
-  currentModule: 0,
+  currentModule: "fundamentos",
 };
