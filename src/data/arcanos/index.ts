@@ -22,6 +22,11 @@ import { O_CARRO } from "./7-o-carro";
 import { A_JUSTICA } from "./8-a-justica";
 import { O_EREMITA } from "./9-o-eremita";
 import { A_RODA_DA_FORTUNA } from "./10-a-roda-da-fortuna";
+import { A_FORCA } from "./11-a-forca";
+import { O_ENFORCADO } from "./12-o-enforcado";
+import { A_MORTE } from "./13-a-morte";
+import { A_TEMPERANCA } from "./14-a-temperanca";
+import { O_DIABO } from "./15-o-diabo";
 
 // ─── Registry Editorial ───
 
@@ -37,6 +42,11 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   8: A_JUSTICA,
   9: O_EREMITA,
   10: A_RODA_DA_FORTUNA,
+  11: A_FORCA,
+  12: O_ENFORCADO,
+  13: A_MORTE,
+  14: A_TEMPERANCA,
+  15: O_DIABO,
 };
 
 // ─── Placeholders para arcanos ainda não escritos ───
