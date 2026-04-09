@@ -73,6 +73,7 @@ export interface UserProgress {
   completedModules: string[];
   badges: Badge[];
   currentModule: string;
+  onboardingCompleted: boolean;
 }
 
 export interface Badge {
@@ -633,4 +634,5 @@ export const DEFAULT_PROGRESS: UserProgress = {
     { id: "library-explorer", name: "Exploradora", description: "Acessou 3 materiais extras", icon: "📚", earned: false },
   ],
   currentModule: "fundamentos",
+  onboardingCompleted: false,
 };
