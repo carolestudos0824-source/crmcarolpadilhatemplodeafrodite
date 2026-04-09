@@ -6,11 +6,14 @@ import { useReview } from "@/hooks/use-review";
 import {
   ALL_FLASHCARDS,
   ALL_REVIEW_QUIZZES,
+  ALL_QUICK_REVIEWS,
   generateDailyChallenge,
   getArcanoName,
+  getArcanoNumeral,
   getFlashcardsForArcano,
   type Flashcard,
 } from "@/data/review-data";
+import { QuickReviewCard } from "@/components/QuickReviewCard";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
