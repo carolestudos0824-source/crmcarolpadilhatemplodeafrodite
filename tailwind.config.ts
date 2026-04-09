@@ -62,6 +62,12 @@ export default {
           DEFAULT: "hsl(var(--crimson))",
           light: "hsl(var(--crimson-light))",
         },
+        wine: "hsl(var(--wine))",
+        plum: "hsl(var(--plum))",
+        midnight: "hsl(var(--midnight))",
+        parchment: "hsl(var(--parchment))",
+        ivory: "hsl(var(--ivory))",
+        moonlight: "hsl(var(--moonlight))",
         mystic: {
           bg: "hsl(var(--mystic-bg))",
           surface: "hsl(var(--mystic-surface))",
