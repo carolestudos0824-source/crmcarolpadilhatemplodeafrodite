@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ArcanoData } from "@/data/tarot-data";
+import foolCardImage from "@/assets/the-fool-card.jpg";
 
 interface CardPresentationProps {
   arcano: ArcanoData;
@@ -38,17 +39,16 @@ export function CardPresentation({ arcano, onComplete }: CardPresentationProps) 
 
       {/* Card */}
       <div
-        className={`relative w-48 h-72 rounded-2xl border-2 border-primary/40 glow-gold flex flex-col items-center justify-center transition-all duration-1000 ${
-          phase === "reveal" ? "animate-card-reveal" : ""
+        className={`relative w-52 h-72 rounded-2xl border-2 border-primary/40 glow-gold overflow-hidden transition-all duration-1000 ${
+          phase === "reveal" ? "animate-card-reveal" : "animate-float"
         }`}
-        style={{
-          background: "linear-gradient(135deg, hsl(240 8% 10%), hsl(240 8% 14%))",
-        }}
       >
-        <div className="absolute inset-2 rounded-xl border border-primary/20" />
-        <span className="text-5xl font-heading text-gradient-gold">{arcano.numeral}</span>
-        <h2 className="font-heading text-lg text-primary mt-3">{arcano.name}</h2>
-        <p className="text-xs text-muted-foreground mt-1 font-accent italic">{arcano.subtitle}</p>
+        <img src={foolCardImage} alt={arcano.name} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute bottom-3 left-0 right-0 text-center">
+          <h2 className="font-heading text-lg text-primary drop-shadow-lg">{arcano.name}</h2>
+          <p className="text-xs text-foreground/70 font-accent italic">{arcano.subtitle}</p>
+        </div>
       </div>
 
       {/* Speech text */}
