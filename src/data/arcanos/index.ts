@@ -1,10 +1,8 @@
 /**
  * Registry central dos Arcanos Maiores no formato editorial.
  * 
- * Para adicionar um novo arcano:
- * 1. Crie src/data/arcanos/{number}-{slug}.ts
- * 2. Importe e adicione aqui
- * 3. Use validateArcano() para verificar completude
+ * Todos os 22 Arcanos Maiores estão completos.
+ * Use validateArcano() para verificar integridade.
  */
 
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
@@ -27,8 +25,14 @@ import { O_ENFORCADO } from "./12-o-enforcado";
 import { A_MORTE } from "./13-a-morte";
 import { A_TEMPERANCA } from "./14-a-temperanca";
 import { O_DIABO } from "./15-o-diabo";
+import { A_TORRE } from "./16-a-torre";
+import { A_ESTRELA } from "./17-a-estrela";
+import { A_LUA } from "./18-a-lua";
+import { O_SOL } from "./19-o-sol";
+import { O_JULGAMENTO } from "./20-o-julgamento";
+import { O_MUNDO } from "./21-o-mundo";
 
-// ─── Registry Editorial ───
+// ─── Registry Editorial — 22/22 completos ───
 
 export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   0: O_LOUCO,
@@ -47,25 +51,13 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   13: A_MORTE,
   14: A_TEMPERANCA,
   15: O_DIABO,
+  16: A_TORRE,
+  17: A_ESTRELA,
+  18: A_LUA,
+  19: O_SOL,
+  20: O_JULGAMENTO,
+  21: O_MUNDO,
 };
-
-// ─── Placeholders para arcanos ainda não escritos ───
-
-const ARCANOS_PENDENTES: [number, string, string, string, string][] = [
-  [16, "A Torre",            "XVI",   "A Revelação Súbita",      "a-torre"],
-  [17, "A Estrela",          "XVII",  "A Esperança Renovada",    "a-estrela"],
-  [18, "A Lua",              "XVIII", "O Caminho da Intuição",   "a-lua"],
-  [19, "O Sol",              "XIX",   "A Alegria Radiante",      "o-sol"],
-  [20, "O Julgamento",       "XX",    "O Despertar Final",       "o-julgamento"],
-  [21, "O Mundo",            "XXI",   "A Completude Sagrada",    "o-mundo"],
-];
-
-// Gera placeholders vazios para arcanos pendentes
-for (const [num, name, numeral, subtitle, slug] of ARCANOS_PENDENTES) {
-  if (!EDITORIAL_REGISTRY[num]) {
-    EDITORIAL_REGISTRY[num] = createEmptyArcano(num, name, numeral, subtitle, slug);
-  }
-}
 
 // ─── API ───
 
@@ -109,6 +101,11 @@ export function getCompleteArcanos(): ArcanoMaiorEditorial[] {
 }
 
 // Re-exports
-export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE, OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA, A_FORCA, O_ENFORCADO, A_MORTE, A_TEMPERANCA, O_DIABO };
+export {
+  O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE,
+  OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA, A_FORCA,
+  O_ENFORCADO, A_MORTE, A_TEMPERANCA, O_DIABO, A_TORRE, A_ESTRELA,
+  A_LUA, O_SOL, O_JULGAMENTO, O_MUNDO,
+};
 export { validateArcano, createEmptyArcano, editorialToLegacy } from "../arcano-editorial";
 export type { ArcanoMaiorEditorial } from "../arcano-editorial";
