@@ -102,19 +102,19 @@ export const THE_FOOL: ArcanoData = {
   name: "O Louco",
   numeral: "0",
   subtitle: "O Início da Jornada",
-  keywords: ["Liberdade", "Espontaneidade", "Novo Começo", "Inocência", "Aventura"],
+  keywords: ["Liberdade", "Coragem", "Travessia", "Impulso", "Desapego"],
   firstPersonIntro:
-    "Olá, viajante! Eu sou O Louco — o zero, o vazio fértil, o nada que contém tudo. Antes de me julgar pelo nome, saiba: não sou insano, sou livre. Livre de expectativas, livre de medos aprendidos, livre de mapas que outros desenharam. Você me encontra aqui, no precipício entre o mundo conhecido e o desconhecido, pronto para dar o primeiro passo de uma jornada que mudará tudo. Vem comigo?",
+    "Eu sou o Louco. Sou o primeiro passo antes da certeza. Sou o impulso que nasce antes da garantia. Em mim existe liberdade, abertura, risco e movimento. Eu não prometo segurança. Eu ensino travessia.",
   layers: {
     main: {
       essence:
-        "Eu sou o sopro antes da primeira palavra, o passo antes do caminho existir. Não sou o início — sou a coragem de iniciar. Carrego tudo o que preciso em minha trouxa: nada além de fé e curiosidade. O abismo à minha frente não me assusta, pois ainda não aprendi a ter medo.",
+        "Eu sou o primeiro passo antes da certeza. Sou o impulso que nasce antes da garantia. Em mim existe liberdade, abertura, risco e movimento. Não sou o início — sou a coragem de iniciar, o sopro antes da primeira palavra, o passo antes do caminho existir.",
       light:
-        "Em minha luz, sou a liberdade absoluta. Sou o salto de fé que você dá quando decide mudar de vida, largar o emprego seguro, declarar amor sem garantias. Sou a criança que pergunta 'por quê?' sem parar, porque cada resposta abre uma nova porta. Quando me encontra em sua luz, você está pronto para começar algo novo sem a necessidade de saber exatamente onde vai chegar.",
+        "Na minha luz, eu falo de coragem para começar, espontaneidade, fé e desapego. Sou o salto de fé que você dá quando decide mudar de vida, declarar amor sem garantias, recomeçar sem mapa. Quando me encontra na luz, você está pronta para o novo — sem precisar saber exatamente onde vai chegar.",
       shadow:
-        "Na minha sombra, torno-me imprudência disfarçada de coragem. Sou a fuga travestida de liberdade, a irresponsabilidade que se finge de espontaneidade. Quando me encontra na sombra, talvez esteja evitando compromissos, pulando de projeto em projeto sem terminar nenhum, ou tomando riscos sem reflexão alguma.",
+        "Na minha sombra, eu aviso sobre imprudência, confusão, fuga e falta de direção. Torno-me a irresponsabilidade que se finge de espontaneidade, a fuga travestida de liberdade. Quando me encontra na sombra, talvez esteja evitando compromissos, pulando de projeto em projeto sem terminar nenhum.",
       practicalApplication:
-        "Quando O Louco aparece em uma leitura, pergunte-se: 'Onde estou me segurando demais? Que primeiro passo estou adiando?' Se está na posição de conselho, O Louco convida a agir com fé — não cegamente, mas com a confiança de quem sabe que a jornada é mais importante que o destino.",
+        "Quando apareço em uma leitura, posso indicar começo, aventura, descoberta ou instabilidade. Tudo depende do contexto, da pergunta e das cartas ao redor. Pergunte-se: 'Onde estou me segurando demais? Que primeiro passo estou adiando?' Eu convido a agir com fé — não cegamente, mas com a confiança de quem sabe que a jornada importa mais que o destino.",
     },
     deepDive: {
       text: "O Louco é o Arcano número 0 — e esse zero é significativo. Ele não está no início nem no fim; está em toda parte e em lugar nenhum. Na tradição do Tarot de Marselha, O Louco é o único Arcano Maior sem número fixo, podendo ser colocado antes do Mago (como potencial puro) ou depois do Mundo (como renascimento).",
