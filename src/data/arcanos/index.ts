@@ -17,6 +17,11 @@ import { A_SACERDOTISA } from "./2-a-sacerdotisa";
 import { A_IMPERATRIZ } from "./3-a-imperatriz";
 import { O_IMPERADOR } from "./4-o-imperador";
 import { O_HIEROFANTE } from "./5-o-hierofante";
+import { OS_ENAMORADOS } from "./6-os-enamorados";
+import { O_CARRO } from "./7-o-carro";
+import { A_JUSTICA } from "./8-a-justica";
+import { O_EREMITA } from "./9-o-eremita";
+import { A_RODA_DA_FORTUNA } from "./10-a-roda-da-fortuna";
 
 // ─── Registry Editorial ───
 
@@ -27,16 +32,16 @@ export const EDITORIAL_REGISTRY: Record<number, ArcanoMaiorEditorial> = {
   3: A_IMPERATRIZ,
   4: O_IMPERADOR,
   5: O_HIEROFANTE,
+  6: OS_ENAMORADOS,
+  7: O_CARRO,
+  8: A_JUSTICA,
+  9: O_EREMITA,
+  10: A_RODA_DA_FORTUNA,
 };
 
 // ─── Placeholders para arcanos ainda não escritos ───
 
 const ARCANOS_PENDENTES: [number, string, string, string, string][] = [
-  [6,  "Os Enamorados",      "VI",    "A Escolha do Coração",    "os-enamorados"],
-  [7,  "O Carro",            "VII",   "A Vontade em Movimento",  "o-carro"],
-  [8,  "A Justiça",          "VIII",  "O Equilíbrio Kármico",    "a-justica"],
-  [9,  "O Eremita",          "IX",    "A Luz Interior",          "o-eremita"],
-  [10, "A Roda da Fortuna",  "X",     "Os Ciclos do Destino",    "a-roda-da-fortuna"],
   [11, "A Força",            "XI",    "O Poder Interior",        "a-forca"],
   [12, "O Enforcado",        "XII",   "A Rendição Sagrada",      "o-enforcado"],
   [13, "A Morte",            "XIII",  "A Grande Transformação",  "a-morte"],
@@ -99,6 +104,6 @@ export function getCompleteArcanos(): ArcanoMaiorEditorial[] {
 }
 
 // Re-exports
-export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE };
+export { O_LOUCO, O_MAGO, A_SACERDOTISA, A_IMPERATRIZ, O_IMPERADOR, O_HIEROFANTE, OS_ENAMORADOS, O_CARRO, A_JUSTICA, O_EREMITA, A_RODA_DA_FORTUNA };
 export { validateArcano, createEmptyArcano, editorialToLegacy } from "../arcano-editorial";
 export type { ArcanoMaiorEditorial } from "../arcano-editorial";
