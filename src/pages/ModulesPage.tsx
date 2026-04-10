@@ -57,6 +57,7 @@ const ModulesPage = () => {
   }
 
   if (!progress.onboardingCompleted) {
+    return <OnboardingPage onComplete={handleOnboardingComplete} />;
   }
 
   const BETA_MODULE_IDS = ["fundamentos", "arcanos-maiores"];
