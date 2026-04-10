@@ -118,7 +118,7 @@ const LandingPage = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               size="lg"
-              onClick={() => navigate("/app")}
+              onClick={() => navigate("/auth")}
               className="font-heading tracking-wide px-8 text-base bg-secondary hover:bg-secondary/90 text-secondary-foreground"
             >
               Começar a Jornada
@@ -375,7 +375,7 @@ const LandingPage = () => {
 
           <Button
             size="lg"
-            onClick={() => navigate("/app")}
+            onClick={() => navigate("/auth")}
             className="font-heading tracking-wide px-10 text-base bg-secondary hover:bg-secondary/90 text-secondary-foreground"
           >
             <Sparkles className="w-4 h-4 mr-2" />
