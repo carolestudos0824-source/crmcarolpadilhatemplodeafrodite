@@ -244,9 +244,31 @@ function createEmptyCard(posicao: CartaPosicao, naipe: Naipe): ArcanoMenorEditor
   };
 }
 
-/** All 56 Minor Arcana cards, scaffolded and ready for content */
-export const ARCANOS_MENORES: ArcanoMenorEditorial[] = NAIPE_ORDER.flatMap((naipe) =>
-  CARD_POSITIONS.map((pos) => createEmptyCard(pos, naipe))
+// ─── Content Imports ──────────────────────────────────────────────
+
+import { COPAS_1_5 } from "./copas-1-5";
+
+/** Merge editorial content into scaffolded cards */
+function mergeContent(
+  cards: ArcanoMenorEditorial[],
+  contentBatches: Partial<ArcanoMenorEditorial>[][]
+): ArcanoMenorEditorial[] {
+  const contentMap = new Map<string, Partial<ArcanoMenorEditorial>>();
+  for (const batch of contentBatches) {
+    for (const c of batch) {
+      if (c.id) contentMap.set(c.id, c);
+    }
+  }
+  return cards.map((card) => {
+    const content = contentMap.get(card.id);
+    return content ? { ...card, ...content } : card;
+  });
+}
+
+/** All 56 Minor Arcana cards, scaffolded and filled with available content */
+export const ARCANOS_MENORES: ArcanoMenorEditorial[] = mergeContent(
+  NAIPE_ORDER.flatMap((naipe) => CARD_POSITIONS.map((pos) => createEmptyCard(pos, naipe))),
+  [COPAS_1_5]
 );
 
 // ─── Lookup Helpers ───────────────────────────────────────────────
