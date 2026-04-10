@@ -49,6 +49,10 @@ const ModulesPage = () => {
       const completed = progress.completedLessons.filter(l => l.startsWith("comb-")).length;
       return Math.round((completed / 10) * 100);
     }
+    if (mod.id === "tiragens") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("tir-")).length;
+      return Math.round((completed / 10) * 100);
+    }
     return 0;
   };
 

@@ -21,6 +21,8 @@ import NumerologiaPage from "./pages/NumerologiaPage.tsx";
 import CartasCortePage from "./pages/CartasCortePage.tsx";
 import CombinacoesPage from "./pages/CombinacoesPage.tsx";
 import CombinacoesLessonPage from "./pages/CombinacoesLessonPage.tsx";
+import TiragensPage from "./pages/TiragensPage.tsx";
+import TiragensLessonPage from "./pages/TiragensLessonPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -44,6 +46,8 @@ const App = () => (
           <Route path="/cartas-da-corte" element={<CartasCortePage />} />
           <Route path="/module/combinacoes" element={<CombinacoesPage />} />
           <Route path="/combinacoes/:order" element={<CombinacoesLessonPage />} />
+          <Route path="/module/tiragens" element={<TiragensPage />} />
+          <Route path="/tiragens/:order" element={<TiragensLessonPage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
