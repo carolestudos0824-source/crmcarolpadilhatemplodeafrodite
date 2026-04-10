@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getArcanoById, ARCANOS_MAIORES } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
+import { useTrackEvent } from "@/hooks/use-track-event";
 import { ArcanoCardDisplay } from "@/components/ArcanoCardDisplay";
 import { ArcanoVoice } from "@/components/ArcanoVoice";
 import { LessonSections } from "@/components/LessonSections";
@@ -21,6 +22,7 @@ const LessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addXP, completeLesson, completeQuiz, earnBadge, isArcanoCompleted } = useProgress();
+  const { trackEvent } = useTrackEvent();
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   const [showSymbols, setShowSymbols] = useState(false);
