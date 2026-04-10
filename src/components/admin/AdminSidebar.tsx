@@ -1,14 +1,17 @@
 import { 
-  BookOpen, Users, BarChart3, Layers, GraduationCap, 
-  HelpCircle, RefreshCw, Sparkles, Package, Lock, Star,
-  Calendar, Crown, Gift
+  LayoutDashboard, Users, Crown, Gift, Layers, BookOpen, Star,
+  HelpCircle, Calendar, BarChart3, HeadphonesIcon, Settings,
+  Lock, RefreshCw, Package, Sparkles
 } from "lucide-react";
 
 export type AdminSection = 
-  | "modules" | "lessons" | "arcanos" | "quizzes" 
-  | "reviews" | "challenges" | "extras" | "access"
-  | "students" | "analytics" | "beta-metrics"
-  | "subscriptions" | "gift-codes";
+  | "overview"
+  | "users"
+  | "subscriptions" | "gift-codes"
+  | "modules" | "arcanos" | "quizzes" | "challenges" | "access"
+  | "usage" | "analytics"
+  | "support"
+  | "settings";
 
 interface AdminSidebarProps {
   active: AdminSection;
@@ -16,26 +19,41 @@ interface AdminSidebarProps {
 }
 
 const sections: { id: AdminSection; label: string; icon: React.ReactNode; group: string }[] = [
-  { id: "modules", label: "Módulos", icon: <Layers className="w-4 h-4" />, group: "Conteúdo" },
-  { id: "lessons", label: "Lições", icon: <BookOpen className="w-4 h-4" />, group: "Conteúdo" },
-  { id: "arcanos", label: "Arcanos", icon: <Star className="w-4 h-4" />, group: "Conteúdo" },
-  { id: "quizzes", label: "Quizzes", icon: <HelpCircle className="w-4 h-4" />, group: "Avaliação" },
-  { id: "reviews", label: "Revisões", icon: <RefreshCw className="w-4 h-4" />, group: "Avaliação" },
-  { id: "challenges", label: "Desafios Diários", icon: <Calendar className="w-4 h-4" />, group: "Engajamento" },
-  { id: "extras", label: "Materiais Extras", icon: <Package className="w-4 h-4" />, group: "Engajamento" },
-  { id: "access", label: "Acesso & Premium", icon: <Lock className="w-4 h-4" />, group: "Controle" },
+  // 1. Visão geral
+  { id: "overview", label: "Visão Geral", icon: <LayoutDashboard className="w-4 h-4" />, group: "Principal" },
+
+  // 2. Usuários
+  { id: "users", label: "Usuários", icon: <Users className="w-4 h-4" />, group: "Principal" },
+
+  // 3. Assinaturas e vendas
   { id: "subscriptions", label: "Assinaturas", icon: <Crown className="w-4 h-4" />, group: "Comercial" },
-  { id: "gift-codes", label: "Códigos Presente", icon: <Gift className="w-4 h-4" />, group: "Comercial" },
-  { id: "students", label: "Estudantes", icon: <Users className="w-4 h-4" />, group: "Gestão" },
-  { id: "analytics", label: "Análises", icon: <BarChart3 className="w-4 h-4" />, group: "Gestão" },
-  { id: "beta-metrics", label: "Beta · Validação", icon: <Sparkles className="w-4 h-4" />, group: "Gestão" },
+
+  // 4. Presentes e chaves
+  { id: "gift-codes", label: "Presentes & Chaves", icon: <Gift className="w-4 h-4" />, group: "Comercial" },
+
+  // 5. Conteúdo
+  { id: "modules", label: "Módulos", icon: <Layers className="w-4 h-4" />, group: "Conteúdo" },
+  { id: "arcanos", label: "Arcanos", icon: <Star className="w-4 h-4" />, group: "Conteúdo" },
+  { id: "quizzes", label: "Quizzes", icon: <HelpCircle className="w-4 h-4" />, group: "Conteúdo" },
+  { id: "challenges", label: "Desafios", icon: <Calendar className="w-4 h-4" />, group: "Conteúdo" },
+  { id: "access", label: "Acesso & Premium", icon: <Lock className="w-4 h-4" />, group: "Conteúdo" },
+
+  // 6. Progresso e uso
+  { id: "usage", label: "Progresso & Uso", icon: <BarChart3 className="w-4 h-4" />, group: "Análise" },
+  { id: "analytics", label: "Métricas", icon: <Sparkles className="w-4 h-4" />, group: "Análise" },
+
+  // 7. Suporte
+  { id: "support", label: "Suporte", icon: <HeadphonesIcon className="w-4 h-4" />, group: "Operação" },
+
+  // 8. Configurações
+  { id: "settings", label: "Configurações", icon: <Settings className="w-4 h-4" />, group: "Operação" },
 ];
 
 const AdminSidebar = ({ active, onChange }: AdminSidebarProps) => {
   const groups = [...new Set(sections.map(s => s.group))];
 
   return (
-    <aside className="w-56 shrink-0 border-r border-border/50 bg-card/30 min-h-[calc(100vh-57px)]">
+    <aside className="w-56 shrink-0 border-r border-border/50 bg-card/30 min-h-[calc(100vh-57px)] overflow-y-auto">
       <nav className="p-3 space-y-5">
         {groups.map(group => (
           <div key={group}>

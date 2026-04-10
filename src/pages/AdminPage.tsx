@@ -2,39 +2,39 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import AdminSidebar, { type AdminSection } from "@/components/admin/AdminSidebar";
-import AdminModules from "@/components/admin/AdminModules";
-import AdminLessons from "@/components/admin/AdminLessons";
-import AdminArcanos from "@/components/admin/AdminArcanos";
-import AdminQuizzes from "@/components/admin/AdminQuizzes";
-import AdminReviews from "@/components/admin/AdminReviews";
-import AdminChallenges from "@/components/admin/AdminChallenges";
-import AdminExtras from "@/components/admin/AdminExtras";
-import AdminAccess from "@/components/admin/AdminAccess";
-import AdminStudents from "@/components/admin/AdminStudents";
-import AdminAnalytics from "@/components/admin/AdminAnalytics";
-import AdminBetaMetrics from "@/components/admin/AdminBetaMetrics";
+import AdminOverview from "@/components/admin/AdminOverview";
+import AdminUsers from "@/components/admin/AdminUsers";
 import AdminSubscriptions from "@/components/admin/AdminSubscriptions";
 import AdminGiftCodes from "@/components/admin/AdminGiftCodes";
+import AdminModules from "@/components/admin/AdminModules";
+import AdminArcanos from "@/components/admin/AdminArcanos";
+import AdminQuizzes from "@/components/admin/AdminQuizzes";
+import AdminChallenges from "@/components/admin/AdminChallenges";
+import AdminAccess from "@/components/admin/AdminAccess";
+import AdminUsage from "@/components/admin/AdminUsage";
+import AdminAnalytics from "@/components/admin/AdminAnalytics";
+import AdminSupport from "@/components/admin/AdminSupport";
+import AdminSettings from "@/components/admin/AdminSettings";
 
 const sectionComponents: Record<AdminSection, React.ComponentType> = {
-  modules: AdminModules,
-  lessons: AdminLessons,
-  arcanos: AdminArcanos,
-  quizzes: AdminQuizzes,
-  reviews: AdminReviews,
-  challenges: AdminChallenges,
-  extras: AdminExtras,
-  access: AdminAccess,
-  students: AdminStudents,
-  analytics: AdminAnalytics,
-  "beta-metrics": AdminBetaMetrics,
+  overview: AdminOverview,
+  users: AdminUsers,
   subscriptions: AdminSubscriptions,
   "gift-codes": AdminGiftCodes,
+  modules: AdminModules,
+  arcanos: AdminArcanos,
+  quizzes: AdminQuizzes,
+  challenges: AdminChallenges,
+  access: AdminAccess,
+  usage: AdminUsage,
+  analytics: AdminAnalytics,
+  support: AdminSupport,
+  settings: AdminSettings,
 };
 
 const AdminPage = () => {
   const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState<AdminSection>("modules");
+  const [activeSection, setActiveSection] = useState<AdminSection>("overview");
 
   const ActiveComponent = sectionComponents[activeSection];
 
