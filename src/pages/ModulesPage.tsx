@@ -115,6 +115,12 @@ const ModulesPage = () => {
 
       {/* Modules grid */}
       <main className="relative z-10 container max-w-3xl py-8 px-6">
+        {/* Beta welcome banner */}
+        <BetaWelcomeBanner />
+
+        {/* Feedback nudge (after 3+ lessons) */}
+        <FeedbackNudge lessonsCompleted={progress.completedLessons.length} />
+
         {categoryOrder.map(cat => {
           const mods = grouped[cat];
           if (!mods || mods.length === 0) return null;
