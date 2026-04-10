@@ -1,49 +1,37 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Layers, Brain, Star, BookOpen, Flame, Eye, ArrowRight, Lock, Users, Compass, Check } from "lucide-react";
+import { Layers, Brain, Star, Flame, Eye, ArrowRight, Lock, Check, ChevronDown, Compass, BookOpen, Sparkles, Users, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ornamentDivider from "@/assets/ornament-divider.png";
+
+const faq = [
+  { q: "O que é a plataforma?", a: "É uma plataforma de ensino de tarô com trilha gamificada, base simbólica clara e experiência imersiva de estudo." },
+  { q: "Qual linha simbólica ela adota?", a: "A base principal é o Rider-Waite-Smith, com aprofundamentos arquetípicos, psicológicos e esotéricos." },
+  { q: "A beta já está completa?", a: "Não. A beta é uma fase inicial de acesso e validação. Ela já entrega a experiência central do produto, mas a expansão seguirá em evolução." },
+  { q: "Para quem a plataforma foi criada?", a: "Para mulheres que querem estudar tarô com mais profundidade, clareza e método." },
+  { q: "O que torna essa plataforma diferente?", a: "A união entre estrutura pedagógica, jornada gamificada, profundidade simbólica e experiências vivas com os arcanos." },
+];
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleBetaSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      navigate(`/auth?email=${encodeURIComponent(email.trim())}`);
-    } else {
-      navigate("/auth");
-    }
-  };
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden">
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6">
-        {/* Atmospheric background */}
+      <section className="relative min-h-[92vh] flex flex-col items-center justify-center px-6">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0" style={{
-            background: "radial-gradient(ellipse at 50% 20%, hsl(42 70% 80% / 0.18) 0%, transparent 60%)",
-          }} />
-          <div className="absolute inset-0" style={{
-            background: "radial-gradient(ellipse at 20% 80%, hsl(340 42% 30% / 0.06) 0%, transparent 50%)",
-          }} />
-          <div className="absolute inset-0" style={{
-            background: "radial-gradient(ellipse at 80% 60%, hsl(36 45% 58% / 0.06) 0%, transparent 50%)",
-          }} />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 20%, hsl(42 70% 80% / 0.18) 0%, transparent 60%)" }} />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 20% 80%, hsl(340 42% 30% / 0.06) 0%, transparent 50%)" }} />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 80% 60%, hsl(36 45% 58% / 0.06) 0%, transparent 50%)" }} />
         </div>
 
-        {/* Corner ornaments */}
-        <div className="absolute top-8 left-8 text-2xl" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✦</div>
-        <div className="absolute top-8 right-8 text-2xl" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✧</div>
-        <div className="absolute bottom-8 left-8 text-xl" style={{ color: "hsl(36 45% 58% / 0.10)" }}>✧</div>
-        <div className="absolute bottom-8 right-8 text-xl" style={{ color: "hsl(36 45% 58% / 0.10)" }}>✦</div>
+        <span className="absolute top-8 left-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✦</span>
+        <span className="absolute top-8 right-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✧</span>
+        <span className="absolute bottom-8 left-8 text-xl select-none" style={{ color: "hsl(36 45% 58% / 0.10)" }}>✧</span>
+        <span className="absolute bottom-8 right-8 text-xl select-none" style={{ color: "hsl(36 45% 58% / 0.10)" }}>✦</span>
 
         <div className="relative z-10 max-w-2xl text-center animate-fade-in">
-          {/* Beta badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8" style={{
             background: "linear-gradient(135deg, hsl(340 42% 28% / 0.08), hsl(280 30% 28% / 0.06))",
             border: "1px solid hsl(36 45% 58% / 0.25)",
@@ -54,7 +42,6 @@ const LandingPage = () => {
             </span>
           </div>
 
-          {/* Overline */}
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="w-12 h-px" style={{ background: "linear-gradient(to right, transparent, hsl(36 45% 58% / 0.40))" }} />
             <span className="text-[10px] tracking-[0.5em] uppercase font-body" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
@@ -63,194 +50,247 @@ const LandingPage = () => {
             <div className="w-12 h-px" style={{ background: "linear-gradient(to left, transparent, hsl(36 45% 58% / 0.40))" }} />
           </div>
 
-          {/* Main heading */}
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wide leading-tight mb-4" style={{
+          <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl tracking-wide leading-tight mb-5" style={{
             background: "linear-gradient(135deg, hsl(340 42% 18%), hsl(230 25% 12%), hsl(36 42% 38%))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            O tarô tem profundidade.<br />
-            Seu estudo também deveria ter.
+            Aprenda tarô como uma jornada viva de símbolo, presença e leitura real.
           </h1>
 
-          {/* Tagline */}
-          <p className="font-accent text-base md:text-lg italic mb-6" style={{ color: "hsl(36 45% 45% / 0.70)" }}>
-            Onde o tarô se revela.
+          <p className="font-body text-sm md:text-base leading-relaxed max-w-lg mx-auto mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Uma plataforma imersiva de ensino de tarô que une método, profundidade simbólica, trilha gamificada e experiência viva com os arcanos.
           </p>
 
-          {/* Subheading */}
-          <p className="font-accent text-lg md:text-xl italic leading-relaxed max-w-lg mx-auto mb-4" style={{
-            color: "hsl(230 20% 15% / 0.55)",
-          }}>
-            A primeira plataforma que ensina tarô com profundidade, beleza e método — carta a carta, camada a camada.
+          <p className="font-accent text-xs md:text-sm italic leading-relaxed max-w-md mx-auto mb-8" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
+            Estude com base no Rider-Waite-Smith, avance por uma jornada progressiva e desenvolva leitura com mais estrutura, repertório e consciência simbólica.
           </p>
 
-          <p className="font-body text-sm leading-relaxed max-w-md mx-auto mb-10" style={{
-            color: "hsl(230 15% 30% / 0.50)",
-          }}>
-            Você não está testando um produto. Está entrando antes que as portas se abram — e ajudando a construir algo que o mercado ainda não viu.
-          </p>
-
-          {/* CTA */}
-          <div className="flex flex-col items-center gap-4">
-            <form onSubmit={handleBetaSignup} className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
-              <input
-                type="email"
-                placeholder="Seu melhor e-mail"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="flex-1 w-full px-4 py-3 rounded-xl font-body text-sm outline-none transition-all focus:ring-2"
-                style={{
-                  background: "hsl(38 30% 95%)",
-                  border: "1.5px solid hsl(36 25% 82% / 0.70)",
-                  color: "hsl(230 25% 10%)",
-              }}
-            />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
-              type="submit"
-              size="lg"
-              className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
+              onClick={() => navigate("/auth")}
+              className="group px-8 py-6 text-sm font-heading tracking-[0.2em] uppercase rounded-xl shadow-lg hover:shadow-xl transition-all duration-500"
+              style={{
+                background: "linear-gradient(135deg, hsl(340 42% 28%), hsl(340 38% 22%))",
+                border: "1px solid hsl(36 45% 58% / 0.25)",
+              }}
             >
-              <Sparkles className="w-4 h-4 mr-1.5" />
-               Dar o primeiro passo
-              </Button>
-            </form>
-            <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.40)" }}>
-              Gratuito · Vitalício · Limitado
-            </p>
+              Entrar na beta
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/convite")}
+              className="px-6 py-5 text-sm font-heading tracking-[0.15em] uppercase rounded-xl transition-all duration-300"
+              style={{
+                border: "1.5px solid hsl(36 25% 82% / 0.70)",
+                color: "hsl(340 42% 28% / 0.70)",
+                background: "transparent",
+              }}
+            >
+              Conhecer a jornada
+            </Button>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <div className="w-5 h-8 rounded-full border flex items-start justify-center pt-1.5" style={{
-            borderColor: "hsl(36 45% 58% / 0.25)",
-          }}>
-            <div className="w-1 h-2 rounded-full" style={{
-              background: "hsl(36 45% 58% / 0.40)",
-              animation: "fade-in 1.5s ease-in-out infinite alternate",
-            }} />
-          </div>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
+          <ChevronDown className="w-5 h-5" style={{ color: "hsl(36 45% 58%)" }} />
         </div>
       </section>
 
-      {/* ═══════════════ O QUE É ═══════════════ */}
+      {/* ═══════════════ BLOCO 1 — O QUE É ═══════════════ */}
       <section className="py-20 px-6" style={{
         background: "linear-gradient(180deg, hsl(38 30% 95% / 0.50) 0%, hsl(36 33% 97%) 100%)",
         borderTop: "1px solid hsl(36 25% 82% / 0.50)",
       }}>
         <div className="max-w-2xl mx-auto text-center">
-          <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50 mx-auto mb-6" loading="lazy" width={800} height={512} />
-          <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-5" style={{
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ O que é a plataforma
+          </p>
+          <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-6" style={{
             background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            O tarô tem profundidade. Seu estudo também deveria ter.
+            A Jornada do Louco é uma plataforma de ensino de tarô criada para transformar estudo em experiência.
           </h2>
-          <p className="font-body text-sm md:text-base leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-            Quem quer estudar tarô com seriedade encontra um cenário fragmentado: vídeos rasos nas redes, apostilas sem método de fixação, cursos caros que não respeitam o seu ritmo. A Jornada do Louco resolve isso.
+          <p className="font-body text-sm leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Aqui, o aprendizado não acontece por repetição vazia, nem por significados soltos decorados de forma mecânica. Ele acontece como travessia, construção de leitura e aprofundamento simbólico.
           </p>
-          <p className="font-accent text-base italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
-            Uma formação completa que une tradição Rider-Waite-Smith, pedagogia em camadas e uma experiência visual que faz jus à profundidade do que ensina — tudo em um só lugar.
+          <p className="font-accent text-sm italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
+            A plataforma adota como base principal o Rider-Waite-Smith, integrando leituras arquetípicas, psicológicas e esotéricas em uma estrutura clara, progressiva e visualmente imersiva.
           </p>
         </div>
       </section>
 
-      {/* ═══════════════ JORNADA DO LOUCO ═══════════════ */}
+      {/* ═══════════════ BLOCO 2 — O PROBLEMA ═══════════════ */}
       <section className="py-20 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <Compass className="w-8 h-8 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
-            <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4" style={{
-              background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
-              A Jornada do Louco
-            </h2>
-            <p className="font-accent text-base italic max-w-md mx-auto" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-              Cada Arcano Maior é uma etapa de uma transformação interior. Você não estuda cartas — você percorre um caminho.
-            </p>
-          </div>
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ O problema que ela resolve
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-6" style={{ color: "hsl(230 25% 12%)" }}>
+            Muita gente estuda tarô, mas continua lendo de forma rasa.
+          </h2>
+          <p className="font-body text-sm leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Assiste vídeos soltos. Anota palavras-chave. Decora frases prontas. Junta interpretações desconexas. E, no fim, não desenvolve leitura real.
+          </p>
+          <p className="font-body text-sm leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Esta plataforma foi criada para resolver exatamente isso.
+          </p>
+          <p className="font-accent text-sm italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
+            Aqui, cada carta é estudada com estrutura, contexto, símbolos, luz, sombra, aplicação prática e progressão. A aluna não apenas memoriza. Ela compreende.
+          </p>
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
+      {/* ═══════════════ BLOCO 3 — O DIFERENCIAL ═══════════════ */}
+      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ O diferencial
+          </p>
+          <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-6" style={{
+            background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>
+            Mais do que um curso.<br />Uma jornada viva de aprendizagem.
+          </h2>
+          <p className="font-body text-sm leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Em vez de páginas frias e estáticas, os arcanos se tornam presenças de estudo, guias de linguagem e pontos de travessia dentro da jornada.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-2">
             {[
-              { step: "Início", cards: "O Louco → O Eremita", desc: "Da inocência ao silêncio interior. Os primeiros passos de quem ousa começar.", color: "hsl(36 45% 50%)" },
-              { step: "Travessia", cards: "A Roda → A Torre", desc: "Ciclos, sombra e desconstrução. A jornada exige coragem para soltar o que não serve.", color: "hsl(340 42% 30%)" },
-              { step: "Revelação", cards: "A Estrela → O Mundo", desc: "Luz, integração e completude. O tarô se torna espelho da sua própria totalidade.", color: "hsl(280 30% 35%)" },
-            ].map((phase, i) => (
-              <div key={i} className="rounded-xl p-5" style={{
-                background: "hsl(36 33% 97% / 0.80)",
-                border: "1px solid hsl(36 25% 82% / 0.60)",
+              "Estudo estruturado",
+              "Profundidade simbólica",
+              "Trilha gamificada",
+              "Progresso visível",
+              "Revisões",
+              "Quizzes",
+              "Experiências vivas com os arcanos",
+            ].map((item, i) => (
+              <span key={i} className="px-4 py-2 rounded-full text-xs font-heading tracking-wider" style={{
+                background: "hsl(340 42% 28% / 0.06)",
+                border: "1px solid hsl(36 45% 58% / 0.20)",
+                color: "hsl(340 42% 28% / 0.65)",
               }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-3" style={{
-                  background: `${phase.color}10`,
-                  border: `1.5px solid ${phase.color}25`,
-                }}>
-                  <span className="font-heading text-[10px] tracking-wider" style={{ color: phase.color }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <h3 className="font-heading text-sm tracking-wide mb-1" style={{ color: "hsl(230 25% 12%)" }}>
-                  {phase.step}
-                </h3>
-                <p className="text-[10px] font-heading tracking-wide mb-2" style={{ color: phase.color }}>
-                  {phase.cards}
-                </p>
-                <p className="text-[12px] font-body leading-relaxed" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-                  {phase.desc}
-                </p>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ BLOCO 4 — O QUE A USUÁRIA ENCONTRA ═══════════════ */}
+      <section className="py-20 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ O que você encontra dentro
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-10" style={{ color: "hsl(230 25% 12%)" }}>
+            Dentro da plataforma, o estudo ganha forma, ritmo e direção.
+          </h2>
+
+          <div className="grid gap-3 max-w-md mx-auto text-left">
+            {[
+              "Fundamentos do Tarô",
+              "Jornada dos Arcanos Maiores",
+              "Arcanos vivos, começando por O Louco",
+              "Quizzes e revisão",
+              "Progresso salvo",
+              "Desafios diários",
+              "Aprofundamento simbólico",
+              "Trilhas por nível",
+              "Módulos avançados em expansão",
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-lg" style={{
+                background: i % 2 === 0 ? "hsl(38 30% 95% / 0.4)" : "transparent",
+              }}>
+                <Check className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(36 45% 50%)" }} />
+                <span className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.75)" }}>{item}</span>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <p className="text-center text-[11px] font-accent italic" style={{ color: "hsl(230 15% 40% / 0.40)" }}>
-            22 Arcanos Maiores · Cada um com 5 camadas de significado · Três leituras: arquetípica, psicológica e esotérica
+      {/* ═══════════════ BLOCO 5 — A JORNADA DO LOUCO ═══════════════ */}
+      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <Compass className="w-8 h-8 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ A Jornada do Louco
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-6" style={{ color: "hsl(230 25% 12%)" }}>
+            A jornada começa no Louco, mas não termina no significado da carta.
+          </h2>
+          <p className="font-body text-sm leading-relaxed mb-4 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            A Jornada do Louco é o eixo simbólico da plataforma. Ela organiza o estudo dos Arcanos Maiores como um percurso de evolução, travessia e consciência.
+          </p>
+          <p className="font-accent text-sm italic leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
+            Cada arcano representa uma etapa. Cada etapa aprofunda percepção, repertório e leitura. O objetivo não é apenas saber o que a carta "significa", mas compreender o que ela faz dentro da experiência humana, da leitura e da narrativa do jogo.
           </p>
         </div>
       </section>
 
-      {/* ═══════════════ ARCANOS VIVOS ═══════════════ */}
-      <section className="py-20 px-6" style={{
-        background: "linear-gradient(180deg, hsl(38 30% 95% / 0.40) 0%, hsl(36 33% 97%) 100%)",
-      }}>
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <Eye className="w-8 h-8 mx-auto mb-4" style={{ color: "hsl(340 42% 28% / 0.35)" }} />
-            <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4" style={{
-              background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
-              Arcanos Vivos
-            </h2>
-            <p className="font-accent text-base italic max-w-md mx-auto" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-              As cartas não são páginas estáticas. Elas aparecem, reaparecem e se revelam — em quizzes, desafios e revisões.
-            </p>
-          </div>
+      {/* ═══════════════ BLOCO 6 — ARCANOS VIVOS ═══════════════ */}
+      <section className="py-20 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <Eye className="w-8 h-8 mx-auto mb-4" style={{ color: "hsl(340 42% 28% / 0.35)" }} />
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ Arcanos vivos
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-6" style={{ color: "hsl(230 25% 12%)" }}>
+            Aprenda com os arcanos como presença, não só como imagem.
+          </h2>
+          <p className="font-body text-sm leading-relaxed mb-4 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Na plataforma, o estudo dos arcanos não é tratado como uma sequência de páginas estáticas.
+          </p>
+          <p className="font-body text-sm leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Ao entrar em uma carta, a aluna encontra uma experiência mais viva, visual e guiada. O arcano apresenta sua essência, seus símbolos, sua luz, sua sombra e sua lição iniciática dentro de uma estrutura elegante e progressiva.
+          </p>
+          <p className="font-accent text-xs italic mt-4" style={{ color: "hsl(36 45% 45% / 0.55)" }}>
+            A experiência começa com O Louco e servirá de base para a expansão dos demais arcanos.
+          </p>
+        </div>
+      </section>
 
-          <div className="space-y-3 max-w-lg mx-auto">
+      {/* ═══════════════ BLOCO 7 — MÉTODO DE ENSINO ═══════════════ */}
+      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <Layers className="w-8 h-8 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ Método de ensino
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-6" style={{ color: "hsl(230 25% 12%)" }}>
+            Um método criado para desenvolver leitura real.
+          </h2>
+          <p className="font-body text-sm leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Isso torna o aprendizado mais leve sem perder profundidade. A aluna pode avançar com fluidez, mas também pode mergulhar mais fundo quando desejar.
+          </p>
+
+          <div className="grid gap-4 max-w-md mx-auto text-left">
             {[
-              { n: "01", label: "Essência", desc: "Significado central, palavras-chave e o arquétipo que a carta encarna" },
-              { n: "02", label: "Luz & Sombra", desc: "Forças que cada arcano ativa — e os desafios que ele apresenta" },
-              { n: "03", label: "Simbolismo", desc: "Cada detalhe da imagem tem propósito — cores, posturas, objetos, paisagens" },
-              { n: "04", label: "Aplicações", desc: "Amor, trabalho, saúde, espiritualidade — a carta na vida real" },
-              { n: "05", label: "Prática", desc: "Exercícios e quizzes que integram o aprendizado no corpo e na mente" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 px-4 py-3.5 rounded-xl" style={{
-                background: "hsl(36 33% 97% / 0.80)",
-                border: "1px solid hsl(36 25% 82% / 0.50)",
+              { icon: Eye, label: "Conteúdo principal", desc: "Curto e obrigatório" },
+              { icon: Brain, label: "Aprofundamento", desc: "Opcional, para quem quer ir mais fundo" },
+              { icon: BookOpen, label: "Materiais extras", desc: "Referências e conexões expandidas" },
+              { icon: Flame, label: "Exercício prático", desc: "Reflexão pessoal guiada" },
+              { icon: Star, label: "Quiz de fixação", desc: "Validação do que foi aprendido" },
+            ].map(({ icon: Icon, label, desc }, i) => (
+              <div key={i} className="flex items-start gap-4 p-4 rounded-xl" style={{
+                background: "hsl(36 33% 97% / 0.7)",
+                border: "1px solid hsl(36 25% 82% / 0.5)",
               }}>
-                <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{
-                  background: "hsl(340 42% 28% / 0.06)",
-                  border: "1.5px solid hsl(340 42% 28% / 0.15)",
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{
+                  background: "linear-gradient(135deg, hsl(340 42% 28% / 0.08), hsl(36 45% 58% / 0.08))",
                 }}>
-                  <span className="font-heading text-[10px] tracking-wider" style={{ color: "hsl(340 42% 26%)" }}>{item.n}</span>
+                  <Icon className="w-4 h-4" style={{ color: "hsl(36 45% 50%)" }} />
                 </div>
                 <div>
-                  <h3 className="font-heading text-[13px] tracking-wide" style={{ color: "hsl(230 25% 12%)" }}>{item.label}</h3>
-                  <p className="text-[11px] font-body leading-relaxed" style={{ color: "hsl(230 15% 30% / 0.50)" }}>{item.desc}</p>
+                  <p className="font-heading text-xs tracking-wide" style={{ color: "hsl(230 25% 12%)" }}>{label}</p>
+                  <p className="font-body text-xs mt-0.5" style={{ color: "hsl(230 10% 40% / 0.65)" }}>{desc}</p>
                 </div>
               </div>
             ))}
@@ -258,199 +298,153 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* ═══════════════ TRILHA GAMIFICADA ═══════════════ */}
+      {/* ═══════════════ BLOCO 8 — PARA QUEM É ═══════════════ */}
       <section className="py-20 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <Flame className="w-8 h-8 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
-            <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4" style={{
-              background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
-              Estudar como um ritual
-            </h2>
-            <p className="font-accent text-base italic max-w-md mx-auto" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-              Gamificação elegante que transforma disciplina em prazer — sem infantilizar o sagrado.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            {[
-              { icon: Star, title: "XP e Conquistas", desc: "Cada lição concluída, cada quiz acertado, cada revisão feita gera experiência e desbloqueia marcos." },
-              { icon: Flame, title: "Streaks e Ritual Diário", desc: "Desafios diários e sequências de estudo que transformam constância em hábito — e hábito em iniciação." },
-              { icon: Brain, title: "Revisão Inteligente", desc: "Flashcards e revisão espaçada para que o que você aprende se torne parte de quem você é." },
-              { icon: Layers, title: "Trilhas por Nível", desc: "De iniciante a avançada — a plataforma se adapta ao seu ritmo e nunca força uma ordem artificial." },
-            ].map((f, i) => {
-              const Icon = f.icon;
-              return (
-                <div key={i} className="group rounded-xl p-5 transition-all duration-300 hover:shadow-md" style={{
-                  background: "hsl(36 33% 97% / 0.80)",
-                  border: "1px solid hsl(36 25% 82% / 0.60)",
-                }}>
-                  <div className="flex items-start gap-3.5">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform" style={{
-                      background: "linear-gradient(135deg, hsl(340 42% 30% / 0.08), hsl(36 45% 58% / 0.10))",
-                      border: "1px solid hsl(36 45% 58% / 0.20)",
-                    }}>
-                      <Icon className="w-5 h-5" style={{ color: "hsl(340 42% 26%)" }} />
-                    </div>
-                    <div>
-                      <h3 className="font-heading text-sm tracking-wide mb-1" style={{ color: "hsl(230 25% 12%)" }}>{f.title}</h3>
-                      <p className="font-body text-sm leading-relaxed" style={{ color: "hsl(230 15% 30% / 0.55)" }}>{f.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ BETA PRIVADA ═══════════════ */}
-      <section className="py-20 px-6" style={{
-        background: "linear-gradient(180deg, hsl(38 30% 95% / 0.50) 0%, hsl(36 33% 97%) 100%)",
-      }}>
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-10">
-            <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50 mx-auto mb-6" loading="lazy" width={800} height={512} />
-            <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4" style={{
-              background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
-              Não é um teste. É um convite.
-            </h2>
-            <p className="font-body text-sm md:text-base leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-              A Jornada do Louco está em fase de formação — e queremos as pessoas certas desde o início. Quem entra agora tem acesso completo, gratuito e vitalício, com voz ativa na construção da plataforma.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { icon: Users, title: "Acesso Vitalício", desc: "Quem entra na beta, fica para sempre — com o plano que tiver no lançamento." },
-              { icon: BookOpen, title: "Voz na Construção", desc: "Seu feedback molda a plataforma. Você influencia o que nasce." },
-              { icon: Star, title: "100% Gratuito", desc: "Sem custo, sem compromisso. Você só investe curiosidade e desejo de aprender." },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <div key={i} className="text-center p-5 rounded-xl" style={{
-                  background: "hsl(36 33% 97% / 0.80)",
-                  border: "1px solid hsl(36 25% 82% / 0.60)",
-                }}>
-                  <div className="w-11 h-11 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{
-                    background: "hsl(340 42% 28% / 0.06)",
-                    border: "1px solid hsl(340 42% 28% / 0.12)",
-                  }}>
-                    <Icon className="w-5 h-5" style={{ color: "hsl(340 42% 26%)" }} />
-                  </div>
-                  <h3 className="font-heading text-sm tracking-wide mb-1" style={{ color: "hsl(340 42% 20%)" }}>{item.title}</h3>
-                  <p className="text-[11px] font-body leading-relaxed" style={{ color: "hsl(230 15% 25% / 0.50)" }}>{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ O QUE VOCÊ ENCONTRA ═══════════════ */}
-      <section className="py-16 px-6">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="font-heading text-xl md:text-2xl tracking-wide text-center mb-8" style={{
-            background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), hsl(36 42% 42%))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}>
-            O que já está na plataforma
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ Para quem é
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-6" style={{ color: "hsl(230 25% 12%)" }}>
+            Para quem quer estudar tarô com mais profundidade, método e presença.
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+          <p className="font-body text-sm leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            Esta plataforma foi criada para mulheres iniciantes e intermediárias que desejam sair da leitura rasa, solta e confusa e entrar em uma experiência mais estruturada, simbólica e autoral.
+          </p>
+          <p className="font-accent text-sm italic mt-4" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
+            É para quem quer estudar com mais beleza, mais clareza e mais direção.
+          </p>
+        </div>
+      </section>
+
+      {/* ═══════════════ BLOCO 9 — O QUE É A BETA ═══════════════ */}
+      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <Lock className="w-7 h-7 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ O que é a beta
+          </p>
+          <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-6" style={{ color: "hsl(230 25% 12%)" }}>
+            Uma entrada antecipada para viver a primeira fase da plataforma.
+          </h2>
+          <p className="font-body text-sm leading-relaxed mb-4 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+            A beta é a fase inicial de teste da plataforma com um grupo reduzido de usuárias. Nesta etapa, você terá acesso à base do produto, poderá experimentar a proposta pedagógica, entrar na Jornada do Louco, testar os primeiros conteúdos e acompanhar de perto a construção de uma experiência de estudo diferente do que hoje existe no mercado.
+          </p>
+          <p className="font-accent text-sm italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
+            A beta não é um produto improvisado. É uma entrada antecipada em uma plataforma em construção refinada.
+          </p>
+        </div>
+      </section>
+
+      {/* ═══════════════ BLOCO 10 — O QUE JÁ ESTÁ DISPONÍVEL ═══════════════ */}
+      <section className="py-20 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ O que você poderá experimentar na beta
+          </p>
+
+          <div className="grid gap-3 max-w-md mx-auto text-left">
             {[
-              "Módulo de Fundamentos",
-              "22 Arcanos Maiores",
-              "Lições em 5 camadas",
-              "Quizzes por carta",
-              "Revisão espaçada",
-              "Desafios diários",
-              "XP e conquistas",
-              "Trilhas por nível",
-              "Biblioteca simbólica",
-              "Rotina de estudo",
-              "Feedback integrado",
-              "Visual premium",
+              "Onboarding inicial",
+              "Dashboard da jornada",
+              "Fundamentos do Tarô",
+              "Início da Jornada dos Arcanos Maiores",
+              "O Louco como primeira experiência viva",
+              "Progresso, quiz e XP",
+              "Primeiros arcanos da trilha",
+              "Área premium inicial em desenvolvimento",
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 px-3 py-2.5 rounded-lg" style={{
-                background: "hsl(38 28% 95% / 0.70)",
-                border: "1px solid hsl(36 25% 82% / 0.50)",
+              <div key={i} className="flex items-center gap-3 p-3 rounded-lg" style={{
+                background: i % 2 === 0 ? "hsl(38 30% 95% / 0.4)" : "transparent",
               }}>
-                <Check className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(140 35% 45%)" }} />
-                <span className="text-[11px] font-body" style={{ color: "hsl(230 15% 25% / 0.60)" }}>{item}</span>
+                <Check className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(36 45% 50%)" }} />
+                <span className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.75)" }}>{item}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ QUOTE ═══════════════ */}
-      <section className="py-16 px-6">
-        <div className="max-w-xl mx-auto text-center">
-          <span className="text-3xl block mb-6" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
-          <blockquote className="font-accent text-xl md:text-2xl italic leading-relaxed mb-6" style={{
-            color: "hsl(340 42% 20%)",
-          }}>
-            "As cartas não preveem o futuro — elas iluminam o que já existe dentro de você."
-          </blockquote>
-          <div className="w-12 h-px mx-auto" style={{ background: "hsl(36 45% 58% / 0.30)" }} />
+      {/* ═══════════════ FAQ ═══════════════ */}
+      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+        <div className="max-w-lg mx-auto">
+          <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-8 text-center" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
+            ✦ Perguntas frequentes
+          </p>
+
+          <div className="space-y-2">
+            {faq.map(({ q, a }, i) => (
+              <div key={i} className="rounded-xl overflow-hidden" style={{
+                background: "hsl(36 33% 97% / 0.7)",
+                border: "1px solid hsl(36 25% 82% / 0.4)",
+              }}>
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between p-4 text-left"
+                >
+                  <span className="font-heading text-xs tracking-wide" style={{ color: "hsl(230 25% 12%)" }}>{q}</span>
+                  <ChevronDown
+                    className="w-4 h-4 flex-shrink-0 transition-transform duration-300"
+                    style={{
+                      color: "hsl(36 45% 55%)",
+                      transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)",
+                    }}
+                  />
+                </button>
+                {openFaq === i && (
+                  <div className="px-4 pb-4">
+                    <p className="font-body text-xs leading-relaxed" style={{ color: "hsl(230 10% 40% / 0.70)" }}>{a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ═══════════════ FINAL CTA ═══════════════ */}
+      {/* ═══════════════ BLOCO 11 — CONVITE FINAL ═══════════════ */}
       <section className="relative py-24 px-6">
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: "radial-gradient(ellipse at 50% 50%, hsl(42 70% 80% / 0.12) 0%, transparent 60%)",
-        }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: "radial-gradient(ellipse at 50% 80%, hsl(340 42% 30% / 0.05) 0%, transparent 50%)",
-        }} />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, hsl(42 70% 80% / 0.12) 0%, transparent 60%)" }} />
+        </div>
 
-        <div className="relative z-10 max-w-lg mx-auto text-center">
+        <div className="relative z-10 max-w-xl mx-auto text-center">
           <span className="text-2xl block mb-4" style={{ color: "hsl(36 45% 58% / 0.25)" }}>✧</span>
           <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4" style={{
             background: "linear-gradient(135deg, hsl(340 42% 18%), hsl(230 25% 12%), hsl(36 42% 38%))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Iniciar minha jornada
+            Entre na beta e acompanhe o nascimento desta jornada desde o início.
           </h2>
-          <p className="font-accent text-base italic leading-relaxed mb-8" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-            O Louco salta sem saber o destino — mas confiando na jornada. Você não precisa saber tudo. Só precisa dar o primeiro passo.
+          <p className="font-body text-sm leading-relaxed mb-8 max-w-md mx-auto" style={{ color: "hsl(230 15% 30% / 0.60)" }}>
+            Se você deseja estudar tarô com mais profundidade, beleza, método e consciência simbólica, esta é a hora de entrar. A beta é a porta de entrada para uma plataforma criada para formar leitura real.
           </p>
 
-          <form onSubmit={handleBetaSignup} className="flex flex-col sm:flex-row items-center gap-3 max-w-md mx-auto mb-4">
-            <input
-              type="email"
-              placeholder="Seu melhor e-mail"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="flex-1 w-full px-4 py-3 rounded-xl font-body text-sm outline-none transition-all focus:ring-2"
-              style={{
-                background: "hsl(38 30% 95%)",
-                border: "1.5px solid hsl(36 25% 82% / 0.70)",
-                color: "hsl(230 25% 10%)",
-              }}
-            />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
             <Button
-              type="submit"
-              size="lg"
-              className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
+              onClick={() => navigate("/auth")}
+              className="group px-8 py-6 text-sm font-heading tracking-[0.2em] uppercase rounded-xl shadow-lg hover:shadow-xl transition-all duration-500"
+              style={{
+                background: "linear-gradient(135deg, hsl(340 42% 28%), hsl(340 38% 22%))",
+                border: "1px solid hsl(36 45% 58% / 0.25)",
+              }}
             >
-              <Sparkles className="w-4 h-4 mr-1.5" />
-              Dar o primeiro passo
+              Quero entrar na beta
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-          </form>
-
-          <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Gratuito · Vitalício · Limitado
-          </p>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/espera")}
+              className="px-6 py-5 text-sm font-heading tracking-[0.15em] uppercase rounded-xl transition-all duration-300"
+              style={{
+                border: "1.5px solid hsl(36 25% 82% / 0.70)",
+                color: "hsl(340 42% 28% / 0.70)",
+                background: "transparent",
+              }}
+            >
+              Entrar na lista de espera
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -465,15 +459,8 @@ const LandingPage = () => {
             <span className="text-sm" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
           </div>
           <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Onde o tarô se revela · Tradição · Profundidade · Beleza
+            Tarô com método, símbolo e jornada viva · Onde o tarô se revela
           </p>
-          <button
-            onClick={() => navigate("/apresentacao")}
-            className="text-[10px] font-body underline transition-colors hover:text-foreground"
-            style={{ color: "hsl(230 15% 30% / 0.40)" }}
-          >
-            Ver apresentação completa
-          </button>
         </div>
       </footer>
     </div>
