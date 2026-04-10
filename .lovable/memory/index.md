@@ -22,4 +22,5 @@ FREE_ARCANO_IDS = [0]. Only O Louco is free. All other arcanos, modules and feat
 - [Monetization](mem://features/monetization) — Subscription plans, pricing, premium states, and subscription management screens
 - [Commercial architecture](mem://features/commercial-architecture) — Access tiers, gift codes, subscription states, admin metrics, pricing
 - [Mobile monetization](mem://features/mobile-monetization) — Final IAP strategy for App Store/Google Play: receipt validation, RevenueCat, webhooks
+- [Access control logic](mem://features/access-control-logic) — Definitive 5 states, permissions matrix, unlock/lock, gift validation, restore purchase
 - [Inclusive language](mem://constraints/inclusive-language) — Plataforma para qualquer pessoa, não apenas mulheres
