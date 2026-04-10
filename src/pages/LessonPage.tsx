@@ -35,11 +35,19 @@ const LessonPage = () => {
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
 
   // Track lesson view on mount (before early return)
+  const isPremiumLocked = !FREE_ARCANO_IDS.includes(arcanoId);
+
   useEffect(() => {
     if (arcano) {
       trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
     }
   }, [arcanoId]);
+
+  useEffect(() => {
+    if (isPremiumLocked && arcano) {
+      trackEvent("premium_gate_hit", { arcano_id: arcanoId, name: arcano.name });
+    }
+  }, [isPremiumLocked, arcanoId]);
 
   if (!arcano) {
     return (
