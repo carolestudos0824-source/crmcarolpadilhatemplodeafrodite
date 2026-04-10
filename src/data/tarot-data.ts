@@ -103,7 +103,7 @@ export interface LearningModule {
 }
 
 export const MODULES: LearningModule[] = [
-  { id: "fundamentos",      name: "Fundamentos do Tarô",   subtitle: "A Base de Tudo",            description: "História, estrutura e linguagem simbólica do Tarô",                 icon: "📖", symbol: "◈",  order: 0,  category: "foundation",    totalLessons: 8,  route: "/module/fundamentos" },
+  { id: "fundamentos",      name: "Fundamentos do Tarô",   subtitle: "A Base de Tudo",            description: "História, estrutura e linguagem simbólica do Tarô",                 icon: "📖", symbol: "◈",  order: 0,  category: "foundation",    totalLessons: 10, route: "/module/fundamentos" },
   { id: "arcanos-maiores",   name: "Arcanos Maiores",       subtitle: "A Jornada do Louco",        description: "Os 22 arquétipos universais da jornada da alma",                    icon: "🃏", symbol: "✦",  order: 1,  category: "major-arcana",  totalLessons: 22, route: "/module/arcanos-maiores",  prerequisiteModuleId: "fundamentos" },
   { id: "copas",             name: "Naipe de Copas",        subtitle: "O Elemento Água",           description: "Emoções, relacionamentos, intuição e o mundo interior",             icon: "💧", symbol: "☽",  order: 2,  category: "minor-arcana",  totalLessons: 14, route: "/module/copas",           prerequisiteModuleId: "arcanos-maiores" },
   { id: "paus",              name: "Naipe de Paus",         subtitle: "O Elemento Fogo",           description: "Ação, criatividade, paixão e força vital",                         icon: "🔥", symbol: "⚡", order: 3,  category: "minor-arcana",  totalLessons: 14, route: "/module/paus",            prerequisiteModuleId: "arcanos-maiores" },
