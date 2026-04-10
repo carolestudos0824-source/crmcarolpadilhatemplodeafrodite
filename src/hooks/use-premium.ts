@@ -34,7 +34,11 @@ export const usePremium = (): PremiumState => {
       if (data) {
         const now = new Date();
         const until = data.premium_until ? new Date(data.premium_until) : null;
-        const isActive = data.is_premium && (!until || until > now);
+        // Premium ativo: is_premium=true e não expirou
+        // Cancelado com acesso: is_premium=false mas premium_until ainda no futuro
+        const isActive = data.is_premium
+          ? (!until || until > now)
+          : (until != null && until > now);
 
         setState({
           isPremium: isActive,
