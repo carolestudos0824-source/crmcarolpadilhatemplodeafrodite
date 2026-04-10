@@ -13,6 +13,8 @@ import AdminAccess from "@/components/admin/AdminAccess";
 import AdminStudents from "@/components/admin/AdminStudents";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
 import AdminBetaMetrics from "@/components/admin/AdminBetaMetrics";
+import AdminSubscriptions from "@/components/admin/AdminSubscriptions";
+import AdminGiftCodes from "@/components/admin/AdminGiftCodes";
 
 const sectionComponents: Record<AdminSection, React.ComponentType> = {
   modules: AdminModules,
@@ -26,6 +28,8 @@ const sectionComponents: Record<AdminSection, React.ComponentType> = {
   students: AdminStudents,
   analytics: AdminAnalytics,
   "beta-metrics": AdminBetaMetrics,
+  subscriptions: AdminSubscriptions,
+  "gift-codes": AdminGiftCodes,
 };
 
 const AdminPage = () => {
