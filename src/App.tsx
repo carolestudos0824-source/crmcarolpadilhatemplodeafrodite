@@ -25,6 +25,7 @@ const FundamentosPage = lazy(() => import("./pages/FundamentosPage.tsx"));
 const FundamentosLessonPage = lazy(() => import("./pages/FundamentosLessonPage.tsx"));
 const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
 const BetaInvitePage = lazy(() => import("./pages/BetaInvitePage.tsx"));
+const WaitlistPage = lazy(() => import("./pages/WaitlistPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -66,6 +67,7 @@ const AppRoutes = () => (
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/convite" element={<BetaInvitePage />} />
+        <Route path="/waitlist" element={<WaitlistPage />} />
         <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
         <Route path="/app" element={<P><ModulesPage /></P>} />
         <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
