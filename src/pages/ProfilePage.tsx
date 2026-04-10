@@ -249,6 +249,94 @@ const ProfilePage = () => {
           </div>
         )}
 
+        {/* ═══════════════ ASSINATURA ═══════════════ */}
+        <div>
+          <div className="flex items-center justify-center mb-3">
+            <img src={ornamentDivider} alt="" className="w-24 h-auto opacity-40" loading="lazy" width={800} height={512} />
+          </div>
+          <h2 className="font-heading text-sm tracking-wide text-center mb-4" style={{ color: "hsl(340 42% 22%)" }}>
+            Assinatura
+          </h2>
+
+          {isPremium ? (
+            <div className="rounded-xl p-5" style={{
+              background: "linear-gradient(135deg, hsl(36 45% 58% / 0.08), hsl(340 42% 30% / 0.06))",
+              border: "1.5px solid hsl(36 45% 58% / 0.25)",
+            }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{
+                  background: "linear-gradient(135deg, hsl(340 42% 28% / 0.10), hsl(36 45% 58% / 0.15))",
+                }}>
+                  <Crown className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
+                </div>
+                <div>
+                  <p className="font-heading text-sm tracking-wide" style={{ color: "hsl(340 42% 22%)" }}>
+                    Jornada Completa
+                  </p>
+                  <span className="text-[10px] font-heading tracking-wide px-2 py-0.5 rounded-full" style={{
+                    background: "hsl(140 35% 45% / 0.10)",
+                    color: "hsl(140 35% 38%)",
+                  }}>
+                    Ativo
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-2 text-[11px] font-body" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
+                {premiumSource && (
+                  <div className="flex justify-between">
+                    <span>Tipo</span>
+                    <span style={{ color: "hsl(340 42% 22%)" }}>
+                      {premiumSource === "gift" ? "Presente" : premiumSource === "admin" ? "Administrativo" : "Assinatura"}
+                    </span>
+                  </div>
+                )}
+                {premiumUntil && (
+                  <div className="flex justify-between">
+                    <span>Válido até</span>
+                    <span style={{ color: "hsl(340 42% 22%)" }}>
+                      {new Date(premiumUntil).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => navigate("/premium")}
+                className="mt-3 text-[10px] font-heading tracking-wider uppercase"
+                style={{ color: "hsl(340 42% 28% / 0.55)" }}
+              >
+                Gerenciar assinatura →
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate("/premium")}
+              className="w-full group rounded-xl p-4 transition-all duration-300 hover:shadow-md text-left"
+              style={{
+                background: "linear-gradient(135deg, hsl(38 28% 93% / 0.90), hsl(36 33% 95% / 0.85))",
+                border: "1.5px solid hsl(36 45% 58% / 0.25)",
+              }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{
+                  background: "linear-gradient(135deg, hsl(340 42% 30% / 0.10), hsl(36 45% 58% / 0.12))",
+                  border: "1.5px solid hsl(36 45% 58% / 0.25)",
+                }}>
+                  <Crown className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
+                </div>
+                <div className="flex-1">
+                  <div className="font-heading text-base tracking-wide" style={{ color: "hsl(230 25% 12%)" }}>
+                    Jornada Completa
+                  </div>
+                  <div className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                    Desbloqueie todos os arcanos e módulos
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
+              </div>
+            </button>
+          )}
+        </div>
+
         {/* ═══════════════ CERTIFICADOS LINK ═══════════════ */}
         <div>
           <div className="flex items-center justify-center mb-3">
