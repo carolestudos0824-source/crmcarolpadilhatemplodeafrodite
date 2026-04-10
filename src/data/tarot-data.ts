@@ -117,7 +117,9 @@ export const MODULES: LearningModule[] = [
   { id: "pratica",           name: "Prática Guiada",        subtitle: "O Tarô Vivo",               description: "Exercícios reais de leitura com feedback e orientação",             icon: "✨", symbol: "★",  order: 9,  category: "practice",      totalLessons: 10, route: "/module/pratica",         prerequisiteModuleId: "tiragens" },
 ];
 
-/** Get module by ID */
+/** Arcanos available for free in beta */
+export const FREE_ARCANO_IDS = [0, 1, 2];
+
 export function getModuleById(id: string): LearningModule | undefined {
   return MODULES.find(m => m.id === id);
 }
