@@ -5,6 +5,8 @@ import { useProgress } from "@/hooks/use-progress";
 import OnboardingPage from "./OnboardingPage";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
+import BetaWelcomeBanner from "@/components/BetaWelcomeBanner";
+import FeedbackNudge from "@/components/FeedbackNudge";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
