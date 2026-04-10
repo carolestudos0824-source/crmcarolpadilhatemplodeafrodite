@@ -56,6 +56,13 @@ const LessonPage = () => {
   const phaseSteps: LessonPhase[] = ["intro", "lesson", "deepdive", "exercise", "quiz"];
   const currentIdx = phaseSteps.indexOf(phase);
 
+  // Track lesson view on mount
+  useEffect(() => {
+    if (arcano) {
+      trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
+    }
+  }, [arcanoId]);
+
   const handleStartLesson = () => {
     addXP(10);
     earnBadge("first-step");
@@ -65,6 +72,7 @@ const LessonPage = () => {
   const handleLessonComplete = () => {
     addXP(25);
     completeLesson(`arcano-${arcano.id}`);
+    trackEvent(`lesson_completed_${arcano.id}`, { name: arcano.name });
     setPhase("quiz");
   };
 
@@ -76,6 +84,7 @@ const LessonPage = () => {
   const handleQuizComplete = (score: number, total: number) => {
     addXP(score * 10);
     completeQuiz(`quiz-arcano-${arcano.id}`);
+    trackEvent(`quiz_completed_${arcano.id}`, { name: arcano.name, score, total });
     if (arcano.id === 0) earnBadge("fool-complete");
     if (score === total) earnBadge("quiz-master");
     setPhase("complete");
