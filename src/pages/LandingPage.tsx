@@ -64,26 +64,31 @@ const LandingPage = () => {
           </div>
 
           {/* Main heading */}
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wide leading-tight mb-6" style={{
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wide leading-tight mb-4" style={{
             background: "linear-gradient(135deg, hsl(340 42% 18%), hsl(230 25% 12%), hsl(36 42% 38%))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            O Tarô não se aprende.<br />
-            Ele se revela.
+            O tarô tem profundidade.<br />
+            Seu estudo também deveria ter.
           </h1>
+
+          {/* Tagline */}
+          <p className="font-accent text-base md:text-lg italic mb-6" style={{ color: "hsl(36 45% 45% / 0.70)" }}>
+            Onde o tarô se revela.
+          </p>
 
           {/* Subheading */}
           <p className="font-accent text-lg md:text-xl italic leading-relaxed max-w-lg mx-auto mb-4" style={{
             color: "hsl(230 20% 15% / 0.55)",
           }}>
-            A primeira plataforma que une tradição, profundidade e beleza no estudo do tarô — e você pode ser uma das primeiras a experimentá-la.
+            A primeira plataforma que ensina tarô com profundidade, beleza e método — carta a carta, camada a camada.
           </p>
 
           <p className="font-body text-sm leading-relaxed max-w-md mx-auto mb-10" style={{
             color: "hsl(230 15% 30% / 0.50)",
           }}>
-            Estamos abrindo as portas para um grupo seleto de estudantes. Acesso antecipado, gratuito e com influência direta no que estamos construindo.
+            Você não está testando um produto. Está entrando antes que as portas se abram — e ajudando a construir algo que o mercado ainda não viu.
           </p>
 
           {/* CTA */}
@@ -107,11 +112,11 @@ const LandingPage = () => {
               className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
             >
               <Sparkles className="w-4 h-4 mr-1.5" />
-              Entrar na Beta
+               Dar o primeiro passo
               </Button>
             </form>
             <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.40)" }}>
-              Acesso gratuito · Vagas limitadas · Sem compromisso
+              Gratuito · Vitalício · Limitado
             </p>
           </div>
         </div>
@@ -141,13 +146,13 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Uma formação em tarô que não existia
+            O tarô tem profundidade. Seu estudo também deveria ter.
           </h2>
           <p className="font-body text-sm md:text-base leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-            O estudo do tarô está fragmentado. Conteúdo raso nas redes, livros sem método de fixação, cursos caros que não respeitam o seu ritmo. A Jornada do Louco resolve isso.
+            Quem quer estudar tarô com seriedade encontra um cenário fragmentado: vídeos rasos nas redes, apostilas sem método de fixação, cursos caros que não respeitam o seu ritmo. A Jornada do Louco resolve isso.
           </p>
           <p className="font-accent text-base italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
-            Reunimos tradição Rider-Waite-Smith, pedagogia em camadas e uma experiência visual que faz jus à profundidade do que ensina — tudo em um só lugar.
+            Uma formação completa que une tradição Rider-Waite-Smith, pedagogia em camadas e uma experiência visual que faz jus à profundidade do que ensina — tudo em um só lugar.
           </p>
         </div>
       </section>
@@ -314,18 +319,18 @@ const LandingPage = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              Por que uma beta privada?
+              Não é um teste. É um convite.
             </h2>
             <p className="font-body text-sm md:text-base leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-              Porque queremos construir algo excelente — e para isso precisamos das pessoas certas desde o início. A beta não é um teste: é um convite.
+              A Jornada do Louco está em fase de formação — e queremos as pessoas certas desde o início. Quem entra agora tem acesso completo, gratuito e vitalício, com voz ativa na construção da plataforma.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { icon: Users, title: "Grupo Seleto", desc: "Poucas vagas. Quem entra agora tem atenção individual e voz direta nas decisões." },
-              { icon: BookOpen, title: "Acesso Antecipado", desc: "Módulos que ainda não existem para o público. Você vê a plataforma nascer." },
-              { icon: Star, title: "Sem Custo", desc: "A beta é 100% gratuita. Você só investe tempo, curiosidade e o desejo de aprender." },
+              { icon: Users, title: "Acesso Vitalício", desc: "Quem entra na beta, fica para sempre — com o plano que tiver no lançamento." },
+              { icon: BookOpen, title: "Voz na Construção", desc: "Seu feedback molda a plataforma. Você influencia o que nasce." },
+              { icon: Star, title: "100% Gratuito", desc: "Sem custo, sem compromisso. Você só investe curiosidade e desejo de aprender." },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
@@ -414,7 +419,7 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Sua vaga está aberta
+            Iniciar minha jornada
           </h2>
           <p className="font-accent text-base italic leading-relaxed mb-8" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
             O Louco salta sem saber o destino — mas confiando na jornada. Você não precisa saber tudo. Só precisa dar o primeiro passo.
@@ -439,12 +444,12 @@ const LandingPage = () => {
               className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
             >
               <Sparkles className="w-4 h-4 mr-1.5" />
-              Quero Entrar
+              Dar o primeiro passo
             </Button>
           </form>
 
           <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Beta gratuita · Vagas limitadas · Sua opinião molda a plataforma
+            Gratuito · Vitalício · Limitado
           </p>
         </div>
       </section>
@@ -460,7 +465,7 @@ const LandingPage = () => {
             <span className="text-sm" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
           </div>
           <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Autoconhecimento através dos arcanos · Tradição · Profundidade · Beleza
+            Onde o tarô se revela · Tradição · Profundidade · Beleza
           </p>
           <button
             onClick={() => navigate("/apresentacao")}
