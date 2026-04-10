@@ -65,9 +65,7 @@ const AppRoutes = () => (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/espera" element={<WaitlistPage />} />
         <Route path="/convite" element={<BetaInvitePage />} />
-        <Route path="/apresentacao" element={<PresentationPage />} />
         <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
         <Route path="/app" element={<P><ModulesPage /></P>} />
         <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
