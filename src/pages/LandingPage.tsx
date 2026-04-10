@@ -146,13 +146,13 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Uma formação em tarô que não existia
+            O tarô tem profundidade. Seu estudo também deveria ter.
           </h2>
           <p className="font-body text-sm md:text-base leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-            O estudo do tarô está fragmentado. Conteúdo raso nas redes, livros sem método de fixação, cursos caros que não respeitam o seu ritmo. A Jornada do Louco resolve isso.
+            Quem quer estudar tarô com seriedade encontra um cenário fragmentado: vídeos rasos nas redes, apostilas sem método de fixação, cursos caros que não respeitam o seu ritmo. A Jornada do Louco resolve isso.
           </p>
           <p className="font-accent text-base italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
-            Reunimos tradição Rider-Waite-Smith, pedagogia em camadas e uma experiência visual que faz jus à profundidade do que ensina — tudo em um só lugar.
+            Uma formação completa que une tradição Rider-Waite-Smith, pedagogia em camadas e uma experiência visual que faz jus à profundidade do que ensina — tudo em um só lugar.
           </p>
         </div>
       </section>
