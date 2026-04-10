@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Crown, Sparkles, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePremium } from "@/hooks/use-premium";
+import { useIsAdmin } from "@/hooks/use-admin";
 
 interface PremiumGateProps {
   featureName?: string;
@@ -27,11 +28,12 @@ const PremiumGate = ({
 }: PremiumGateProps) => {
   const navigate = useNavigate();
   const { isPremium, loading } = usePremium();
+  const { isAdmin } = useIsAdmin();
 
-  // If premium or loading, show children (unlocked content)
+  // Admins always bypass premium gate
   if (loading) return null;
-  if (isPremium && children) return <>{children}</>;
-  if (isPremium) return null;
+  if ((isPremium || isAdmin) && children) return <>{children}</>;
+  if (isPremium || isAdmin) return null;
 
   if (variant === "banner") {
     return (
