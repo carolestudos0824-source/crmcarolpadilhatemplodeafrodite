@@ -14,7 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      beta_feedback: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          page: string | null
+          rating: number | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          page?: string | null
+          rating?: number | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          page?: string | null
+          rating?: number | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          is_beta_tester: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_beta_tester?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_beta_tester?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          completed_exercises: string[]
+          completed_lessons: string[]
+          completed_modules: string[]
+          completed_quizzes: string[]
+          created_at: string
+          id: string
+          last_active: string
+          level: number
+          onboarding_completed: boolean
+          streak: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          completed_exercises?: string[]
+          completed_lessons?: string[]
+          completed_modules?: string[]
+          completed_quizzes?: string[]
+          created_at?: string
+          id?: string
+          last_active?: string
+          level?: number
+          onboarding_completed?: boolean
+          streak?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          completed_exercises?: string[]
+          completed_lessons?: string[]
+          completed_modules?: string[]
+          completed_quizzes?: string[]
+          created_at?: string
+          id?: string
+          last_active?: string
+          level?: number
+          onboarding_completed?: boolean
+          streak?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
