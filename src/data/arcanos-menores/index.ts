@@ -255,6 +255,9 @@ import { PAUS_CORTE } from "./paus-corte";
 import { ESPADAS_1_5 } from "./espadas-1-5";
 import { ESPADAS_6_10 } from "./espadas-6-10";
 import { ESPADAS_CORTE } from "./espadas-corte";
+import { OUROS_1_5 } from "./ouros-1-5";
+import { OUROS_6_10 } from "./ouros-6-10";
+import { OUROS_CORTE } from "./ouros-corte";
 
 /** Merge editorial content into scaffolded cards */
 function mergeContent(
@@ -276,7 +279,7 @@ function mergeContent(
 /** All 56 Minor Arcana cards, scaffolded and filled with available content */
 export const ARCANOS_MENORES: ArcanoMenorEditorial[] = mergeContent(
   NAIPE_ORDER.flatMap((naipe) => CARD_POSITIONS.map((pos) => createEmptyCard(pos, naipe))),
-  [COPAS_1_5, COPAS_6_10, COPAS_CORTE, PAUS_1_5, PAUS_6_10, PAUS_CORTE, ESPADAS_1_5, ESPADAS_6_10, ESPADAS_CORTE]
+  [COPAS_1_5, COPAS_6_10, COPAS_CORTE, PAUS_1_5, PAUS_6_10, PAUS_CORTE, ESPADAS_1_5, ESPADAS_6_10, ESPADAS_CORTE, OUROS_1_5, OUROS_6_10, OUROS_CORTE]
 );
 
 // ─── Lookup Helpers ───────────────────────────────────────────────
