@@ -101,6 +101,7 @@ const LessonPage = () => {
     setLastQuizScore(score);
     setLastQuizTotal(total);
     completeQuiz(`quiz-arcano-${arcano.id}`);
+    completeLesson(`arcano-${arcano.id}`);
     trackEvent(`quiz_completed_${arcano.id}`, { name: arcano.name, score, total });
     if (arcano.id === 0) earnBadge("fool-complete");
     if (score === total) earnBadge("quiz-master");
