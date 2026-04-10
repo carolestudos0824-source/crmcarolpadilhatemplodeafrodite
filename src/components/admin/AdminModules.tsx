@@ -125,7 +125,7 @@ const AdminModules = () => {
                 onClick={() => handleTogglePremium(mod.id)}
                 title={mod.premium ? "Tornar gratuito" : "Tornar premium"}
               >
-                <Lock className={`w-3.5 h-3.5 ${mod.premium ? "text-primary" : "text-muted-foreground"}`} />
+                <LockIcon className={`w-3.5 h-3.5 ${mod.premium ? "text-primary" : "text-muted-foreground"}`} />
               </Button>
               <Button 
                 variant="ghost" size="sm" className="h-8 w-8 p-0"
