@@ -14,10 +14,10 @@ interface PremiumGateProps {
 }
 
 const VALUE_HOOKS = [
-  "78 arcanos com análise profunda",
-  "Combinações, tiragens e prática guiada",
+  "78 arcanos com análise simbólica em camadas",
+  "Combinações, tiragens e prática com feedback",
   "Módulo exclusivo de Tarô e Amor",
-  "Certificados digitais de conclusão",
+  "Certificados digitais por módulo concluído",
 ];
 
 const PremiumGate = ({
@@ -48,7 +48,7 @@ const PremiumGate = ({
             Jornada Completa
           </p>
           <p className="text-[10px]" style={{ color: "hsl(230 15% 30% / 0.40)" }}>
-            Desbloqueie todos os módulos e conteúdos
+            Acesse todos os módulos e aprofundamentos
           </p>
         </div>
         <ArrowRight className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(36 45% 50% / 0.50)" }} />
@@ -116,7 +116,7 @@ const PremiumGate = ({
           {featureName ? `${featureName}` : "Conteúdo Premium"}
         </h3>
         <p className="font-accent text-sm italic mt-1" style={{ color: "hsl(230 15% 30% / 0.45)" }}>
-          {message || "Este conteúdo faz parte da Jornada Completa."}
+          {message || "Este conteúdo faz parte da Jornada Completa — sua formação sem limites."}
         </p>
       </div>
 

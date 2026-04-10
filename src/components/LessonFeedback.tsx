@@ -54,7 +54,7 @@ const LessonFeedback = ({ lessonId, lessonName }: LessonFeedbackProps) => {
         border: "1px solid hsl(140 35% 45% / 0.15)",
       }}>
         <p className="text-sm font-accent italic" style={{ color: "hsl(140 35% 40%)" }}>
-          Obrigada pelo feedback! 💜
+          Sua voz fortalece esta jornada. Obrigada. 💜
         </p>
       </div>
     );
@@ -67,7 +67,7 @@ const LessonFeedback = ({ lessonId, lessonName }: LessonFeedbackProps) => {
     }}>
       <div className="text-center">
         <p className="text-[10px] font-heading tracking-[0.25em] uppercase" style={{ color: "hsl(280 30% 35% / 0.60)" }}>
-          Como foi essa lição?
+          O que achou desta lição?
         </p>
       </div>
 
@@ -100,13 +100,13 @@ const LessonFeedback = ({ lessonId, lessonName }: LessonFeedbackProps) => {
               style={{ color: "hsl(230 15% 40% / 0.40)" }}
             >
               <MessageCircle className="w-3 h-3" />
-              Quer contar mais?
+              Quer compartilhar algo mais?
             </button>
           ) : (
             <Textarea
               value={comment}
               onChange={e => setComment(e.target.value)}
-              placeholder="O que achou? O que pode melhorar?"
+              placeholder="O que funcionou? O que pode ser melhor? Fique à vontade."
               rows={2}
               className="text-sm resize-none"
             />
