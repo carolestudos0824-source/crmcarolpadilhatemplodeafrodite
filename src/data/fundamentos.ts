@@ -12,6 +12,11 @@ export interface FundamentosLesson {
   deepDive?: string;
   /** Reflection prompt */
   reflection?: string;
+  /** Simple exercise */
+  exercise: {
+    instruction: string;
+    type: "reflection" | "practice" | "observation" | "writing";
+  };
   /** Quiz questions */
   quiz: FundamentosQuizQuestion[];
 }
