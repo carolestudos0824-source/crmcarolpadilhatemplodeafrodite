@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw, Crown, User } from "lucide-react";
+import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw, Crown, User, Hash } from "lucide-react";
 import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import OnboardingPage from "./OnboardingPage";
@@ -36,6 +36,14 @@ const ModulesPage = () => {
     if (mod.id === "arcanos-maiores") {
       const completed = progress.completedLessons.filter(l => l.startsWith("arcano-")).length;
       return Math.round((completed / 22) * 100);
+    }
+    if (mod.id === "fundamentos") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("fund-")).length;
+      return Math.round((completed / 10) * 100);
+    }
+    if (["copas", "paus", "espadas", "ouros"].includes(mod.id)) {
+      const completed = progress.completedLessons.filter(l => l.startsWith(`${mod.id}-`)).length;
+      return Math.round((completed / 14) * 100);
     }
     return 0;
   };
