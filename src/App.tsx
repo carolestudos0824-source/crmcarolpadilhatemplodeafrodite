@@ -1,97 +1,120 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
-import FeedbackPage from "./pages/FeedbackPage.tsx";
 import BetaBadge from "@/components/BetaBadge";
 import BetaFeedback from "@/components/BetaFeedback";
-import ModulesPage from "./pages/ModulesPage.tsx";
+import BottomNav from "@/components/BottomNav";
+
+// Eager: critical path
 import LandingPage from "./pages/LandingPage.tsx";
 import AuthPage from "./pages/AuthPage.tsx";
-import Index from "./pages/Index.tsx";
-import LessonPage from "./pages/LessonPage.tsx";
-import AdminPage from "./pages/AdminPage.tsx";
-import SymbolLibraryPage from "./pages/SymbolLibraryPage.tsx";
-import PremiumPage from "./pages/PremiumPage.tsx";
-import ReviewPage from "./pages/ReviewPage.tsx";
-import ProfilePage from "./pages/ProfilePage.tsx";
-import FoolsJourneyPage from "./pages/FoolsJourneyPage.tsx";
-import FundamentosPage from "./pages/FundamentosPage.tsx";
-import FundamentosLessonPage from "./pages/FundamentosLessonPage.tsx";
-import NaipePage from "./pages/NaipePage.tsx";
-import NaipeIntroPage from "./pages/NaipeIntroPage.tsx";
-import NumerologiaPage from "./pages/NumerologiaPage.tsx";
-import CartasCortePage from "./pages/CartasCortePage.tsx";
-import CombinacoesPage from "./pages/CombinacoesPage.tsx";
-import CombinacoesLessonPage from "./pages/CombinacoesLessonPage.tsx";
-import TiragensPage from "./pages/TiragensPage.tsx";
-import TiragensLessonPage from "./pages/TiragensLessonPage.tsx";
-import AmorPage from "./pages/AmorPage.tsx";
-import AmorLessonPage from "./pages/AmorLessonPage.tsx";
-import PraticaPage from "./pages/PraticaPage.tsx";
-import PraticaLessonPage from "./pages/PraticaLessonPage.tsx";
-import CertificatesPage from "./pages/CertificatesPage.tsx";
-import TrailsPage from "./pages/TrailsPage.tsx";
-import DailyChallengesPage from "./pages/DailyChallengesPage.tsx";
-import StudyRoutinePage from "./pages/StudyRoutinePage.tsx";
-import NotFound from "./pages/NotFound.tsx";
+import ModulesPage from "./pages/ModulesPage.tsx";
+
+// Lazy: everything else
+const Index = lazy(() => import("./pages/Index.tsx"));
+const LessonPage = lazy(() => import("./pages/LessonPage.tsx"));
+const AdminPage = lazy(() => import("./pages/AdminPage.tsx"));
+const SymbolLibraryPage = lazy(() => import("./pages/SymbolLibraryPage.tsx"));
+const PremiumPage = lazy(() => import("./pages/PremiumPage.tsx"));
+const ReviewPage = lazy(() => import("./pages/ReviewPage.tsx"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage.tsx"));
+const FoolsJourneyPage = lazy(() => import("./pages/FoolsJourneyPage.tsx"));
+const FundamentosPage = lazy(() => import("./pages/FundamentosPage.tsx"));
+const FundamentosLessonPage = lazy(() => import("./pages/FundamentosLessonPage.tsx"));
+const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
+const NaipeIntroPage = lazy(() => import("./pages/NaipeIntroPage.tsx"));
+const NumerologiaPage = lazy(() => import("./pages/NumerologiaPage.tsx"));
+const CartasCortePage = lazy(() => import("./pages/CartasCortePage.tsx"));
+const CombinacoesPage = lazy(() => import("./pages/CombinacoesPage.tsx"));
+const CombinacoesLessonPage = lazy(() => import("./pages/CombinacoesLessonPage.tsx"));
+const TiragensPage = lazy(() => import("./pages/TiragensPage.tsx"));
+const TiragensLessonPage = lazy(() => import("./pages/TiragensLessonPage.tsx"));
+const AmorPage = lazy(() => import("./pages/AmorPage.tsx"));
+const AmorLessonPage = lazy(() => import("./pages/AmorLessonPage.tsx"));
+const PraticaPage = lazy(() => import("./pages/PraticaPage.tsx"));
+const PraticaLessonPage = lazy(() => import("./pages/PraticaLessonPage.tsx"));
+const CertificatesPage = lazy(() => import("./pages/CertificatesPage.tsx"));
+const TrailsPage = lazy(() => import("./pages/TrailsPage.tsx"));
+const DailyChallengesPage = lazy(() => import("./pages/DailyChallengesPage.tsx"));
+const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
+const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
+
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="text-center space-y-3">
+      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
+      <p className="text-xs text-muted-foreground font-heading tracking-wider">Carregando...</p>
+    </div>
+  </div>
+);
 
 /** Redirects to /auth if not logged in */
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center space-y-3">
-        <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
-        <p className="text-xs text-muted-foreground font-heading tracking-wider">Carregando...</p>
-      </div>
-    </div>
-  );
+  if (loading) return <LoadingFallback />;
   if (!user) return <Navigate to="/auth" replace />;
   return <>{children}</>;
 };
+
+/** Redirects to /app if already logged in */
+const PublicOnlyRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <LoadingFallback />;
+  if (user) return <Navigate to="/app" replace />;
+  return <>{children}</>;
+};
+
+const P = ({ children }: { children: React.ReactNode }) => (
+  <ProtectedRoute>{children}</ProtectedRoute>
+);
 
 const AppRoutes = () => (
   <>
     <BetaBadge />
     <BetaFeedback />
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/app" element={<ProtectedRoute><ModulesPage /></ProtectedRoute>} />
-      <Route path="/trilhas" element={<ProtectedRoute><TrailsPage /></ProtectedRoute>} />
-      <Route path="/ritual-diario" element={<ProtectedRoute><DailyChallengesPage /></ProtectedRoute>} />
-      <Route path="/rotina" element={<ProtectedRoute><StudyRoutinePage /></ProtectedRoute>} />
-      <Route path="/module/fundamentos" element={<ProtectedRoute><FundamentosPage /></ProtectedRoute>} />
-      <Route path="/fundamentos/:order" element={<ProtectedRoute><FundamentosLessonPage /></ProtectedRoute>} />
-      <Route path="/module/arcanos-maiores" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-      <Route path="/lesson/:id" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
-      <Route path="/module/:naipe" element={<ProtectedRoute><NaipePage /></ProtectedRoute>} />
-      <Route path="/intro/:naipe" element={<ProtectedRoute><NaipeIntroPage /></ProtectedRoute>} />
-      <Route path="/numerologia" element={<ProtectedRoute><NumerologiaPage /></ProtectedRoute>} />
-      <Route path="/cartas-da-corte" element={<ProtectedRoute><CartasCortePage /></ProtectedRoute>} />
-      <Route path="/module/combinacoes" element={<ProtectedRoute><CombinacoesPage /></ProtectedRoute>} />
-      <Route path="/combinacoes/:order" element={<ProtectedRoute><CombinacoesLessonPage /></ProtectedRoute>} />
-      <Route path="/module/tiragens" element={<ProtectedRoute><TiragensPage /></ProtectedRoute>} />
-      <Route path="/tiragens/:order" element={<ProtectedRoute><TiragensLessonPage /></ProtectedRoute>} />
-      <Route path="/module/amor" element={<ProtectedRoute><AmorPage /></ProtectedRoute>} />
-      <Route path="/amor/:order" element={<ProtectedRoute><AmorLessonPage /></ProtectedRoute>} />
-      <Route path="/module/pratica" element={<ProtectedRoute><PraticaPage /></ProtectedRoute>} />
-      <Route path="/pratica/:order" element={<ProtectedRoute><PraticaLessonPage /></ProtectedRoute>} />
-      <Route path="/jornada-do-louco" element={<ProtectedRoute><FoolsJourneyPage /></ProtectedRoute>} />
-      <Route path="/biblioteca" element={<ProtectedRoute><SymbolLibraryPage /></ProtectedRoute>} />
-      <Route path="/revisao" element={<ProtectedRoute><ReviewPage /></ProtectedRoute>} />
-      <Route path="/premium" element={<ProtectedRoute><PremiumPage /></ProtectedRoute>} />
-      <Route path="/perfil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      <Route path="/certificados" element={<ProtectedRoute><CertificatesPage /></ProtectedRoute>} />
-      <Route path="/feedback" element={<ProtectedRoute><FeedbackPage /></ProtectedRoute>} />
-      <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <Suspense fallback={<LoadingFallback />}>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
+        <Route path="/app" element={<P><ModulesPage /></P>} />
+        <Route path="/trilhas" element={<P><TrailsPage /></P>} />
+        <Route path="/ritual-diario" element={<P><DailyChallengesPage /></P>} />
+        <Route path="/rotina" element={<P><StudyRoutinePage /></P>} />
+        <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
+        <Route path="/fundamentos/:order" element={<P><FundamentosLessonPage /></P>} />
+        <Route path="/module/arcanos-maiores" element={<P><Index /></P>} />
+        <Route path="/lesson/:id" element={<P><LessonPage /></P>} />
+        <Route path="/module/:naipe" element={<P><NaipePage /></P>} />
+        <Route path="/intro/:naipe" element={<P><NaipeIntroPage /></P>} />
+        <Route path="/numerologia" element={<P><NumerologiaPage /></P>} />
+        <Route path="/cartas-da-corte" element={<P><CartasCortePage /></P>} />
+        <Route path="/module/combinacoes" element={<P><CombinacoesPage /></P>} />
+        <Route path="/combinacoes/:order" element={<P><CombinacoesLessonPage /></P>} />
+        <Route path="/module/tiragens" element={<P><TiragensPage /></P>} />
+        <Route path="/tiragens/:order" element={<P><TiragensLessonPage /></P>} />
+        <Route path="/module/amor" element={<P><AmorPage /></P>} />
+        <Route path="/amor/:order" element={<P><AmorLessonPage /></P>} />
+        <Route path="/module/pratica" element={<P><PraticaPage /></P>} />
+        <Route path="/pratica/:order" element={<P><PraticaLessonPage /></P>} />
+        <Route path="/jornada-do-louco" element={<P><FoolsJourneyPage /></P>} />
+        <Route path="/biblioteca" element={<P><SymbolLibraryPage /></P>} />
+        <Route path="/revisao" element={<P><ReviewPage /></P>} />
+        <Route path="/premium" element={<P><PremiumPage /></P>} />
+        <Route path="/perfil" element={<P><ProfilePage /></P>} />
+        <Route path="/certificados" element={<P><CertificatesPage /></P>} />
+        <Route path="/feedback" element={<P><FeedbackPage /></P>} />
+        <Route path="/admin" element={<P><AdminPage /></P>} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+    <BottomNav />
   </>
 );
 
