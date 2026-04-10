@@ -27,6 +27,7 @@ import AmorPage from "./pages/AmorPage.tsx";
 import AmorLessonPage from "./pages/AmorLessonPage.tsx";
 import PraticaPage from "./pages/PraticaPage.tsx";
 import PraticaLessonPage from "./pages/PraticaLessonPage.tsx";
+import CertificatesPage from "./pages/CertificatesPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/revisao" element={<ReviewPage />} />
           <Route path="/premium" element={<PremiumPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
+          <Route path="/certificados" element={<CertificatesPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

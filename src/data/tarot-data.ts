@@ -639,4 +639,6 @@ export const DEFAULT_PROGRESS: UserProgress = {
   ],
   currentModule: "fundamentos",
   onboardingCompleted: false,
+  studentName: "",
+  certificatesEarned: {},
 };
