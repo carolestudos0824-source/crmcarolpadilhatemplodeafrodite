@@ -75,6 +75,8 @@ export interface UserProgress {
   badges: Badge[];
   currentModule: string;
   onboardingCompleted: boolean;
+  studentName: string;
+  certificatesEarned: Record<string, string>;
 }
 
 export interface Badge {
