@@ -9,70 +9,70 @@ import { Button } from "@/components/ui/button";
 /* ═══════════════ DATA ═══════════════ */
 
 const FREE_FEATURES = [
-  "Onboarding completo",
-  "Módulo de Fundamentos",
-  "O Louco — experiência completa",
+  "Onboarding iniciático completo",
+  "Fundamentos do Tarô",
+  "O Louco — experiência completa em camadas",
   "Primeiras cartas dos Arcanos Maiores",
-  "Desafios diários básicos",
-  "Quizzes introdutórios",
-  "XP, sequência e badges iniciais",
+  "Desafios diários essenciais",
+  "Quizzes de integração",
+  "XP, streak e primeiras conquistas",
 ];
 
 const PREMIUM_FEATURES = [
-  "Todos os 22 Arcanos Maiores",
-  "56 Arcanos Menores (4 naipes)",
-  "Módulo Combinações",
-  "Módulo Tiragens",
-  "Módulo Tarô e Amor",
-  "Módulo Prática Guiada",
+  "Todos os 22 Arcanos Maiores em profundidade",
+  "56 Arcanos Menores — Copas, Ouros, Espadas e Paus",
+  "Combinações entre cartas",
+  "Tiragens clássicas e contemporâneas",
+  "Tarô e Amor — leituras afetivas",
+  "Prática Guiada com feedback",
   "Biblioteca Simbólica completa",
-  "Trilhas Iniciante → Avançado",
+  "Trilhas de Iniciante a Avançada",
   "Rotina de estudo personalizada",
-  "Revisão espaçada avançada",
-  "Certificados de conclusão",
-  "Todos os desafios diários",
+  "Revisão espaçada inteligente",
+  "Certificados de conclusão por módulo",
+  "Todos os desafios e rituais diários",
 ];
 
 const PREMIUM_HIGHLIGHTS = [
   {
     icon: Layers,
-    title: "22 + 56 Arcanos",
-    desc: "Cada carta com análise simbólica em camadas: essência, luz, sombra, amor, trabalho e espiritualidade.",
+    title: "78 Arcanos em Camadas",
+    desc: "Cada carta com essência, luz, sombra, amor, trabalho e espiritualidade — tudo interconectado.",
   },
   {
     icon: Heart,
     title: "Tarô e Amor",
-    desc: "Módulo exclusivo sobre leituras afetivas, dinâmicas de casal e autoconhecimento emocional.",
+    desc: "Leituras afetivas, dinâmicas de casal e autoconhecimento emocional — com sensibilidade e profundidade.",
   },
   {
     icon: Compass,
-    title: "Tiragens Reais",
-    desc: "Cruz Celta, 3 cartas, ferradura — aprenda a montar e interpretar tiragens completas.",
+    title: "Tiragens Clássicas",
+    desc: "Cruz Celta, três cartas, ferradura e mais — aprenda a montar, interpretar e confiar na sua leitura.",
   },
   {
     icon: Eye,
     title: "Prática Guiada",
-    desc: "Exercícios de interpretação passo a passo com feedback e meditações com arcanos.",
+    desc: "Exercícios de interpretação passo a passo, meditações com arcanos e diário reflexivo.",
   },
   {
     icon: Award,
     title: "Certificados",
-    desc: "Certificados digitais ao completar cada módulo — reconhecimento da sua dedicação.",
+    desc: "Reconhecimento da sua dedicação a cada módulo concluído — algo que é só seu.",
   },
   {
     icon: Library,
     title: "Biblioteca Completa",
-    desc: "78 arcanos detalhados com busca por símbolo, referências cruzadas e correspondências.",
+    desc: "78 arcanos detalhados com busca por símbolo, referências cruzadas e correspondências esotéricas.",
   },
 ];
 
 const TESTIMONIALS = [
   {
-    text: "Nunca pensei que entenderia Tarô de verdade. Agora leio cartas para mim e para amigas com confiança.",
+    text: "Nunca imaginei que estudar tarô pudesse ser tão bonito. Cada lição é um encontro comigo mesma.",
     name: "Camila R.",
   },
   {
-    text: "As camadas de significado são incríveis. Cada vez que revisito uma carta, descubro algo novo.",
+    text: "As camadas de significado são viciantes. Toda vez que volto a uma carta, ela me diz algo diferente.",
     name: "Letícia M.",
   },
 ];
@@ -120,13 +120,13 @@ const PremiumPage = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              Desbloqueie todo o poder{"\n"}do conhecimento
+              A jornada completa{"\n"}espera por você
             </h1>
 
             <p className="font-accent text-base italic leading-relaxed max-w-sm mx-auto" style={{
               color: "hsl(230 20% 15% / 0.45)",
             }}>
-              78 arcanos. 10 módulos. Uma transformação completa — no ritmo que for seu.
+              78 arcanos. 10 módulos. Uma formação que transforma estudo em autoconhecimento — no seu tempo.
             </p>
           </div>
         </div>
@@ -208,10 +208,10 @@ const PremiumPage = () => {
         <section>
           <div className="text-center mb-6">
             <p className="text-[9px] font-heading tracking-[0.35em] uppercase" style={{ color: "hsl(36 45% 50%)" }}>
-              O que você desbloqueia
+              O que se abre para você
             </p>
             <h2 className="font-heading text-lg tracking-wide mt-1" style={{ color: "hsl(340 42% 20%)" }}>
-              Uma jornada de transformação
+              Uma formação que transforma
             </h2>
           </div>
 
@@ -293,7 +293,7 @@ const PremiumPage = () => {
           </div>
 
           <p className="font-accent text-base italic max-w-xs mx-auto leading-relaxed" style={{ color: "hsl(230 20% 15% / 0.38)" }}>
-            "O Tarô não é sobre prever o futuro — é sobre compreender o presente com profundidade."
+            "As cartas não preveem — elas revelam. E revelar-se é o primeiro ato de poder."
           </p>
 
           <Button
