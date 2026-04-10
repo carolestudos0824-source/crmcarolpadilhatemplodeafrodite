@@ -34,6 +34,13 @@ const LessonPage = () => {
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
 
+  // Track lesson view on mount (before early return)
+  useEffect(() => {
+    if (arcano) {
+      trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
+    }
+  }, [arcanoId]);
+
   if (!arcano) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
@@ -52,16 +59,6 @@ const LessonPage = () => {
       </div>
     );
   }
-
-  const phaseSteps: LessonPhase[] = ["intro", "lesson", "deepdive", "exercise", "quiz"];
-  const currentIdx = phaseSteps.indexOf(phase);
-
-  // Track lesson view on mount
-  useEffect(() => {
-    if (arcano) {
-      trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
-    }
-  }, [arcanoId]);
 
   const handleStartLesson = () => {
     addXP(10);
