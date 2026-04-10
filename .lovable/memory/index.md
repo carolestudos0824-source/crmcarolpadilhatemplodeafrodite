@@ -9,6 +9,7 @@ Arcanos use ArcanoMaiorEditorial type (17 fields). Files in src/data/arcanos/. 3
 CSS-only animations (no Framer Motion). Prefer transform/opacity. Respect prefers-reduced-motion.
 Motion = revelação. Elementos entram de baixo (reveal). Easing: cubic-bezier(0.16,1,0.3,1). Loops só em elementos focais.
 FREE_ARCANO_IDS = [0]. Only O Louco is free. All other arcanos, modules and features require premium subscription.
+Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off) | Presenteado. Sem vitalício, sem trial, sem ads.
 
 ## Memories
 - [Design tokens](mem://design/tokens) — Full color system: gold, crimson, mystic surfaces, HSL variables
@@ -23,4 +24,5 @@ FREE_ARCANO_IDS = [0]. Only O Louco is free. All other arcanos, modules and feat
 - [Commercial architecture](mem://features/commercial-architecture) — Access tiers, gift codes, subscription states, admin metrics, pricing
 - [Mobile monetization](mem://features/mobile-monetization) — Final IAP strategy for App Store/Google Play: receipt validation, RevenueCat, webhooks
 - [Access control logic](mem://features/access-control-logic) — Definitive 5 states, permissions matrix, unlock/lock, gift validation, restore purchase
+- [Official plans](mem://features/official-plans) — Final 4-tier structure: Gratuito, Mensal R$29,90, Anual R$197, Presenteado
 - [Inclusive language](mem://constraints/inclusive-language) — Plataforma para qualquer pessoa, não apenas mulheres
