@@ -191,6 +191,9 @@ const NaipePage = () => {
               <div className="h-full rounded-full transition-all duration-700" style={{ width: `${progressPct}%`, background: `linear-gradient(90deg, ${naipeInfo.color.primary}, hsl(36 45% 55%))` }} />
             </div>
           </div>
+          <div className="mt-3">
+            <XPBar xp={progress.xp} level={progress.level} />
+          </div>
         </div>
       </header>
 
