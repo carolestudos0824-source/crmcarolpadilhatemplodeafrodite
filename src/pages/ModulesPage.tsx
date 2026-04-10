@@ -233,6 +233,36 @@ const ModulesPage = () => {
           );
         })}
 
+        {/* Trails link */}
+        <section className="mb-4">
+          <button
+            onClick={() => navigate("/trilhas")}
+            className="w-full group transition-all duration-500 hover:scale-[1.01]"
+          >
+            <div className="relative overflow-hidden rounded-xl p-5 flex items-center gap-4" style={{
+              background: "linear-gradient(145deg, hsl(280 35% 45% / 0.06), hsl(38 28% 93% / 0.90))",
+              backdropFilter: "blur(14px)",
+              border: "1px solid hsl(280 35% 45% / 0.22)",
+            }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{
+                border: "1.5px solid hsl(280 35% 45% / 0.35)",
+                background: "hsl(280 35% 45% / 0.06)"
+              }}>
+                <Route className="w-4 h-4" style={{ color: "hsl(280 35% 45%)" }} />
+              </div>
+              <div className="flex-1 text-left">
+                <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
+                  Trilhas de Formação
+                </h3>
+                <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                  Iniciante · Intermediário · Avançado
+                </p>
+              </div>
+              <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(280 35% 45% / 0.40)" }} />
+            </div>
+          </button>
+        </section>
+
         {/* Fool's Journey overview */}
         <section className="mb-4">
           <button
