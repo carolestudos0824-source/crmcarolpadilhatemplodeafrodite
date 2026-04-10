@@ -43,6 +43,7 @@ const DailyChallengesPage = lazy(() => import("./pages/DailyChallengesPage.tsx")
 const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
 const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
 const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
+const WaitlistPage = lazy(() => import("./pages/WaitlistPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();

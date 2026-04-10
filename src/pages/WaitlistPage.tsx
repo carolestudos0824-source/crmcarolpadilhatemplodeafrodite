@@ -119,7 +119,6 @@ const WaitlistPage = () => {
                     background: "hsl(38 30% 95%)",
                     border: "1.5px solid hsl(36 25% 82% / 0.70)",
                     color: "hsl(230 25% 10%)",
-                    focusRingColor: "hsl(36 45% 58%)",
                   }}
                 />
               </div>
