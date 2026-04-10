@@ -78,6 +78,9 @@ export type Database = {
           display_name: string | null
           id: string
           is_beta_tester: boolean
+          is_premium: boolean
+          premium_source: string | null
+          premium_until: string | null
           updated_at: string
           user_id: string
         }
@@ -87,6 +90,9 @@ export type Database = {
           display_name?: string | null
           id?: string
           is_beta_tester?: boolean
+          is_premium?: boolean
+          premium_source?: string | null
+          premium_until?: string | null
           updated_at?: string
           user_id: string
         }
@@ -96,6 +102,9 @@ export type Database = {
           display_name?: string | null
           id?: string
           is_beta_tester?: boolean
+          is_premium?: boolean
+          premium_source?: string | null
+          premium_until?: string | null
           updated_at?: string
           user_id?: string
         }
