@@ -5,7 +5,7 @@ import { FUNDAMENTOS_LESSONS, getFundamentosLessonByOrder } from "@/data/fundame
 import { useProgress } from "@/hooks/use-progress";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
-type Phase = "lesson" | "deepdive" | "quiz" | "complete";
+type Phase = "lesson" | "exercise" | "deepdive" | "quiz" | "complete";
 
 const FundamentosLessonPage = () => {
   const { order } = useParams();
@@ -34,7 +34,7 @@ const FundamentosLessonPage = () => {
     );
   }
 
-  const phaseSteps: Phase[] = ["lesson", ...(lesson.deepDive ? ["deepdive" as Phase] : []), "quiz"];
+  const phaseSteps: Phase[] = ["lesson", "exercise", ...(lesson.deepDive ? ["deepdive" as Phase] : []), "quiz"];
   const currentIdx = phaseSteps.indexOf(phase);
 
   const handleStartQuiz = () => {
