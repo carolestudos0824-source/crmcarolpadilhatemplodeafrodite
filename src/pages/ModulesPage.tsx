@@ -278,7 +278,7 @@ const ModulesPage = () => {
         </section>
 
         {/* Library link */}
-        <section className="mb-8">
+        <section className="mb-4">
           <button
             onClick={() => navigate("/biblioteca")}
             className="w-full group transition-all duration-500 hover:scale-[1.01]"
@@ -305,6 +305,44 @@ const ModulesPage = () => {
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
             </div>
           </button>
+        </section>
+
+        {/* Study tools */}
+        <section className="mb-8">
+          <h2 className="font-accent text-xs tracking-[0.2em] uppercase italic text-center mb-3" style={{ color: "hsl(230 10% 45%)" }}>
+            Ferramentas de Estudo
+          </h2>
+          <div className="grid grid-cols-2 gap-2.5">
+            {[
+              { icon: <Hash className="w-4 h-4" />, label: "Numerologia", desc: "O significado dos números no tarô", route: "/numerologia" },
+              { icon: <Crown className="w-4 h-4" />, label: "Cartas da Corte", desc: "Pajem, Cavaleiro, Rainha e Rei", route: "/cartas-da-corte" },
+            ].map((tool) => (
+              <button
+                key={tool.label}
+                onClick={() => navigate(tool.route)}
+                className="rounded-xl p-4 text-left transition-all duration-300 hover:scale-[1.02] group"
+                style={{
+                  background: "hsl(38 28% 93% / 0.85)",
+                  border: "1px solid hsl(36 45% 50% / 0.18)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <div className="w-8 h-8 rounded-full flex items-center justify-center mb-2" style={{
+                  background: "hsl(36 45% 58% / 0.08)",
+                  border: "1px solid hsl(36 45% 58% / 0.20)",
+                  color: "hsl(36 42% 40%)",
+                }}>
+                  {tool.icon}
+                </div>
+                <h3 className="font-heading text-xs tracking-wide mb-0.5" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
+                  {tool.label}
+                </h3>
+                <p className="text-[10px] font-accent italic" style={{ color: "hsl(230 20% 15% / 0.40)" }}>
+                  {tool.desc}
+                </p>
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* Premium CTA */}
