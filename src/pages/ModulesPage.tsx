@@ -483,7 +483,7 @@ const ModulesPage = () => {
         </section>
 
         {/* Bottom ornament */}
-        <div className="flex items-center justify-center pt-4 pb-8">
+        <div className="flex items-center justify-center pt-4 pb-24">
           <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-40" loading="lazy" width={800} height={512} />
         </div>
       </main>
