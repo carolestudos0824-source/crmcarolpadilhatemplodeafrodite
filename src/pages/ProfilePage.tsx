@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift } from "lucide-react";
+import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift, Shield } from "lucide-react";
+import { useIsAdmin } from "@/hooks/use-admin";
 import { useProgress } from "@/hooks/use-progress";
 import { usePremium } from "@/hooks/use-premium";
 import { useGiftCode } from "@/hooks/use-gift-code";
