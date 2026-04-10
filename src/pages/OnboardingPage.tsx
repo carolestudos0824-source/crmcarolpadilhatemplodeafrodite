@@ -1,66 +1,141 @@
 import { useState, useCallback } from "react";
-import { ChevronRight, Sparkles } from "lucide-react";
-import mysticBg from "@/assets/mystic-bg.jpg";
-import ornamentDivider from "@/assets/ornament-divider.png";
+import { ChevronRight, Sparkles, Layers, Star, Moon, Sun, Eye } from "lucide-react";
 
 interface OnboardingStep {
-  symbol: string;
+  symbol: React.ReactNode;
+  kicker: string;
   title: string;
-  subtitle: string;
-  body: string;
+  lines: string[];
   accent: "gold" | "wine" | "plum";
+  detail?: string;
 }
 
 const STEPS: OnboardingStep[] = [
   {
-    symbol: "✦",
-    title: "Bem-vinda à Jornada",
-    subtitle: "O Tarô como espelho da alma",
-    body: "Aqui, você não vai apenas aprender cartas.\nVai mergulhar em arquétipos, símbolos e camadas de significado que revelam quem você é — e quem está se tornando.",
+    symbol: <Moon className="w-6 h-6" />,
+    kicker: "Bem-vinda",
+    title: "Você não veio aprender cartas.",
+    lines: [
+      "Você veio aprender a ler a si mesma.",
+      "",
+      "Aqui, o Tarô é linguagem viva — um espelho de arquétipos, símbolos e forças que já habitam você.",
+      "",
+      "Cada carta revela uma parte da sua história.",
+    ],
     accent: "gold",
   },
   {
-    symbol: "◎",
-    title: "A Jornada do Louco",
-    subtitle: "22 arcanos, uma transformação",
-    body: "Sua trilha começa no Arcano Zero — O Louco — e percorre os 22 Arcanos Maiores.\nCada um é um mestre. Cada um carrega uma lição sobre a vida, o amor e o sagrado.",
+    symbol: <Star className="w-6 h-6" />,
+    kicker: "A Jornada do Louco",
+    title: "22 mestres. Uma travessia.",
+    lines: [
+      "Sua trilha começa no Arcano Zero — O Louco.",
+      "Ele é o viajante que salta sem saber onde vai cair.",
+      "",
+      "Cada Arcano Maior é um portal:",
+      "O Mago ensina o poder da intenção.",
+      "A Sacerdotisa revela o que está oculto.",
+      "A Imperatriz desperta a criação.",
+      "",
+      "Você vai caminhar com todos eles.",
+    ],
     accent: "wine",
   },
   {
-    symbol: "⟡",
-    title: "Estudo em Camadas",
-    subtitle: "Profundidade no seu ritmo",
-    body: "Cada arcano é apresentado em camadas:\nessência, símbolos, luz, sombra, lição, amor, trabalho e espiritualidade.\nVá fundo quando quiser — avance quando estiver pronta.",
+    symbol: <Layers className="w-6 h-6" />,
+    kicker: "Método em Camadas",
+    title: "Profundidade no seu ritmo.",
+    lines: [
+      "Cada arcano é estudado em camadas:",
+    ],
     accent: "plum",
+    detail: "layers",
   },
   {
-    symbol: "☀",
-    title: "Progresso & Conquistas",
-    subtitle: "Cada passo conta",
-    body: "Você ganha XP a cada lição, quiz e exercício.\nConquistas e badges marcam seu caminho.\nSua sequência de dias mostra sua constância.\nA jornada é sua — sem pressa, com presença.",
+    symbol: <Eye className="w-6 h-6" />,
+    kicker: "Arcanos Vivos",
+    title: "Cada carta fala com você.",
+    lines: [
+      "As cartas não estão em um livro morto.",
+      "Elas aparecem nos seus quizzes, nos desafios diários, nas revisões — e até falam diretamente com você.",
+      "",
+      "Você não memoriza. Você convive.",
+      "E quanto mais convive, mais entende.",
+    ],
     accent: "gold",
   },
   {
-    symbol: "❋",
-    title: "Rider-Waite-Smith",
-    subtitle: "Nossa base simbólica",
-    body: "Trabalhamos com o baralho Rider-Waite-Smith — a tradição visual mais influente do tarô moderno.\nCada símbolo, cor e gesto nas cartas foi escolhido com intenção. Aqui, você aprende a ler essa linguagem.",
+    symbol: <Sun className="w-6 h-6" />,
+    kicker: "Além dos Maiores",
+    title: "56 cartas. 10 módulos. Uma vida inteira.",
+    lines: [
+      "Depois dos Arcanos Maiores, você entra nos Menores — Copas, Ouros, Espadas e Paus.",
+      "",
+      "Combinações. Tiragens. Tarô e Amor. Prática guiada.",
+      "",
+      "A plataforma cresce com você.",
+    ],
     accent: "wine",
+    detail: "modules",
   },
   {
-    symbol: "☽",
-    title: "Você está pronta?",
-    subtitle: "O primeiro passo é confiar",
-    body: "Não é preciso saber tudo.\nNão é preciso acreditar em tudo.\nSó é preciso estar aberta.\n\nO Louco espera por você à beira do precipício.\nEle sorri — porque sabe que a jornada vale o salto.",
+    symbol: <Sparkles className="w-6 h-6" />,
+    kicker: "Pronta?",
+    title: "O Louco espera por você.",
+    lines: [
+      "Não é preciso saber tudo.",
+      "Não é preciso acreditar em nada.",
+      "",
+      "Só é preciso dar o primeiro passo.",
+      "",
+      "O precipício não é o fim.",
+      "É o começo.",
+    ],
     accent: "plum",
   },
 ];
 
-const ACCENT_COLORS = {
-  gold: { main: "hsl(36 42% 42%)", soft: "hsl(36 42% 44% / 0.12)", border: "hsl(36 42% 44% / 0.25)" },
-  wine: { main: "hsl(340 42% 28%)", soft: "hsl(340 42% 28% / 0.08)", border: "hsl(340 42% 28% / 0.20)" },
-  plum: { main: "hsl(280 30% 30%)", soft: "hsl(280 30% 30% / 0.08)", border: "hsl(280 30% 30% / 0.18)" },
+const ACCENT = {
+  gold: {
+    main: "hsl(36 45% 50%)",
+    soft: "hsl(36 45% 50% / 0.10)",
+    border: "hsl(36 45% 50% / 0.22)",
+    glow: "hsl(36 45% 50% / 0.06)",
+    gradient: "linear-gradient(135deg, hsl(36 45% 42%), hsl(36 50% 60%))",
+  },
+  wine: {
+    main: "hsl(340 42% 30%)",
+    soft: "hsl(340 42% 30% / 0.08)",
+    border: "hsl(340 42% 30% / 0.18)",
+    glow: "hsl(340 42% 30% / 0.04)",
+    gradient: "linear-gradient(135deg, hsl(340 42% 25%), hsl(340 38% 40%))",
+  },
+  plum: {
+    main: "hsl(280 30% 32%)",
+    soft: "hsl(280 30% 32% / 0.08)",
+    border: "hsl(280 30% 32% / 0.16)",
+    glow: "hsl(280 30% 32% / 0.04)",
+    gradient: "linear-gradient(135deg, hsl(280 30% 26%), hsl(280 28% 42%))",
+  },
 };
+
+const LAYER_ITEMS = [
+  { label: "Essência", desc: "O coração da carta", icon: "◉" },
+  { label: "Luz & Sombra", desc: "Forças e desafios", icon: "☯" },
+  { label: "Simbolismo", desc: "Cada detalhe importa", icon: "⟡" },
+  { label: "Amor & Trabalho", desc: "Aplicações reais", icon: "♡" },
+  { label: "Quiz & Prática", desc: "Fixe o que aprendeu", icon: "✦" },
+];
+
+const MODULE_ITEMS = [
+  { name: "Fundamentos", desc: "A base do Tarô" },
+  { name: "Arcanos Maiores", desc: "Os 22 trunfos" },
+  { name: "Arcanos Menores", desc: "56 cartas em 4 naipes" },
+  { name: "Combinações", desc: "Leitura cruzada" },
+  { name: "Tiragens", desc: "Métodos de leitura" },
+  { name: "Tarô e Amor", desc: "Leituras afetivas" },
+  { name: "Prática Guiada", desc: "Exercícios reais" },
+];
 
 interface Props {
   onComplete: () => void;
@@ -68,125 +143,217 @@ interface Props {
 
 const OnboardingPage = ({ onComplete }: Props) => {
   const [step, setStep] = useState(0);
-  const [exiting, setExiting] = useState(false);
+  const [direction, setDirection] = useState<"in" | "out">("in");
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
-  const colors = ACCENT_COLORS[current.accent];
+  const colors = ACCENT[current.accent];
 
   const goNext = useCallback(() => {
     if (isLast) {
-      setExiting(true);
+      setDirection("out");
       setTimeout(onComplete, 500);
       return;
     }
-    setExiting(true);
+    setDirection("out");
     setTimeout(() => {
       setStep(s => s + 1);
-      setExiting(false);
-    }, 300);
+      setDirection("in");
+    }, 320);
   }, [isLast, onComplete]);
+
+  const goBack = useCallback(() => {
+    if (step === 0) return;
+    setDirection("out");
+    setTimeout(() => {
+      setStep(s => s - 1);
+      setDirection("in");
+    }, 320);
+  }, [step]);
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden flex flex-col"
-      style={{ transition: "opacity 0.5s ease", opacity: exiting && isLast ? 0 : 1 }}
+      className="min-h-screen relative overflow-hidden flex flex-col select-none"
+      style={{
+        background: "linear-gradient(170deg, hsl(36 33% 97%) 0%, hsl(38 28% 93%) 40%, hsl(36 30% 95%) 100%)",
+        transition: "opacity 0.5s ease",
+        opacity: direction === "out" && isLast ? 0 : 1,
+      }}
     >
-      {/* Background */}
-      <div className="fixed inset-0 z-0">
-        <img src={mysticBg} alt="" className="w-full h-full object-cover" width={1920} height={1080} />
-        <div className="absolute inset-0" style={{
-          background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.12), hsl(36 33% 97% / 0.06), hsl(36 33% 97% / 0.25))"
-        }} />
+      {/* Subtle texture overlay */}
+      <div className="fixed inset-0 z-0 pointer-events-none" style={{
+        background: `radial-gradient(ellipse at 50% 0%, ${colors.glow} 0%, transparent 70%)`,
+        transition: "background 0.5s ease",
+      }} />
+
+      {/* Top bar: progress + skip */}
+      <div className="relative z-10 flex items-center justify-between px-6 pt-6 pb-2">
+        <div className="flex items-center gap-1.5">
+          {STEPS.map((_, i) => (
+            <div
+              key={i}
+              className="rounded-full transition-all duration-500"
+              style={{
+                width: i === step ? 24 : 6,
+                height: 4,
+                background:
+                  i < step
+                    ? "hsl(140 35% 50% / 0.40)"
+                    : i === step
+                    ? colors.main
+                    : "hsl(36 20% 70% / 0.30)",
+              }}
+            />
+          ))}
+        </div>
+        {!isLast && (
+          <button
+            onClick={onComplete}
+            className="text-[10px] font-accent italic transition-colors"
+            style={{ color: "hsl(230 15% 40% / 0.35)" }}
+          >
+            Pular
+          </button>
+        )}
       </div>
 
-      {/* Progress dots */}
-      <div className="relative z-10 flex justify-center gap-2 pt-8 pb-2 px-6">
-        {STEPS.map((_, i) => (
-          <div key={i} className="h-[3px] rounded-full transition-all duration-500" style={{
-            width: i === step ? 28 : 10,
-            background: i < step
-              ? "hsl(140 40% 45% / 0.45)"
-              : i === step
-              ? `linear-gradient(90deg, ${colors.main}, hsl(36 42% 55%))`
-              : "hsl(36 45% 50% / 0.18)",
-          }} />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 relative z-10 flex items-center justify-center px-6">
+      {/* Main content */}
+      <div className="flex-1 relative z-10 flex items-center justify-center px-6 py-4">
         <div
-          className="max-w-md w-full text-center"
+          className="max-w-sm w-full"
           style={{
-            animation: exiting ? "none" : "fade-up 0.5s ease-out",
-            opacity: exiting ? 0 : 1,
-            transform: exiting ? "translateY(8px)" : "none",
+            animation: direction === "in" ? "fade-in 0.45s ease-out" : "none",
+            opacity: direction === "out" ? 0 : 1,
+            transform: direction === "out" ? "translateY(6px)" : "none",
             transition: "opacity 0.3s ease, transform 0.3s ease",
           }}
         >
-          {/* Symbol */}
-          <div className="mb-6 flex justify-center">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{
-              background: colors.soft,
-              border: `1.5px solid ${colors.border}`,
-              boxShadow: `0 4px 20px ${colors.soft}`,
-            }}>
-              <span className="text-2xl" style={{ color: colors.main }}>{current.symbol}</span>
+          {/* Icon */}
+          <div className="flex justify-center mb-5">
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center"
+              style={{
+                background: colors.soft,
+                border: `1px solid ${colors.border}`,
+                color: colors.main,
+                boxShadow: `0 8px 32px ${colors.glow}`,
+              }}
+            >
+              {current.symbol}
             </div>
           </div>
 
-          {/* Subtitle */}
-          <span className="text-[9px] font-heading tracking-[0.4em] uppercase block mb-2" style={{ color: colors.main }}>
-            {current.subtitle}
-          </span>
+          {/* Kicker */}
+          <p
+            className="text-center text-[9px] font-heading tracking-[0.35em] uppercase mb-2"
+            style={{ color: colors.main }}
+          >
+            {current.kicker}
+          </p>
 
           {/* Title */}
-          <h1 className="font-heading text-2xl md:text-3xl tracking-wide mb-6" style={{
-            background: `linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%), ${colors.main})`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}>
+          <h1
+            className="text-center font-heading text-xl md:text-2xl tracking-wide leading-tight mb-5"
+            style={{ color: "hsl(230 25% 12%)" }}
+          >
             {current.title}
           </h1>
 
-          {/* Ornament */}
-          <div className="flex justify-center mb-6">
-            <img src={ornamentDivider} alt="" className="w-20 h-auto opacity-30" loading="lazy" width={800} height={512} />
+          {/* Thin divider */}
+          <div className="flex justify-center mb-5">
+            <div className="w-8 h-px" style={{ background: colors.border }} />
           </div>
 
-          {/* Body */}
-          <div className="space-y-2 mb-10">
-            {current.body.split("\n").map((line, i) => (
-              <p key={i} className="font-body text-sm leading-relaxed" style={{
-                color: line.trim() === "" ? "transparent" : "hsl(230 20% 15% / 0.60)",
-              }}>
+          {/* Body text */}
+          <div className="space-y-1 mb-6">
+            {current.lines.map((line, i) => (
+              <p
+                key={i}
+                className="text-center text-[13px] font-body leading-relaxed"
+                style={{ color: line === "" ? "transparent" : "hsl(230 15% 25% / 0.55)" }}
+              >
                 {line || "\u00A0"}
               </p>
             ))}
           </div>
+
+          {/* Detail: Layers */}
+          {current.detail === "layers" && (
+            <div className="space-y-2 mb-4">
+              {LAYER_ITEMS.map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all"
+                  style={{
+                    background: "hsl(38 28% 94% / 0.7)",
+                    border: "1px solid hsl(36 25% 82% / 0.5)",
+                    animationDelay: `${i * 80}ms`,
+                    animation: direction === "in" ? `fade-in 0.4s ease-out ${i * 80}ms both` : "none",
+                  }}
+                >
+                  <span className="text-base w-6 text-center" style={{ color: colors.main }}>{item.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] font-heading tracking-wide" style={{ color: "hsl(230 25% 15%)" }}>{item.label}</p>
+                    <p className="text-[10px]" style={{ color: "hsl(230 15% 40% / 0.50)" }}>{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+              <p className="text-center text-[10px] italic font-accent mt-3" style={{ color: "hsl(230 15% 40% / 0.40)" }}>
+                Vá fundo quando quiser. Avance quando estiver pronta.
+              </p>
+            </div>
+          )}
+
+          {/* Detail: Modules */}
+          {current.detail === "modules" && (
+            <div className="mb-4">
+              <div className="flex flex-wrap justify-center gap-1.5">
+                {MODULE_ITEMS.map((mod, i) => (
+                  <span
+                    key={i}
+                    className="text-[10px] px-2.5 py-1 rounded-full font-heading tracking-wide"
+                    style={{
+                      background: i < 3 ? "hsl(38 28% 93% / 0.8)" : colors.soft,
+                      border: `1px solid ${i < 3 ? "hsl(36 25% 82% / 0.4)" : colors.border}`,
+                      color: i < 3 ? "hsl(230 15% 30%)" : colors.main,
+                      animation: direction === "in" ? `fade-in 0.3s ease-out ${i * 60}ms both` : "none",
+                    }}
+                  >
+                    {mod.name}
+                  </span>
+                ))}
+              </div>
+              <div
+                className="mt-4 px-4 py-2.5 rounded-xl text-center"
+                style={{
+                  background: colors.soft,
+                  border: `1px solid ${colors.border}`,
+                }}
+              >
+                <p className="text-[10px] font-heading tracking-wider uppercase" style={{ color: colors.main }}>
+                  ✦ Área Premium
+                </p>
+                <p className="text-[10px] mt-0.5" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
+                  Combinações, Tiragens, Amor e Prática com acesso exclusivo.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Bottom action */}
-      <div className="relative z-10 px-6 pb-10">
+      {/* Bottom */}
+      <div className="relative z-10 px-6 pb-8 space-y-3">
+        {/* Main CTA */}
         <button
           onClick={goNext}
-          className="w-full max-w-md mx-auto flex items-center justify-center gap-2 py-4 rounded-xl font-heading text-[11px] tracking-[0.2em] uppercase transition-all duration-300 active:scale-[0.98]"
+          className="w-full max-w-sm mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl font-heading text-[11px] tracking-[0.18em] uppercase transition-all duration-300 active:scale-[0.98]"
           style={{
-            background: isLast
-              ? `linear-gradient(135deg, ${colors.main}, hsl(36 42% 44%))`
-              : "hsl(38 28% 93% / 0.85)",
-            border: isLast
-              ? "none"
-              : `1px solid ${colors.border}`,
-            color: isLast
-              ? "hsl(36 33% 97%)"
-              : colors.main,
-            boxShadow: isLast
-              ? `0 6px 24px ${colors.soft}`
-              : "none",
-            backdropFilter: "blur(12px)",
+            background: isLast ? colors.gradient : "hsl(38 28% 94% / 0.90)",
+            border: isLast ? "none" : `1px solid ${colors.border}`,
+            color: isLast ? "hsl(36 33% 97%)" : colors.main,
+            boxShadow: isLast ? `0 8px 32px ${colors.soft}` : "none",
+            backdropFilter: "blur(8px)",
           }}
         >
           {isLast ? (
@@ -197,21 +364,26 @@ const OnboardingPage = ({ onComplete }: Props) => {
           ) : (
             <>
               Continuar
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </>
           )}
         </button>
 
-        {/* Skip */}
-        {!isLast && (
+        {/* Back */}
+        {step > 0 && !isLast && (
           <button
-            onClick={onComplete}
-            className="block mx-auto mt-4 text-[10px] font-accent italic transition-all"
-            style={{ color: "hsl(230 20% 15% / 0.30)" }}
+            onClick={goBack}
+            className="block mx-auto text-[10px] font-accent italic transition-colors"
+            style={{ color: "hsl(230 15% 40% / 0.30)" }}
           >
-            Pular introdução
+            Voltar
           </button>
         )}
+
+        {/* Step counter */}
+        <p className="text-center text-[9px]" style={{ color: "hsl(230 15% 40% / 0.25)" }}>
+          {step + 1} de {STEPS.length}
+        </p>
       </div>
     </div>
   );
