@@ -5,19 +5,19 @@ import { ARCANOS_MAIORES, MODULES, getArcanoById } from "@/data/tarot-data";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const LEVEL_TITLES: Record<number, string> = {
-  1: "Neófita",
+  1: "Neófito",
   2: "Aprendiz",
   3: "Estudante",
-  4: "Buscadora",
-  5: "Iniciada",
-  6: "Adepta",
-  7: "Sacerdotisa",
-  8: "Mestra",
+  4: "Buscador",
+  5: "Iniciado",
+  6: "Adepto",
+  7: "Guardião",
+  8: "Mestre",
   9: "Oráculo",
-  10: "Iluminada",
+  10: "Iluminado",
 };
 
-const getLevelTitle = (level: number) => LEVEL_TITLES[Math.min(level, 10)] || "Iluminada";
+const getLevelTitle = (level: number) => LEVEL_TITLES[Math.min(level, 10)] || "Iluminado";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
