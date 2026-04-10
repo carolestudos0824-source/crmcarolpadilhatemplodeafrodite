@@ -3,7 +3,6 @@ import { BookOpen, Sun, User, MessageCircle, Crown } from "lucide-react";
 
 const NAV_ITEMS = [
   { path: "/app", label: "Módulos", icon: BookOpen },
-  { path: "/ritual-diario", label: "Diário", icon: Sun },
   { path: "/feedback", label: "Feedback", icon: MessageCircle },
   { path: "/premium", label: "Premium", icon: Crown },
   { path: "/perfil", label: "Perfil", icon: User },
