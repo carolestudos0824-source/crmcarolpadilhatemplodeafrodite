@@ -7,6 +7,8 @@ import {
   hasContent,
 } from "@/data/arcanos-menores";
 import { useProgress } from "@/hooks/use-progress";
+import { XPBar } from "@/components/XPBar";
+import { StreakCounter } from "@/components/StreakCounter";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const NAIPE_ROUTE_MAP: Record<string, Naipe> = {
