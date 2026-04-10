@@ -19,6 +19,8 @@ import NaipePage from "./pages/NaipePage.tsx";
 import NaipeIntroPage from "./pages/NaipeIntroPage.tsx";
 import NumerologiaPage from "./pages/NumerologiaPage.tsx";
 import CartasCortePage from "./pages/CartasCortePage.tsx";
+import CombinacoesPage from "./pages/CombinacoesPage.tsx";
+import CombinacoesLessonPage from "./pages/CombinacoesLessonPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -40,6 +42,8 @@ const App = () => (
           <Route path="/intro/:naipe" element={<NaipeIntroPage />} />
           <Route path="/numerologia" element={<NumerologiaPage />} />
           <Route path="/cartas-da-corte" element={<CartasCortePage />} />
+          <Route path="/module/combinacoes" element={<CombinacoesPage />} />
+          <Route path="/combinacoes/:order" element={<CombinacoesLessonPage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
