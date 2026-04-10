@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft, Crown, Sparkles, Check, ChevronRight,
@@ -77,6 +78,12 @@ const Divider = () => (
 
 const PremiumPage = () => {
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    import("@/hooks/use-track-event").then(({ useTrackEvent }) => {
+      // Can't use hooks here, so direct call
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
