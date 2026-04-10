@@ -55,6 +55,7 @@ Foi no século XVIII que o tarô começou a ser associado ao ocultismo, quando A
 
 No século XX, o baralho Rider-Waite-Smith (1909), criado por Arthur Edward Waite e ilustrado por Pamela Colman Smith, revolucionou o tarô ao adicionar cenas narrativas completas a todas as 78 cartas — tornando-o acessível para estudo e leitura intuitiva.`,
     reflection: "Antes de começar seus estudos, reflita: o que te trouxe ao tarô? Que perguntas você carrega? Anote suas motivações — elas serão seu norte ao longo da jornada.",
+    exercise: { instruction: "Escreva em seu caderno: 'Eu cheguei ao tarô porque...' Complete a frase com sinceridade. Guarde essa resposta — você vai revisitá-la ao final do módulo.", type: "writing" },
     quiz: [
       {
         id: "fund-1-q1",
@@ -82,7 +83,7 @@ No século XX, o baralho Rider-Waite-Smith (1909), criado por Arthur Edward Wait
   {
     id: "fund-2",
     order: 1,
-    title: "Estrutura do Baralho",
+    title: "Como o Baralho é Organizado",
     subtitle: "78 cartas, um universo completo",
     icon: "🃏",
     content: `O baralho de tarô é composto por 78 cartas, divididas em dois grandes grupos:
@@ -111,6 +112,7 @@ As cartas da corte (Pajem, Cavaleiro, Rainha, Rei) representam diferentes nívei
 
 Os números de 1 a 10 seguem um arco narrativo dentro de cada naipe: do potencial (Ás) ao cumprimento (10), passando por desenvolvimento, conflito e resolução.`,
     reflection: "Pegue um baralho de tarô (ou procure imagens online) e separe os Arcanos Maiores dos Menores. Observe as diferenças visuais. O que os Maiores parecem transmitir de diferente?",
+    exercise: { instruction: "Procure uma imagem do baralho completo de tarô online. Conte quantos Arcanos Maiores e quantos Menores existem. Identifique os 4 naipes e anote qual elemento corresponde a cada um.", type: "observation" },
     quiz: [
       {
         id: "fund-2-q1",
@@ -150,7 +152,7 @@ Os números de 1 a 10 seguem um arco narrativo dentro de cada naipe: do potencia
   {
     id: "fund-3",
     order: 2,
-    title: "Arcanos Maiores vs. Menores",
+    title: "Arcanos Maiores e Menores",
     subtitle: "O cósmico e o cotidiano",
     icon: "⚖️",
     content: `A diferença entre Arcanos Maiores e Menores não é de importância — é de escala.
@@ -171,6 +173,7 @@ Ambos são essenciais. Uma leitura completa usa os dois em harmonia.`,
       "Uma leitura completa integra ambos",
     ],
     reflection: "Em sua vida agora, o que parece ser um 'tema maior' (transformação profunda) e o que parece ser 'tema menor' (desafio do dia a dia)? Como eles se conectam?",
+    exercise: { instruction: "Pense em 3 situações da sua vida atual. Classifique cada uma como 'Arcano Maior' (grande tema existencial) ou 'Arcano Menor' (desafio do cotidiano). Anote por quê.", type: "reflection" },
     quiz: [
       {
         id: "fund-3-q1",
@@ -203,7 +206,7 @@ Ambos são essenciais. Uma leitura completa usa os dois em harmonia.`,
   {
     id: "fund-4",
     order: 3,
-    title: "O que é Simbologia no Tarô",
+    title: "Símbolos, Imagem e Leitura",
     subtitle: "A linguagem das imagens",
     icon: "🔮",
     content: `Todo elemento visual em uma carta de tarô carrega significado. Cores, números, animais, plantas, objetos, posturas corporais, direção do olhar — nada é acidental.
@@ -237,6 +240,7 @@ A chave é: não decore símbolos isolados. Aprenda a ler a carta como uma cena 
 
 Cada símbolo muda de significado conforme o contexto da carta. A mesma água pode ser calma ou tempestuosa, indicando emoções serenas ou turbulentas.`,
     reflection: "Escolha uma carta de tarô e observe-a por 3 minutos em silêncio. Anote todos os símbolos que identificar. Depois, tente imaginar o que cada um comunica. Não busque respostas 'certas' — confie nas suas impressões.",
+    exercise: { instruction: "Escolha qualquer carta de tarô. Liste pelo menos 5 símbolos visuais que você observa (cores, objetos, animais, posturas). Para cada um, escreva uma palavra que ele evoca em você.", type: "observation" },
     quiz: [
       {
         id: "fund-4-q1",
@@ -269,7 +273,7 @@ Cada símbolo muda de significado conforme o contexto da carta. A mesma água po
   {
     id: "fund-5",
     order: 4,
-    title: "Como Ler Além da Palavra-chave",
+    title: "Palavra-chave, Contexto e Interpretação",
     subtitle: "Da superfície à profundidade",
     icon: "📖",
     content: `Um dos maiores erros no estudo do tarô é depender exclusivamente de palavras-chave. "A Imperatriz = abundância." "A Torre = destruição." Essas simplificações podem ser um ponto de partida, mas nunca devem ser o destino.
@@ -291,6 +295,7 @@ Ler tarô é interpretar, não traduzir. É como poesia — o significado nasce 
       "Ler tarô é interpretar, não traduzir",
     ],
     reflection: "Pegue a carta 'A Estrela' (ou procure uma imagem). Sem consultar nenhum livro, escreva três frases sobre o que ela comunica para você. Depois compare com um livro de referência e note as similaridades.",
+    exercise: { instruction: "Escolha uma carta e escreva 3 significados possíveis em 3 contextos diferentes: amor, trabalho e espiritualidade. Note como a mesma carta muda de sentido conforme a pergunta.", type: "practice" },
     quiz: [
       {
         id: "fund-5-q1",
@@ -318,7 +323,7 @@ Ler tarô é interpretar, não traduzir. É como poesia — o significado nasce 
   {
     id: "fund-6",
     order: 5,
-    title: "Como Estudar sem Decorar",
+    title: "Como Estudar com Profundidade",
     subtitle: "Compreensão vence memorização",
     icon: "🧠",
     content: `Muitas pessoas desistem do tarô porque acham que precisam decorar 78 significados. A boa notícia: você não precisa.
@@ -341,6 +346,7 @@ A plataforma foi projetada para esse método: lições curtas, camadas opcionais
       "Pratique leitura desde cedo, não espere saber tudo",
     ],
     reflection: "Escolha um arcano que você já conheça superficialmente. Em vez de ler sobre ele, tente recontar sua 'história visual' de memória. O que lembra? O que esqueceu? Essa lacuna é sua próxima investigação.",
+    exercise: { instruction: "Escolha um arcano e conte sua história visual em voz alta ou por escrito, como se estivesse explicando para uma amiga. Não consulte nada — use apenas o que lembra. Depois compare.", type: "practice" },
     quiz: [
       {
         id: "fund-6-q1",
@@ -378,7 +384,7 @@ A plataforma foi projetada para esse método: lições curtas, camadas opcionais
   {
     id: "fund-7",
     order: 6,
-    title: "Intuição e Estrutura",
+    title: "Intuição e Método",
     subtitle: "Os dois pilares da leitura",
     icon: "✨",
     content: `No tarô, intuição e estrutura não são opostos — são complementares. Uma leitura poderosa nasce da combinação dos dois.
@@ -400,6 +406,7 @@ O erro mais comum de iniciantes é achar que precisa escolher um ou outro. "Sou 
       "Os melhores leitores integram ambos naturalmente",
     ],
     reflection: "Tire uma carta aleatoriamente. Antes de pensar no significado 'oficial', anote em uma frase o que você sente. Depois consulte o significado. O que sua intuição captou que combina com a tradição?",
+    exercise: { instruction: "Tire uma carta sem olhar. Antes de virar, respire fundo. Ao virar, anote a PRIMEIRA impressão — uma palavra ou frase. Depois consulte o significado tradicional. Compare as duas respostas.", type: "practice" },
     quiz: [
       {
         id: "fund-7-q1",
@@ -437,7 +444,7 @@ O erro mais comum de iniciantes é achar que precisa escolher um ou outro. "Sou 
   {
     id: "fund-8",
     order: 7,
-    title: "Ética e Postura da Leitora",
+    title: "Ética da Leitura",
     subtitle: "Responsabilidade com as palavras",
     icon: "⚜️",
     content: `Ler tarô para alguém é um ato de responsabilidade. As palavras ditas durante uma leitura podem afetar profundamente a pessoa que as recebe. Por isso, ética não é opcional — é fundamental.
@@ -464,6 +471,7 @@ A postura ética não é uma limitação — é o que diferencia uma leitora sé
       "A ética diferencia leitoras sérias",
     ],
     reflection: "Imagine que uma pessoa lhe pergunta se vai morrer em breve. Como você responderia com ética? Reflita sobre os limites do tarô e onde começa a responsabilidade profissional de outras áreas.",
+    exercise: { instruction: "Escreva 3 perguntas que você NÃO responderia com tarô e explique por quê. Depois escreva 3 perguntas que o tarô pode ajudar a responder de forma ética.", type: "writing" },
     quiz: [
       {
         id: "fund-8-q1",
@@ -535,6 +543,7 @@ Tanto no tarô quanto na jornada heroica, o protagonista:
 
 Carl Jung via nos arcanos do tarô representações dos arquétipos do inconsciente coletivo. A jornada do Louco seria, nessa leitura, o processo de individuação — a integração de todas as partes do ser em direção à totalidade.`,
     reflection: "Em que fase da Jornada do Louco você sente que está agora? Mundo material? Mundo interior? Travessia sombria? Iluminação? Não há resposta errada — apenas consciência.",
+    exercise: { instruction: "Desenhe uma linha reta no papel e marque 4 pontos: Material, Interior, Sombra, Iluminação. Coloque um 'X' onde você sente que está agora na sua vida. Escreva uma frase sobre por quê.", type: "reflection" },
     quiz: [
       {
         id: "fund-9-q1",
@@ -572,7 +581,7 @@ Carl Jung via nos arcanos do tarô representações dos arquétipos do inconscie
   {
     id: "fund-10",
     order: 9,
-    title: "Como a Plataforma Ensina Tarô",
+    title: "Como Usar a Plataforma",
     subtitle: "Seu método de estudo",
     icon: "🌟",
     content: `Esta plataforma foi projetada para ensinar tarô de forma profunda, bonita e estruturada. Aqui, cada carta é uma jornada completa — não uma ficha para decorar.
@@ -601,6 +610,7 @@ Sua jornada começa aqui. Os Arcanos Maiores são o próximo passo.`,
       "Base Rider-Waite-Smith para coerência total",
     ],
     reflection: "Agora que você conhece os fundamentos e o método, defina uma intenção para seus estudos. Escreva em uma frase: 'Eu estudo tarô porque...' Essa frase será sua bússola.",
+    exercise: { instruction: "Releia a frase que você escreveu na Lição 1 ('Eu cheguei ao tarô porque...'). Agora reescreva: 'Eu estudo tarô para...' Compare as duas. O que mudou?", type: "writing" },
     quiz: [
       {
         id: "fund-10-q1",
