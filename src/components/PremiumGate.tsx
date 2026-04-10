@@ -28,11 +28,12 @@ const PremiumGate = ({
 }: PremiumGateProps) => {
   const navigate = useNavigate();
   const { isPremium, loading } = usePremium();
+  const { isAdmin } = useIsAdmin();
 
-  // If premium or loading, show children (unlocked content)
+  // Admins always bypass premium gate
   if (loading) return null;
-  if (isPremium && children) return <>{children}</>;
-  if (isPremium) return null;
+  if ((isPremium || isAdmin) && children) return <>{children}</>;
+  if (isPremium || isAdmin) return null;
 
   if (variant === "banner") {
     return (
