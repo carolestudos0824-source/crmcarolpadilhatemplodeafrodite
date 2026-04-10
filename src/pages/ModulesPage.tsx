@@ -53,6 +53,10 @@ const ModulesPage = () => {
       const completed = progress.completedLessons.filter(l => l.startsWith("tir-")).length;
       return Math.round((completed / 10) * 100);
     }
+    if (mod.id === "amor") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("amor-")).length;
+      return Math.round((completed / 10) * 100);
+    }
     return 0;
   };
 
