@@ -7,48 +7,48 @@ const FEATURES = [
   {
     icon: Eye,
     title: "Arcanos Vivos",
-    description: "Cada carta ganha vida com lições em camadas — do significado essencial ao simbolismo profundo.",
+    description: "Cada carta se revela em camadas — da essência visível ao simbolismo mais sutil, no ritmo que for seu.",
   },
   {
     icon: Layers,
-    title: "Estudo em Camadas",
-    description: "Comece pelo essencial e mergulhe mais fundo conforme avança. Você escolhe a profundidade.",
+    title: "Profundidade Estruturada",
+    description: "Significado essencial, luz e sombra, simbolismo, aplicações e prática — cada camada aprofunda a anterior.",
   },
   {
     icon: Brain,
-    title: "Repetição Inteligente",
-    description: "Flashcards, quizzes e revisão espaçada que fixam o conhecimento na memória de longo prazo.",
+    title: "Memória que se Constrói",
+    description: "Revisão espaçada, quizzes e flashcards que fazem o conhecimento habitar você — não apenas passar por você.",
   },
   {
     icon: Flame,
-    title: "Trilha Gamificada",
-    description: "XP, conquistas, streaks e progresso visual que tornam o estudo um ritual prazeroso.",
+    title: "Ritual de Estudo",
+    description: "XP, conquistas e streaks transformam disciplina em prazer. Estudar se torna um encontro diário consigo mesma.",
   },
   {
     icon: BookOpen,
-    title: "Base Rider-Waite-Smith",
-    description: "Simbologia coerente e fundamentada na tradição mais respeitada do tarô ocidental.",
+    title: "Tradição Rider-Waite-Smith",
+    description: "Simbologia fundamentada na escola mais respeitada do tarô ocidental. Cada detalhe visual tem propósito.",
   },
   {
     icon: Star,
-    title: "Três Leituras",
-    description: "Cada arcano é explorado pelos olhares arquetípico, psicológico e esotérico.",
+    title: "Três Olhares",
+    description: "Cada arcano é lido pelo prisma arquetípico, psicológico e esotérico — três formas de enxergar a mesma verdade.",
   },
 ];
 
 const TESTIMONIALS = [
   {
-    text: "Finalmente um estudo de tarô que não é superficial nem esotérico demais. É profundo e acessível ao mesmo tempo.",
+    text: "Eu já tinha lido sobre tarô, mas nunca tinha entendido. Aqui é diferente — cada carta faz sentido dentro de mim.",
     author: "Marina C.",
     role: "Estudante de psicologia",
   },
   {
-    text: "A forma como os arcanos são apresentados me fez entender conexões que eu nunca tinha visto em anos de estudo.",
+    text: "As camadas são geniais. Volto a uma carta que achava que já conhecia e descubro uma dimensão nova. Não canso.",
     author: "Beatriz S.",
     role: "Taróloga há 5 anos",
   },
   {
-    text: "O sistema de revisão e os quizzes mudaram completamente minha forma de memorizar os significados.",
+    text: "Nunca pensei que revisão pudesse ser bonita. Os quizzes e flashcards fizeram o que nenhum livro conseguiu.",
     author: "Luísa R.",
     role: "Iniciante em tarô",
   },
@@ -97,21 +97,21 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Desvende os Arcanos.<br />
-            Desperte o que já sabe.
+            O Tarô não se aprende.<br />
+            Ele se revela.
           </h1>
 
           {/* Subheading */}
           <p className="font-accent text-lg md:text-xl italic leading-relaxed max-w-lg mx-auto mb-4" style={{
             color: "hsl(230 20% 15% / 0.55)",
           }}>
-            Uma jornada profunda, bonita e estruturada pelo universo simbólico do tarô — do Louco ao Mundo.
+            Uma plataforma de estudo profundo, bela e estruturada — do Louco ao Mundo, no ritmo que for seu.
           </p>
 
           <p className="font-body text-sm leading-relaxed max-w-md mx-auto mb-10" style={{
             color: "hsl(230 15% 30% / 0.50)",
           }}>
-            Estude os 22 Arcanos Maiores com camadas de significado, exercícios práticos, revisão inteligente e uma trilha que respeita seu ritmo.
+            78 arcanos em camadas de significado. Três leituras por carta. Exercícios, quizzes, revisão inteligente e uma trilha que cresce com você.
           </p>
 
           {/* CTA */}
@@ -186,7 +186,7 @@ const LandingPage = () => {
               Como Funciona a Jornada
             </h2>
             <p className="font-accent text-base italic max-w-md mx-auto" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-              Não é um curso convencional. É um percurso iniciático com estrutura pedagógica.
+              Não é um curso de tarô. É um percurso iniciático — com a profundidade de uma escola e a beleza de um ritual.
             </p>
           </div>
 
@@ -200,23 +200,23 @@ const LandingPage = () => {
             {[
               {
                 step: "01",
-                title: "Encontre o Arcano",
-                desc: "Cada carta é apresentada com sua essência, palavras-chave e contexto arquetípico.",
+                title: "Encontre a Carta",
+                desc: "Cada arcano é apresentado com sua essência, palavras-chave e o arquétipo que ele encarna.",
               },
               {
                 step: "02",
                 title: "Mergulhe nas Camadas",
-                desc: "Explore simbolismo, história, correspondências e leituras — no ritmo que desejar.",
+                desc: "Simbolismo, correspondências, luz e sombra, amor e trabalho — você escolhe até onde ir.",
               },
               {
                 step: "03",
-                title: "Pratique e Fixe",
-                desc: "Exercícios, quizzes e flashcards inteligentes consolidam o que você aprendeu.",
+                title: "Pratique e Integre",
+                desc: "Quizzes, exercícios reflexivos e revisão espaçada fazem o conhecimento se tornar parte de você.",
               },
               {
                 step: "04",
-                title: "Avance na Trilha",
-                desc: "Ganhe XP, desbloqueie conquistas e veja sua jornada crescer a cada arcano dominado.",
+                title: "Avance na Jornada",
+                desc: "Conquistas, XP e certificados marcam cada etapa. Sua trilha se constrói carta a carta.",
               },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-5 pl-1">
@@ -302,11 +302,11 @@ const LandingPage = () => {
           <blockquote className="font-accent text-xl md:text-2xl italic leading-relaxed mb-6" style={{
             color: "hsl(340 42% 20%)",
           }}>
-            "O tarô não é sobre prever o futuro — é sobre compreender o presente com olhos mais profundos."
+            "As cartas não preveem o futuro — elas iluminam o que já existe dentro de você."
           </blockquote>
           <div className="w-12 h-px mx-auto mb-6" style={{ background: "hsl(36 45% 58% / 0.30)" }} />
           <p className="font-body text-sm leading-relaxed max-w-md mx-auto" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
-            Cada símbolo carrega séculos de sabedoria. Esta jornada te convida a desvendar essas camadas — no seu ritmo, com profundidade e beleza.
+            Cada símbolo carrega séculos de sabedoria. Esta plataforma te convida a desvendá-los com profundidade, beleza e respeito pelo seu tempo.
           </p>
         </div>
       </section>
@@ -367,10 +367,10 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Sua jornada começa aqui
+            O primeiro passo é seu
           </h2>
           <p className="font-accent text-base italic leading-relaxed mb-8" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-            O Louco dá o primeiro passo sem saber o destino — mas sabendo que precisa caminhar.
+            O Louco salta sem saber o destino — mas confiando na jornada. Você não precisa saber tudo. Só precisa começar.
           </p>
 
           <Button
@@ -379,11 +379,11 @@ const LandingPage = () => {
             className="font-heading tracking-wide px-10 text-base bg-secondary hover:bg-secondary/90 text-secondary-foreground"
           >
             <Sparkles className="w-4 h-4 mr-2" />
-            Começar Agora
+            Iniciar Minha Jornada
           </Button>
 
           <p className="text-xs font-body mt-4" style={{ color: "hsl(230 15% 30% / 0.40)" }}>
-            Gratuito para começar · Sem compromisso · No seu ritmo
+            Comece gratuitamente · Sem compromisso · No seu ritmo
           </p>
         </div>
       </section>
@@ -399,7 +399,7 @@ const LandingPage = () => {
             <span className="text-sm" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
           </div>
           <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Uma jornada de autoconhecimento através dos arcanos
+            Autoconhecimento através dos arcanos · Tradição · Profundidade · Beleza
           </p>
         </div>
       </footer>
