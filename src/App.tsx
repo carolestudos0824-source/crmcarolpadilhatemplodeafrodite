@@ -17,6 +17,7 @@ import FundamentosPage from "./pages/FundamentosPage.tsx";
 import FundamentosLessonPage from "./pages/FundamentosLessonPage.tsx";
 import NaipePage from "./pages/NaipePage.tsx";
 import NaipeIntroPage from "./pages/NaipeIntroPage.tsx";
+import NumerologiaPage from "./pages/NumerologiaPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/lesson/:id" element={<LessonPage />} />
           <Route path="/module/:naipe" element={<NaipePage />} />
           <Route path="/intro/:naipe" element={<NaipeIntroPage />} />
+          <Route path="/numerologia" element={<NumerologiaPage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
