@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Lock, Check, Sparkles, Crown } from "lucide-react";
-import { ARCANOS_MAIORES } from "@/data/tarot-data";
+import { ARCANOS_MAIORES, FREE_ARCANO_IDS } from "@/data/tarot-data";
 import { UserProgress } from "@/data/tarot-data";
-
-const FREE_ARCANO_IDS = [0, 1, 2];
 
 interface JourneyMapProps {
   progress: UserProgress;

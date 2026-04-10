@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getArcanoById, ARCANOS_MAIORES } from "@/data/tarot-data";
+import { getArcanoById, ARCANOS_MAIORES, FREE_ARCANO_IDS } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import { useTrackEvent } from "@/hooks/use-track-event";
 import { CinematicIntro } from "@/components/arcano-vivo/CinematicIntro";
