@@ -1,7 +1,7 @@
 # Project Memory
 
 ## Core
-Dark mystic theme: black bg, gold primary, crimson secondary. Cinzel headings, Inter body, Cormorant Garamond accent.
+Platform name: A Jornada do Louco. Dark mystic theme: black bg, gold primary, crimson secondary. Cinzel headings, Inter body, Cormorant Garamond accent.
 Tarot learning platform with gamification (Duolingo-inspired, not childish). Premium, feminine, symbolic.
 Lessons use 5-layer pedagogy: main (required) → deepDive → extras → exercise → quiz. Students advance without consuming optional content.
 Base simbólica: Rider-Waite-Smith. Leituras arquetípicas, psicológicas e esotéricas. Coerência em todas as lições.

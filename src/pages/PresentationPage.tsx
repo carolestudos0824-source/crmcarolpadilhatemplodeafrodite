@@ -60,7 +60,7 @@ const PresentationPage = () => {
           ← Voltar
         </button>
         <span className="text-[10px] font-heading tracking-[0.4em] uppercase" style={{ color: "hsl(340 42% 28% / 0.60)" }}>
-          ✦ Tarô Iniciático ✦
+          ✦ A Jornada do Louco ✦
         </span>
         <span className="text-[10px] font-body tabular-nums" style={{ color: "hsl(230 15% 40% / 0.40)" }}>
           {current + 1} / {total}
@@ -169,7 +169,7 @@ const SlideCover = () => (
       WebkitBackgroundClip: "text",
       WebkitTextFillColor: "transparent",
     }}>
-      Tarô Iniciático
+      A Jornada do Louco
     </h1>
     <p className="font-accent text-lg md:text-xl italic leading-relaxed max-w-md mx-auto" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
       A plataforma que transforma o estudo do tarô em uma jornada de autoconhecimento — com profundidade, beleza e estrutura.
@@ -223,7 +223,7 @@ const SlideSolution = () => (
     <SlideTitle
       kicker="A Solução"
       title="Uma plataforma completa de formação em tarô"
-      subtitle="O Tarô Iniciático reúne o que estava disperso: tradição, método, beleza e prática — em um só lugar."
+      subtitle="A Jornada do Louco reúne o que estava disperso: tradição, método, beleza e prática — em um só lugar."
     />
     <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
       {[
@@ -485,7 +485,7 @@ const SlideValue = () => (
     </blockquote>
     <div className="w-12 h-px mx-auto" style={{ background: "hsl(36 45% 58% / 0.30)" }} />
     <p className="font-body text-sm leading-relaxed max-w-md mx-auto" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
-      O Tarô Iniciático não é mais um curso. É uma formação que une tradição milenar, pedagogia estruturada e uma experiência visual que faz jus à profundidade do que ensina. Cada detalhe foi pensado para que o estudo seja tão transformador quanto o próprio tarô.
+      A Jornada do Louco não é mais um curso. É uma formação que une tradição milenar, pedagogia estruturada e uma experiência visual que faz jus à profundidade do que ensina. Cada detalhe foi pensado para que o estudo seja tão transformador quanto o próprio tarô.
     </p>
   </div>
 );
