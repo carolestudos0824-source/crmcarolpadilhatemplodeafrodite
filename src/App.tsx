@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
+import FeedbackPage from "./pages/FeedbackPage.tsx";
 import BetaBadge from "@/components/BetaBadge";
 import BetaFeedback from "@/components/BetaFeedback";
 import ModulesPage from "./pages/ModulesPage.tsx";
@@ -87,6 +88,7 @@ const AppRoutes = () => (
       <Route path="/premium" element={<ProtectedRoute><PremiumPage /></ProtectedRoute>} />
       <Route path="/perfil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/certificados" element={<ProtectedRoute><CertificatesPage /></ProtectedRoute>} />
+      <Route path="/feedback" element={<ProtectedRoute><FeedbackPage /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
