@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { Lock, Check, ChevronRight, Sparkles, BookOpen, RefreshCw, Crown, User, Hash, Route, Sun, Calendar } from "lucide-react";
-import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory } from "@/data/tarot-data";
+import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory, ARCANOS_MAIORES } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import OnboardingPage from "./OnboardingPage";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
 import BetaWelcomeBanner from "@/components/BetaWelcomeBanner";
 import FeedbackNudge from "@/components/FeedbackNudge";
+import RetentionBanner from "@/components/RetentionBanner";
+import ContinuityCard from "@/components/ContinuityCard";
+import ProgressCelebration from "@/components/ProgressCelebration";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
