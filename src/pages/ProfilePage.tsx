@@ -28,6 +28,7 @@ const getLevelTitle = (level: number) => LEVEL_TITLES[Math.min(level, 10)] || "I
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const { isAdmin } = useIsAdmin();
   const { progress, completedCount, journeyProgress, getCurrentArcanoId } = useProgress();
   const { isPremium, premiumUntil, premiumSource } = usePremium();
   const { redeem, loading: redeemLoading } = useGiftCode();
