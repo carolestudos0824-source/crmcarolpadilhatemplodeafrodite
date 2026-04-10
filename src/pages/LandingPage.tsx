@@ -51,11 +51,11 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Aprenda tarô como uma jornada viva de símbolo, presença e leitura real.
+            Aprenda tarô como uma jornada viva de conhecimento, símbolo e presença.
           </h1>
 
           <p className="font-body text-sm md:text-base leading-relaxed max-w-lg mx-auto mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
-            Uma plataforma imersiva de ensino de tarô que une método, profundidade simbólica, trilha gamificada e experiência viva com os arcanos.
+            Uma plataforma imersiva de ensino de tarô com trilha gamificada, prática guiada, aprofundamento simbólico e experiências vivas com os arcanos.
           </p>
 
           <p className="font-accent text-xs md:text-sm italic leading-relaxed max-w-md mx-auto mb-8" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
@@ -103,10 +103,10 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Uma plataforma criada para transformar estudo em experiência.
+             Uma plataforma criada para transformar estudo em experiência.
           </h2>
           <p className="font-body text-sm leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
-            Cada carta é estudada com estrutura, contexto, símbolos, luz, sombra, aplicação prática e progressão. A aluna não apenas memoriza. Ela compreende.
+            Cada carta é estudada com estrutura, contexto, símbolos, luz, sombra, aplicação prática e progressão. Aqui, você não apenas memoriza. Você compreende.
           </p>
           <p className="font-accent text-sm italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
             O estudo acontece como travessia, construção de leitura e aprofundamento simbólico.
@@ -121,7 +121,7 @@ const LandingPage = () => {
             ✦ O diferencial
           </p>
           <h2 className="font-heading text-xl md:text-2xl tracking-wide mb-8" style={{ color: "hsl(230 25% 12%)" }}>
-            Mais do que um curso. Uma jornada viva de aprendizagem.
+            Mais do que decorar cartas. Uma jornada de evolução real.
           </h2>
 
           <div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -253,7 +253,7 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Entre na beta e comece sua jornada.
+             Comece sua jornada no tarô com profundidade, método e presença.
           </h2>
           <p className="font-body text-sm leading-relaxed mb-8 max-w-md mx-auto" style={{ color: "hsl(230 15% 30% / 0.60)" }}>
             Se você deseja estudar tarô com mais profundidade, beleza e método, esta é a hora de entrar.
