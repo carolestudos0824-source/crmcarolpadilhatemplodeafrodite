@@ -2,72 +2,56 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight, Lock, Sparkles, Check, ChevronDown,
-  Eye, Layers, BookOpen, Compass, Star,
+  Eye, Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /* ═══════════════ DATA ═══════════════ */
 
-const INSIDE_ITEMS = [
-  "Fundamentos do Tarô",
-  "Jornada dos Arcanos Maiores",
-  "Arcanos vivos, começando por O Louco",
-  "Quizzes e revisão",
-  "Progresso salvo",
-  "Desafios diários",
-  "Aprofundamento simbólico",
-];
-
 const BETA_ITEMS = [
-  "Onboarding inicial",
-  "Dashboard da jornada",
+  "Onboarding e introdução ao método",
   "Fundamentos do Tarô",
-  "Início da Jornada dos Arcanos Maiores",
-  "O Louco como primeira experiência viva",
-  "Progresso, quiz e XP",
-  "Primeiros arcanos da trilha",
-  "Área premium inicial em desenvolvimento",
-];
-
-const FAQ = [
-  {
-    q: "O que é a plataforma?",
-    a: "É uma plataforma de ensino de tarô com trilha gamificada, base simbólica clara e experiência imersiva de estudo.",
-  },
-  {
-    q: "Qual linha simbólica ela adota?",
-    a: "A base principal é o Rider-Waite-Smith, com aprofundamentos arquetípicos, psicológicos e esotéricos.",
-  },
-  {
-    q: "A beta já está completa?",
-    a: "Não. A beta é uma fase inicial de acesso e validação. Ela já entrega a experiência central do produto, mas a expansão seguirá em evolução.",
-  },
-  {
-    q: "Para quem a plataforma foi criada?",
-    a: "Para mulheres que querem estudar tarô com mais profundidade, clareza e método.",
-  },
+  "O Louco — arcano completo com voz e quiz",
+  "Progresso salvo com XP e streak",
+  "Experiência visual imersiva",
+  "Área premium em desenvolvimento",
 ];
 
 const WHY_NOW = [
   {
     icon: Lock,
     title: "Grupo reduzido",
-    desc: "A beta é aberta para poucas usuárias — você entra antes de todos.",
+    desc: "Você entra antes de todos e acompanha a construção.",
   },
   {
     icon: Sparkles,
-    title: "Experiência real desde o início",
-    desc: "A proposta pedagógica já está ativa e funcional na beta.",
+    title: "Experiência real",
+    desc: "A proposta pedagógica já está ativa e funcional.",
   },
   {
     icon: Star,
-    title: "Acompanhe a construção",
-    desc: "Veja a plataforma crescer e ajude a moldar a experiência.",
+    title: "Molde a jornada",
+    desc: "Seu feedback ajuda a refinar a plataforma.",
   },
   {
     icon: Eye,
     title: "Qualidade, não improviso",
-    desc: "A beta não é um rascunho — é uma entrada antecipada em algo refinado.",
+    desc: "A beta é uma entrada antecipada em algo refinado.",
+  },
+];
+
+const FAQ = [
+  {
+    q: "O que é a plataforma?",
+    a: "Uma plataforma de ensino de tarô com trilha gamificada, base no Rider-Waite-Smith e experiência imersiva.",
+  },
+  {
+    q: "Para quem foi criada?",
+    a: "Para mulheres que querem estudar tarô com mais profundidade, clareza e método.",
+  },
+  {
+    q: "A beta já está completa?",
+    a: "A beta já entrega a experiência central do produto. A expansão acontece em fases.",
   },
 ];
 
@@ -89,12 +73,6 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   </h2>
 );
 
-const Divider = () => (
-  <div className="flex justify-center py-4">
-    <span className="text-lg select-none" style={{ color: "hsl(36 45% 58% / 0.25)" }}>⟡</span>
-  </div>
-);
-
 /* ═══════════════ PAGE ═══════════════ */
 
 const BetaInvitePage = () => {
@@ -104,10 +82,8 @@ const BetaInvitePage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden">
 
-      {/* ════════════════════════════════════════════════
-          1. HERO
-          ════════════════════════════════════════════════ */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6">
+      {/* ════════════════ HERO ════════════════ */}
+      <section className="relative min-h-[88vh] flex flex-col items-center justify-center px-6">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0" style={{
             background: "radial-gradient(ellipse at 50% 18%, hsl(42 70% 80% / 0.20) 0%, transparent 58%)",
@@ -115,15 +91,10 @@ const BetaInvitePage = () => {
           <div className="absolute inset-0" style={{
             background: "radial-gradient(ellipse at 20% 80%, hsl(340 42% 30% / 0.07) 0%, transparent 50%)",
           }} />
-          <div className="absolute inset-0" style={{
-            background: "radial-gradient(ellipse at 80% 60%, hsl(36 45% 58% / 0.06) 0%, transparent 50%)",
-          }} />
         </div>
 
         <span className="absolute top-8 left-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✦</span>
         <span className="absolute top-8 right-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✧</span>
-        <span className="absolute bottom-8 left-8 text-xl select-none" style={{ color: "hsl(36 45% 58% / 0.10)" }}>✧</span>
-        <span className="absolute bottom-8 right-8 text-xl select-none" style={{ color: "hsl(36 45% 58% / 0.10)" }}>✦</span>
 
         <div className="relative z-10 max-w-2xl text-center animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8" style={{
@@ -153,7 +124,7 @@ const BetaInvitePage = () => {
           </h1>
 
           <p className="font-body text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.60)" }}>
-            Uma plataforma imersiva de ensino de tarô que une método, profundidade simbólica, trilha gamificada e experiência viva com os arcanos.
+            Uma plataforma imersiva de ensino de tarô que une método, profundidade simbólica, trilha gamificada e experiência viva com os arcanos. A beta está aberta para as primeiras usuárias.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -183,78 +154,22 @@ const BetaInvitePage = () => {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════
-          2. O QUE É A PLATAFORMA
-          ════════════════════════════════════════════════ */}
+      {/* ════════════════ O QUE JÁ ESTÁ NA BETA ════════════════ */}
       <section className="py-20 px-6" style={{
         background: "linear-gradient(180deg, hsl(38 30% 95% / 0.50) 0%, hsl(36 33% 97%) 100%)",
         borderTop: "1px solid hsl(36 25% 82% / 0.40)",
       }}>
-        <div className="max-w-2xl mx-auto text-center space-y-5">
-          <SectionLabel>O que é</SectionLabel>
-          <SectionTitle>Uma plataforma criada para transformar estudo em experiência.</SectionTitle>
-
-          <p className="font-body text-[13px] leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-            A Jornada do Louco é uma plataforma de ensino de tarô onde cada carta é estudada com estrutura, contexto, símbolos, luz, sombra, aplicação prática e progressão.
-          </p>
-
-          <p className="font-accent text-[13px] italic leading-relaxed max-w-md mx-auto" style={{ color: "hsl(230 20% 15% / 0.40)" }}>
-            A aluna não apenas memoriza. Ela compreende.
-          </p>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════
-          3. O QUE A USUÁRIA ENCONTRA DENTRO
-          ════════════════════════════════════════════════ */}
-      <section className="py-20 px-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-3">
-            <SectionLabel>O que você encontra</SectionLabel>
-            <SectionTitle>Dentro da plataforma, o estudo ganha forma, ritmo e direção.</SectionTitle>
+            <SectionLabel>O que já está disponível</SectionLabel>
+            <SectionTitle>A beta já entrega a experiência central da plataforma.</SectionTitle>
           </div>
-
-          <div className="max-w-md mx-auto space-y-2.5">
-            {INSIDE_ITEMS.map((item, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-xl" style={{
-                background: i % 2 === 0 ? "hsl(38 30% 95% / 0.50)" : "transparent",
-                border: i % 2 === 0 ? "1px solid hsl(36 25% 82% / 0.40)" : "1px solid transparent",
-              }}>
-                <Sparkles className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(36 45% 50% / 0.60)" }} />
-                <span className="font-body text-[13px]" style={{ color: "hsl(230 15% 25% / 0.60)" }}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* ════════════════════════════════════════════════
-          4. O QUE JÁ ESTÁ DISPONÍVEL NA BETA
-          ════════════════════════════════════════════════ */}
-      <section className="py-20 px-6" style={{
-        background: "linear-gradient(180deg, hsl(38 30% 95% / 0.40) 0%, hsl(36 33% 97%) 100%)",
-        borderTop: "1px solid hsl(36 25% 82% / 0.30)",
-      }}>
-        <div className="max-w-2xl mx-auto space-y-6">
-          <div className="text-center space-y-3">
-            <SectionLabel>A Beta</SectionLabel>
-            <SectionTitle>Uma entrada antecipada para viver a primeira fase da plataforma.</SectionTitle>
-          </div>
-
-          <p className="font-body text-[13px] leading-relaxed max-w-lg mx-auto text-center" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
-            A beta é a fase inicial de acesso à plataforma com um grupo reduzido de usuárias. Nesta etapa, você poderá experimentar a proposta pedagógica, entrar na Jornada do Louco e acompanhar a construção refinada da experiência.
-          </p>
 
           <div className="rounded-2xl p-6 max-w-md mx-auto space-y-3" style={{
             background: "linear-gradient(170deg, hsl(38 28% 95%), hsl(340 42% 28% / 0.02))",
             border: "1.5px solid hsl(36 45% 58% / 0.22)",
             boxShadow: "0 8px 40px hsl(340 42% 28% / 0.04)",
           }}>
-            <p className="text-[10px] font-heading tracking-[0.3em] uppercase text-center mb-3" style={{ color: "hsl(340 42% 28% / 0.60)" }}>
-              O que já está disponível
-            </p>
             {BETA_ITEMS.map((item, i) => (
               <div key={i} className="flex items-center gap-2.5">
                 <Check className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(36 45% 50% / 0.70)" }} />
@@ -265,14 +180,12 @@ const BetaInvitePage = () => {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════
-          5. POR QUE VALE ENTRAR AGORA
-          ════════════════════════════════════════════════ */}
+      {/* ════════════════ POR QUE AGORA ════════════════ */}
       <section className="py-20 px-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-3">
             <SectionLabel>Por que agora</SectionLabel>
-            <SectionTitle>A beta não é um improviso. É uma porta que se abre para poucas.</SectionTitle>
+            <SectionTitle>A beta é uma porta que se abre para poucas.</SectionTitle>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
@@ -295,18 +208,13 @@ const BetaInvitePage = () => {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════
-          6. FAQ
-          ════════════════════════════════════════════════ */}
-      <section className="py-20 px-6" style={{
+      {/* ════════════════ FAQ ════════════════ */}
+      <section className="py-16 px-6" style={{
         background: "linear-gradient(180deg, hsl(38 30% 95% / 0.40) 0%, hsl(36 33% 97%) 100%)",
         borderTop: "1px solid hsl(36 25% 82% / 0.30)",
       }}>
         <div className="max-w-lg mx-auto space-y-6">
-          <div className="text-center space-y-3">
-            <SectionLabel>Perguntas frequentes</SectionLabel>
-          </div>
-
+          <SectionLabel>Perguntas frequentes</SectionLabel>
           <div className="space-y-2">
             {FAQ.map(({ q, a }, i) => (
               <div key={i} className="rounded-xl overflow-hidden" style={{
@@ -337,9 +245,7 @@ const BetaInvitePage = () => {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════
-          7. CTA FINAL
-          ════════════════════════════════════════════════ */}
+      {/* ════════════════ CTA FINAL ════════════════ */}
       <section className="relative py-24 px-6">
         <div className="absolute inset-0 pointer-events-none" style={{
           background: "radial-gradient(ellipse at 50% 50%, hsl(42 70% 80% / 0.12) 0%, transparent 60%)",
@@ -349,10 +255,10 @@ const BetaInvitePage = () => {
           <span className="text-2xl block" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
 
           <SectionLabel>Convite</SectionLabel>
-          <SectionTitle>Entre na beta e acompanhe o nascimento desta jornada desde o início.</SectionTitle>
+          <SectionTitle>Entre na beta e comece sua jornada desde o início.</SectionTitle>
 
           <p className="font-body text-[13px] leading-relaxed max-w-md mx-auto" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
-            Se você deseja estudar tarô com mais profundidade, beleza, método e consciência simbólica, esta é a hora de entrar.
+            Se você deseja estudar tarô com mais profundidade, beleza e consciência simbólica, esta é a hora de entrar.
           </p>
 
           <div className="flex flex-col items-center gap-3 pt-2">
@@ -372,7 +278,7 @@ const BetaInvitePage = () => {
               className="text-[11px] font-heading tracking-wider uppercase transition-colors"
               style={{ color: "hsl(340 42% 28% / 0.50)" }}
             >
-              Quero entrar na lista de espera
+              Entrar na lista de espera
             </button>
           </div>
         </div>
