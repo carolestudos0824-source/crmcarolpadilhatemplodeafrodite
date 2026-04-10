@@ -74,6 +74,10 @@ export interface ArcanoMenorEditorial {
   interpretacaoEspiritualidade: string;
   /** First-person voice of the card */
   vozDaCarta: string;
+  /** Deep symbolic/historical expansion */
+  aprofundamento: string;
+  /** Reflection questions for the student */
+  perguntasReflexao: string[];
   /** Quiz questions */
   quiz: QuizQuestion[];
   /** Quick review data */
@@ -224,6 +228,8 @@ function createEmptyCard(posicao: CartaPosicao, naipe: Naipe): ArcanoMenorEditor
     interpretacaoTrabalho: "",
     interpretacaoEspiritualidade: "",
     vozDaCarta: "",
+    aprofundamento: "",
+    perguntasReflexao: [],
     quiz: [],
     revisaoRapida: {
       palavraChave: "",
