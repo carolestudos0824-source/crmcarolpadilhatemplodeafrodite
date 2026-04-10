@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, BookOpen, Sparkles, MapPin, ChevronDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { FUNDAMENTOS_LESSONS, getFundamentosLessonByOrder } from "@/data/fundamentos";
 import { useProgress } from "@/hooks/use-progress";
 import mysticBg from "@/assets/mystic-bg.jpg";
