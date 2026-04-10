@@ -23,6 +23,8 @@ import CombinacoesPage from "./pages/CombinacoesPage.tsx";
 import CombinacoesLessonPage from "./pages/CombinacoesLessonPage.tsx";
 import TiragensPage from "./pages/TiragensPage.tsx";
 import TiragensLessonPage from "./pages/TiragensLessonPage.tsx";
+import AmorPage from "./pages/AmorPage.tsx";
+import AmorLessonPage from "./pages/AmorLessonPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -48,6 +50,8 @@ const App = () => (
           <Route path="/combinacoes/:order" element={<CombinacoesLessonPage />} />
           <Route path="/module/tiragens" element={<TiragensPage />} />
           <Route path="/tiragens/:order" element={<TiragensLessonPage />} />
+          <Route path="/module/amor" element={<AmorPage />} />
+          <Route path="/amor/:order" element={<AmorLessonPage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
