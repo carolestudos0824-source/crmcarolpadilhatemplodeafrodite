@@ -94,7 +94,7 @@ const ModulesPage = () => {
                 WebkitTextFillColor: "transparent",
                 filter: "drop-shadow(0 1px 2px hsl(36 45% 50% / 0.20))"
               }}>
-                Módulos do Curso
+                Sua Jornada
               </h1>
             </div>
             <div className="flex items-center gap-3">
@@ -255,7 +255,7 @@ const ModulesPage = () => {
                   Rotina de Estudo
                 </h3>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  O que estudar hoje, progresso e próximos passos
+                  Sua bússola de estudo — o que fazer hoje e como avançar
                 </p>
               </div>
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(340 42% 28% / 0.30)" }} />
@@ -286,7 +286,7 @@ const ModulesPage = () => {
                   Ritual Diário
                 </h3>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  Carta do dia, quiz, símbolos e prática
+                  Carta do dia, quiz relâmpago e prática reflexiva
                 </p>
               </div>
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 45% 50% / 0.40)" }} />
@@ -346,7 +346,7 @@ const ModulesPage = () => {
                   A Jornada do Louco
                 </h3>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  Visão geral do percurso iniciático dos 22 Arcanos
+                  O mapa iniciático completo — do Louco ao Mundo
                 </p>
               </div>
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
@@ -376,7 +376,7 @@ const ModulesPage = () => {
                   Revisão Inteligente
                 </h3>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  Flashcards, desafios diários e repetição espaçada
+                  Flashcards, desafios e repetição espaçada — o que você aprendeu não se perde
                 </p>
               </div>
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(340 42% 28% / 0.30)" }} />
@@ -406,7 +406,7 @@ const ModulesPage = () => {
                   Biblioteca de Símbolos
                 </h3>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  Luas, sóis, flores, animais, cores e mais
+                  Luas, sóis, flores, animais, cores — o alfabeto visual do tarô
                 </p>
               </div>
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
@@ -474,7 +474,7 @@ const ModulesPage = () => {
                   Jornada Completa
                 </h3>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  Desbloqueie todos os aprofundamentos e trilhas avançadas
+                  Acesse todos os aprofundamentos, trilhas e certificados
                 </p>
               </div>
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
