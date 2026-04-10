@@ -64,26 +64,31 @@ const LandingPage = () => {
           </div>
 
           {/* Main heading */}
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wide leading-tight mb-6" style={{
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-wide leading-tight mb-4" style={{
             background: "linear-gradient(135deg, hsl(340 42% 18%), hsl(230 25% 12%), hsl(36 42% 38%))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            O Tarô não se aprende.<br />
-            Ele se revela.
+            O tarô tem profundidade.<br />
+            Seu estudo também deveria ter.
           </h1>
+
+          {/* Tagline */}
+          <p className="font-accent text-base md:text-lg italic mb-6" style={{ color: "hsl(36 45% 45% / 0.70)" }}>
+            Onde o tarô se revela.
+          </p>
 
           {/* Subheading */}
           <p className="font-accent text-lg md:text-xl italic leading-relaxed max-w-lg mx-auto mb-4" style={{
             color: "hsl(230 20% 15% / 0.55)",
           }}>
-            A primeira plataforma que une tradição, profundidade e beleza no estudo do tarô — e você pode ser uma das primeiras a experimentá-la.
+            A primeira plataforma que ensina tarô com profundidade, beleza e método — carta a carta, camada a camada.
           </p>
 
           <p className="font-body text-sm leading-relaxed max-w-md mx-auto mb-10" style={{
             color: "hsl(230 15% 30% / 0.50)",
           }}>
-            Estamos abrindo as portas para um grupo seleto de estudantes. Acesso antecipado, gratuito e com influência direta no que estamos construindo.
+            Você não está testando um produto. Está entrando antes que as portas se abram — e ajudando a construir algo que o mercado ainda não viu.
           </p>
 
           {/* CTA */}
