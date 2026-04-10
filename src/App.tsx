@@ -15,6 +15,7 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import FoolsJourneyPage from "./pages/FoolsJourneyPage.tsx";
 import FundamentosPage from "./pages/FundamentosPage.tsx";
 import FundamentosLessonPage from "./pages/FundamentosLessonPage.tsx";
+import NaipePage from "./pages/NaipePage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/fundamentos/:order" element={<FundamentosLessonPage />} />
           <Route path="/module/arcanos-maiores" element={<Index />} />
           <Route path="/lesson/:id" element={<LessonPage />} />
+          <Route path="/module/:naipe" element={<NaipePage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
