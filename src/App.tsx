@@ -25,6 +25,8 @@ import TiragensPage from "./pages/TiragensPage.tsx";
 import TiragensLessonPage from "./pages/TiragensLessonPage.tsx";
 import AmorPage from "./pages/AmorPage.tsx";
 import AmorLessonPage from "./pages/AmorLessonPage.tsx";
+import PraticaPage from "./pages/PraticaPage.tsx";
+import PraticaLessonPage from "./pages/PraticaLessonPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -52,6 +54,8 @@ const App = () => (
           <Route path="/tiragens/:order" element={<TiragensLessonPage />} />
           <Route path="/module/amor" element={<AmorPage />} />
           <Route path="/amor/:order" element={<AmorLessonPage />} />
+          <Route path="/module/pratica" element={<PraticaPage />} />
+          <Route path="/pratica/:order" element={<PraticaLessonPage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
