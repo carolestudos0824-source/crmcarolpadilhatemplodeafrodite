@@ -18,6 +18,7 @@ import FundamentosLessonPage from "./pages/FundamentosLessonPage.tsx";
 import NaipePage from "./pages/NaipePage.tsx";
 import NaipeIntroPage from "./pages/NaipeIntroPage.tsx";
 import NumerologiaPage from "./pages/NumerologiaPage.tsx";
+import CartasCortePage from "./pages/CartasCortePage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
