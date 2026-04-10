@@ -345,6 +345,84 @@ const ProfilePage = () => {
           )}
         </div>
 
+        {/* ═══════════════ CÓDIGO DE PRESENTE ═══════════════ */}
+        {!isPremium && (
+          <div>
+            <div className="flex items-center justify-center mb-3">
+              <img src={ornamentDivider} alt="" className="w-24 h-auto opacity-40" loading="lazy" width={800} height={512} />
+            </div>
+            <h2 className="font-heading text-sm tracking-wide text-center mb-4" style={{ color: "hsl(340 42% 22%)" }}>
+              Código de Presente
+            </h2>
+
+            {!showGiftInput ? (
+              <button
+                onClick={() => setShowGiftInput(true)}
+                className="w-full group rounded-xl p-4 transition-all duration-300 hover:shadow-md text-left"
+                style={{
+                  background: "linear-gradient(135deg, hsl(38 28% 93% / 0.90), hsl(36 33% 95% / 0.85))",
+                  border: "1.5px solid hsl(36 45% 58% / 0.25)",
+                }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{
+                    background: "linear-gradient(135deg, hsl(340 42% 30% / 0.10), hsl(36 45% 58% / 0.12))",
+                    border: "1.5px solid hsl(36 45% 58% / 0.25)",
+                  }}>
+                    <Gift className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-heading text-base tracking-wide" style={{ color: "hsl(230 25% 12%)" }}>
+                      Tenho um código
+                    </div>
+                    <div className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                      Resgate seu presente e desbloqueie o acesso
+                    </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
+                </div>
+              </button>
+            ) : (
+              <div className="rounded-xl p-5 space-y-3" style={{
+                background: "hsl(38 28% 93% / 0.75)",
+                border: "1px solid hsl(36 45% 50% / 0.18)",
+              }}>
+                <div className="flex gap-2">
+                  <Input
+                    value={giftCode}
+                    onChange={(e) => setGiftCode(e.target.value.toUpperCase())}
+                    placeholder="ARCANO-XXXXXX"
+                    className="font-mono text-sm"
+                  />
+                  <Button
+                    size="sm"
+                    disabled={redeemLoading || !giftCode.trim()}
+                    onClick={async () => {
+                      const result = await redeem(giftCode);
+                      if (result.success) {
+                        toast.success(`Presente resgatado! ${result.days} dias de acesso premium.`);
+                        setGiftCode("");
+                        setShowGiftInput(false);
+                        window.location.reload();
+                      } else {
+                        toast.error(result.error || "Erro ao resgatar código.");
+                      }
+                    }}
+                  >
+                    {redeemLoading ? "..." : "Resgatar"}
+                  </Button>
+                </div>
+                <button
+                  onClick={() => { setShowGiftInput(false); setGiftCode(""); }}
+                  className="text-[10px] text-muted-foreground hover:text-foreground"
+                >
+                  Cancelar
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ═══════════════ CERTIFICADOS LINK ═══════════════ */}
         <div>
           <div className="flex items-center justify-center mb-3">
