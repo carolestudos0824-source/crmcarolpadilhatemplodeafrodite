@@ -29,6 +29,9 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { progress, completedCount, journeyProgress, getCurrentArcanoId } = useProgress();
   const { isPremium, premiumUntil, premiumSource } = usePremium();
+  const { redeem, loading: redeemLoading } = useGiftCode();
+  const [giftCode, setGiftCode] = useState("");
+  const [showGiftInput, setShowGiftInput] = useState(false);
   const earnedBadges = progress.badges.filter(b => b.earned);
   const unearnedBadges = progress.badges.filter(b => !b.earned);
   const xpInLevel = progress.xp % 100;
