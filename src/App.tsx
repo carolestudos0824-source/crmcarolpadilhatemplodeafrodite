@@ -43,6 +43,7 @@ const DailyChallengesPage = lazy(() => import("./pages/DailyChallengesPage.tsx")
 const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
 const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
 const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
+const WaitlistPage = lazy(() => import("./pages/WaitlistPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -83,6 +84,7 @@ const AppRoutes = () => (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/espera" element={<WaitlistPage />} />
         <Route path="/apresentacao" element={<PresentationPage />} />
         <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
         <Route path="/app" element={<P><ModulesPage /></P>} />
