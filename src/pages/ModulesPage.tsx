@@ -45,6 +45,10 @@ const ModulesPage = () => {
       const completed = progress.completedLessons.filter(l => l.startsWith(`${mod.id}-`)).length;
       return Math.round((completed / 14) * 100);
     }
+    if (mod.id === "combinacoes") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("comb-")).length;
+      return Math.round((completed / 10) * 100);
+    }
     return 0;
   };
 
