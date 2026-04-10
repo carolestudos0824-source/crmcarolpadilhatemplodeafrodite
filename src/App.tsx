@@ -28,6 +28,7 @@ import AmorLessonPage from "./pages/AmorLessonPage.tsx";
 import PraticaPage from "./pages/PraticaPage.tsx";
 import PraticaLessonPage from "./pages/PraticaLessonPage.tsx";
 import CertificatesPage from "./pages/CertificatesPage.tsx";
+import TrailsPage from "./pages/TrailsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/app" element={<ModulesPage />} />
+          <Route path="/trilhas" element={<TrailsPage />} />
           <Route path="/module/fundamentos" element={<FundamentosPage />} />
           <Route path="/fundamentos/:order" element={<FundamentosLessonPage />} />
           <Route path="/module/arcanos-maiores" element={<Index />} />
