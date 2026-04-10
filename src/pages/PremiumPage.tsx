@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTrackEvent } from "@/hooks/use-track-event";
-import { usePremium } from "@/hooks/use-premium";
+import { usePremium, type SubscriptionStatus } from "@/hooks/use-premium";
 import { toast } from "sonner";
 
 /* ═══════════════ DATA ═══════════════ */
