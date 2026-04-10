@@ -48,7 +48,7 @@ const BetaWelcomeBanner = () => {
 
         <div className="flex-1 min-w-0">
           <p className="text-[9px] font-heading tracking-[0.3em] uppercase mb-1" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
-            ✦ Bem-vinda à Beta
+            ✦ Boas-vindas à Beta
           </p>
           <h3 className="font-heading text-base tracking-wide mb-1.5" style={{
             background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 28%))",

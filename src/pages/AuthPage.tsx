@@ -65,7 +65,7 @@ const AuthPage = () => {
             {mode === "signup" ? "Criar conta" : "Entrar"}
           </h1>
           <p className="text-xs" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
-            {mode === "signup" ? "Junte-se à beta privada da jornada." : "Bem-vinda de volta à jornada."}
+            {mode === "signup" ? "Junte-se à beta privada da jornada." : "Boas-vindas de volta à jornada."}
           </p>
           <span className="inline-block text-[9px] font-heading tracking-[0.2em] uppercase px-2.5 py-0.5 rounded-full" style={{
             background: "hsl(340 42% 28% / 0.08)",

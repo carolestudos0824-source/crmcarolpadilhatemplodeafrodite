@@ -47,7 +47,7 @@ const FAQ = [
   },
   {
     q: "Para quem foi criada?",
-    a: "Para mulheres que querem estudar tarô com mais profundidade, clareza e método.",
+    a: "Para quem quer estudar tarô de verdade, com profundidade, clareza e método.",
   },
   {
     q: "A beta já está completa?",
@@ -124,7 +124,7 @@ const BetaInvitePage = () => {
           </h1>
 
           <p className="font-body text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.60)" }}>
-            Uma plataforma imersiva de ensino de tarô que une método, profundidade simbólica, trilha gamificada e experiência viva com os arcanos. A beta está aberta para as primeiras usuárias.
+            Uma plataforma imersiva de ensino de tarô que une método, profundidade simbólica, trilha gamificada e experiência viva com os arcanos. A beta está aberta para os primeiros estudantes.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

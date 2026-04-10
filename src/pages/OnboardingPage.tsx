@@ -13,7 +13,7 @@ interface OnboardingStep {
 const STEPS: OnboardingStep[] = [
   {
     symbol: <Moon className="w-6 h-6" />,
-    kicker: "Bem-vinda",
+    kicker: "Boas-vindas",
     title: "Você não veio aprender cartas.",
     lines: [
       "Você veio aprender a ler o que já existe dentro de si.",

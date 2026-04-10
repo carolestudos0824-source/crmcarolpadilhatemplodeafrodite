@@ -331,7 +331,7 @@ const WaitlistPage = () => {
           <SectionTitle>Uma entrada antecipada para viver a primeira fase da plataforma.</SectionTitle>
 
           <p className="font-body text-[13px] leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
-            A beta é a fase inicial de acesso à plataforma com um grupo reduzido de usuárias. Nesta etapa, será possível experimentar a proposta pedagógica, entrar na Jornada do Louco, testar os primeiros conteúdos e acompanhar de perto o nascimento de uma nova forma de estudar tarô.
+            A beta é a fase inicial de acesso à plataforma com um grupo reduzido de estudantes. Nesta etapa, será possível experimentar a proposta pedagógica, entrar na Jornada do Louco, testar os primeiros conteúdos e acompanhar de perto o nascimento de uma nova forma de estudar tarô.
           </p>
 
           {/* Beta value card */}
