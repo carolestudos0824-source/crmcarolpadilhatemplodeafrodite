@@ -113,8 +113,17 @@ const Divider = () => (
 
 /* ═══════════════ ACTIVE SUBSCRIBER VIEW ═══════════════ */
 
-const ActiveSubscriberView = ({ premiumUntil, premiumSource }: { premiumUntil: string | null; premiumSource: string | null }) => {
+const ActiveSubscriberView = ({
+  premiumUntil,
+  premiumSource,
+  subscriptionStatus,
+}: {
+  premiumUntil: string | null;
+  premiumSource: string | null;
+  subscriptionStatus: SubscriptionStatus;
+}) => {
   const navigate = useNavigate();
+  const isCancelledWithAccess = subscriptionStatus === "cancelled_with_access";
 
   const sourceLabel = premiumSource === "gift" ? "Presente" : premiumSource === "admin" ? "Acesso administrativo" : "Assinatura";
   const untilFormatted = premiumUntil
@@ -149,12 +158,28 @@ const ActiveSubscriberView = ({ premiumUntil, premiumSource }: { premiumUntil: s
               Jornada Completa
             </p>
             <h1 className="font-heading text-2xl tracking-wide mt-2" style={{ color: "hsl(var(--midnight))" }}>
-              Sua jornada está ativa ✦
+              {isCancelledWithAccess ? "Sua jornada ainda está ativa" : "Sua jornada está ativa ✦"}
             </h1>
             <p className="font-body text-sm mt-2" style={{ color: "hsl(var(--muted-foreground) / 0.60)" }}>
-              Todo o conteúdo está desbloqueado. Continue estudando no seu ritmo.
+              {isCancelledWithAccess
+                ? "Você cancelou, mas seu acesso continua até o fim do período."
+                : "Todo o conteúdo está desbloqueado. Continue estudando no seu ritmo."}
             </p>
           </div>
+
+          {isCancelledWithAccess && untilFormatted && (
+            <div
+              className="rounded-xl p-4 max-w-sm mx-auto"
+              style={{
+                background: "hsl(40 80% 55% / 0.08)",
+                border: "1px solid hsl(40 80% 55% / 0.20)",
+              }}
+            >
+              <p className="text-[12px] font-body leading-relaxed" style={{ color: "hsl(var(--muted-foreground) / 0.70)" }}>
+                Seu acesso termina em <strong style={{ color: "hsl(var(--midnight))" }}>{untilFormatted}</strong>. Reassine para manter acesso contínuo.
+              </p>
+            </div>
+          )}
 
           <div className="rounded-xl p-5 max-w-xs mx-auto" style={{
             background: "hsl(var(--mystic-surface))",
@@ -174,26 +199,181 @@ const ActiveSubscriberView = ({ premiumUntil, premiumSource }: { premiumUntil: s
               <div className="flex justify-between items-center">
                 <span className="text-[11px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.50)" }}>Status</span>
                 <span className="text-[11px] font-heading tracking-wide px-2 py-0.5 rounded-full" style={{
-                  background: "hsl(140 35% 45% / 0.10)",
-                  color: "hsl(140 35% 38%)",
+                  background: isCancelledWithAccess ? "hsl(40 80% 55% / 0.10)" : "hsl(140 35% 45% / 0.10)",
+                  color: isCancelledWithAccess ? "hsl(40 60% 40%)" : "hsl(140 35% 38%)",
                 }}>
-                  Ativo
+                  {isCancelledWithAccess ? "Cancelado" : "Ativo"}
                 </span>
               </div>
             </div>
           </div>
 
-          <Button
-            onClick={() => navigate("/app")}
-            className="font-heading tracking-wide text-[11px] uppercase px-8 py-5"
-            style={{
+          <div className="flex flex-col items-center gap-3">
+            <Button
+              onClick={() => navigate("/app")}
+              className="font-heading tracking-wide text-[11px] uppercase px-8 py-5"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+                color: "hsl(var(--parchment))",
+                border: "1px solid hsl(var(--secondary) / 0.40)",
+              }}
+            >
+              Continuar estudando
+            </Button>
+
+            {isCancelledWithAccess && (
+              <button
+                onClick={() => toast.info("Reassinatura será ativada com a integração de pagamento.")}
+                className="text-[11px] font-heading tracking-wider uppercase px-4 py-2 rounded-lg transition-colors"
+                style={{
+                  background: "hsl(var(--secondary) / 0.06)",
+                  color: "hsl(var(--secondary))",
+                  border: "1px solid hsl(var(--secondary) / 0.15)",
+                }}
+              >
+                Reassinar
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ═══════════════ EXPIRED / RETURN VIEW ═══════════════ */
+
+const ExpiredView = ({
+  premiumUntil,
+  subscriptionStatus,
+  selectedPlan,
+  setSelectedPlan,
+  onSubscribe,
+  onRestore,
+}: {
+  premiumUntil: string | null;
+  subscriptionStatus: SubscriptionStatus;
+  selectedPlan: string;
+  setSelectedPlan: (p: string) => void;
+  onSubscribe: () => void;
+  onRestore: () => void;
+}) => {
+  const navigate = useNavigate();
+  const isExpired = subscriptionStatus === "expired";
+  const untilFormatted = premiumUntil
+    ? new Date(premiumUntil).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })
+    : null;
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: "radial-gradient(ellipse at 50% 0%, hsl(var(--secondary) / 0.06) 0%, transparent 55%)",
+        }} />
+        <div className="relative max-w-2xl mx-auto px-6 pt-8 pb-10">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-10">
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm font-body">Voltar</span>
+          </button>
+          <div className="text-center space-y-5">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl" style={{
+              background: "linear-gradient(135deg, hsl(var(--secondary) / 0.10), hsl(var(--gold) / 0.15))",
+              border: "1.5px solid hsl(var(--gold) / 0.25)",
+            }}>
+              <Crown className="w-7 h-7" style={{ color: "hsl(var(--gold))" }} />
+            </div>
+            <p className="text-[9px] font-heading tracking-[0.4em] uppercase" style={{ color: "hsl(var(--gold))" }}>
+              Jornada Completa
+            </p>
+            <h1 className="font-heading text-[22px] md:text-[28px] tracking-wide leading-tight max-w-md mx-auto" style={{
+              background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--gold-dark)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+              {isExpired ? "Sua jornada está pausada." : "Que bom ver você de volta."}
+            </h1>
+            <p className="font-body text-[13px] leading-relaxed max-w-sm mx-auto" style={{ color: "hsl(var(--muted-foreground) / 0.65)" }}>
+              {isExpired
+                ? `Seu acesso premium expirou${untilFormatted ? ` em ${untilFormatted}` : ""}. Seu progresso está salvo — reassine para continuar de onde parou.`
+                : `Seu plano foi cancelado${untilFormatted ? ` em ${untilFormatted}` : ""}. Seu progresso continua aqui, esperando por você.`}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-6 pb-16 space-y-8">
+        {/* Plans */}
+        <section className="space-y-5">
+          <SectionLabel>Reativar acesso</SectionLabel>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {PLANS.map((plan) => {
+              const isSelected = selectedPlan === plan.id;
+              return (
+                <button
+                  key={plan.id}
+                  onClick={() => setSelectedPlan(plan.id)}
+                  className="rounded-2xl p-5 text-left transition-all relative"
+                  style={{
+                    background: isSelected
+                      ? "linear-gradient(170deg, hsl(var(--mystic-surface)), hsl(var(--secondary) / 0.03))"
+                      : "hsl(var(--mystic-surface))",
+                    border: isSelected
+                      ? "2px solid hsl(var(--gold) / 0.40)"
+                      : "1.5px solid hsl(var(--border) / 0.60)",
+                    boxShadow: isSelected ? "0 8px 40px hsl(var(--secondary) / 0.08)" : "none",
+                  }}
+                >
+                  {plan.badge && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="text-[9px] font-heading tracking-[0.2em] uppercase px-3 py-1 rounded-full whitespace-nowrap" style={{
+                        background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+                        color: "hsl(var(--parchment))",
+                      }}>
+                        ✦ {plan.badge}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-start justify-between mb-3">
+                    <p className="font-heading text-sm tracking-wide" style={{ color: "hsl(var(--midnight))" }}>{plan.name}</p>
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5" style={{
+                      border: isSelected ? "2px solid hsl(var(--secondary))" : "2px solid hsl(var(--border))",
+                      background: isSelected ? "hsl(var(--secondary))" : "transparent",
+                    }}>
+                      {isSelected && <Check className="w-3 h-3" style={{ color: "hsl(var(--parchment))" }} />}
+                    </div>
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <span className="font-heading text-2xl tracking-wide" style={{ color: "hsl(var(--secondary))" }}>{plan.price}</span>
+                    <span className="text-[11px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.50)" }}>{plan.period}</span>
+                  </div>
+                  <p className="text-[11px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.50)" }}>{plan.description}</p>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-col items-center gap-3 pt-2">
+            <Button size="lg" onClick={onSubscribe} className="font-heading tracking-wide px-10 py-6 text-sm w-full sm:w-auto" style={{
               background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
               color: "hsl(var(--parchment))",
               border: "1px solid hsl(var(--secondary) / 0.40)",
-            }}
-          >
-            Continuar estudando
-          </Button>
+              boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18)",
+            }}>
+              <Crown className="w-4 h-4 mr-2" />
+              Reativar minha jornada
+            </Button>
+            <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
+              Cancele quando quiser · Acesso imediato
+            </p>
+          </div>
+        </section>
+
+        {/* Restore */}
+        <div className="text-center">
+          <button onClick={onRestore} className="inline-flex items-center gap-2 text-[11px] font-body transition-colors" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
+            <RefreshCw className="w-3 h-3" />
+            Restaurar compra anterior
+          </button>
         </div>
       </div>
     </div>
@@ -205,7 +385,7 @@ const ActiveSubscriberView = ({ premiumUntil, premiumSource }: { premiumUntil: s
 const PremiumPage = () => {
   const navigate = useNavigate();
   const { trackEvent } = useTrackEvent();
-  const { isPremium, premiumUntil, premiumSource, loading } = usePremium();
+  const { isPremium, premiumUntil, premiumSource, subscriptionStatus, loading } = usePremium();
   const [selectedPlan, setSelectedPlan] = useState("annual");
 
   useEffect(() => {
@@ -214,13 +394,16 @@ const PremiumPage = () => {
 
   if (loading) return null;
 
-  // Active subscriber view
+  // Active subscriber view (includes cancelled_with_access)
   if (isPremium) {
-    return <ActiveSubscriberView premiumUntil={premiumUntil} premiumSource={premiumSource} />;
+    return <ActiveSubscriberView premiumUntil={premiumUntil} premiumSource={premiumSource} subscriptionStatus={subscriptionStatus} />;
   }
 
+  // Expired or cancelled — return/reactivation view
+  const isReturnUser = subscriptionStatus === "expired" || subscriptionStatus === "cancelled_expired";
+
   const handleSubscribe = () => {
-    trackEvent("premium_subscribe_clicked", { plan: selectedPlan });
+    trackEvent(isReturnUser ? "premium_reactivate_clicked" : "premium_subscribe_clicked", { plan: selectedPlan });
     toast.info("Assinatura será ativada em breve. Estamos finalizando a integração de pagamento.");
   };
 
@@ -228,6 +411,19 @@ const PremiumPage = () => {
     trackEvent("premium_restore_clicked");
     toast.info("Restauração de compra será implementada com a loja de aplicativos.");
   };
+
+  if (isReturnUser) {
+    return (
+      <ExpiredView
+        premiumUntil={premiumUntil}
+        subscriptionStatus={subscriptionStatus}
+        selectedPlan={selectedPlan}
+        setSelectedPlan={setSelectedPlan}
+        onSubscribe={handleSubscribe}
+        onRestore={handleRestore}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
