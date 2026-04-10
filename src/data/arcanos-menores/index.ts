@@ -249,6 +249,9 @@ function createEmptyCard(posicao: CartaPosicao, naipe: Naipe): ArcanoMenorEditor
 import { COPAS_1_5 } from "./copas-1-5";
 import { COPAS_6_10 } from "./copas-6-10";
 import { COPAS_CORTE } from "./copas-corte";
+import { PAUS_1_5 } from "./paus-1-5";
+import { PAUS_6_10 } from "./paus-6-10";
+import { PAUS_CORTE } from "./paus-corte";
 
 /** Merge editorial content into scaffolded cards */
 function mergeContent(
@@ -270,7 +273,7 @@ function mergeContent(
 /** All 56 Minor Arcana cards, scaffolded and filled with available content */
 export const ARCANOS_MENORES: ArcanoMenorEditorial[] = mergeContent(
   NAIPE_ORDER.flatMap((naipe) => CARD_POSITIONS.map((pos) => createEmptyCard(pos, naipe))),
-  [COPAS_1_5, COPAS_6_10, COPAS_CORTE]
+  [COPAS_1_5, COPAS_6_10, COPAS_CORTE, PAUS_1_5, PAUS_6_10, PAUS_CORTE]
 );
 
 // ─── Lookup Helpers ───────────────────────────────────────────────
