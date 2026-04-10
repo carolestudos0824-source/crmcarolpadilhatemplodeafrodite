@@ -114,7 +114,7 @@ const AdminArcanos = () => {
                 </div>
                 <div>
                   <label className="text-sm text-muted-foreground mb-1 block">Palavras-chave</label>
-                  <Input defaultValue={arcano.keywords?.join(", ")} placeholder="Separadas por vírgula" />
+                  <Input placeholder="Separadas por vírgula" />
                 </div>
                 <div className="p-3 rounded-lg bg-muted/30 text-xs text-muted-foreground">
                   <p>💡 Para editar conteúdo completo (lições, deep dive, quiz), acesse a aba <strong>Lições</strong> e filtre por este arcano.</p>

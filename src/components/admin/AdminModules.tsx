@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Edit, GripVertical, Eye, EyeOff } from "lucide-react";
+import { Plus, Edit, GripVertical, Eye, EyeOff, LockIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
