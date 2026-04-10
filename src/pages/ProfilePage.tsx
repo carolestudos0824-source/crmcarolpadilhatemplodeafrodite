@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { ARCANOS_MAIORES, MODULES, getArcanoById } from "@/data/tarot-data";
 import ornamentDivider from "@/assets/ornament-divider.png";
@@ -247,6 +247,39 @@ const ProfilePage = () => {
             </div>
           </div>
         )}
+
+        {/* ═══════════════ CERTIFICADOS LINK ═══════════════ */}
+        <div>
+          <div className="flex items-center justify-center mb-3">
+            <img src={ornamentDivider} alt="" className="w-24 h-auto opacity-40" loading="lazy" width={800} height={512} />
+          </div>
+          <button
+            onClick={() => navigate("/certificados")}
+            className="w-full group rounded-xl p-4 transition-all duration-300 hover:shadow-md text-left"
+            style={{
+              background: "linear-gradient(135deg, hsl(38 28% 93% / 0.90), hsl(36 33% 95% / 0.85))",
+              border: "1.5px solid hsl(36 45% 58% / 0.25)",
+            }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{
+                background: "linear-gradient(135deg, hsl(340 42% 30% / 0.10), hsl(36 45% 58% / 0.12))",
+                border: "1.5px solid hsl(36 45% 58% / 0.25)",
+              }}>
+                <Award className="w-5 h-5" style={{ color: "hsl(340 42% 24%)" }} />
+              </div>
+              <div className="flex-1">
+                <div className="font-heading text-base tracking-wide" style={{ color: "hsl(230 25% 12%)" }}>
+                  Certificados
+                </div>
+                <div className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                  Suas conquistas na formação
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
+            </div>
+          </button>
+        </div>
 
         {/* ═══════════════ NEXT STEPS ═══════════════ */}
         {currentArcano && completedCount < 22 && (
