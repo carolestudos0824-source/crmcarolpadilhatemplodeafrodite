@@ -460,35 +460,37 @@ const ModulesPage = () => {
           </div>
         </section>
 
-        {/* Premium CTA */}
-        <section className="mb-8">
-          <button
-            onClick={() => navigate("/premium")}
-            className="w-full group rounded-xl border transition-all duration-300 hover:shadow-md p-4"
-            style={{
-              borderColor: "hsl(36 45% 58% / 0.35)",
-              background: "linear-gradient(135deg, hsl(36 45% 58% / 0.06), hsl(340 42% 30% / 0.06))",
-            }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full shrink-0" style={{
-                background: "linear-gradient(135deg, hsl(36 45% 58% / 0.18), hsl(340 42% 30% / 0.18))",
-                border: "1px solid hsl(36 45% 58% / 0.25)",
-              }}>
-                <Crown className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
+        {/* Premium CTA - only after some progress */}
+        {progress.completedLessons.length >= 2 && (
+          <section className="mb-8">
+            <button
+              onClick={() => navigate("/premium")}
+              className="w-full group rounded-xl border transition-all duration-300 hover:shadow-md p-4"
+              style={{
+                borderColor: "hsl(36 45% 58% / 0.35)",
+                background: "linear-gradient(135deg, hsl(36 45% 58% / 0.06), hsl(340 42% 30% / 0.06))",
+              }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full shrink-0" style={{
+                  background: "linear-gradient(135deg, hsl(36 45% 58% / 0.18), hsl(340 42% 30% / 0.18))",
+                  border: "1px solid hsl(36 45% 58% / 0.25)",
+                }}>
+                  <Crown className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
+                </div>
+                <div className="flex-1 text-left">
+                  <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(340 42% 24%)" }}>
+                    Jornada Completa
+                  </h3>
+                  <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                    Acesse todos os aprofundamentos, trilhas e certificados
+                  </p>
+                </div>
+                <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
               </div>
-              <div className="flex-1 text-left">
-                <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(340 42% 24%)" }}>
-                  Jornada Completa
-                </h3>
-                <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  Acesse todos os aprofundamentos, trilhas e certificados
-                </p>
-              </div>
-              <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
-            </div>
-          </button>
-        </section>
+            </button>
+          </section>
+        )}
 
         {/* Bottom ornament */}
         <div className="flex items-center justify-center pt-4 pb-24">
