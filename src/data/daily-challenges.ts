@@ -78,19 +78,27 @@ function getTodayStr(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+// ─── Helper to get full arcano data ───
+
+function getFullArcano(seed: number, offset: number): ArcanoData | undefined {
+  const summary = seededPick(ARCANOS_MAIORES, seed, offset);
+  return getArcanoById(summary.id);
+}
+
 // ─── Generators ───
 
 export function getCartaDoDia(date = getTodayStr()): CartaDoDia {
   const seed = dateSeed(date);
-  const arcano = seededPick(ARCANOS_MAIORES, seed, 0);
+  const summary = seededPick(ARCANOS_MAIORES, seed, 0);
+  const full = getArcanoById(summary.id);
   return {
-    arcanoId: arcano.id,
-    name: arcano.name,
-    numeral: arcano.numeral,
-    subtitle: arcano.subtitle,
-    keywords: arcano.keywords,
-    essence: arcano.layers.main.essence,
-    reflection: `Como ${arcano.name} se manifesta na sua vida hoje? Observe os padrões do dia com a lente deste arcano.`,
+    arcanoId: summary.id,
+    name: summary.name,
+    numeral: summary.numeral,
+    subtitle: summary.subtitle,
+    keywords: full?.keywords || [],
+    essence: full?.layers.main.essence || "",
+    reflection: `Como ${summary.name} se manifesta na sua vida hoje? Observe os padrões do dia com a lente deste arcano.`,
   };
 }
 
@@ -99,9 +107,9 @@ export function getPerguntasDoDia(date = getTodayStr()): PerguntasDoDia {
   const questions: PerguntasDoDia["questions"] = [];
 
   for (let i = 0; i < 3; i++) {
-    const arcano = seededPick(ARCANOS_MAIORES, seed, i * 7 + 3);
-    if (arcano.quiz && arcano.quiz.length > 0) {
-      const q = seededPick(arcano.quiz, seed, i * 13);
+    const full = getFullArcano(seed, i * 7 + 3);
+    if (full && full.quiz && full.quiz.length > 0) {
+      const q = seededPick(full.quiz, seed, i * 13);
       questions.push({
         id: `daily-${date}-q${i}`,
         question: q.question,
@@ -129,8 +137,10 @@ export function getSimboloDoDia(date = getTodayStr()): SimboloDoDia {
 
 export function getCombinacaoDoDia(date = getTodayStr()): CombinacaoDoDia {
   const seed = dateSeed(date);
-  const a1 = seededPick(ARCANOS_MAIORES, seed, 5);
-  const a2 = seededPick(ARCANOS_MAIORES, seed, 17);
+  const s1 = seededPick(ARCANOS_MAIORES, seed, 5);
+  const s2 = seededPick(ARCANOS_MAIORES, seed, 17);
+  const f1 = getArcanoById(s1.id);
+  const f2 = getArcanoById(s2.id);
   
   const contexts = [
     "num contexto afetivo",
@@ -140,18 +150,22 @@ export function getCombinacaoDoDia(date = getTodayStr()): CombinacaoDoDia {
     "como conselho do dia",
   ];
   const ctx = seededPick(contexts, seed, 23);
+  const kw1 = f1?.keywords[0]?.toLowerCase() || "transformação";
+  const kw2 = f2?.keywords[0]?.toLowerCase() || "sabedoria";
 
   return {
-    card1: { name: a1.name, numeral: a1.numeral },
-    card2: { name: a2.name, numeral: a2.numeral },
-    prompt: `Imagine que ${a1.name} e ${a2.name} aparecem lado a lado ${ctx}. O que essa combinação conta?`,
-    insight: `${a1.name} traz a energia de ${a1.keywords[0]?.toLowerCase() || "transformação"}, enquanto ${a2.name} adiciona ${a2.keywords[0]?.toLowerCase() || "sabedoria"}. Juntas, sugerem ${ctx === "num contexto afetivo" ? "uma dinâmica relacional complexa" : ctx === "numa decisão profissional" ? "uma encruzilhada de ação e reflexão" : "um convite ao autoconhecimento profundo"}.`,
+    card1: { name: s1.name, numeral: s1.numeral },
+    card2: { name: s2.name, numeral: s2.numeral },
+    prompt: `Imagine que ${s1.name} e ${s2.name} aparecem lado a lado ${ctx}. O que essa combinação conta?`,
+    insight: `${s1.name} traz a energia de ${kw1}, enquanto ${s2.name} adiciona ${kw2}. Juntas, sugerem ${ctx === "num contexto afetivo" ? "uma dinâmica relacional complexa" : ctx === "numa decisão profissional" ? "uma encruzilhada de ação e reflexão" : "um convite ao autoconhecimento profundo"}.`,
   };
 }
 
 export function getMiniInterpretacao(date = getTodayStr()): MiniInterpretacao {
   const seed = dateSeed(date);
-  const arcano = seededPick(ARCANOS_MAIORES, seed, 31);
+  const summary = seededPick(ARCANOS_MAIORES, seed, 31);
+  const full = getArcanoById(summary.id);
+  const keywords = full?.keywords || [];
   
   const positions = ["Passado", "Presente", "Futuro", "Conselho", "Obstáculo", "Resultado"];
   const pos = seededPick(positions, seed, 41);
@@ -164,17 +178,18 @@ export function getMiniInterpretacao(date = getTodayStr()): MiniInterpretacao {
     "Alguém está iniciando um projeto e quer saber as energias ao redor.",
   ];
   const ctx = seededPick(contexts, seed, 51);
+  const essenceStart = full?.layers.main.essence.split(".")[0].toLowerCase() || "uma energia de transformação se apresenta";
 
   return {
     context: ctx,
-    card: { name: arcano.name, numeral: arcano.numeral, keywords: arcano.keywords },
+    card: { name: summary.name, numeral: summary.numeral, keywords },
     position: pos,
     guidedQuestions: [
-      `O que ${arcano.name} na posição de ${pos} sugere sobre a situação?`,
+      `O que ${summary.name} na posição de ${pos} sugere sobre a situação?`,
       `Quais palavras-chave se conectam ao contexto da pergunta?`,
       `Qual seria a mensagem principal para o consulente?`,
     ],
-    sampleReading: `${arcano.name} na posição de ${pos} sugere que ${arcano.layers.main.essence.split(".")[0].toLowerCase()}. No contexto apresentado, isso aponta para ${arcano.keywords.slice(0, 2).join(" e ").toLowerCase()} como temas centrais da resposta.`,
+    sampleReading: `${summary.name} na posição de ${pos} sugere que ${essenceStart}. No contexto apresentado, isso aponta para ${keywords.slice(0, 2).join(" e ").toLowerCase() || "reflexão e transformação"} como temas centrais da resposta.`,
   };
 }
 
