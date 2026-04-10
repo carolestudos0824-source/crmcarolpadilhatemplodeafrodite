@@ -61,8 +61,8 @@ export function JourneyMap({ progress }: JourneyMapProps) {
               {/* Card */}
               <div className={`flex-1 ${side === "left" ? "pr-10 md:pr-14" : "pl-10 md:pl-14"}`}>
                 <button
-                  onClick={() => isUnlocked && navigate(`/lesson/${arcano.id}`)}
-                  disabled={!isUnlocked}
+                  onClick={() => (isUnlocked || isPremium) && navigate(`/lesson/${arcano.id}`)}
+                  disabled={!isUnlocked && !isPremium}
                   className={`w-full group relative transition-all duration-500 ${
                     side === "left" ? "text-right" : "text-left"
                   }`}
