@@ -16,11 +16,11 @@ const STEPS: OnboardingStep[] = [
     kicker: "Bem-vinda",
     title: "Você não veio aprender cartas.",
     lines: [
-      "Você veio aprender a ler a si mesma.",
+      "Você veio aprender a ler o que já existe dentro de si.",
       "",
-      "Aqui, o Tarô é linguagem viva — um espelho de arquétipos, símbolos e forças que já habitam você.",
+      "Aqui, o Tarô é linguagem viva — espelho de arquétipos, forças e verdades que já te habitam.",
       "",
-      "Cada carta revela uma parte da sua história.",
+      "Cada carta revela uma parte da sua história. Nenhuma resposta vem de fora.",
     ],
     accent: "gold",
   },
@@ -29,24 +29,24 @@ const STEPS: OnboardingStep[] = [
     kicker: "A Jornada do Louco",
     title: "22 mestres. Uma travessia.",
     lines: [
-      "Sua trilha começa no Arcano Zero — O Louco.",
-      "Ele é o viajante que salta sem saber onde vai cair.",
+      "Tudo começa no Arcano Zero — O Louco.",
+      "Ele é o viajante que salta sem garantias.",
       "",
-      "Cada Arcano Maior é um portal:",
-      "O Mago ensina o poder da intenção.",
-      "A Sacerdotisa revela o que está oculto.",
-      "A Imperatriz desperta a criação.",
+      "Cada Arcano Maior é um portal de sabedoria:",
+      "O Mago ensina o poder da intenção consciente.",
+      "A Sacerdotisa revela o que está além do visível.",
+      "A Imperatriz desperta a força criadora.",
       "",
-      "Você vai caminhar com todos eles.",
+      "Você vai caminhar com todos eles — um a um.",
     ],
     accent: "wine",
   },
   {
     symbol: <Layers className="w-6 h-6" />,
     kicker: "Método em Camadas",
-    title: "Profundidade no seu ritmo.",
+    title: "Profundidade sem pressão.",
     lines: [
-      "Cada arcano é estudado em camadas:",
+      "Cada arcano é estudado em camadas de significado:",
     ],
     accent: "plum",
     detail: "layers",
@@ -54,26 +54,26 @@ const STEPS: OnboardingStep[] = [
   {
     symbol: <Eye className="w-6 h-6" />,
     kicker: "Arcanos Vivos",
-    title: "Cada carta fala com você.",
+    title: "As cartas conversam com você.",
     lines: [
-      "As cartas não estão em um livro morto.",
-      "Elas aparecem nos seus quizzes, nos desafios diários, nas revisões — e até falam diretamente com você.",
+      "As cartas não estão presas em páginas.",
+      "Elas aparecem nos seus quizzes, nos desafios, nas revisões — e falam diretamente com você.",
       "",
       "Você não memoriza. Você convive.",
-      "E quanto mais convive, mais entende.",
+      "E quanto mais convive, mais compreende.",
     ],
     accent: "gold",
   },
   {
     symbol: <Sun className="w-6 h-6" />,
     kicker: "Além dos Maiores",
-    title: "56 cartas. 10 módulos. Uma vida inteira.",
+    title: "56 cartas. 10 módulos. Uma formação inteira.",
     lines: [
-      "Depois dos Arcanos Maiores, você entra nos Menores — Copas, Ouros, Espadas e Paus.",
+      "Após os Arcanos Maiores, você encontra os Menores — Copas, Ouros, Espadas e Paus.",
       "",
       "Combinações. Tiragens. Tarô e Amor. Prática guiada.",
       "",
-      "A plataforma cresce com você.",
+      "A plataforma se aprofunda junto com você.",
     ],
     accent: "wine",
     detail: "modules",
@@ -83,13 +83,13 @@ const STEPS: OnboardingStep[] = [
     kicker: "Pronta?",
     title: "O Louco espera por você.",
     lines: [
-      "Não é preciso saber tudo.",
+      "Não é preciso saber nada.",
       "Não é preciso acreditar em nada.",
       "",
       "Só é preciso dar o primeiro passo.",
       "",
       "O precipício não é o fim.",
-      "É o começo.",
+      "É onde a jornada começa.",
     ],
     accent: "plum",
   },
@@ -120,21 +120,21 @@ const ACCENT = {
 };
 
 const LAYER_ITEMS = [
-  { label: "Essência", desc: "O coração da carta", icon: "◉" },
-  { label: "Luz & Sombra", desc: "Forças e desafios", icon: "☯" },
-  { label: "Simbolismo", desc: "Cada detalhe importa", icon: "⟡" },
-  { label: "Amor & Trabalho", desc: "Aplicações reais", icon: "♡" },
-  { label: "Quiz & Prática", desc: "Fixe o que aprendeu", icon: "✦" },
+  { label: "Essência", desc: "O coração vivo da carta", icon: "◉" },
+  { label: "Luz & Sombra", desc: "Forças e desafios que ela encarna", icon: "☯" },
+  { label: "Simbolismo", desc: "Cada detalhe visual tem propósito", icon: "⟡" },
+  { label: "Amor & Trabalho", desc: "Aplicações na vida real", icon: "♡" },
+  { label: "Quiz & Prática", desc: "Integre o que compreendeu", icon: "✦" },
 ];
 
 const MODULE_ITEMS = [
-  { name: "Fundamentos", desc: "A base do Tarô" },
-  { name: "Arcanos Maiores", desc: "Os 22 trunfos" },
+  { name: "Fundamentos", desc: "As raízes do Tarô" },
+  { name: "Arcanos Maiores", desc: "22 portais de sabedoria" },
   { name: "Arcanos Menores", desc: "56 cartas em 4 naipes" },
-  { name: "Combinações", desc: "Leitura cruzada" },
-  { name: "Tiragens", desc: "Métodos de leitura" },
-  { name: "Tarô e Amor", desc: "Leituras afetivas" },
-  { name: "Prática Guiada", desc: "Exercícios reais" },
+  { name: "Combinações", desc: "A arte da leitura cruzada" },
+  { name: "Tiragens", desc: "Métodos clássicos e intuitivos" },
+  { name: "Tarô e Amor", desc: "Leituras do coração" },
+  { name: "Prática Guiada", desc: "Interpretação com feedback" },
 ];
 
 interface Props {
@@ -299,7 +299,7 @@ const OnboardingPage = ({ onComplete }: Props) => {
                 </div>
               ))}
               <p className="text-center text-[10px] italic font-accent mt-3" style={{ color: "hsl(230 15% 40% / 0.40)" }}>
-                Vá fundo quando quiser. Avance quando estiver pronta.
+                Vá fundo quando quiser. Avance quando sentir que é hora.
               </p>
             </div>
           )}
@@ -334,7 +334,7 @@ const OnboardingPage = ({ onComplete }: Props) => {
                   ✦ Área Premium
                 </p>
                 <p className="text-[10px] mt-0.5" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
-                  Combinações, Tiragens, Amor e Prática com acesso exclusivo.
+                  Combinações, Tiragens, Amor e Prática — acesso exclusivo para quem quer ir além.
                 </p>
               </div>
             </div>
