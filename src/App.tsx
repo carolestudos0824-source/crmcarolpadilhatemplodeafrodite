@@ -39,6 +39,7 @@ const App = () => (
           <Route path="/module/:naipe" element={<NaipePage />} />
           <Route path="/intro/:naipe" element={<NaipeIntroPage />} />
           <Route path="/numerologia" element={<NumerologiaPage />} />
+          <Route path="/cartas-da-corte" element={<CartasCortePage />} />
           <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
