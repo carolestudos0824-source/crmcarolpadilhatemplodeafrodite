@@ -70,9 +70,8 @@ const PresentationPage = () => {
       {/* Slide area */}
       <div className="flex-1 relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center p-6 md:p-12">
-          <div className="w-full max-w-4xl" style={{
+          <div key={slideId} className="w-full max-w-4xl" style={{
             animation: "fade-in 0.4s ease-out",
-            key: slideId,
           }}>
             {slideId === "cover" && <SlideCover />}
             {slideId === "problem" && <SlideProblem />}
