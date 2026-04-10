@@ -12,6 +12,7 @@ import SymbolLibraryPage from "./pages/SymbolLibraryPage.tsx";
 import PremiumPage from "./pages/PremiumPage.tsx";
 import ReviewPage from "./pages/ReviewPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
+import FoolsJourneyPage from "./pages/FoolsJourneyPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/app" element={<ModulesPage />} />
           <Route path="/module/arcanos-maiores" element={<Index />} />
           <Route path="/lesson/:id" element={<LessonPage />} />
+          <Route path="/jornada-do-louco" element={<FoolsJourneyPage />} />
           <Route path="/biblioteca" element={<SymbolLibraryPage />} />
           <Route path="/revisao" element={<ReviewPage />} />
           <Route path="/premium" element={<PremiumPage />} />
