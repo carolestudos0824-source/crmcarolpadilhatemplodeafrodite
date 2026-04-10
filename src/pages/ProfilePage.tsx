@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award } from "lucide-react";
+import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { ARCANOS_MAIORES, MODULES, getArcanoById } from "@/data/tarot-data";
 import ornamentDivider from "@/assets/ornament-divider.png";
