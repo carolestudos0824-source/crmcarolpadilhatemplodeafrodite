@@ -1,13 +1,14 @@
 import { 
   BookOpen, Users, BarChart3, Layers, GraduationCap, 
   HelpCircle, RefreshCw, Sparkles, Package, Lock, Star,
-  Calendar
+  Calendar, Crown, Gift
 } from "lucide-react";
 
 export type AdminSection = 
   | "modules" | "lessons" | "arcanos" | "quizzes" 
   | "reviews" | "challenges" | "extras" | "access"
-  | "students" | "analytics" | "beta-metrics";
+  | "students" | "analytics" | "beta-metrics"
+  | "subscriptions" | "gift-codes";
 
 interface AdminSidebarProps {
   active: AdminSection;
@@ -23,7 +24,9 @@ const sections: { id: AdminSection; label: string; icon: React.ReactNode; group:
   { id: "challenges", label: "Desafios Diários", icon: <Calendar className="w-4 h-4" />, group: "Engajamento" },
   { id: "extras", label: "Materiais Extras", icon: <Package className="w-4 h-4" />, group: "Engajamento" },
   { id: "access", label: "Acesso & Premium", icon: <Lock className="w-4 h-4" />, group: "Controle" },
-  { id: "students", label: "Alunas", icon: <Users className="w-4 h-4" />, group: "Gestão" },
+  { id: "subscriptions", label: "Assinaturas", icon: <Crown className="w-4 h-4" />, group: "Comercial" },
+  { id: "gift-codes", label: "Códigos Presente", icon: <Gift className="w-4 h-4" />, group: "Comercial" },
+  { id: "students", label: "Estudantes", icon: <Users className="w-4 h-4" />, group: "Gestão" },
   { id: "analytics", label: "Análises", icon: <BarChart3 className="w-4 h-4" />, group: "Gestão" },
   { id: "beta-metrics", label: "Beta · Validação", icon: <Sparkles className="w-4 h-4" />, group: "Gestão" },
 ];

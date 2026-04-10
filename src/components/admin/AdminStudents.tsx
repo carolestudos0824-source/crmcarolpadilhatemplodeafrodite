@@ -4,8 +4,8 @@ const AdminStudents = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-heading text-lg text-foreground">Alunas</h2>
-        <p className="text-sm text-muted-foreground">Visualize o progresso das alunas cadastradas.</p>
+        <h2 className="font-heading text-lg text-foreground">Estudantes</h2>
+        <p className="text-sm text-muted-foreground">Visualize o progresso dos estudantes cadastrados.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
