@@ -68,7 +68,7 @@ const PLANS = [
   {
     id: "annual",
     name: "Anual",
-    price: "R$ 199,90",
+    price: "R$ 197,00",
     period: "/ano",
     description: "Equivale a R$ 16,66/mês — economia de 44%",
     highlighted: true,
