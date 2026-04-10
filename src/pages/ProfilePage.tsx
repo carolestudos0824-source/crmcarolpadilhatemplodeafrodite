@@ -66,13 +66,24 @@ const ProfilePage = () => {
         <div className="absolute top-6 right-6 text-2xl" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✧</div>
 
         <div className="relative max-w-2xl mx-auto px-6 pt-8 pb-10">
-          <button
-            onClick={() => navigate("/app")}
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-body">Voltar</span>
-          </button>
+          <div className="flex items-center justify-between mb-8">
+            <button
+              onClick={() => navigate("/app")}
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm font-body">Voltar</span>
+            </button>
+            {isAdmin && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+              >
+                <Shield className="w-4 h-4" />
+                <span>Painel Admin</span>
+              </button>
+            )}
+          </div>
 
           {/* Avatar / Level */}
           <div className="text-center space-y-3">
