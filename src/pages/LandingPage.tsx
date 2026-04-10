@@ -196,14 +196,12 @@ const LandingPage = () => {
           <div className="grid gap-3 max-w-md mx-auto text-left">
             {[
               "Fundamentos do Tarô",
-              "Jornada dos Arcanos Maiores",
+              "Jornada dos 22 Arcanos Maiores",
               "Arcanos vivos, começando por O Louco",
-              "Quizzes e revisão",
-              "Progresso salvo",
-              "Desafios diários",
-              "Aprofundamento simbólico",
-              "Trilhas por nível",
-              "Módulos avançados em expansão",
+              "Quizzes de fixação",
+              "Progresso salvo com XP e streak",
+              "Aprofundamento simbólico opcional",
+              "Exercícios reflexivos",
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 p-3 rounded-lg" style={{
                 background: i % 2 === 0 ? "hsl(38 30% 95% / 0.4)" : "transparent",
@@ -434,7 +432,7 @@ const LandingPage = () => {
             </Button>
             <Button
               variant="outline"
-              onClick={() => navigate("/espera")}
+              onClick={() => navigate("/convite")}
               className="px-6 py-5 text-sm font-heading tracking-[0.15em] uppercase rounded-xl transition-all duration-300"
               style={{
                 border: "1.5px solid hsl(36 25% 82% / 0.70)",
@@ -442,7 +440,7 @@ const LandingPage = () => {
                 background: "transparent",
               }}
             >
-              Entrar na lista de espera
+              Conhecer a jornada
             </Button>
           </div>
         </div>

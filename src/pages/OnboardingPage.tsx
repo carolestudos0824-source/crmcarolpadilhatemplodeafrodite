@@ -66,17 +66,16 @@ const STEPS: OnboardingStep[] = [
   },
   {
     symbol: <Sun className="w-6 h-6" />,
-    kicker: "Além dos Maiores",
-    title: "56 cartas. 10 módulos. Uma formação inteira.",
+    kicker: "A Jornada Completa",
+    title: "22 arcanos. 2 módulos. Uma travessia profunda.",
     lines: [
-      "Após os Arcanos Maiores, você encontra os Menores — Copas, Ouros, Espadas e Paus.",
+      "Comece pelos Fundamentos do Tarô — a base de tudo.",
       "",
-      "Combinações. Tiragens. Tarô e Amor. Prática guiada.",
+      "Depois, entre na Jornada dos Arcanos Maiores — 22 portais de sabedoria, um a um.",
       "",
-      "A plataforma se aprofunda junto com você.",
+      "A plataforma cresce junto com você.",
     ],
     accent: "wine",
-    detail: "modules",
   },
   {
     symbol: <Sparkles className="w-6 h-6" />,
@@ -130,11 +129,6 @@ const LAYER_ITEMS = [
 const MODULE_ITEMS = [
   { name: "Fundamentos", desc: "As raízes do Tarô" },
   { name: "Arcanos Maiores", desc: "22 portais de sabedoria" },
-  { name: "Arcanos Menores", desc: "56 cartas em 4 naipes" },
-  { name: "Combinações", desc: "A arte da leitura cruzada" },
-  { name: "Tiragens", desc: "Métodos clássicos e intuitivos" },
-  { name: "Tarô e Amor", desc: "Leituras do coração" },
-  { name: "Prática Guiada", desc: "Interpretação com feedback" },
 ];
 
 interface Props {
