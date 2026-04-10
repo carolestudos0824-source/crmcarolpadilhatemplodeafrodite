@@ -233,6 +233,36 @@ const ModulesPage = () => {
           );
         })}
 
+        {/* Study Routine link */}
+        <section className="mb-4">
+          <button
+            onClick={() => navigate("/rotina")}
+            className="w-full group transition-all duration-500 hover:scale-[1.01]"
+          >
+            <div className="relative overflow-hidden rounded-xl p-5 flex items-center gap-4" style={{
+              background: "linear-gradient(145deg, hsl(340 42% 30% / 0.06), hsl(38 28% 93% / 0.92))",
+              backdropFilter: "blur(14px)",
+              border: "1.5px solid hsl(340 42% 28% / 0.22)",
+            }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{
+                border: "1.5px solid hsl(340 42% 28% / 0.30)",
+                background: "hsl(340 42% 30% / 0.06)"
+              }}>
+                <Calendar className="w-4 h-4" style={{ color: "hsl(340 42% 28%)" }} />
+              </div>
+              <div className="flex-1 text-left">
+                <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(340 42% 22%)" }}>
+                  Rotina de Estudo
+                </h3>
+                <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                  O que estudar hoje, progresso e próximos passos
+                </p>
+              </div>
+              <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(340 42% 28% / 0.30)" }} />
+            </div>
+          </button>
+        </section>
+
         {/* Daily Ritual link */}
         <section className="mb-4">
           <button
