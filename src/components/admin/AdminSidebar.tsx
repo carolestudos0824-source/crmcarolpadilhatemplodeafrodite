@@ -7,7 +7,7 @@ import {
 export type AdminSection = 
   | "modules" | "lessons" | "arcanos" | "quizzes" 
   | "reviews" | "challenges" | "extras" | "access"
-  | "students" | "analytics";
+  | "students" | "analytics" | "beta-metrics";
 
 interface AdminSidebarProps {
   active: AdminSection;
@@ -25,6 +25,7 @@ const sections: { id: AdminSection; label: string; icon: React.ReactNode; group:
   { id: "access", label: "Acesso & Premium", icon: <Lock className="w-4 h-4" />, group: "Controle" },
   { id: "students", label: "Alunas", icon: <Users className="w-4 h-4" />, group: "Gestão" },
   { id: "analytics", label: "Análises", icon: <BarChart3 className="w-4 h-4" />, group: "Gestão" },
+  { id: "beta-metrics", label: "Beta · Validação", icon: <Sparkles className="w-4 h-4" />, group: "Gestão" },
 ];
 
 const AdminSidebar = ({ active, onChange }: AdminSidebarProps) => {
