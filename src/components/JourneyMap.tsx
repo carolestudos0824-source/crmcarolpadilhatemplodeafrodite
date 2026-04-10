@@ -73,6 +73,8 @@ export function JourneyMap({ progress }: JourneyMapProps) {
                         ? "hover:scale-[1.02] cursor-pointer"
                         : isCompleted
                         ? "cursor-pointer"
+                        : isPremium
+                        ? "hover:scale-[1.01] cursor-pointer"
                         : "cursor-not-allowed"
                     }`}
                     style={isCurrent ? {
