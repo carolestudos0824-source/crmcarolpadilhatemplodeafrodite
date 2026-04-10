@@ -118,8 +118,57 @@ const ModulesPage = () => {
 
       {/* Modules grid */}
       <main className="relative z-10 container max-w-3xl py-8 px-6">
+        {/* Progress celebration toast */}
+        <ProgressCelebration
+          xp={progress.xp}
+          level={progress.level}
+          streak={progress.streak}
+          completedLessons={progress.completedLessons.length}
+        />
+
         {/* Beta welcome banner */}
         <BetaWelcomeBanner />
+
+        {/* Retention banner - motivational messages */}
+        <RetentionBanner
+          streak={progress.streak}
+          completedLessons={progress.completedLessons.length}
+          xp={progress.xp}
+          level={progress.level}
+          lastActive={progress.lastActive}
+        />
+
+        {/* Continuity suggestions */}
+        <ContinuityCard
+          lastLessonId={progress.completedLessons.length > 0
+            ? (() => {
+                const lastLesson = progress.completedLessons[progress.completedLessons.length - 1];
+                if (lastLesson?.startsWith("arcano-")) {
+                  const num = parseInt(lastLesson.replace("arcano-", ""));
+                  return num < 21 ? String(num + 1) : null;
+                }
+                return null;
+              })()
+            : "0"
+          }
+          lastLessonName={progress.completedLessons.length > 0
+            ? (() => {
+                const lastLesson = progress.completedLessons[progress.completedLessons.length - 1];
+                if (lastLesson?.startsWith("arcano-")) {
+                  const num = parseInt(lastLesson.replace("arcano-", ""));
+                  if (num < 21) {
+                    const next = ARCANOS_MAIORES.find(a => a.id === num + 1);
+                    return next?.name || null;
+                  }
+                }
+                return null;
+              })()
+            : ARCANOS_MAIORES[0]?.name || "O Louco"
+          }
+          completedLessons={progress.completedLessons.length}
+          completedQuizzes={progress.completedQuizzes.length}
+          hasUnfinishedReview={progress.completedLessons.length > progress.completedQuizzes.length}
+        />
 
         {/* Feedback nudge (after 3+ lessons) */}
         <FeedbackNudge lessonsCompleted={progress.completedLessons.length} />
