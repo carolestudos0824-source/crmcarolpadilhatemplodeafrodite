@@ -10,6 +10,7 @@ CSS-only animations (no Framer Motion). Prefer transform/opacity. Respect prefer
 Motion = revelação. Elementos entram de baixo (reveal). Easing: cubic-bezier(0.16,1,0.3,1). Loops só em elementos focais.
 FREE_ARCANO_IDS = [0]. Only O Louco is free. All other arcanos, modules and features require premium subscription.
 Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off) | Presenteado. Sem vitalício, sem trial, sem ads.
+7 estados de assinatura: free, monthly_active, annual_active, gift_active, expired, cancelled_with_access, cancelled_expired.
 
 ## Memories
 - [Design tokens](mem://design/tokens) — Full color system: gold, crimson, mystic surfaces, HSL variables
@@ -22,6 +23,7 @@ Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off
 - [Premium model](mem://features/premium-model) — Official free vs premium tier: O Louco free, everything else premium
 - [Official plans](mem://features/official-plans) — Final 4-tier: Gratuito, Mensal R$29,90, Anual R$197, Presenteado
 - [Access control logic](mem://features/access-control-logic) — 5 states, permissions matrix, unlock/lock, gift validation, restore purchase
+- [Subscription states](mem://features/subscription-states) — Definitive 7 states: access rules, UI display, CTAs, admin view, expiration behavior
 - [Gift access logic](mem://features/gift-access-logic) — Codes + manual grant, validation rules, admin controls, redemption history
 - [Commercial architecture](mem://features/commercial-architecture) — Access tiers, gift codes, subscription states, admin metrics, pricing
 - [Mobile monetization](mem://features/mobile-monetization) — IAP strategy for App Store/Google Play: receipt validation, RevenueCat, webhooks
