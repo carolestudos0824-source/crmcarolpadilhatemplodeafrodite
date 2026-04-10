@@ -45,8 +45,18 @@ const ModulesPage = () => {
     trackEvent("onboarding_completed");
   };
 
+  if (progressLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-3">
+          <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
+          <p className="text-xs text-muted-foreground font-heading tracking-wider">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!progress.onboardingCompleted) {
-    return <OnboardingPage onComplete={handleOnboardingComplete} />;
   }
 
   const BETA_MODULE_IDS = ["fundamentos", "arcanos-maiores"];
