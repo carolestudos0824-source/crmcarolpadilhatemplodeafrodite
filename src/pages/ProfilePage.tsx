@@ -23,7 +23,7 @@ const getLevelTitle = (level: number) => LEVEL_TITLES[Math.min(level, 10)] || "I
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { progress, completedCount, journeyProgress, getCurrentArcanoId } = useProgress();
-
+  const { isPremium, premiumUntil, premiumSource } = usePremium();
   const earnedBadges = progress.badges.filter(b => b.earned);
   const unearnedBadges = progress.badges.filter(b => !b.earned);
   const xpInLevel = progress.xp % 100;
