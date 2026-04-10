@@ -25,7 +25,7 @@ const CATEGORY_LABELS: Record<ModuleCategory, string> = {
 
 const ModulesPage = () => {
   const navigate = useNavigate();
-  const { progress, completeOnboarding } = useProgress();
+  const { progress, loading: progressLoading, completeOnboarding } = useProgress();
   const { trackEvent } = useTrackEvent();
 
   // Track return visits
