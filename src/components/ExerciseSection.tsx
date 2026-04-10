@@ -34,7 +34,11 @@ export function ExerciseSection({ instruction, type, duration, onComplete, compl
           )}
         </div>
 
-        <p className="font-accent text-foreground/85 leading-relaxed italic mb-6">"{instruction}"</p>
+        <div className="font-accent text-foreground/85 leading-relaxed italic mb-6 space-y-3">
+          {instruction.split("\n\n").map((line, i) => (
+            <p key={i}>"{line}"</p>
+          ))}
+        </div>
 
         {(type === "reflection" || type === "journaling") && (
           <textarea

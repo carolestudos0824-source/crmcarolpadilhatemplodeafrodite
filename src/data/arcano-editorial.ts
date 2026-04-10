@@ -240,7 +240,7 @@ export function editorialToLegacy(editorial: ArcanoMaiorEditorial, unlocked = fa
       deepDive: editorial.deepDive,
       extras: [],
       exercise: {
-        instruction: editorial.reflectionQuestions.map(q => q.question).join("\n"),
+        instruction: editorial.reflectionQuestions.map((q, i) => `${i + 1}. ${q.question}`).join("\n\n"),
         type: "reflection",
         duration: "10 min",
       },
