@@ -99,16 +99,15 @@ const LandingPage = () => {
                   background: "hsl(38 30% 95%)",
                   border: "1.5px solid hsl(36 25% 82% / 0.70)",
                   color: "hsl(230 25% 10%)",
-                  ringColor: "hsl(36 45% 58% / 0.40)",
-                }}
-              />
-              <Button
-                type="submit"
-                size="lg"
-                className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
-              >
-                <Sparkles className="w-4 h-4 mr-1.5" />
-                Entrar na Beta
+              }}
+            />
+            <Button
+              type="submit"
+              size="lg"
+              className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
+            >
+              <Sparkles className="w-4 h-4 mr-1.5" />
+              Entrar na Beta
               </Button>
             </form>
             <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.40)" }}>
@@ -293,7 +292,7 @@ const LandingPage = () => {
                     </div>
                     <div>
                       <h3 className="font-heading text-sm tracking-wide mb-1" style={{ color: "hsl(230 25% 12%)" }}>{f.title}</h3>
-                      <p className="font-body text-sm leading-relaxed" style={{ color: "hsl(230 15% 30% / 0.55)" }}>{f.description}</p>
+                      <p className="font-body text-sm leading-relaxed" style={{ color: "hsl(230 15% 30% / 0.55)" }}>{f.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -432,7 +431,6 @@ const LandingPage = () => {
                 background: "hsl(38 30% 95%)",
                 border: "1.5px solid hsl(36 25% 82% / 0.70)",
                 color: "hsl(230 25% 10%)",
-                ringColor: "hsl(36 45% 58% / 0.40)",
               }}
             />
             <Button
