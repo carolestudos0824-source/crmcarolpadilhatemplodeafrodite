@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown } from "lucide-react";
+import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { usePremium } from "@/hooks/use-premium";
+import { useGiftCode } from "@/hooks/use-gift-code";
 import { ARCANOS_MAIORES, MODULES, getArcanoById } from "@/data/tarot-data";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const LEVEL_TITLES: Record<number, string> = {
