@@ -112,11 +112,11 @@ const LandingPage = () => {
               className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
             >
               <Sparkles className="w-4 h-4 mr-1.5" />
-              Entrar na Beta
+               Dar o primeiro passo
               </Button>
             </form>
             <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.40)" }}>
-              Acesso gratuito · Vagas limitadas · Sem compromisso
+              Gratuito · Vitalício · Limitado
             </p>
           </div>
         </div>
