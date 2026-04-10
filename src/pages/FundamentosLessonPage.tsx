@@ -171,6 +171,64 @@ const FundamentosLessonPage = () => {
             {/* Actions */}
             <div className="flex flex-col items-center gap-3 pt-4">
               <button
+                onClick={() => { completeLesson(lesson.id); addXP(15); setPhase("exercise"); }}
+                className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))",
+                  color: "hsl(36 33% 97%)",
+                  boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)",
+                }}
+              >
+                <span className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  Continuar
+                </span>
+              </button>
+              {lesson.deepDive && (
+                <button
+                  onClick={() => setPhase("deepdive")}
+                  className="text-xs font-heading tracking-wider transition-colors"
+                  style={{ color: "hsl(230 10% 45%)" }}
+                >
+                  🔮 Aprofundar (opcional)
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* EXERCISE */}
+        {phase === "exercise" && (
+          <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>
+                ✍️ Exercício
+              </span>
+              <button onClick={handleStartQuiz} className="text-xs font-heading tracking-wider" style={{ color: "hsl(36 45% 58%)" }}>
+                Pular para Quiz →
+              </button>
+            </div>
+
+            <div className="rounded-xl p-6" style={{ background: "hsl(340 42% 28% / 0.04)", border: "1px solid hsl(340 42% 28% / 0.18)" }}>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm" style={{
+                  background: "hsl(340 42% 28% / 0.08)",
+                  border: "1px solid hsl(340 42% 28% / 0.20)",
+                  color: "hsl(340 42% 26%)",
+                }}>
+                  {lesson.exercise.type === "writing" ? "✏️" : lesson.exercise.type === "observation" ? "👁️" : lesson.exercise.type === "practice" ? "🎴" : "💭"}
+                </span>
+                <span className="text-xs font-heading tracking-wider uppercase" style={{ color: "hsl(340 42% 26%)" }}>
+                  {lesson.exercise.type === "writing" ? "Escrita" : lesson.exercise.type === "observation" ? "Observação" : lesson.exercise.type === "practice" ? "Prática" : "Reflexão"}
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>
+                {lesson.exercise.instruction}
+              </p>
+            </div>
+
+            <div className="flex justify-center pt-4">
+              <button
                 onClick={handleStartQuiz}
                 className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider transition-all duration-300 hover:scale-105"
                 style={{
@@ -184,15 +242,6 @@ const FundamentosLessonPage = () => {
                   Ir ao Quiz
                 </span>
               </button>
-              {lesson.deepDive && (
-                <button
-                  onClick={() => setPhase("deepdive")}
-                  className="text-xs font-heading tracking-wider transition-colors"
-                  style={{ color: "hsl(230 10% 45%)" }}
-                >
-                  🔮 Aprofundar (opcional)
-                </button>
-              )}
             </div>
           </div>
         )}
