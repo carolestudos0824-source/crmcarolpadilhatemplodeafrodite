@@ -1,36 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Crown, Sparkles, Check, ChevronRight,
-  Eye, Heart, Star, BookOpen, Layers, Target,
+  ArrowLeft, Crown, Check, BookOpen, Eye, Layers,
+  Target, Star, Heart, Sparkles, Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTrackEvent } from "@/hooks/use-track-event";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
 /* ═══════════════ DATA ═══════════════ */
 
 const FREE_ITEMS = [
   "Onboarding e introdução ao método",
-  "Módulo de Fundamentos do Tarô",
-  "O Louco — arcano completo",
-  "Primeiro quiz e progresso",
-  "Experiência inicial da plataforma",
+  "Dashboard com progresso e continuidade",
+  "O Louco — arcano completo com voz, quiz e aprofundamento",
+  "Fundamentos do Tarô",
+  "Experiência real da plataforma",
 ];
 
 const PREMIUM_UNLOCKS = [
-  { icon: BookOpen, text: "O Mago — lição, símbolos, quiz, voz do arcano" },
-  { icon: Eye, text: "A Sacerdotisa — lição, símbolos, quiz, voz do arcano" },
-  { icon: Layers, text: "Aprofundamentos simbólicos em cada arcano" },
+  { icon: BookOpen, text: "21 arcanos maiores — lição completa, símbolos e voz" },
+  { icon: Eye, text: "Aprofundamentos simbólicos em cada arcano" },
   { icon: Target, text: "Exercícios de reflexão guiada" },
+  { icon: Layers, text: "Quizzes completos com feedback" },
   { icon: Star, text: "Revisão expandida com espaçamento inteligente" },
-  { icon: Heart, text: "Continuidade da Jornada do Louco" },
+  { icon: Heart, text: "Módulos de Amor, Combinações, Tiragens e Prática" },
 ];
 
 const HIGHLIGHTS = [
   {
     icon: Layers,
     title: "Progressão viva",
-    desc: "Cada arcano constrói sobre o anterior. A jornada tem direção.",
+    desc: "Cada arcano constrói sobre o anterior. A jornada tem direção e ritmo.",
   },
   {
     icon: Eye,
@@ -40,7 +43,7 @@ const HIGHLIGHTS = [
   {
     icon: Target,
     title: "Prática guiada",
-    desc: "Reflexões e exercícios que desenvolvem leitura, não apenas memória.",
+    desc: "Reflexões e exercícios que desenvolvem leitura — não apenas memória.",
   },
   {
     icon: Star,
@@ -49,29 +52,43 @@ const HIGHLIGHTS = [
   },
 ];
 
+const NEXT_ARCANOS = [
+  { numeral: "I", name: "O Mago", subtitle: "A vontade que cria. O gesto que transforma.", hue: "340 42% 28%" },
+  { numeral: "II", name: "A Sacerdotisa", subtitle: "O silêncio que sabe. A escuta que revela.", hue: "260 30% 35%" },
+];
+
 /* ═══════════════ HELPERS ═══════════════ */
 
 const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-[9px] font-heading tracking-[0.4em] uppercase text-center" style={{ color: "hsl(36 45% 50%)" }}>
+  <p
+    className="text-[9px] font-heading tracking-[0.4em] uppercase text-center"
+    style={{ color: "hsl(var(--gold))" }}
+  >
     {children}
   </p>
 );
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="font-heading text-lg md:text-xl tracking-wide text-center leading-snug" style={{ color: "hsl(340 42% 20%)" }}>
+  <h2
+    className="font-heading text-lg md:text-xl tracking-wide text-center leading-snug"
+    style={{ color: "hsl(var(--midnight))" }}
+  >
     {children}
   </h2>
 );
 
 const SectionText = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-[13px] font-body leading-relaxed text-center max-w-md mx-auto" style={{ color: "hsl(230 15% 25% / 0.50)" }}>
+  <p
+    className="text-[13px] font-body leading-relaxed text-center max-w-md mx-auto"
+    style={{ color: "hsl(var(--muted-foreground) / 0.65)" }}
+  >
     {children}
   </p>
 );
 
 const Divider = () => (
   <div className="flex justify-center py-2">
-    <div className="w-8 h-px" style={{ background: "hsl(36 45% 58% / 0.25)" }} />
+    <div className="w-8 h-px" style={{ background: "hsl(var(--gold) / 0.25)" }} />
   </div>
 );
 
@@ -80,18 +97,92 @@ const Divider = () => (
 const PremiumPage = () => {
   const navigate = useNavigate();
   const { trackEvent } = useTrackEvent();
+  const { user } = useAuth();
+  const [joining, setJoining] = useState(false);
+  const [joined, setJoined] = useState(false);
 
   useEffect(() => {
     trackEvent("premium_page_viewed");
   }, []);
 
+  const handleJoinWaitlist = async () => {
+    if (!user?.email) {
+      toast.info("Faça login para registrar seu interesse.");
+      return;
+    }
+
+    setJoining(true);
+    try {
+      const { error } = await supabase.from("waitlist").insert({
+        email: user.email,
+        name: user.user_metadata?.display_name || null,
+        source: "premium_page",
+      });
+
+      if (error && error.code === "23505") {
+        setJoined(true);
+        toast.success("Você já está na lista!");
+      } else if (error) {
+        throw error;
+      } else {
+        setJoined(true);
+        trackEvent("premium_waitlist_joined");
+        toast.success("Interesse registrado! Avisaremos quando estiver disponível.");
+      }
+    } catch {
+      toast.error("Erro ao registrar interesse. Tente novamente.");
+    } finally {
+      setJoining(false);
+    }
+  };
+
+  const CTAButton = () => (
+    <div className="flex flex-col items-center gap-3">
+      <Button
+        size="lg"
+        onClick={handleJoinWaitlist}
+        disabled={joining || joined}
+        className="font-heading tracking-wide px-10 py-6 text-sm transition-all"
+        style={{
+          background: joined
+            ? "hsl(140 35% 42%)"
+            : "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+          color: "hsl(var(--parchment))",
+          border: `1px solid ${joined ? "hsl(140 35% 42% / 0.40)" : "hsl(var(--secondary) / 0.40)"}`,
+          boxShadow: joined
+            ? "none"
+            : "0 6px 24px hsl(var(--secondary) / 0.18), inset 0 1px 0 hsl(var(--gold) / 0.10)",
+        }}
+      >
+        {joined ? (
+          <>
+            <Check className="w-4 h-4 mr-2" />
+            Interesse registrado
+          </>
+        ) : (
+          <>
+            <Mail className="w-4 h-4 mr-2" />
+            {joining ? "Registrando..." : "Quero ser avisado quando abrir"}
+          </>
+        )}
+      </Button>
+      <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
+        {joined ? "Você receberá um aviso quando o premium estiver disponível" : "Sem compromisso · Avisaremos por e-mail"}
+      </p>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* ═══════════ HERO ═══════════ */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: "radial-gradient(ellipse at 50% 0%, hsl(340 42% 30% / 0.08) 0%, transparent 55%)",
-        }} />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 0%, hsl(var(--secondary) / 0.06) 0%, transparent 55%)",
+          }}
+        />
 
         <div className="relative max-w-2xl mx-auto px-6 pt-8 pb-10">
           <button
@@ -103,110 +194,144 @@ const PremiumPage = () => {
           </button>
 
           <div className="text-center space-y-5">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl" style={{
-              background: "linear-gradient(135deg, hsl(340 42% 28% / 0.10), hsl(36 45% 58% / 0.15))",
-              border: "1.5px solid hsl(36 45% 58% / 0.25)",
-              boxShadow: "0 8px 32px hsl(36 45% 58% / 0.08)",
-            }}>
-              <Crown className="w-7 h-7" style={{ color: "hsl(36 45% 50%)" }} />
+            {/* Icon */}
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-2xl"
+              style={{
+                background:
+                  "linear-gradient(135deg, hsl(var(--secondary) / 0.10), hsl(var(--gold) / 0.15))",
+                border: "1.5px solid hsl(var(--gold) / 0.25)",
+                boxShadow: "0 8px 32px hsl(var(--gold) / 0.08)",
+              }}
+            >
+              <Crown className="w-7 h-7" style={{ color: "hsl(var(--gold))" }} />
             </div>
 
-            <p className="text-[9px] font-heading tracking-[0.4em] uppercase" style={{ color: "hsl(36 45% 50%)" }}>
+            {/* Label */}
+            <p
+              className="text-[9px] font-heading tracking-[0.4em] uppercase"
+              style={{ color: "hsl(var(--gold))" }}
+            >
               Jornada Completa
             </p>
 
-            <h1 className="font-heading text-[22px] md:text-[28px] tracking-wide leading-tight max-w-md mx-auto" style={{
-              background: "linear-gradient(135deg, hsl(340 42% 22%), hsl(36 42% 38%))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
+            {/* Title */}
+            <h1
+              className="font-heading text-[22px] md:text-[28px] tracking-wide leading-tight max-w-md mx-auto"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--gold-dark)))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
               Continue sua jornada. Aprofunde sua leitura.
             </h1>
 
-            <p className="font-body text-[13px] leading-relaxed max-w-sm mx-auto" style={{
-              color: "hsl(230 20% 15% / 0.50)",
-            }}>
-              Você conheceu O Louco e sentiu a proposta. Agora, desbloqueie O Mago e A Sacerdotisa — e entre na experiência completa do método.
+            {/* Subtitle */}
+            <p
+              className="font-body text-[13px] leading-relaxed max-w-sm mx-auto"
+              style={{ color: "hsl(var(--muted-foreground) / 0.65)" }}
+            >
+              Você conheceu O Louco e sentiu a proposta. Agora, desbloqueie os
+              próximos arcanos e entre na experiência completa do método.
             </p>
 
-            <div className="flex flex-col items-center gap-3 pt-2">
-              <Button
-                size="lg"
-                className="font-heading tracking-wide px-10 py-6 text-sm"
-                style={{
-                  background: "linear-gradient(135deg, hsl(340 42% 26%), hsl(340 42% 32%))",
-                  color: "hsl(36 33% 97%)",
-                  border: "1px solid hsl(340 42% 28% / 0.40)",
-                  boxShadow: "0 6px 24px hsl(340 42% 28% / 0.18), inset 0 1px 0 hsl(36 45% 58% / 0.10)",
-                }}
-              >
-                <Crown className="w-4 h-4 mr-2" />
-                Quero continuar a jornada
-              </Button>
-              <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-                Em breve · Lista de interesse
-              </p>
+            <div className="pt-2">
+              <CTAButton />
             </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-6 pb-16 space-y-12">
-
-        {/* ═══════════ BLOCO 1 — O que muda ═══════════ */}
+        {/* ═══════════ O QUE MUDA ═══════════ */}
         <section className="space-y-4">
           <SectionLabel>O que muda</SectionLabel>
-          <SectionTitle>O gratuito mostra a proposta. O premium abre o caminho.</SectionTitle>
+          <SectionTitle>
+            O gratuito mostra a proposta. O premium abre o caminho.
+          </SectionTitle>
           <SectionText>
-            Na entrada gratuita, você conhece o método, estuda O Louco e sente a experiência da plataforma. No premium, você avança para os próximos arcanos com toda a profundidade que o método oferece.
+            Na entrada gratuita, você conhece o método, estuda O Louco e sente a
+            experiência. No premium, você avança com profundidade —
+            arcano a arcano, no seu ritmo.
           </SectionText>
         </section>
 
         <Divider />
 
-        {/* ═══════════ BLOCO 2 — Comparação ═══════════ */}
+        {/* ═══════════ COMPARAÇÃO ═══════════ */}
         <section className="space-y-5">
           <SectionLabel>Comparação</SectionLabel>
           <SectionTitle>O que cada fase oferece</SectionTitle>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Gratuito */}
-            <div className="rounded-2xl p-5 space-y-3" style={{
-              background: "hsl(38 28% 95% / 0.80)",
-              border: "1px solid hsl(36 25% 82% / 0.60)",
-            }}>
-              <div className="text-center pb-2" style={{ borderBottom: "1px solid hsl(36 25% 82% / 0.40)" }}>
-                <p className="text-[10px] font-heading tracking-[0.3em] uppercase" style={{ color: "hsl(230 15% 40% / 0.50)" }}>
+            <div
+              className="rounded-2xl p-5 space-y-3"
+              style={{
+                background: "hsl(var(--mystic-surface))",
+                border: "1px solid hsl(var(--border) / 0.60)",
+              }}
+            >
+              <div
+                className="text-center pb-2"
+                style={{ borderBottom: "1px solid hsl(var(--border) / 0.40)" }}
+              >
+                <p
+                  className="text-[10px] font-heading tracking-[0.3em] uppercase"
+                  style={{ color: "hsl(var(--muted-foreground) / 0.50)" }}
+                >
                   Gratuito
                 </p>
               </div>
               <div className="space-y-2">
                 {FREE_ITEMS.map((item, i) => (
                   <div key={i} className="flex items-center gap-2.5">
-                    <Check className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(140 35% 45%)" }} />
-                    <span className="text-[12px] font-body" style={{ color: "hsl(230 15% 25% / 0.55)" }}>{item}</span>
+                    <Check
+                      className="w-3.5 h-3.5 shrink-0"
+                      style={{ color: "hsl(140 35% 45%)" }}
+                    />
+                    <span
+                      className="text-[12px] font-body"
+                      style={{ color: "hsl(var(--muted-foreground) / 0.65)" }}
+                    >
+                      {item}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Premium */}
-            <div className="rounded-2xl p-5 space-y-3 relative" style={{
-              background: "linear-gradient(170deg, hsl(38 28% 95%), hsl(340 42% 28% / 0.03))",
-              border: "1.5px solid hsl(36 45% 58% / 0.30)",
-              boxShadow: "0 8px 40px hsl(340 42% 28% / 0.06)",
-            }}>
+            <div
+              className="rounded-2xl p-5 space-y-3 relative"
+              style={{
+                background:
+                  "linear-gradient(170deg, hsl(var(--mystic-surface)), hsl(var(--secondary) / 0.03))",
+                border: "1.5px solid hsl(var(--gold) / 0.30)",
+                boxShadow: "0 8px 40px hsl(var(--secondary) / 0.06)",
+              }}
+            >
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="text-[9px] font-heading tracking-[0.2em] uppercase px-3 py-1 rounded-full" style={{
-                  background: "linear-gradient(135deg, hsl(340 42% 26%), hsl(340 42% 32%))",
-                  color: "hsl(36 33% 97%)",
-                  boxShadow: "0 2px 8px hsl(340 42% 28% / 0.20)",
-                }}>
+                <span
+                  className="text-[9px] font-heading tracking-[0.2em] uppercase px-3 py-1 rounded-full"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+                    color: "hsl(var(--parchment))",
+                    boxShadow: "0 2px 8px hsl(var(--secondary) / 0.20)",
+                  }}
+                >
                   ✦ Recomendado
                 </span>
               </div>
-              <div className="text-center pb-2" style={{ borderBottom: "1px solid hsl(36 45% 58% / 0.18)" }}>
-                <p className="text-[10px] font-heading tracking-[0.3em] uppercase" style={{ color: "hsl(340 42% 28%)" }}>
+              <div
+                className="text-center pb-2"
+                style={{ borderBottom: "1px solid hsl(var(--gold) / 0.18)" }}
+              >
+                <p
+                  className="text-[10px] font-heading tracking-[0.3em] uppercase"
+                  style={{ color: "hsl(var(--secondary))" }}
+                >
                   Premium
                 </p>
               </div>
@@ -215,8 +340,16 @@ const PremiumPage = () => {
                   const Icon = item.icon;
                   return (
                     <div key={i} className="flex items-center gap-2.5">
-                      <Icon className="w-3.5 h-3.5 shrink-0" style={{ color: "hsl(36 45% 50%)" }} />
-                      <span className="text-[12px] font-body" style={{ color: "hsl(230 15% 25% / 0.60)" }}>{item.text}</span>
+                      <Icon
+                        className="w-3.5 h-3.5 shrink-0"
+                        style={{ color: "hsl(var(--gold))" }}
+                      />
+                      <span
+                        className="text-[12px] font-body"
+                        style={{ color: "hsl(var(--muted-foreground) / 0.70)" }}
+                      >
+                        {item.text}
+                      </span>
                     </div>
                   );
                 })}
@@ -227,40 +360,61 @@ const PremiumPage = () => {
 
         <Divider />
 
-        {/* ═══════════ BLOCO 3 — Próximos arcanos ═══════════ */}
+        {/* ═══════════ PRÓXIMOS ARCANOS ═══════════ */}
         <section className="space-y-5">
           <SectionLabel>Próximos arcanos</SectionLabel>
           <SectionTitle>O Mago e A Sacerdotisa esperam por você</SectionTitle>
           <SectionText>
-            A jornada do tarô não termina em O Louco — ela começa. Cada arcano traz uma nova camada de compreensão, novos símbolos e novas perguntas.
+            A jornada do tarô não termina em O Louco — ela começa. Cada arcano
+            traz uma nova camada de compreensão, novos símbolos e novas
+            perguntas.
           </SectionText>
 
           <div className="space-y-3 pt-2">
-            {[
-              { numeral: "I", name: "O Mago", subtitle: "A vontade que cria. O gesto que transforma.", color: "hsl(340 42% 28%)" },
-              { numeral: "II", name: "A Sacerdotisa", subtitle: "O silêncio que sabe. A escuta que revela.", color: "hsl(260 30% 35%)" },
-            ].map((arcano, i) => (
-              <div key={i} className="rounded-xl p-5 flex items-center gap-4" style={{
-                background: "linear-gradient(145deg, hsl(38 28% 95% / 0.90), hsl(36 33% 96% / 0.85))",
-                border: "1.5px solid hsl(36 45% 58% / 0.22)",
-                boxShadow: "0 4px 20px hsl(340 42% 28% / 0.04)",
-              }}>
-                <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0" style={{
-                  background: "linear-gradient(135deg, hsl(38 28% 93%), hsl(36 33% 96%), hsl(36 45% 55% / 0.12))",
-                  border: `2px solid ${arcano.color}30`,
-                  boxShadow: `0 0 20px ${arcano.color}10`,
-                }}>
-                  <span className="font-heading text-lg" style={{ color: arcano.color }}>{arcano.numeral}</span>
+            {NEXT_ARCANOS.map((arcano, i) => (
+              <div
+                key={i}
+                className="rounded-xl p-5 flex items-center gap-4"
+                style={{
+                  background:
+                    "linear-gradient(145deg, hsl(var(--mystic-surface) / 0.90), hsl(var(--card) / 0.85))",
+                  border: "1.5px solid hsl(var(--gold) / 0.22)",
+                  boxShadow: "0 4px 20px hsl(var(--secondary) / 0.04)",
+                }}
+              >
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center shrink-0"
+                  style={{
+                    background: `linear-gradient(135deg, hsl(var(--mystic-surface)), hsl(var(--card)), hsl(var(--gold) / 0.12))`,
+                    border: `2px solid hsl(${arcano.hue} / 0.18)`,
+                    boxShadow: `0 0 20px hsl(${arcano.hue} / 0.06)`,
+                  }}
+                >
+                  <span
+                    className="font-heading text-lg"
+                    style={{ color: `hsl(${arcano.hue})` }}
+                  >
+                    {arcano.numeral}
+                  </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-heading text-base tracking-wide" style={{ color: "hsl(340 42% 20%)" }}>
+                  <h3
+                    className="font-heading text-base tracking-wide"
+                    style={{ color: "hsl(var(--midnight))" }}
+                  >
                     {arcano.name}
                   </h3>
-                  <p className="font-accent text-[12px] italic" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
+                  <p
+                    className="font-accent text-[12px] italic"
+                    style={{ color: "hsl(var(--muted-foreground) / 0.55)" }}
+                  >
                     {arcano.subtitle}
                   </p>
                 </div>
-                <Crown className="w-4 h-4 shrink-0" style={{ color: "hsl(36 45% 50% / 0.50)" }} />
+                <Crown
+                  className="w-4 h-4 shrink-0"
+                  style={{ color: "hsl(var(--gold) / 0.50)" }}
+                />
               </div>
             ))}
           </div>
@@ -268,30 +422,45 @@ const PremiumPage = () => {
 
         <Divider />
 
-        {/* ═══════════ BLOCO 4 — Diferenciais ═══════════ */}
+        {/* ═══════════ DIFERENCIAIS ═══════════ */}
         <section className="space-y-4">
           <SectionLabel>O diferencial</SectionLabel>
-          <SectionTitle>Não é mais conteúdo. É a forma como o estudo foi construído.</SectionTitle>
+          <SectionTitle>
+            Não é mais conteúdo. É a forma como o estudo foi construído.
+          </SectionTitle>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
             {HIGHLIGHTS.map((item, i) => {
               const Icon = item.icon;
               return (
-                <div key={i} className="rounded-xl p-4 flex items-start gap-3.5" style={{
-                  background: "hsl(38 28% 95% / 0.80)",
-                  border: "1px solid hsl(36 25% 82% / 0.50)",
-                }}>
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{
-                    background: "hsl(340 42% 28% / 0.06)",
-                    border: "1px solid hsl(340 42% 28% / 0.10)",
-                  }}>
-                    <Icon className="w-4 h-4" style={{ color: "hsl(340 42% 28%)" }} />
+                <div
+                  key={i}
+                  className="rounded-xl p-4 flex items-start gap-3.5"
+                  style={{
+                    background: "hsl(var(--mystic-surface) / 0.80)",
+                    border: "1px solid hsl(var(--border) / 0.50)",
+                  }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                    style={{
+                      background: "hsl(var(--secondary) / 0.06)",
+                      border: "1px solid hsl(var(--secondary) / 0.10)",
+                    }}
+                  >
+                    <Icon className="w-4 h-4" style={{ color: "hsl(var(--secondary))" }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-heading text-[13px] tracking-wide" style={{ color: "hsl(340 42% 20%)" }}>
+                    <h3
+                      className="font-heading text-[13px] tracking-wide"
+                      style={{ color: "hsl(var(--midnight))" }}
+                    >
                       {item.title}
                     </h3>
-                    <p className="text-[11px] font-body leading-relaxed mt-0.5" style={{ color: "hsl(230 15% 25% / 0.45)" }}>
+                    <p
+                      className="text-[11px] font-body leading-relaxed mt-0.5"
+                      style={{ color: "hsl(var(--muted-foreground) / 0.55)" }}
+                    >
                       {item.desc}
                     </p>
                   </div>
@@ -303,37 +472,50 @@ const PremiumPage = () => {
 
         <Divider />
 
+        {/* ═══════════ MANIFESTO ═══════════ */}
+        <section className="space-y-4">
+          <SectionLabel>O método</SectionLabel>
+          <SectionTitle>
+            Estudar tarô é mais do que decorar cartas.
+          </SectionTitle>
+          <div className="max-w-md mx-auto space-y-3">
+            <p
+              className="text-[13px] font-body leading-relaxed text-center"
+              style={{ color: "hsl(var(--muted-foreground) / 0.60)" }}
+            >
+              Tarô se aprende com o corpo inteiro: leitura, imagem, interação,
+              narração e experiências imersivas com os arcanos. A Jornada
+              Completa foi construída para desenvolver leitura viva, repertório
+              simbólico e autonomia interpretativa.
+            </p>
+            <p
+              className="font-accent text-[13px] italic text-center"
+              style={{ color: "hsl(var(--muted-foreground) / 0.45)" }}
+            >
+              "O objetivo não é saber o que cada carta significa — é saber
+              ouvir o que ela diz."
+            </p>
+          </div>
+        </section>
+
+        <Divider />
+
         {/* ═══════════ CTA FINAL ═══════════ */}
         <section className="text-center space-y-5 pt-4">
           <SectionLabel>Próximo passo</SectionLabel>
-          <SectionTitle>Se O Louco te encantou, o próximo arcano vai te surpreender.</SectionTitle>
+          <SectionTitle>
+            Se O Louco te encantou, o próximo arcano vai te surpreender.
+          </SectionTitle>
 
-          <p className="font-accent text-[13px] italic max-w-xs mx-auto leading-relaxed" style={{ color: "hsl(230 20% 15% / 0.38)" }}>
-            "O gratuito apresenta a travessia. O premium abre o caminho inteiro."
-          </p>
-
-          <div className="flex flex-col items-center gap-3 pt-2">
-            <Button
-              size="lg"
-              className="font-heading tracking-wide px-10 py-6 text-sm"
-              style={{
-                background: "linear-gradient(135deg, hsl(340 42% 26%), hsl(340 42% 32%))",
-                color: "hsl(36 33% 97%)",
-                border: "1px solid hsl(340 42% 28% / 0.40)",
-                boxShadow: "0 6px 24px hsl(340 42% 28% / 0.18), inset 0 1px 0 hsl(36 45% 58% / 0.10)",
-              }}
-            >
-              <Crown className="w-4 h-4 mr-2" />
-              Quero continuar a jornada
-            </Button>
-            <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-              Em breve · Cadastre seu interesse
-            </p>
+          <div className="pt-2">
+            <CTAButton />
           </div>
 
           {/* Footer ornament */}
           <div className="pt-6">
-            <div className="text-lg" style={{ color: "hsl(36 45% 58% / 0.25)" }}>⟡</div>
+            <div className="text-lg" style={{ color: "hsl(var(--gold) / 0.25)" }}>
+              ⟡
+            </div>
           </div>
         </section>
       </div>

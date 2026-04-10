@@ -14,10 +14,10 @@ interface PremiumGateProps {
 }
 
 const VALUE_HOOKS = [
-  "78 arcanos com análise simbólica em camadas",
-  "Combinações, tiragens e prática com feedback",
-  "Módulo exclusivo de Tarô e Amor",
-  "Certificados digitais por módulo concluído",
+  "21 arcanos maiores com análise simbólica em camadas",
+  "Aprofundamentos, exercícios e quizzes completos",
+  "Módulos de Amor, Combinações, Tiragens e Prática",
+  "Revisão inteligente e certificados por módulo",
 ];
 
 const PremiumGate = ({

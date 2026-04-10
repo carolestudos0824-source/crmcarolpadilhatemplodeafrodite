@@ -118,7 +118,7 @@ export const MODULES: LearningModule[] = [
 ];
 
 /** Arcanos available for free in beta */
-export const FREE_ARCANO_IDS = [0, 1, 2];
+export const FREE_ARCANO_IDS = [0];
 
 export function getModuleById(id: string): LearningModule | undefined {
   return MODULES.find(m => m.id === id);
