@@ -328,9 +328,9 @@ const LandingPage = () => {
 
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { icon: Users, title: "Grupo Seleto", desc: "Poucas vagas. Quem entra agora tem atenção individual e voz direta nas decisões." },
-              { icon: BookOpen, title: "Acesso Antecipado", desc: "Módulos que ainda não existem para o público. Você vê a plataforma nascer." },
-              { icon: Star, title: "Sem Custo", desc: "A beta é 100% gratuita. Você só investe tempo, curiosidade e o desejo de aprender." },
+              { icon: Users, title: "Acesso Vitalício", desc: "Quem entra na beta, fica para sempre — com o plano que tiver no lançamento." },
+              { icon: BookOpen, title: "Voz na Construção", desc: "Seu feedback molda a plataforma. Você influencia o que nasce." },
+              { icon: Star, title: "100% Gratuito", desc: "Sem custo, sem compromisso. Você só investe curiosidade e desejo de aprender." },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
