@@ -123,6 +123,33 @@ const NaipePage = () => {
 
       {/* Cards list */}
       <main className="relative z-10 container max-w-3xl py-8 px-6">
+        {/* Intro link */}
+        <button
+          onClick={() => navigate(`/intro/${naipe}`)}
+          className="w-full mb-6 group transition-all duration-500 hover:scale-[1.01]"
+        >
+          <div className="relative overflow-hidden rounded-xl p-5 flex items-center gap-4" style={{
+            background: naipeInfo.color.surface,
+            border: `1px solid ${naipeInfo.color.border}`,
+          }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{
+              border: `1.5px solid ${naipeInfo.color.border}`,
+              background: `${naipeInfo.color.primary}10`,
+            }}>
+              <span className="text-lg">{naipeInfo.elementSymbol}</span>
+            </div>
+            <div className="flex-1 text-left">
+              <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
+                Introdução ao {naipeInfo.name}
+              </h3>
+              <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                Elemento, simbologia, psicologia e aplicações em leitura
+              </p>
+            </div>
+            <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: naipeInfo.color.primary }} />
+          </div>
+        </button>
+
         {/* Numbered cards section */}
         <h2 className="font-heading text-xs tracking-[0.25em] uppercase text-center mb-4" style={{ color: "hsl(230 10% 45%)" }}>
           Ás ao Dez
