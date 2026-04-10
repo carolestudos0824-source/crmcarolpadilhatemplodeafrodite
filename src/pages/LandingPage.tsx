@@ -419,7 +419,7 @@ const LandingPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Sua vaga está aberta
+            Iniciar minha jornada
           </h2>
           <p className="font-accent text-base italic leading-relaxed mb-8" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
             O Louco salta sem saber o destino — mas confiando na jornada. Você não precisa saber tudo. Só precisa dar o primeiro passo.
@@ -444,12 +444,12 @@ const LandingPage = () => {
               className="font-heading tracking-wide px-8 text-sm bg-secondary hover:bg-secondary/90 text-secondary-foreground whitespace-nowrap"
             >
               <Sparkles className="w-4 h-4 mr-1.5" />
-              Quero Entrar
+              Dar o primeiro passo
             </Button>
           </form>
 
           <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Beta gratuita · Vagas limitadas · Sua opinião molda a plataforma
+            Gratuito · Vitalício · Limitado
           </p>
         </div>
       </section>
@@ -465,7 +465,7 @@ const LandingPage = () => {
             <span className="text-sm" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
           </div>
           <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.35)" }}>
-            Autoconhecimento através dos arcanos · Tradição · Profundidade · Beleza
+            Onde o tarô se revela · Tradição · Profundidade · Beleza
           </p>
           <button
             onClick={() => navigate("/apresentacao")}
