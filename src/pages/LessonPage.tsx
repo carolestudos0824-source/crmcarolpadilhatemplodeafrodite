@@ -15,7 +15,7 @@ import { ArrowLeft, MapPin } from "lucide-react";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 /** Arcanos available for free in beta */
-const FREE_ARCANO_IDS = [0];
+const FREE_ARCANO_IDS = [0, 1, 2];
 
 type LessonPhase = "intro" | "lesson" | "deepdive" | "exercise" | "quiz" | "complete";
 
