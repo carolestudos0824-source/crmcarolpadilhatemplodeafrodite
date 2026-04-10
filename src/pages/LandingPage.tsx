@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 const faq = [
   { q: "O que é a plataforma?", a: "Uma plataforma de ensino de tarô com trilha gamificada, base simbólica clara e experiência imersiva de estudo." },
   { q: "Qual linha simbólica ela adota?", a: "A base principal é o Rider-Waite-Smith, com leituras arquetípicas, psicológicas e esotéricas." },
-  { q: "Para quem foi criada?", a: "Para mulheres que querem estudar tarô com mais profundidade, clareza e método." },
-  { q: "O que é a beta?", a: "Uma entrada antecipada para um grupo reduzido de usuárias. Já entrega a experiência central do produto." },
+  { q: "Para quem foi criada?", a: "Para quem quer estudar tarô de verdade, com profundidade, clareza e método." },
+  { q: "O que é a beta?", a: "Uma entrada antecipada para um grupo reduzido de estudantes. Já entrega a experiência central do produto." },
 ];
 
 const LandingPage = () => {

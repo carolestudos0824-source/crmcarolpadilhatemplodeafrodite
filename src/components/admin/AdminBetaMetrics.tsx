@@ -98,7 +98,7 @@ const AdminBetaMetrics = () => {
         </div>
         <div>
           <p className="text-3xl font-heading text-foreground">{totalUsers}</p>
-          <p className="text-xs text-muted-foreground">Usuárias cadastradas</p>
+          <p className="text-xs text-muted-foreground">Estudantes cadastrados</p>
         </div>
       </div>
 

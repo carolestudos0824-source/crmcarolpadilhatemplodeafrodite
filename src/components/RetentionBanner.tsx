@@ -61,7 +61,7 @@ function getMotivationalMessage(streak: number, lessons: number, hoursSinceActiv
   if (lessons === 1) {
     return {
       title: "Primeira lição concluída",
-      subtitle: "O primeiro passo na jornada é sempre o mais corajoso. Bem-vinda.",
+      subtitle: "O primeiro passo na jornada é sempre o mais corajoso. Boas-vindas.",
       icon: "book",
     };
   }
