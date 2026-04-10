@@ -129,11 +129,6 @@ const LAYER_ITEMS = [
 const MODULE_ITEMS = [
   { name: "Fundamentos", desc: "As raízes do Tarô" },
   { name: "Arcanos Maiores", desc: "22 portais de sabedoria" },
-  { name: "Arcanos Menores", desc: "56 cartas em 4 naipes" },
-  { name: "Combinações", desc: "A arte da leitura cruzada" },
-  { name: "Tiragens", desc: "Métodos clássicos e intuitivos" },
-  { name: "Tarô e Amor", desc: "Leituras do coração" },
-  { name: "Prática Guiada", desc: "Interpretação com feedback" },
 ];
 
 interface Props {
