@@ -5,6 +5,7 @@ import {
   Eye, Heart, Star, BookOpen, Layers, Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTrackEvent } from "@/hooks/use-track-event";
 
 /* ═══════════════ DATA ═══════════════ */
 
@@ -78,11 +79,10 @@ const Divider = () => (
 
 const PremiumPage = () => {
   const navigate = useNavigate();
-  
+  const { trackEvent } = useTrackEvent();
+
   useEffect(() => {
-    import("@/hooks/use-track-event").then(({ useTrackEvent }) => {
-      // Can't use hooks here, so direct call
-    });
+    trackEvent("premium_page_viewed");
   }, []);
 
   return (
