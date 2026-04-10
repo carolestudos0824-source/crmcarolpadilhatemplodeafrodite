@@ -45,8 +45,7 @@ const AdminBetaMetrics = () => {
       const funnelData: FunnelStep[] = [];
       
       for (const e of events) {
-        const { count } = await supabase
-          .from("user_events")
+        const { count } = await (supabase.from("user_events") as any)
           .select("*", { count: "exact", head: true })
           .eq("event_name", e.event);
         funnelData.push({ ...e, count: count ?? 0 });
