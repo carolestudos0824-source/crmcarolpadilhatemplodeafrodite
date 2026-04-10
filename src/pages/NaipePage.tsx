@@ -152,22 +152,25 @@ const NaipePage = () => {
         boxShadow: "0 6px 36px hsl(36 45% 50% / 0.08)",
       }}>
         <div className="container max-w-3xl py-5 px-6">
-          <div className="flex items-center gap-4 mb-3">
-            <button onClick={() => navigate("/app")} className="transition-colors hover:scale-105 duration-200" style={{ color: "hsl(230 10% 40%)" }}>
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <div className="flex-1">
-              <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-0.5 flex items-center gap-1.5" style={{ color: naipeInfo.color.primary }}>
-                {naipeInfo.icon} Arcanos Menores
-              </span>
-              <h1 className="font-heading text-xl md:text-2xl tracking-wide" style={{
-                background: `linear-gradient(135deg, hsl(340 42% 22%), ${naipeInfo.color.primary})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                {naipeInfo.name}
-              </h1>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-4">
+              <button onClick={() => navigate("/app")} className="transition-colors hover:scale-105 duration-200" style={{ color: "hsl(230 10% 40%)" }}>
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <div>
+                <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-0.5 flex items-center gap-1.5" style={{ color: naipeInfo.color.primary }}>
+                  {naipeInfo.icon} Arcanos Menores
+                </span>
+                <h1 className="font-heading text-xl md:text-2xl tracking-wide" style={{
+                  background: `linear-gradient(135deg, hsl(340 42% 22%), ${naipeInfo.color.primary})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  {naipeInfo.name}
+                </h1>
+              </div>
             </div>
+            <StreakCounter streak={progress.streak} />
           </div>
 
           <p className="font-accent text-xs italic leading-relaxed mb-4" style={{ color: "hsl(230 20% 25% / 0.55)" }}>
