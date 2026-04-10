@@ -60,6 +60,9 @@ const LessonPage = () => {
     );
   }
 
+  const phaseSteps: LessonPhase[] = ["intro", "lesson", "deepdive", "exercise", "quiz"];
+  const currentIdx = phaseSteps.indexOf(phase);
+
   const handleStartLesson = () => {
     addXP(10);
     earnBadge("first-step");
