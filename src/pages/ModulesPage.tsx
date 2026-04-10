@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Check, ChevronRight, Sparkles, Crown, User } from "lucide-react";
 import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory, ARCANOS_MAIORES } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
+import { useTrackEvent } from "@/hooks/use-track-event";
 import OnboardingPage from "./OnboardingPage";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
@@ -24,9 +26,27 @@ const CATEGORY_LABELS: Record<ModuleCategory, string> = {
 const ModulesPage = () => {
   const navigate = useNavigate();
   const { progress, completeOnboarding } = useProgress();
+  const { trackEvent } = useTrackEvent();
+
+  // Track return visits
+  useEffect(() => {
+    if (progress.onboardingCompleted) {
+      const lastVisit = localStorage.getItem("last-visit-date");
+      const today = new Date().toISOString().slice(0, 10);
+      if (lastVisit && lastVisit !== today) {
+        trackEvent("return_visit", { days_since: lastVisit });
+      }
+      localStorage.setItem("last-visit-date", today);
+    }
+  }, [progress.onboardingCompleted]);
+
+  const handleOnboardingComplete = () => {
+    completeOnboarding();
+    trackEvent("onboarding_completed");
+  };
 
   if (!progress.onboardingCompleted) {
-    return <OnboardingPage onComplete={completeOnboarding} />;
+    return <OnboardingPage onComplete={handleOnboardingComplete} />;
   }
 
   const BETA_MODULE_IDS = ["fundamentos", "arcanos-maiores"];

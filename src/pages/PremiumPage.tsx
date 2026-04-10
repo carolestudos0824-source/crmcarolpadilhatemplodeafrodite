@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft, Crown, Sparkles, Check, ChevronRight,
   Eye, Heart, Star, BookOpen, Layers, Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTrackEvent } from "@/hooks/use-track-event";
 
 /* ═══════════════ DATA ═══════════════ */
 
@@ -77,6 +79,11 @@ const Divider = () => (
 
 const PremiumPage = () => {
   const navigate = useNavigate();
+  const { trackEvent } = useTrackEvent();
+
+  useEffect(() => {
+    trackEvent("premium_page_viewed");
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

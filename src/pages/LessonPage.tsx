@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getArcanoById, ARCANOS_MAIORES } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
+import { useTrackEvent } from "@/hooks/use-track-event";
 import { ArcanoCardDisplay } from "@/components/ArcanoCardDisplay";
 import { ArcanoVoice } from "@/components/ArcanoVoice";
 import { LessonSections } from "@/components/LessonSections";
@@ -21,6 +22,7 @@ const LessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addXP, completeLesson, completeQuiz, earnBadge, isArcanoCompleted } = useProgress();
+  const { trackEvent } = useTrackEvent();
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   const [showSymbols, setShowSymbols] = useState(false);
@@ -31,6 +33,21 @@ const LessonPage = () => {
   // Navigation helpers
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
+
+  // Track lesson view on mount (before early return)
+  const isPremiumLocked = !FREE_ARCANO_IDS.includes(arcanoId);
+
+  useEffect(() => {
+    if (arcano) {
+      trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
+    }
+  }, [arcanoId]);
+
+  useEffect(() => {
+    if (isPremiumLocked && arcano) {
+      trackEvent("premium_gate_hit", { arcano_id: arcanoId, name: arcano.name });
+    }
+  }, [isPremiumLocked, arcanoId]);
 
   if (!arcano) {
     return (
@@ -63,6 +80,7 @@ const LessonPage = () => {
   const handleLessonComplete = () => {
     addXP(25);
     completeLesson(`arcano-${arcano.id}`);
+    trackEvent(`lesson_completed_${arcano.id}`, { name: arcano.name });
     setPhase("quiz");
   };
 
@@ -74,6 +92,7 @@ const LessonPage = () => {
   const handleQuizComplete = (score: number, total: number) => {
     addXP(score * 10);
     completeQuiz(`quiz-arcano-${arcano.id}`);
+    trackEvent(`quiz_completed_${arcano.id}`, { name: arcano.name, score, total });
     if (arcano.id === 0) earnBadge("fool-complete");
     if (score === total) earnBadge("quiz-master");
     setPhase("complete");
@@ -91,9 +110,7 @@ const LessonPage = () => {
   };
 
   const symbolsSection = arcano.lessonSections.find((s) => s.id === "simbolos");
-  const isPremiumLocked = !FREE_ARCANO_IDS.includes(arcanoId);
 
-  // Premium gate — show elegant paywall instead of lesson
   if (isPremiumLocked) {
     return (
       <div className="min-h-screen relative overflow-hidden">
