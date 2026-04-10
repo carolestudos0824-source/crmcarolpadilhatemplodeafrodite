@@ -110,14 +110,6 @@ const LessonPage = () => {
   };
 
   const symbolsSection = arcano.lessonSections.find((s) => s.id === "simbolos");
-  const isPremiumLocked = !FREE_ARCANO_IDS.includes(arcanoId);
-
-  // Premium gate — track and show elegant paywall
-  useEffect(() => {
-    if (isPremiumLocked) {
-      trackEvent("premium_gate_hit", { arcano_id: arcanoId, name: arcano.name });
-    }
-  }, [isPremiumLocked, arcanoId]);
 
   if (isPremiumLocked) {
     return (
