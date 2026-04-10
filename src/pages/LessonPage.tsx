@@ -8,8 +8,12 @@ import { LessonSections } from "@/components/LessonSections";
 import { DeepDiveSection } from "@/components/DeepDiveSection";
 import { ExerciseSection } from "@/components/ExerciseSection";
 import { QuizSection } from "@/components/QuizSection";
+import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, ArrowRight, BookOpen, Sparkles, Eye, MapPin } from "lucide-react";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/** Arcanos available for free in beta */
+const FREE_ARCANO_IDS = [0];
 
 type LessonPhase = "intro" | "lesson" | "deepdive" | "exercise" | "quiz" | "complete";
 
@@ -87,6 +91,64 @@ const LessonPage = () => {
   };
 
   const symbolsSection = arcano.lessonSections.find((s) => s.id === "simbolos");
+  const isPremiumLocked = !FREE_ARCANO_IDS.includes(arcanoId);
+
+  // Premium gate — show elegant paywall instead of lesson
+  if (isPremiumLocked) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="fixed inset-0 z-0">
+          <img src={mysticBg} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{
+            background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.92), hsl(36 33% 97% / 0.88))",
+          }} />
+        </div>
+        <header className="relative z-10 backdrop-blur-md" style={{
+          background: "hsl(36 33% 97% / 0.85)",
+          borderBottom: "1px solid hsl(36 45% 58% / 0.15)",
+        }}>
+          <div className="container max-w-3xl py-3 px-4 flex items-center gap-4">
+            <button onClick={() => navigate("/module/arcanos-maiores")} className="transition-colors hover:scale-105 duration-200" style={{ color: "hsl(230 10% 40%)" }}>
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div className="flex-1 text-center">
+              <span className="text-[9px] tracking-[0.35em] uppercase font-heading" style={{ color: "hsl(340 42% 28% / 0.50)" }}>
+                {arcano.numeral} · Conteúdo Premium
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <main className="relative z-10 container max-w-lg mx-auto px-6 pt-12 pb-20">
+          {/* Arcano preview */}
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style={{
+              background: "linear-gradient(135deg, hsl(38 28% 93%), hsl(36 33% 96%), hsl(36 45% 55% / 0.12))",
+              border: "2px solid hsl(36 45% 58% / 0.30)",
+              boxShadow: "0 0 30px hsl(36 45% 55% / 0.10)",
+            }}>
+              <span className="font-heading text-xl" style={{ color: "hsl(340 42% 22%)" }}>{arcano.numeral}</span>
+            </div>
+            <h1 className="font-heading text-2xl tracking-wide mb-2" style={{
+              background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 42% 42%))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+              {arcano.name}
+            </h1>
+            <p className="font-accent text-sm italic" style={{ color: "hsl(230 20% 15% / 0.55)" }}>
+              {arcano.subtitle}
+            </p>
+          </div>
+
+          <PremiumGate
+            featureName={arcano.name}
+            message={`Estude ${arcano.name} com profundidade — essência, símbolos, luz, sombra, voz do arcano, exercícios e quiz completo.`}
+          />
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">

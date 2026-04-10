@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { Lock, Check, Sparkles } from "lucide-react";
+import { Lock, Check, Sparkles, Crown } from "lucide-react";
 import { ARCANOS_MAIORES } from "@/data/tarot-data";
 import { UserProgress } from "@/data/tarot-data";
+
+const FREE_ARCANO_IDS = [0];
 
 interface JourneyMapProps {
   progress: UserProgress;
@@ -38,10 +40,11 @@ export function JourneyMap({ progress }: JourneyMapProps) {
       <div className="relative space-y-0">
         {ARCANOS_MAIORES.map((arcano, index) => {
           const isCompleted = progress.completedLessons.includes(`arcano-${arcano.id}`) && progress.completedQuizzes.includes(`quiz-arcano-${arcano.id}`);
-          const isUnlocked = arcano.id === 0 || (
+          const isPremium = !FREE_ARCANO_IDS.includes(arcano.id);
+          const isUnlocked = !isPremium && (arcano.id === 0 || (
             progress.completedLessons.includes(`arcano-${arcano.id - 1}`) &&
             progress.completedQuizzes.includes(`quiz-arcano-${arcano.id - 1}`)
-          );
+          ));
           const isCurrent = isUnlocked && !isCompleted;
           const side = index % 2 === 0 ? "left" : "right";
           const symbol = ARCANO_SYMBOLS[arcano.id] || "◇";
@@ -58,8 +61,8 @@ export function JourneyMap({ progress }: JourneyMapProps) {
               {/* Card */}
               <div className={`flex-1 ${side === "left" ? "pr-10 md:pr-14" : "pl-10 md:pl-14"}`}>
                 <button
-                  onClick={() => isUnlocked && navigate(`/lesson/${arcano.id}`)}
-                  disabled={!isUnlocked}
+                  onClick={() => (isUnlocked || isPremium) && navigate(`/lesson/${arcano.id}`)}
+                  disabled={!isUnlocked && !isPremium}
                   className={`w-full group relative transition-all duration-500 ${
                     side === "left" ? "text-right" : "text-left"
                   }`}
@@ -70,6 +73,8 @@ export function JourneyMap({ progress }: JourneyMapProps) {
                         ? "hover:scale-[1.02] cursor-pointer"
                         : isCompleted
                         ? "cursor-pointer"
+                        : isPremium
+                        ? "hover:scale-[1.01] cursor-pointer"
                         : "cursor-not-allowed"
                     }`}
                     style={isCurrent ? {
@@ -169,6 +174,15 @@ export function JourneyMap({ progress }: JourneyMapProps) {
                           </span>
                         </div>
                       )}
+
+                      {isPremium && !isCompleted && (
+                        <div className={`flex items-center gap-1.5 mt-3 ${side === "left" ? "justify-end" : "justify-start"}`}>
+                          <Crown className="w-3 h-3" style={{ color: "hsl(36 45% 50% / 0.55)" }} />
+                          <span className="text-[9px] tracking-[0.2em] uppercase font-body" style={{
+                            color: "hsl(36 45% 50% / 0.50)"
+                          }}>Premium</span>
+                        </div>
+                      )}
                     </div>
 
                     {isCurrent && (
@@ -210,6 +224,8 @@ export function JourneyMap({ progress }: JourneyMapProps) {
                     <Check className="w-4 h-4" style={{ color: "hsl(36 42% 38% / 0.88)" }} />
                   ) : isUnlocked ? (
                     <span className="text-base" style={{ color: "hsl(340 42% 22%)", lineHeight: 1 }}>{symbol}</span>
+                  ) : isPremium ? (
+                    <Crown className="w-3.5 h-3.5" style={{ color: "hsl(36 45% 50% / 0.45)" }} />
                   ) : (
                     <Lock className="w-3.5 h-3.5" style={{ color: "hsl(230 10% 45% / 0.30)" }} />
                   )}

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, BookOpen, Check } from "lucide-react";
+import PremiumGate from "@/components/PremiumGate";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
 import { JourneyMap } from "@/components/JourneyMap";
@@ -222,6 +223,13 @@ const Index = () => {
                 }} />
               </div>
             </button>
+          </section>
+        )}
+
+        {/* Premium upsell after completing O Louco */}
+        {completedCount >= 1 && (
+          <section className="mb-10">
+            <PremiumGate variant="banner" className="mb-0" />
           </section>
         )}
 
