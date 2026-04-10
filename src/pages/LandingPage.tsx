@@ -319,10 +319,10 @@ const LandingPage = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              Por que uma beta privada?
+              Não é um teste. É um convite.
             </h2>
             <p className="font-body text-sm md:text-base leading-relaxed max-w-lg mx-auto" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-              Porque queremos construir algo excelente — e para isso precisamos das pessoas certas desde o início. A beta não é um teste: é um convite.
+              A Jornada do Louco está em fase de formação — e queremos as pessoas certas desde o início. Quem entra agora tem acesso completo, gratuito e vitalício, com voz ativa na construção da plataforma.
             </p>
           </div>
 
