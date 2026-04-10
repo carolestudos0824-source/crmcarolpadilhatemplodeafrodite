@@ -90,7 +90,7 @@ const ModulesPage = () => {
             <div className="flex flex-col">
               <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(340 42% 28%)" }}>
                 <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
-                Tarô Iniciático
+                A Jornada do Louco
                 <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
               </span>
               <h1 className="font-heading text-2xl md:text-3xl tracking-wide" style={{

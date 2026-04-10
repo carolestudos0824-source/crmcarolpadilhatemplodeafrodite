@@ -58,7 +58,7 @@ const LandingPage = () => {
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="w-12 h-px" style={{ background: "linear-gradient(to right, transparent, hsl(36 45% 58% / 0.40))" }} />
             <span className="text-[10px] tracking-[0.5em] uppercase font-body" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
-              Tarô Iniciático
+              A Jornada do Louco
             </span>
             <div className="w-12 h-px" style={{ background: "linear-gradient(to left, transparent, hsl(36 45% 58% / 0.40))" }} />
           </div>
@@ -144,7 +144,7 @@ const LandingPage = () => {
             Uma formação em tarô que não existia
           </h2>
           <p className="font-body text-sm md:text-base leading-relaxed mb-4" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-            O estudo do tarô está fragmentado. Conteúdo raso nas redes, livros sem método de fixação, cursos caros que não respeitam o seu ritmo. O Tarô Iniciático resolve isso.
+            O estudo do tarô está fragmentado. Conteúdo raso nas redes, livros sem método de fixação, cursos caros que não respeitam o seu ritmo. A Jornada do Louco resolve isso.
           </p>
           <p className="font-accent text-base italic leading-relaxed" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
             Reunimos tradição Rider-Waite-Smith, pedagogia em camadas e uma experiência visual que faz jus à profundidade do que ensina — tudo em um só lugar.
@@ -455,7 +455,7 @@ const LandingPage = () => {
           <div className="flex items-center gap-2">
             <span className="text-sm" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
             <span className="font-heading text-sm tracking-widest" style={{ color: "hsl(340 42% 22% / 0.60)" }}>
-              TARÔ INICIÁTICO
+              A JORNADA DO LOUCO
             </span>
             <span className="text-sm" style={{ color: "hsl(36 45% 58% / 0.30)" }}>✦</span>
           </div>
