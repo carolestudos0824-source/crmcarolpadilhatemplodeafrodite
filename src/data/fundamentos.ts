@@ -584,25 +584,27 @@ Carl Jung via nos arcanos do tarô representações dos arquétipos do inconscie
     title: "Como Usar a Plataforma",
     subtitle: "Seu método de estudo",
     icon: "🌟",
-    content: `Esta plataforma foi projetada para ensinar tarô de forma profunda, bonita e estruturada. Aqui, cada carta é uma jornada completa — não uma ficha para decorar.
+    content: `O método de ensino desta plataforma foi construído para unir clareza, profundidade e experiência.
 
-**O método pedagógico:**
+Em vez de apresentar o tarô como uma coleção de significados soltos, o conteúdo é organizado como uma trilha progressiva de aprendizagem, onde cada etapa prepara a próxima.
 
-1. **Lições em camadas** — Cada arcano tem conteúdo principal (obrigatório) e aprofundamento (opcional). Você avança sem ser forçada a consumir tudo, mas o conteúdo profundo está sempre disponível.
+A base simbólica principal é o tarô Rider-Waite-Smith. A partir dele, cada carta é estudada em diferentes camadas: essência, símbolos visuais, arquétipo, luz, sombra, aplicação prática e leitura aprofundada. Isso permite que você não apenas memorize, mas compreenda.
 
-2. **Voz do arcano** — Cada carta "fala" em primeira pessoa, criando uma conexão emocional e mnemônica poderosa.
+**Cada lição é dividida em cinco níveis de experiência:**
 
-3. **Exercícios reflexivos** — Cada lição tem um exercício prático que conecta o significado da carta à sua vida real.
+1. **Conteúdo principal** — Curto e obrigatório. A essência da carta.
 
-4. **Quiz de fixação** — Ao final de cada arcano, um quiz testa sua compreensão (não memorização) e recompensa com XP.
+2. **Aprofundamento** — Opcional, para quem quer ir mais fundo.
 
-5. **Revisão inteligente** — Flashcards e revisão espaçada garantem que o aprendizado seja retido a longo prazo.
+3. **Materiais extras** — Curiosidades, mitologia, conexões culturais.
 
-6. **Gamificação respeitosa** — XP, badges e streak motivam sem infantilizar. O tom é premium, elegante e simbólico.
+4. **Exercício prático** — Reflexão pessoal guiada conectando a carta à sua vida.
 
-7. **Base simbólica consistente** — Todo o conteúdo usa o baralho Rider-Waite-Smith como referência principal, garantindo coerência visual e interpretativa.
+5. **Quiz de fixação** — Validação do que foi aprendido, com XP como recompensa.
 
-Sua jornada começa aqui. Os Arcanos Maiores são o próximo passo.`,
+A lógica pedagógica combina progressão gamificada com aprofundamento real. O estudo permanece leve e estimulante, sem perder densidade simbólica. Você pode avançar com fluidez, mas também pode mergulhar mais fundo quando desejar.
+
+O objetivo é desenvolver leitura viva, repertório simbólico e autonomia interpretativa. Sua jornada começa aqui.`,
     keyPoints: [
       "Lições em camadas: conteúdo principal + aprofundamento opcional",
       "Cada arcano tem voz, exercício e quiz",
