@@ -11,6 +11,7 @@ Motion = revelação. Elementos entram de baixo (reveal). Easing: cubic-bezier(0
 FREE_ARCANO_IDS = [0]. Only O Louco is free. All other arcanos, modules and features require premium subscription.
 Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off) | Presenteado. Sem vitalício, sem trial, sem ads.
 7 estados de assinatura: free, monthly_active, annual_active, gift_active, expired, cancelled_with_access, cancelled_expired.
+Monetização 100% fechada. Pendente apenas integração IAP (RevenueCat) para mobile.
 
 ## Memories
 - [Design tokens](mem://design/tokens) — Full color system: gold, crimson, mystic surfaces, HSL variables
@@ -20,13 +21,13 @@ Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off
 - [Modules](mem://features/modules) — 10 learning modules from Fundamentos to Prática Guiada
 - [Editorial guideline](mem://features/editorial-guideline) — Rider-Waite-Smith como base simbólica principal
 - [Arcano editorial model](mem://features/arcano-editorial-model) — 17-field standardized structure for all 22 Major Arcana
-- [Premium model](mem://features/premium-model) — Official free vs premium tier: O Louco free, everything else premium
-- [Official plans](mem://features/official-plans) — Final 4-tier: Gratuito, Mensal R$29,90, Anual R$197, Presenteado
+- [**Final monetization**](mem://features/final-monetization) — Complete commercial architecture: plans, 7 states, flows, admin, revenue, pending IAP
 - [Subscription states](mem://features/subscription-states) — 7 states with access matrix, UI display, CTAs, admin view, expiration logic
 - [Restore & reactivation](mem://features/restore-reactivation) — Restore purchase flow, expired/cancelled handling, contextual CTAs
-- [Access control logic](mem://features/access-control-logic) — Permissions matrix, unlock/lock, gift validation, restore purchase
 - [Gift access logic](mem://features/gift-access-logic) — Codes + manual grant, validation rules, admin controls, redemption history
+- [Official plans](mem://features/official-plans) — Final 4-tier: Gratuito, Mensal R$29,90, Anual R$197, Presenteado
+- [Premium model](mem://features/premium-model) — Official free vs premium tier: O Louco free, everything else premium
+- [Access control logic](mem://features/access-control-logic) — Permissions matrix, unlock/lock, gift validation, restore purchase
 - [Commercial architecture](mem://features/commercial-architecture) — Access tiers, gift codes, subscription states, admin metrics, pricing
 - [Mobile monetization](mem://features/mobile-monetization) — IAP strategy for App Store/Google Play: receipt validation, RevenueCat, webhooks
-- [Monetization](mem://features/monetization) — Subscription plans, pricing, premium states, and subscription management screens
 - [Inclusive language](mem://constraints/inclusive-language) — Plataforma para qualquer pessoa, não apenas mulheres
