@@ -598,7 +598,7 @@ Carl Jung via nos arcanos do tarô representações dos arquétipos do inconscie
 
 5. **Revisão inteligente** — Flashcards e revisão espaçada garantem que o aprendizado seja retido a longo prazo.
 
-6. **Gamificação respeitosa** — XP, badges e streak motivam sem infantilizar. O tom é premium, feminino e simbólico.
+6. **Gamificação respeitosa** — XP, badges e streak motivam sem infantilizar. O tom é premium, elegante e simbólico.
 
 7. **Base simbólica consistente** — Todo o conteúdo usa o baralho Rider-Waite-Smith como referência principal, garantindo coerência visual e interpretativa.
 
