@@ -3,9 +3,8 @@
  * Deterministic daily content based on date seed.
  */
 
-import { ARCANOS_MAIORES, getArcanoById } from "./tarot-data";
+import { ARCANOS_MAIORES, getArcanoById, type ArcanoData } from "./tarot-data";
 import { SYMBOL_CATEGORIES } from "./symbol-library";
-import { ARCANOS_MENORES } from "./arcanos-menores";
 
 // ─── Types ───
 
