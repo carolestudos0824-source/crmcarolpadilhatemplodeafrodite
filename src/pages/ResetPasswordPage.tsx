@@ -7,16 +7,24 @@ import { Crown, Eye, EyeOff } from "lucide-react";
 
 type RecoveryState = "checking" | "ready" | "invalid" | "expired";
 
-const getRecoveryContext = () => {
+type RecoveryContext = {
+  code: string | null;
+  hasHashTokens: boolean;
+  isRecoveryLink: boolean;
+};
+
+const getRecoveryContext = (): RecoveryContext => {
   const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
   const searchParams = new URLSearchParams(window.location.search);
 
   const type = hashParams.get("type") ?? searchParams.get("type");
   const hasHashTokens = hashParams.has("access_token") || hashParams.has("refresh_token");
-  const hasQueryCode = searchParams.has("code") || hashParams.has("code");
+  const code = searchParams.get("code");
 
   return {
-    isRecoveryLink: type === "recovery" || hasHashTokens || hasQueryCode,
+    code,
+    hasHashTokens,
+    isRecoveryLink: type === "recovery" || hasHashTokens || !!code,
   };
 };
 
@@ -40,8 +48,42 @@ const ResetPasswordPage = () => {
       setError("");
     };
 
+    const markInvalid = (state: Exclude<RecoveryState, "checking" | "ready">) => {
+      if (!isMounted) return;
+      setRecoveryState(state);
+    };
+
+    const clearRecoveryUrl = () => {
+      const cleanUrl = `${window.location.origin}/reset-password`;
+      window.history.replaceState({}, document.title, cleanUrl);
+    };
+
+    const establishRecoverySession = async () => {
+      if (recoveryContext.code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(recoveryContext.code);
+        if (error) {
+          markInvalid("expired");
+          return false;
+        }
+        clearRecoveryUrl();
+        return true;
+      }
+
+      return recoveryContext.hasHashTokens;
+    };
+
     const resolveRecoveryState = async (attempt = 0) => {
-      const { data: { session } } = await supabase.auth.getSession();
+      if (!recoveryContext.isRecoveryLink) {
+        markInvalid("invalid");
+        return;
+      }
+
+      const sessionEstablished = await establishRecoverySession();
+      if (!isMounted) return;
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (!isMounted) return;
 
@@ -50,23 +92,27 @@ const ResetPasswordPage = () => {
         return;
       }
 
-      if (recoveryContext.isRecoveryLink && attempt === 0) {
+      if ((sessionEstablished || recoveryContext.hasHashTokens) && attempt === 0) {
         retryTimeout = window.setTimeout(() => {
           void resolveRecoveryState(1);
         }, 500);
         return;
       }
 
-      setRecoveryState(recoveryContext.isRecoveryLink ? "expired" : "invalid");
+      markInvalid("expired");
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY") {
+        clearRecoveryUrl();
         markReady();
         return;
       }
 
       if (event === "SIGNED_IN" && session && recoveryContext.isRecoveryLink) {
+        clearRecoveryUrl();
         markReady();
       }
     });
@@ -78,7 +124,7 @@ const ResetPasswordPage = () => {
       if (retryTimeout) window.clearTimeout(retryTimeout);
       subscription.unsubscribe();
     };
-  }, [recoveryContext.isRecoveryLink]);
+  }, [recoveryContext]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +162,7 @@ const ResetPasswordPage = () => {
             <h1 className="font-heading text-xl tracking-wide">{recoveryState === "expired" ? "Link expirado" : "Link inválido"}</h1>
             <p className="text-sm text-muted-foreground">
               {recoveryState === "expired"
-                ? "O link já foi usado ou venceu. Solicite um novo e-mail para redefinir sua senha."
+                ? "O link já foi usado, venceu ou não conseguiu abrir sua sessão de recuperação. Solicite um novo e-mail para redefinir sua senha."
                 : "Abra esta página a partir do link enviado por e-mail para redefinir sua senha."}
             </p>
           </div>
