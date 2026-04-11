@@ -43,6 +43,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 4. Peça feedback honesto
 5. Comece a cobrar quando sentir que entrega valor real`,
     keyPoints: ["Não existe diploma — mas existe preparo real", "Conhecer as 78 cartas, criar narrativa, reformular perguntas", "30-50 leituras gratuitas antes de cobrar", "Confiança (não certeza) é o sinal de prontidão"],
+    deepDive: `A psicóloga Angela Duckworth pesquisa o conceito de "grit" — perseverança apaixonada de longo prazo. No tarô, a prontidão para atender não vem de uma revelação súbita, mas de prática consistente ao longo do tempo. As 50 leituras gratuitas não são apenas treino — são a construção do "grit" necessário para sustentar uma prática profissional.`,
+    reflection: "Se alguém te pedisse uma leitura hoje, você se sentiria preparada? Sem julgamento — onde está sua confiança numa escala de 1 a 10? O número é seu mapa.",
     exercise: { instruction: "Faça um autodiagnóstico honesto: dos 5 critérios de prontidão, quantos você já domina? Quais precisa desenvolver?", type: "reflection" },
     quiz: [
       { id: "tt1-q1", question: "Quantas leituras gratuitas são recomendadas antes de cobrar?", options: ["5-10", "10-20", "30-50", "100+"], correctIndex: 2, explanation: "30-50 leituras gratuitas dão a prática necessária e a confiança para entregar leituras de valor." },
@@ -80,6 +82,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 - Se apropriado, sugira uma reflexão para casa
 - Não prometa resultados — convide à ação consciente`,
     keyPoints: ["Sessão de 45-60 min: acolhimento → pergunta → leitura → síntese → encerramento", "Ajudar a reformular perguntas é parte essencial do trabalho", "Linguagem acessível, sem jargão esotérico", "Envolver o consulente: 'Isso faz sentido para você?'"],
+    deepDive: `A técnica de "devolver a pergunta" ("Isso faz sentido para você?") vem da psicoterapia rogeriana de Carl Rogers, que demonstrou que as pessoas encontram suas próprias respostas quando se sentem verdadeiramente ouvidas. No tarô, o consulente não vem buscar a SUA resposta — vem buscar a DELE, que as cartas ajudam a revelar.`,
+    reflection: "Na sua última leitura para alguém, quem falou mais — você ou a pessoa? A proporção ideal é 40% você, 60% o consulente. Se você fala mais, está monologando, não lendo.",
     exercise: { instruction: "Simule uma sessão completa com alguém de confiança. Siga os 5 passos. Peça feedback sobre como se sentiu.", type: "practice" },
     quiz: [
       { id: "tt2-q1", question: "Qual é a estrutura recomendada de uma sessão de tarô profissional?", options: ["Tirar cartas e dizer o significado", "Acolhimento → pergunta → leitura → síntese → encerramento", "Embaralhar e entregar ao consulente", "Ler todas as 78 cartas"], correctIndex: 1, explanation: "Uma sessão profissional segue 5 etapas: acolhimento, formulação da pergunta, leitura, síntese e encerramento." },
@@ -110,6 +114,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 - Cobrar mais por "leitura mais profunda" no meio da sessão
 - Compartilhar histórias de outros consulentes`,
     keyPoints: ["Escutar mais do que falar — o consulente precisa se sentir ouvido", "Honestidade com delicadeza, nunca pânico", "Não criar dependência — empoderar é o objetivo", "Manter limites profissionais: não é terapeuta"],
+    deepDive: `O conceito de "transferência" (o consulente projeta em você figuras de autoridade) vem da psicanálise freudiana. No tarô, isso se manifesta quando o consulente diz "você é tão sábia" ou "preciso de você para tomar decisões". Reconhecer a transferência é essencial: sua função é devolver o poder, não absorvê-lo.`,
+    reflection: "Quando alguém te elogia por uma leitura, como você se sente? Se o elogio alimenta seu ego mais do que sua compaixão, cuidado — a transferência pode ser sedutora.",
     exercise: { instruction: "Escreva sua 'carta de princípios' pessoal: 5 compromissos que você assume com seus futuros consulentes.", type: "writing" },
     quiz: [
       { id: "tt3-q1", question: "O que fazer se um consulente volta toda semana com a mesma pergunta?", options: ["Ler novamente normalmente", "Conversar sobre a dependência e empoderar", "Recusar o atendimento", "Cobrar mais caro"], correctIndex: 1, explanation: "Quando alguém repete a mesma pergunta, é sinal de dependência. Converse sobre isso e ajude a pessoa a confiar em si." },
@@ -142,6 +148,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 - Consulente relata violência doméstica → oriente sobre canais de denúncia
 - Consulente quer "amarrar" alguém → recuse. Ética acima de receita`,
     keyPoints: ["Confidencialidade absoluta — sem exceções", "Transparência sobre duração, preço e limites", "Encaminhar quando o tema extrapola o tarô", "Educação contínua: nunca pare de estudar"],
+    deepDive: `No Brasil, o tarô não é profissão regulamentada — não há conselho de classe, exame de ordem ou diploma obrigatório. Isso significa que a regulação é autorregulatória: cada profissional define seus próprios padrões éticos. Essa liberdade é ao mesmo tempo privilégio e responsabilidade. Um código de ética pessoal não é opcional — é o mínimo para uma prática digna.`,
+    reflection: "Se você escrevesse 3 princípios inegociáveis para sua prática, quais seriam? Esses princípios serão testados quando um cliente difícil aparecer.",
     exercise: { instruction: "Escreva seu código de ética pessoal em 8-10 pontos. Imprima e coloque onde possa vê-lo antes de cada atendimento.", type: "writing" },
     quiz: [
       { id: "tt4-q1", question: "O que fazer se um consulente menciona ideação suicida?", options: ["Fazer uma leitura de proteção", "Encaminhar para CVV (188) ou CAPS", "Continuar a leitura normalmente", "Dar conselhos pessoais"], correctIndex: 1, explanation: "Ideação suicida exige encaminhamento profissional. Oriente sobre o CVV (188) e CAPS. Isso não é papel do tarô." },
@@ -170,6 +178,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 - Monólogo sem verificar se faz sentido
 - Suavizar demais verdades necessárias`,
     keyPoints: ["Linguagem acessível, sem jargão esotérico", "Possibilidades, não certezas: 'as cartas indicam que...'", "Analogias ajudam a traduzir conceitos abstratos", "Silêncio depois de revelações é respeito, não desconforto"],
+    deepDive: `Pesquisas em comunicação mostram que as pessoas retêm apenas 10-20% do que ouvem, mas 65% do que veem e ouvem juntos. No atendimento de tarô, mostrar as cartas enquanto fala, apontar detalhes visuais e usar analogias visuais aumenta dramaticamente a retenção e o impacto da leitura.`,
+    reflection: "Grave uma interpretação de 3 cartas como se estivesse falando com alguém. Depois ouça: você é clara? Usa linguagem acessível? Dá espaço para silêncio?",
     exercise: { instruction: "Grave (em áudio) uma interpretação de 3 cartas como se estivesse falando com um consulente. Ouça depois: usou jargão? Falou rápido? Envolveu a pessoa?", type: "practice" },
     quiz: [
       { id: "tt5-q1", question: "Qual é a melhor forma de comunicar uma interpretação?", options: ["'Isso VAI acontecer'", "'As cartas indicam que...' — linguagem de possibilidade", "'O Eremita no caminho de Yod...' — termos técnicos", "'Eu acho que...' — opinião pessoal"], correctIndex: 1, explanation: "Linguagem de possibilidade ('as cartas indicam que...') é mais honesta e menos intimidadora do que certezas absolutas." },
@@ -204,6 +214,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 - Considere MEI (Microempreendedor Individual) para formalização
 - Separe conta pessoal de conta profissional`,
     keyPoints: ["Agenda fixa, sistema de agendamento, política de cancelamento", "Pesquisar preço do mercado local (R$80-200 para 45-60 min)", "Presença online educativa, não previsões genéricas", "Considerar MEI para formalização e registrar finanças"],
+    deepDive: `O MEI (Microempreendedor Individual) é a forma mais simples de formalização no Brasil. Com CNAE adequado (atividades de serviços pessoais), você pode emitir nota fiscal, ter conta PJ e contribuir para o INSS. A formalização transmite profissionalismo e protege financeiramente.`,
+    reflection: "Você quer trabalhar com tarô como hobby, renda extra ou profissão principal? A resposta determina o nível de organização necessário.",
     exercise: { instruction: "Monte seu plano profissional: defina horários, pesquise preços na sua região, escolha canais de divulgação. Escreva tudo num documento.", type: "writing" },
     quiz: [
       { id: "tt6-q1", question: "Que tipo de conteúdo postar nas redes sociais como taróloga?", options: ["Previsões genéricas ('Signo de Áries esta semana')", "Conteúdo educativo sobre tarô e método", "Leituras reais de clientes (anonimizadas)", "Promessas de resultados"], correctIndex: 1, explanation: "Conteúdo educativo sobre tarô atrai clientes que valorizam profundidade — não promessas ou previsões genéricas." },
@@ -234,6 +246,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 - Gravação da sessão (com consentimento)
 - Menor custo operacional (sem sala)`,
     keyPoints: ["Videochamada > áudio — o olho no olho importa", "Câmera mostrando rosto + cartas, iluminação frontal", "Ir mais devagar online e narrar cada ação", "Enviar foto das cartas + resumo após a sessão"],
+    deepDive: `Estudos sobre teleconferência mostram que a "fadiga de zoom" é real — olhar para uma tela por longos períodos esgota mais do que a presença física. Para atendimentos online de tarô, sessões de 40-50 minutos funcionam melhor que 60. Inclua uma pausa de 2 minutos no meio se necessário.`,
+    reflection: "Você já atendeu online? Se sim, o que funcionou e o que não funcionou? Se não, que receio tem? Testar numa leitura gratuita remove a maioria dos medos.",
     exercise: { instruction: "Faça um teste: monte seu setup de atendimento online. Grave um vídeo teste de 3 minutos interpretando 3 cartas. Avalie: a imagem é clara? Dá para ver as cartas?", type: "practice" },
     quiz: [
       { id: "tt7-q1", question: "O que enviar ao consulente após um atendimento online?", options: ["Nada", "Foto das cartas e um resumo por escrito", "Uma lista de livros para estudar", "O vídeo completo sem edição"], correctIndex: 1, explanation: "Enviar foto das cartas e um breve resumo é um toque profissional que agrega valor ao atendimento." },
@@ -265,6 +279,8 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
 
 **O tarô é um espelho.** Quanto mais você cresce, mais ele mostra. A jornada do Louco é eterna — não há linha de chegada, apenas caminho.`,
     keyPoints: ["Prática diária (diário do tarô) é a base do crescimento", "Leia livros de referência e estude outras tradições", "Busque supervisão e participe de comunidades", "Ensinar consolida o conhecimento — volte às cartas periodicamente"],
+    deepDive: `O conceito japonês de "kaizen" — melhoria contínua em pequenos passos — aplica-se perfeitamente ao tarô. Não é preciso ler 10 livros por mês. Uma carta por dia, uma releitura por semana, uma conversa com outro tarólogo por mês. Pequenos passos consistentes superam grandes gestos esporádicos. A jornada do Louco é eterna — e essa é a beleza.`,
+    reflection: "O que você vai fazer AMANHÃ para crescer como estudante ou profissional de tarô? Não na próxima semana, não quando tiver tempo — amanhã. Um passo. Um gesto. Um compromisso.",
     exercise: { instruction: "Crie seu plano de educação contínua: defina 1 livro para ler, 1 prática diária e 1 forma de conexão com outros estudiosos. Comece esta semana.", type: "writing" },
     quiz: [
       { id: "tt8-q1", question: "Por que voltar a reler os módulos do curso periodicamente?", options: ["Porque esquecemos tudo", "Porque mudamos e percebemos coisas novas", "Porque os módulos mudam", "Porque é obrigatório"], correctIndex: 1, explanation: "Quando você cresce, o tarô mostra mais. Relendo com novos olhos, percebe camadas que antes eram invisíveis." },

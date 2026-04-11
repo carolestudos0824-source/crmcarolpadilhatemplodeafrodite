@@ -36,6 +36,8 @@ Isso não significa que você precisa aderir a uma religião ou crença específ
 
 A espiritualidade no tarô é **honestidade profunda** — com você, com o consulente e com o sagrado que habita o silêncio entre as perguntas.`,
     keyPoints: ["O tarô é instrumento simbólico e espiritual, não apenas técnico", "Trabalha com arquétipos universais que transcendem culturas", "Espiritualidade no tarô = presença + introspecção + honestidade", "Não é adivinhação, submissão ou teatro místico"],
+    deepDive: `A relação entre tarô e espiritualidade tem raízes no século XVIII, quando Court de Gébelin associou as cartas à sabedoria egípcia. No século XX, Jung trouxe a perspectiva dos arquétipos do inconsciente coletivo — o tarô como espelho da psique. Essa abordagem, nem dogmática nem materialista, é a base das práticas contemporâneas.`,
+    reflection: "Qual é a sua relação com a dimensão espiritual do tarô? Ferramenta psicológica, espiritual, ou ambos? Saber onde você está é o primeiro passo para aprofundar.",
     exercise: { instruction: "Antes da próxima leitura, sente-se em silêncio por 2 minutos. Respire. Pergunte-se: 'Estou presente?' Depois, faça a leitura. Note a diferença.", type: "practice" },
     quiz: [
       { id: "esp1-q1", question: "O que torna o tarô um instrumento espiritual?", options: ["Usar velas e incenso", "Trabalhar com símbolos universais e exigir presença", "Fazer previsões precisas", "Seguir uma religião específica"], correctIndex: 1, explanation: "O tarô é espiritual porque trabalha com símbolos universais e exige presença, introspecção e honestidade." },
@@ -64,6 +66,8 @@ A espiritualidade no tarô é **honestidade profunda** — com você, com o cons
 - Ler por obrigação, pressa ou para impressionar.
 - Ler sem formular uma pergunta clara.`,
     keyPoints: ["Preparação interior separa leitura superficial de profunda", "Ritual simples: silêncio → respiração → intenção → presença → pergunta", "Evitar ler sob emoção, pressa ou para confirmar desejos", "O ego precisa recuar para que a leitura seja honesta"],
+    deepDive: `Em tradições contemplativas, existe o conceito de "espaço liminar" — entre o ordinário e o extraordinário. A neurociência confirma: rituais preparatórios ativam o córtex pré-frontal e reduzem a reatividade da amígdala, criando um estado mental mais receptivo. A preparação não é superstição — é transição consciente.`,
+    reflection: "Quando senta para ler tarô, consegue sair do piloto automático? A qualidade da preparação determina a qualidade da leitura.",
     exercise: { instruction: "Pratique o ritual de 5 minutos descrito acima antes de uma leitura real. Depois escreva: como a preparação mudou a qualidade da leitura?", type: "practice" },
     quiz: [
       { id: "esp2-q1", question: "Por que se preparar antes de uma leitura?", options: ["Para impressionar o consulente", "Para sair do modo automático e entrar no modo receptivo", "Porque é obrigatório no tarô", "Para ativar poderes sobrenaturais"], correctIndex: 1, explanation: "A preparação ajuda a sair do modo automático e entrar no modo receptivo, limpando a mente de projeções." },
@@ -90,6 +94,8 @@ O espaço precisa comunicar: "Aqui, algo diferente acontece." Não precisa ser e
 
 **Para atendimento profissional:** O espaço precisa transmitir respeito e acolhimento. O consulente deve se sentir seguro, não intimidado.`,
     keyPoints: ["O ambiente influencia a qualidade da presença", "Princípios: organização, iluminação suave, silêncio, intenção", "Não precisa ser elaborado — precisa ser intencional", "Para atendimento: o espaço deve transmitir respeito e acolhimento"],
+    deepDive: `O conceito de espaço sagrado existe em todas as tradições: do Templo de Salomão ao puja hindu. A mesa de tarô cumpre função análoga — separar o ordinário do simbólico. O cérebro responde a rituais espaciais, entrando mais facilmente em estados de foco quando reconhece sinais ambientais consistentes.`,
+    reflection: "Onde você costuma ler tarô? Na mesa da cozinha entre pratos? Se o espaço não comunica "algo diferente acontece aqui", talvez seja hora de criar um.",
     exercise: { instruction: "Monte seu espaço de leitura ideal. Limpe a mesa, acenda uma vela, escolha uma música. Faça uma leitura nesse espaço e compare com leituras feitas na pressa.", type: "practice" },
     quiz: [
       { id: "esp3-q1", question: "O que é mais importante num espaço de leitura?", options: ["Muitas velas e incensos", "Escuridão total", "Intenção e presença", "Decoração elaborada"], correctIndex: 2, explanation: "O espaço não precisa ser elaborado — precisa ser intencional. Uma mesa limpa com uma vela já basta." },
@@ -114,6 +120,8 @@ O espaço precisa comunicar: "Aqui, algo diferente acontece." Não precisa ser e
 
 **O paradoxo da leitura:** Quanto mais você tenta controlar o resultado, pior a leitura fica. Quanto mais se rende à verdade das cartas — mesmo quando incomoda — melhor a leitura se torna.`,
     keyPoints: ["Presença = estar inteira no momento, sem projeções", "Intenção = direção da leitura, não controle do resultado", "A primeira impressão costuma ser a mais honesta", "Quanto mais se rende à verdade, melhor a leitura"],
+    deepDive: `Na tradição zen, "shoshin" é a mente de principiante — olhar para algo familiar como se fosse a primeira vez. No tarô, mesmo que você conheça O Mago de cor, cada leitura exige shoshin porque o contexto é novo. A intenção corresponde ao "sankalpa" budista: não desejo (controlar resultado), mas direção (abrir espaço para verdade).`,
+    reflection: "Na sua última leitura, você estava presente ou no piloto automático? A diferença entre uma leitura com atenção plena e uma feita com pressa é abismal.",
     exercise: { instruction: "Faça uma leitura sobre algo que você deseja muito. Observe: você está lendo as cartas ou tentando fazê-las dizer o que quer ouvir?", type: "reflection" },
     quiz: [
       { id: "esp4-q1", question: "O que é 'intenção' no contexto de uma leitura?", options: ["Controlar o resultado", "Direcionar o foco sem determinar o resultado", "Pedir às cartas o que quer ouvir", "Repetir até conseguir a resposta certa"], correctIndex: 1, explanation: "Intenção direciona o foco da leitura sem tentar controlar o resultado — ela abre, não força." },
@@ -139,6 +147,8 @@ O espaço precisa comunicar: "Aqui, algo diferente acontece." Não precisa ser e
 
 **7. Saber quando não ler.** Se você está emocionalmente envolvida no tema, passe a leitura para outra pessoa. Se o consulente está em crise aguda, encaminhe para profissional adequado.`,
     keyPoints: ["Não diagnosticar, não prever tragédias, não invadir terceiros", "Confidencialidade absoluta é inegociável", "Verdade com empatia — honestidade sem crueldade", "Saber quando não ler e quando encaminhar"],
+    deepDive: `A ética no tarô foi construída através de erros ao longo de séculos. O dilema mais complexo é a verdade desconfortável. O caminho: comunicar com honestidade E empatia. "As cartas indicam desafios significativos. O que você sente quando digo isso?" — devolver a responsabilidade ao consulente sem brutalizar nem omitir.`,
+    reflection: "Você já se deparou com cartas que mostraram algo que o consulente não queria ouvir? Como lidou? A resposta revela sua maturidade como leitora.",
     exercise: { instruction: "Escreva 3 perguntas que você NÃO leria no tarô e explique por quê. Depois escreva como reformularia cada uma de forma ética.", type: "writing" },
     quiz: [
       { id: "esp5-q1", question: "Se as cartas sugerem problemas de saúde, o que fazer?", options: ["Diagnosticar a doença", "Dizer que as cartas indicam cuidado com a saúde e sugerir consultar um médico", "Ignorar a carta", "Prever o pior cenário"], correctIndex: 1, explanation: "Tarô não diagnostica. Indique cuidado e sugira que o consulente procure um profissional de saúde." },
@@ -160,6 +170,8 @@ O espaço precisa comunicar: "Aqui, algo diferente acontece." Não precisa ser e
 
 **Você não precisa dominar todas as tradições.** Escolha a que ressoa com você e use-a para aprofundar sua compreensão. O tarô é grande o suficiente para acolher múltiplas perspectivas.`,
     keyPoints: ["O tarô dialoga com Cabala, hermetismo, astrologia, Jung e alquimia", "Nenhuma tradição 'possui' o tarô — ele acolhe múltiplas perspectivas", "Cabala oferece a conexão mais sistemática (Árvore da Vida)", "Escolha a tradição que ressoa e use para aprofundar"],
+    deepDive: `Na Árvore da Vida cabalística, 22 caminhos conectam 10 Sephiroth — correspondendo exatamente aos 22 Arcanos Maiores. O Louco = Aleph (Kether-Chokmah), O Mago = Beth (Kether-Binah), A Sacerdotisa = Gimel (Kether-Tiferet). Cada caminho é uma transição entre estados de consciência. Para os Menores, cada Sephirah governa um número: Kether=Ases até Malkuth=10s.`,
+    reflection: "Das tradições apresentadas, qual ressoa mais com você? A que escolhe revela o tipo de aprofundamento que sua alma pede.",
     exercise: { instruction: "Releia a seção 'Cabala' de O Louco, O Mago e A Sacerdotisa. Trace as conexões: como os caminhos na Árvore da Vida refletem a jornada dos arcanos?", type: "reflection" },
     quiz: [
       { id: "esp6-q1", question: "Qual tradição conecta sistematicamente cada Arcano Maior a um caminho na Árvore da Vida?", options: ["Astrologia", "Cabala", "Alquimia", "Psicologia junguiana"], correctIndex: 1, explanation: "A Cabala conecta cada Arcano Maior a um caminho entre os Sephiroth na Árvore da Vida." },
@@ -193,6 +205,8 @@ O espaço precisa comunicar: "Aqui, algo diferente acontece." Não precisa ser e
 
 Não é "imaginação" — é diálogo com o inconsciente usando a linguagem que ele melhor compreende: imagens.`,
     keyPoints: ["Pathworking = entrar na carta em meditação visual", "Treina intuição, memória simbólica e conexão com arquétipos", "Não é imaginação — é diálogo com o inconsciente", "Prática regular transforma a profundidade das leituras"],
+    deepDive: `O pathworking tem raízes na Golden Dawn, mas a prática é mais antiga: budismo tibetano (entrar em mandalas), Cabala (meditação nos Sephiroth), gnose (ascensão visionária). Jung chamava de "imaginação ativa" e praticava com pacientes. O "Livro Vermelho" de Jung é essencialmente um diário de pathworking. Funciona porque o inconsciente se comunica em imagens.`,
+    reflection: "Você já tentou "entrar" numa carta em meditação? Muitas vezes o medo de "não ver nada" é o maior bloqueio — e até "não ver nada" é uma mensagem.",
     exercise: { instruction: "Faça a meditação com O Louco seguindo os 7 passos. Anote tudo que viu, sentiu e ouviu. Compare com o conteúdo editorial da carta.", type: "practice" },
     quiz: [
       { id: "esp7-q1", question: "O que é pathworking no contexto do tarô?", options: ["Decorar significados", "Meditação visual onde se 'entra' na carta", "Estudo acadêmico das cartas", "Tiragem de cartas em sequência"], correctIndex: 1, explanation: "Pathworking é a prática de meditação visual onde o praticante 'entra' na carta e dialoga com seus elementos." },
@@ -223,6 +237,8 @@ Não é "imaginação" — é diálogo com o inconsciente usando a linguagem que
 
 **Depois de 78 dias** (um ciclo completo), você terá pelo menos uma vivência pessoal com cada carta — isso vale mais do que qualquer livro.`,
     keyPoints: ["Tirar 1 carta/dia e registrar impressão + manifestação", "Cria vocabulário pessoal e treina olhar simbólico", "78 dias = uma vivência com cada carta do baralho", "A prática mais simples e mais transformadora"],
+    deepDive: `O diário combina três dimensões: prospectiva (manhã — energia do dia), retrospectiva (noite — como se manifestou) e cumulativa (meses — padrões que emergem). Após 78 dias, releia o diário inteiro. Observe que cartas apareceram mais, quais menos, e o que isso diz sobre o período. Muitos relatam que cartas "difíceis" se tornam profundamente significativas meses depois.`,
+    reflection: "Se começasse o diário hoje, que carta gostaria de tirar? E qual teria medo de tirar? As duas respostas revelam onde você está no caminho.",
     exercise: { instruction: "Comece seu diário do tarô hoje. Tire 1 carta, registre sua impressão. À noite, complete: como ela se manifestou?", type: "writing" },
     quiz: [
       { id: "esp8-q1", question: "Por que o diário do tarô é tão eficaz?", options: ["Porque decora significados", "Porque cria vocabulário pessoal e treina intuição pela repetição", "Porque substitui livros de estudo", "Porque prevê o futuro do dia"], correctIndex: 1, explanation: "O diário cria vocabulário pessoal com as cartas e treina a intuição pela repetição e reflexão diária." },

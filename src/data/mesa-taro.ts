@@ -38,6 +38,8 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
 
 **A mesa comunica:** Para o consulente, a mesa diz "aqui é sério". Para você, diz "aqui eu entro em modo de leitura".`,
     keyPoints: ["Superfície limpa e ampla é o mínimo (60cm × 60cm)", "Pano de leitura protege cartas e delimita o espaço sagrado", "Iluminação suave + funcional: precisa ver as cartas", "Caderno e caneta fazem parte do processo de leitura"],
+    deepDive: `A tradição de usar panos específicos para leitura de tarô remonta ao século XVIII. Na Golden Dawn, cores tinham correspondências precisas: preto para concentração e banimento, púrpura para espiritualidade e conexão com o divino, branco para clareza e purificação. O importante não é seguir regras rígidas, mas criar um espaço que comunique intenção.`,
+    reflection: "Como é o seu espaço de leitura atual? Se não tem um, imagine: como seria o ambiente ideal para você se conectar com as cartas?",
     exercise: { instruction: "Monte sua mesa de leitura com o que tem disponível. Tire uma foto. Identifique o que falta e o que já funciona.", type: "practice" },
     quiz: [
       { id: "mesa1-q1", question: "Qual é o tamanho mínimo recomendado para uma mesa de tarô?", options: ["30cm × 30cm", "60cm × 60cm", "1m × 1m", "O tamanho não importa"], correctIndex: 1, explanation: "Uma tiragem de Cruz Celta precisa de 10 cartas dispostas — 60cm × 60cm é o mínimo funcional." },
@@ -67,6 +69,8 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
 
 **Música com letra** — Letras competem pela atenção. Se quiser som, use instrumental.`,
     keyPoints: ["Pano dedicado, baralho em bom estado, caderno exclusivo", "Evitar bagunça, luz fria, excesso de objetos", "Menos é mais — a mesa não é um altar caótico", "Baralhos emprestados devem ser limpos antes do uso"],
+    deepDive: `A questão de quem pode tocar o baralho é uma das superstições mais persistentes do tarô. Na prática profissional moderna, muitos tarólogos pedem que o consulente embaralhe — isso cria envolvimento e conexão pessoal com a leitura. O que importa não é a "pureza energética" do baralho, mas a intenção e presença de quem o usa.`,
+    reflection: "Você tem alguma superstição sobre seu baralho? Reflita: ela serve à sua prática ou a limita?",
     exercise: { instruction: "Faça um inventário: o que você tem e o que falta? Liste 3 itens essenciais que precisa adquirir ou organizar.", type: "writing" },
     quiz: [
       { id: "mesa2-q1", question: "Por que evitar música com letra durante uma leitura?", options: ["É proibido no tarô", "Letras competem pela atenção verbal", "Música não combina com tarô", "Porque é tradição"], correctIndex: 1, explanation: "Letras competem pela atenção verbal, que você precisa para interpretar as cartas. Instrumental é preferível." },
@@ -94,6 +98,8 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
 
 **Frequência ideal:** 3-4 sessões por semana de 30 minutos é mais eficaz do que uma sessão de 3 horas por mês. Regularidade supera intensidade.`,
     keyPoints: ["Mesa de estudo ≠ mesa de atendimento", "Boa iluminação, material acessível, uma carta por vez", "Anotar é essencial — estudo sem anotação se perde", "Regularidade (3-4×/semana, 30min) supera intensidade"],
+    deepDive: `O método de estudar uma carta por vez — em vez de tentar absorver o baralho inteiro — reflete o princípio pedagógico do "espaçamento": a memória de longo prazo se forma melhor com sessões curtas e frequentes do que com maratonas. Estudar 1 carta por dia durante 78 dias é mais eficaz do que estudar 78 cartas em um fim de semana.`,
+    reflection: "Como você estuda atualmente? Maratonas esporádicas ou sessões regulares? A resposta afeta diretamente a profundidade do seu aprendizado.",
     exercise: { instruction: "Monte seu espaço de estudo. Estude uma carta por 30 minutos usando a rotina sugerida. Anote o que descobriu.", type: "practice" },
     quiz: [
       { id: "mesa3-q1", question: "O que é mais eficaz para o estudo do tarô?", options: ["Uma sessão longa por mês", "Estudar todas as cartas de uma vez", "3-4 sessões de 30 minutos por semana", "Estudar apenas quando sentir vontade"], correctIndex: 2, explanation: "Regularidade supera intensidade. 3-4 sessões curtas por semana são mais eficazes que sessões longas esporádicas." },
@@ -124,6 +130,8 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
 - Nada entre você e o consulente além das cartas
 - Celulares desligados (dos dois)`,
     keyPoints: ["Privacidade, conforto e neutralidade visual são essenciais", "Cartas visíveis para ambos, frente a frente", "Ofereça água, defina tempo, desligue celulares", "O espaço deve ser acolhedor para qualquer pessoa"],
+    deepDive: `O conceito de "neutralidade visual" no espaço de atendimento é especialmente importante num país religiosamente diverso como o Brasil. Um consulente evangélico pode se sentir desconfortável cercado de imagens de santos; um ateu pode se sentir alienado por excesso de misticismo. O espaço profissional deve acolher sem impor — o tarô é universal.`,
+    reflection: "Quando você imagina seu espaço de atendimento ideal, quem é seu consulente? Que tipo de pessoa precisa se sentir acolhida ali?",
     exercise: { instruction: "Simule um atendimento: convide alguém de confiança para uma leitura curta (3 cartas). Monte a mesa como profissional. Peça feedback sobre o ambiente.", type: "practice" },
     quiz: [
       { id: "mesa4-q1", question: "Por que evitar excesso de símbolos religiosos no espaço de atendimento?", options: ["Porque são proibidos", "Para manter neutralidade e acolher qualquer pessoa", "Porque atrapalham a leitura", "Porque não combinam com tarô"], correctIndex: 1, explanation: "Neutralidade visual garante que qualquer consulente — independente de crenças — se sinta acolhido." },
@@ -157,6 +165,8 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
 - "Só funciona se foi presente" — Comprar seu próprio baralho é perfeitamente válido.
 - "Cartas usadas têm energia ruim" — Baralhos de segunda mão são completamente utilizáveis após limpeza.`,
     keyPoints: ["Guardar em pano/caixa dedicada, longe de umidade e sol", "Limpeza energética: embaralhar com intenção, fumaça ou luar", "Ter mais de um baralho é normal (estudo, pessoal, atendimento)", "Abandonar superstições: qualquer pessoa pode tocar, pode comprar o próprio"],
+    deepDive: `Na tradição, "limpar" o baralho entre leituras serve para marcar o fim de uma sessão e o início de outra — é uma fronteira psicológica. Algumas práticas de limpeza têm base na psicologia dos rituais: embaralhar 7 vezes é estatisticamente o mínimo para randomizar completamente um baralho de 78 cartas (pesquisa de Persi Diaconis, matemático de Stanford).`,
+    reflection: "Qual é a sua relação com o seu baralho? Você o trata como ferramenta profissional ou como objeto sagrado? Ambas as atitudes são válidas — o importante é que haja respeito.",
     exercise: { instruction: "Limpe seu baralho hoje (física e energeticamente). Guarde-o de forma adequada. Se não tem um baralho físico, pesquise opções de Rider-Waite-Smith para comprar.", type: "practice" },
     quiz: [
       { id: "mesa5-q1", question: "É verdade que ninguém pode tocar seu baralho?", options: ["Sim, é regra sagrada", "Não — é superstição. O consulente pode embaralhar se quiser", "Depende da tradição", "Só familiares podem"], correctIndex: 1, explanation: "É superstição. Se o consulente quer embaralhar, está tudo bem. O importante é a intenção, não a exclusividade." },
@@ -188,6 +198,8 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
 
 **O ritual é seu.** Não copie de livros — crie algo que faça sentido para você. O melhor ritual é aquele que você pratica, não o mais elaborado.`,
     keyPoints: ["Rituais marcam início e fim do espaço de leitura", "Abertura: limpar, respirar, declarar intenção, embaralhar", "Fechamento: recolher, anotar, guardar, encerrar", "O melhor ritual é aquele que você pratica — crie o seu"],
+    deepDive: `O ritual de lavar as mãos após um atendimento aparece em diversas tradições de cura — do xamanismo indígena à medicina ocidental. No contexto do tarô, é um gesto de fronteira: marca o fim do espaço de leitura e o retorno à vida pessoal. Tarólogos que não criam essa fronteira frequentemente relatam "carregar" a energia dos atendimentos — não por razões místicas, mas por falta de separação psicológica.`,
+    reflection: "Você tem um ritual de encerramento depois de ler tarô? Se não, crie um simples — pode ser lavar as mãos, respirar 3 vezes, ou simplesmente dizer "encerrado". A fronteira protege.",
     exercise: { instruction: "Crie seus próprios rituais de abertura e fechamento. Pratique-os por 1 semana. Ajuste o que não funcionar.", type: "practice" },
     quiz: [
       { id: "mesa6-q1", question: "Por que lavar as mãos depois de um atendimento?", options: ["Higiene obrigatória", "Gesto simbólico de encerrar a energia do atendimento", "Tradição religiosa", "Para limpar a tinta das cartas"], correctIndex: 1, explanation: "Lavar as mãos é um gesto simbólico que marca o encerramento da energia do atendimento — separar a sessão da vida pessoal." },
