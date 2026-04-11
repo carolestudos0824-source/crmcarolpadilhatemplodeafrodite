@@ -1,5 +1,27 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, RefreshCw, BookOpen, Sparkles } from "lucide-react";
+import { ArrowRight, RefreshCw, Sparkles } from "lucide-react";
+import { MODULES, ARCANOS_MAIORES, type LearningModule } from "@/data/tarot-data";
+
+/** Module lesson prefix mapping for detecting last completed lesson per module */
+const MODULE_PREFIX_MAP: Record<string, { prefix: string; route: (order: number) => string; getLessonName?: (id: string) => string }> = {
+  "fundamentos":         { prefix: "fund-", route: (o) => `/fundamentos/${o}` },
+  "leitura-simbolica":   { prefix: "ls-",   route: (o) => `/leitura-simbolica/${o}` },
+  "arcanos-maiores":     { prefix: "arcano-", route: (o) => `/lesson/${o}` },
+  "arquitetura-menores": { prefix: "am-",   route: (o) => `/arquitetura-menores/${o}` },
+  "copas":               { prefix: "copas-", route: (o) => `/naipe/copas/${o}` },
+  "paus":                { prefix: "paus-",  route: (o) => `/naipe/paus/${o}` },
+  "espadas":             { prefix: "espadas-", route: (o) => `/naipe/espadas/${o}` },
+  "ouros":               { prefix: "ouros-", route: (o) => `/naipe/ouros/${o}` },
+  "cartas-corte":        { prefix: "corte-", route: (o) => `/cartas-corte/${o}` },
+  "combinacoes":         { prefix: "comb-", route: (o) => `/combinacoes/${o}` },
+  "tiragens":            { prefix: "tir-",  route: (o) => `/tiragens/${o}` },
+  "espiritualidade":     { prefix: "esp-",  route: (o) => `/espiritualidade/${o}` },
+  "mesa-taro":           { prefix: "mesa-", route: (o) => `/mesa-taro/${o}` },
+  "leitura-aplicada":    { prefix: "la-",   route: (o) => `/leitura-aplicada/${o}` },
+  "pratica":             { prefix: "prat-", route: (o) => `/pratica/${o}` },
+  "trabalhar-taro":      { prefix: "tt-",   route: (o) => `/trabalhar-taro/${o}` },
+  "amor":                { prefix: "amor-", route: (o) => `/amor/${o}` },
+};
 
 interface ContinuityCardProps {
   lastLessonId: string | null;
@@ -7,12 +29,67 @@ interface ContinuityCardProps {
   completedLessons: number;
   completedQuizzes: number;
   hasUnfinishedReview: boolean;
+  /** Full completed lessons array for smart suggestions */
+  completedLessonIds?: string[];
 }
 
-const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, completedQuizzes, hasUnfinishedReview }: ContinuityCardProps) => {
+function findNextLessonSuggestion(completedLessonIds: string[]): { label: string; subtitle: string; path: string } | null {
+  // Check each module in order for in-progress work
+  for (const mod of MODULES) {
+    const mapping = MODULE_PREFIX_MAP[mod.id];
+    if (!mapping) continue;
+
+    if (mod.id === "arcanos-maiores") {
+      // Special handling for arcanos
+      const completedArcanos = completedLessonIds.filter(l => l.startsWith("arcano-"));
+      if (completedArcanos.length > 0 && completedArcanos.length < 22) {
+        const lastNum = Math.max(...completedArcanos.map(l => parseInt(l.replace("arcano-", ""))));
+        const nextId = lastNum + 1;
+        if (nextId <= 21) {
+          const next = ARCANOS_MAIORES.find(a => a.id === nextId);
+          if (next) {
+            return {
+              label: `Continuar: ${next.name}`,
+              subtitle: "Próximo arcano na jornada",
+              path: `/lesson/${nextId}`,
+            };
+          }
+        }
+      }
+      continue;
+    }
+
+    const completedInModule = completedLessonIds.filter(l => l.startsWith(mapping.prefix));
+    if (completedInModule.length > 0 && completedInModule.length < mod.totalLessons) {
+      // Module is in progress — suggest next lesson
+      const lastOrder = Math.max(...completedInModule.map(l => {
+        const num = parseInt(l.replace(mapping.prefix, ""));
+        return isNaN(num) ? -1 : num;
+      }));
+      const nextOrder = lastOrder + 1;
+      return {
+        label: `Continuar: ${mod.name}`,
+        subtitle: `Lição ${nextOrder + 1} de ${mod.totalLessons}`,
+        path: mapping.route(nextOrder),
+      };
+    }
+  }
+
+  // If no module is in progress, suggest the first unlocked but not started module
+  if (completedLessonIds.length === 0) {
+    return {
+      label: "Começar: O Louco",
+      subtitle: "Sua primeira lição",
+      path: "/lesson/0",
+    };
+  }
+
+  return null;
+}
+
+const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, completedQuizzes, hasUnfinishedReview, completedLessonIds }: ContinuityCardProps) => {
   const navigate = useNavigate();
 
-  // Determine the best action to suggest
   const actions: Array<{
     label: string;
     subtitle: string;
@@ -21,8 +98,13 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
     priority: number;
   }> = [];
 
-  // Continue last lesson
-  if (lastLessonId && lastLessonName) {
+  // Smart suggestion based on all completed lessons
+  if (completedLessonIds && completedLessonIds.length > 0) {
+    const suggestion = findNextLessonSuggestion(completedLessonIds);
+    if (suggestion) {
+      actions.push({ ...suggestion, icon: ArrowRight, priority: 1 });
+    }
+  } else if (lastLessonId && lastLessonName) {
     actions.push({
       label: `Continuar: ${lastLessonName}`,
       subtitle: "Retome de onde parou",
@@ -32,7 +114,6 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
     });
   }
 
-  // Review if there are completed lessons but user hasn't reviewed recently
   if (completedLessons >= 3 && hasUnfinishedReview) {
     actions.push({
       label: "Revisão rápida",
@@ -43,7 +124,6 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
     });
   }
 
-  // Daily ritual
   actions.push({
     label: "Ritual diário",
     subtitle: "Sua prática de hoje",
@@ -52,9 +132,7 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
     priority: 3,
   });
 
-  // Sort by priority, show top 2
   const topActions = actions.sort((a, b) => a.priority - b.priority).slice(0, 2);
-
   if (topActions.length === 0) return null;
 
   return (
