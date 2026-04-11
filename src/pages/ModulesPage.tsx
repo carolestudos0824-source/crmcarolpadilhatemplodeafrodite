@@ -60,16 +60,13 @@ const ModulesPage = () => {
     return <OnboardingPage onComplete={handleOnboardingComplete} />;
   }
 
-  const BETA_MODULE_IDS = ["fundamentos", "arcanos-maiores"];
-  const betaModules = MODULES.filter(m => BETA_MODULE_IDS.includes(m.id));
-
-  const grouped = betaModules.reduce<Record<ModuleCategory, LearningModule[]>>((acc, mod) => {
+  const grouped = MODULES.reduce<Record<ModuleCategory, LearningModule[]>>((acc, mod) => {
     if (!acc[mod.category]) acc[mod.category] = [];
     acc[mod.category].push(mod);
     return acc;
   }, {} as Record<ModuleCategory, LearningModule[]>);
 
-  const categoryOrder: ModuleCategory[] = ["foundation", "major-arcana"];
+  const categoryOrder: ModuleCategory[] = ["foundation", "major-arcana", "minor-arcana", "advanced", "practice"];
 
   const getModuleProgress = (mod: LearningModule): number => {
     if (mod.id === "arcanos-maiores") {
