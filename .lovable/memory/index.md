@@ -15,6 +15,7 @@ Monetização 100% fechada. Pendente apenas integração IAP (RevenueCat) para m
 
 ## Memories
 - [**🏛 Product Bible**](mem://product-bible) — Complete product document: identity, course, beta, arcanos vivos, monetization, admin, mobile, stack, status
+- [**🃏 Bíblia dos Arcanos Vivos**](mem://features/arcanos-vivos-bible) — Official production bible: all 22 arcana with RWS fidelity, symbols, animation, voice, pedagogy
 - [Design tokens](mem://design/tokens) — Full color system: gold, crimson, mystic surfaces, HSL variables
 - [Animation levels](mem://design/animation-levels) — Per-screen animation intensity (leve/média/alta/cinematográfica) + performance rules
 - [Motion language](mem://design/motion-language) — Microanimation specs per element: buttons, cards, quiz, progress, premium, journeymap
