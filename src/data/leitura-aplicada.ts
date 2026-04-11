@@ -46,7 +46,7 @@ export const LEITURA_APLICADA_LESSONS: LeituraAplicadaLesson[] = [
 4. O que precisamos trabalhar`,
     keyPoints: ["A leitura é sobre quem pergunta, não sobre a mente alheia", "Reformular perguntas fechadas em abertas", "Cuidado com profecias auto-realizáveis", "Tiragem de 4 cartas: minha energia, a do outro, o que une, o que trabalhar"],
     deepDive: `A tiragem afetiva mais solicitada é variação do "Que ele/ela sente?" — mas essa formulação é eticamente problemática porque tenta acessar a mente alheia. Na prática, o tarô reflete a dinâmica percebida por quem pergunta, não os pensamentos reais do outro. Reformular para "Que energia existe nessa conexão?" produz leituras mais honestas e úteis.`,
-    reflection: "Quando você pensa em ler tarô sobre amor, o que realmente quer saber? A verdade sobre a relação — ou confirmação do que deseja ouvir? A resposta honesta a essa pergunta determina a qualidade da leitura.",
+    reflection: `Quando você pensa em ler tarô sobre amor, o que realmente quer saber? A verdade sobre a relação — ou confirmação do que deseja ouvir? A resposta honesta a essa pergunta determina a qualidade da leitura.`,
     exercise: { instruction: "Faça a tiragem de 4 cartas para amor sobre uma relação real (pode ser romântica, familiar ou amizade). Registre a interpretação.", type: "practice" },
     quiz: [
       { id: "la1-q1", question: "Como reformular 'Ele vai voltar?'", options: ["'Quando ele vai voltar?'", "'Que energia envolve essa dinâmica agora?'", "'Devo esperar?'", "'É destino?'"], correctIndex: 1, explanation: "Perguntas abertas sobre energia e dinâmica produzem leituras mais honestas e úteis do que perguntas fechadas." },
@@ -77,7 +77,7 @@ export const LEITURA_APLICADA_LESSONS: LeituraAplicadaLesson[] = [
 5. Direção mais favorável`,
     keyPoints: ["Reformular perguntas de sim/não em perguntas de clareza", "O Mago, Imperador, 8 de Ouros são cartas-chave profissionais", "Tiragem de 5 cartas para decisões de carreira", "Tarô não decide por você — ilumina a decisão"],
     deepDive: `O tarô tem uma limitação importante em leituras de trabalho: ele mostra tendências e energias, não fatos. "As cartas indicam estagnação" não significa "você será demitida" — significa que a energia atual é de estagnação. A ação humana pode alterar qualquer tendência. Por isso, sempre termine leituras profissionais com: "O que posso fazer para mudar isso?"`,
-    reflection: "Se você fizesse uma leitura sobre sua carreira agora, que pergunta faria? A qualidade da pergunta determina a profundidade da resposta.",
+    reflection: `Se você fizesse uma leitura sobre sua carreira agora, que pergunta faria? A qualidade da pergunta determina a profundidade da resposta.`,
     exercise: { instruction: "Faça a tiragem de 5 cartas para carreira. Interprete cada posição. Que insight novo surgiu?", type: "practice" },
     quiz: [
       { id: "la2-q1", question: "O que a carta 8 de Ouros geralmente indica no trabalho?", options: ["Crise financeira", "Dedicação e domínio gradual", "Demissão", "Sorte inesperada"], correctIndex: 1, explanation: "O 8 de Ouros mostra dedicação ao ofício — aprendizado paciente e domínio gradual da habilidade." },
@@ -113,7 +113,7 @@ export const LEITURA_APLICADA_LESSONS: LeituraAplicadaLesson[] = [
 - **A Lua** — Inconsciente, medos, ilusões a atravessar.`,
     keyPoints: ["Leituras espirituais iluminam padrões, lições e bloqueios", "Perguntas abertas sobre alma e padrões geram melhores leituras", "Tiragem de 3: consciente, inconsciente, o que a alma pede", "Sacerdotisa, Eremita e Estrela são cartas-chave espirituais"],
     deepDive: `Na tradição junguiana, a leitura espiritual mais poderosa é a que revela a "sombra" — os aspectos de si que negamos ou desconhecemos. Quando A Lua ou O Diabo aparecem em posições espirituais, não indicam "algo ruim" — indicam material inconsciente pedindo integração. A espiritualidade no tarô não é luz eterna; é integração da totalidade.`,
-    reflection: "Qual carta do tarô você mais evita ou que mais te incomoda? Essa carta provavelmente contém uma lição espiritual que você precisa — a resistência é o sinal.",
+    reflection: `Qual carta do tarô você mais evita ou que mais te incomoda? Essa carta provavelmente contém uma lição espiritual que você precisa — a resistência é o sinal.`,
     exercise: { instruction: "Faça a tiragem de autoconhecimento (3 cartas). Medite 5 minutos sobre a carta do 'inconsciente'. O que ela revela?", type: "practice" },
     quiz: [
       { id: "la3-q1", question: "Qual pergunta é mais adequada para uma leitura espiritual?", options: ["'Vou ficar rica?'", "'O que minha alma está pedindo agora?'", "'Quando vou encontrar o amor?'", "'Qual é meu signo verdadeiro?'"], correctIndex: 1, explanation: "Perguntas sobre a alma e padrões internos são as mais poderosas para leituras espirituais." },
@@ -144,7 +144,7 @@ export const LEITURA_APLICADA_LESSONS: LeituraAplicadaLesson[] = [
 - **6 de Copas** — Nostalgia, memórias de infância, inocência.`,
     keyPoints: ["Leia sua relação com a família, não a família em si", "Evitar triangulação — cada leitura é sobre quem pergunta", "Padrões geracionais podem aparecer como cartas recorrentes", "10 de Paus e 6 de Copas são cartas-chave em leituras familiares"],
     deepDive: `Padrões geracionais no tarô são fascinantes: quando a mesma carta aparece repetidamente em leituras sobre família — especialmente cartas como O Imperador, A Imperatriz ou 10 de Paus — ela pode estar sinalizando uma dinâmica que se repete através de gerações. Na psicologia familiar, isso é chamado de "transmissão transgeracional".`,
-    reflection: "Que papel você ocupa na sua família? Cuidadora? Mediadora? Rebelde? As cartas da corte podem refletir esses papéis — observe qual aparece mais em suas leituras familiares.",
+    reflection: `Que papel você ocupa na sua família? Cuidadora? Mediadora? Rebelde? As cartas da corte podem refletir esses papéis — observe qual aparece mais em suas leituras familiares.`,
     exercise: { instruction: "Faça a tiragem familiar de 4 cartas. Foque na carta 'herança emocional'. Que padrão da sua família de origem você reconhece?", type: "practice" },
     quiz: [
       { id: "la4-q1", question: "Por que evitar perguntas como 'O que minha mãe sente sobre minha irmã?'", options: ["Porque é proibido no tarô", "Porque é triangulação — a leitura deve ser sobre quem pergunta", "Porque é impossível ler família", "Porque família não é tema válido"], correctIndex: 1, explanation: "É triangulação — ler sobre a relação entre outras pessoas não é ético nem produtivo. A leitura é sobre quem pergunta." },
@@ -175,7 +175,7 @@ Separe as cartas em dois grupos:
 - **A Justiça** — Consequências, equilíbrio, verdade.`,
     keyPoints: ["Tarô ilumina aspectos ocultos, não decide por você", "Tiragem de 2 caminhos: energia + desafio + resultado para cada", "Nunca repetir a tiragem para 'mudar' o resultado", "Os Enamorados e A Justiça são cartas centrais em decisões"],
     deepDive: `O filósofo existencialista Jean-Paul Sartre dizia que "não escolher já é uma escolha". No tarô, o 2 de Espadas representa exatamente isso — a paralisia de quem se recusa a decidir, vendada diante de duas espadas. A tiragem de decisão funciona melhor quando feita ANTES de já ter decidido internamente — se você já sabe o que quer, a leitura vira confirmação, não clareza.`,
-    reflection: "Quando você pede ajuda ao tarô para decidir, realmente está aberta às duas possibilidades? Ou já decidiu e quer que as cartas confirmem?",
+    reflection: `Quando você pede ajuda ao tarô para decidir, realmente está aberta às duas possibilidades? Ou já decidiu e quer que as cartas confirmem?`,
     exercise: { instruction: "Pense numa decisão real que precisa tomar. Faça a tiragem de 2 caminhos. Compare: qual se alinha mais com seus valores?", type: "practice" },
     quiz: [
       { id: "la5-q1", question: "O que fazer se as cartas mostram algo que você não quer ver?", options: ["Repetir até mudar", "Aceitar que mostram algo que precisa ser visto", "Ignorar a leitura", "Culpar as cartas"], correctIndex: 1, explanation: "Se as cartas incomodam, é porque mostram algo que você precisa ver. Repetir a tiragem não muda a verdade." },
@@ -207,7 +207,7 @@ Separe as cartas em dois grupos:
 **Insight importante:** Muitos bloqueios são proteções disfarçadas. A carta "causa oculta" frequentemente revela um medo que, quando conscientizado, perde seu poder.`,
     keyPoints: ["Bloqueios frequentemente têm causas inconscientes", "Tiragem de 5: bloqueio, causa visível, causa oculta, perpetuação, chave", "8 de Espadas e A Lua indicam prisões mentais e medos inconscientes", "Muitos bloqueios são proteções disfarçadas — conscientizar é destravar"],
     deepDive: `Na psicologia, muitos bloqueios são mecanismos de defesa — proteções criadas pelo inconsciente para evitar dor. O 8 de Espadas (prisão mental auto-imposta) e A Lua (medos inconscientes) frequentemente revelam que o bloqueio não é o problema — é a solução que a psique encontrou para um problema mais profundo. Destravar significa encontrar uma solução melhor, não forçar a remoção.`,
-    reflection: "Pense num bloqueio persistente na sua vida. E se ele não fosse um obstáculo, mas uma proteção? Do que ele está te protegendo? A resposta pode ser a chave.",
+    reflection: `Pense num bloqueio persistente na sua vida. E se ele não fosse um obstáculo, mas uma proteção? Do que ele está te protegendo? A resposta pode ser a chave.`,
     exercise: { instruction: "Pense num bloqueio real na sua vida. Faça a tiragem de 5 cartas. Foque na carta 3 (causa oculta): que medo ela revela?", type: "practice" },
     quiz: [
       { id: "la6-q1", question: "O que a carta 8 de Espadas geralmente indica sobre bloqueios?", options: ["Bloqueio externo intransponível", "Prisão mental auto-imposta — a saída existe mas não é vista", "Falta de inteligência", "Problema financeiro"], correctIndex: 1, explanation: "O 8 de Espadas mostra uma prisão mental auto-imposta — a pessoa está presa, mas a saída existe. As vendas impedem de ver." },
@@ -234,7 +234,7 @@ Separe as cartas em dois grupos:
 **Tiragem do ano é uma ferramenta de autoconhecimento longitudinal** — mais útil que tiragens pontuais porque mostra tendências ao longo do tempo.`,
     keyPoints: ["12 cartas = 12 meses + 1 carta-tema opcional", "Cada carta indica energia dominante, não evento específico", "Observar padrões de naipes revela o tom geral do ano", "Releitura mensal é a prática mais valiosa"],
     deepDive: `A tiragem do ano tem uma armadilha: a tentação de ler cada carta como previsão literal. "Saiu A Torre em março — algo vai desmoronar!" Não. A carta indica a energia dominante — e como você se relaciona com essa energia determina como o mês se manifesta. A Torre em março pode ser uma revelação libertadora se você estiver aberta à verdade.`,
-    reflection: "Se você fizesse a tiragem do ano agora, que mês te preocuparia mais? E qual esperaria com mais curiosidade? Suas expectativas já revelam onde estão seus medos e desejos.",
+    reflection: `Se você fizesse a tiragem do ano agora, que mês te preocuparia mais? E qual esperaria com mais curiosidade? Suas expectativas já revelam onde estão seus medos e desejos.`,
     exercise: { instruction: "Faça a tiragem do ano (12 + 1 cartas). Anote cada carta por mês. No final do mês, releia e compare com o vivido.", type: "practice" },
     quiz: [
       { id: "la7-q1", question: "O que cada carta da tiragem do ano indica?", options: ["Um evento que vai acontecer naquele mês", "A energia dominante do mês", "Uma pessoa que vai aparecer", "O dia mais importante do mês"], correctIndex: 1, explanation: "Cada carta indica a energia dominante do mês — não um evento específico ou uma previsão literal." },
@@ -259,7 +259,7 @@ Separe as cartas em dois grupos:
 **Regra final:** O tarô é uma ferramenta de clareza, não de fuga. Se a leitura está substituindo terapia, decisão ou ação — algo está errado.`,
     keyPoints: ["Não ler quando emocionalmente envolvida no tema", "Não repetir a mesma pergunta até conseguir a 'resposta certa'", "Encaminhar questões de saúde, legais ou crises para profissionais", "O tarô é ferramenta de clareza, não de fuga"],
     deepDive: `A ética de "quando não ler" é uma das marcas de maturidade profissional. Tarólogos iniciantes tendem a ler sempre — para provar competência. Tarólogos experientes sabem que recusar uma leitura é, às vezes, a leitura mais poderosa que se pode oferecer. "Você não precisa de cartas agora — precisa de uma conversa honesta" pode ser mais valioso do que qualquer tiragem.`,
-    reflection: "Você já leu tarô quando não deveria? O que aconteceu? A experiência de ler no momento errado ensina tanto quanto ler no momento certo.",
+    reflection: `Você já leu tarô quando não deveria? O que aconteceu? A experiência de ler no momento errado ensina tanto quanto ler no momento certo.`,
     exercise: { instruction: "Liste 3 situações pessoais em que você NÃO deveria ler tarô para si mesma. Para cada uma, identifique: o que fazer em vez disso?", type: "writing" },
     quiz: [
       { id: "la8-q1", question: "O que fazer se um consulente está em crise aguda?", options: ["Fazer a leitura rapidamente", "Oferecer acolhimento humano e encaminhar para profissional", "Ignorar o estado emocional", "Ler mais cartas para acalmar"], correctIndex: 1, explanation: "Em crise aguda, o consulente precisa de acolhimento humano, não de tiragem. Se necessário, encaminhe para profissional." },
