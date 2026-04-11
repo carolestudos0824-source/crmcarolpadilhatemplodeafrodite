@@ -247,5 +247,8 @@ export function editorialToLegacy(editorial: ArcanoMaiorEditorial, unlocked = fa
     },
     quiz: editorial.quiz as QuizQuestion[],
     unlocked,
+    quickReview: editorial.quickReview,
+    reflectionQuestions: editorial.reflectionQuestions,
+    initiationLesson: editorial.initiationLesson,
   };
 }
