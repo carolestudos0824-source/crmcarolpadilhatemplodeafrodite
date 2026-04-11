@@ -67,7 +67,7 @@ const ModulesPage = () => {
     return acc;
   }, {} as Record<ModuleCategory, LearningModule[]>);
 
-  const categoryOrder: ModuleCategory[] = ["foundation", "major-arcana", "minor-arcana", "advanced", "practice"];
+  const categoryOrder: ModuleCategory[] = ["foundation", "major-arcana", "minor-arcana", "advanced", "practice", "professional"];
 
   const getModuleProgress = (mod: LearningModule): number => {
     if (mod.id === "arcanos-maiores") {
