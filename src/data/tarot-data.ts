@@ -52,6 +52,9 @@ export interface ArcanoData {
   layers: LessonLayer;
   quiz: QuizQuestion[];
   unlocked: boolean;
+  quickReview?: { keyword: string; meaning: string }[];
+  reflectionQuestions?: { id: string; question: string }[];
+  initiationLesson?: string;
 }
 
 export interface QuizQuestion {
