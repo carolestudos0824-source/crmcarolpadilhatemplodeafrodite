@@ -64,6 +64,7 @@ const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
 const CartasCortePage = lazy(() => import("./pages/CartasCortePage.tsx"));
 const NumerologiaPage = lazy(() => import("./pages/NumerologiaPage.tsx"));
 const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage.tsx"));
 
 const queryClient = new QueryClient();
 
