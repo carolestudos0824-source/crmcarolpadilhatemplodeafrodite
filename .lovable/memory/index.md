@@ -12,10 +12,12 @@ FREE_ARCANO_IDS = [0]. Only O Louco is free. All other arcanos, modules and feat
 Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off) | Presenteado. Sem vitalício, sem trial, sem ads.
 7 estados de assinatura: free, monthly_active, annual_active, gift_active, expired, cancelled_with_access, cancelled_expired.
 Monetização 100% fechada. Pendente apenas integração IAP (RevenueCat) para mobile.
+Beta = 5 módulos (Fundamentos, Louco, Mago, Sacerdotisa, Leitura Simbólica). V1 = +6 módulos. Futuro = +4 módulos.
 
 ## Memories
 - [**🏛 Product Bible**](mem://product-bible) — Complete product document: identity, course, beta, arcanos vivos, monetization, admin, mobile, stack, status
 - [**🃏 Bíblia dos Arcanos Vivos**](mem://features/arcanos-vivos-bible) — Official production bible: all 22 arcana with RWS fidelity, symbols, animation, voice, pedagogy
+- [**📚 Course Roadmap**](mem://features/course-roadmap) — Definitive module list: beta (5) → v1 (6) → future (4), access tiers, completion status
 - [Design tokens](mem://design/tokens) — Full color system: gold, crimson, mystic surfaces, HSL variables
 - [Animation levels](mem://design/animation-levels) — Per-screen animation intensity (leve/média/alta/cinematográfica) + performance rules
 - [Motion language](mem://design/motion-language) — Microanimation specs per element: buttons, cards, quiz, progress, premium, journeymap
