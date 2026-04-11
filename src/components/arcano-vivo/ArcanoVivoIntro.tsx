@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Volume2, VolumeX } from "lucide-react";
-import { getArcanoVivoConfig, type ArcanoVivoConfig } from "@/data/arcano-vivo-config";
+import { getArcanoVivoConfig, type ArcanoVivoConfig, type SymbolSpotlight } from "@/data/arcano-vivo-config";
 
 interface ArcanoVivoIntroProps {
   arcanoId: number;
@@ -15,19 +15,21 @@ interface ArcanoVivoIntroProps {
   onEnterLesson: () => void;
 }
 
-type Phase = "darkness" | "reveal" | "awaken" | "shimmer" | "breathe" | "voice" | "ready";
+type Phase = "darkness" | "reveal" | "awaken" | "shimmer" | "breathe" | "emerge" | "symbols" | "voice" | "ready";
 
 /**
- * ARCANO VIVO — Intro Cinematográfica
+ * ARCANO VIVO v2 — Intro Cinematográfica com Animações Vivas
  * 
  * Fases:
  * 1. darkness   — tela escura, silêncio
  * 2. reveal     — carta emerge das sombras
  * 3. awaken     — saturação aumenta, brilho cresce
  * 4. shimmer    — varredura de luz sobre a carta
- * 5. breathe    — aura começa a pulsar, partículas surgem
- * 6. voice      — arcano fala em primeira pessoa
- * 7. ready      — CTA para iniciar lição
+ * 5. breathe    — aura começa a pulsar, partículas surgem, carta "respira"
+ * 6. emerge     — arcano "sai" da carta (perspective + translateZ)
+ * 7. symbols    — spotlights iluminam símbolos-chave sequencialmente
+ * 8. voice      — arcano fala em primeira pessoa
+ * 9. ready      — CTA para iniciar lição
  */
 export function ArcanoVivoIntro({
   arcanoId, name, numeral, subtitle, keywords, cardImage,
@@ -39,6 +41,8 @@ export function ArcanoVivoIntro({
   const [charIndex, setCharIndex] = useState(0);
   const [isListening, setIsListening] = useState(false);
   const [particlesVisible, setParticlesVisible] = useState(false);
+  const [activeSpotlight, setActiveSpotlight] = useState(-1);
+  const [showSpotlightLabel, setShowSpotlightLabel] = useState(false);
 
   const activeText = voiceMode === "full" ? voiceFullText : voiceIntro;
   const typingDone = charIndex >= activeText.length;
@@ -54,7 +58,37 @@ export function ArcanoVivoIntro({
       setPhase("breathe");
       setParticlesVisible(true);
     }, config.shimmerDelay + 1200));
-    timers.push(setTimeout(() => setPhase("voice"), config.shimmerDelay + 2200));
+    
+    // Emergence phase
+    if (config.emergenceStyle !== "none") {
+      timers.push(setTimeout(() => setPhase("emerge"), config.emergenceDelay));
+      
+      // Symbols phase — sequential spotlights
+      if (config.symbolSpotlights && config.symbolSpotlights.length > 0) {
+        const symbolStart = config.emergenceDelay + 1500;
+        timers.push(setTimeout(() => setPhase("symbols"), symbolStart));
+        
+        config.symbolSpotlights.forEach((spot, i) => {
+          timers.push(setTimeout(() => {
+            setActiveSpotlight(i);
+            setShowSpotlightLabel(true);
+            // Hide label after 2s
+            timers.push(setTimeout(() => setShowSpotlightLabel(false), 2000));
+          }, symbolStart + spot.delay));
+        });
+
+        // Voice phase after all symbols
+        const lastDelay = config.symbolSpotlights[config.symbolSpotlights.length - 1].delay;
+        timers.push(setTimeout(() => {
+          setPhase("voice");
+          setActiveSpotlight(-1);
+        }, symbolStart + lastDelay + 2500));
+      } else {
+        timers.push(setTimeout(() => setPhase("voice"), config.emergenceDelay + 2500));
+      }
+    } else {
+      timers.push(setTimeout(() => setPhase("voice"), config.shimmerDelay + 2200));
+    }
 
     return () => timers.forEach(clearTimeout);
   }, [config]);
@@ -71,7 +105,6 @@ export function ArcanoVivoIntro({
     return () => clearTimeout(t);
   }, [phase, charIndex, activeText, config.voiceStyle]);
 
-  // Reset char index when switching voice mode
   useEffect(() => {
     setCharIndex(0);
     if (phase === "ready") setPhase("voice");
@@ -94,12 +127,21 @@ export function ArcanoVivoIntro({
     }
   };
 
+  const skipAll = () => {
+    setPhase("voice");
+    setParticlesVisible(true);
+    setActiveSpotlight(-1);
+    setCharIndex(0);
+  };
+
   const skipTyping = () => setCharIndex(activeText.length);
 
   const isRevealed = phase !== "darkness";
-  const isAwakened = ["awaken", "shimmer", "breathe", "voice", "ready"].includes(phase);
+  const isAwakened = !["darkness", "reveal"].includes(phase);
   const isShimmering = phase === "shimmer";
-  const isBreathing = ["breathe", "voice", "ready"].includes(phase);
+  const isBreathing = !["darkness", "reveal", "awaken", "shimmer"].includes(phase);
+  const isEmerged = !["darkness", "reveal", "awaken", "shimmer", "breathe"].includes(phase);
+  const showSymbols = phase === "symbols";
   const showVoice = ["voice", "ready"].includes(phase);
 
   return (
@@ -107,6 +149,21 @@ export function ArcanoVivoIntro({
       className="min-h-[85vh] flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden"
       style={{ "--arcano-glow": config.glowColor } as React.CSSProperties}
     >
+      {/* Skip button — always visible during animation phases */}
+      {!showVoice && phase !== "darkness" && phase !== "ready" && (
+        <button
+          onClick={skipAll}
+          className="absolute top-4 right-4 z-20 text-[10px] font-heading tracking-wider px-3 py-1.5 rounded-full transition-opacity"
+          style={{
+            color: "hsl(230 10% 55%)",
+            background: "hsl(36 33% 97% / 0.5)",
+            border: "1px solid hsl(36 25% 82% / 0.3)",
+          }}
+        >
+          Pular animação →
+        </button>
+      )}
+
       {/* Atmosphere gradient layers */}
       {config.atmosphere.map((stop, i) => (
         <div
@@ -118,6 +175,22 @@ export function ArcanoVivoIntro({
           }}
         />
       ))}
+
+      {/* Energy flow overlay */}
+      {isBreathing && (
+        <div
+          className="absolute inset-0 pointer-events-none arcano-vivo-energy"
+          style={{
+            background: config.energyFlow === "upward"
+              ? `linear-gradient(to top, hsl(${config.glowColor} / 0.06) 0%, transparent 40%, hsl(${config.ambientColor} / 0.03) 80%, transparent 100%)`
+              : config.energyFlow === "downward"
+              ? `linear-gradient(to bottom, hsl(${config.glowColor} / 0.06) 0%, transparent 40%, hsl(${config.ambientColor} / 0.03) 80%, transparent 100%)`
+              : `radial-gradient(ellipse at 50% 50%, hsl(${config.glowColor} / 0.06) 0%, transparent 50%)`,
+            animation: `arcano-energy-flow ${config.breatheSpeed * 3}s ease-in-out infinite`,
+            backgroundSize: "200% 200%",
+          }}
+        />
+      )}
 
       {/* Floating particles */}
       {particlesVisible && (
@@ -145,8 +218,30 @@ export function ArcanoVivoIntro({
         </div>
       )}
 
-      {/* Card container */}
-      <div className="relative">
+      {/* Aura emanation rings */}
+      {isEmerged && (
+        <>
+          {[0, 1, 2].map((i) => (
+            <div
+              key={`emanation-${i}`}
+              className="absolute arcano-vivo-emanation rounded-full pointer-events-none"
+              style={{
+                width: "240px",
+                height: "340px",
+                left: "50%",
+                top: "calc(50% - 60px)",
+                transform: "translate(-50%, -50%)",
+                border: `1px solid hsl(${config.glowColor} / 0.15)`,
+                animation: `arcano-aura-emanate ${3 + i * 0.8}s ease-out infinite`,
+                animationDelay: `${i * 1}s`,
+              }}
+            />
+          ))}
+        </>
+      )}
+
+      {/* Card container with perspective */}
+      <div className="relative" style={{ perspective: "800px" }}>
         {/* Outer aura (breathing) */}
         <div
           className="absolute -inset-6 rounded-3xl pointer-events-none arcano-vivo-aura transition-opacity duration-1000"
@@ -156,18 +251,24 @@ export function ArcanoVivoIntro({
           }}
         />
 
-        {/* The card itself */}
+        {/* The card itself — with living breathe and emergence */}
         <div
           className="arcano-vivo-card relative w-48 h-72 sm:w-56 sm:h-80 rounded-2xl overflow-hidden"
           style={{
             border: `2px solid hsl(${config.glowColor} / 0.40)`,
+            transformStyle: "preserve-3d",
             animation: isRevealed
-              ? isBreathing
-                ? `arcano-aura-pulse ${config.breatheSpeed}s ease-in-out infinite, arcano-border-glow ${config.breatheSpeed}s ease-in-out infinite`
+              ? isEmerged
+                ? `arcano-float-gentle ${config.breatheSpeed * 1.2}s ease-in-out infinite`
+                : isBreathing
+                ? `arcano-living-breathe ${config.breatheSpeed}s ease-in-out infinite, arcano-aura-pulse ${config.breatheSpeed}s ease-in-out infinite, arcano-border-glow ${config.breatheSpeed}s ease-in-out infinite`
                 : "arcano-card-awaken 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards"
               : undefined,
             opacity: isRevealed ? undefined : 0,
-            boxShadow: `0 16px 48px hsl(${config.glowColor} / 0.15), 0 0 80px hsl(${config.ambientColor} / 0.08)`,
+            boxShadow: isEmerged
+              ? `0 20px 60px hsl(${config.glowColor} / 0.25), 0 0 100px hsl(${config.ambientColor} / 0.12), 0 0 150px hsl(${config.glowColor} / 0.05)`
+              : `0 16px 48px hsl(${config.glowColor} / 0.15), 0 0 80px hsl(${config.ambientColor} / 0.08)`,
+            transition: "box-shadow 1.5s ease-out",
           }}
         >
           {/* Card image */}
@@ -176,7 +277,11 @@ export function ArcanoVivoIntro({
             alt={name}
             className="w-full h-full object-cover transition-all duration-[2s]"
             style={{
-              filter: isAwakened ? "brightness(1) saturate(1)" : "brightness(0.5) saturate(0.3)",
+              filter: isAwakened
+                ? isEmerged
+                  ? "brightness(1.08) saturate(1.1) contrast(1.03)"
+                  : "brightness(1) saturate(1)"
+                : "brightness(0.5) saturate(0.3)",
             }}
           />
 
@@ -191,9 +296,120 @@ export function ArcanoVivoIntro({
             />
           )}
 
+          {/* Light crack before emergence */}
+          {phase === "emerge" && (
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `linear-gradient(180deg, hsl(${config.glowColor} / 0.6), hsl(${config.ambientColor} / 0.3))`,
+                animation: "arcano-light-crack 1.5s ease-out forwards",
+                mixBlendMode: "screen",
+              }}
+            />
+          )}
+
+          {/* Fabric flow overlays */}
+          {isBreathing && config.fabricRegions?.map((region, i) => (
+            <div
+              key={`fabric-${i}`}
+              className="absolute pointer-events-none"
+              style={{
+                left: `${region.x}%`,
+                top: `${region.y}%`,
+                width: `${region.width}%`,
+                height: `${region.height}%`,
+                background: `linear-gradient(${region.angle}deg, transparent 20%, hsl(${config.glowColor} / 0.04) 50%, transparent 80%)`,
+                animation: `arcano-fabric-flow ${config.breatheSpeed * 1.5}s ease-in-out infinite`,
+                animationDelay: `${i * 0.5}s`,
+                mixBlendMode: "overlay",
+              }}
+            />
+          ))}
+
+          {/* Eye gaze highlight */}
+          {isBreathing && config.gazePosition && (
+            <div
+              className="absolute pointer-events-none rounded-full"
+              style={{
+                left: `${config.gazePosition.x}%`,
+                top: `${config.gazePosition.y}%`,
+                width: "12px",
+                height: "8px",
+                background: `radial-gradient(ellipse, hsl(${config.glowColor} / 0.2) 0%, transparent 70%)`,
+                animation: `arcano-gaze-shift ${config.breatheSpeed * 2}s ease-in-out infinite`,
+                "--symbol-color": config.glowColor,
+              } as React.CSSProperties}
+            />
+          )}
+
+          {/* Symbol spotlights */}
+          {config.symbolSpotlights?.map((spot, i) => {
+            const isActive = showSymbols && i <= activeSpotlight;
+            const isCurrent = showSymbols && i === activeSpotlight;
+            return (
+              <div key={`spot-${i}`}>
+                {/* Glow */}
+                <div
+                  className="absolute pointer-events-none rounded-full arcano-vivo-spotlight transition-opacity duration-700"
+                  style={{
+                    left: `${spot.x}%`,
+                    top: `${spot.y}%`,
+                    width: `${spot.size}px`,
+                    height: `${spot.size}px`,
+                    opacity: isActive ? 1 : 0,
+                    "--symbol-color": spot.color,
+                    animation: isActive ? `arcano-symbol-pulse ${spot.duration}s ease-in-out infinite` : undefined,
+                    background: `radial-gradient(circle, hsl(${spot.color} / 0.35) 0%, transparent 70%)`,
+                  } as React.CSSProperties}
+                />
+                {/* Label */}
+                {isCurrent && showSpotlightLabel && (
+                  <div
+                    className="absolute z-10 pointer-events-none"
+                    style={{
+                      left: `${spot.x}%`,
+                      top: `${Math.min(spot.y + 8, 90)}%`,
+                      transform: "translateX(-50%)",
+                      animation: "arcano-voice-emerge 0.4s ease-out",
+                    }}
+                  >
+                    <div
+                      className="px-2.5 py-1 rounded-lg text-[9px] font-heading tracking-wider whitespace-nowrap"
+                      style={{
+                        background: "hsl(230 25% 8% / 0.85)",
+                        color: `hsl(${spot.color})`,
+                        border: `1px solid hsl(${spot.color} / 0.3)`,
+                        boxShadow: `0 4px 16px hsl(${spot.color} / 0.2)`,
+                        maxWidth: "180px",
+                        whiteSpace: "normal",
+                        textAlign: "center",
+                        lineHeight: "1.4",
+                      }}
+                    >
+                      {spot.label}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {/* Subtle vibration on breathe */}
+          {isBreathing && !isEmerged && (
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                animation: "subtle-vibrate 0.15s linear infinite",
+                opacity: 0.3,
+                mixBlendMode: "overlay",
+                background: `radial-gradient(circle at 50% 40%, hsl(${config.glowColor} / 0.05) 0%, transparent 60%)`,
+              }}
+            />
+          )}
+
           {/* Bottom gradient overlay */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 pointer-events-none"
             style={{
               background: `linear-gradient(to top, hsl(230 25% 6% / 0.75) 0%, hsl(230 25% 8% / 0.2) 35%, transparent 65%)`,
             }}
@@ -214,19 +430,6 @@ export function ArcanoVivoIntro({
               {name}
             </h1>
           </div>
-
-          {/* Subtle vibration on breathe */}
-          {isBreathing && (
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                animation: "subtle-vibrate 0.15s linear infinite",
-                opacity: 0.3,
-                mixBlendMode: "overlay",
-                background: `radial-gradient(circle at 50% 40%, hsl(${config.glowColor} / 0.05) 0%, transparent 60%)`,
-              }}
-            />
-          )}
         </div>
 
         {/* Corner ornaments with breathing */}
@@ -387,18 +590,18 @@ export function ArcanoVivoIntro({
 // ─── Particle Field Component ───
 
 function ParticleField({ particles, intensity, glowColor }: { particles: string[]; intensity: ArcanoVivoConfig["intensity"]; glowColor: string }) {
-  const count = intensity === "intense" ? 12 : intensity === "moderate" ? 8 : 5;
+  const count = intensity === "intense" ? 14 : intensity === "moderate" ? 9 : 5;
 
   const items = useMemo(() => {
     return Array.from({ length: count }, (_, i) => {
       const symbol = particles[i % particles.length];
-      const x = 10 + Math.random() * 80;
-      const y = 10 + Math.random() * 80;
-      const driftX = (Math.random() - 0.5) * 40;
-      const duration = 4 + Math.random() * 6;
-      const delay = Math.random() * 5;
-      const size = 8 + Math.random() * 6;
-      const useFloat = Math.random() > 0.5;
+      const x = 5 + Math.random() * 90;
+      const y = 5 + Math.random() * 90;
+      const driftX = (Math.random() - 0.5) * 50;
+      const duration = 4 + Math.random() * 8;
+      const delay = Math.random() * 6;
+      const size = 7 + Math.random() * 8;
+      const useFloat = Math.random() > 0.4;
 
       return { symbol, x, y, driftX, duration, delay, size, useFloat };
     });

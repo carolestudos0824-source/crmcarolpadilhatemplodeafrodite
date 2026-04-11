@@ -6,7 +6,7 @@ export const O_LOUCO: ArcanoMaiorEditorial = {
   numeral: "0",
   subtitle: "O Início da Jornada",
   slug: "o-louco",
-  cardImage: "/assets/the-fool-card.jpg",
+  cardImage: "/src/assets/arcano-0-louco.jpg",
   keywords: ["Liberdade", "Coragem", "Travessia", "Impulso", "Desapego"],
 
   essence:

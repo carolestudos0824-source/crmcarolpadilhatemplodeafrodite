@@ -6,7 +6,7 @@ export const A_SACERDOTISA: ArcanoMaiorEditorial = {
   numeral: "II",
   subtitle: "O Véu do Mistério",
   slug: "a-sacerdotisa",
-  cardImage: "/assets/the-high-priestess-card.jpg",
+  cardImage: "/src/assets/arcano-2-sacerdotisa.jpg",
   keywords: ["Intuição", "Mistério", "Silêncio", "Sabedoria Oculta", "Receptividade"],
 
   essence:
