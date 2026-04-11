@@ -29,7 +29,7 @@ export const FOOL_LESSON_SECTIONS: LessonSection[] = [
     title: "Símbolos Centrais",
     icon: "◎",
     content:
-      "A trouxa sobre o ombro representa o karma — experiências que carregamos sem consciência. O cachorro branco pode ser guia instintivo ou advertência. O precipício não é queda: é fé. As montanhas ao fundo são os desafios superados ou os que virão. A rosa branca na mão simboliza pureza e apreciação pela beleza. O sol dourado ao fundo ilumina sem revelar o caminho — é a confiança cósmica.",
+      "A trouxa sobre o ombro representa o karma — experiências que carregamos sem consciência. O cachorro branco salta junto, não ladra contra: é o instinto protetor, a intuição animal que alerta sem impedir. O precipício não é queda: é fé. As montanhas geladas ao fundo são as alturas da sabedoria abstrata que ele deixa para trás. A rosa branca na mão simboliza pureza — ele segura sem apertar, oferece sem cobrar. O sol dourado ao fundo ilumina sem revelar o caminho. A gorra com pena vermelha é a loucura sagrada, ligação com o Ar. A túnica bordada com 10 rodas carrega toda a sabedoria dos Sephiroth — sem que ele saiba.",
   },
   {
     id: "luz",
