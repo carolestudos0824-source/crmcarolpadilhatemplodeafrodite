@@ -88,6 +88,10 @@ const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName,
       completeQuiz(lesson.id);
       completeLesson(lesson.id);
       addXP(25 + score * 10);
+      // Auto-complete module if this was the last lesson
+      if (!nextLesson && moduleId) {
+        completeModule(moduleId);
+      }
       goTo("complete");
     }
   };
