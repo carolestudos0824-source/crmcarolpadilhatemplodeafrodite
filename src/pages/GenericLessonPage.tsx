@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Brain, Lightbulb, CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { StreakCounter } from "@/components/StreakCounter";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 interface GenericLesson {
@@ -18,19 +19,31 @@ interface GenericLesson {
   quiz: { id: string; question: string; options: string[]; correctIndex: number; explanation: string }[];
 }
 
-type Phase = "lesson" | "exercise" | "quiz" | "complete";
+type Phase = "lesson" | "deepdive" | "exercise" | "quiz" | "complete";
+const PHASE_LABELS: Record<Phase, string> = {
+  lesson: "Lição",
+  deepdive: "Aprofundamento",
+  exercise: "Exercício",
+  quiz: "Quiz",
+  complete: "Conclusão",
+};
+const PHASE_ORDER: Phase[] = ["lesson", "deepdive", "exercise", "quiz", "complete"];
 
 interface Props {
   lessons: GenericLesson[];
   getLessonByOrder: (order: number) => GenericLesson | undefined;
   moduleRoute: string;
   moduleName: string;
+  /** Optional theme accent HSL e.g. "280 30% 45%" */
+  themeAccent?: string;
+  /** Optional category label */
+  categoryLabel?: string;
 }
 
-const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName }: Props) => {
+const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName, themeAccent, categoryLabel }: Props) => {
   const { order } = useParams();
   const navigate = useNavigate();
-  const { addXP, completeLesson, completeQuiz } = useProgress();
+  const { progress, addXP, completeLesson, completeQuiz } = useProgress();
   const [phase, setPhase] = useState<Phase>("lesson");
   const [quizIdx, setQuizIdx] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -40,15 +53,22 @@ const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName 
   const lessonOrder = parseInt(order || "0", 10);
   const lesson = getLessonByOrder(lessonOrder);
   const nextLesson = getLessonByOrder(lessonOrder + 1);
+  const totalLessons = lessons.length;
+
+  const accent = themeAccent || "36 42% 44%";
 
   if (!lesson) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
-        <p className="font-heading">Lição não encontrada</p>
-        <button onClick={() => navigate(moduleRoute)} className="text-sm font-heading mt-4" style={{ color: "hsl(36 45% 58%)" }}>Voltar</button>
+        <div className="text-center space-y-3">
+          <p className="font-heading text-lg" style={{ color: "hsl(230 25% 15%)" }}>Lição não encontrada</p>
+          <button onClick={() => navigate(moduleRoute)} className="text-sm font-heading" style={{ color: `hsl(${accent})` }}>Voltar ao módulo</button>
+        </div>
       </div>
     );
   }
+
+  const currentPhaseIdx = PHASE_ORDER.indexOf(phase);
 
   const handleAnswer = (idx: number) => {
     if (selected !== null) return;
@@ -66,146 +86,396 @@ const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName 
       completeQuiz(lesson.id);
       completeLesson(lesson.id);
       addXP(25 + score * 10);
-      setPhase("complete");
+      goTo("complete");
     }
   };
 
+  const goTo = (p: Phase) => {
+    setPhase(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const goToNextLesson = () => {
+    if (!nextLesson) return;
+    navigate(`${moduleRoute.replace("/module/", "/")}/${nextLesson.order}`);
+    setPhase("lesson");
+    setQuizIdx(0);
+    setSelected(null);
+    setShowExp(false);
+    setScore(0);
+    window.scrollTo({ top: 0 });
+  };
+
+  // ── Render helpers ──
+
+  const PhaseNav = () => (
+    <div className="flex items-center gap-1 animate-fade-in" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
+      {PHASE_ORDER.slice(0, -1).map((p, i) => {
+        const isActive = i === currentPhaseIdx;
+        const isPast = i < currentPhaseIdx;
+        return (
+          <div key={p} className="flex items-center gap-1">
+            <div
+              className="w-2 h-2 rounded-full transition-all duration-300"
+              style={{
+                background: isPast ? `hsl(${accent})` : isActive ? `hsl(${accent} / 0.7)` : "hsl(230 10% 75% / 0.4)",
+                transform: isActive ? "scale(1.3)" : "scale(1)",
+                boxShadow: isActive ? `0 0 8px hsl(${accent} / 0.3)` : "none",
+              }}
+            />
+            {i < PHASE_ORDER.length - 2 && (
+              <div className="w-3 h-px" style={{ background: isPast ? `hsl(${accent} / 0.4)` : "hsl(230 10% 75% / 0.25)" }} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const SectionBlock = ({ children, icon, label, delay = "0ms", accentOverride }: {
+    children: React.ReactNode;
+    icon?: React.ReactNode;
+    label?: string;
+    delay?: string;
+    accentOverride?: string;
+  }) => {
+    const a = accentOverride || accent;
+    return (
+      <div
+        className="rounded-xl overflow-hidden animate-fade-in"
+        style={{
+          background: "hsl(38 28% 93% / 0.85)",
+          border: `1px solid hsl(${a} / 0.12)`,
+          backdropFilter: "blur(8px)",
+          boxShadow: `0 4px 24px hsl(${a} / 0.04)`,
+          animationDelay: delay,
+          animationFillMode: "both",
+        }}
+      >
+        {label && (
+          <div className="px-5 pt-4 pb-0 flex items-center gap-2">
+            {icon}
+            <span className="text-[10px] font-heading tracking-[0.2em] uppercase" style={{ color: `hsl(${a})` }}>{label}</span>
+          </div>
+        )}
+        <div className="p-5">
+          {children}
+        </div>
+      </div>
+    );
+  };
+
+  const ContinueButton = ({ onClick, label = "Continuar →" }: { onClick: () => void; label?: string }) => (
+    <div className="flex justify-center pt-2 animate-fade-in" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
+      <button
+        onClick={onClick}
+        className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all hover:scale-105 active:scale-95"
+        style={{
+          background: `linear-gradient(135deg, hsl(${accent}), hsl(${accent} / 0.8))`,
+          color: "hsl(36 33% 97%)",
+          boxShadow: `0 4px 20px hsl(${accent} / 0.2)`,
+        }}
+      >
+        {label}
+      </button>
+    </div>
+  );
+
   return (
     <div className="min-h-screen relative overflow-hidden">
+      {/* Background */}
       <div className="fixed inset-0 z-0">
         <img src={mysticBg} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.10), hsl(36 33% 97% / 0.22))" }} />
+        <div className="absolute inset-0" style={{
+          background: `linear-gradient(to bottom, hsl(${accent} / 0.03), hsl(36 33% 97% / 0.18), hsl(36 33% 97% / 0.26))`
+        }} />
       </div>
 
-      <div className="relative z-10 max-w-lg mx-auto px-4 pb-28 pt-6">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate(moduleRoute)} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "hsl(36 33% 97% / 0.7)", border: "1px solid hsl(36 42% 52% / 0.15)" }}>
+      {/* ── Sticky Header ── */}
+      <header
+        className="sticky top-0 z-20"
+        style={{
+          background: "hsl(36 33% 97% / 0.88)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          borderBottom: `1px solid hsl(${accent} / 0.10)`,
+        }}
+      >
+        <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
+          <button
+            onClick={() => navigate(moduleRoute)}
+            className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform active:scale-95"
+            style={{ background: "hsl(36 33% 97% / 0.7)", border: `1px solid hsl(${accent} / 0.12)` }}
+          >
             <ArrowLeft className="w-4 h-4" style={{ color: "hsl(230 20% 25%)" }} />
           </button>
-          <div className="flex-1">
-            <p className="text-[9px] font-heading tracking-[0.3em] uppercase" style={{ color: "hsl(36 40% 42% / 0.7)" }}>{moduleName}</p>
-            <h1 className="font-heading text-sm tracking-wide" style={{ color: "hsl(230 25% 15%)" }}>{lesson.title}</h1>
+          <div className="flex-1 min-w-0">
+            <p className="text-[9px] font-heading tracking-[0.25em] uppercase truncate" style={{ color: `hsl(${accent} / 0.7)` }}>
+              {categoryLabel || moduleName}
+            </p>
+            <p className="font-heading text-sm truncate" style={{ color: "hsl(230 25% 15%)" }}>
+              {lesson.title}
+            </p>
           </div>
-          <span className="text-lg">{lesson.icon}</span>
+          <PhaseNav />
         </div>
+        {/* Lesson progress bar */}
+        <div className="h-0.5" style={{ background: `hsl(${accent} / 0.08)` }}>
+          <div
+            className="h-full transition-all duration-500"
+            style={{
+              width: `${((lessonOrder + 1) / totalLessons) * 100}%`,
+              background: `linear-gradient(90deg, hsl(${accent}), hsl(${accent} / 0.6))`,
+            }}
+          />
+        </div>
+      </header>
 
-        {/* Phase: Lesson */}
+      <div className="relative z-10 max-w-lg mx-auto px-4 pb-28 pt-5">
+        {/* ── Editorial opening ── */}
         {phase === "lesson" && (
-          <div className="space-y-5" style={{ animation: "fade-up 0.4s ease-out" }}>
-            <div className="rounded-xl p-5" style={{ background: "hsl(38 28% 93% / 0.85)", border: "1px solid hsl(36 42% 52% / 0.15)" }}>
-              <p className="font-accent text-xs italic mb-3" style={{ color: "hsl(230 20% 15% / 0.5)" }}>{lesson.subtitle}</p>
-              {lesson.content.split("\n\n").map((p, i) => (
-                <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "hsl(230 20% 25%)" }}
-                  dangerouslySetInnerHTML={{ __html: p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+          <>
+            {/* Intro card */}
+            <div
+              className="rounded-2xl p-5 mb-5 animate-fade-in"
+              style={{
+                background: `linear-gradient(135deg, hsl(${accent} / 0.05), hsl(36 33% 97% / 0.70), hsl(${accent} / 0.03))`,
+                border: `1px solid hsl(${accent} / 0.12)`,
+                backdropFilter: "blur(12px)",
+                boxShadow: `0 6px 24px hsl(${accent} / 0.05)`,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <StreakCounter streak={progress.streak} />
+                <span className="text-[10px] font-heading tracking-wider ml-auto" style={{ color: "hsl(230 20% 15% / 0.4)" }}>
+                  Lição {lessonOrder + 1} de {totalLessons}
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <span className="text-xl">{lesson.icon}</span>
+                <h1 className="font-heading text-lg tracking-wide" style={{ color: "hsl(230 25% 15%)" }}>
+                  {lesson.title}
+                </h1>
+              </div>
+              <p className="font-accent text-xs italic leading-relaxed" style={{ color: "hsl(230 20% 15% / 0.55)" }}>
+                {lesson.subtitle}
+              </p>
+            </div>
+
+            {/* Main content */}
+            <div className="space-y-4">
+              <SectionBlock
+                icon={<BookOpen className="w-3.5 h-3.5" style={{ color: `hsl(${accent})` }} />}
+                label="Conteúdo Principal"
+                delay="100ms"
+              >
+                {lesson.content.split("\n\n").map((p, i) => (
+                  <p
+                    key={i}
+                    className="text-sm leading-relaxed mb-3 last:mb-0"
+                    style={{ color: "hsl(230 20% 25%)" }}
+                    dangerouslySetInnerHTML={{ __html: p.replace(/\*\*(.*?)\*\*/g, '<strong style="color: hsl(230 25% 15%)">$1</strong>') }}
+                  />
+                ))}
+              </SectionBlock>
+
+              {/* Key Points */}
+              {lesson.keyPoints.length > 0 && (
+                <SectionBlock
+                  icon={<Lightbulb className="w-3.5 h-3.5" style={{ color: `hsl(${accent})` }} />}
+                  label="Pontos-chave"
+                  delay="200ms"
+                >
+                  <ul className="space-y-2">
+                    {lesson.keyPoints.map((kp, i) => (
+                      <li key={i} className="text-xs leading-relaxed flex gap-2.5 items-start" style={{ color: "hsl(230 20% 25%)" }}>
+                        <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: `hsl(${accent})` }} />
+                        {kp}
+                      </li>
+                    ))}
+                  </ul>
+                </SectionBlock>
+              )}
+
+              {/* Deep Dive preview */}
+              {lesson.deepDive && (
+                <SectionBlock
+                  icon={<Brain className="w-3.5 h-3.5" style={{ color: "hsl(270 30% 40%)" }} />}
+                  label="Aprofundamento"
+                  delay="300ms"
+                  accentOverride="270 30% 40%"
+                >
+                  <p className="text-xs leading-relaxed mb-3" style={{ color: "hsl(230 20% 25% / 0.7)" }}>
+                    {lesson.deepDive.slice(0, 200)}…
+                  </p>
+                  <button
+                    onClick={() => goTo("deepdive")}
+                    className="text-[11px] font-heading tracking-wider"
+                    style={{ color: "hsl(270 30% 40%)" }}
+                  >
+                    Ler mais →
+                  </button>
+                </SectionBlock>
+              )}
+
+              <ContinueButton onClick={() => goTo("exercise")} />
+            </div>
+          </>
+        )}
+
+        {/* ── Deep Dive ── */}
+        {phase === "deepdive" && lesson.deepDive && (
+          <div className="space-y-4">
+            <SectionBlock
+              icon={<Brain className="w-3.5 h-3.5" style={{ color: "hsl(270 30% 40%)" }} />}
+              label="Aprofundamento"
+              accentOverride="270 30% 40%"
+            >
+              {lesson.deepDive.split("\n\n").map((p, i) => (
+                <p
+                  key={i}
+                  className="text-sm leading-relaxed mb-3 last:mb-0"
+                  style={{ color: "hsl(230 20% 25%)" }}
+                  dangerouslySetInnerHTML={{ __html: p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+                />
               ))}
-            </div>
-
-            {lesson.keyPoints.length > 0 && (
-              <div className="rounded-xl p-4" style={{ background: "hsl(36 42% 44% / 0.06)", border: "1px solid hsl(36 42% 44% / 0.15)" }}>
-                <h3 className="font-heading text-xs tracking-wider mb-2" style={{ color: "hsl(36 40% 42%)" }}>✦ Pontos-chave</h3>
-                <ul className="space-y-1.5">
-                  {lesson.keyPoints.map((kp, i) => (
-                    <li key={i} className="text-xs leading-relaxed flex gap-2" style={{ color: "hsl(230 20% 25%)" }}>
-                      <span style={{ color: "hsl(36 42% 44%)" }}>•</span>{kp}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex justify-center">
-              <button onClick={() => setPhase("exercise")} className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all hover:scale-105"
-                style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.2)" }}>
-                Continuar →
-              </button>
-            </div>
+            </SectionBlock>
+            <ContinueButton onClick={() => goTo("exercise")} label="Ir ao Exercício →" />
           </div>
         )}
 
-        {/* Phase: Exercise */}
+        {/* ── Exercise ── */}
         {phase === "exercise" && (
-          <div className="space-y-5" style={{ animation: "fade-up 0.4s ease-out" }}>
-            <div className="rounded-xl p-5" style={{ background: "hsl(340 42% 28% / 0.05)", border: "1px solid hsl(340 42% 28% / 0.15)" }}>
-              <h3 className="font-heading text-xs tracking-wider mb-3" style={{ color: "hsl(340 42% 28%)" }}>✍ Exercício</h3>
-              <p className="text-sm leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>{lesson.exercise.instruction}</p>
-            </div>
+          <div className="space-y-4">
+            <SectionBlock
+              icon={<CheckCircle2 className="w-3.5 h-3.5" style={{ color: "hsl(340 42% 28%)" }} />}
+              label="Exercício"
+              accentOverride="340 42% 28%"
+            >
+              <p className="text-sm leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>
+                {lesson.exercise.instruction}
+              </p>
+            </SectionBlock>
+
             {lesson.reflection && (
-              <div className="rounded-xl p-4" style={{ background: "hsl(270 30% 35% / 0.04)", border: "1px solid hsl(270 30% 35% / 0.12)" }}>
-                <h3 className="font-heading text-xs tracking-wider mb-2" style={{ color: "hsl(270 30% 35%)" }}>💭 Reflexão</h3>
-                <p className="text-xs leading-relaxed italic" style={{ color: "hsl(230 20% 25%)" }}>{lesson.reflection}</p>
-              </div>
+              <SectionBlock
+                icon={<span className="text-sm">💭</span>}
+                label="Reflexão"
+                delay="120ms"
+                accentOverride="270 30% 35%"
+              >
+                <p className="text-xs leading-relaxed italic" style={{ color: "hsl(230 20% 25% / 0.8)" }}>
+                  {lesson.reflection}
+                </p>
+              </SectionBlock>
             )}
-            <div className="flex justify-center">
-              <button onClick={() => { setPhase("quiz"); setQuizIdx(0); setSelected(null); setShowExp(false); setScore(0); }}
-                className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all hover:scale-105"
-                style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)" }}>
-                Ir ao Quiz →
-              </button>
-            </div>
+
+            <ContinueButton onClick={() => { goTo("quiz"); setQuizIdx(0); setSelected(null); setShowExp(false); setScore(0); }} label="Ir ao Quiz →" />
           </div>
         )}
 
-        {/* Phase: Quiz */}
+        {/* ── Quiz ── */}
         {phase === "quiz" && lesson.quiz[quizIdx] && (
-          <div className="space-y-4" style={{ animation: "fade-up 0.3s ease-out" }}>
-            <div className="flex justify-between text-[10px] font-heading tracking-wider" style={{ color: "hsl(230 20% 15% / 0.5)" }}>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-[10px] font-heading tracking-wider animate-fade-in" style={{ color: "hsl(230 20% 15% / 0.5)" }}>
               <span>Pergunta {quizIdx + 1}/{lesson.quiz.length}</span>
-              <span>{score} acertos</span>
+              <span>{score} acerto{score !== 1 ? "s" : ""}</span>
             </div>
-            <div className="rounded-xl p-5" style={{ background: "hsl(38 28% 93% / 0.85)", border: "1px solid hsl(36 42% 52% / 0.15)" }}>
-              <p className="text-sm font-heading leading-relaxed mb-4" style={{ color: "hsl(230 25% 15%)" }}>{lesson.quiz[quizIdx].question}</p>
+
+            <SectionBlock>
+              <p className="text-sm font-heading leading-relaxed mb-4" style={{ color: "hsl(230 25% 15%)" }}>
+                {lesson.quiz[quizIdx].question}
+              </p>
               <div className="space-y-2">
                 {lesson.quiz[quizIdx].options.map((opt, i) => {
                   const isCorrect = i === lesson.quiz[quizIdx].correctIndex;
                   const isSelected = i === selected;
                   return (
-                    <button key={i} onClick={() => handleAnswer(i)} disabled={selected !== null}
-                      className="w-full text-left rounded-lg p-3 text-xs transition-all"
+                    <button
+                      key={i}
+                      onClick={() => handleAnswer(i)}
+                      disabled={selected !== null}
+                      className="w-full text-left rounded-lg p-3.5 text-xs transition-all duration-200"
                       style={{
-                        background: selected !== null ? (isCorrect ? "hsl(120 40% 40% / 0.1)" : isSelected ? "hsl(0 60% 50% / 0.1)" : "hsl(38 28% 93% / 0.5)") : "hsl(38 28% 93% / 0.5)",
-                        border: `1px solid ${selected !== null ? (isCorrect ? "hsl(120 40% 40% / 0.3)" : isSelected ? "hsl(0 60% 50% / 0.3)" : "hsl(36 25% 82% / 0.3)") : "hsl(36 25% 82% / 0.3)"}`,
+                        background: selected !== null
+                          ? (isCorrect ? "hsl(140 40% 45% / 0.10)" : isSelected ? "hsl(0 60% 50% / 0.10)" : "hsl(38 28% 93% / 0.5)")
+                          : "hsl(38 28% 93% / 0.5)",
+                        border: `1px solid ${selected !== null
+                          ? (isCorrect ? "hsl(140 40% 45% / 0.30)" : isSelected ? "hsl(0 60% 50% / 0.30)" : "hsl(36 25% 82% / 0.3)")
+                          : "hsl(36 25% 82% / 0.3)"}`,
                         color: "hsl(230 20% 25%)",
-                      }}>
+                      }}
+                    >
                       {opt}
                     </button>
                   );
                 })}
               </div>
               {showExp && (
-                <div className="mt-3 p-3 rounded-lg text-xs" style={{ background: "hsl(36 42% 44% / 0.06)", border: "1px solid hsl(36 42% 44% / 0.12)", color: "hsl(230 20% 25%)" }}>
+                <div className="mt-3 p-3.5 rounded-lg text-xs leading-relaxed animate-fade-in" style={{
+                  background: `hsl(${accent} / 0.05)`,
+                  border: `1px solid hsl(${accent} / 0.12)`,
+                  color: "hsl(230 20% 25%)",
+                }}>
                   {lesson.quiz[quizIdx].explanation}
                 </div>
               )}
-            </div>
+            </SectionBlock>
+
             {selected !== null && (
-              <div className="flex justify-center">
-                <button onClick={handleNext} className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all hover:scale-105"
-                  style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)" }}>
-                  {quizIdx < lesson.quiz.length - 1 ? "Próxima →" : "Ver Resultado"}
-                </button>
-              </div>
+              <ContinueButton
+                onClick={handleNext}
+                label={quizIdx < lesson.quiz.length - 1 ? "Próxima →" : "Ver Resultado"}
+              />
             )}
           </div>
         )}
 
-        {/* Phase: Complete */}
+        {/* ── Complete ── */}
         {phase === "complete" && (
-          <div className="text-center space-y-6 py-12" style={{ animation: "fade-up 0.5s ease-out" }}>
-            <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center" style={{ background: "hsl(36 42% 44% / 0.1)", border: "2px solid hsl(36 42% 44% / 0.3)" }}>
-              <Sparkles className="w-7 h-7" style={{ color: "hsl(36 42% 44%)" }} />
+          <div className="text-center py-10 animate-fade-in">
+            <div
+              className="w-18 h-18 rounded-full mx-auto mb-5 flex items-center justify-center"
+              style={{
+                width: 72,
+                height: 72,
+                background: `linear-gradient(135deg, hsl(${accent} / 0.08), hsl(${accent} / 0.15))`,
+                border: `2px solid hsl(${accent} / 0.25)`,
+                boxShadow: `0 8px 32px hsl(${accent} / 0.10)`,
+              }}
+            >
+              <Sparkles className="w-8 h-8" style={{ color: `hsl(${accent})` }} />
             </div>
-            <h2 className="font-heading text-lg" style={{ color: "hsl(230 25% 15%)" }}>Lição Concluída!</h2>
-            <p className="text-sm" style={{ color: "hsl(230 20% 25%)" }}>{score}/{lesson.quiz.length} acertos • +{25 + score * 10} XP</p>
-            <div className="flex flex-col gap-3">
+
+            <h2 className="font-heading text-xl mb-2" style={{ color: "hsl(230 25% 15%)" }}>
+              Lição Concluída!
+            </h2>
+            <p className="text-sm mb-1" style={{ color: "hsl(230 20% 25%)" }}>
+              {score}/{lesson.quiz.length} acertos
+            </p>
+            <p className="text-xs font-heading tracking-wider mb-8" style={{ color: `hsl(${accent})` }}>
+              +{25 + score * 10} XP conquistados
+            </p>
+
+            <div className="space-y-3">
               {nextLesson && (
-                <button onClick={() => { navigate(`${moduleRoute.replace("/module/", "/")}/${nextLesson.order}`); setPhase("lesson"); setQuizIdx(0); setSelected(null); setShowExp(false); setScore(0); }}
-                  className="px-8 py-3 rounded-full font-heading text-sm tracking-wider mx-auto"
-                  style={{ background: "linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%))", color: "hsl(36 33% 97%)" }}>
-                  Próxima Lição <ArrowRight className="w-3.5 h-3.5 inline ml-1" />
+                <button
+                  onClick={goToNextLesson}
+                  className="px-8 py-3 rounded-full font-heading text-sm tracking-wider mx-auto flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
+                  style={{
+                    background: `linear-gradient(135deg, hsl(${accent}), hsl(${accent} / 0.8))`,
+                    color: "hsl(36 33% 97%)",
+                    boxShadow: `0 4px 20px hsl(${accent} / 0.2)`,
+                  }}
+                >
+                  Próxima Lição <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               )}
-              <button onClick={() => navigate(moduleRoute)} className="text-xs font-heading tracking-wider" style={{ color: "hsl(36 45% 58%)" }}>
+              <button
+                onClick={() => navigate(moduleRoute)}
+                className="text-xs font-heading tracking-wider block mx-auto"
+                style={{ color: `hsl(${accent} / 0.7)` }}
+              >
                 Voltar ao módulo
               </button>
             </div>
