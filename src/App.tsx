@@ -131,6 +131,7 @@ const AppRoutes = () => (
         <Route path="/module/cartas-corte" element={<P><CartasCortePage /></P>} />
         <Route path="/cartas-corte" element={<Navigate to="/module/cartas-corte" replace />} />
         <Route path="/numerologia" element={<P><NumerologiaPage /></P>} />
+        <Route path="/arcano-menor/:id" element={<P><NaipePage /></P>} />
 
         {/* Combinações */}
         <Route path="/module/combinacoes" element={<P><CombinacoesPage /></P>} />

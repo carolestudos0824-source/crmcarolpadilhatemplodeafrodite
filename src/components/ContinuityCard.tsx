@@ -47,7 +47,7 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
   actions.push({
     label: "Ritual diário",
     subtitle: "Sua prática de hoje",
-    path: "/ritual-diario",
+    path: "/desafios",
     icon: Sparkles,
     priority: 3,
   });

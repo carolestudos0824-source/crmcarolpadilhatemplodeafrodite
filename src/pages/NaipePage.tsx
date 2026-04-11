@@ -205,9 +205,9 @@ const NaipePage = () => {
         {/* Study tools */}
         <div className="grid grid-cols-3 gap-2.5 mb-6" style={{ animation: "fade-up 0.4s ease-out" }}>
           {[
-            { icon: <BookOpen className="w-4 h-4" />, label: "Introdução", desc: "Elemento e simbologia", onClick: () => navigate(`/intro/${naipe}`) },
+            { icon: <BookOpen className="w-4 h-4" />, label: "Introdução", desc: "Elemento e simbologia", onClick: () => navigate(`/naipe/${naipe}/intro`) },
             { icon: <Hash className="w-4 h-4" />, label: "Números", desc: "Ás ao Dez", onClick: () => navigate("/numerologia") },
-            { icon: <Crown className="w-4 h-4" />, label: "Corte", desc: "Pajem ao Rei", onClick: () => navigate("/cartas-da-corte") },
+            { icon: <Crown className="w-4 h-4" />, label: "Corte", desc: "Pajem ao Rei", onClick: () => navigate("/module/cartas-corte") },
           ].map((tool) => (
             <button
               key={tool.label}
