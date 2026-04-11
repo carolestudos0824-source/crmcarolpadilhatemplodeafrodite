@@ -7,6 +7,7 @@ const ArquiteturaMenoresLessonPage = () => (
     getLessonByOrder={(order) => ARQUITETURA_MENORES_LESSONS.find(l => l.order === order)}
     moduleRoute="/module/arquitetura-menores"
     moduleName="Arquitetura dos Menores"
+    moduleId="arquitetura-menores"
     categoryLabel="Arcanos Menores"
     themeAccent="36 38% 48%"
   />
