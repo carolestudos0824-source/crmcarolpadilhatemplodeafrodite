@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { ArrowLeft, Lock, Check, ChevronRight, BookOpen, Hash, Crown } from "lucide-react";
 import {
   type Naipe,
@@ -27,10 +27,13 @@ const NAIPE_PHRASES: Record<Naipe, string> = {
 
 const NaipePage = () => {
   const { naipe: naipeParam } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { progress } = useProgress();
 
-  const naipe = NAIPE_ROUTE_MAP[naipeParam || ""];
+  // Support both /module/:naipe route and /module/copas style routes
+  const pathNaipe = location.pathname.split("/").pop() || "";
+  const naipe = NAIPE_ROUTE_MAP[naipeParam || pathNaipe] || NAIPE_ROUTE_MAP[pathNaipe];
   if (!naipe) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
