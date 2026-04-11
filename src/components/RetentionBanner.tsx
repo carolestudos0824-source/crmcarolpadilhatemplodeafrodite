@@ -23,7 +23,7 @@ function getMotivationalMessage(streak: number, lessons: number, hoursSinceActiv
       title: "Sentimos sua falta ✦",
       subtitle: "Sua jornada te aguarda. Um passo por dia transforma o caminho.",
       icon: "sun",
-      cta: { label: "Retomar jornada", path: "/ritual-diario" },
+      cta: { label: "Retomar jornada", path: "/desafios" },
     };
   }
 
@@ -102,7 +102,7 @@ function getMotivationalMessage(streak: number, lessons: number, hoursSinceActiv
       title: "Seu ritual de hoje espera",
       subtitle: "Poucos minutos de prática mantêm a chama acesa.",
       icon: "sun",
-      cta: { label: "Praticar agora", path: "/ritual-diario" },
+      cta: { label: "Praticar agora", path: "/desafios" },
     };
   }
 

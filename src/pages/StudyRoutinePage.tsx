@@ -179,7 +179,7 @@ const StudyRoutinePage = () => {
               subtitle={dailyDone ? "Completo ✦" : `${dailyCompleted}/${dailyTotal} desafios`}
               completed={dailyDone}
               accent="hsl(36 45% 58%)"
-              onClick={() => navigate("/ritual-diario")}
+              onClick={() => navigate("/desafios")}
             />
 
             {/* 2. Current lesson */}
