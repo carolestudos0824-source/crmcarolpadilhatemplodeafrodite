@@ -13,12 +13,14 @@ export const O_MAGO: ArcanoMaiorEditorial = {
     "O Mago é o Arcano I — a primeira manifestação consciente da vontade. Enquanto O Louco é potencial puro, O Mago é o potencial canalizado. Ele é o momento em que a intenção se torna ação, em que o desejo ganha forma. Com uma mão apontando para o céu e outra para a terra, ele é o canal perfeito entre o divino e o material. Quando O Mago aparece, ele diz: você tem tudo o que precisa — agora use.",
 
   symbols: [
-    { name: "Mesa com quatro elementos", meaning: "Espada (ar/mente), cálice (água/emoções), bastão (fogo/vontade), pentáculo (terra/matéria)" },
-    { name: "Lemniscata (∞)", meaning: "Domínio infinito e consciência eterna" },
-    { name: "Mão direita erguida", meaning: "Canaliza energia cósmica do alto" },
-    { name: "Mão esquerda apontando para baixo", meaning: "Manifesta a energia na terra" },
-    { name: "Rosas vermelhas", meaning: "Paixão e desejo" },
-    { name: "Lírios brancos", meaning: "Pureza de intenção" },
+    { name: "Mesa com quatro elementos", meaning: "Espada (ar/mente), cálice (água/emoções), bastão (fogo/vontade), pentáculo (terra/matéria) — domínio completo" },
+    { name: "Lemniscata (∞) sobre a cabeça", meaning: "Domínio infinito e consciência eterna — maestria que transcende o tempo" },
+    { name: "Mão direita erguida com bastão", meaning: "Canaliza energia cósmica do alto — 'como acima...'" },
+    { name: "Mão esquerda apontando para baixo", meaning: "Manifesta a energia na terra — '...assim abaixo'" },
+    { name: "Jardim de rosas vermelhas", meaning: "Paixão, desejo e vontade — o território do Mago é fértil de intenção" },
+    { name: "Lírios brancos", meaning: "Pureza de intenção — o desejo só se torna poder quando é autêntico" },
+    { name: "Túnica branca com manto vermelho", meaning: "Branco = pureza interior; vermelho = vontade ativa e poder de realização" },
+    { name: "Cinto-serpente (Ouroboros)", meaning: "A serpente mordendo a própria cauda — eternidade, ciclos e sabedoria alquímica" },
   ],
 
   archetype:
