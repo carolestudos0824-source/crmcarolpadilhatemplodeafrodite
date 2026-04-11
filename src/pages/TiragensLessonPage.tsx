@@ -61,6 +61,7 @@ const TiragensLessonPage = () => {
     } else {
       completeQuiz(`quiz-${lesson.id}`);
       addXP(10);
+      if (!nextLesson) completeModule("tiragens");
       setPhase("complete");
     }
   };

@@ -61,6 +61,7 @@ const PraticaLessonPage = () => {
     } else {
       completeQuiz(`quiz-${lesson.id}`);
       addXP(10);
+      if (!nextLesson) completeModule("pratica");
       setPhase("complete");
     }
   };

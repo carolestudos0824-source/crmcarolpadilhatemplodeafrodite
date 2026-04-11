@@ -61,6 +61,7 @@ const FundamentosLessonPage = () => {
     } else {
       completeQuiz(`quiz-${lesson.id}`);
       addXP(10);
+      if (!nextLesson) completeModule("fundamentos");
       setPhase("complete");
     }
   };

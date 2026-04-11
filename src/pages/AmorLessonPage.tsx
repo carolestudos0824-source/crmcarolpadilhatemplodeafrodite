@@ -61,6 +61,7 @@ const AmorLessonPage = () => {
     } else {
       completeQuiz(`quiz-${lesson.id}`);
       addXP(10);
+      if (!nextLesson) completeModule("amor");
       setPhase("complete");
     }
   };
