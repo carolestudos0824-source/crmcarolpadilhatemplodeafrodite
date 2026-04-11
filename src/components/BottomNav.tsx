@@ -12,9 +12,8 @@ const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Only show on app pages, not landing/auth
-  const hideOn = ["/", "/auth"];
-  if (hideOn.includes(location.pathname)) return null;
+  // Hide on landing (rendered inside AppShell so auth/reset are already excluded)
+  if (location.pathname === "/") return null;
 
   return (
     <nav
