@@ -201,7 +201,7 @@ const SlideProblem = () => (
       {[
         "Conteúdo raso em redes sociais — listas de significados sem profundidade",
         "Livros densos sem método de fixação — leitura sem prática",
-        "Cursos longos e caros que não respeitam o ritmo da aluna",
+        "Cursos longos e caros que não respeitam o ritmo de quem estuda",
         "Falta de revisão — o que foi lido se perde em semanas",
         "Ausência de estrutura pedagógica — cada fonte diz algo diferente",
         "Nenhuma plataforma une profundidade, beleza e método em um só lugar",
@@ -327,7 +327,7 @@ const SlideInside = () => (
   <div>
     <SlideTitle
       kicker="Por Dentro"
-      title="O que a aluna encontra"
+      title="O que você encontra"
       subtitle="Uma formação completa com recursos que se complementam."
     />
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
@@ -397,7 +397,7 @@ const SlideJourney = () => (
     <SlideTitle
       kicker="A Jornada"
       title="Do Louco ao Mundo"
-      subtitle="A aluna percorre os 22 Arcanos Maiores como etapas de uma transformação interior."
+      subtitle="Você percorre os 22 Arcanos Maiores como etapas de uma transformação interior."
     />
     <div className="flex flex-wrap justify-center gap-2 max-w-xl mx-auto">
       {[
@@ -431,7 +431,7 @@ const SlidePlans = () => (
     <SlideTitle
       kicker="Planos"
       title="Gratuito e Premium"
-      subtitle="Comece sem custo. Aprofunde quando estiver pronta."
+      subtitle="Comece sem custo. Aprofunde quando quiser."
     />
     <div className="grid md:grid-cols-2 gap-4 max-w-xl mx-auto">
       {/* Free */}

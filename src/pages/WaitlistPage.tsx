@@ -25,7 +25,7 @@ const WaitlistForm = () => {
       });
       if (error) {
         if (error.code === "23505") {
-          toast({ title: "Você já está na lista ✦", description: "Esse e-mail já foi registrado. Fique atenta — em breve você receberá novidades." });
+          toast({ title: "Você já está na lista ✦", description: "Esse e-mail já foi registrado. Em breve você receberá novidades." });
           setSubmitted(true);
         } else throw error;
       } else {
@@ -51,7 +51,7 @@ const WaitlistForm = () => {
           Você está na lista ✦
         </h2>
         <p className="font-body text-sm leading-relaxed" style={{ color: "hsl(230 15% 30% / 0.55)" }}>
-          Quando as portas se abrirem, você será uma das primeiras a entrar. Fique atenta ao seu e-mail.
+          Quando as portas se abrirem, você será das primeiras pessoas a entrar. Fique de olho no seu e-mail.
         </p>
       </div>
     );
