@@ -219,6 +219,9 @@ const LessonPage = () => {
             onGoDeepDive={() => goToPhase("deepdive")}
             onGoExercise={() => goToPhase("exercise")}
             onSkipToQuiz={() => goToPhase("quiz")}
+            quickReview={arcano.quickReview}
+            reflectionQuestions={arcano.reflectionQuestions}
+            initiationLesson={arcano.initiationLesson}
           />
         )}
 
