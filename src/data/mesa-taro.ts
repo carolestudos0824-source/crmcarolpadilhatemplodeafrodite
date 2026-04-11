@@ -7,6 +7,7 @@ export interface MesaTaroLesson {
   content: string;
   keyPoints: string[];
   deepDive?: string;
+  reflection?: string;
   exercise: {
     instruction: string;
     type: "reflection" | "practice" | "observation" | "writing";
