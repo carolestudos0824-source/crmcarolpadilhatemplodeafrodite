@@ -1,6 +1,16 @@
 import { useState } from "react";
-import { BookOpen, Layers, Eye, ChevronDown, Heart, Briefcase, Sparkles } from "lucide-react";
+import { BookOpen, Layers, Eye, ChevronDown, Heart, Briefcase, Sparkles, ScrollText, Feather } from "lucide-react";
 import { type LessonSection } from "@/data/fool-lesson-content";
+
+interface QuickReviewItem {
+  keyword: string;
+  meaning: string;
+}
+
+interface ReflectionQuestion {
+  id: string;
+  question: string;
+}
 
 interface LessonContentProps {
   sections: LessonSection[];
@@ -11,6 +21,9 @@ interface LessonContentProps {
   onGoDeepDive: () => void;
   onGoExercise: () => void;
   onSkipToQuiz: () => void;
+  quickReview?: QuickReviewItem[];
+  reflectionQuestions?: ReflectionQuestion[];
+  initiationLesson?: string;
 }
 
 /**
@@ -20,9 +33,10 @@ interface LessonContentProps {
 export function LessonContent({
   sections, essence, light, shadow,
   onComplete, onGoDeepDive, onGoExercise, onSkipToQuiz,
+  quickReview, reflectionQuestions, initiationLesson,
 }: LessonContentProps) {
   const [openSection, setOpenSection] = useState<string | null>(null);
-  const [step, setStep] = useState(0); // 0=essence, 1=light, 2=shadow, 3=sections+applied
+  const [step, setStep] = useState(0); // 0=essence, 1=light, 2=shadow, 3=initiation+applied
 
   const steps = [
     { id: "essence", title: "Essência", icon: "✦", content: essence },
@@ -30,7 +44,7 @@ export function LessonContent({
     { id: "shadow", title: "Sombra", icon: "☾", content: shadow },
   ];
 
-  // Separate sections into core (essencia/simbolos/luz/sombra/licao) and applied (amor/trabalho/espiritualidade)
+  // Separate sections into core and applied
   const coreIds = ["essencia", "simbolos", "luz", "sombra", "licao"];
   const appliedIds = ["amor", "trabalho", "espiritualidade"];
   const coreSections = sections.filter(s => coreIds.includes(s.id));
@@ -112,6 +126,26 @@ export function LessonContent({
         })}
       </div>
 
+      {/* ── Initiation Lesson ── */}
+      {step >= 2 && initiationLesson && (
+        <div
+          className="rounded-xl p-5"
+          style={{
+            background: "linear-gradient(135deg, hsl(36 42% 44% / 0.04), hsl(270 30% 35% / 0.03))",
+            border: "1px solid hsl(36 42% 44% / 0.15)",
+            animation: "fade-up 0.4s ease-out",
+          }}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-base w-7 h-7 rounded-full flex items-center justify-center"
+              style={{ background: "hsl(36 42% 44% / 0.08)", border: "1px solid hsl(36 42% 44% / 0.2)" }}
+            >⟡</span>
+            <span className="text-[10px] font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>Lição Iniciática</span>
+          </div>
+          <p className="text-sm leading-relaxed italic" style={{ color: "hsl(230 20% 25%)" }}>{initiationLesson}</p>
+        </div>
+      )}
+
       {/* Applied interpretations — amor, trabalho, espiritualidade */}
       {step >= 2 && appliedSections.length > 0 && (
         <div className="space-y-3 pt-2" style={{ animation: "fade-up 0.4s ease-out" }}>
@@ -126,7 +160,6 @@ export function LessonContent({
             const colors = appliedColors[section.id] || appliedColors.amor;
             const Icon = appliedIcons[section.id] || Heart;
             
-            // Parse "Na luz: ... Na sombra: ..." format
             const parts = section.content.split(/Na sombra:/);
             const lightText = parts[0]?.replace(/^Na luz:\s*/, "").trim();
             const shadowText = parts[1]?.trim();
@@ -180,6 +213,83 @@ export function LessonContent({
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* ── Reflection Questions ── */}
+      {step >= 2 && reflectionQuestions && reflectionQuestions.length > 0 && (
+        <div
+          className="rounded-xl p-5 space-y-3"
+          style={{
+            background: "hsl(270 30% 35% / 0.04)",
+            border: "1px solid hsl(270 30% 35% / 0.12)",
+            animation: "fade-up 0.4s ease-out 0.1s both",
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <Feather className="w-3.5 h-3.5" style={{ color: "hsl(270 30% 35%)" }} />
+            <span className="text-[10px] font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(270 30% 35%)" }}>
+              Perguntas para Reflexão
+            </span>
+          </div>
+          <div className="space-y-2.5">
+            {reflectionQuestions.map((q, i) => (
+              <div
+                key={q.id}
+                className="rounded-lg px-4 py-3 animate-fade-in"
+                style={{
+                  background: "hsl(270 30% 35% / 0.03)",
+                  border: "1px solid hsl(270 30% 35% / 0.08)",
+                  animationDelay: `${i * 80}ms`,
+                  animationFillMode: "both",
+                }}
+              >
+                <p className="text-xs leading-relaxed italic" style={{ color: "hsl(230 20% 20% / 0.75)" }}>
+                  "{q.question}"
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Quick Review Cards ── */}
+      {step >= 2 && quickReview && quickReview.length > 0 && (
+        <div
+          className="rounded-xl p-5 space-y-3"
+          style={{
+            background: "hsl(36 42% 44% / 0.04)",
+            border: "1px solid hsl(36 42% 44% / 0.12)",
+            animation: "fade-up 0.4s ease-out 0.2s both",
+          }}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <ScrollText className="w-3.5 h-3.5" style={{ color: "hsl(36 40% 42%)" }} />
+            <span className="text-[10px] font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>
+              Revisão Rápida
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {quickReview.map((item, i) => (
+              <div
+                key={i}
+                className="rounded-lg px-3 py-2.5 animate-fade-in"
+                style={{
+                  background: "hsl(36 42% 44% / 0.04)",
+                  border: "1px solid hsl(36 42% 44% / 0.10)",
+                  animationDelay: `${i * 60}ms`,
+                  animationFillMode: "both",
+                }}
+              >
+                <p className="text-[9px] font-heading tracking-wider uppercase mb-0.5" style={{ color: "hsl(36 40% 42%)" }}>
+                  {item.keyword}
+                </p>
+                <p className="text-[11px] leading-snug" style={{ color: "hsl(230 20% 25%)" }}>
+                  {item.meaning}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
