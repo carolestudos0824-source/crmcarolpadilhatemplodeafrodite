@@ -128,7 +128,8 @@ const AppRoutes = () => (
         <Route path="/module/espadas" element={<P><NaipePage /></P>} />
         <Route path="/module/ouros" element={<P><NaipePage /></P>} />
         <Route path="/naipe/:naipe/intro" element={<P><NaipeIntroPage /></P>} />
-        <Route path="/cartas-corte" element={<P><CartasCortePage /></P>} />
+        <Route path="/module/cartas-corte" element={<P><CartasCortePage /></P>} />
+        <Route path="/cartas-corte" element={<Navigate to="/module/cartas-corte" replace />} />
         <Route path="/numerologia" element={<P><NumerologiaPage /></P>} />
 
         {/* Combinações */}
