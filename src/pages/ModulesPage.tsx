@@ -324,34 +324,55 @@ const ModulesPage = () => {
           );
         })}
 
-        {/* Fool's Journey overview */}
-        <section className="mb-4">
-          <button
-            onClick={() => navigate("/jornada-do-louco")}
-            className="w-full group transition-all duration-500 hover:scale-[1.01]"
-          >
-            <div className="relative overflow-hidden rounded-xl p-5 flex items-center gap-4" style={{
-              background: "linear-gradient(145deg, hsl(36 42% 44% / 0.06), hsl(38 28% 93% / 0.90))",
-              backdropFilter: "blur(14px)",
-              border: "1px solid hsl(36 42% 44% / 0.22)",
-            }}>
-              <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{
-                border: "1.5px solid hsl(36 42% 44% / 0.35)",
-                background: "hsl(36 42% 44% / 0.06)"
-              }}>
-                <span className="text-lg" style={{ color: "hsl(36 42% 42%)" }}>◎</span>
-              </div>
-              <div className="flex-1 text-left">
-                <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
-                  A Jornada do Louco
-                </h3>
-                <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
-                  O mapa iniciático completo — do Louco ao Mundo
-                </p>
-              </div>
-              <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
-            </div>
-          </button>
+        {/* ═══════════════ STUDY TOOLS ═══════════════ */}
+        <section className="mb-8">
+          <div className="flex items-center justify-center mb-3">
+            <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50" loading="lazy" width={800} height={512} />
+          </div>
+          <h2 className="font-accent text-sm tracking-[0.25em] uppercase italic text-center mb-5" style={{
+            color: "hsl(340 42% 24%)",
+            textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
+          }}>
+            Ferramentas de Estudo
+          </h2>
+          <div className="space-y-2.5">
+            {[
+              { icon: "◎", label: "A Jornada do Louco", desc: "O mapa iniciático — do Louco ao Mundo", route: "/jornada-do-louco" },
+              { icon: "🔄", label: "Revisão", desc: "Flashcards e revisão espaçada", route: "/revisao" },
+              { icon: "🔥", label: "Desafio Diário", desc: "Pratique todos os dias com desafios únicos", route: "/desafios" },
+              { icon: "📚", label: "Biblioteca de Símbolos", desc: "Consulte cores, animais e objetos do tarô", route: "/biblioteca" },
+              { icon: "📋", label: "Rotina de Estudo", desc: "Seu plano de estudo personalizado", route: "/rotina" },
+              { icon: "🏆", label: "Certificados", desc: "Conquistas e diplomas de conclusão", route: "/certificados" },
+            ].map((tool, i) => (
+              <button
+                key={tool.route}
+                onClick={() => navigate(tool.route)}
+                className="w-full text-left group transition-all duration-300"
+              >
+                <div className="rounded-xl p-4 flex items-center gap-3.5 transition-all duration-300" style={{
+                  background: "linear-gradient(145deg, hsl(38 28% 93% / 0.80), hsl(36 33% 95% / 0.75))",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid hsl(36 42% 52% / 0.20)",
+                }}>
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{
+                    background: "hsl(36 45% 58% / 0.08)",
+                    border: "1px solid hsl(36 45% 58% / 0.18)",
+                  }}>
+                    <span className="text-sm">{tool.icon}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
+                      {tool.label}
+                    </h3>
+                    <p className="font-accent text-[11px] italic truncate" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                      {tool.desc}
+                    </p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.35)" }} />
+                </div>
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* Premium CTA - only after some progress */}
