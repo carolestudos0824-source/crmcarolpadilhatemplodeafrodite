@@ -7,6 +7,8 @@ const LeituraSimbolicaLessonPage = () => (
     getLessonByOrder={(order) => LEITURA_SIMBOLICA_LESSONS.find(l => l.order === order)}
     moduleRoute="/module/leitura-simbolica"
     moduleName="Leitura Simbólica"
+    categoryLabel="Método"
+    themeAccent="250 28% 48%"
   />
 );
 

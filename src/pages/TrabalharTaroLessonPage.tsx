@@ -7,6 +7,8 @@ const TrabalharTaroLessonPage = () => (
     getLessonByOrder={(order) => TRABALHAR_TARO_LESSONS.find(l => l.order === order)}
     moduleRoute="/module/trabalhar-taro"
     moduleName="Como Trabalhar com Tarô"
+    categoryLabel="Profissionalização"
+    themeAccent="260 25% 42%"
   />
 );
 
