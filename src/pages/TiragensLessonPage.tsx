@@ -10,7 +10,7 @@ type Phase = "lesson" | "exercise" | "deepdive" | "quiz" | "complete";
 const TiragensLessonPage = () => {
   const { order } = useParams();
   const navigate = useNavigate();
-  const { addXP, completeLesson, completeQuiz } = useProgress();
+  const { addXP, completeLesson, completeQuiz, completeModule } = useProgress();
   const [phase, setPhase] = useState<Phase>("lesson");
   const [quizIndex, setQuizIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
