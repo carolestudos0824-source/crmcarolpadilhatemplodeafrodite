@@ -327,7 +327,7 @@ const SlideInside = () => (
   <div>
     <SlideTitle
       kicker="Por Dentro"
-      title="O que a aluna encontra"
+      title="O que você encontra"
       subtitle="Uma formação completa com recursos que se complementam."
     />
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
