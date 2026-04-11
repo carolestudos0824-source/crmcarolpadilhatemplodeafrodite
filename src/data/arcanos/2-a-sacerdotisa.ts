@@ -13,11 +13,13 @@ export const A_SACERDOTISA: ArcanoMaiorEditorial = {
     "A Sacerdotisa é o Arcano II — o portal entre o consciente e o inconsciente, entre o que se sabe e o que se intui. Ela não age; ela percebe. Não fala; escuta. É a guardiã do conhecimento oculto, da sabedoria que habita o silêncio. Sentada entre as duas colunas — Boaz (força) e Jachin (estabelecimento) — ela representa o equilíbrio entre polaridades. Quando a Sacerdotisa aparece, ela convida a parar, silenciar e escutar o que já se sabe por dentro.",
 
   symbols: [
-    { name: "Colunas B e J", meaning: "Polaridades do Templo de Salomão — dualidade equilibrada" },
-    { name: "Véu com romãs e palmeiras", meaning: "Separa o mundo visível do invisível — só iniciados passam" },
-    { name: "Lua crescente aos pés", meaning: "Domínio sobre ciclos, feminilidade e marés emocionais" },
-    { name: "Rolo da Torá", meaning: "Sabedoria parcialmente oculta — há sempre mais a descobrir" },
-    { name: "Cruz solar no peito", meaning: "União do divino masculino e feminino" },
+    { name: "Colunas B e J", meaning: "Boaz (força, negro) e Jachin (estabilidade, branco) — as colunas do Templo de Salomão, dualidade equilibrada" },
+    { name: "Véu com romãs e palmeiras", meaning: "Separa o mundo visível do invisível — as romãs são fertilidade (Perséfone), as palmeiras são vitória. Só iniciados passam" },
+    { name: "Lua crescente aos pés", meaning: "Domínio sobre ciclos, feminilidade e marés emocionais — a lua obedece à Sacerdotisa, não o contrário" },
+    { name: "Rolo da Torá (TORA)", meaning: "Parcialmente coberto pelo manto — nem toda verdade pode ser revelada de uma vez. A palavra TORA é um anagrama de TARO" },
+    { name: "Cruz solar no peito", meaning: "União dos quatro elementos e do divino masculino-feminino em equilíbrio" },
+    { name: "Manto azul fluindo", meaning: "Azul = água, intuição, profundidade lunar. O manto flui como água, reforçando sua natureza receptiva" },
+    { name: "Água/oceano atrás do véu", meaning: "O inconsciente coletivo — o mar de memórias e sabedoria que existe além do véu visível" },
   ],
 
   archetype:

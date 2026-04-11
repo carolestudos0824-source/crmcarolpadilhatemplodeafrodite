@@ -13,12 +13,14 @@ export const O_LOUCO: ArcanoMaiorEditorial = {
     "O Louco é o Arcano Zero — o vazio fértil, o potencial puro antes de qualquer manifestação. Ele não é o início; é a coragem de iniciar. É o sopro antes da primeira palavra, o passo antes do caminho existir. Carrega consigo a energia da possibilidade infinita, do momento em que tudo ainda pode ser. Quando o Louco aparece, ele convida a soltar o controle e confiar no desconhecido.",
 
   symbols: [
-    { name: "Trouxa", meaning: "Karma — experiências que carregamos sem consciência" },
-    { name: "Cachorro branco", meaning: "Guia instintivo ou advertência — a intuição animal" },
+    { name: "Trouxa sobre o ombro", meaning: "Karma — experiências que carregamos sem consciência, bagagem da alma" },
+    { name: "Cachorro branco", meaning: "Instinto protetor que salta junto — não ladra contra, acompanha. A intuição animal que alerta sem impedir" },
     { name: "Precipício", meaning: "Não é queda: é fé. O limiar entre o conhecido e o desconhecido" },
-    { name: "Montanhas ao fundo", meaning: "Desafios superados ou os que virão" },
-    { name: "Rosa branca", meaning: "Pureza e apreciação pela beleza" },
-    { name: "Sol dourado", meaning: "Confiança cósmica — ilumina sem revelar o caminho" },
+    { name: "Montanhas geladas ao fundo", meaning: "As alturas frias da sabedoria abstrata que ele deixa para trás — ou os desafios que virão" },
+    { name: "Rosa branca na mão", meaning: "Pureza, inocência e apreciação pela beleza — segura sem apertar, oferece sem cobrar" },
+    { name: "Sol dourado", meaning: "Confiança cósmica — ilumina sem revelar o caminho, energia que vem de trás" },
+    { name: "Gorra com pena vermelha", meaning: "A loucura sagrada e a ligação com o elemento Ar — leveza e pensamento livre" },
+    { name: "Túnica bordada com rodas", meaning: "Na RWS, as 10 rodas na veste representam os Sephiroth ou ciclos da Roda da Fortuna — o Louco carrega toda a sabedoria sem saber" },
   ],
 
   archetype:
