@@ -28,6 +28,29 @@ const BetaInvitePage = lazy(() => import("./pages/BetaInvitePage.tsx"));
 const WaitlistPage = lazy(() => import("./pages/WaitlistPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
+// Module pages
+const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
+const NaipeIntroPage = lazy(() => import("./pages/NaipeIntroPage.tsx"));
+const CombinacoesPage = lazy(() => import("./pages/CombinacoesPage.tsx"));
+const CombinacoesLessonPage = lazy(() => import("./pages/CombinacoesLessonPage.tsx"));
+const TiragensPage = lazy(() => import("./pages/TiragensPage.tsx"));
+const TiragensLessonPage = lazy(() => import("./pages/TiragensLessonPage.tsx"));
+const AmorPage = lazy(() => import("./pages/AmorPage.tsx"));
+const AmorLessonPage = lazy(() => import("./pages/AmorLessonPage.tsx"));
+const PraticaPage = lazy(() => import("./pages/PraticaPage.tsx"));
+const PraticaLessonPage = lazy(() => import("./pages/PraticaLessonPage.tsx"));
+
+// Utility pages
+const TrailsPage = lazy(() => import("./pages/TrailsPage.tsx"));
+const ReviewPage = lazy(() => import("./pages/ReviewPage.tsx"));
+const DailyChallengesPage = lazy(() => import("./pages/DailyChallengesPage.tsx"));
+const CertificatesPage = lazy(() => import("./pages/CertificatesPage.tsx"));
+const SymbolLibraryPage = lazy(() => import("./pages/SymbolLibraryPage.tsx"));
+const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
+const CartasCortePage = lazy(() => import("./pages/CartasCortePage.tsx"));
+const NumerologiaPage = lazy(() => import("./pages/NumerologiaPage.tsx"));
+const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
+
 const queryClient = new QueryClient();
 
 const LoadingFallback = () => (
@@ -65,20 +88,64 @@ const AppRoutes = () => (
     <BetaFeedback />
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
+        {/* Public */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/convite" element={<BetaInvitePage />} />
         <Route path="/waitlist" element={<WaitlistPage />} />
+        <Route path="/apresentacao" element={<PresentationPage />} />
         <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
+
+        {/* Dashboard */}
         <Route path="/app" element={<P><ModulesPage /></P>} />
+        <Route path="/trilhas" element={<P><TrailsPage /></P>} />
+
+        {/* Fundamentos */}
         <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
         <Route path="/fundamentos/:order" element={<P><FundamentosLessonPage /></P>} />
+
+        {/* Arcanos Maiores */}
         <Route path="/module/arcanos-maiores" element={<P><Index /></P>} />
         <Route path="/lesson/:id" element={<P><LessonPage /></P>} />
         <Route path="/jornada-do-louco" element={<P><FoolsJourneyPage /></P>} />
+
+        {/* Arcanos Menores — Naipes */}
+        <Route path="/module/copas" element={<P><NaipePage /></P>} />
+        <Route path="/module/paus" element={<P><NaipePage /></P>} />
+        <Route path="/module/espadas" element={<P><NaipePage /></P>} />
+        <Route path="/module/ouros" element={<P><NaipePage /></P>} />
+        <Route path="/naipe/:naipe/intro" element={<P><NaipeIntroPage /></P>} />
+        <Route path="/cartas-corte" element={<P><CartasCortePage /></P>} />
+        <Route path="/numerologia" element={<P><NumerologiaPage /></P>} />
+
+        {/* Combinações */}
+        <Route path="/module/combinacoes" element={<P><CombinacoesPage /></P>} />
+        <Route path="/combinacoes/:order" element={<P><CombinacoesLessonPage /></P>} />
+
+        {/* Tiragens */}
+        <Route path="/module/tiragens" element={<P><TiragensPage /></P>} />
+        <Route path="/tiragens/:order" element={<P><TiragensLessonPage /></P>} />
+
+        {/* Amor */}
+        <Route path="/module/amor" element={<P><AmorPage /></P>} />
+        <Route path="/amor/:order" element={<P><AmorLessonPage /></P>} />
+
+        {/* Prática */}
+        <Route path="/module/pratica" element={<P><PraticaPage /></P>} />
+        <Route path="/pratica/:order" element={<P><PraticaLessonPage /></P>} />
+
+        {/* Ferramentas de estudo */}
+        <Route path="/revisao" element={<P><ReviewPage /></P>} />
+        <Route path="/desafios" element={<P><DailyChallengesPage /></P>} />
+        <Route path="/certificados" element={<P><CertificatesPage /></P>} />
+        <Route path="/biblioteca" element={<P><SymbolLibraryPage /></P>} />
+        <Route path="/rotina" element={<P><StudyRoutinePage /></P>} />
+
+        {/* Premium & Profile */}
         <Route path="/premium" element={<P><PremiumPage /></P>} />
         <Route path="/perfil" element={<P><ProfilePage /></P>} />
         <Route path="/feedback" element={<P><FeedbackPage /></P>} />
         <Route path="/admin" element={<P><AdminPage /></P>} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
