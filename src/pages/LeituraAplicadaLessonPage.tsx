@@ -7,6 +7,8 @@ const LeituraAplicadaLessonPage = () => (
     getLessonByOrder={(order) => LEITURA_APLICADA_LESSONS.find(l => l.order === order)}
     moduleRoute="/module/leitura-aplicada"
     moduleName="Leitura Aplicada"
+    categoryLabel="Prática Guiada"
+    themeAccent="180 30% 40%"
   />
 );
 
