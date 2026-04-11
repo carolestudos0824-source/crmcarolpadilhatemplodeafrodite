@@ -199,6 +199,16 @@ export function useProgress() {
     });
   }, []);
 
+  const completeModule = useCallback((moduleId: string) => {
+    setProgress((prev) => {
+      if (prev.completedModules.includes(moduleId)) return prev;
+      return {
+        ...prev,
+        completedModules: [...prev.completedModules, moduleId],
+      };
+    });
+  }, []);
+
   const completeLesson = useCallback((lessonId: string) => {
     setProgress((prev) => {
       if (prev.completedLessons.includes(lessonId)) return prev;
@@ -289,6 +299,7 @@ export function useProgress() {
     loading,
     addXP,
     completeLesson,
+    completeModule,
     completeQuiz,
     completeExercise,
     earnBadge,

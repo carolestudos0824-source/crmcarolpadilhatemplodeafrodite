@@ -432,55 +432,149 @@ const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName,
         )}
 
         {/* ── Complete ── */}
-        {phase === "complete" && (
-          <div className="text-center py-10 animate-fade-in">
-            <div
-              className="w-18 h-18 rounded-full mx-auto mb-5 flex items-center justify-center"
-              style={{
-                width: 72,
-                height: 72,
-                background: `linear-gradient(135deg, hsl(${accent} / 0.08), hsl(${accent} / 0.15))`,
-                border: `2px solid hsl(${accent} / 0.25)`,
-                boxShadow: `0 8px 32px hsl(${accent} / 0.10)`,
-              }}
-            >
-              <Sparkles className="w-8 h-8" style={{ color: `hsl(${accent})` }} />
-            </div>
+        {phase === "complete" && (() => {
+          const percentage = Math.round((score / lesson.quiz.length) * 100);
+          const isExcellent = percentage >= 80;
+          const xpEarned = 25 + score * 10;
+          const isLastLesson = !nextLesson;
 
-            <h2 className="font-heading text-xl mb-2" style={{ color: "hsl(230 25% 15%)" }}>
-              Lição Concluída!
-            </h2>
-            <p className="text-sm mb-1" style={{ color: "hsl(230 20% 25%)" }}>
-              {score}/{lesson.quiz.length} acertos
-            </p>
-            <p className="text-xs font-heading tracking-wider mb-8" style={{ color: `hsl(${accent})` }}>
-              +{25 + score * 10} XP conquistados
-            </p>
-
-            <div className="space-y-3">
-              {nextLesson && (
-                <button
-                  onClick={goToNextLesson}
-                  className="px-8 py-3 rounded-full font-heading text-sm tracking-wider mx-auto flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
+          return (
+            <div className="text-center py-10 space-y-6" style={{ animation: "fade-up 0.6s ease-out" }}>
+              {/* Achievement icon */}
+              <div className="relative">
+                <div
+                  className="w-20 h-20 mx-auto rounded-full flex items-center justify-center"
                   style={{
-                    background: `linear-gradient(135deg, hsl(${accent}), hsl(${accent} / 0.8))`,
-                    color: "hsl(36 33% 97%)",
-                    boxShadow: `0 4px 20px hsl(${accent} / 0.2)`,
+                    background: `linear-gradient(135deg, hsl(${accent} / 0.15), hsl(${accent} / 0.08))`,
+                    border: `2px solid hsl(${accent} / 0.30)`,
+                    boxShadow: `0 0 40px hsl(${accent} / 0.12)`,
+                    animation: "glow-breathe 3s ease-in-out infinite",
                   }}
                 >
-                  Próxima Lição <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                  <Sparkles className="w-8 h-8" style={{ color: `hsl(${accent})` }} />
+                </div>
+                {isExcellent && (
+                  <div
+                    className="absolute w-7 h-7 rounded-full flex items-center justify-center text-xs animate-fade-in"
+                    style={{
+                      background: `linear-gradient(135deg, hsl(42 80% 55%), hsl(36 60% 50%))`,
+                      border: "2px solid hsl(36 33% 97%)",
+                      boxShadow: `0 2px 8px hsl(${accent} / 0.3)`,
+                      top: "-4px",
+                      left: "calc(50% + 24px)",
+                    }}
+                  >⭐</div>
+                )}
+              </div>
+
+              <div>
+                <h2 className="font-heading text-xl mb-1" style={{
+                  background: `linear-gradient(135deg, hsl(340 42% 20%), hsl(${accent}))`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>Lição Concluída!</h2>
+                <p className="text-sm" style={{ color: "hsl(230 20% 30%)" }}>
+                  <strong>{lesson.title}</strong>
+                </p>
+              </div>
+
+              {/* Stats */}
+              <div className="flex justify-center gap-6">
+                <div className="text-center">
+                  <span className="block font-heading text-xl" style={{ color: `hsl(${accent})` }}>{percentage}%</span>
+                  <span className="text-[9px] font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(230 10% 50%)" }}>Quiz</span>
+                </div>
+                <div className="w-px h-10" style={{ background: `hsl(${accent} / 0.2)` }} />
+                <div className="text-center">
+                  <span className="block font-heading text-xl" style={{ color: `hsl(${accent})` }}>+{xpEarned}</span>
+                  <span className="text-[9px] font-heading tracking-[0.2em] uppercase" style={{ color: "hsl(230 10% 50%)" }}>XP</span>
+                </div>
+              </div>
+
+              {/* Progress saved */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-heading tracking-wider"
+                style={{
+                  background: "hsl(120 40% 50% / 0.08)",
+                  border: "1px solid hsl(120 40% 50% / 0.2)",
+                  color: "hsl(120 40% 35%)",
+                }}
+              >✓ Progresso salvo</div>
+
+              {/* Next lesson teaser */}
+              {nextLesson && (
+                <div
+                  className="rounded-xl p-5 text-left mx-auto max-w-sm animate-fade-in"
+                  style={{
+                    background: `linear-gradient(135deg, hsl(${accent} / 0.04), hsl(340 42% 28% / 0.03))`,
+                    border: `1px solid hsl(${accent} / 0.12)`,
+                    animationDelay: "300ms",
+                    animationFillMode: "both",
+                  }}
+                >
+                  <p className="text-[9px] font-heading tracking-[0.3em] uppercase mb-2" style={{ color: `hsl(${accent} / 0.6)` }}>
+                    Próxima lição
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                      style={{
+                        background: `hsl(${accent} / 0.08)`,
+                        border: `1px solid hsl(${accent} / 0.2)`,
+                      }}
+                    >
+                      <span className="text-sm">{nextLesson.icon}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-heading text-sm" style={{ color: "hsl(230 25% 15%)" }}>{nextLesson.title}</p>
+                      <p className="font-accent text-[11px] italic truncate" style={{ color: "hsl(230 20% 15% / 0.45)" }}>{nextLesson.subtitle}</p>
+                    </div>
+                  </div>
+                </div>
               )}
-              <button
-                onClick={() => navigate(moduleRoute)}
-                className="text-xs font-heading tracking-wider block mx-auto"
-                style={{ color: `hsl(${accent} / 0.7)` }}
-              >
-                Voltar ao módulo
-              </button>
+
+              {/* Module complete celebration */}
+              {isLastLesson && (
+                <div className="pt-4" style={{ borderTop: `1px solid hsl(${accent} / 0.15)` }}>
+                  <div className="text-2xl mb-3">🎉</div>
+                  <h3 className="font-heading text-lg tracking-wide mb-2" style={{ color: "hsl(340 42% 22%)" }}>
+                    Módulo Concluído!
+                  </h3>
+                  <p className="font-accent text-sm italic max-w-sm mx-auto" style={{ color: "hsl(230 20% 15% / 0.55)" }}>
+                    Você completou todas as lições de {moduleName}. Parabéns pela dedicação!
+                  </p>
+                </div>
+              )}
+
+              {/* Navigation */}
+              <div className="flex flex-col items-center gap-3 pt-2">
+                {nextLesson && (
+                  <button
+                    onClick={goToNextLesson}
+                    className="px-10 py-3.5 rounded-full font-heading text-sm tracking-wider flex items-center gap-3 transition-all hover:scale-105 active:scale-95"
+                    style={{
+                      background: `linear-gradient(135deg, hsl(${accent}), hsl(${accent} / 0.8))`,
+                      color: "hsl(36 33% 97%)",
+                      boxShadow: `0 4px 20px hsl(${accent} / 0.2)`,
+                    }}
+                  >
+                    <span>Continuar</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
+                <button
+                  onClick={() => navigate(moduleRoute)}
+                  className="px-8 py-3 rounded-full font-heading text-sm tracking-wider transition-all hover:scale-105 flex items-center gap-2"
+                  style={{
+                    background: "transparent",
+                    border: `1.5px solid hsl(${accent} / 0.35)`,
+                    color: `hsl(${accent})`,
+                  }}
+                >
+                  Voltar ao módulo
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     </div>
   );
