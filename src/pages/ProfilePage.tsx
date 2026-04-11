@@ -28,7 +28,7 @@ const getLevelTitle = (level: number) => LEVEL_TITLES[Math.min(level, 10)] || "I
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const { isAdmin } = useIsAdmin();
+  const { isAdmin, loading: adminLoading } = useIsAdmin();
   const { progress, completedCount, journeyProgress, getCurrentArcanoId } = useProgress();
   const { isPremium, premiumUntil, premiumSource } = usePremium();
   const { redeem, loading: redeemLoading } = useGiftCode();
@@ -74,7 +74,7 @@ const ProfilePage = () => {
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-body">Voltar</span>
             </button>
-            {isAdmin && (
+            {!adminLoading && isAdmin && (
               <button
                 onClick={() => navigate("/admin")}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
