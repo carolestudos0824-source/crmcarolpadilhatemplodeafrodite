@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getArcanoById, ARCANOS_MAIORES, FREE_ARCANO_IDS } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import { useTrackEvent } from "@/hooks/use-track-event";
-import { CinematicIntro } from "@/components/arcano-vivo/CinematicIntro";
+import { ArcanoVivoIntro } from "@/components/arcano-vivo/ArcanoVivoIntro";
 import { LessonContent } from "@/components/arcano-vivo/LessonContent";
 import { CompletionScreen } from "@/components/arcano-vivo/CompletionScreen";
 import { PhaseIndicator } from "@/components/arcano-vivo/PhaseIndicator";
@@ -194,7 +194,8 @@ const LessonPage = () => {
       <main className="relative z-10 max-w-lg mx-auto px-4 py-6">
         {/* INTRO — Cinematic */}
         {phase === "intro" && (
-          <CinematicIntro
+          <ArcanoVivoIntro
+            arcanoId={arcanoId}
             name={arcano.name}
             numeral={arcano.numeral}
             subtitle={arcano.subtitle}
