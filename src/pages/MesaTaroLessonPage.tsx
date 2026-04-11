@@ -7,6 +7,7 @@ const MesaTaroLessonPage = () => (
     getLessonByOrder={(order) => MESA_TARO_LESSONS.find(l => l.order === order)}
     moduleRoute="/module/mesa-taro"
     moduleName="Como Montar uma Mesa"
+    moduleId="mesa-taro"
     categoryLabel="Método"
     themeAccent="28 35% 45%"
   />

@@ -7,6 +7,7 @@ const EspiritualidadeLessonPage = () => (
     getLessonByOrder={(order) => ESPIRITUALIDADE_LESSONS.find(l => l.order === order)}
     moduleRoute="/module/espiritualidade"
     moduleName="Tarô e Espiritualidade"
+    moduleId="espiritualidade"
     categoryLabel="Espiritualidade"
     themeAccent="280 30% 45%"
   />
