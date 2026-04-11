@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Crown, ArrowLeft, Eye, EyeOff } from "lucide-react";
 
 const AuthPage = () => {
-  const [mode, setMode] = useState<"login" | "signup">("signup");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn, signUp } = useAuth();
@@ -19,7 +21,21 @@ const AuthPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setInfo("");
     setLoading(true);
+
+    if (mode === "forgot") {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        setError(error.message);
+      } else {
+        setInfo("E-mail de recuperação enviado. Verifique sua caixa de entrada.");
+      }
+      setLoading(false);
+      return;
+    }
 
     if (mode === "signup") {
       const { error } = await signUp(email, password, name);
@@ -62,10 +78,10 @@ const AuthPage = () => {
             <Crown className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
           </div>
           <h1 className="font-heading text-xl tracking-wide" style={{ color: "hsl(340 42% 20%)" }}>
-            {mode === "signup" ? "Criar conta" : "Entrar"}
+            {mode === "signup" ? "Criar conta" : mode === "login" ? "Entrar" : "Recuperar senha"}
           </h1>
           <p className="text-xs" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
-            {mode === "signup" ? "Junte-se à beta privada da jornada." : "Boas-vindas de volta à jornada."}
+            {mode === "signup" ? "Junte-se à beta privada da jornada." : mode === "login" ? "Boas-vindas de volta à jornada." : "Enviaremos um link para redefinir sua senha."}
           </p>
           <span className="inline-block text-[9px] font-heading tracking-[0.2em] uppercase px-2.5 py-0.5 rounded-full" style={{
             background: "hsl(340 42% 28% / 0.08)",
@@ -88,23 +104,28 @@ const AuthPage = () => {
             <label className="text-[11px] text-muted-foreground mb-1 block">E-mail</label>
             <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" required />
           </div>
-          <div className="relative">
-            <label className="text-[11px] text-muted-foreground mb-1 block">Senha</label>
-            <Input
-              type={showPass ? "text" : "password"}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Mínimo 6 caracteres"
-              required
-              minLength={6}
-            />
-            <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-7 text-muted-foreground">
-              {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
+          {mode !== "forgot" && (
+            <div className="relative">
+              <label className="text-[11px] text-muted-foreground mb-1 block">Senha</label>
+              <Input
+                type={showPass ? "text" : "password"}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Mínimo 6 caracteres"
+                required
+                minLength={6}
+              />
+              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-7 text-muted-foreground">
+                {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          )}
 
           {error && (
             <p className="text-xs text-destructive text-center">{error}</p>
+          )}
+          {info && (
+            <p className="text-xs text-center" style={{ color: "hsl(120 40% 35%)" }}>{info}</p>
           )}
 
           <Button
@@ -116,17 +137,24 @@ const AuthPage = () => {
               color: "hsl(36 33% 97%)",
             }}
           >
-            {loading ? "Aguarde..." : mode === "signup" ? "Criar Conta" : "Entrar"}
+            {loading ? "Aguarde..." : mode === "signup" ? "Criar Conta" : mode === "login" ? "Entrar" : "Enviar link"}
           </Button>
         </form>
 
         {/* Toggle mode */}
-        <p className="text-center text-xs" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
-          {mode === "signup" ? "Já tem conta?" : "Não tem conta?"}{" "}
-          <button onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setError(""); }} className="font-medium underline" style={{ color: "hsl(340 42% 28%)" }}>
-            {mode === "signup" ? "Entrar" : "Criar conta"}
-          </button>
-        </p>
+        <div className="text-center space-y-1">
+          {mode === "login" && (
+            <button onClick={() => { setMode("forgot"); setError(""); setInfo(""); }} className="text-xs underline block mx-auto" style={{ color: "hsl(340 42% 28% / 0.6)" }}>
+              Esqueci minha senha
+            </button>
+          )}
+          <p className="text-xs" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
+            {mode === "signup" ? "Já tem conta?" : mode === "login" ? "Não tem conta?" : "Lembrou a senha?"}{" "}
+            <button onClick={() => { setMode(mode === "signup" ? "login" : mode === "login" ? "signup" : "login"); setError(""); setInfo(""); }} className="font-medium underline" style={{ color: "hsl(340 42% 28%)" }}>
+              {mode === "signup" ? "Entrar" : mode === "login" ? "Criar conta" : "Entrar"}
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );

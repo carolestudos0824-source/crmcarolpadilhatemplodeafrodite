@@ -64,6 +64,7 @@ const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
 const CartasCortePage = lazy(() => import("./pages/CartasCortePage.tsx"));
 const NumerologiaPage = lazy(() => import("./pages/NumerologiaPage.tsx"));
 const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -108,6 +109,7 @@ const AppRoutes = () => (
         <Route path="/waitlist" element={<WaitlistPage />} />
         <Route path="/apresentacao" element={<PresentationPage />} />
         <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* Dashboard */}
         <Route path="/app" element={<P><ModulesPage /></P>} />
