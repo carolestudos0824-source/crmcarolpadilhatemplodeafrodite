@@ -21,6 +21,7 @@ const CATEGORY_LABELS: Record<ModuleCategory, string> = {
   "minor-arcana": "Arcanos Menores",
   "advanced": "Avançado",
   "practice": "Prática",
+  "professional": "Profissional",
 };
 
 const ModulesPage = () => {
