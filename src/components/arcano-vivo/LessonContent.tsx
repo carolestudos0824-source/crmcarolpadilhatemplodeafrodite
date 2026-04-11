@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Layers, Eye, ChevronDown } from "lucide-react";
+import { BookOpen, Layers, Eye, ChevronDown, Heart, Briefcase, Sparkles } from "lucide-react";
 import { type LessonSection } from "@/data/fool-lesson-content";
 
 interface LessonContentProps {
@@ -22,13 +22,32 @@ export function LessonContent({
   onComplete, onGoDeepDive, onGoExercise, onSkipToQuiz,
 }: LessonContentProps) {
   const [openSection, setOpenSection] = useState<string | null>(null);
-  const [step, setStep] = useState(0); // 0=essence, 1=light, 2=shadow, 3=sections
+  const [step, setStep] = useState(0); // 0=essence, 1=light, 2=shadow, 3=sections+applied
 
   const steps = [
     { id: "essence", title: "Essência", icon: "✦", content: essence },
     { id: "light", title: "Luz", icon: "☀", content: light },
     { id: "shadow", title: "Sombra", icon: "☾", content: shadow },
   ];
+
+  // Separate sections into core (essencia/simbolos/luz/sombra/licao) and applied (amor/trabalho/espiritualidade)
+  const coreIds = ["essencia", "simbolos", "luz", "sombra", "licao"];
+  const appliedIds = ["amor", "trabalho", "espiritualidade"];
+  const coreSections = sections.filter(s => coreIds.includes(s.id));
+  const appliedSections = sections.filter(s => appliedIds.includes(s.id));
+  const otherSections = sections.filter(s => !coreIds.includes(s.id) && !appliedIds.includes(s.id));
+
+  const appliedIcons: Record<string, typeof Heart> = {
+    amor: Heart,
+    trabalho: Briefcase,
+    espiritualidade: Sparkles,
+  };
+
+  const appliedColors: Record<string, { bg: string; border: string; accent: string }> = {
+    amor: { bg: "hsl(340 42% 28% / 0.06)", border: "hsl(340 42% 28% / 0.20)", accent: "hsl(340 42% 28%)" },
+    trabalho: { bg: "hsl(36 42% 44% / 0.06)", border: "hsl(36 42% 44% / 0.20)", accent: "hsl(36 42% 40%)" },
+    espiritualidade: { bg: "hsl(270 30% 35% / 0.06)", border: "hsl(270 30% 35% / 0.18)", accent: "hsl(270 30% 35%)" },
+  };
 
   return (
     <div className="space-y-6 pb-8" style={{ animation: "fade-up 0.5s ease-out" }}>
@@ -93,8 +112,79 @@ export function LessonContent({
         })}
       </div>
 
-      {/* Expandable lesson sections */}
-      {step >= 2 && sections.length > 0 && (
+      {/* Applied interpretations — amor, trabalho, espiritualidade */}
+      {step >= 2 && appliedSections.length > 0 && (
+        <div className="space-y-3 pt-2" style={{ animation: "fade-up 0.4s ease-out" }}>
+          <div className="flex items-center gap-2 mb-1">
+            <Eye className="w-3.5 h-3.5" style={{ color: "hsl(340 42% 28% / 0.6)" }} />
+            <span className="text-[9px] font-heading tracking-[0.3em] uppercase" style={{ color: "hsl(340 42% 28% / 0.6)" }}>
+              Interpretações práticas
+            </span>
+          </div>
+          {appliedSections.map((section) => {
+            const isOpen = openSection === section.id;
+            const colors = appliedColors[section.id] || appliedColors.amor;
+            const Icon = appliedIcons[section.id] || Heart;
+            
+            // Parse "Na luz: ... Na sombra: ..." format
+            const parts = section.content.split(/Na sombra:/);
+            const lightText = parts[0]?.replace(/^Na luz:\s*/, "").trim();
+            const shadowText = parts[1]?.trim();
+
+            return (
+              <div key={section.id} className="rounded-xl overflow-hidden"
+                style={{
+                  background: isOpen ? colors.bg : "hsl(38 30% 95% / 0.5)",
+                  border: `1px solid ${isOpen ? colors.border : "hsl(36 25% 82% / 0.3)"}`,
+                }}
+              >
+                <button
+                  onClick={() => setOpenSection(isOpen ? null : section.id)}
+                  className="w-full px-4 py-3.5 flex items-center gap-3 text-left"
+                >
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{
+                    background: colors.bg,
+                    border: `1px solid ${colors.border}`,
+                  }}>
+                    <Icon className="w-3.5 h-3.5" style={{ color: colors.accent }} />
+                  </div>
+                  <span className="font-heading text-xs tracking-wide flex-1" style={{ color: "hsl(230 25% 15%)" }}>{section.title}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    style={{ color: colors.accent }} />
+                </button>
+                {isOpen && (
+                  <div className="px-4 pb-4" style={{ animation: "fade-up 0.3s ease-out" }}>
+                    <div className="h-px mb-3" style={{ background: `linear-gradient(90deg, transparent, ${colors.border}, transparent)` }} />
+                    {lightText && shadowText ? (
+                      <div className="space-y-3">
+                        <div className="rounded-lg p-3" style={{ background: "hsl(36 45% 58% / 0.05)", border: "1px solid hsl(36 45% 58% / 0.10)" }}>
+                          <div className="flex items-center gap-1.5 mb-1.5">
+                            <span className="text-xs">☀</span>
+                            <span className="text-[9px] font-heading tracking-wider uppercase" style={{ color: "hsl(36 42% 40%)" }}>Luz</span>
+                          </div>
+                          <p className="text-xs leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>{lightText}</p>
+                        </div>
+                        <div className="rounded-lg p-3" style={{ background: "hsl(270 30% 30% / 0.04)", border: "1px solid hsl(270 30% 30% / 0.10)" }}>
+                          <div className="flex items-center gap-1.5 mb-1.5">
+                            <span className="text-xs">☾</span>
+                            <span className="text-[9px] font-heading tracking-wider uppercase" style={{ color: "hsl(270 30% 35%)" }}>Sombra</span>
+                          </div>
+                          <p className="text-xs leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>{shadowText}</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-xs leading-relaxed" style={{ color: "hsl(230 20% 25%)" }}>{section.content}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Expandable core lesson sections */}
+      {step >= 2 && [...coreSections, ...otherSections].length > 0 && (
         <div className="space-y-2 pt-2" style={{ animation: "fade-up 0.4s ease-out" }}>
           <div className="flex items-center gap-2 mb-2">
             <Layers className="w-3.5 h-3.5" style={{ color: "hsl(36 40% 42%)" }} />
@@ -102,7 +192,7 @@ export function LessonContent({
               Conteúdo detalhado
             </span>
           </div>
-          {sections.map((section) => {
+          {[...coreSections, ...otherSections].map((section) => {
             const isOpen = openSection === section.id;
             return (
               <div key={section.id} className="rounded-xl overflow-hidden"
