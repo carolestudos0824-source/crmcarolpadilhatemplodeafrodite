@@ -185,7 +185,7 @@ const BetaInvitePage = () => {
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-3">
             <SectionLabel>Por que agora</SectionLabel>
-            <SectionTitle>A beta é uma porta que se abre para poucas.</SectionTitle>
+            <SectionTitle>A beta é uma porta que se abre para poucos.</SectionTitle>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
