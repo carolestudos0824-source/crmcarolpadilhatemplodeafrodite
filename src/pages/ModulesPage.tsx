@@ -67,7 +67,7 @@ const ModulesPage = () => {
     return acc;
   }, {} as Record<ModuleCategory, LearningModule[]>);
 
-  const categoryOrder: ModuleCategory[] = ["foundation", "major-arcana", "minor-arcana", "advanced", "practice"];
+  const categoryOrder: ModuleCategory[] = ["foundation", "major-arcana", "minor-arcana", "advanced", "practice", "professional"];
 
   const getModuleProgress = (mod: LearningModule): number => {
     if (mod.id === "arcanos-maiores") {
@@ -97,6 +97,30 @@ const ModulesPage = () => {
     if (mod.id === "pratica") {
       const completed = progress.completedLessons.filter(l => l.startsWith("prat-")).length;
       return Math.round((completed / 10) * 100);
+    }
+    if (mod.id === "leitura-simbolica") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("ls-")).length;
+      return Math.round((completed / mod.totalLessons) * 100);
+    }
+    if (mod.id === "arquitetura-menores") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("am-")).length;
+      return Math.round((completed / mod.totalLessons) * 100);
+    }
+    if (mod.id === "espiritualidade") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("esp-")).length;
+      return Math.round((completed / mod.totalLessons) * 100);
+    }
+    if (mod.id === "mesa-taro") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("mesa-")).length;
+      return Math.round((completed / mod.totalLessons) * 100);
+    }
+    if (mod.id === "leitura-aplicada") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("la-")).length;
+      return Math.round((completed / mod.totalLessons) * 100);
+    }
+    if (mod.id === "trabalhar-taro") {
+      const completed = progress.completedLessons.filter(l => l.startsWith("tt-")).length;
+      return Math.round((completed / mod.totalLessons) * 100);
     }
     return 0;
   };

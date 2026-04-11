@@ -57,7 +57,7 @@ const GenericModulePage = ({ moduleTitle, moduleSubtitle, moduleIcon, lessons, l
           </div>
         </div>
 
-        <XPBar />
+        <XPBar xp={progress.xp} level={progress.level} />
 
         {/* Progress */}
         <div className="mb-6 mt-4">

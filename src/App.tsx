@@ -40,6 +40,20 @@ const AmorLessonPage = lazy(() => import("./pages/AmorLessonPage.tsx"));
 const PraticaPage = lazy(() => import("./pages/PraticaPage.tsx"));
 const PraticaLessonPage = lazy(() => import("./pages/PraticaLessonPage.tsx"));
 
+// New generic modules
+const LeituraSimbolicaPage = lazy(() => import("./pages/LeituraSimbolicaPage.tsx"));
+const LeituraSimbolicaLessonPage = lazy(() => import("./pages/LeituraSimbolicaLessonPage.tsx"));
+const ArquiteturaMenoresPage = lazy(() => import("./pages/ArquiteturaMenoresPage.tsx"));
+const ArquiteturaMenoresLessonPage = lazy(() => import("./pages/ArquiteturaMenoresLessonPage.tsx"));
+const EspiritualidadePage = lazy(() => import("./pages/EspiritualidadePage.tsx"));
+const EspiritualidadeLessonPage = lazy(() => import("./pages/EspiritualidadeLessonPage.tsx"));
+const MesaTaroPage = lazy(() => import("./pages/MesaTaroPage.tsx"));
+const MesaTaroLessonPage = lazy(() => import("./pages/MesaTaroLessonPage.tsx"));
+const LeituraAplicadaPage = lazy(() => import("./pages/LeituraAplicadaPage.tsx"));
+const LeituraAplicadaLessonPage = lazy(() => import("./pages/LeituraAplicadaLessonPage.tsx"));
+const TrabalharTaroPage = lazy(() => import("./pages/TrabalharTaroPage.tsx"));
+const TrabalharTaroLessonPage = lazy(() => import("./pages/TrabalharTaroLessonPage.tsx"));
+
 // Utility pages
 const TrailsPage = lazy(() => import("./pages/TrailsPage.tsx"));
 const ReviewPage = lazy(() => import("./pages/ReviewPage.tsx"));
@@ -132,6 +146,30 @@ const AppRoutes = () => (
         {/* Prática */}
         <Route path="/module/pratica" element={<P><PraticaPage /></P>} />
         <Route path="/pratica/:order" element={<P><PraticaLessonPage /></P>} />
+
+        {/* Leitura Simbólica */}
+        <Route path="/module/leitura-simbolica" element={<P><LeituraSimbolicaPage /></P>} />
+        <Route path="/leitura-simbolica/:order" element={<P><LeituraSimbolicaLessonPage /></P>} />
+
+        {/* Arquitetura dos Menores */}
+        <Route path="/module/arquitetura-menores" element={<P><ArquiteturaMenoresPage /></P>} />
+        <Route path="/arquitetura-menores/:order" element={<P><ArquiteturaMenoresLessonPage /></P>} />
+
+        {/* Espiritualidade */}
+        <Route path="/module/espiritualidade" element={<P><EspiritualidadePage /></P>} />
+        <Route path="/espiritualidade/:order" element={<P><EspiritualidadeLessonPage /></P>} />
+
+        {/* Mesa de Tarô */}
+        <Route path="/module/mesa-taro" element={<P><MesaTaroPage /></P>} />
+        <Route path="/mesa-taro/:order" element={<P><MesaTaroLessonPage /></P>} />
+
+        {/* Leitura Aplicada */}
+        <Route path="/module/leitura-aplicada" element={<P><LeituraAplicadaPage /></P>} />
+        <Route path="/leitura-aplicada/:order" element={<P><LeituraAplicadaLessonPage /></P>} />
+
+        {/* Trabalhar com Tarô */}
+        <Route path="/module/trabalhar-taro" element={<P><TrabalharTaroPage /></P>} />
+        <Route path="/trabalhar-taro/:order" element={<P><TrabalharTaroLessonPage /></P>} />
 
         {/* Ferramentas de estudo */}
         <Route path="/revisao" element={<P><ReviewPage /></P>} />
