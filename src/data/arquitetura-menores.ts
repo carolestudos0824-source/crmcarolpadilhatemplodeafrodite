@@ -43,11 +43,17 @@ Cada naipe funciona como um capítulo da vida. Juntos, cobrem todas as dimensõe
       "Cada naipe cobre uma dimensão: emoção, ação, mente, matéria",
       "Na prática, os Menores são tão importantes quanto os Maiores",
     ],
-    deepDive: `Na tradição original do tarô de Marselha, os Arcanos Menores não tinham cenas ilustradas — apenas padrões geométricos dos símbolos do naipe. Foi Pamela Colman Smith que revolucionou o tarô ao ilustrar todas as 56 cartas com cenas narrativas completas, tornando possível ler os Menores de forma intuitiva.`,
+    deepDive: `Na tradição original do tarô de Marselha, os Arcanos Menores não tinham cenas ilustradas — apenas padrões geométricos dos símbolos do naipe. Foi Pamela Colman Smith que revolucionou o tarô ao ilustrar todas as 56 cartas com cenas narrativas completas, tornando possível ler os Menores de forma intuitiva.
+
+Antes dessa inovação, ler Menores exigia memorização pura — saber que o 5 de Espadas significava "derrota" sem nenhuma imagem que guiasse a interpretação. A decisão de Waite e Smith de ilustrar cada carta narrativamente foi uma das contribuições mais importantes da história do tarô moderno.
+
+Curiosamente, o baralho Thoth de Aleister Crowley e Frieda Harris (1943) seguiu caminho diferente: ilustrou os Menores com geometria abstrata e nomes-palavra (como "Defeat" para o 5 de Espadas), criando um sistema mais intelectual. A diferença entre RWS e Thoth nos Menores reflete duas filosofias: intuição narrativa vs. estrutura intelectual.`,
+    reflection: "Quando você pensa na sua vida cotidiana, quais dimensões parecem mais ativas? Emoções (Copas)? Ação e projetos (Paus)? Pensamentos e decisões (Espadas)? Questões materiais (Ouros)? Essa reflexão já é uma leitura de naipes — sem cartas.",
     exercise: { instruction: "Separe as 56 cartas menores em 4 montes por naipe. Para cada monte, escreva: qual dimensão da vida ele representa? Que situações do seu cotidiano ele cobre?", type: "practice" },
     quiz: [
       { id: "am1-q1", question: "Quantas cartas tem cada naipe dos Arcanos Menores?", options: ["10", "12", "14", "16"], correctIndex: 2, explanation: "Cada naipe tem 14 cartas: 10 numeradas (Ás a 10) + 4 da corte (Pajem, Cavaleiro, Rainha, Rei)." },
       { id: "am1-q2", question: "Qual naipe está associado ao elemento Fogo?", options: ["Copas", "Espadas", "Paus", "Ouros"], correctIndex: 2, explanation: "Paus está associado ao Fogo — ação, criatividade, paixão e força vital." },
+      { id: "am1-q3", question: "Por que os Menores não devem ser tratados como 'menos importantes'?", options: ["Porque são mais bonitos", "Porque aparecem mais frequentemente e mostram a vida real", "Porque são mais antigos", "Porque custam mais caro"], correctIndex: 1, explanation: "Na prática, os Menores aparecem com muito mais frequência e mostram onde a vida real se manifesta." },
     ],
   },
   {
@@ -81,10 +87,23 @@ A terra é sólida, concreta, fértil. Ouros trata de dinheiro, saúde, trabalho
       "Elementos interagem: podem se complementar ou tensionar",
       "Dominar os elementos permite ler qualquer carta menor pela essência",
     ],
+    deepDive: `Os 4 elementos não são apenas categorias estáticas — são forças dinâmicas que interagem em toda leitura. Na tradição hermética, a relação entre os elementos segue padrões precisos:
+
+**Elementos complementares** (se fortalecem):
+- Água + Terra: o rio que irriga a terra. Emoção que nutre resultados concretos. Num relacionamento, é o afeto que constrói um lar.
+- Fogo + Ar: o vento que alimenta a chama. Ideias que impulsionam ação. Num projeto, é a inspiração que vira plano.
+
+**Elementos em tensão** (se desafiam):
+- Água + Fogo: vapor. A emoção que apaga a ação, ou a ação que evapora o sentimento. No amor, é querer agir mas estar paralisado pelo medo.
+- Ar + Terra: erosão. O pensamento que desgasta a realidade concreta, ou a matéria que limita a ideia. No trabalho, é a teoria que não vira prática.
+
+Quando você vê duas cartas de elementos em tensão lado a lado numa tiragem, elas estão indicando um conflito interno que precisa ser integrado — não resolvido pela eliminação de um dos lados.`,
+    reflection: "Pense numa situação difícil da sua vida agora. Que elementos estão em jogo? Há mais emoção (Água) ou mais pensamento (Ar)? Falta ação (Fogo) ou falta concretude (Terra)? A resposta já aponta o desequilíbrio.",
     exercise: { instruction: "Para a próxima semana, quando algo relevante acontecer no seu dia, pergunte: 'Isso é Copas, Paus, Espadas ou Ouros?' Registre num caderno.", type: "practice" },
     quiz: [
       { id: "am2-q1", question: "Uma leitura dominada por Espadas sugere que a questão central é:", options: ["Emocional", "Financeira", "Mental ou comunicacional", "Criativa"], correctIndex: 2, explanation: "Espadas = Ar = mente, pensamentos, comunicação, conflitos mentais." },
       { id: "am2-q2", question: "Qual é a interação entre Água (Copas) e Fogo (Paus)?", options: ["Harmonia natural", "Tensão — emoção vs. ação", "Indiferença", "Destruição mútua"], correctIndex: 1, explanation: "Água e Fogo criam tensão — emoção e ação são forças que precisam ser equilibradas." },
+      { id: "am2-q3", question: "Que interação elementar representa 'ideia que vira realidade'?", options: ["Água + Fogo", "Ar + Terra", "Fogo + Terra", "Água + Ar"], correctIndex: 1, explanation: "Ar (ideia/mente) + Terra (concretização/matéria) = ideia que se torna realidade. O pensamento que ganha forma." },
     ],
   },
   {
@@ -116,10 +135,23 @@ Quando você entende a jornada numérica, consegue ler qualquer carta menor comb
       "Número + elemento = interpretação natural de qualquer Menor",
       "Os números contam uma história de nascimento, crise e resolução",
     ],
+    deepDive: `A jornada numérica do tarô espelha estruturas narrativas universais. O estudioso Joseph Campbell identificou o "monomito" — a Jornada do Herói — como padrão em todas as culturas. Os números do tarô seguem padrão similar:
+
+**Ás-3: O Chamado e a Partida** — O potencial surge (Ás), encontra um parceiro ou escolha (2) e produz o primeiro resultado (3). Na Jornada do Herói, é o chamado à aventura.
+
+**4-6: A Prova e a Crise** — A estabilidade se instala (4), mas é sacudida por uma crise (5) que força crescimento. A restauração (6) só vem depois da dor. No monomito, são as provações no mundo especial.
+
+**7-9: A Transformação** — A reflexão interior (7) leva ao movimento decidido (8) e à realização quase completa (9). É o momento em que o herói se transforma.
+
+**10: O Retorno** — A completude traz consigo tudo o que foi vivido — plenitude ou peso. O herói retorna ao mundo comum, transformado.
+
+Na Cabala, os 10 números correspondem aos 10 Sephiroth da Árvore da Vida: do Kether (1/Ás, coroa divina) ao Malkuth (10, manifestação terrena). Cada número é um estágio de descensão da energia divina até a matéria.`,
+    reflection: "Pense em algo que você começou recentemente — um projeto, um relacionamento, um estudo. Em que número você está? No entusiasmo do começo (Ás-3)? Na crise (5)? Na reflexão (7)? Já está perto da completude (9-10)?",
     exercise: { instruction: "Separe as 10 cartas numeradas de Copas. Coloque em ordem (Ás a 10) e leia como uma história emocional. Escreva essa história em suas palavras.", type: "practice" },
     quiz: [
       { id: "am3-q1", question: "O que o número 5 representa na jornada de qualquer naipe?", options: ["Estabilidade", "Crise e desequilíbrio", "Completude", "Celebração"], correctIndex: 1, explanation: "O 5 é sempre a crise — o momento que sacode a estabilidade do 4 e força mudança." },
       { id: "am3-q2", question: "Qual é a diferença entre 9 e 10 no ciclo numérico?", options: ["Nenhuma — são iguais", "9 = culminação solitária; 10 = completude/herança", "9 = início; 10 = meio", "9 = crise; 10 = recuperação"], correctIndex: 1, explanation: "O 9 é quase lá — realização solitária. O 10 é a completude final — plenitude ou peso acumulado." },
+      { id: "am3-q3", question: "Na Cabala, a que correspondem os 10 números dos naipes?", options: ["Aos 10 mandamentos", "Aos 10 Sephiroth da Árvore da Vida", "Aos 10 planetas", "Aos 10 arcanos maiores"], correctIndex: 1, explanation: "Os 10 números correspondem aos 10 Sephiroth: do Kether (Ás) ao Malkuth (10), representando estágios de manifestação." },
     ],
   },
   {
@@ -144,6 +176,12 @@ Exemplo: **5 de Ouros**
 - Imagem: Duas figuras feridas na neve, passando por uma igreja iluminada sem perceber.
 - Leitura: Crise material que cega para os recursos disponíveis. A ajuda existe — mas a dor impede de ver.
 
+**Exemplo: 3 de Copas**
+- Elemento: Água (emoções, conexão)
+- Número: 3 (expansão, celebração, criação conjunta)
+- Imagem: Três mulheres erguem taças em brinde, com frutas ao chão.
+- Leitura: Celebração emocional, amizade, alegria compartilhada. A abundância afetiva que nasce quando nos permitimos conectar.
+
 **Armadilhas a evitar:**
 - Ler apenas pelo número, ignorando a imagem.
 - Ler apenas pela imagem, ignorando o número e o naipe.
@@ -157,9 +195,19 @@ Quando você domina a tríade elemento-número-imagem, qualquer carta menor se a
       "Menores são tão ricos quanto Maiores quando lidos com método",
       "Armadilha: decorar sem entender a lógica do sistema",
     ],
+    deepDive: `A tríade elemento-número-imagem é o método mais sólido para ler Menores, mas existe uma quarta camada que poucos exploram: a **dignidade elemental**.
+
+Na tradição da Golden Dawn, cada carta menor recebe uma "dignidade" baseada em sua posição astrológica. Cada carta numerada (2-10) é associada a um decanato do zodíaco:
+- 2 de Paus = Marte em Áries (1º decanato) = início explosivo
+- 3 de Paus = Sol em Áries (2º decanato) = liderança criativa
+- 4 de Paus = Vênus em Áries (3º decanato) = celebração, conclusão de esforço
+
+Você não precisa dominar astrologia para usar o tarô, mas saber que cada carta tem uma "personalidade astrológica" enriquece a leitura. O 2 de Paus não é apenas "dois + fogo" — é Marte em Áries, a explosão mais pura de energia inicial. Isso explica por que o 2 de Paus mostra uma figura segurando o mundo nas mãos, olhando para o horizonte com ambição.`,
+    reflection: "Escolha uma carta menor que te intriga ou confunde. Aplique as 3 camadas: o que o naipe diz? O que o número diz? O que a imagem mostra? Como essas camadas conversam? Se alguma camada contradiz outra, aí está a riqueza da carta.",
     exercise: { instruction: "Escolha uma carta menor aleatória. Sem consultar nenhum material, interprete-a usando as 3 camadas: elemento + número + imagem. Depois compare com o conteúdo da plataforma.", type: "practice" },
     quiz: [
       { id: "am4-q1", question: "Quais são as 3 camadas para ler um Arcano Menor com profundidade?", options: ["Nome, data e posição", "Elemento, número e imagem", "Cor, tamanho e posição", "Intuição, lógica e memória"], correctIndex: 1, explanation: "Elemento (naipe) + número + imagem (RWS) = as 3 camadas da leitura profunda de Menores." },
+      { id: "am4-q2", question: "Na leitura do 5 de Ouros, o que a imagem RWS revela além do significado numérico?", options: ["Que a crise é irreversível", "Que a ajuda existe mas a dor impede de vê-la", "Que é hora de mudar de emprego", "Que o dinheiro vai voltar sozinho"], correctIndex: 1, explanation: "A imagem mostra figuras passando por uma igreja iluminada sem perceber — a ajuda existe, mas a crise cega para os recursos." },
     ],
   },
   {
@@ -178,6 +226,12 @@ Posição "como viver isso": 3 de Copas (Menor)
 
 Leitura: Uma energia de abundância e criação (Imperatriz) se manifesta como celebração emocional, conexão com amigas, alegria compartilhada (3 de Copas).
 
+**Outro exemplo:**
+Posição "desafio": A Torre (Maior)
+Posição "como lidar": 4 de Espadas (Menor)
+
+Leitura: Uma ruptura ou revelação súbita (Torre) pede recolhimento e pausa mental (4 de Espadas). A resposta à crise é descanso, não reação.
+
 **Proporção na leitura:**
 - Muitos Maiores → Forças grandes em jogo, momento de transformação pessoal.
 - Muitos Menores → Questões práticas, cotidianas, ações concretas.
@@ -190,9 +244,20 @@ Leitura: Uma energia de abundância e criação (Imperatriz) se manifesta como c
       "Muitos Menores indicam questões práticas e ações concretas",
       "Um Maior define o tom; Menores mostram como se vive esse tom",
     ],
+    deepDive: `Na tradição da Golden Dawn, cada Arcano Maior está vinculado a um caminho na Árvore da Vida, enquanto cada Arcano Menor está vinculado a um Sephirah (esfera). Isso cria uma relação estrutural: os Maiores são os **caminhos** que conectam as esferas, enquanto os Menores são as **esferas** em si.
+
+Na prática, isso significa que os Maiores representam **processos de transição** — o que está acontecendo entre um estado e outro. Os Menores representam **estados** — onde você está agora.
+
+Exemplo cabalístico:
+- O Mago (caminho de Beth, entre Kether e Binah) = o processo de canalizar potencial em compreensão.
+- 2 de Copas (Chokmah em Água) = o estado de conexão emocional, parceria, amor que começa.
+
+Quando aparecem juntos: o processo de canalizar (Mago) se manifesta no estado de conexão (2 de Copas) = usar sua vontade e habilidade para criar uma conexão emocional verdadeira.`,
+    reflection: "Na sua última leitura (ou numa hipotética), havia mais Maiores ou Menores? O que isso diz sobre o momento — forças profundas em ação ou questões práticas do cotidiano? A proporção entre Maiores e Menores já é uma leitura em si.",
     exercise: { instruction: "Faça uma tiragem de 3 cartas. Se saírem Maiores e Menores juntos, observe: qual define o tema principal? Quais detalham o cotidiano?", type: "practice" },
     quiz: [
       { id: "am5-q1", question: "Se uma leitura tem muitos Arcanos Maiores, o que isso sugere?", options: ["Que a leitura deu errado", "Momento de transformação profunda, forças maiores em jogo", "Que as cartas menores são irrelevantes", "Que a pergunta foi superficial"], correctIndex: 1, explanation: "Muitos Maiores indicam que forças arquetípicas maiores estão em ação — momento de transformação." },
+      { id: "am5-q2", question: "Qual é a função dos Menores quando aparecem ao lado de um Maior?", options: ["Repetir o que o Maior disse", "Mostrar como a energia do Maior se manifesta no cotidiano", "Anular o Maior", "Não têm função relevante"], correctIndex: 1, explanation: "Os Menores detalham como a energia arquetípica do Maior se manifesta na vida prática e cotidiana." },
     ],
   },
   {
@@ -246,10 +311,26 @@ Com este mapa internalizado, você está pronta para mergulhar em cada naipe.`,
       "Este mapa serve de referência rápida para qualquer leitura",
       "Compreender o mapa é pré-requisito para estudar cada naipe",
     ],
+    deepDive: `As correspondências entre naipes, estações e direções variam entre tradições. O sistema apresentado aqui segue a Golden Dawn, mas outras tradições diferem:
+
+**Golden Dawn (usado aqui):** Copas=Oeste/Outono, Paus=Sul/Primavera, Espadas=Leste/Inverno, Ouros=Norte/Verão.
+
+**Tradição Wicca/Neopagã:** Frequentemente troca Ar e Fogo de posição — Paus=Leste, Espadas=Sul.
+
+**Tradição Continental:** Algumas escolas europeias associam Copas ao Norte e Ouros ao Sul, refletindo climas e culturas diferentes.
+
+Não existe "certo" absoluto — o importante é ser consistente dentro do sistema que você adota. O RWS segue a Golden Dawn, então, se você estuda nesta base, mantenha essas correspondências.
+
+**Uma nota sobre polaridade:**
+Copas e Ouros são considerados naipes **receptivos** (Água e Terra = feminino/yin).
+Paus e Espadas são considerados naipes **ativos** (Fogo e Ar = masculino/yang).
+Quando numa tiragem há predomínio de naipes receptivos, a situação pede escuta e paciência. Quando há predomínio de ativos, pede ação e decisão.`,
+    reflection: "Olhe para o mapa dos 4 naipes. Qual naipe parece mais presente na sua vida agora? E qual parece mais ausente? A ausência pode ser tão reveladora quanto a presença — o naipe que falta indica a dimensão que está sendo negligenciada.",
     exercise: { instruction: "Desenhe o mapa dos 4 naipes num papel. Para cada um, escreva: elemento, domínio, pergunta-guia, excesso e falta. Use como referência nos próximos módulos.", type: "writing" },
     quiz: [
       { id: "am6-q1", question: "Qual é a pergunta-guia do naipe de Espadas?", options: ["O que estou sentindo?", "O que estou pensando?", "O que estou construindo?", "O que quero criar?"], correctIndex: 1, explanation: "Espadas (Ar) = mente → a pergunta-guia é 'O que eu estou pensando?'" },
       { id: "am6-q2", question: "Qual é o excesso do elemento Fogo (Paus)?", options: ["Frieza", "Materialismo", "Impulsividade e burnout", "Ansiedade"], correctIndex: 2, explanation: "Fogo em excesso vira impulsividade, burnout e agressividade." },
+      { id: "am6-q3", question: "Copas e Ouros são naipes considerados:", options: ["Ativos (yang)", "Receptivos (yin)", "Neutros", "Superiores"], correctIndex: 1, explanation: "Copas (Água) e Ouros (Terra) são naipes receptivos/yin — pedem escuta e paciência quando predominam." },
     ],
   },
 ];
