@@ -34,16 +34,18 @@ interface Props {
   getLessonByOrder: (order: number) => GenericLesson | undefined;
   moduleRoute: string;
   moduleName: string;
+  /** Module ID for auto-completing */
+  moduleId?: string;
   /** Optional theme accent HSL e.g. "280 30% 45%" */
   themeAccent?: string;
   /** Optional category label */
   categoryLabel?: string;
 }
 
-const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName, themeAccent, categoryLabel }: Props) => {
+const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName, moduleId, themeAccent, categoryLabel }: Props) => {
   const { order } = useParams();
   const navigate = useNavigate();
-  const { progress, addXP, completeLesson, completeQuiz } = useProgress();
+  const { progress, addXP, completeLesson, completeQuiz, completeModule } = useProgress();
   const [phase, setPhase] = useState<Phase>("lesson");
   const [quizIdx, setQuizIdx] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
