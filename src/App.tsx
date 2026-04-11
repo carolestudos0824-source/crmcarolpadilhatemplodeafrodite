@@ -109,6 +109,7 @@ const AppRoutes = () => (
         <Route path="/waitlist" element={<WaitlistPage />} />
         <Route path="/apresentacao" element={<PresentationPage />} />
         <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* Dashboard */}
         <Route path="/app" element={<P><ModulesPage /></P>} />
