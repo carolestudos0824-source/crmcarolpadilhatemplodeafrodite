@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getArcanoById, ARCANOS_MAIORES, FREE_ARCANO_IDS } from "@/data/tarot-data";
 import { useProgress } from "@/hooks/use-progress";
 import { useTrackEvent } from "@/hooks/use-track-event";
+import { usePremium } from "@/hooks/use-premium";
+import { useIsAdmin } from "@/hooks/use-admin";
 import { ArcanoVivoIntro } from "@/components/arcano-vivo/ArcanoVivoIntro";
 import { LessonContent } from "@/components/arcano-vivo/LessonContent";
 import { CompletionScreen } from "@/components/arcano-vivo/CompletionScreen";
@@ -25,6 +27,8 @@ const LessonPage = () => {
   const navigate = useNavigate();
   const { addXP, completeLesson, completeQuiz, earnBadge, isArcanoCompleted } = useProgress();
   const { trackEvent } = useTrackEvent();
+  const { isPremium, loading: premiumLoading } = usePremium();
+  const { isAdmin } = useIsAdmin();
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   const [xpEarned, setXpEarned] = useState(0);
@@ -33,7 +37,8 @@ const LessonPage = () => {
 
   const arcanoId = parseInt(id || "0", 10);
   const arcano = getArcanoById(arcanoId);
-  const isPremiumLocked = !FREE_ARCANO_IDS.includes(arcanoId);
+  const isFree = FREE_ARCANO_IDS.includes(arcanoId);
+  const hasAccess = isFree || isPremium || isAdmin;
 
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
@@ -43,8 +48,8 @@ const LessonPage = () => {
   }, [arcanoId]);
 
   useEffect(() => {
-    if (isPremiumLocked && arcano) trackEvent("premium_gate_hit", { arcano_id: arcanoId, name: arcano.name });
-  }, [isPremiumLocked, arcanoId]);
+    if (!hasAccess && arcano) trackEvent("premium_gate_hit", { arcano_id: arcanoId, name: arcano.name });
+  }, [hasAccess, arcanoId]);
 
   const resetForNewArcano = () => {
     setPhase("intro");
@@ -64,6 +69,15 @@ const LessonPage = () => {
             Voltar à Jornada
           </button>
         </div>
+      </div>
+    );
+  }
+
+  // Show loading while checking premium status
+  if (premiumLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
+        <div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: "hsl(36 45% 58%)", borderTopColor: "transparent" }} />
       </div>
     );
   }
@@ -113,8 +127,8 @@ const LessonPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Premium gate
-  if (isPremiumLocked) {
+  // Premium gate — only shown to non-premium, non-admin, non-free users
+  if (!hasAccess) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <div className="fixed inset-0 z-0">
