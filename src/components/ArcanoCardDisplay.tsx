@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getDeckEntry, getCanonicalNumeral } from "@/data/deck-registry";
 
 interface ArcanoCardDisplayProps {
   name: string;
@@ -6,9 +7,16 @@ interface ArcanoCardDisplayProps {
   subtitle: string;
   keywords: string[];
   cardImage: string;
+  /** Número do arcano (0-21) — usado para travar imagem/numeral pelo registry oficial */
+  number?: number;
 }
 
-export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage }: ArcanoCardDisplayProps) {
+export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage, number }: ArcanoCardDisplayProps) {
+  // DECK OFICIAL: se temos o número, registry é a fonte de verdade — impede imagem/numeral trocados.
+  const deckEntry = number !== undefined ? getDeckEntry(number) : undefined;
+  const finalImage = deckEntry?.cardImage ?? cardImage;
+  const finalNumeral = deckEntry?.numeral ?? (number !== undefined ? getCanonicalNumeral(number) : numeral);
+  const isPlaceholder = deckEntry?.assetStatus === "placeholder";
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -44,25 +52,53 @@ export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage
           }}
         >
           <img
-            src={cardImage}
-            alt={name}
+            src={finalImage}
+            alt={`${finalNumeral} — ${name} (Rider-Waite-Smith)`}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           {/* Bottom gradient overlay */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, hsl(230 25% 8% / 0.7) 0%, hsl(230 25% 8% / 0.2) 30%, transparent 60%)",
+                "linear-gradient(to top, hsl(230 25% 8% / 0.78) 0%, hsl(230 25% 8% / 0.25) 35%, transparent 65%)",
             }}
           />
-          {/* Card label */}
+
+          {/* Top numeral overlay — fonte CANÔNICA, nunca confiamos no que está gravado na imagem */}
+          <div className="absolute top-2 left-0 right-0 text-center pointer-events-none">
+            <span
+              className="inline-block px-2 py-0.5 font-heading text-[10px] tracking-[0.35em] rounded-sm"
+              style={{
+                color: "hsl(42 70% 80%)",
+                background: "hsl(230 25% 8% / 0.55)",
+                border: "1px solid hsl(36 45% 58% / 0.25)",
+              }}
+            >
+              {finalNumeral}
+            </span>
+          </div>
+
+          {/* Placeholder: nome estilizado no centro */}
+          {isPlaceholder && (
+            <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
+              <p
+                className="font-heading text-center text-lg md:text-xl tracking-[0.18em] uppercase"
+                style={{ color: "hsl(42 70% 80% / 0.85)", textShadow: "0 2px 12px hsl(230 25% 8% / 0.8)" }}
+              >
+                {name}
+              </p>
+            </div>
+          )}
+
+          {/* Card label — bottom */}
           <div className="absolute bottom-0 left-0 right-0 p-3 text-center">
             <p
               className="font-heading text-xs tracking-[0.25em] mb-0.5"
               style={{ color: "hsl(42 70% 80%)" }}
             >
-              {numeral}
+              {finalNumeral}
             </p>
             <h2
               className="font-heading text-base tracking-wide"
