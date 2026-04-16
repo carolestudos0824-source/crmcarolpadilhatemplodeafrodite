@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-0-louco.jpg";
 
 export const O_LOUCO: ArcanoMaiorEditorial = {
   number: 0,
@@ -6,7 +7,7 @@ export const O_LOUCO: ArcanoMaiorEditorial = {
   numeral: "0",
   subtitle: "O Início da Jornada",
   slug: "o-louco",
-  cardImage: "/src/assets/arcano-0-louco.jpg",
+  cardImage,
   keywords: ["Liberdade", "Coragem", "Travessia", "Impulso", "Desapego"],
 
   essence:

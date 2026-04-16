@@ -6,7 +6,7 @@ export const O_MAGO: ArcanoMaiorEditorial = {
   numeral: "I",
   subtitle: "O Poder da Vontade",
   slug: "o-mago",
-  cardImage: "/src/assets/arcano-1-mago.jpg",
+  cardImage: new URL("@/assets/arcano-1-mago.jpg", import.meta.url).href,
   keywords: ["Vontade", "Manifestação", "Domínio", "Ação Consciente", "Poder Criativo"],
 
   essence:
