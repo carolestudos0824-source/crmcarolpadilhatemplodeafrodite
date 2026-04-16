@@ -62,8 +62,8 @@ export function DeckValidationReport() {
                   <span
                     className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-medium ${
                       r.status === "aprovado"
-                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                        : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                        ? "bg-primary/10 text-primary"
+                        : "bg-secondary/15 text-secondary-foreground"
                     }`}
                   >
                     {r.status}
@@ -92,7 +92,7 @@ export function DeckValidationReport() {
 
 const Cell = ({ ok }: { ok: boolean }) =>
   ok ? (
-    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 inline" />
+    <CheckCircle2 className="w-3.5 h-3.5 text-primary inline" />
   ) : (
-    <AlertCircle className="w-3.5 h-3.5 text-amber-500 inline" />
+    <AlertCircle className="w-3.5 h-3.5 text-muted-foreground inline" />
   );
