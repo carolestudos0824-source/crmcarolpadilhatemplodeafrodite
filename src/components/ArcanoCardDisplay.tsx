@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getDeckEntry, getCanonicalNumeral } from "@/data/deck-registry";
 
 interface ArcanoCardDisplayProps {
   name: string;
@@ -6,9 +7,16 @@ interface ArcanoCardDisplayProps {
   subtitle: string;
   keywords: string[];
   cardImage: string;
+  /** Número do arcano (0-21) — usado para travar imagem/numeral pelo registry oficial */
+  number?: number;
 }
 
-export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage }: ArcanoCardDisplayProps) {
+export function ArcanoCardDisplay({ name, numeral, subtitle, keywords, cardImage, number }: ArcanoCardDisplayProps) {
+  // DECK OFICIAL: se temos o número, registry é a fonte de verdade — impede imagem/numeral trocados.
+  const deckEntry = number !== undefined ? getDeckEntry(number) : undefined;
+  const finalImage = deckEntry?.cardImage ?? cardImage;
+  const finalNumeral = deckEntry?.numeral ?? (number !== undefined ? getCanonicalNumeral(number) : numeral);
+  const isPlaceholder = deckEntry?.assetStatus === "placeholder";
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
