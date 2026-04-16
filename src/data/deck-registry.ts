@@ -263,3 +263,137 @@ export function validateDeck(): DeckValidationRow[] {
     };
   });
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// ARCANOS MENORES (40) + CARTAS DA CORTE (16)
+// ═══════════════════════════════════════════════════════════════════
+
+const SUIT_META: Record<Suit, { name: string; element: string; symbols: string[] }> = {
+  copas:    { name: "Copas",    element: "Água",  symbols: ["cálice", "água", "peixes", "lótus"] },
+  paus:     { name: "Paus",     element: "Fogo",  symbols: ["bastão florescido", "salamandra", "deserto", "folhas brotando"] },
+  espadas:  { name: "Espadas",  element: "Ar",    symbols: ["lâmina", "nuvens", "vento", "pássaros"] },
+  ouros:    { name: "Ouros",    element: "Terra", symbols: ["pentáculo", "moeda dourada", "jardim", "uvas"] },
+};
+
+const COURT_META: Record<CourtRank, { name: string; archetype: string }> = {
+  pajem:      { name: "Pajem",      archetype: "mensageiro / aprendiz" },
+  cavaleiro:  { name: "Cavaleiro",  archetype: "ação / movimento" },
+  rainha:     { name: "Rainha",     archetype: "maturidade interior" },
+  rei:        { name: "Rei",        archetype: "domínio externo" },
+};
+
+const SUITS: Suit[] = ["copas", "paus", "espadas", "ouros"];
+const COURTS: CourtRank[] = ["pajem", "cavaleiro", "rainha", "rei"];
+
+const numberName = (n: number) =>
+  n === 1 ? "Ás" : ["Dois","Três","Quatro","Cinco","Seis","Sete","Oito","Nove","Dez"][n - 2];
+
+/** 40 Arcanos Menores numerados (1-10 × 4 naipes) */
+export const MENORES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
+  Array.from({ length: 10 }, (_, i) => {
+    const pos = i + 1;
+    const meta = SUIT_META[suit];
+    return {
+      id: `${suit}-${pos}`,
+      category: "menor" as const,
+      name: `${numberName(pos)} de ${meta.name}`,
+      slug: `${suit}-${pos}`,
+      subtitle: `${meta.element} · posição ${pos}`,
+      cardImage: placeholderImage,
+      assetStatus: "placeholder" as const,
+      canonicalSymbols: meta.symbols,
+      naipe: suit,
+      position: pos,
+    };
+  })
+);
+
+/** 16 Cartas da Corte (4 ranks × 4 naipes) */
+export const CORTES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
+  COURTS.map((rank) => {
+    const sm = SUIT_META[suit];
+    const cm = COURT_META[rank];
+    return {
+      id: `${suit}-${rank}`,
+      category: "corte" as const,
+      name: `${cm.name} de ${sm.name}`,
+      slug: `${suit}-${rank}`,
+      subtitle: `${cm.archetype} · ${sm.element}`,
+      cardImage: placeholderImage,
+      assetStatus: "placeholder" as const,
+      canonicalSymbols: sm.symbols,
+      naipe: suit,
+      court: rank,
+    };
+  })
+);
+
+/** Maiores convertidos para o formato unificado DeckCardEntry */
+export const MAIORES_REGISTRY: readonly DeckCardEntry[] = DECK_REGISTRY.map((e) => ({
+  id: `maior-${e.number}`,
+  category: "maior",
+  name: e.name,
+  slug: e.slug,
+  subtitle: e.subtitle,
+  cardImage: e.cardImage,
+  assetStatus: e.assetStatus,
+  canonicalSymbols: e.canonicalSymbols,
+  number: e.number,
+  numeral: e.numeral,
+}));
+
+/** Deck completo — 78 cartas oficiais */
+export const FULL_DECK: readonly DeckCardEntry[] = [
+  ...MAIORES_REGISTRY,
+  ...MENORES_REGISTRY,
+  ...CORTES_REGISTRY,
+];
+
+/** Busca qualquer carta por id estável (ex.: "maior-1", "copas-7", "espadas-rainha") */
+export function getCard(id: string): DeckCardEntry | undefined {
+  return FULL_DECK.find((c) => c.id === id);
+}
+
+/** Busca cartas por categoria */
+export function getCardsByCategory(category: CardCategory): DeckCardEntry[] {
+  return FULL_DECK.filter((c) => c.category === category);
+}
+
+/** Busca cartas por naipe (Menores + Cortes) */
+export function getCardsBySuit(suit: Suit): DeckCardEntry[] {
+  return FULL_DECK.filter((c) => c.naipe === suit);
+}
+
+/** Resumo de validação de todo o deck (78 cartas) */
+export interface FullDeckSummary {
+  total: number;
+  approved: number;
+  placeholders: number;
+  byCategory: Record<CardCategory, { total: number; official: number; placeholder: number }>;
+}
+
+export function getFullDeckSummary(): FullDeckSummary {
+  const summary: FullDeckSummary = {
+    total: FULL_DECK.length,
+    approved: 0,
+    placeholders: 0,
+    byCategory: {
+      maior: { total: 0, official: 0, placeholder: 0 },
+      menor: { total: 0, official: 0, placeholder: 0 },
+      corte: { total: 0, official: 0, placeholder: 0 },
+    },
+  };
+  for (const c of FULL_DECK) {
+    const bucket = summary.byCategory[c.category];
+    bucket.total++;
+    if (c.assetStatus === "official") {
+      bucket.official++;
+      summary.approved++;
+    } else {
+      bucket.placeholder++;
+      summary.placeholders++;
+    }
+  }
+  return summary;
+}
+
