@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-2-sacerdotisa.jpg";
 
 export const A_SACERDOTISA: ArcanoMaiorEditorial = {
   number: 2,
@@ -6,7 +7,7 @@ export const A_SACERDOTISA: ArcanoMaiorEditorial = {
   numeral: "II",
   subtitle: "O Véu do Mistério",
   slug: "a-sacerdotisa",
-  cardImage: new URL("@/assets/arcano-2-sacerdotisa.jpg", import.meta.url).href,
+  cardImage,
   keywords: ["Intuição", "Mistério", "Silêncio", "Sabedoria Oculta", "Receptividade"],
 
   essence:

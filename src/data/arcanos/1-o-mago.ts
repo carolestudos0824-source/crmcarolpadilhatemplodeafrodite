@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-1-mago.jpg";
 
 export const O_MAGO: ArcanoMaiorEditorial = {
   number: 1,
@@ -6,7 +7,7 @@ export const O_MAGO: ArcanoMaiorEditorial = {
   numeral: "I",
   subtitle: "O Poder da Vontade",
   slug: "o-mago",
-  cardImage: new URL("@/assets/arcano-1-mago.jpg", import.meta.url).href,
+  cardImage,
   keywords: ["Vontade", "Manifestação", "Domínio", "Ação Consciente", "Poder Criativo"],
 
   essence:
