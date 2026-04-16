@@ -253,7 +253,7 @@ export function ArcanoVivoIntro({
 
         {/* The card itself — with living breathe and emergence */}
         <div
-          className="arcano-vivo-card relative w-48 h-72 sm:w-56 sm:h-80 rounded-2xl overflow-hidden"
+          className="arcano-vivo-card relative w-60 h-[22rem] sm:w-72 sm:h-[26rem] rounded-2xl overflow-hidden"
           style={{
             border: `2px solid hsl(${config.glowColor} / 0.40)`,
             transformStyle: "preserve-3d",
@@ -416,16 +416,16 @@ export function ArcanoVivoIntro({
           />
 
           {/* Card identity */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+          <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
             <p
-              className="font-heading text-[10px] tracking-[0.35em] mb-1 transition-opacity duration-1000"
+              className="font-heading text-xs tracking-[0.4em] mb-1.5 transition-opacity duration-1000"
               style={{ color: `hsl(${config.glowColor})`, opacity: isAwakened ? 1 : 0 }}
             >
               {numeral}
             </p>
             <h1
-              className="font-heading text-lg tracking-wide transition-opacity duration-1000"
-              style={{ color: "hsl(36 33% 95%)", opacity: isAwakened ? 1 : 0 }}
+              className="font-heading text-2xl tracking-wide transition-opacity duration-1000"
+              style={{ color: "hsl(36 33% 95%)", opacity: isAwakened ? 1 : 0, textShadow: "0 2px 12px hsl(230 25% 6% / 0.6)" }}
             >
               {name}
             </h1>
@@ -458,21 +458,21 @@ export function ArcanoVivoIntro({
 
       {/* Subtitle & keywords */}
       <div
-        className="mt-6 text-center transition-all duration-700"
+        className="mt-7 text-center transition-all duration-700"
         style={{ opacity: isAwakened ? 1 : 0, transform: isAwakened ? "translateY(0)" : "translateY(8px)" }}
       >
-        <p className="text-[10px] font-heading tracking-[0.3em] uppercase mb-3" style={{ color: "hsl(36 40% 42%)" }}>
+        <p className="text-[11px] font-heading tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(36 38% 36%)" }}>
           {subtitle}
         </p>
         <div className="flex flex-wrap justify-center gap-1.5">
           {keywords.map((kw) => (
             <span
               key={kw}
-              className="px-2.5 py-0.5 rounded-full text-[10px] font-medium"
+              className="px-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
               style={{
-                background: `hsl(${config.glowColor} / 0.08)`,
-                border: `1px solid hsl(${config.glowColor} / 0.18)`,
-                color: "hsl(36 40% 35%)",
+                background: `hsl(${config.glowColor} / 0.10)`,
+                border: `1px solid hsl(${config.glowColor} / 0.22)`,
+                color: "hsl(36 38% 30%)",
               }}
             >
               {kw}
@@ -483,8 +483,8 @@ export function ArcanoVivoIntro({
 
       {/* Archetype */}
       <p
-        className="mt-4 text-center text-xs font-accent italic leading-relaxed max-w-xs transition-all duration-700"
-        style={{ color: "hsl(230 20% 25% / 0.60)", opacity: isBreathing ? 1 : 0 }}
+        className="mt-5 text-center text-sm font-accent italic leading-relaxed max-w-xs transition-all duration-700"
+        style={{ color: "hsl(230 22% 22% / 0.78)", opacity: isBreathing ? 1 : 0 }}
       >
         {archetype}
       </p>
@@ -514,13 +514,13 @@ export function ArcanoVivoIntro({
             <span className="absolute bottom-2 right-3 text-xl font-accent select-none" style={{ color: `hsl(${config.glowColor} / 0.2)` }}>"</span>
 
             <p
-              className="font-accent text-sm sm:text-base leading-relaxed italic whitespace-pre-line min-h-[60px]"
-              style={{ color: "hsl(230 25% 18%)" }}
+              className="font-accent text-base sm:text-lg leading-relaxed italic whitespace-pre-line min-h-[60px]"
+              style={{ color: "hsl(230 28% 14%)" }}
             >
               {activeText.substring(0, charIndex)}
               {!typingDone && (
                 <span
-                  className="inline-block w-0.5 h-4 ml-0.5 align-middle"
+                  className="inline-block w-0.5 h-5 ml-0.5 align-middle"
                   style={{ background: `hsl(${config.glowColor})`, animation: "pulse-gold 1s ease-in-out infinite" }}
                 />
               )}
