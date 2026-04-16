@@ -253,7 +253,7 @@ export function ArcanoVivoIntro({
 
         {/* The card itself — with living breathe and emergence */}
         <div
-          className="arcano-vivo-card relative w-48 h-72 sm:w-56 sm:h-80 rounded-2xl overflow-hidden"
+          className="arcano-vivo-card relative w-60 h-[22rem] sm:w-72 sm:h-[26rem] rounded-2xl overflow-hidden"
           style={{
             border: `2px solid hsl(${config.glowColor} / 0.40)`,
             transformStyle: "preserve-3d",
