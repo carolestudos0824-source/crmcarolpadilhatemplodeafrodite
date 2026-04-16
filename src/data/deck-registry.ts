@@ -1,13 +1,16 @@
 /**
- * DECK OFICIAL — ARCANOS MAIORES (Rider-Waite-Smith)
- * ===================================================
- * Single source of truth para os 22 Arcanos Maiores.
+ * DECK OFICIAL — Rider-Waite-Smith
+ * =================================
+ * Single source of truth para TODAS as 78 cartas:
+ *  · 22 Arcanos Maiores
+ *  · 40 Arcanos Menores numerados (1-10 × 4 naipes)
+ *  · 16 Cartas da Corte (Pajem, Cavaleiro, Rainha, Rei × 4 naipes)
  *
- * Nenhuma tela deve hardcodar numeral, nome ou imagem de carta.
+ * Nenhuma tela pode hardcodar numeral, nome ou imagem de carta.
  * Tudo passa por aqui — impede inconsistências entre admin, jornada e lições.
  *
- * Regra: o numeral romano é SEMPRE renderizado via CSS overlay,
- * NUNCA confiamos no numeral gravado dentro da imagem (evita o erro do Mago).
+ * Regra: numerais romanos são SEMPRE renderizados via CSS overlay,
+ * NUNCA confiamos no que está gravado dentro da imagem.
  */
 
 import placeholderImage from "@/assets/arcano-placeholder.jpg";
@@ -15,11 +18,16 @@ import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
 import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
 
-export interface DeckEntry {
-  /** Número arábico oficial (0–21) */
-  number: number;
-  /** Numeral romano canônico (renderizado via CSS, nunca via imagem) */
-  numeral: string;
+// ─── Tipos canônicos ─────────────────────────────────────────────
+export type CardCategory = "maior" | "menor" | "corte";
+export type Suit = "copas" | "paus" | "espadas" | "ouros";
+export type CourtRank = "pajem" | "cavaleiro" | "rainha" | "rei";
+
+/** Entrada base de qualquer carta no deck oficial */
+export interface DeckCardEntry {
+  /** ID único e estável (ex.: "maior-1", "copas-7", "espadas-rainha") */
+  id: string;
+  category: CardCategory;
   /** Nome oficial em português */
   name: string;
   /** Slug URL-safe */
@@ -28,9 +36,36 @@ export interface DeckEntry {
   subtitle: string;
   /** Asset oficial — placeholder enquanto não houver arte fiel ao RWS */
   cardImage: string;
-  /** Símbolos centrais canônicos (referência Rider-Waite-Smith) */
+  /** Símbolos centrais canônicos (RWS) */
   canonicalSymbols: string[];
   /** Status do asset visual */
+  assetStatus: "official" | "placeholder";
+
+  // Maiores
+  /** Número arábico (0–21) — apenas Maiores */
+  number?: number;
+  /** Numeral romano canônico — apenas Maiores */
+  numeral?: string;
+
+  // Menores e Cortes
+  naipe?: Suit;
+  /** Posição 1-10 — apenas Menores numerados */
+  position?: number;
+  /** Rank — apenas Cortes */
+  court?: CourtRank;
+}
+
+/**
+ * @deprecated Use DeckCardEntry. Mantido para retrocompatibilidade dos Maiores.
+ */
+export interface DeckEntry {
+  number: number;
+  numeral: string;
+  name: string;
+  slug: string;
+  subtitle: string;
+  cardImage: string;
+  canonicalSymbols: string[];
   assetStatus: "official" | "placeholder";
 }
 
@@ -228,3 +263,137 @@ export function validateDeck(): DeckValidationRow[] {
     };
   });
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// ARCANOS MENORES (40) + CARTAS DA CORTE (16)
+// ═══════════════════════════════════════════════════════════════════
+
+const SUIT_META: Record<Suit, { name: string; element: string; symbols: string[] }> = {
+  copas:    { name: "Copas",    element: "Água",  symbols: ["cálice", "água", "peixes", "lótus"] },
+  paus:     { name: "Paus",     element: "Fogo",  symbols: ["bastão florescido", "salamandra", "deserto", "folhas brotando"] },
+  espadas:  { name: "Espadas",  element: "Ar",    symbols: ["lâmina", "nuvens", "vento", "pássaros"] },
+  ouros:    { name: "Ouros",    element: "Terra", symbols: ["pentáculo", "moeda dourada", "jardim", "uvas"] },
+};
+
+const COURT_META: Record<CourtRank, { name: string; archetype: string }> = {
+  pajem:      { name: "Pajem",      archetype: "mensageiro / aprendiz" },
+  cavaleiro:  { name: "Cavaleiro",  archetype: "ação / movimento" },
+  rainha:     { name: "Rainha",     archetype: "maturidade interior" },
+  rei:        { name: "Rei",        archetype: "domínio externo" },
+};
+
+const SUITS: Suit[] = ["copas", "paus", "espadas", "ouros"];
+const COURTS: CourtRank[] = ["pajem", "cavaleiro", "rainha", "rei"];
+
+const numberName = (n: number) =>
+  n === 1 ? "Ás" : ["Dois","Três","Quatro","Cinco","Seis","Sete","Oito","Nove","Dez"][n - 2];
+
+/** 40 Arcanos Menores numerados (1-10 × 4 naipes) */
+export const MENORES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
+  Array.from({ length: 10 }, (_, i) => {
+    const pos = i + 1;
+    const meta = SUIT_META[suit];
+    return {
+      id: `${suit}-${pos}`,
+      category: "menor" as const,
+      name: `${numberName(pos)} de ${meta.name}`,
+      slug: `${suit}-${pos}`,
+      subtitle: `${meta.element} · posição ${pos}`,
+      cardImage: placeholderImage,
+      assetStatus: "placeholder" as const,
+      canonicalSymbols: meta.symbols,
+      naipe: suit,
+      position: pos,
+    };
+  })
+);
+
+/** 16 Cartas da Corte (4 ranks × 4 naipes) */
+export const CORTES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
+  COURTS.map((rank) => {
+    const sm = SUIT_META[suit];
+    const cm = COURT_META[rank];
+    return {
+      id: `${suit}-${rank}`,
+      category: "corte" as const,
+      name: `${cm.name} de ${sm.name}`,
+      slug: `${suit}-${rank}`,
+      subtitle: `${cm.archetype} · ${sm.element}`,
+      cardImage: placeholderImage,
+      assetStatus: "placeholder" as const,
+      canonicalSymbols: sm.symbols,
+      naipe: suit,
+      court: rank,
+    };
+  })
+);
+
+/** Maiores convertidos para o formato unificado DeckCardEntry */
+export const MAIORES_REGISTRY: readonly DeckCardEntry[] = DECK_REGISTRY.map((e) => ({
+  id: `maior-${e.number}`,
+  category: "maior",
+  name: e.name,
+  slug: e.slug,
+  subtitle: e.subtitle,
+  cardImage: e.cardImage,
+  assetStatus: e.assetStatus,
+  canonicalSymbols: e.canonicalSymbols,
+  number: e.number,
+  numeral: e.numeral,
+}));
+
+/** Deck completo — 78 cartas oficiais */
+export const FULL_DECK: readonly DeckCardEntry[] = [
+  ...MAIORES_REGISTRY,
+  ...MENORES_REGISTRY,
+  ...CORTES_REGISTRY,
+];
+
+/** Busca qualquer carta por id estável (ex.: "maior-1", "copas-7", "espadas-rainha") */
+export function getCard(id: string): DeckCardEntry | undefined {
+  return FULL_DECK.find((c) => c.id === id);
+}
+
+/** Busca cartas por categoria */
+export function getCardsByCategory(category: CardCategory): DeckCardEntry[] {
+  return FULL_DECK.filter((c) => c.category === category);
+}
+
+/** Busca cartas por naipe (Menores + Cortes) */
+export function getCardsBySuit(suit: Suit): DeckCardEntry[] {
+  return FULL_DECK.filter((c) => c.naipe === suit);
+}
+
+/** Resumo de validação de todo o deck (78 cartas) */
+export interface FullDeckSummary {
+  total: number;
+  approved: number;
+  placeholders: number;
+  byCategory: Record<CardCategory, { total: number; official: number; placeholder: number }>;
+}
+
+export function getFullDeckSummary(): FullDeckSummary {
+  const summary: FullDeckSummary = {
+    total: FULL_DECK.length,
+    approved: 0,
+    placeholders: 0,
+    byCategory: {
+      maior: { total: 0, official: 0, placeholder: 0 },
+      menor: { total: 0, official: 0, placeholder: 0 },
+      corte: { total: 0, official: 0, placeholder: 0 },
+    },
+  };
+  for (const c of FULL_DECK) {
+    const bucket = summary.byCategory[c.category];
+    bucket.total++;
+    if (c.assetStatus === "official") {
+      bucket.official++;
+      summary.approved++;
+    } else {
+      bucket.placeholder++;
+      summary.placeholders++;
+    }
+  }
+  return summary;
+}
+
