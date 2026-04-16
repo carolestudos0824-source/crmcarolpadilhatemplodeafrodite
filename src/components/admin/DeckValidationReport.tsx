@@ -33,6 +33,24 @@ export function DeckValidationReport() {
 
       {open && (
         <div className="border-t border-border/50">
+          {/* Resumo das 3 categorias do deck oficial */}
+          <div className="grid grid-cols-3 gap-2 p-3 bg-muted/20 border-b border-border/30">
+            {(["maior", "menor", "corte"] as const).map((cat) => {
+              const b = summary.byCategory[cat];
+              const label = cat === "maior" ? "Arcanos Maiores" : cat === "menor" ? "Arcanos Menores" : "Cartas da Corte";
+              return (
+                <div key={cat} className="rounded-lg border border-border/40 bg-card/50 p-2">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
+                  <p className="text-sm font-medium text-foreground mt-0.5">{b.official}/{b.total} oficiais</p>
+                  <p className="text-[10px] text-muted-foreground">{b.placeholder} placeholder</p>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-muted-foreground bg-muted/10">
+            Detalhe — Arcanos Maiores
+          </div>
           {/* Header */}
           <div className="grid grid-cols-12 gap-2 px-3 py-2 text-[10px] uppercase tracking-wider text-muted-foreground bg-muted/30">
             <div className="col-span-1">#</div>
