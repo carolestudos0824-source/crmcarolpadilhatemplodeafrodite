@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CheckCircle2, AlertCircle, ChevronDown, Shield } from "lucide-react";
-import { validateDeck, DECK_REGISTRY } from "@/data/deck-registry";
+import { validateDeck, DECK_REGISTRY, getFullDeckSummary } from "@/data/deck-registry";
 
 /**
  * Relatório oficial de validação do Deck dos 22 Arcanos Maiores.
@@ -9,6 +9,7 @@ import { validateDeck, DECK_REGISTRY } from "@/data/deck-registry";
 export function DeckValidationReport() {
   const [open, setOpen] = useState(true);
   const rows = validateDeck();
+  const summary = getFullDeckSummary();
 
   const approved = rows.filter((r) => r.status === "aprovado").length;
   const toFix = rows.length - approved;
