@@ -219,16 +219,23 @@ export function editorialToLegacy(editorial: ArcanoMaiorEditorial, unlocked = fa
     },
   ];
 
+  // DECK OFICIAL: numeral, nome e cardImage vêm do registry (single source of truth).
+  // Impede que um arquivo de arcano com numeral/imagem errados contamine a UI.
+  const deckEntry = getDeckEntry(editorial.number);
+  const officialNumeral = deckEntry?.numeral ?? getCanonicalNumeral(editorial.number);
+  const officialImage = deckEntry?.cardImage ?? editorial.cardImage;
+  const officialName = deckEntry?.name ?? editorial.name;
+
   return {
     id: editorial.number,
-    name: editorial.name,
-    numeral: editorial.numeral,
+    name: officialName,
+    numeral: officialNumeral,
     subtitle: editorial.subtitle,
     keywords: editorial.keywords,
     archetype: editorial.archetype,
     firstPersonIntro: editorial.voice.intro,
     voiceText: editorial.voice.fullText,
-    cardImage: editorial.cardImage,
+    cardImage: officialImage,
     lessonSections,
     layers: {
       main: {
