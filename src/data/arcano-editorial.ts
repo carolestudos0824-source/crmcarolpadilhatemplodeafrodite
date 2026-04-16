@@ -13,6 +13,8 @@
  * - Expansão futura (minor arcana, combinações)
  */
 
+import { getDeckEntry, getCanonicalNumeral } from "./deck-registry";
+
 // ─── Tipos auxiliares ───
 
 export interface ArcanoSymbol {
