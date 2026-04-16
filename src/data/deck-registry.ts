@@ -1,13 +1,16 @@
 /**
- * DECK OFICIAL — ARCANOS MAIORES (Rider-Waite-Smith)
- * ===================================================
- * Single source of truth para os 22 Arcanos Maiores.
+ * DECK OFICIAL — Rider-Waite-Smith
+ * =================================
+ * Single source of truth para TODAS as 78 cartas:
+ *  · 22 Arcanos Maiores
+ *  · 40 Arcanos Menores numerados (1-10 × 4 naipes)
+ *  · 16 Cartas da Corte (Pajem, Cavaleiro, Rainha, Rei × 4 naipes)
  *
- * Nenhuma tela deve hardcodar numeral, nome ou imagem de carta.
+ * Nenhuma tela pode hardcodar numeral, nome ou imagem de carta.
  * Tudo passa por aqui — impede inconsistências entre admin, jornada e lições.
  *
- * Regra: o numeral romano é SEMPRE renderizado via CSS overlay,
- * NUNCA confiamos no numeral gravado dentro da imagem (evita o erro do Mago).
+ * Regra: numerais romanos são SEMPRE renderizados via CSS overlay,
+ * NUNCA confiamos no que está gravado dentro da imagem.
  */
 
 import placeholderImage from "@/assets/arcano-placeholder.jpg";
@@ -15,11 +18,16 @@ import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
 import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
 
-export interface DeckEntry {
-  /** Número arábico oficial (0–21) */
-  number: number;
-  /** Numeral romano canônico (renderizado via CSS, nunca via imagem) */
-  numeral: string;
+// ─── Tipos canônicos ─────────────────────────────────────────────
+export type CardCategory = "maior" | "menor" | "corte";
+export type Suit = "copas" | "paus" | "espadas" | "ouros";
+export type CourtRank = "pajem" | "cavaleiro" | "rainha" | "rei";
+
+/** Entrada base de qualquer carta no deck oficial */
+export interface DeckCardEntry {
+  /** ID único e estável (ex.: "maior-1", "copas-7", "espadas-rainha") */
+  id: string;
+  category: CardCategory;
   /** Nome oficial em português */
   name: string;
   /** Slug URL-safe */
@@ -28,9 +36,36 @@ export interface DeckEntry {
   subtitle: string;
   /** Asset oficial — placeholder enquanto não houver arte fiel ao RWS */
   cardImage: string;
-  /** Símbolos centrais canônicos (referência Rider-Waite-Smith) */
+  /** Símbolos centrais canônicos (RWS) */
   canonicalSymbols: string[];
   /** Status do asset visual */
+  assetStatus: "official" | "placeholder";
+
+  // Maiores
+  /** Número arábico (0–21) — apenas Maiores */
+  number?: number;
+  /** Numeral romano canônico — apenas Maiores */
+  numeral?: string;
+
+  // Menores e Cortes
+  naipe?: Suit;
+  /** Posição 1-10 — apenas Menores numerados */
+  position?: number;
+  /** Rank — apenas Cortes */
+  court?: CourtRank;
+}
+
+/**
+ * @deprecated Use DeckCardEntry. Mantido para retrocompatibilidade dos Maiores.
+ */
+export interface DeckEntry {
+  number: number;
+  numeral: string;
+  name: string;
+  slug: string;
+  subtitle: string;
+  cardImage: string;
+  canonicalSymbols: string[];
   assetStatus: "official" | "placeholder";
 }
 
