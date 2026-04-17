@@ -320,7 +320,10 @@ const LessonPage = () => {
               border: "1px solid hsl(36 45% 58% / 0.15)",
               boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)",
             }}>
-              <QuizSection questions={arcano.quiz} onComplete={handleQuizComplete} />
+              <QuizSection
+                questions={resolvedQuiz.questions ?? arcano.quiz}
+                onComplete={handleQuizComplete}
+              />
             </div>
             <div className="flex justify-center">
               <button onClick={() => navigate("/module/arcanos-maiores")} className="text-sm flex items-center gap-2" style={{ color: "hsl(230 10% 45%)" }}>
