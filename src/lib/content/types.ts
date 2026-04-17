@@ -184,7 +184,7 @@ export interface UseContentResult<T> {
   /** True quando a leitura caiu no legado (telemetria). */
   usedFallback: boolean;
   /** TanStack Query refetch (opcional, exposto para admin). */
-  refetch?: () => void;
+  refetch?: () => Promise<unknown>;
   /** True quando há refetch silencioso em andamento. */
   isFetching?: boolean;
 }
