@@ -14,12 +14,12 @@ export const O_ENFORCADO: ArcanoMaiorEditorial = {
     "O Enforcado é o Arcano XII — a pausa radical, a inversão de perspectiva que só acontece quando paramos de lutar. Ele não está preso — está suspenso por escolha própria. Pendurado de cabeça para baixo, vê o mundo de um ângulo que ninguém mais vê. Seu rosto é sereno, não atormentado. Arquétipo do Sacrifício iniciático — irmão de Odin pendurado em Yggdrasil em busca das runas — encarna a sabedoria que só se conquista quando o ego aceita ficar de cabeça para baixo. Quando O Enforcado aparece, ele diz: pare de forçar. A resposta vem quando você solta.",
 
   symbols: [
-    { name: "Homem pendurado pelo pé", meaning: "Inversão voluntária — ver o mundo de uma perspectiva completamente nova" },
-    { name: "Pé direito amarrado, esquerdo cruzado", meaning: "Estabilidade na entrega — posição de meditação invertida" },
-    { name: "Auréola dourada", meaning: "Iluminação pela rendição — a sabedoria que nasce da pausa" },
-    { name: "Árvore viva (em T)", meaning: "A árvore da vida — o sacrifício que gera crescimento" },
-    { name: "Rosto sereno", meaning: "Aceitação pacífica — não há sofrimento, há compreensão" },
-    { name: "Mãos atrás das costas", meaning: "Soltar o controle — não agir é, às vezes, a ação mais sábia" },
+    { name: "Homem pendurado pelo pé direito", meaning: "Inversão voluntária — ver o mundo de uma perspectiva completamente nova. Não é castigo: ele se entregou à corda para enxergar o que de pé não conseguia." },
+    { name: "Perna esquerda cruzada formando um 4", meaning: "Estabilidade na entrega — posição de meditação invertida. O 4 desenhado pelas pernas indica ordem oculta: mesmo de cabeça para baixo, há estrutura interior." },
+    { name: "Auréola dourada ao redor da cabeça", meaning: "Iluminação pela rendição — a sabedoria que nasce da pausa. O ouro irradia da mente que parou de lutar, mostrando que a luz vem por dentro, não por feito." },
+    { name: "Árvore viva em forma de T (Tau)", meaning: "A árvore da vida e a cruz Tau hebraica — o sacrifício que gera crescimento. Está coberta de folhas: o suporte que o sustenta continua vivo, não é instrumento de morte." },
+    { name: "Rosto sereno e olhos abertos", meaning: "Aceitação pacífica — não há sofrimento, há compreensão. O olhar consciente revela que ele escolhe estar ali: a iniciação só funciona quando consentida." },
+    { name: "Mãos cruzadas atrás das costas", meaning: "Soltar o controle — não agir é, às vezes, a ação mais sábia. As mãos invisíveis mostram que o poder, neste momento, está em conter o gesto." },
   ],
 
   archetype:

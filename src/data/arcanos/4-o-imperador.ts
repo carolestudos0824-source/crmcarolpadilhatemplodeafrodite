@@ -14,12 +14,12 @@ export const O_IMPERADOR: ArcanoMaiorEditorial = {
     "O Imperador é o Arcano IV — a força que organiza, estrutura e protege. Se a Imperatriz cria, o Imperador sustenta. Ele é a lei, a ordem, o limite necessário para que a criação não se dissolva no caos. Sentado em seu trono de pedra, ele não seduz — ele comanda. Não inspira — ele constrói. Quando o Imperador aparece, ele diz: é hora de dar estrutura ao que foi criado, de transformar sonho em plano e desejo em disciplina.",
 
   symbols: [
-    { name: "Trono de pedra", meaning: "Solidez, permanência e autoridade inabalável" },
-    { name: "Quatro carneiros no trono", meaning: "Áries — energia marciana de iniciativa e liderança" },
-    { name: "Orbe e cetro", meaning: "Domínio sobre o mundo material e poder de governo" },
-    { name: "Armadura sob o manto", meaning: "Proteção e prontidão para o combate, mesmo em tempos de paz" },
-    { name: "Montanhas áridas ao fundo", meaning: "Território conquistado pela força da vontade, sem adornos" },
-    { name: "Rio estreito", meaning: "Emoções controladas — presentes mas contidas pela razão" },
+    { name: "Trono de pedra cúbica", meaning: "Solidez, permanência e autoridade inabalável. O cubo é a forma da matéria estabilizada — quem se senta nele governa pela estrutura, não pela emoção." },
+    { name: "Cabeças de carneiro no trono", meaning: "Áries — energia marciana de iniciativa, coragem e liderança. Lembra que esta autoridade nasceu da ação, não da herança: foi conquistada." },
+    { name: "Orbe e cetro ankh", meaning: "Domínio sobre o mundo material e poder de governo. O ankh egípcio na vara indica que sua lei pretende sustentar a vida, não apenas controlá-la." },
+    { name: "Armadura sob o manto vermelho", meaning: "Proteção e prontidão para o combate, mesmo em tempos de paz. O Imperador nunca depõe as armas — sabe que a ordem se defende continuamente." },
+    { name: "Montanhas áridas ao fundo", meaning: "Território conquistado pela força da vontade, sem adornos. A paisagem severa revela o custo do poder: terras que só obedecem a quem é mais firme do que elas." },
+    { name: "Pequeno rio aos pés", meaning: "Emoções controladas — presentes mas contidas pela razão. Mostra que o sentimento não foi negado: foi colocado em seu lugar, fluindo dentro dos limites do reino." },
   ],
 
   archetype:

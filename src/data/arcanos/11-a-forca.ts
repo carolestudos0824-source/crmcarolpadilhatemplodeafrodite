@@ -14,12 +14,12 @@ export const A_FORCA: ArcanoMaiorEditorial = {
     "A Força é o Arcano XI — o poder que não precisa gritar para ser ouvido. Não é a força bruta do guerreiro, mas a coragem silenciosa de quem domina seus instintos com compaixão. A mulher que abre a boca do leão não o subjuga — ela o acaricia. É a vitória da consciência sobre o impulso, do amor sobre o medo. Reescritura feminina do herói solar — eco da deusa Cibele com seus leões e da virgem que doma a fera nas alegorias medievais — apresenta o poder espiritual como ternura firme, não como dominação. Quando A Força aparece, ela diz: o verdadeiro poder é gentil.",
 
   symbols: [
-    { name: "Mulher abrindo a boca do leão", meaning: "Domínio dos instintos pela gentileza — não pela violência" },
-    { name: "Lemniscata (∞) sobre a cabeça", meaning: "Consciência infinita — o mesmo símbolo do Mago, agora internalizado" },
-    { name: "Guirlanda de flores", meaning: "A beleza que domestica a fera — o poder do feminino" },
-    { name: "Leão", meaning: "Os instintos, as paixões, a natureza animal que precisa ser integrada" },
-    { name: "Manto branco", meaning: "Pureza de intenção — a força a serviço do bem" },
-    { name: "Paisagem verde e serena", meaning: "Harmonia interior — o ambiente reflete o estado interno" },
+    { name: "Mulher abrindo a boca do leão", meaning: "Domínio dos instintos pela gentileza — não pela violência. A mão pousa, não esmaga: a fera se rende porque foi reconhecida, não dominada." },
+    { name: "Lemniscata (∞) sobre a cabeça", meaning: "Consciência infinita — o mesmo símbolo do Mago, agora internalizado. Indica que o poder espiritual aqui já não está nas mãos: está na própria mente serena." },
+    { name: "Guirlanda de flores na cintura e cabeça", meaning: "A beleza que domestica a fera — o poder do feminino que liga e suaviza. Une a figura ao leão como um cinturão vivo: a coragem se enfeita, não se arma." },
+    { name: "Leão dourado submetido", meaning: "Os instintos, as paixões, a natureza animal que precisa ser integrada. Sua cor solar revela que esses impulsos não são inimigos — são energia bruta a ser canalizada." },
+    { name: "Manto branco esvoaçante", meaning: "Pureza de intenção — a força a serviço do bem. O branco indica que esta dominação é interior: nada precisa ser provado para fora." },
+    { name: "Paisagem verde e serena", meaning: "Harmonia interior — o ambiente reflete o estado interno. A natureza calma confirma: quando a fera dentro foi reconciliada, o mundo ao redor para de rugir." },
   ],
 
   archetype:

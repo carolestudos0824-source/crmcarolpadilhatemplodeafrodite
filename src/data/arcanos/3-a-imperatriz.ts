@@ -14,12 +14,12 @@ export const A_IMPERATRIZ: ArcanoMaiorEditorial = {
     "A Imperatriz é o Arcano III — a Grande Mãe, a força criativa que dá forma à vida. Ela é a natureza em seu estado mais generoso: fértil, sensual, abundante. Enquanto a Sacerdotisa guarda o mistério no silêncio, a Imperatriz o manifesta em matéria, cor, textura e prazer. Ela não pensa a criação — ela a sente, a gesta, a nutre. Quando a Imperatriz aparece, o universo diz: é hora de criar, nutrir e florescer.",
 
   symbols: [
-    { name: "Coroa de doze estrelas", meaning: "Os doze signos do zodíaco e o domínio sobre os ciclos naturais" },
-    { name: "Cetro", meaning: "Poder sobre o mundo material e a fertilidade da terra" },
-    { name: "Escudo com a águia", meaning: "Símbolo imperial — poder criador e proteção maternal" },
-    { name: "Campo de trigo dourado", meaning: "Abundância, colheita e os frutos do que foi cultivado" },
-    { name: "Rio fluindo", meaning: "Emoções em movimento, fluxo criativo e fertilidade" },
-    { name: "Almofadas e tecidos luxuosos", meaning: "Conforto, prazer sensorial e conexão com o corpo" },
+    { name: "Coroa de doze estrelas", meaning: "Os doze signos do zodíaco e o domínio sobre os ciclos naturais. Coroa-se não pelo poder, mas pela harmonia com o tempo cósmico — quem rege a Imperatriz é a própria natureza." },
+    { name: "Cetro com globo", meaning: "Poder sobre o mundo material e a fertilidade da terra. O globo no topo lembra que sua autoridade é orgânica: ela não impõe, ela faz crescer." },
+    { name: "Escudo em forma de coração com Vênus", meaning: "Símbolo imperial gravado com o glifo de Vênus — poder criador e proteção maternal. Reforça que esta soberania é regida pelo amor, não pela conquista." },
+    { name: "Campo de trigo dourado", meaning: "Abundância concreta, colheita e os frutos do que foi cultivado com paciência. Indica que a Imperatriz só aparece em vida onde alguém regou o solo antes." },
+    { name: "Cascata e rio fluindo", meaning: "Emoções em movimento, fluxo criativo e fertilidade contínua. A água que desce dos altos lembra que a vida circula livremente quando nada é represado." },
+    { name: "Almofadas e tecidos luxuosos", meaning: "Conforto, prazer sensorial e conexão com o corpo. Ensina que prazer não é frivolidade — é via legítima de contato com o sagrado." },
   ],
 
   archetype:

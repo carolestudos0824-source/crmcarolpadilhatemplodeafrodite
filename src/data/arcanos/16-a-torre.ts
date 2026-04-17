@@ -14,12 +14,12 @@ export const A_TORRE: ArcanoMaiorEditorial = {
     "A Torre é o Arcano XVI — o raio que destrói o que foi construído sobre fundamentos falsos. Não é punição divina: é revelação súbita. A estrutura que desmorona não era sólida — era ilusão de segurança. As figuras que caem não estão morrendo — estão sendo libertadas à força do que as aprisionava. Eco da Torre de Babel e do mito prometeico do fogo roubado, é o arquétipo da revelação cataclísmica: o instante em que o céu intervém para impedir que o ego construa mais alto do que sua própria verdade suporta. Quando A Torre aparece, ela diz: o que não pode se sustentar na verdade, cairá.",
 
   symbols: [
-    { name: "Torre atingida por raio", meaning: "Estrutura do ego ou falsa segurança destruída pela verdade divina" },
-    { name: "Raio/relâmpago", meaning: "Revelação súbita — a verdade que não pode ser ignorada" },
-    { name: "Coroa caindo", meaning: "Queda do ego, da falsa autoridade, das ilusões de grandeza" },
-    { name: "Duas figuras caindo", meaning: "Libertação forçada — o colapso como passagem, não como fim" },
-    { name: "Chamas nas janelas", meaning: "Purificação pelo fogo — o que era falso queima" },
-    { name: "Fundo escuro", meaning: "A noite da alma — a escuridão que precede a nova aurora" },
+    { name: "Torre erguida sobre rocha solitária", meaning: "Estrutura do ego ou falsa segurança destruída pela verdade divina. Construída no alto e isolada, simboliza tudo o que se elevou sem alicerce verdadeiro — orgulho, ilusão, dogma." },
+    { name: "Raio que desce do céu", meaning: "Revelação súbita — a verdade que não pode ser ignorada. Vem de cima, não de dentro: a Torre é abalada por uma intervenção maior do que a vontade humana." },
+    { name: "Coroa dourada caindo", meaning: "Queda do ego, da falsa autoridade, das ilusões de grandeza. O símbolo do poder mundano se desprende primeiro — aviso de que tudo que coroava o falso será derrubado também." },
+    { name: "Duas figuras lançadas no vazio", meaning: "Libertação forçada — o colapso como passagem, não como fim. Caem de cabeça para baixo como o Enforcado, mas sem escolha: a vida inverte por elas o que elas não souberam inverter por dentro." },
+    { name: "Chamas saindo das janelas", meaning: "Purificação pelo fogo — o que era falso queima. As três aberturas em chamas evocam a tríade mente, coração e instinto sendo simultaneamente atingidos pela revelação." },
+    { name: "Vinte e duas chamas yod ao redor", meaning: "Os 22 caminhos da Árvore da Vida descendo como faíscas divinas. Lembram que a destruição não é cega: é a própria centelha sagrada reordenando o que se desviou do real." },
   ],
 
   archetype:
