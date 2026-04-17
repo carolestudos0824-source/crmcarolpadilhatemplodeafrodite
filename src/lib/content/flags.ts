@@ -15,17 +15,17 @@ export type ContentSourceMode = "fallback" | "auto" | "db";
 export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
-  // Fase 2A — arcanos promovidos para 'auto' apenas para o piloto (Louco, Mago,
-  // Sacerdotisa). Para os 19 arcanos restantes a leitura também tenta DB
-  // (todos já existem em cms_arcanos como 'published'), mas a UI continua
-  // baseada no objeto legado para preservar animação, voz, deepDive e símbolos
-  // que ainda não estão totalmente no schema canônico.
+  // Fase 2/3 — arcanos (Maiores, Menores e Cortes) já carregam via DB com
+  // fallback automático para o legado em caso de erro.
   arcanos: "auto",
-  // Fase 1 — quizzes promovidos para 'auto':
-  // tenta DB primeiro; ausência ou erro cai automaticamente no legado com warn.
+  // Fase 1 — quizzes via DB com fallback.
   quizzes: "auto",
-  lessons: "fallback",
-  modules: "fallback",
+  // Fase 4A — piloto controlado: módulo Fundamentos + 3 lições reais.
+  // Como o serviço usa DB-first com fallback automático para o legado,
+  // promover para 'auto' é seguro — qualquer lição/módulo ainda não semeado
+  // continua resolvendo via legado e emite warn de telemetria.
+  lessons: "auto",
+  modules: "auto",
 };
 
 export function getFlag(domain: ContentDomain): ContentSourceMode {

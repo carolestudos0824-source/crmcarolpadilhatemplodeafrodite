@@ -4,7 +4,11 @@ import { ArrowLeft, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { FUNDAMENTOS_LESSONS, getFundamentosLessonByOrder } from "@/data/fundamentos";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
+import { useResolvedLesson } from "@/hooks/use-resolved-lesson";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/** Fase 4A — piloto restrito a 3 lições reais de Fundamentos. */
+const FASE_4A_PILOT_LESSONS = new Set(["fund-1", "fund-2", "fund-3"]);
 
 type Phase = "lesson" | "exercise" | "deepdive" | "quiz" | "complete";
 
@@ -36,6 +40,14 @@ const FundamentosLessonPage = () => {
       explanation: q.explanation,
     })) ?? null,
   });
+
+  // Fase 4A — telemetria invisível: lição via adaptador (DB-first), restrito
+  // ao piloto fund-1/2/3. Demais lições não disparam query (slug = null).
+  const isPilotLesson = lesson ? FASE_4A_PILOT_LESSONS.has(lesson.id) : false;
+  useResolvedLesson(
+    isPilotLesson ? "fundamentos" : null,
+    isPilotLesson && lesson ? lesson.id : null,
+  );
 
   if (import.meta.env.DEV && lesson && resolvedQuiz.sourceUsed) {
     // eslint-disable-next-line no-console

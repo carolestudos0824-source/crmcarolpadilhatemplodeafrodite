@@ -2,12 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight, BookOpen } from "lucide-react";
 import { FUNDAMENTOS_LESSONS } from "@/data/fundamentos";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedModule } from "@/hooks/use-resolved-module";
 import { XPBar } from "@/components/XPBar";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const FundamentosPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  // Fase 4A — telemetria invisível: módulo Fundamentos via adaptador (DB-first).
+  useResolvedModule("fundamentos");
 
   const isLessonCompleted = (lessonId: string) =>
     progress.completedLessons.includes(lessonId);
