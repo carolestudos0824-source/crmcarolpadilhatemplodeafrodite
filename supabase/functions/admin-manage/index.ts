@@ -30,13 +30,34 @@ Deno.serve(async (req) => {
     const { data: { user }, error: userErr } = await userClient.auth.getUser();
     if (userErr || !user) return json({ error: "Unauthorized" }, 401);
 
-    const { data: isAdminData } = await admin
+    // STRICT ADMIN GATE: every action exposed by this function is admin-only.
+    // Moderators and regular users are rejected here, regardless of UI.
+    const { data: callerRoles } = await admin
       .from("user_roles")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (!isAdminData) return json({ error: "Forbidden" }, 403);
+      .select("role")
+      .eq("user_id", user.id);
+    const roleSet = new Set((callerRoles ?? []).map((r) => r.role));
+    const isAdmin = roleSet.has("admin");
+
+    if (!isAdmin) {
+      // Log the unauthorized attempt for audit trail (best-effort; never blocks).
+      const attemptedAction = await req.clone().json().then((b) => b?.action ?? "unknown").catch(() => "unknown");
+      await admin.from("admin_audit_log").insert({
+        admin_id: user.id,
+        admin_email: user.email ?? null,
+        action: "unauthorized_attempt",
+        target_type: "edge_function",
+        target_id: "admin-manage",
+        target_label: `action=${attemptedAction}`,
+        details: {
+          caller_roles: Array.from(roleSet),
+          reason: roleSet.has("moderator")
+            ? "moderator_called_admin_only_function"
+            : "non_admin_called_admin_only_function",
+        },
+      }).then(() => {}, () => {});
+      return json({ error: "Forbidden: admin role required" }, 403);
+    }
 
     const body = await req.json();
     const { action, email, target_user_id, days, source, gift_code_id } = body;
