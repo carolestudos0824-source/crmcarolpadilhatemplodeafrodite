@@ -235,13 +235,22 @@ const DailyChallengesPage = () => {
 
 // ─── Challenge Modal ───
 
+interface DailyData {
+  carta: CartaDoDia | null;
+  perguntas: PerguntasDoDia;
+  simbolo: SimboloDoDia | null;
+  combinacao: CombinacaoDoDia | null;
+  interpretacao: MiniInterpretacao | null;
+}
+
 interface ModalProps {
   challenge: DailyChallengeItem;
+  data: DailyData;
   onComplete: () => void;
   onClose: () => void;
 }
 
-const ChallengeModal = ({ challenge, onComplete, onClose }: ModalProps) => {
+const ChallengeModal = ({ challenge, data, onComplete, onClose }: ModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{
       background: "hsl(230 25% 10% / 0.50)",
@@ -269,12 +278,12 @@ const ChallengeModal = ({ challenge, onComplete, onClose }: ModalProps) => {
 
         {/* Content */}
         <div className="p-6">
-          {challenge.type === "carta-do-dia" && <CartaDoDiaContent onComplete={onComplete} />}
-          {challenge.type === "revisao-rapida" && <RevisaoRapidaContent onComplete={onComplete} />}
-          {challenge.type === "perguntas-do-dia" && <PerguntasContent onComplete={onComplete} />}
-          {challenge.type === "simbolo-do-dia" && <SimboloContent onComplete={onComplete} />}
-          {challenge.type === "combinacao-do-dia" && <CombinacaoContent onComplete={onComplete} />}
-          {challenge.type === "mini-interpretacao" && <InterpretacaoContent onComplete={onComplete} />}
+          {challenge.type === "carta-do-dia" && <CartaDoDiaContent data={data.carta} onComplete={onComplete} />}
+          {challenge.type === "revisao-rapida" && <RevisaoRapidaContent data={data.carta} onComplete={onComplete} />}
+          {challenge.type === "perguntas-do-dia" && <PerguntasContent data={data.perguntas} onComplete={onComplete} />}
+          {challenge.type === "simbolo-do-dia" && <SimboloContent data={data.simbolo} onComplete={onComplete} />}
+          {challenge.type === "combinacao-do-dia" && <CombinacaoContent data={data.combinacao} onComplete={onComplete} />}
+          {challenge.type === "mini-interpretacao" && <InterpretacaoContent data={data.interpretacao} onComplete={onComplete} />}
         </div>
       </div>
     </div>
