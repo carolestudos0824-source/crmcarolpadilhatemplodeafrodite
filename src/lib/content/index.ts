@@ -8,6 +8,7 @@
 
 export {
   getArcanoContent,
+  getJourneyContent,
   listArcanosContent,
   getQuizContent,
   getLessonContent,
@@ -16,6 +17,13 @@ export {
   type GetQuizParams,
   type GetLessonParams,
 } from "./service";
+
+export type {
+  JourneyContent,
+  JourneyArcanoContent,
+  JourneyMetaContent,
+  JourneyPhaseContent,
+} from "./journey-types";
 
 export type {
   ArcanoContent,

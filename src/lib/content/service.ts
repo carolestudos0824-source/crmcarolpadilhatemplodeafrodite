@@ -263,3 +263,14 @@ export async function getModuleContent(
     },
   );
 }
+
+// ─── JOURNEY ───────────────────────────────────────────────────────
+
+export async function getJourneyContent(): Promise<JourneyContent | null> {
+  return withFallback<JourneyContent>(
+    "journey",
+    "fools-journey",
+    () => fetchJourneyFromDb(),
+    () => fetchJourneyFromLegacy(),
+  );
+}

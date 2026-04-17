@@ -8,6 +8,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getArcanoContent,
+  getJourneyContent,
   getLessonContent,
   getModuleContent,
   getQuizContent,
@@ -23,6 +24,7 @@ import type {
   QuizContent,
   UseContentResult,
 } from "@/lib/content/types";
+import type { JourneyContent } from "@/lib/content/journey-types";
 
 const STALE_MS = 5 * 60 * 1000;
 const GC_MS = 30 * 60 * 1000;
