@@ -31,24 +31,27 @@ export interface PilotMenorTarget {
   key: string;
 }
 
-/** Os 8 itens-piloto da Fase 3 — fonte da verdade. */
-export const PILOT_MENORES: readonly PilotMenorTarget[] = [
-  // Numeradas
-  { naipe: "copas", posicao: 1, key: "copas-1" },
-  { naipe: "paus", posicao: 5, key: "paus-5" },
-  { naipe: "espadas", posicao: 6, key: "espadas-6" },
-  { naipe: "ouros", posicao: 10, key: "ouros-10" },
-  // Cortes
-  { naipe: "ouros", posicao: "pajem", key: "ouros-pajem" },
-  { naipe: "copas", posicao: "cavaleiro", key: "copas-cavaleiro" },
-  { naipe: "espadas", posicao: "rainha", key: "espadas-rainha" },
-  { naipe: "paus", posicao: "rei", key: "paus-rei" },
-] as const;
+/**
+ * Fase 3B — escopo expandido para os 56 Menores (40 numeradas + 16 cortes).
+ * Gerado proceduralmente: 4 naipes × (1..10 + pajem, cavaleiro, rainha, rei).
+ */
+const NAIPES_ALL: ContentNaipe[] = ["copas", "paus", "espadas", "ouros"];
+const CORTES_ALL: CortePosicao[] = ["pajem", "cavaleiro", "rainha", "rei"];
 
-export function isPilotTarget(naipe: ContentNaipe, posicao: number | string): boolean {
-  return PILOT_MENORES.some(
-    (t) => t.naipe === naipe && String(t.posicao) === String(posicao),
-  );
+export const PILOT_MENORES: readonly PilotMenorTarget[] = NAIPES_ALL.flatMap(
+  (naipe) => [
+    ...Array.from({ length: 10 }, (_, i) => i + 1).map((n) => ({
+      naipe,
+      posicao: n as number,
+      key: `${naipe}-${n}`,
+    })),
+    ...CORTES_ALL.map((c) => ({ naipe, posicao: c, key: `${naipe}-${c}` })),
+  ],
+);
+
+export function isPilotTarget(_naipe: ContentNaipe, _posicao: number | string): boolean {
+  // Fase 3B: todos os 56 Menores estão no escopo do adaptador.
+  return true;
 }
 
 export interface UseResolvedArcanoMenorPilotResult {

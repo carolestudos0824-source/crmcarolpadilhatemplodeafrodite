@@ -12,10 +12,26 @@ import mysticBg from "@/assets/mystic-bg.jpg";
  * Espadas, Rei de Paus) resolve via DB. Não altera UI nem comportamento.
  */
 const PilotCortePilots = () => {
-  useResolvedArcanoMenorPilot("ouros", "pajem");
-  useResolvedArcanoMenorPilot("copas", "cavaleiro");
-  useResolvedArcanoMenorPilot("espadas", "rainha");
-  useResolvedArcanoMenorPilot("paus", "rei");
+  // Fase 3B — todas as 16 cortes (4 cortes × 4 naipes)
+  const naipes = ["copas", "paus", "espadas", "ouros"] as const;
+  const cortes = ["pajem", "cavaleiro", "rainha", "rei"] as const;
+  return (
+    <>
+      {naipes.flatMap((n) =>
+        cortes.map((c) => <CorteProbe key={`${n}-${c}`} naipe={n} corte={c} />),
+      )}
+    </>
+  );
+};
+
+const CorteProbe = ({
+  naipe,
+  corte,
+}: {
+  naipe: Naipe;
+  corte: "pajem" | "cavaleiro" | "rainha" | "rei";
+}) => {
+  useResolvedArcanoMenorPilot(naipe, corte);
   return null;
 };
 
