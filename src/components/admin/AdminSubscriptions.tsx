@@ -4,7 +4,7 @@ import {
   Crown, Gift, TrendingUp, TrendingDown, DollarSign, Repeat,
   CalendarDays, Filter, RefreshCw, AlertCircle, Sparkles, Plug,
 } from "lucide-react";
-import { PLAN_PRICES, monthlyValue, REAL_REVENUE_ENABLED } from "@/lib/billing";
+import { PLAN_PRICES, monthlyValue, isRealRevenueEnabled } from "@/lib/billing";
 import {
   Select,
   SelectContent,
@@ -104,15 +104,18 @@ const AdminSubscriptions = () => {
   const [planFilter, setPlanFilter] = useState<PlanFilter>("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [originFilter, setOriginFilter] = useState<OriginFilter>("all");
+  const [realRevenueEnabled, setRealRevenueEnabled] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: prof }, { data: gif }] = await Promise.all([
+      const [{ data: prof }, { data: gif }, realEnabled] = await Promise.all([
         supabase.from("profiles").select("user_id, display_name, is_premium, premium_until, premium_source, created_at, updated_at"),
         supabase.from("gift_redemptions").select("user_id, redeemed_at, gift_code_id"),
+        isRealRevenueEnabled(),
       ]);
       if (prof) setProfiles(prof);
       if (gif) setGifts(gif);
+      setRealRevenueEnabled(realEnabled);
       setLoading(false);
     };
     load();
@@ -239,13 +242,13 @@ const AdminSubscriptions = () => {
             Receita real
           </h3>
           <span className={`text-[9px] font-heading tracking-wider uppercase px-2 py-0.5 rounded-full inline-flex items-center gap-1 ${
-            REAL_REVENUE_ENABLED ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+            realRevenueEnabled ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
           }`}>
             <Plug className="w-2.5 h-2.5" />
-            {REAL_REVENUE_ENABLED ? "Stripe conectado" : "Aguardando Stripe"}
+            {realRevenueEnabled ? "Stripe conectado" : "Aguardando Stripe"}
           </span>
         </div>
-        {!REAL_REVENUE_ENABLED ? (
+        {!realRevenueEnabled ? (
           <div className="rounded-xl border border-dashed border-border/50 bg-card/20 p-5 text-center">
             <Plug className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
             <p className="text-sm text-foreground font-medium mb-1">Faturamento confirmado ainda não disponível</p>

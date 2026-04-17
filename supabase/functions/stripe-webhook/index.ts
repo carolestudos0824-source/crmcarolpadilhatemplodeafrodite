@@ -1,12 +1,14 @@
-// Stripe webhook handler — receives billing events and writes them to
-// subscription_events + updates profiles.is_premium accordingly.
+// Stripe webhook handler — receives billing events, persists them in
+// subscription_events, and mirrors premium status to profiles.
 //
-// STATE: scaffolding. Will only run end-to-end once STRIPE_WEBHOOK_SECRET
-// is configured. Until then, every request returns 503 with a clear reason.
+// Public function (verify_jwt=false). Authenticity verified via Stripe SDK
+// using STRIPE_WEBHOOK_SECRET (constructEventAsync — Deno-safe).
 //
-// This function is PUBLIC (verify_jwt=false) — Stripe calls it with no JWT.
-// Authenticity is verified via Stripe-Signature HMAC.
+// Required env:
+// - STRIPE_SECRET_KEY
+// - STRIPE_WEBHOOK_SECRET
 
+import Stripe from "https://esm.sh/stripe@17.5.0?target=deno";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -21,35 +23,13 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
-// Minimal HMAC-SHA256 verification of Stripe-Signature header.
-// Stripe format: t=timestamp,v1=signature
-async function verifyStripeSignature(payload: string, header: string, secret: string): Promise<boolean> {
-  const parts = Object.fromEntries(header.split(",").map((p) => p.split("=") as [string, string]));
-  const t = parts.t;
-  const v1 = parts.v1;
-  if (!t || !v1) return false;
-
-  const signedPayload = `${t}.${payload}`;
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"],
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(signedPayload));
-  const expected = Array.from(new Uint8Array(sig))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  return expected === v1;
-}
-
 // Map Stripe event type → our internal event_type enum.
 const EVENT_TYPE_MAP: Record<string, string> = {
   "checkout.session.completed": "checkout_completed",
   "customer.subscription.created": "subscription_created",
   "customer.subscription.updated": "subscription_renewed",
   "customer.subscription.deleted": "subscription_cancelled",
+  "invoice.paid": "payment_succeeded",
   "invoice.payment_succeeded": "payment_succeeded",
   "invoice.payment_failed": "payment_failed",
   "charge.refunded": "refund_issued",
@@ -61,12 +41,12 @@ Deno.serve(async (req) => {
 
   const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
   const SERVICE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const STRIPE_SECRET = Deno.env.get("STRIPE_SECRET_KEY");
   const WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
-  if (!WEBHOOK_SECRET) {
-    // Honest failure — no fake success, no silent drop.
+  if (!STRIPE_SECRET || !WEBHOOK_SECRET) {
     return json(
-      { error: "Stripe integration pending: STRIPE_WEBHOOK_SECRET not configured." },
+      { error: "Stripe pendente: STRIPE_SECRET_KEY e/ou STRIPE_WEBHOOK_SECRET não configurados." },
       503,
     );
   }
@@ -76,48 +56,75 @@ Deno.serve(async (req) => {
 
   const rawBody = await req.text();
 
-  const valid = await verifyStripeSignature(rawBody, sigHeader, WEBHOOK_SECRET).catch(() => false);
-  if (!valid) return json({ error: "Invalid signature" }, 401);
+  const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2024-12-18.acacia" });
 
-  let event: Record<string, unknown>;
+  let event: Stripe.Event;
   try {
-    event = JSON.parse(rawBody);
-  } catch {
-    return json({ error: "Invalid JSON" }, 400);
+    // Deno-safe async verification (uses SubtleCrypto).
+    event = await stripe.webhooks.constructEventAsync(
+      rawBody,
+      sigHeader,
+      WEBHOOK_SECRET,
+      undefined,
+      Stripe.createSubtleCryptoProvider(),
+    );
+  } catch (err) {
+    console.error("[stripe-webhook] signature verification failed", err);
+    return json({ error: "Invalid signature" }, 401);
   }
 
-  const stripeEventId = event.id as string;
-  const stripeType = event.type as string;
-  const internalType = EVENT_TYPE_MAP[stripeType];
-
+  const internalType = EVENT_TYPE_MAP[event.type];
   if (!internalType) {
-    // Acknowledge unhandled event types so Stripe stops retrying.
-    return json({ received: true, ignored: stripeType });
+    return json({ received: true, ignored: event.type });
   }
 
   const admin = createClient(SUPABASE_URL, SERVICE);
-  const data = (event.data as { object?: Record<string, unknown> })?.object ?? {};
+  const obj = event.data.object as Record<string, unknown>;
 
   // Best-effort field extraction (shape varies by event type).
-  const customerId = (data.customer as string) ?? null;
-  const subscriptionId = (data.subscription as string) ?? (data.id as string) ?? null;
-  const amountCents = (data.amount_paid as number) ?? (data.amount_total as number) ?? (data.amount as number) ?? null;
-  const currency = ((data.currency as string) ?? "brl").toUpperCase();
-  const userId = ((data.metadata as { user_id?: string })?.user_id) ?? null;
-  const planCode = ((data.metadata as { plan_code?: string })?.plan_code) ?? null;
+  const customerId = (obj.customer as string) ?? null;
+  const subscriptionId = (obj.subscription as string) ?? (obj.id as string) ?? null;
+  const amountCents =
+    (obj.amount_paid as number) ??
+    (obj.amount_total as number) ??
+    (obj.amount as number) ??
+    null;
+  const currency = ((obj.currency as string) ?? "brl").toUpperCase();
+
+  // Metadata may live on the object or its parent subscription.
+  let userId = ((obj.metadata as { user_id?: string })?.user_id) ?? null;
+  let planCode = ((obj.metadata as { plan_code?: string })?.plan_code) ?? null;
+
+  // For invoice events, fetch parent subscription to recover metadata.
+  if (!userId && subscriptionId && event.type.startsWith("invoice.")) {
+    try {
+      const sub = await stripe.subscriptions.retrieve(subscriptionId);
+      userId = sub.metadata?.user_id ?? null;
+      planCode = sub.metadata?.plan_code ?? null;
+    } catch (e) {
+      console.warn("[stripe-webhook] could not fetch parent subscription", e);
+    }
+  }
 
   // Idempotent insert via UNIQUE (provider, provider_event_id).
   const { error: insertErr } = await admin.from("subscription_events").insert({
     user_id: userId,
     provider: "stripe",
-    provider_event_id: stripeEventId,
+    provider_event_id: event.id,
     provider_customer_id: customerId,
     provider_subscription_id: subscriptionId,
-    event_type: internalType,
+    event_type: internalType as
+      | "checkout_completed"
+      | "subscription_created"
+      | "subscription_renewed"
+      | "subscription_cancelled"
+      | "payment_succeeded"
+      | "payment_failed"
+      | "refund_issued",
     plan_code: planCode,
     amount_cents: amountCents,
     currency,
-    raw_payload: event,
+    raw_payload: event as unknown as Record<string, unknown>,
   });
 
   if (insertErr && !insertErr.message.includes("duplicate")) {
@@ -126,21 +133,41 @@ Deno.serve(async (req) => {
   }
 
   // Mirror to profiles.is_premium for fast access checks.
-  // Only applies when we know the user_id (Stripe metadata.user_id).
   if (userId) {
-    if (internalType === "subscription_created" || internalType === "subscription_renewed" || internalType === "payment_succeeded") {
-      const periodEndUnix = (data.current_period_end as number) ?? null;
-      const premium_until = periodEndUnix ? new Date(periodEndUnix * 1000).toISOString() : null;
-      await admin.from("profiles").update({
-        is_premium: true,
-        premium_source: "stripe",
-        ...(premium_until ? { premium_until } : {}),
-      }).eq("user_id", userId);
-    } else if (internalType === "subscription_cancelled" || internalType === "payment_failed") {
-      // Cancellation: respect current_period_end — don't revoke instantly on cancel.
-      // For payment_failed we also don't revoke instantly (dunning window handled elsewhere).
-      // This is intentionally a no-op until a dunning policy is implemented.
+    if (
+      internalType === "subscription_created" ||
+      internalType === "subscription_renewed" ||
+      internalType === "payment_succeeded" ||
+      internalType === "checkout_completed"
+    ) {
+      const periodEndUnix = (obj.current_period_end as number) ?? null;
+      const premium_until = periodEndUnix
+        ? new Date(periodEndUnix * 1000).toISOString()
+        : null;
+      await admin
+        .from("profiles")
+        .update({
+          is_premium: true,
+          premium_source: planCode === "annual" ? "store_annual" : "store_monthly",
+          ...(premium_until ? { premium_until } : {}),
+        })
+        .eq("user_id", userId);
+    } else if (internalType === "subscription_cancelled") {
+      // Don't revoke instantly — let access run until current_period_end.
+      // Flip is_premium=false so renewal stops; premium_until preserves grace window.
+      const periodEndUnix = (obj.current_period_end as number) ?? null;
+      const premium_until = periodEndUnix
+        ? new Date(periodEndUnix * 1000).toISOString()
+        : null;
+      await admin
+        .from("profiles")
+        .update({
+          is_premium: false,
+          ...(premium_until ? { premium_until } : {}),
+        })
+        .eq("user_id", userId);
     }
+    // payment_failed: no instant revoke (dunning handled separately).
   }
 
   return json({ received: true, type: internalType });
