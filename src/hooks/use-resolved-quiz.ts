@@ -14,7 +14,7 @@
 
 import { useMemo } from "react";
 import { useQuizContent } from "./use-content";
-import type { QuizQuestion } from "@/data/tarot-data";
+import type { QuizQuestion } from "@/lib/content";
 import type { GetQuizParams } from "@/lib/content/service";
 import type { ContentSource } from "@/lib/content/types";
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { UserProgress, DEFAULT_PROGRESS } from "@/data/tarot-data";
+import { DEFAULT_PROGRESS, type UserProgress } from "@/lib/content";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 

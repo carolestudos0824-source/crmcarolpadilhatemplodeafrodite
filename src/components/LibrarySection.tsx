@@ -1,4 +1,4 @@
-import { ExtraMaterial } from "@/data/tarot-data";
+import type { ExtraMaterial } from "@/lib/content";
 import { FileText, Headphones, File, Video, ExternalLink, ChevronRight } from "lucide-react";
 
 interface LibrarySectionProps {
