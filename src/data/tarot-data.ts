@@ -1,3 +1,23 @@
+/**
+ * @deprecated (Fase 6.0) — NÃO importe deste arquivo no runtime.
+ *
+ * Este arquivo permanece apenas como SEED interno do catálogo
+ * (`src/lib/content/catalog.ts`) enquanto os 17 módulos não estão
+ * publicados no CMS.
+ *
+ * Tipos canônicos foram movidos para `src/lib/content/runtime-types.ts`
+ * e devem ser importados via `@/lib/content`:
+ *
+ *   import type { ArcanoData, QuizQuestion, UserProgress, Badge,
+ *                 ExtraMaterial, LessonLayer } from "@/lib/content";
+ *   import { DEFAULT_PROGRESS } from "@/lib/content";
+ *
+ * Conteúdo (`MODULES`, `ARCANOS_MAIORES`, `getArcanoById`,
+ * `isModuleUnlocked`, `FREE_ARCANO_IDS`) deve vir de
+ * `MODULES_CATALOG`, `ARCANOS_MAIORES_CATALOG`, `getArcanoFull`,
+ * `isModuleUnlocked` e `FREE_ARCANO_IDS` exportados pelo mesmo
+ * `@/lib/content`.
+ */
 import { type LessonSection } from "@/data/fool-lesson-content";
 import { getArcanoAsLegacy } from "./arcanos/index";
 
