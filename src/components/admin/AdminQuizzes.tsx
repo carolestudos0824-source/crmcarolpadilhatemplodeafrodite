@@ -896,6 +896,13 @@ const CreateQuizDialog = ({
       toast({ title: "Erro ao criar", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "quiz.create",
+      targetType: "quiz",
+      targetId: data?.id ?? null,
+      targetLabel: title.trim(),
+      details: { module_id: moduleId === "none" ? null : moduleId, difficulty },
+    });
     toast({ title: "Quiz criado" });
     setTitle("");
     setLinkedTo("");
