@@ -25,6 +25,7 @@ Beta = 5 módulos (Fundamentos, Louco, Mago, Sacerdotisa, Leitura Simbólica). V
 - [Editorial guideline](mem://features/editorial-guideline) — Rider-Waite-Smith como base simbólica principal
 - [Arcano editorial model](mem://features/arcano-editorial-model) — 17-field standardized structure for all 22 Major Arcana
 - [Arcano Vivo system](mem://features/arcano-vivo-system) — 5 phases, 3 intensity levels, body/voice/gesture specs
+- [Naipes oficiais](mem://features/naipes-oficiais) — Definição canônica dos 4 naipes: essência, atmosfera, função, desafios, potencial, linguagem, cor, motion
 - [Arcano Vivo screen](mem://features/arcano-vivo-screen) — Reusable component architecture for lesson screens
 - [Final monetization](mem://features/final-monetization) — Plans, 7 states, flows, admin, revenue, pending IAP
 - [Subscription states](mem://features/subscription-states) — 7 states with access matrix, UI display, CTAs, admin view

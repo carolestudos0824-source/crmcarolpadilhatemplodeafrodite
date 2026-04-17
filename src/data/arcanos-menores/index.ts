@@ -323,6 +323,15 @@ export function getPositionIndex(posicao: CartaPosicao): number {
   return CARD_POSITIONS.indexOf(posicao);
 }
 
+// ─── Definição oficial dos 4 naipes (fonte canônica) ──────────────
+export {
+  NAIPES_OFICIAIS,
+  getNaipeOficial,
+  getAllNaipesOficiais,
+  naipeHsl,
+  type NaipeOficial,
+} from "./naipes-oficial";
+
 /** Check if position is a court card */
 export function isCourtCard(posicao: CartaPosicao): boolean {
   return typeof posicao === "string";
