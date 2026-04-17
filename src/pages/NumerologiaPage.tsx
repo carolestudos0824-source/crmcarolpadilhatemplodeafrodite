@@ -173,7 +173,7 @@ const NumerologiaPage = () => {
                                     </span>
                                   </div>
                                   <p className="text-xs leading-relaxed" style={{ color: "hsl(230 20% 20%)" }}>
-                                    {num.comoAfetaCadaNaipe[naipe]}
+                                    {num.manifestacao[naipe]}
                                   </p>
                                 </div>
                               );
