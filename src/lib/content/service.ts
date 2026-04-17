@@ -226,6 +226,7 @@ export async function getLessonContent(
       const found = await fetchLessonFromDb(params.lessonSlug);
       if (!found) return null;
       return mapDbLessonToUI(found.lesson, {
+        moduleSlug: found.module.slug,
         moduleName: found.module.name,
         moduleTier: found.module.tier,
         moduleStatus: found.module.status,

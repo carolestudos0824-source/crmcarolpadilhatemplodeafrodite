@@ -209,7 +209,7 @@ export interface LegacyLesson {
 
 export function mapLegacyLessonToUI(
   l: LegacyLesson,
-  moduleId: string,
+  moduleSlug: string,
   moduleName: string,
 ): LessonContent {
   const exercicio = typeof l.exercise === "string"
@@ -221,8 +221,10 @@ export function mapLegacyLessonToUI(
     slug: l.id,
     titulo: l.title,
     subtitulo: l.subtitle,
-    moduloId: moduleId,
+    moduloId: `legacy-module-${moduleSlug}`,
+    moduloSlug: moduleSlug,
     moduloNome: moduleName,
+    ordem: l.order ?? 0,
     tier: "premium",
     status: "publicado",
     editorial: {
@@ -232,11 +234,13 @@ export function mapLegacyLessonToUI(
       exemploPratico: undefined,
       exercicio,
       revisaoRapida: l.reflection,
+      citacao: undefined,
+      pratica: undefined,
     },
     quiz: l.quiz && l.quiz.length > 0
-      ? mapLegacyQuizToUI(l.quiz, { tipo: "licao", id: l.id }, l.id, `Quiz: ${l.title}`)
+      ? mapLegacyQuizToUI(l.quiz, { tipo: "licao", id: l.id, slug: l.id }, l.id, `Quiz: ${l.title}`)
       : null,
-    metadata: { source: "legacy" },
+    metadata: { source: "legacy", sourceId: l.id, usedFallback: true },
   };
 }
 

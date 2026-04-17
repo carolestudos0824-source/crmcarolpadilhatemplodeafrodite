@@ -109,7 +109,9 @@ export interface LessonContent {
   titulo: string;
   subtitulo?: string;
   moduloId: string;
+  moduloSlug: string;
   moduloNome: string;
+  ordem: number;
   tier: ContentTier;
   status: ContentStatus;
 
@@ -120,12 +122,16 @@ export interface LessonContent {
     exemploPratico?: string;
     exercicio?: string;
     revisaoRapida?: string;
+    citacao?: string;
+    pratica?: string;
   };
 
   quiz: QuizContent | null;
 
   metadata: {
     source: ContentSource;
+    sourceId?: string;
+    usedFallback?: boolean;
   };
 }
 
