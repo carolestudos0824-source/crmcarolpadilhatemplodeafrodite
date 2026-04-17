@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { logAdminAction, type AdminAction } from "@/lib/admin-audit";
+import { useRole } from "@/hooks/use-role";
 
 interface ProfileRow {
   user_id: string;
@@ -279,6 +280,7 @@ interface UserDetail {
 }
 
 const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | null; onClose: () => void; onChanged: () => void }) => {
+  const { isAdmin } = useRole();
   const [data, setData] = useState<UserDetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
@@ -381,44 +383,51 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
               Módulos concluídos: <span className="text-foreground font-medium">{data.progress?.completed_modules?.length ?? 0}</span> · Nível: <span className="text-foreground font-medium">{data.progress?.level ?? 1}</span> · Resgates de presente: <span className="text-foreground font-medium">{data.redemptions?.length ?? 0}</span>
             </div>
 
-            {/* Premium controls */}
-            <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
-              <p className="text-xs font-heading tracking-wider text-muted-foreground uppercase">Acesso premium</p>
-              <div className="flex flex-wrap items-center gap-2">
-                <Input type="number" value={days} onChange={(e) => setDays(e.target.value)} className="w-20 h-9 text-sm" min={1} />
-                <span className="text-xs text-muted-foreground">dias</span>
-                <Button size="sm" onClick={() => run("grant_premium", { days: Number(days), source: "admin" }, "Premium concedido")} disabled={busy === "grant_premium"}>
-                  <Crown className="w-3.5 h-3.5" /> Conceder premium
-                </Button>
-                <Button size="sm" variant="outline" onClick={() => run("grant_premium", { days: Number(days), source: "gift" }, "Presente concedido")} disabled={busy === "grant_premium"}>
-                  <Gift className="w-3.5 h-3.5" /> Presentear
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => run("revoke_premium", {}, "Premium removido")} disabled={busy === "revoke_premium" || !data.profile?.is_premium}>
-                  Remover premium
-                </Button>
-              </div>
-            </div>
+            {/* Premium + Roles — admin only */}
+            {isAdmin ? (
+              <>
+                <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
+                  <p className="text-xs font-heading tracking-wider text-muted-foreground uppercase">Acesso premium</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Input type="number" value={days} onChange={(e) => setDays(e.target.value)} className="w-20 h-9 text-sm" min={1} />
+                    <span className="text-xs text-muted-foreground">dias</span>
+                    <Button size="sm" onClick={() => run("grant_premium", { days: Number(days), source: "admin" }, "Premium concedido")} disabled={busy === "grant_premium"}>
+                      <Crown className="w-3.5 h-3.5" /> Conceder premium
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => run("grant_premium", { days: Number(days), source: "gift" }, "Presente concedido")} disabled={busy === "grant_premium"}>
+                      <Gift className="w-3.5 h-3.5" /> Presentear
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => run("revoke_premium", {}, "Premium removido")} disabled={busy === "revoke_premium" || !data.profile?.is_premium}>
+                      Remover premium
+                    </Button>
+                  </div>
+                </div>
 
-            {/* Role + Reset */}
-            <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
-              <p className="text-xs font-heading tracking-wider text-muted-foreground uppercase">Funções e progresso</p>
-              <div className="flex flex-wrap gap-2">
-                {data.roles.includes("admin") ? (
-                  <Button size="sm" variant="outline" onClick={() => run("demote", {}, "Admin removido")} disabled={busy === "demote"}>
-                    <Shield className="w-3.5 h-3.5" /> Remover admin
-                  </Button>
-                ) : (
-                  <Button size="sm" variant="outline" onClick={() => run("promote", {}, "Promovido a admin")} disabled={busy === "promote"}>
-                    <Shield className="w-3.5 h-3.5" /> Tornar admin
-                  </Button>
-                )}
-                <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => {
-                  if (confirm("Tem certeza? Isso zera XP, streak, lições e módulos concluídos.")) run("reset_progress", {}, "Progresso resetado");
-                }} disabled={busy === "reset_progress"}>
-                  <RotateCcw className="w-3.5 h-3.5" /> Resetar progresso
-                </Button>
+                <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
+                  <p className="text-xs font-heading tracking-wider text-muted-foreground uppercase">Funções e progresso</p>
+                  <div className="flex flex-wrap gap-2">
+                    {data.roles.includes("admin") ? (
+                      <Button size="sm" variant="outline" onClick={() => run("demote", {}, "Admin removido")} disabled={busy === "demote"}>
+                        <Shield className="w-3.5 h-3.5" /> Remover admin
+                      </Button>
+                    ) : (
+                      <Button size="sm" variant="outline" onClick={() => run("promote", {}, "Promovido a admin")} disabled={busy === "promote"}>
+                        <Shield className="w-3.5 h-3.5" /> Tornar admin
+                      </Button>
+                    )}
+                    <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => {
+                      if (confirm("Tem certeza? Isso zera XP, streak, lições e módulos concluídos.")) run("reset_progress", {}, "Progresso resetado");
+                    }} disabled={busy === "reset_progress"}>
+                      <RotateCcw className="w-3.5 h-3.5" /> Resetar progresso
+                    </Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="rounded-xl border border-border/50 bg-muted/20 p-4 text-xs text-muted-foreground">
+                Visualização em modo leitura. Apenas administradores podem alterar premium, papéis ou resetar progresso.
               </div>
-            </div>
+            )}
           </div>
         )}
       </DialogContent>
