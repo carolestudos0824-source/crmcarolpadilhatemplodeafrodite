@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedArcanosMaiores } from "@/hooks/use-resolved-arcanos-maiores";
 import {
   JOURNEY_INTRO,
   JOURNEY_PHASES,
