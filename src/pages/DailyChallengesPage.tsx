@@ -1,17 +1,23 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, ChevronRight, Flame, Gift, Star, X } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useArcanosList, useSymbolsContent } from "@/hooks/use-content";
 import {
-  getDailyChallenges,
-  getCartaDoDia,
-  getPerguntasDoDia,
-  getSimboloDoDia,
-  getCombinacaoDoDia,
-  getMiniInterpretacao,
+  buildDailyChallenges,
+  buildCartaDoDia,
+  buildPerguntasDoDia,
+  buildSimboloDoDia,
+  buildCombinacaoDoDia,
+  buildMiniInterpretacao,
   DAILY_TOTAL_XP,
   type DailyChallengeItem,
-} from "@/data/daily-challenges";
+  type CartaDoDia,
+  type PerguntasDoDia,
+  type SimboloDoDia,
+  type CombinacaoDoDia,
+  type MiniInterpretacao,
+} from "@/lib/daily/builders";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -19,6 +25,15 @@ const today = () => new Date().toISOString().slice(0, 10);
 const DailyChallengesPage = () => {
   const navigate = useNavigate();
   const { progress, addXP, updateStreak } = useProgress();
+  const { data: arcanos } = useArcanosList({ tipo: "maior" });
+  const { data: symbols } = useSymbolsContent();
+
+  const arcanosList = arcanos ?? [];
+  const cartaDoDia = useMemo(() => buildCartaDoDia(arcanosList), [arcanosList]);
+  const perguntasDoDia = useMemo(() => buildPerguntasDoDia(arcanosList), [arcanosList]);
+  const simboloDoDia = useMemo(() => buildSimboloDoDia(symbols), [symbols]);
+  const combinacaoDoDia = useMemo(() => buildCombinacaoDoDia(arcanosList), [arcanosList]);
+  const miniInterpretacao = useMemo(() => buildMiniInterpretacao(arcanosList), [arcanosList]);
 
   const [challenges, setChallenges] = useState<DailyChallengeItem[]>(() => {
     const saved = localStorage.getItem("daily-challenges");
@@ -28,7 +43,7 @@ const DailyChallengesPage = () => {
         if (parsed.date === today()) return parsed.items;
       } catch {}
     }
-    return getDailyChallenges();
+    return buildDailyChallenges();
   });
 
   const [activeChallenge, setActiveChallenge] = useState<DailyChallengeItem | null>(null);
@@ -60,6 +75,13 @@ const DailyChallengesPage = () => {
       {activeChallenge && (
         <ChallengeModal
           challenge={activeChallenge}
+          data={{
+            carta: cartaDoDia,
+            perguntas: perguntasDoDia,
+            simbolo: simboloDoDia,
+            combinacao: combinacaoDoDia,
+            interpretacao: miniInterpretacao,
+          }}
           onComplete={() => completeChallenge(activeChallenge.id)}
           onClose={() => setActiveChallenge(null)}
         />
@@ -220,13 +242,22 @@ const DailyChallengesPage = () => {
 
 // ─── Challenge Modal ───
 
+interface DailyData {
+  carta: CartaDoDia | null;
+  perguntas: PerguntasDoDia;
+  simbolo: SimboloDoDia | null;
+  combinacao: CombinacaoDoDia | null;
+  interpretacao: MiniInterpretacao | null;
+}
+
 interface ModalProps {
   challenge: DailyChallengeItem;
+  data: DailyData;
   onComplete: () => void;
   onClose: () => void;
 }
 
-const ChallengeModal = ({ challenge, onComplete, onClose }: ModalProps) => {
+const ChallengeModal = ({ challenge, data, onComplete, onClose }: ModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{
       background: "hsl(230 25% 10% / 0.50)",
@@ -254,12 +285,12 @@ const ChallengeModal = ({ challenge, onComplete, onClose }: ModalProps) => {
 
         {/* Content */}
         <div className="p-6">
-          {challenge.type === "carta-do-dia" && <CartaDoDiaContent onComplete={onComplete} />}
-          {challenge.type === "revisao-rapida" && <RevisaoRapidaContent onComplete={onComplete} />}
-          {challenge.type === "perguntas-do-dia" && <PerguntasContent onComplete={onComplete} />}
-          {challenge.type === "simbolo-do-dia" && <SimboloContent onComplete={onComplete} />}
-          {challenge.type === "combinacao-do-dia" && <CombinacaoContent onComplete={onComplete} />}
-          {challenge.type === "mini-interpretacao" && <InterpretacaoContent onComplete={onComplete} />}
+          {challenge.type === "carta-do-dia" && <CartaDoDiaContent data={data.carta} onComplete={onComplete} />}
+          {challenge.type === "revisao-rapida" && <RevisaoRapidaContent data={data.carta} onComplete={onComplete} />}
+          {challenge.type === "perguntas-do-dia" && <PerguntasContent data={data.perguntas} onComplete={onComplete} />}
+          {challenge.type === "simbolo-do-dia" && <SimboloContent data={data.simbolo} onComplete={onComplete} />}
+          {challenge.type === "combinacao-do-dia" && <CombinacaoContent data={data.combinacao} onComplete={onComplete} />}
+          {challenge.type === "mini-interpretacao" && <InterpretacaoContent data={data.interpretacao} onComplete={onComplete} />}
         </div>
       </div>
     </div>
@@ -281,8 +312,8 @@ const CompleteButton = ({ onComplete, label = "Concluir" }: { onComplete: () => 
   </button>
 );
 
-const CartaDoDiaContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getCartaDoDia();
+const CartaDoDiaContent = ({ data, onComplete }: { data: CartaDoDia | null; onComplete: () => void }) => {
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="text-center">
@@ -323,9 +354,9 @@ const CartaDoDiaContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const RevisaoRapidaContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getCartaDoDia(); // reuse card of the day for review
+const RevisaoRapidaContent = ({ data, onComplete }: { data: CartaDoDia | null; onComplete: () => void }) => {
   const [revealed, setRevealed] = useState(false);
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4 text-center">
       <p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
@@ -368,8 +399,7 @@ const RevisaoRapidaContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const PerguntasContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getPerguntasDoDia();
+const PerguntasContent = ({ data, onComplete }: { data: PerguntasDoDia; onComplete: () => void }) => {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -459,8 +489,8 @@ const PerguntasContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const SimboloContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getSimboloDoDia();
+const SimboloContent = ({ data, onComplete }: { data: SimboloDoDia | null; onComplete: () => void }) => {
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Símbolos carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="text-center">
@@ -491,9 +521,9 @@ const SimboloContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const CombinacaoContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getCombinacaoDoDia();
+const CombinacaoContent = ({ data, onComplete }: { data: CombinacaoDoDia | null; onComplete: () => void }) => {
   const [showInsight, setShowInsight] = useState(false);
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center gap-4">
@@ -536,9 +566,9 @@ const CombinacaoContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const InterpretacaoContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getMiniInterpretacao();
+const InterpretacaoContent = ({ data, onComplete }: { data: MiniInterpretacao | null; onComplete: () => void }) => {
   const [showSample, setShowSample] = useState(false);
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="rounded-lg p-4" style={{ background: "hsl(340 42% 30% / 0.05)", border: "1px solid hsl(340 42% 30% / 0.12)" }}>

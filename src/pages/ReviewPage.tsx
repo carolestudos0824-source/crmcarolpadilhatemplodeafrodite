@@ -3,16 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, RotateCcw, Check, X, Zap, BookOpen, Sparkles, ChevronRight, RefreshCw } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { useReview } from "@/hooks/use-review";
+import { useArcanosList } from "@/hooks/use-content";
 import {
-  ALL_FLASHCARDS,
-  ALL_REVIEW_QUIZZES,
-  ALL_QUICK_REVIEWS,
+  buildReviewBundle,
   generateDailyChallenge,
-  getArcanoName,
-  getArcanoNumeral,
+  getArcanoNameFromBundle,
+  getArcanoNumeralFromBundle,
   getFlashcardsForArcano,
   type Flashcard,
-} from "@/data/review-data";
+} from "@/lib/review/builders";
 import { QuickReviewCard } from "@/components/QuickReviewCard";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
@@ -23,6 +22,14 @@ const ReviewPage = () => {
   const navigate = useNavigate();
   const { progress, addXP } = useProgress();
   const review = useReview();
+  const { data: arcanos } = useArcanosList({ tipo: "maior" });
+
+  const bundle = useMemo(() => buildReviewBundle(arcanos ?? []), [arcanos]);
+  const ALL_FLASHCARDS = bundle.allFlashcards;
+  const ALL_REVIEW_QUIZZES = bundle.allReviewQuizzes;
+  const ALL_QUICK_REVIEWS = bundle.allQuickReviews;
+  const getArcanoName = (id: number) => getArcanoNameFromBundle(bundle, id);
+  const getArcanoNumeral = (id: number) => getArcanoNumeralFromBundle(bundle, id);
 
   const [mode, setMode] = useState<ReviewMode>("home");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,7 +39,10 @@ const ReviewPage = () => {
   const [showExplanation, setShowExplanation] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
-  const dailyChallenge = generateDailyChallenge(today, progress.completedLessons);
+  const dailyChallenge = useMemo(
+    () => generateDailyChallenge(bundle, today, progress.completedLessons),
+    [bundle, today, progress.completedLessons],
+  );
   const isDailyDone = review.completedDailyChallenges.includes(`daily-${today}`);
   const dueFlashcards = review.getDueFlashcards();
 
@@ -50,7 +60,7 @@ const ReviewPage = () => {
       return ALL_FLASHCARDS.filter(f => dailyChallenge?.items.includes(f.id));
     }
     if (selectedArcano !== null) {
-      return getFlashcardsForArcano(selectedArcano);
+      return getFlashcardsForArcano(bundle, selectedArcano);
     }
     if (dueFlashcards.length > 0) {
       return ALL_FLASHCARDS.filter(f => dueFlashcards.includes(f.id));
@@ -120,6 +130,7 @@ const ReviewPage = () => {
   if (mode === "flashcards" && currentFlashcard) {
     return <FlashcardView
       card={currentFlashcard}
+      arcanoName={getArcanoName(currentFlashcard.arcanoId)}
       index={currentIndex}
       total={flashcardSet.length}
       flipped={flipped}
@@ -145,6 +156,7 @@ const ReviewPage = () => {
   if (mode === "daily-challenge" && dailyChallenge && currentFlashcard) {
     return <FlashcardView
       card={currentFlashcard}
+      arcanoName={getArcanoName(currentFlashcard.arcanoId)}
       index={currentIndex}
       total={flashcardSet.length}
       flipped={flipped}
@@ -316,7 +328,7 @@ const ReviewPage = () => {
             </h2>
             <div className="space-y-2.5">
               {studiedArcanoIds.map(id => {
-                const cards = getFlashcardsForArcano(id);
+                const cards = getFlashcardsForArcano(bundle, id);
                 const reviewed = cards.filter(c => review.completedFlashcards.includes(c.id)).length;
                 return (
                   <button
@@ -407,6 +419,7 @@ const ReviewPage = () => {
 
 interface FlashcardViewProps {
   card: Flashcard;
+  arcanoName: string;
   index: number;
   total: number;
   flipped: boolean;
@@ -416,7 +429,7 @@ interface FlashcardViewProps {
   isDaily?: boolean;
 }
 
-const FlashcardView = ({ card, index, total, flipped, onFlip, onAnswer, onBack, isDaily }: FlashcardViewProps) => (
+const FlashcardView = ({ card, arcanoName, index, total, flipped, onFlip, onAnswer, onBack, isDaily }: FlashcardViewProps) => (
   <div className="min-h-screen flex flex-col" style={{
     background: "linear-gradient(180deg, hsl(36 33% 96%), hsl(38 28% 93%))",
   }}>
@@ -476,7 +489,7 @@ const FlashcardView = ({ card, index, total, flipped, onFlip, onAnswer, onBack, 
               border: "1px solid hsl(36 45% 50% / 0.15)",
               color: "hsl(36 42% 40%)",
             }}>
-              {getArcanoName(card.arcanoId)} · {
+              {arcanoName} · {
                 card.category === "symbol" ? "Símbolo" :
                 card.category === "archetype" ? "Arquétipo" :
                 card.category === "light-shadow" ? "Luz & Sombra" :

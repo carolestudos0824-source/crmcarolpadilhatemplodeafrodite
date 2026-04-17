@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, Sun, Moon, Lightbulb, Compass, Quote } from "lucide-react";
-import type { QuickReviewSummary } from "@/data/review-data";
+import type { QuickReviewSummary } from "@/lib/review/builders";
 
 interface QuickReviewCardProps {
   review: QuickReviewSummary;

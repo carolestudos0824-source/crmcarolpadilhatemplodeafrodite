@@ -1,6 +1,11 @@
 /**
- * Daily Challenge System
- * Deterministic daily content based on date seed.
+ * @deprecated (Fase 6.2) — NÃO importe deste arquivo no runtime.
+ *
+ * Substituído por `@/lib/daily/builders` (builders puros alimentados
+ * pelo adaptador de conteúdo) + `@/lib/daily/pools` (config técnica).
+ * Mantido apenas como referência da curadoria inicial.
+ *
+ * Daily Challenge System — versão legada.
  */
 
 import { ARCANOS_MAIORES, getArcanoById, type ArcanoData } from "./tarot-data";

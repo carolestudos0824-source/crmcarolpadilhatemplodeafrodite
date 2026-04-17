@@ -1,3 +1,9 @@
+/**
+ * @deprecated (Fase 6.2) — NÃO importe deste arquivo no runtime.
+ *
+ * Substituído por `@/lib/review/builders` (derivador puro alimentado
+ * pelo adaptador de conteúdo). Mantido apenas como backup imutável.
+ */
 import { getArcanoById, ARCANOS_MAIORES, type ArcanoData, type QuizQuestion } from "./tarot-data";
 
 /** Flashcard for symbol ↔ meaning association */
