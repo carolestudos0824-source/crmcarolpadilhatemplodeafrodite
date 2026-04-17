@@ -21,6 +21,7 @@ export type {
   ArcanoContent,
   QuizContent,
   QuizQuestionContent,
+  QuizDificuldade,
   LessonContent,
   ModuleContent,
   UseContentResult,

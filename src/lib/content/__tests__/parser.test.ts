@@ -20,11 +20,12 @@ describe("content/parser", () => {
   });
 
   describe("parseQuizStatus", () => {
-    it("colapsa todos não-publicados em rascunho", () => {
+    it("usa o mesmo conjunto de status canônicos", () => {
       expect(parseQuizStatus("published")).toBe("publicado");
       expect(parseQuizStatus("draft")).toBe("rascunho");
-      expect(parseQuizStatus("empty")).toBe("rascunho");
-      expect(parseQuizStatus(null)).toBe("rascunho");
+      expect(parseQuizStatus("partial")).toBe("parcial");
+      expect(parseQuizStatus("empty")).toBe("vazio");
+      expect(parseQuizStatus(null)).toBe("vazio");
     });
   });
 
