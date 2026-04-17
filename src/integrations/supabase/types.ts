@@ -52,29 +52,41 @@ export type Database = {
       }
       beta_feedback: {
         Row: {
+          admin_notes: string | null
           created_at: string
           id: string
           message: string
           page: string | null
           rating: number | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["feedback_status"]
           type: string
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
           created_at?: string
           id?: string
           message: string
           page?: string | null
           rating?: number | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["feedback_status"]
           type: string
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
           created_at?: string
           id?: string
           message?: string
           page?: string | null
           rating?: number | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["feedback_status"]
           type?: string
           user_id?: string
         }
@@ -682,6 +694,7 @@ export type Database = {
       app_role: "admin" | "moderator" | "user"
       arcano_naipe: "copas" | "ouros" | "espadas" | "paus"
       arcano_type: "maior" | "menor"
+      feedback_status: "aberto" | "em_andamento" | "resolvido"
       module_status: "empty" | "partial" | "draft" | "published"
       module_tier: "free" | "premium"
       quiz_difficulty: "easy" | "medium" | "hard"
@@ -815,6 +828,7 @@ export const Constants = {
       app_role: ["admin", "moderator", "user"],
       arcano_naipe: ["copas", "ouros", "espadas", "paus"],
       arcano_type: ["maior", "menor"],
+      feedback_status: ["aberto", "em_andamento", "resolvido"],
       module_status: ["empty", "partial", "draft", "published"],
       module_tier: ["free", "premium"],
       quiz_difficulty: ["easy", "medium", "hard"],
