@@ -190,7 +190,7 @@ const AdminSubscriptions = () => {
     return {
       monthlyActive, annualActive, giftActive, adminGrant, cancelledAccess,
       expired, cancelledExpired, free,
-      activeTotal, totalPaying, mrr, arr, conversionRate,
+      activeTotal, totalPaying, mrrEstimated, arrEstimated, conversionRate,
       newSignups30, expiringSoon, recentlyExpired, churnRate,
       total: enriched.length,
       giftRedemptions: gifts.length,
