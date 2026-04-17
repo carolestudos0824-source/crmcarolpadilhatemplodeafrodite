@@ -11,6 +11,10 @@ export {
   getJourneyContent,
   getSymbolsContent,
   getCertificatesContent,
+  getNumerologyContent,
+  getSuitsContent,
+  getSuitContent,
+  getCourtCardsContent,
   listArcanosContent,
   getQuizContent,
   getLessonContent,
@@ -38,6 +42,23 @@ export type {
   CertificatesContent,
   CertificateStatus,
 } from "./certificates-types";
+
+export type {
+  NumerologyContent,
+  NumerologyItemContent,
+  NumerologyManifestation,
+} from "./numerology-types";
+
+export type {
+  SuitContent,
+  SuitsContent,
+} from "./suits-types";
+
+export type {
+  CourtCardContent,
+  CourtCardsContent,
+  CourtSuitManifestation,
+} from "./court-types";
 
 // Fase 6.0 — tipos canônicos de runtime (extraídos de tarot-data.ts).
 export type {

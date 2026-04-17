@@ -182,3 +182,63 @@ export function useCertificatesContent(): UseContentResult<CertificatesContent |
   });
   return wrap(query);
 }
+
+// ─── Numerology ────────────────────────────────────────────────────
+
+export function useNumerologyContent(): UseContentResult<NumerologyContent | null> {
+  const query = useQuery<NumerologyContent | null>({
+    queryKey: ["content", "numerology"],
+    queryFn: () => getNumerologyContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+// ─── Suits (Naipe Intro) ───────────────────────────────────────────
+
+export function useSuitsContent(): UseContentResult<SuitsContent | null> {
+  const query = useQuery<SuitsContent | null>({
+    queryKey: ["content", "suits"],
+    queryFn: () => getSuitsContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+export function useSuitIntroContent(
+  naipe: ContentNaipe | null,
+): UseContentResult<SuitContent | null> {
+  const query = useQuery<SuitContent | null>({
+    queryKey: ["content", "suit", naipe],
+    queryFn: () => (naipe ? getSuitContent(naipe) : Promise.resolve(null)),
+    enabled: !!naipe,
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  // SuitContent não tem metadata; usamos o wrapper da lista para sourceUsed.
+  const data = (query.data ?? null) as SuitContent | null;
+  return {
+    data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    error: (query.error as Error | null) ?? null,
+    sourceUsed: data ? "db" : null,
+    usedFallback: false,
+    refetch: () => query.refetch(),
+    isFetching: query.isFetching,
+  };
+}
+
+// ─── Court Cards (pedagógicas) ─────────────────────────────────────
+
+export function useCourtCardsContent(): UseContentResult<CourtCardsContent | null> {
+  const query = useQuery<CourtCardsContent | null>({
+    queryKey: ["content", "court-cards"],
+    queryFn: () => getCourtCardsContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
