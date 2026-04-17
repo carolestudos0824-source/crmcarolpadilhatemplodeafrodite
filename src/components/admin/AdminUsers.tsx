@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
+import { logAdminAction, type AdminAction } from "@/lib/admin-audit";
 
 interface ProfileRow {
   user_id: string;
@@ -307,6 +308,25 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
       return;
     }
     toast({ title: successMsg });
+
+    // Audit log: map edge action → audit action
+    const auditMap: Record<string, AdminAction> = {
+      grant_premium: "premium.grant",
+      revoke_premium: "premium.revoke",
+      promote: "role.promote",
+      demote: "role.demote",
+    };
+    const auditAction = auditMap[action];
+    if (auditAction) {
+      await logAdminAction({
+        action: auditAction,
+        targetType: "user",
+        targetId: userId,
+        targetLabel: data?.profile?.display_name ?? data?.auth?.email ?? null,
+        details: body,
+      });
+    }
+
     // Refresh detail and outer list
     const { data: refreshed } = await supabase.functions.invoke("admin-manage", {
       body: { action: "user_detail", target_user_id: userId },
