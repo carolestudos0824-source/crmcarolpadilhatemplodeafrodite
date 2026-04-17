@@ -245,10 +245,11 @@ const AdminModules = () => {
     if (swapIdx < 0 || swapIdx >= sorted.length) return;
     const a = sorted[idx];
     const b = sorted[swapIdx];
-    const { error } = await supabase.from("cms_modules").upsert([
-      { ...a, order_index: b.order_index },
-      { ...b, order_index: a.order_index },
+    const [r1, r2] = await Promise.all([
+      supabase.from("cms_modules").update({ order_index: b.order_index }).eq("id", a.id),
+      supabase.from("cms_modules").update({ order_index: a.order_index }).eq("id", b.id),
     ]);
+    const error = r1.error ?? r2.error;
     if (error) {
       toast({ title: "Erro ao reordenar", description: error.message, variant: "destructive" });
       return;
