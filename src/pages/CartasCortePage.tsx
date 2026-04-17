@@ -3,7 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import { CARTAS_CORTE } from "@/data/arcanos-menores/cartas-corte";
 import { NAIPES, type Naipe } from "@/data/arcanos-menores";
+import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/**
+ * Telemetria invisível da Fase 3 — dispara o hook do adaptador para validar
+ * que o piloto das cortes (Pajem de Ouros, Cavaleiro de Copas, Rainha de
+ * Espadas, Rei de Paus) resolve via DB. Não altera UI nem comportamento.
+ */
+const PilotCortePilots = () => {
+  useResolvedArcanoMenorPilot("ouros", "pajem");
+  useResolvedArcanoMenorPilot("copas", "cavaleiro");
+  useResolvedArcanoMenorPilot("espadas", "rainha");
+  useResolvedArcanoMenorPilot("paus", "rei");
+  return null;
+};
 
 const CartasCortePage = () => {
   const navigate = useNavigate();
@@ -42,6 +56,8 @@ const CartasCortePage = () => {
       </header>
 
       <main className="relative z-10 container max-w-3xl px-4 py-8">
+        {/* Fase 3 — telemetria invisível dos itens-piloto das cortes */}
+        <PilotCortePilots />
         {/* Hero */}
         <div className="text-center space-y-4 mb-10" style={{ animation: "fade-up 0.6s ease-out" }}>
           <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl" style={{

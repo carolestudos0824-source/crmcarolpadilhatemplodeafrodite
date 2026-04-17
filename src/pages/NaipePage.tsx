@@ -9,7 +9,24 @@ import {
 import { useProgress } from "@/hooks/use-progress";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
+import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/**
+ * Telemetria invisível da Fase 3 — dispara o hook do adaptador para validar
+ * que o piloto (Ás de Copas, Cinco de Paus, Seis de Espadas, Dez de Ouros)
+ * resolve via DB. Não altera UI nem comportamento.
+ */
+const PilotMenorProbe = ({
+  naipe,
+  posicao,
+}: {
+  naipe: Naipe;
+  posicao: number | string;
+}) => {
+  useResolvedArcanoMenorPilot(naipe, posicao);
+  return null;
+};
 
 const NAIPE_ROUTE_MAP: Record<string, Naipe> = {
   copas: "copas",
@@ -201,6 +218,17 @@ const NaipePage = () => {
       </header>
 
       <main className="relative z-10 container max-w-3xl py-6 px-6">
+        {/* Fase 3 — telemetria invisível dos itens-piloto numerados deste naipe */}
+        {numbered
+          .filter((c) =>
+            (naipe === "copas" && c.posicao === 1) ||
+            (naipe === "paus" && c.posicao === 5) ||
+            (naipe === "espadas" && c.posicao === 6) ||
+            (naipe === "ouros" && c.posicao === 10),
+          )
+          .map((c) => (
+            <PilotMenorProbe key={`probe-${c.id}`} naipe={naipe} posicao={c.posicao} />
+          ))}
 
         {/* Study tools */}
         <div className="grid grid-cols-3 gap-2.5 mb-6" style={{ animation: "fade-up 0.4s ease-out" }}>
