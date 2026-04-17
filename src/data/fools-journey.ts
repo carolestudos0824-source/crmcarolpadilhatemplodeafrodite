@@ -1,11 +1,19 @@
 /**
+ * @deprecated (Fase 5D) Não importe deste arquivo diretamente.
+ *
+ * A Jornada do Louco agora vem do CMS (`cms_journey_phases`,
+ * `cms_journey_arcanos`, `cms_journey_meta`) através do adapter:
+ *
+ *   import { useJourneyContent } from "@/hooks/use-content";
+ *   import { CORES_FASE, JOURNEY_MOTION } from "@/data/fools-journey-visual";
+ *
+ * Este arquivo permanece apenas como SEED / FALLBACK consumido por
+ * `src/lib/content/repo-legacy-journey.ts`. Nenhuma tela ou componente
+ * deve mais ler `JOURNEY_INTRO`, `JOURNEY_PHASES`, `JOURNEY_ARCANOS` ou
+ * `JOURNEY_CLOSING` daqui.
+ *
  * A JORNADA DO LOUCO — Narrativa Completa dos 22 Arcanos Maiores
- * 
- * A Jornada do Louco é a estrutura narrativa e simbólica que organiza
- * os 22 Arcanos Maiores como um percurso de evolução da consciência.
- * 
- * Baseada na tradição Rider-Waite-Smith, com leituras arquetípicas,
- * psicológicas e esotéricas.
+ * Baseada na tradição Rider-Waite-Smith.
  */
 
 export interface JourneyPhase {

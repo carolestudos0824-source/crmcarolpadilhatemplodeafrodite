@@ -43,12 +43,15 @@ import {
   mapLegacyModuleToUI,
   mapLegacyQuizToUI,
 } from "./mappers-legacy";
+import { fetchJourneyFromDb } from "./repo-db-journey";
+import { fetchJourneyFromLegacy } from "./repo-legacy-journey";
 import type {
   ArcanoContent,
   LessonContent,
   ModuleContent,
   QuizContent,
 } from "./types";
+import type { JourneyContent } from "./journey-types";
 
 // ─── Helper genérico ───────────────────────────────────────────────
 
@@ -258,5 +261,16 @@ export async function getModuleContent(
       if (!found) return null;
       return mapLegacyModuleToUI(found.slug, found.name, found.lessons);
     },
+  );
+}
+
+// ─── JOURNEY ───────────────────────────────────────────────────────
+
+export async function getJourneyContent(): Promise<JourneyContent | null> {
+  return withFallback<JourneyContent>(
+    "journey",
+    "fools-journey",
+    () => fetchJourneyFromDb(),
+    () => fetchJourneyFromLegacy(),
   );
 }

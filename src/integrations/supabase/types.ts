@@ -206,6 +206,152 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_journey_arcanos: {
+        Row: {
+          arcano_number: number
+          created_at: string
+          id: string
+          journey_role: string
+          name: string
+          narrative_text: string
+          numeral: string
+          order_index: number
+          phase_slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          updated_at: string
+        }
+        Insert: {
+          arcano_number: number
+          created_at?: string
+          id?: string
+          journey_role: string
+          name: string
+          narrative_text: string
+          numeral: string
+          order_index?: number
+          phase_slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          updated_at?: string
+        }
+        Update: {
+          arcano_number?: number
+          created_at?: string
+          id?: string
+          journey_role?: string
+          name?: string
+          narrative_text?: string
+          numeral?: string
+          order_index?: number
+          phase_slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_journey_arcanos_phase_slug_fkey"
+            columns: ["phase_slug"]
+            isOneToOne: false
+            referencedRelation: "cms_journey_phases"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      cms_journey_meta: {
+        Row: {
+          closing_body: string | null
+          closing_invitation: string | null
+          closing_title: string
+          created_at: string
+          id: string
+          intro_body: string[]
+          intro_epigraph: string | null
+          intro_subtitle: string | null
+          intro_title: string
+          singleton: boolean
+          status: Database["public"]["Enums"]["module_status"]
+          updated_at: string
+        }
+        Insert: {
+          closing_body?: string | null
+          closing_invitation?: string | null
+          closing_title: string
+          created_at?: string
+          id?: string
+          intro_body?: string[]
+          intro_epigraph?: string | null
+          intro_subtitle?: string | null
+          intro_title: string
+          singleton?: boolean
+          status?: Database["public"]["Enums"]["module_status"]
+          updated_at?: string
+        }
+        Update: {
+          closing_body?: string | null
+          closing_invitation?: string | null
+          closing_title?: string
+          created_at?: string
+          id?: string
+          intro_body?: string[]
+          intro_epigraph?: string | null
+          intro_subtitle?: string | null
+          intro_title?: string
+          singleton?: boolean
+          status?: Database["public"]["Enums"]["module_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_journey_phases: {
+        Row: {
+          arcano_ids: number[]
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          order_index: number
+          slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          subtitle: string | null
+          symbol: string | null
+          theme: string
+          tier: Database["public"]["Enums"]["module_tier"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          arcano_ids?: number[]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          order_index?: number
+          slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitle?: string | null
+          symbol?: string | null
+          theme?: string
+          tier?: Database["public"]["Enums"]["module_tier"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          arcano_ids?: number[]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          order_index?: number
+          slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitle?: string | null
+          symbol?: string | null
+          theme?: string
+          tier?: Database["public"]["Enums"]["module_tier"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cms_module_lessons: {
         Row: {
           created_at: string

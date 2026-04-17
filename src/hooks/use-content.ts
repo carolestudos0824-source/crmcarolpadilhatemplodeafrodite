@@ -8,6 +8,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getArcanoContent,
+  getJourneyContent,
   getLessonContent,
   getModuleContent,
   getQuizContent,
@@ -23,6 +24,7 @@ import type {
   QuizContent,
   UseContentResult,
 } from "@/lib/content/types";
+import type { JourneyContent } from "@/lib/content/journey-types";
 
 const STALE_MS = 5 * 60 * 1000;
 const GC_MS = 30 * 60 * 1000;
@@ -127,6 +129,18 @@ export function useModuleContent(
     queryKey: ["content", "module", slug],
     queryFn: () => (slug ? getModuleContent(slug) : Promise.resolve(null)),
     enabled: !!slug,
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+// ─── Journey ───────────────────────────────────────────────────────
+
+export function useJourneyContent(): UseContentResult<JourneyContent | null> {
+  const query = useQuery<JourneyContent | null>({
+    queryKey: ["content", "journey"],
+    queryFn: () => getJourneyContent(),
     staleTime: STALE_MS,
     gcTime: GC_MS,
   });

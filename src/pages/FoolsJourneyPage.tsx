@@ -2,57 +2,37 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedArcanosMaiores } from "@/hooks/use-resolved-arcanos-maiores";
-import {
-  JOURNEY_INTRO,
-  JOURNEY_PHASES,
-  JOURNEY_ARCANOS,
-  JOURNEY_CLOSING,
-  type JourneyPhase,
-} from "@/data/fools-journey";
+import { useJourneyContent } from "@/hooks/use-content";
+import { CORES_FASE, JOURNEY_MOTION } from "@/data/fools-journey-visual";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
-
-const PHASE_COLORS: Record<JourneyPhase["theme"], { main: string; soft: string; border: string; gradient: string }> = {
-  gold: {
-    main: "hsl(36 42% 42%)",
-    soft: "hsl(36 42% 44% / 0.10)",
-    border: "hsl(36 42% 44% / 0.25)",
-    gradient: "linear-gradient(135deg, hsl(36 42% 42%), hsl(36 45% 55%))",
-  },
-  wine: {
-    main: "hsl(340 42% 28%)",
-    soft: "hsl(340 42% 28% / 0.08)",
-    border: "hsl(340 42% 28% / 0.20)",
-    gradient: "linear-gradient(135deg, hsl(340 42% 22%), hsl(340 42% 35%))",
-  },
-  plum: {
-    main: "hsl(280 30% 30%)",
-    soft: "hsl(280 30% 30% / 0.08)",
-    border: "hsl(280 30% 30% / 0.18)",
-    gradient: "linear-gradient(135deg, hsl(280 30% 25%), hsl(280 30% 40%))",
-  },
-  moonlight: {
-    main: "hsl(210 35% 35%)",
-    soft: "hsl(210 35% 35% / 0.08)",
-    border: "hsl(210 35% 35% / 0.18)",
-    gradient: "linear-gradient(135deg, hsl(210 35% 30%), hsl(210 45% 50%))",
-  },
-};
 
 const FoolsJourneyPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
 
-  // Fase 2C: lista agregada dos 22 Arcanos Maiores também passa pelo adaptador.
-  // A UI continua usando JOURNEY_ARCANOS / JOURNEY_PHASES (legado) para
-  // preservar journeyRole, narrativeText, ordenação narrativa e estados
-  // visuais. O probe garante sourceUsed='db'/usedFallback=false e expõe
-  // telemetria, sem alterar layout, ordem ou comportamento de premium.
+  // Fase 2C: lista agregada dos 22 Arcanos Maiores também passa pelo adaptador
+  // (telemetria sourceUsed='db'/usedFallback=false).
   const resolvedMaiores = useResolvedArcanosMaiores();
   void resolvedMaiores;
 
+  // Fase 5D: estrutura editorial da Jornada vem do CMS via adapter.
+  const { data: journey, isLoading } = useJourneyContent();
+
   const isStudied = (arcanoId: number) =>
     progress.completedLessons.includes(`arcano-${arcanoId}`);
+
+  if (isLoading || !journey) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="font-accent italic text-sm" style={{ color: "hsl(36 42% 45% / 0.60)" }}>
+          Preparando a travessia…
+        </div>
+      </div>
+    );
+  }
+
+  const { meta, fases, arcanos } = journey;
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -92,7 +72,7 @@ const FoolsJourneyPage = () => {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}>
-                {JOURNEY_INTRO.title}
+                {meta.introTitulo}
               </h1>
             </div>
           </div>
@@ -107,10 +87,10 @@ const FoolsJourneyPage = () => {
             <img src={ornamentDivider} alt="" className="w-24 h-auto opacity-40" loading="lazy" width={800} height={512} />
           </div>
           <p className="font-accent text-base italic leading-relaxed" style={{ color: "hsl(230 20% 15% / 0.55)" }}>
-            "{JOURNEY_INTRO.epigraph}"
+            "{meta.introEpigrafe}"
           </p>
           <p className="font-heading text-xs tracking-[0.3em] uppercase mt-3" style={{ color: "hsl(36 42% 45% / 0.60)" }}>
-            {JOURNEY_INTRO.subtitle}
+            {meta.introSubtitulo}
           </p>
         </div>
 
@@ -121,7 +101,7 @@ const FoolsJourneyPage = () => {
             backdropFilter: "blur(14px)",
             border: "1px solid hsl(36 45% 50% / 0.18)",
           }}>
-            {JOURNEY_INTRO.body.map((para, i) => (
+            {meta.introCorpo.map((para, i) => (
               <p key={i} className="font-body text-sm leading-[1.85]" style={{ color: "hsl(230 20% 15% / 0.68)" }}>
                 {para}
               </p>
@@ -130,9 +110,9 @@ const FoolsJourneyPage = () => {
         </section>
 
         {/* Journey Phases */}
-        {JOURNEY_PHASES.map((phase, phaseIndex) => {
-          const colors = PHASE_COLORS[phase.theme];
-          const phaseArcanos = JOURNEY_ARCANOS.filter(a => phase.arcanoIds.includes(a.id));
+        {fases.map((phase, phaseIndex) => {
+          const colors = CORES_FASE[phase.theme];
+          const phaseArcanos = arcanos.filter((a) => a.faseSlug === phase.slug);
 
           return (
             <section
@@ -154,7 +134,7 @@ const FoolsJourneyPage = () => {
                     boxShadow: `0 4px 20px ${colors.soft}`,
                   }}
                 >
-                  <span className="text-xl" style={{ color: colors.main }}>{phase.symbol}</span>
+                  <span className="text-xl" style={{ color: colors.main }}>{phase.simbolo}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span className="text-[9px] font-heading tracking-[0.35em] uppercase" style={{ color: colors.main }}>
@@ -162,10 +142,10 @@ const FoolsJourneyPage = () => {
                   </span>
                 </div>
                 <h2 className="font-heading text-lg tracking-wide mb-1" style={{ color: "hsl(230 20% 12% / 0.85)" }}>
-                  {phase.title}
+                  {phase.titulo}
                 </h2>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-                  {phase.subtitle}
+                  {phase.subtitulo}
                 </p>
               </div>
 
@@ -176,18 +156,18 @@ const FoolsJourneyPage = () => {
                 backdropFilter: "blur(12px)",
               }}>
                 <p className="font-body text-sm leading-[1.85]" style={{ color: "hsl(230 20% 15% / 0.65)" }}>
-                  {phase.description}
+                  {phase.descricao}
                 </p>
               </div>
 
               {/* Arcano cards within this phase */}
               <div className="space-y-2.5">
                 {phaseArcanos.map((arcano) => {
-                  const studied = isStudied(arcano.id);
+                  const studied = isStudied(arcano.arcanoNumero);
                   return (
                     <button
                       key={arcano.id}
-                      onClick={() => studied ? navigate(`/lesson/${arcano.id}`) : undefined}
+                      onClick={() => studied ? navigate(`/lesson/${arcano.arcanoNumero}`) : undefined}
                       disabled={!studied}
                       className="w-full text-left group transition-all duration-300"
                     >
@@ -228,7 +208,7 @@ const FoolsJourneyPage = () => {
                                 className="font-heading text-sm tracking-wide"
                                 style={{ color: studied ? "hsl(230 20% 12% / 0.85)" : "hsl(230 10% 50% / 0.40)" }}
                               >
-                                {arcano.name}
+                                {arcano.nome}
                               </h3>
                               {studied && (
                                 <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-40 group-hover:translate-x-0.5 transition-transform" style={{ color: colors.main }} />
@@ -238,14 +218,14 @@ const FoolsJourneyPage = () => {
                               className="font-accent text-[11px] italic mb-1.5"
                               style={{ color: studied ? colors.main : "hsl(230 10% 50% / 0.30)" }}
                             >
-                              {arcano.journeyRole}
+                              {arcano.papel}
                             </p>
                             {studied && (
                               <p
                                 className="font-body text-[11px] leading-relaxed"
                                 style={{ color: "hsl(230 20% 15% / 0.55)" }}
                               >
-                                {arcano.narrativeText}
+                                {arcano.textoNarrativo}
                               </p>
                             )}
                           </div>
@@ -271,13 +251,13 @@ const FoolsJourneyPage = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              {JOURNEY_CLOSING.title}
+              {meta.encerramentoTitulo}
             </h2>
             <p className="font-body text-sm leading-[1.85] max-w-lg mx-auto mb-4" style={{ color: "hsl(230 20% 15% / 0.60)" }}>
-              {JOURNEY_CLOSING.body}
+              {meta.encerramentoCorpo}
             </p>
             <p className="font-accent text-base italic" style={{ color: "hsl(36 42% 42% / 0.75)" }}>
-              {JOURNEY_CLOSING.invitation}
+              {meta.encerramentoConvite}
             </p>
           </div>
         </section>
