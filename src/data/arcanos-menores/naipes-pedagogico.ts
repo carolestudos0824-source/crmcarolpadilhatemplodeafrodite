@@ -1,4 +1,9 @@
 /**
+ * @deprecated Fase 6.5 — não use no runtime.
+ * Conteúdo agora vive em `cms_suits` e é lido via `getSuitContent` /
+ * `useSuitIntroContent`. Mantido apenas como fallback através de
+ * `repo-legacy-suits.ts` e como referência editorial.
+ *
  * Conteúdo pedagógico dos 4 naipes — introduções ricas e didáticas.
  */
 

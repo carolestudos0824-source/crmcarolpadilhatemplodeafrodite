@@ -1,4 +1,9 @@
 /**
+ * @deprecated Fase 6.5 — não use no runtime.
+ * Conteúdo agora vive em `cms_numerologia` e é lido via `getNumerologyContent`
+ * (`@/lib/content`). Mantido apenas como fallback de emergência através de
+ * `repo-legacy-numerology.ts` e como referência editorial.
+ *
  * Numerologia dos Arcanos Menores — significado de cada número (Ás a 10).
  */
 

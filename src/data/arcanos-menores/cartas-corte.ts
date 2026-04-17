@@ -1,4 +1,9 @@
 /**
+ * @deprecated Fase 6.5 — não use no runtime.
+ * Conteúdo agora vive em `cms_court_cards` e é lido via `getCourtCardsContent`
+ * / `useCourtCardsContent`. Mantido apenas como fallback através de
+ * `repo-legacy-court.ts` e como referência editorial.
+ *
  * Cartas da Corte — Pajem, Cavaleiro, Rainha e Rei.
  * Lógica pedagógica para desmistificar as 16 cartas da corte.
  */
