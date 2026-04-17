@@ -6,6 +6,9 @@ import AdminOverview from "@/components/admin/AdminOverview";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminSubscriptions from "@/components/admin/AdminSubscriptions";
 import AdminGiftCodes from "@/components/admin/AdminGiftCodes";
+import AdminModules from "@/components/admin/AdminModules";
+import AdminArcanos from "@/components/admin/AdminArcanos";
+import AdminQuizzes from "@/components/admin/AdminQuizzes";
 import AdminContent from "@/components/admin/AdminContent";
 import AdminProgress from "@/components/admin/AdminProgress";
 import AdminSupport from "@/components/admin/AdminSupport";
@@ -16,6 +19,9 @@ const sectionComponents: Record<AdminSection, React.ComponentType> = {
   users: AdminUsers,
   subscriptions: AdminSubscriptions,
   gifts: AdminGiftCodes,
+  modules: AdminModules,
+  arcanos: AdminArcanos,
+  quizzes: AdminQuizzes,
   content: AdminContent,
   progress: AdminProgress,
   support: AdminSupport,
