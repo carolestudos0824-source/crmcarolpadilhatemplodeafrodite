@@ -26,6 +26,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { logAdminAction } from "@/lib/admin-audit";
 import type { Database } from "@/integrations/supabase/types";
 
 type ModuleStatus = Database["public"]["Enums"]["module_status"];
@@ -193,15 +194,23 @@ const AdminModules = () => {
       route_prefix: editing.route_prefix?.trim() || null,
     };
 
-    const { error } = editing.id
-      ? await supabase.from("cms_modules").update(payload).eq("id", editing.id)
-      : await supabase.from("cms_modules").insert(payload);
+    const isUpdate = !!editing.id;
+    const { data: saved, error } = isUpdate
+      ? await supabase.from("cms_modules").update(payload).eq("id", editing.id!).select().maybeSingle()
+      : await supabase.from("cms_modules").insert(payload).select().maybeSingle();
 
     if (error) {
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: editing.id ? "Módulo atualizado" : "Módulo criado" });
+    await logAdminAction({
+      action: isUpdate ? "module.update" : "module.create",
+      targetType: "module",
+      targetId: saved?.id ?? editing.id ?? null,
+      targetLabel: payload.name,
+      details: { slug: payload.slug, tier: payload.tier, status: payload.status },
+    });
+    toast({ title: isUpdate ? "Módulo atualizado" : "Módulo criado" });
     setDialogOpen(false);
     setEditing(null);
     await loadModules();
@@ -209,11 +218,18 @@ const AdminModules = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Remover este módulo? As lições vinculadas também serão apagadas.")) return;
+    const target = modules.find((m) => m.id === id);
     const { error } = await supabase.from("cms_modules").delete().eq("id", id);
     if (error) {
       toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "module.delete",
+      targetType: "module",
+      targetId: id,
+      targetLabel: target?.name ?? null,
+    });
     toast({ title: "Módulo removido" });
     await loadModules();
   };
@@ -225,6 +241,13 @@ const AdminModules = () => {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: next === "published" ? "module.publish" : "module.unpublish",
+      targetType: "module",
+      targetId: m.id,
+      targetLabel: m.name,
+      details: { from: m.status, to: next },
+    });
     await loadModules();
   };
 
@@ -235,6 +258,13 @@ const AdminModules = () => {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "module.tier_change",
+      targetType: "module",
+      targetId: m.id,
+      targetLabel: m.name,
+      details: { from: m.tier, to: next },
+    });
     await loadModules();
   };
 
@@ -254,6 +284,13 @@ const AdminModules = () => {
       toast({ title: "Erro ao reordenar", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "module.reorder",
+      targetType: "module",
+      targetId: m.id,
+      targetLabel: m.name,
+      details: { direction, swapped_with: b.id },
+    });
     await loadModules();
   };
 
@@ -631,13 +668,21 @@ const ModuleLessonsView = ({
       title: editing.title.trim(),
       order_index: Number(editing.order_index ?? 0),
     };
-    const { error } = editing.id
-      ? await supabase.from("cms_module_lessons").update(payload).eq("id", editing.id)
+    const isUpdate = !!editing.id;
+    const { error } = isUpdate
+      ? await supabase.from("cms_module_lessons").update(payload).eq("id", editing.id!)
       : await supabase.from("cms_module_lessons").insert(payload);
     if (error) {
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: isUpdate ? "module_lesson.update" : "module_lesson.create",
+      targetType: "module_lesson",
+      targetId: editing.id ?? null,
+      targetLabel: payload.title,
+      details: { module_id: module.id, module_name: module.name, lesson_id: payload.lesson_id },
+    });
     setOpen(false);
     setEditing(null);
     await load();
@@ -645,11 +690,19 @@ const ModuleLessonsView = ({
 
   const handleDelete = async (id: string) => {
     if (!confirm("Remover esta lição do módulo?")) return;
+    const target = lessons.find((l) => l.id === id);
     const { error } = await supabase.from("cms_module_lessons").delete().eq("id", id);
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "module_lesson.delete",
+      targetType: "module_lesson",
+      targetId: id,
+      targetLabel: target?.title ?? null,
+      details: { module_id: module.id, module_name: module.name },
+    });
     await load();
   };
 

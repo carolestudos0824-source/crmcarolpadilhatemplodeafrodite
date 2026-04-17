@@ -229,11 +229,16 @@ const TicketDialog = ({
 
   const update = async (patch: Partial<Pick<Ticket, "status" | "admin_notes">>, successMsg: string, action: string) => {
     setBusy(true);
-    const updates: Record<string, unknown> = { ...patch };
+    const updates: {
+      status?: Status;
+      admin_notes?: string | null;
+      resolved_at?: string | null;
+      resolved_by?: string | null;
+    } = { ...patch };
     if (patch.status === "resolvido") {
       updates.resolved_at = new Date().toISOString();
       updates.resolved_by = currentUserId ?? null;
-    } else if (patch.status && patch.status !== "resolvido") {
+    } else if (patch.status) {
       updates.resolved_at = null;
       updates.resolved_by = null;
     }

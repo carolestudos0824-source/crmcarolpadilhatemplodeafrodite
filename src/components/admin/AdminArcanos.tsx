@@ -28,6 +28,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Database } from "@/integrations/supabase/types";
 import { EDITORIAL_REGISTRY } from "@/data/arcanos/index";
+import { logAdminAction } from "@/lib/admin-audit";
 
 type ArcanoStatus = Database["public"]["Enums"]["module_status"];
 type ArcanoTier = Database["public"]["Enums"]["module_tier"];
@@ -404,6 +405,13 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "arcano.update",
+      targetType: "arcano",
+      targetId: draft.id,
+      targetLabel: draft.name,
+      details: { fields: fields as string[] },
+    });
     toast({ title: "Seção salva" });
   };
 
@@ -415,6 +423,13 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
       return;
     }
     update("status", next);
+    await logAdminAction({
+      action: next === "published" ? "arcano.publish" : "arcano.unpublish",
+      targetType: "arcano",
+      targetId: draft.id,
+      targetLabel: draft.name,
+      details: { from: draft.status, to: next },
+    });
     toast({ title: next === "published" ? "Publicado" : "Despublicado" });
   };
 
@@ -423,6 +438,13 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
     const { error } = await supabase.from("cms_arcanos").update({ tier: next }).eq("id", draft.id);
     if (error) return;
     update("tier", next);
+    await logAdminAction({
+      action: "arcano.tier_change",
+      targetType: "arcano",
+      targetId: draft.id,
+      targetLabel: draft.name,
+      details: { from: draft.tier, to: next },
+    });
   };
 
   const toggleValidated = async () => {
@@ -430,6 +452,13 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
     const { error } = await supabase.from("cms_arcanos").update({ validated: next }).eq("id", draft.id);
     if (error) return;
     update("validated", next);
+    await logAdminAction({
+      action: "arcano.validate",
+      targetType: "arcano",
+      targetId: draft.id,
+      targetLabel: draft.name,
+      details: { validated: next },
+    });
     toast({ title: next ? "Marcado como validado" : "Validação removida" });
   };
 
@@ -440,6 +469,13 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "arcano.delete",
+      targetType: "arcano",
+      targetId: draft.id,
+      targetLabel: draft.name,
+      details: { type: draft.type, number: draft.number },
+    });
     toast({ title: "Arcano removido" });
     onBack();
   };
@@ -703,6 +739,13 @@ const CreateArcanoDialog = ({
       toast({ title: "Erro ao criar", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "arcano.create",
+      targetType: "arcano",
+      targetId: data?.id ?? null,
+      targetLabel: name.trim(),
+      details: { type, number, naipe: type === "menor" ? naipe : null },
+    });
     toast({ title: "Arcano criado" });
     onCreated(data as ArcanoRow);
     setName("");

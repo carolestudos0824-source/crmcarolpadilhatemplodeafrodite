@@ -1,18 +1,62 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export type AdminAction =
+  // Premium
   | "premium.grant"
   | "premium.revoke"
+  // Gift codes
   | "gift_code.create"
   | "gift_code.deactivate"
+  | "gift_code.activate"
+  // Roles
+  | "role.promote"
+  | "role.demote"
+  // Modules
+  | "module.create"
+  | "module.update"
+  | "module.delete"
+  | "module.publish"
+  | "module.unpublish"
+  | "module.tier_change"
+  | "module.reorder"
+  // Module lessons
+  | "module_lesson.create"
+  | "module_lesson.update"
+  | "module_lesson.delete"
+  // Arcanos
+  | "arcano.create"
+  | "arcano.update"
+  | "arcano.delete"
   | "arcano.publish"
   | "arcano.unpublish"
-  | "module.update"
+  | "arcano.tier_change"
+  | "arcano.validate"
+  // Quizzes
+  | "quiz.create"
   | "quiz.update"
-  | "role.promote"
-  | "role.demote";
+  | "quiz.delete"
+  | "quiz.publish"
+  | "quiz.unpublish"
+  // Quiz questions
+  | "quiz_question.create"
+  | "quiz_question.update"
+  | "quiz_question.delete"
+  | "quiz_question.reorder"
+  // Feedback / support
+  | "feedback.note"
+  | "feedback.reopen"
+  | "feedback.in_progress"
+  | "feedback.resolve";
 
-export type AdminTargetType = "user" | "gift_code" | "arcano" | "module" | "quiz";
+export type AdminTargetType =
+  | "user"
+  | "gift_code"
+  | "module"
+  | "module_lesson"
+  | "arcano"
+  | "quiz"
+  | "quiz_question"
+  | "feedback";
 
 interface LogParams {
   action: AdminAction;
@@ -54,10 +98,37 @@ export const ACTION_LABELS: Record<AdminAction, string> = {
   "premium.revoke": "Removeu premium",
   "gift_code.create": "Criou código presente",
   "gift_code.deactivate": "Desativou código presente",
+  "gift_code.activate": "Reativou código presente",
+  "role.promote": "Promoveu papel",
+  "role.demote": "Rebaixou papel",
+  "module.create": "Criou módulo",
+  "module.update": "Editou módulo",
+  "module.delete": "Removeu módulo",
+  "module.publish": "Publicou módulo",
+  "module.unpublish": "Despublicou módulo",
+  "module.tier_change": "Alterou tier do módulo",
+  "module.reorder": "Reordenou módulos",
+  "module_lesson.create": "Criou lição",
+  "module_lesson.update": "Editou lição",
+  "module_lesson.delete": "Removeu lição",
+  "arcano.create": "Criou arcano",
+  "arcano.update": "Editou arcano",
+  "arcano.delete": "Removeu arcano",
   "arcano.publish": "Publicou arcano",
   "arcano.unpublish": "Despublicou arcano",
-  "module.update": "Editou módulo",
+  "arcano.tier_change": "Alterou tier do arcano",
+  "arcano.validate": "Alterou validação do arcano",
+  "quiz.create": "Criou quiz",
   "quiz.update": "Editou quiz",
-  "role.promote": "Promoveu admin/moderador",
-  "role.demote": "Rebaixou admin/moderador",
+  "quiz.delete": "Removeu quiz",
+  "quiz.publish": "Publicou quiz",
+  "quiz.unpublish": "Despublicou quiz",
+  "quiz_question.create": "Criou pergunta",
+  "quiz_question.update": "Editou pergunta",
+  "quiz_question.delete": "Removeu pergunta",
+  "quiz_question.reorder": "Reordenou perguntas",
+  "feedback.note": "Anotou ticket",
+  "feedback.reopen": "Reabriu ticket",
+  "feedback.in_progress": "Marcou ticket em andamento",
+  "feedback.resolve": "Resolveu ticket",
 };
