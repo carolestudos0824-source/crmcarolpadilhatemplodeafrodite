@@ -541,6 +541,98 @@ export type Database = {
           },
         ]
       }
+      cms_symbol_categories: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          icon: string
+          id: string
+          name: string
+          order_index: number
+          slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          tier: Database["public"]["Enums"]["module_tier"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string
+          id?: string
+          name: string
+          order_index?: number
+          slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          tier?: Database["public"]["Enums"]["module_tier"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string
+          id?: string
+          name?: string
+          order_index?: number
+          slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          tier?: Database["public"]["Enums"]["module_tier"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_symbols: {
+        Row: {
+          cards: string[]
+          category_slug: string
+          created_at: string
+          explanation: string
+          id: string
+          name: string
+          order_index: number
+          readings: string[]
+          slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          updated_at: string
+        }
+        Insert: {
+          cards?: string[]
+          category_slug: string
+          created_at?: string
+          explanation: string
+          id?: string
+          name: string
+          order_index?: number
+          readings?: string[]
+          slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          updated_at?: string
+        }
+        Update: {
+          cards?: string[]
+          category_slug?: string
+          created_at?: string
+          explanation?: string
+          id?: string
+          name?: string
+          order_index?: number
+          readings?: string[]
+          slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_symbols_category_slug_fkey"
+            columns: ["category_slug"]
+            isOneToOne: false
+            referencedRelation: "cms_symbol_categories"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       daily_challenge_completions: {
         Row: {
           challenge_date: string
