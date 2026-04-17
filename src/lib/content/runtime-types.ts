@@ -143,3 +143,39 @@ export const DEFAULT_PROGRESS: UserProgress = {
   studentName: "",
   certificatesEarned: {},
 };
+
+// ─── Catálogo (módulos & arcanos summary) ──────────────────────────
+
+export type ModuleCategory =
+  | "foundation"
+  | "major-arcana"
+  | "minor-arcana"
+  | "advanced"
+  | "practice"
+  | "professional";
+
+export interface LearningModule {
+  id: string;
+  name: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  symbol: string;
+  order: number;
+  category: ModuleCategory;
+  totalLessons: number;
+  prerequisiteModuleId?: string;
+  route: string;
+}
+
+export interface ArcanoSummary {
+  id: number;
+  name: string;
+  numeral: string;
+  subtitle: string;
+  slug: string;
+  order: number;
+  category: "arcanos-maiores";
+  unlocked: boolean;
+}
+
