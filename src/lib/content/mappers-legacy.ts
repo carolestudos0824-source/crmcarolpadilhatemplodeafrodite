@@ -258,13 +258,24 @@ export function mapLegacyModuleToUI(
     categoryLabel: undefined,
     descricaoCurta: undefined,
     descricaoEditorial: undefined,
+    editorialIntro: undefined,
     ordem: 0,
     tier: "premium",
     status: "publicado",
     themeColor: undefined,
     licoes: [...lessons]
       .sort((a, b) => a.order - b.order)
-      .map((l) => mapLegacyLessonToUI(l, slug, name)),
+      .map((l) => ({
+        id: `legacy-lesson-${l.id}`,
+        slug: l.id,
+        titulo: l.title,
+        subtitulo: l.subtitle,
+        ordem: l.order ?? 0,
+        tier: "premium" as const,
+        status: "publicado" as const,
+        quizDisponivel: !!(l.quiz && l.quiz.length > 0),
+        arcanoSlug: undefined,
+      })),
     metadata: { source: "legacy", sourceId: slug, usedFallback: true },
   };
 }
