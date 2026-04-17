@@ -75,6 +75,13 @@ const DailyChallengesPage = () => {
       {activeChallenge && (
         <ChallengeModal
           challenge={activeChallenge}
+          data={{
+            carta: cartaDoDia,
+            perguntas: perguntasDoDia,
+            simbolo: simboloDoDia,
+            combinacao: combinacaoDoDia,
+            interpretacao: miniInterpretacao,
+          }}
           onComplete={() => completeChallenge(activeChallenge.id)}
           onClose={() => setActiveChallenge(null)}
         />
@@ -305,8 +312,8 @@ const CompleteButton = ({ onComplete, label = "Concluir" }: { onComplete: () => 
   </button>
 );
 
-const CartaDoDiaContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getCartaDoDia();
+const CartaDoDiaContent = ({ data, onComplete }: { data: CartaDoDia | null; onComplete: () => void }) => {
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="text-center">
@@ -347,9 +354,9 @@ const CartaDoDiaContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const RevisaoRapidaContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getCartaDoDia(); // reuse card of the day for review
+const RevisaoRapidaContent = ({ data, onComplete }: { data: CartaDoDia | null; onComplete: () => void }) => {
   const [revealed, setRevealed] = useState(false);
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4 text-center">
       <p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>
@@ -392,8 +399,7 @@ const RevisaoRapidaContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const PerguntasContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getPerguntasDoDia();
+const PerguntasContent = ({ data, onComplete }: { data: PerguntasDoDia; onComplete: () => void }) => {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -483,8 +489,8 @@ const PerguntasContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const SimboloContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getSimboloDoDia();
+const SimboloContent = ({ data, onComplete }: { data: SimboloDoDia | null; onComplete: () => void }) => {
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Símbolos carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="text-center">
@@ -515,9 +521,9 @@ const SimboloContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const CombinacaoContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getCombinacaoDoDia();
+const CombinacaoContent = ({ data, onComplete }: { data: CombinacaoDoDia | null; onComplete: () => void }) => {
   const [showInsight, setShowInsight] = useState(false);
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center gap-4">
@@ -560,9 +566,9 @@ const CombinacaoContent = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const InterpretacaoContent = ({ onComplete }: { onComplete: () => void }) => {
-  const data = getMiniInterpretacao();
+const InterpretacaoContent = ({ data, onComplete }: { data: MiniInterpretacao | null; onComplete: () => void }) => {
   const [showSample, setShowSample] = useState(false);
+  if (!data) return <div className="text-center py-8"><p className="font-body text-sm" style={{ color: "hsl(230 15% 30% / 0.50)" }}>Conteúdo carregando...</p><CompleteButton onComplete={onComplete} /></div>;
   return (
     <div className="space-y-4">
       <div className="rounded-lg p-4" style={{ background: "hsl(340 42% 30% / 0.05)", border: "1px solid hsl(340 42% 30% / 0.12)" }}>
