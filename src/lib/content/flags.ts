@@ -15,7 +15,7 @@
 
 export type ContentSourceMode = "fallback" | "auto" | "db";
 
-export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey" | "symbols";
+export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey" | "symbols" | "certificates";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // Fase 2/3 — arcanos (Maiores, Menores e Cortes) já carregam via DB com
@@ -35,6 +35,9 @@ export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // Fase 6.1 — Biblioteca de Símbolos (12 categorias + 41 símbolos) lê do DB
   // primeiro; em vazio/erro cai no legado de `src/data/symbol-library.ts`.
   symbols: "auto",
+  // Fase 6.4 — Certificados (10 itens editoriais) lêem do DB; em vazio/erro
+  // caem no legado de `src/data/certificates.ts`.
+  certificates: "auto",
 };
 
 export function getFlag(domain: ContentDomain): ContentSourceMode {
