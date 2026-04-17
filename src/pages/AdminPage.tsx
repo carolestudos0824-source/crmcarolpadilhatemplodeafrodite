@@ -9,7 +9,6 @@ import AdminGiftCodes from "@/components/admin/AdminGiftCodes";
 import AdminModules from "@/components/admin/AdminModules";
 import AdminArcanos from "@/components/admin/AdminArcanos";
 import AdminQuizzes from "@/components/admin/AdminQuizzes";
-import AdminContent from "@/components/admin/AdminContent";
 import AdminProgress from "@/components/admin/AdminProgress";
 import AdminSupport from "@/components/admin/AdminSupport";
 import AdminSettings from "@/components/admin/AdminSettings";
@@ -22,7 +21,6 @@ const sectionComponents: Record<AdminSection, React.ComponentType> = {
   modules: AdminModules,
   arcanos: AdminArcanos,
   quizzes: AdminQuizzes,
-  content: AdminContent,
   progress: AdminProgress,
   support: AdminSupport,
   settings: AdminSettings,
