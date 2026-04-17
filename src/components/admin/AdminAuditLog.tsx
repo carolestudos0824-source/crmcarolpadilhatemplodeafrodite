@@ -78,6 +78,15 @@ const AdminAuditLog = () => {
         <p className="text-sm text-muted-foreground">Rastro completo e imutável de todas as ações administrativas.</p>
       </div>
 
+      {!isAdmin && (
+        <div className="flex items-start gap-2 rounded-lg border border-border/50 bg-muted/30 p-3 text-xs text-muted-foreground">
+          <Eye className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>
+            <strong className="text-foreground">Modo leitura:</strong> moderadores podem visualizar a auditoria, mas apenas administradores geram novos registros.
+          </span>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Select value={actionFilter} onValueChange={setActionFilter}>
           <SelectTrigger><SelectValue placeholder="Tipo de ação" /></SelectTrigger>
