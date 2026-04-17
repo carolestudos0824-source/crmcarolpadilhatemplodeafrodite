@@ -1,6 +1,11 @@
 /**
- * Certificate System — Types & Definitions
- * 8 certificate types tied to module completion.
+ * Certificate System — Types & Definitions (LEGADO / FALLBACK)
+ *
+ * ⚠️ Fase 6.4 — este arquivo NÃO é mais lido pelo runtime principal.
+ *    A fonte editorial oficial é `cms_certificates`, consumida via
+ *    `useCertificatesContent()` e `getCertificatesContent()`. Este
+ *    módulo permanece apenas como fallback de emergência (em
+ *    `src/lib/content/repo-legacy-certificates.ts`) e como seed/backup.
  */
 
 export interface Certificate {
