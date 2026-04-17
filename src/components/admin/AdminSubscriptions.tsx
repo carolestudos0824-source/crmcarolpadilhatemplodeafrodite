@@ -161,8 +161,11 @@ const AdminSubscriptions = () => {
 
     const activeTotal = monthlyActive + annualActive + giftActive + adminGrant + cancelledAccess;
     const totalPaying = monthlyActive + annualActive;
-    const mrr = (monthlyActive * MONTHLY_PRICE) + (annualActive * (ANNUAL_PRICE / 12));
-    const arr = mrr * 12;
+    // Estimated revenue — derived from current premium counts × catalog prices.
+    // NOT real charged revenue. Real numbers will come from subscription_events
+    // once Stripe webhook is wired (REAL_REVENUE_ENABLED flag in src/lib/billing.ts).
+    const mrrEstimated = (monthlyActive * monthlyValue("monthly")) + (annualActive * monthlyValue("annual"));
+    const arrEstimated = mrrEstimated * 12;
     const conversionRate = enriched.length > 0 ? Math.round(((totalPaying + giftActive) / enriched.length) * 100) : 0;
 
     // Growth (last 30 days)
