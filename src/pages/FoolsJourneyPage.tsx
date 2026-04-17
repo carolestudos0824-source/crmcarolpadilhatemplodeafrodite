@@ -72,7 +72,7 @@ const FoolsJourneyPage = () => {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}>
-                {JOURNEY_INTRO.title}
+                {meta.introTitulo}
               </h1>
             </div>
           </div>
@@ -87,10 +87,10 @@ const FoolsJourneyPage = () => {
             <img src={ornamentDivider} alt="" className="w-24 h-auto opacity-40" loading="lazy" width={800} height={512} />
           </div>
           <p className="font-accent text-base italic leading-relaxed" style={{ color: "hsl(230 20% 15% / 0.55)" }}>
-            "{JOURNEY_INTRO.epigraph}"
+            "{meta.introEpigrafe}"
           </p>
           <p className="font-heading text-xs tracking-[0.3em] uppercase mt-3" style={{ color: "hsl(36 42% 45% / 0.60)" }}>
-            {JOURNEY_INTRO.subtitle}
+            {meta.introSubtitulo}
           </p>
         </div>
 
@@ -101,7 +101,7 @@ const FoolsJourneyPage = () => {
             backdropFilter: "blur(14px)",
             border: "1px solid hsl(36 45% 50% / 0.18)",
           }}>
-            {JOURNEY_INTRO.body.map((para, i) => (
+            {meta.introCorpo.map((para, i) => (
               <p key={i} className="font-body text-sm leading-[1.85]" style={{ color: "hsl(230 20% 15% / 0.68)" }}>
                 {para}
               </p>
@@ -110,9 +110,9 @@ const FoolsJourneyPage = () => {
         </section>
 
         {/* Journey Phases */}
-        {JOURNEY_PHASES.map((phase, phaseIndex) => {
-          const colors = PHASE_COLORS[phase.theme];
-          const phaseArcanos = JOURNEY_ARCANOS.filter(a => phase.arcanoIds.includes(a.id));
+        {fases.map((phase, phaseIndex) => {
+          const colors = CORES_FASE[phase.theme];
+          const phaseArcanos = arcanos.filter((a) => a.faseSlug === phase.slug);
 
           return (
             <section
