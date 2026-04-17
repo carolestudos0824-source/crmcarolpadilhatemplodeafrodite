@@ -12,19 +12,26 @@ const ARCANO_NAMES: Record<string, string> = {
   "20": "O Julgamento", "21": "O Mundo",
 };
 
-const formatLessonName = (id: string) => {
-  const match = id.match(/arcano-(\d+)/);
-  if (match && ARCANO_NAMES[match[1]]) return ARCANO_NAMES[match[1]];
-  const moduleMatch = id.match(/^([a-z-]+)-(\d+)$/);
-  if (moduleMatch) {
-    const mods: Record<string, string> = {
-      "fundamentos": "Fundamentos", "combinacoes": "Combinações", "tiragens": "Tiragens",
-      "amor": "Tarô e Amor", "pratica": "Prática", "espiritualidade": "Espiritualidade",
-      "mesa-taro": "Mesa de Tarô", "trabalhar-taro": "Trabalhar com Tarô",
-      "leitura-aplicada": "Leitura Aplicada", "leitura-simbolica": "Leitura Simbólica",
-    };
-    return `${mods[moduleMatch[1]] || moduleMatch[1]} #${moduleMatch[2]}`;
+interface NameMaps {
+  lessonTitles: Record<string, string>;
+  lessonModule: Record<string, string>;
+  moduleNames: Record<string, string>;
+  arcanoNames: Record<string, string>;
+}
+
+const buildFormatter = (maps: NameMaps) => (id: string): string => {
+  // Lesson registered in CMS
+  if (maps.lessonTitles[id]) {
+    const mod = maps.lessonModule[id];
+    return mod ? `${maps.lessonTitles[id]} · ${mod}` : maps.lessonTitles[id];
   }
+  // Arcano by id pattern
+  const arc = id.match(/arcano-(\d+)/);
+  if (arc) {
+    return maps.arcanoNames[arc[1]] || ARCANO_NAMES[arc[1]] || `Arcano ${arc[1]}`;
+  }
+  // Module slug directly
+  if (maps.moduleNames[id]) return maps.moduleNames[id];
   return id;
 };
 
@@ -43,19 +50,37 @@ const AdminProgress = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<"all" | "7d" | "30d">("all");
+  const [maps, setMaps] = useState<NameMaps>({ lessonTitles: {}, lessonModule: {}, moduleNames: {}, arcanoNames: {} });
 
   useEffect(() => {
     const load = async () => {
-      const [{ data: prog }, { data: prof }] = await Promise.all([
+      const [{ data: prog }, { data: prof }, { data: mods }, { data: lessons }, { data: arcs }] = await Promise.all([
         supabase.from("user_progress").select("completed_lessons, completed_quizzes, completed_exercises, completed_modules, last_active, streak, xp, level"),
         supabase.from("profiles").select("user_id, is_premium, created_at"),
+        supabase.from("cms_modules").select("id, slug, name"),
+        supabase.from("cms_module_lessons").select("lesson_id, title, module_id"),
+        supabase.from("cms_arcanos").select("number, name"),
       ]);
+      const moduleNameById: Record<string, string> = {};
+      const moduleNames: Record<string, string> = {};
+      (mods || []).forEach((m: any) => { moduleNameById[m.id] = m.name; moduleNames[m.slug] = m.name; });
+      const lessonTitles: Record<string, string> = {};
+      const lessonModule: Record<string, string> = {};
+      (lessons || []).forEach((l: any) => {
+        lessonTitles[l.lesson_id] = l.title;
+        if (moduleNameById[l.module_id]) lessonModule[l.lesson_id] = moduleNameById[l.module_id];
+      });
+      const arcanoNames: Record<string, string> = {};
+      (arcs || []).forEach((a: any) => { arcanoNames[String(a.number)] = a.name; });
+      setMaps({ lessonTitles, lessonModule, moduleNames, arcanoNames });
       setProgress(prog || []);
       setProfiles(prof || []);
       setLoading(false);
     };
     load();
   }, []);
+
+  const formatLessonName = useMemo(() => buildFormatter(maps), [maps]);
 
   const stats = useMemo(() => {
     const now = new Date();
@@ -131,7 +156,7 @@ const AdminProgress = () => {
       abandonRate,
       neverStarted,
     };
-  }, [progress, profiles, period]);
+  }, [progress, profiles, period, formatLessonName]);
 
   if (loading) return <div className="p-8 text-center text-sm text-muted-foreground">Carregando dados de uso...</div>;
 
