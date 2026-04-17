@@ -16,6 +16,9 @@ import {
   type CartaPosicao,
   isCourtCard,
 } from "./index";
+import { FROZEN_DECK, FROZEN_BY_ID, FROZEN_DECK_VERSION, DECK_MENORES_OFICIAL } from "./deck-frozen";
+
+export { FROZEN_DECK, FROZEN_DECK_VERSION, DECK_MENORES_OFICIAL };
 
 export type StatusValidacao = "validado" | "pendente" | "ausente";
 
@@ -189,5 +192,31 @@ export function validateDeckIntegrity(): DeckIntegrityIssue[] {
     if (!ids.has(`${n}-${p}`)) issues.push({ id: `${n}-${p}`, problema: "carta faltante" });
   }
 
+  // 5. FREEZE — registry deve bater 1:1 com a tabela imutável oficial
+  if (DECK_MENORES_REGISTRY.length !== FROZEN_DECK.length) {
+    issues.push({ id: "_freeze_", problema: "tamanho do registry ≠ freeze oficial" });
+  }
+  for (const f of FROZEN_DECK) {
+    const e = DECK_BY_ID.get(f.id);
+    if (!e) { issues.push({ id: f.id, problema: "ausente no registry (freeze quebrado)" }); continue; }
+    if (e.nome !== f.nome) issues.push({ id: f.id, problema: "nome divergente do freeze", detalhe: { atual: e.nome, oficial: f.nome } });
+    if (e.slug !== f.slug) issues.push({ id: f.id, problema: "slug divergente do freeze", detalhe: { atual: e.slug, oficial: f.slug } });
+    if (e.naipe !== f.naipe) issues.push({ id: f.id, problema: "naipe divergente do freeze" });
+    if (String(e.posicao) !== String(f.posicao)) issues.push({ id: f.id, problema: "posição divergente do freeze" });
+    if (e.cardImage !== f.cardImage) issues.push({ id: f.id, problema: "imagem divergente do freeze", detalhe: { atual: e.cardImage, oficial: f.cardImage } });
+  }
+  for (const e of DECK_MENORES_REGISTRY) {
+    if (!FROZEN_BY_ID.has(e.id)) {
+      issues.push({ id: e.id, problema: "id existe no registry mas não no freeze oficial" });
+    }
+  }
+
   return issues;
 }
+
+/** Marcador público de homologação para o admin. */
+export const DECK_OFICIAL_FLAG = {
+  oficial: DECK_MENORES_OFICIAL,
+  versao: FROZEN_DECK_VERSION,
+  total: FROZEN_DECK.length,
+} as const;
