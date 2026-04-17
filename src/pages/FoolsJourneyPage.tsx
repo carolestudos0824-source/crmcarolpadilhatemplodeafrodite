@@ -134,7 +134,7 @@ const FoolsJourneyPage = () => {
                     boxShadow: `0 4px 20px ${colors.soft}`,
                   }}
                 >
-                  <span className="text-xl" style={{ color: colors.main }}>{phase.symbol}</span>
+                  <span className="text-xl" style={{ color: colors.main }}>{phase.simbolo}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 mb-1">
                   <span className="text-[9px] font-heading tracking-[0.35em] uppercase" style={{ color: colors.main }}>
@@ -142,10 +142,10 @@ const FoolsJourneyPage = () => {
                   </span>
                 </div>
                 <h2 className="font-heading text-lg tracking-wide mb-1" style={{ color: "hsl(230 20% 12% / 0.85)" }}>
-                  {phase.title}
+                  {phase.titulo}
                 </h2>
                 <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-                  {phase.subtitle}
+                  {phase.subtitulo}
                 </p>
               </div>
 
@@ -156,18 +156,18 @@ const FoolsJourneyPage = () => {
                 backdropFilter: "blur(12px)",
               }}>
                 <p className="font-body text-sm leading-[1.85]" style={{ color: "hsl(230 20% 15% / 0.65)" }}>
-                  {phase.description}
+                  {phase.descricao}
                 </p>
               </div>
 
               {/* Arcano cards within this phase */}
               <div className="space-y-2.5">
                 {phaseArcanos.map((arcano) => {
-                  const studied = isStudied(arcano.id);
+                  const studied = isStudied(arcano.arcanoNumero);
                   return (
                     <button
                       key={arcano.id}
-                      onClick={() => studied ? navigate(`/lesson/${arcano.id}`) : undefined}
+                      onClick={() => studied ? navigate(`/lesson/${arcano.arcanoNumero}`) : undefined}
                       disabled={!studied}
                       className="w-full text-left group transition-all duration-300"
                     >
@@ -208,7 +208,7 @@ const FoolsJourneyPage = () => {
                                 className="font-heading text-sm tracking-wide"
                                 style={{ color: studied ? "hsl(230 20% 12% / 0.85)" : "hsl(230 10% 50% / 0.40)" }}
                               >
-                                {arcano.name}
+                                {arcano.nome}
                               </h3>
                               {studied && (
                                 <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-40 group-hover:translate-x-0.5 transition-transform" style={{ color: colors.main }} />
@@ -218,14 +218,14 @@ const FoolsJourneyPage = () => {
                               className="font-accent text-[11px] italic mb-1.5"
                               style={{ color: studied ? colors.main : "hsl(230 10% 50% / 0.30)" }}
                             >
-                              {arcano.journeyRole}
+                              {arcano.papel}
                             </p>
                             {studied && (
                               <p
                                 className="font-body text-[11px] leading-relaxed"
                                 style={{ color: "hsl(230 20% 15% / 0.55)" }}
                               >
-                                {arcano.narrativeText}
+                                {arcano.textoNarrativo}
                               </p>
                             )}
                           </div>
@@ -251,13 +251,13 @@ const FoolsJourneyPage = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
-              {JOURNEY_CLOSING.title}
+              {meta.encerramentoTitulo}
             </h2>
             <p className="font-body text-sm leading-[1.85] max-w-lg mx-auto mb-4" style={{ color: "hsl(230 20% 15% / 0.60)" }}>
-              {JOURNEY_CLOSING.body}
+              {meta.encerramentoCorpo}
             </p>
             <p className="font-accent text-base italic" style={{ color: "hsl(36 42% 42% / 0.75)" }}>
-              {JOURNEY_CLOSING.invitation}
+              {meta.encerramentoConvite}
             </p>
           </div>
         </section>
