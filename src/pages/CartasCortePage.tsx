@@ -39,6 +39,8 @@ const CartasCortePage = () => {
   const navigate = useNavigate();
   const [openCard, setOpenCard] = useState<string | null>(null);
   const [openNaipe, setOpenNaipe] = useState<string | null>(null);
+  const { data: courtData } = useCourtCardsContent();
+  const CARTAS_CORTE = courtData?.items ?? [];
 
   const progressColors = [
     { bg: "hsl(36 45% 58% / 0.10)", border: "hsl(36 45% 58% / 0.30)", accent: "hsl(36 45% 45%)" },
