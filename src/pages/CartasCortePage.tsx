@@ -233,7 +233,7 @@ const CartasCortePage = () => {
                       <div className="space-y-2">
                         {(["copas", "paus", "espadas", "ouros"] as const).map((naipe) => {
                           const info = NAIPES[naipe];
-                          const manifest = carta.comoSeManifesta[naipe];
+                          const manifest = carta.manifestacao[naipe];
                           const naipeKey = `${carta.id}-${naipe}`;
                           const isNaipeOpen = openNaipe === naipeKey;
 
