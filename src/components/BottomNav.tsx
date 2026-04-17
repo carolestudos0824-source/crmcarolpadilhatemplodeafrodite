@@ -12,8 +12,9 @@ const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Hide on landing (rendered inside AppShell so auth/reset are already excluded)
+  // Hide on landing and inside Admin (which has its own navigation)
   if (location.pathname === "/") return null;
+  if (location.pathname.startsWith("/admin")) return null;
 
   return (
     <nav
