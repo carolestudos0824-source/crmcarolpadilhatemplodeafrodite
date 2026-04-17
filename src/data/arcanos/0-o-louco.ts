@@ -37,8 +37,8 @@ export const O_LOUCO: ArcanoMaiorEditorial = {
     "A lição do Louco é aprender que a jornada importa mais do que o destino. Ele nos ensina que todo grande mestre já foi aprendiz, que todo caminho começa com um passo incerto, e que a sabedoria não é a ausência de risco, mas a capacidade de caminhar com o risco. O Louco nos convida a abandonar o controle excessivo e permitir que a vida nos surpreenda.",
 
   love: {
-    light: "No amor, o Louco indica começos emocionantes, paixão espontânea e abertura para o inesperado. Pode representar um novo relacionamento que chega sem aviso, uma fase de redescoberta a dois, ou a coragem de se declarar sem saber a resposta.",
-    shadow: "Na sombra amorosa, avisa sobre idealização excessiva, relações sem profundidade ou medo de compromisso real.",
+    light: "No amor, o Louco indica começos emocionantes, paixão espontânea e abertura para o inesperado. Pode representar um novo relacionamento que chega sem aviso, uma fase de redescoberta a dois, ou a coragem de se declarar sem saber a resposta. Aplicado, fala de quem aceita conhecer o outro sem tentar enquadrá-lo, de vínculos que renascem quando os dois soltam o roteiro antigo, e da inocência madura de amar sem garantias contratuais.",
+    shadow: "Na sombra amorosa, avisa sobre idealização excessiva, relações sem profundidade ou medo de compromisso real. Pode indicar quem confunde liberdade com ausência de presença, salta de paixão em paixão sem se deixar marcar, ou usa a espontaneidade como álibi para nunca aprofundar.",
   },
 
   work: {
