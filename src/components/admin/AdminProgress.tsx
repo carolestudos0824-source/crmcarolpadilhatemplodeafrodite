@@ -28,6 +28,16 @@ const formatLessonName = (id: string) => {
   return id;
 };
 
+/**
+ * AdminProgress — READ-ONLY analytics view.
+ *
+ * This component MUST NOT perform any mutations (insert/update/delete/rpc).
+ * It only aggregates user_progress + profiles for visualization.
+ *
+ * If you ever add an admin action here (e.g., reset progress, recalculate XP),
+ * you MUST log it via logAdminAction() from @/lib/admin-audit. Silent admin
+ * mutations are forbidden by project policy.
+ */
 const AdminProgress = () => {
   const [progress, setProgress] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
