@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Crown, Users, Gift, TrendingUp, TrendingDown, DollarSign, Repeat,
-  CalendarDays, Filter, RefreshCw, AlertCircle, Sparkles,
+  Crown, Gift, TrendingUp, TrendingDown, DollarSign, Repeat,
+  CalendarDays, Filter, RefreshCw, AlertCircle, Sparkles, Plug,
 } from "lucide-react";
+import { PLAN_PRICES, monthlyValue, REAL_REVENUE_ENABLED } from "@/lib/billing";
 import {
   Select,
   SelectContent,
