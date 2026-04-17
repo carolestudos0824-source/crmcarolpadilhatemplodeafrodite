@@ -27,7 +27,7 @@ const LandingPage = () => {
         <span className="absolute top-8 left-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✦</span>
         <span className="absolute top-8 right-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✧</span>
 
-        <div className="relative z-10 max-w-2xl text-center animate-fade-in">
+        <div className="relative z-10 max-w-2xl text-center animate-fade-up">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8" style={{
             background: "linear-gradient(135deg, hsl(340 42% 28% / 0.08), hsl(280 30% 28% / 0.06))",
             border: "1px solid hsl(36 45% 58% / 0.25)",
