@@ -26,7 +26,7 @@ export const A_MORTE: ArcanoMaiorEditorial = {
     "A Ceifadora, a Transformadora, a Grande Passagem — a força que dissolve o velho para que o novo possa emergir, sem negociação e sem exceção.",
 
   light:
-    "Na luz, A Morte é libertação do que não serve mais, transformação profunda, desapego necessário e renascimento. É o divórcio que liberta, a mudança de carreira que aterroriza mas salva, o luto que abre espaço para nova vida. Quando encontrada na luz, indica que o fim que você teme é, na verdade, a porta para o que mais deseja.",
+    "Na luz, A Morte é libertação do que não serve mais, transformação profunda, desapego necessário e renascimento. É o divórcio que liberta, a mudança de carreira que aterroriza mas salva, o luto que abre espaço para nova vida. Aplicada, ela aparece como a clareza para encerrar ciclos sem culpa, a leveza de quem solta papéis antigos e a coragem de habitar uma identidade que ainda está se formando. Quando encontrada na luz, indica que o fim que você teme é, na verdade, a porta para o que mais deseja.",
 
   shadow:
     "Na sombra, A Morte se torna resistência desesperada à mudança, apego ao que já morreu, medo paralisante do fim, ou destruição sem propósito. É se agarrar a um relacionamento morto, a um emprego que esgota, a uma versão de si mesma que já não existe. Na sombra, ela pergunta: o que você está mantendo vivo artificialmente?",

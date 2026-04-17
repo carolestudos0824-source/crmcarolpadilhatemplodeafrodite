@@ -26,7 +26,7 @@ export const O_ENFORCADO: ArcanoMaiorEditorial = {
     "O Suspenso, o Místico, o Sacrificante Voluntário — aquele que encontra liberdade na rendição e sabedoria na imobilidade escolhida.",
 
   light:
-    "Na luz, O Enforcado é sabedoria pela pausa, perspectiva renovada, desapego consciente e a coragem de não agir quando tudo pede ação. É o momento de suspender o julgamento, soltar o controle e permitir que a vida revele seu próprio caminho. Quando encontrado na luz, indica que a resposta virá — mas só se você parar de buscá-la freneticamente.",
+    "Na luz, O Enforcado é sabedoria pela pausa, perspectiva renovada, desapego consciente e a coragem de não agir quando tudo pede ação. É o momento de suspender o julgamento, soltar o controle e permitir que a vida revele seu próprio caminho. Aplicado, ele se traduz em sabáticos restauradores, mudanças de ângulo que dissolvem impasses antigos e a entrega lúcida de quem percebe que render-se também é uma forma de avançar. Quando encontrado na luz, indica que a resposta virá — mas só se você parar de buscá-la freneticamente.",
 
   shadow:
     "Na sombra, O Enforcado se torna estagnação disfarçada de paciência, martírio, vitimismo, ou a recusa de agir por medo das consequências. É quem se sacrifica para ganhar pena, quem espera eternamente sem nunca decidir, ou quem usa a 'entrega espiritual' para evitar responsabilidade. Na sombra, ele pergunta: você está se rendendo ou se sabotando?",

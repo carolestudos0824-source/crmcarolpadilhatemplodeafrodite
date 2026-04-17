@@ -26,7 +26,7 @@ export const A_FORCA: ArcanoMaiorEditorial = {
     "A Domadora, a Guerreira Gentil, a Mestra dos Instintos — aquela que vence não pela força bruta, mas pelo amor corajoso e pela paciência inabalável.",
 
   light:
-    "Na luz, A Força é coragem compassiva, autodomínio, paciência infinita e a capacidade de enfrentar o medo sem se tornar violenta. É a mãe que acalma a criança em pânico, a mulher que enfrenta uma situação aterrorizante com serenidade, a líder que inspira sem intimidar. Quando encontrada na luz, indica que você tem mais força do que imagina — e ela está na sua suavidade.",
+    "Na luz, A Força é coragem compassiva, autodomínio, paciência infinita e a capacidade de enfrentar o medo sem se tornar violenta. É a mãe que acalma a criança em pânico, a mulher que enfrenta uma situação aterrorizante com serenidade, a líder que inspira sem intimidar. Aplicada, ela aparece como impulsos domados sem repressão, conversas tensas conduzidas com firmeza afetuosa e a autoestima quieta de quem não precisa provar nada para sustentar sua presença. Quando encontrada na luz, indica que você tem mais força do que imagina — e ela está na sua suavidade.",
 
   shadow:
     "Na sombra, A Força se torna repressão emocional, controle excessivo dos instintos, passividade disfarçada de paciência, ou explosões quando a contenção se rompe. É negar a raiva, sufocar o desejo, ou se convencer de que 'ser forte' é nunca sentir. Na sombra, ela pergunta: você está integrando seus instintos ou apenas os amordaçando?",

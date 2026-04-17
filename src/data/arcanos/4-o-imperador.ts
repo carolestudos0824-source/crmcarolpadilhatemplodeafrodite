@@ -26,7 +26,7 @@ export const O_IMPERADOR: ArcanoMaiorEditorial = {
     "O Pai, o Construtor, o Legislador — aquele que transforma visão em realidade através da disciplina, da ordem e da autoridade responsável.",
 
   light:
-    "Na luz, o Imperador é liderança sólida, estrutura que liberta, proteção genuína e capacidade de construir algo duradouro. É o pai que ensina limites com amor, o líder que organiza sem oprimir, o estrategista que transforma caos em ordem. Quando encontrado na luz, indica que é hora de ser prático, disciplinado e responsável — sem perder a humanidade.",
+    "Na luz, o Imperador é liderança sólida, estrutura que liberta, proteção genuína e capacidade de construir algo duradouro. É o pai que ensina limites com amor, o líder que organiza sem oprimir, o estrategista que transforma caos em ordem. Aplicado, ele se manifesta como rotinas que sustentam sonhos, fronteiras pessoais bem desenhadas e instituições internas — autoridade sobre o próprio tempo, dinheiro e energia. Quando encontrado na luz, indica que é hora de ser prático, disciplinado e responsável — sem perder a humanidade.",
 
   shadow:
     "Na sombra, o Imperador se torna autoritarismo, rigidez, controle excessivo e frieza emocional. É o pai ausente que só cobra resultados, o chefe que domina pelo medo, a estrutura que se torna prisão. Na sombra, ele pergunta: você está liderando ou controlando? Está protegendo ou sufocando? Seus limites servem à vida ou ao seu ego?",

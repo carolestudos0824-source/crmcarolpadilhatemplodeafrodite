@@ -26,7 +26,7 @@ export const A_TORRE: ArcanoMaiorEditorial = {
     "O Relâmpago, o Destruidor Sagrado, a Verdade Inescapável — a força que derruba o que foi construído sobre mentiras para que algo verdadeiro possa emergir.",
 
   light:
-    "Na luz, A Torre é libertação súbita, revelação transformadora, colapso que abre espaço para o autêntico e a coragem de reconstruir do zero. É o diagnóstico que salva a vida, a traição que revela a verdade, o terremoto que destrói a casa velha e permite construir uma nova. Quando encontrada na luz, indica que a destruição que você teme é, na verdade, a libertação que precisa.",
+    "Na luz, A Torre é libertação súbita, revelação transformadora, colapso que abre espaço para o autêntico e a coragem de reconstruir do zero. É o diagnóstico que salva a vida, a traição que revela a verdade, o terremoto que destrói a casa velha e permite construir uma nova. Aplicada, ela aparece como ilusões que finalmente caem, estruturas falsas dissolvidas a tempo e a clareza brutal — e libertadora — de quem prefere a verdade nua à segurança fingida. Quando encontrada na luz, indica que a destruição que você teme é, na verdade, a libertação que precisa.",
 
   shadow:
     "Na sombra, A Torre se torna destruição sem propósito, caos, trauma não processado, ou a tendência de sabotar tudo antes que desmorone sozinho. É destruir relações por medo de ser abandonada, provocar crises para se sentir viva, ou negar a reconstrução por estar viciada no drama. Na sombra, ela pergunta: você está sendo libertada ou está se destruindo?",

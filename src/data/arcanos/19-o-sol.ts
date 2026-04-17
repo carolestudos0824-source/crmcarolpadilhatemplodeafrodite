@@ -26,7 +26,7 @@ export const O_SOL: ArcanoMaiorEditorial = {
     "A Criança Divina, o Iluminado, a Alegria Encarnada — aquele que encontrou a clareza total e celebra a existência sem reservas.",
 
   light:
-    "Na luz, O Sol é sucesso genuíno, alegria irradiante, clareza mental, vitalidade plena e a celebração da vida como ela é. É a criança que ri sem motivo, o projeto que dá certo, a relação que floresce, o momento em que tudo faz sentido. Quando encontrado na luz, indica que o momento é de celebrar — a luz está a seu favor e a verdade está clara.",
+    "Na luz, O Sol é sucesso genuíno, alegria irradiante, clareza mental, vitalidade plena e a celebração da vida como ela é. É a criança que ri sem motivo, o projeto que dá certo, a relação que floresce, o momento em que tudo faz sentido. Aplicado, ele se manifesta como reconhecimento merecido, vínculos que aquecem sem queimar e a confiança serena de quem se permite ser visto inteiro, sem máscaras. Quando encontrado na luz, indica que o momento é de celebrar — a luz está a seu favor e a verdade está clara.",
 
   shadow:
     "Na sombra, O Sol se torna arrogância solar, excesso de otimismo que ignora problemas reais, superficialidade emocional, ou a incapacidade de lidar com a escuridão. É a positividade tóxica que nega a dor, a criança interior que se recusa a crescer, ou o brilho que ofusca em vez de iluminar. Na sombra, ele pergunta: sua alegria é genuína ou é fuga da complexidade da vida?",

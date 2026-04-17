@@ -26,7 +26,7 @@ export const A_TEMPERANCA: ArcanoMaiorEditorial = {
     "O Alquimista, o Curador, o Anjo da Medida — aquele que transforma extremos em harmonia e encontra o sagrado na proporção perfeita.",
 
   light:
-    "Na luz, A Temperança é paciência alquímica, integração dos opostos, cura gradual e o talento de encontrar equilíbrio em situações complexas. É a terapeuta que sabe dosar intervenção e escuta, a artista que mistura cores até encontrar o tom exato, a pessoa que navega conflitos sem perder o centro. Quando encontrada na luz, indica que a moderação é o caminho.",
+    "Na luz, A Temperança é paciência alquímica, integração dos opostos, cura gradual e o talento de encontrar equilíbrio em situações complexas. É a terapeuta que sabe dosar intervenção e escuta, a artista que mistura cores até encontrar o tom exato, a pessoa que navega conflitos sem perder o centro. Aplicada, ela aparece como dietas e ritmos sustentáveis, finanças equilibradas a longo prazo e relações onde dar e receber circulam com naturalidade. Quando encontrada na luz, indica que a moderação é o caminho — e que o tempo, bem dosado, é o melhor solvente.",
 
   shadow:
     "Na sombra, A Temperança se torna indecisão crônica disfarçada de equilíbrio, mediocridade por medo de extremos, passividade, ou a incapacidade de se posicionar. É diluir tanto as tintas que nenhuma cor aparece, evitar conflitos a todo custo, ou perder a identidade na tentativa de agradar todos os lados. Na sombra, ela pergunta: você está equilibrando ou se anulando?",

@@ -26,7 +26,7 @@ export const A_IMPERATRIZ: ArcanoMaiorEditorial = {
     "A Grande Mãe, a Criadora, a Deusa da Fertilidade — aquela que gera, nutre e sustenta toda forma de vida com amor incondicional.",
 
   light:
-    "Na luz, a Imperatriz é criatividade florescendo, abundância genuína, conexão profunda com o corpo e com a natureza. É a mãe que acolhe, a artista que cria sem censura, a mulher que habita sua sensualidade com soberania. Quando encontrada na luz, indica fertilidade em todos os sentidos — projetos nascendo, relações amadurecendo, ideias ganhando forma. É o sim da vida.",
+    "Na luz, a Imperatriz é criatividade florescendo, abundância genuína, conexão profunda com o corpo e com a natureza. É a mãe que acolhe, a artista que cria sem censura, a mulher que habita sua sensualidade com soberania. Aplicada, ela se traduz em casas que viram lar, projetos que nutrem quem os recebe e a generosidade serena de quem cria a partir do excesso, não da carência. Quando encontrada na luz, indica fertilidade em todos os sentidos — projetos nascendo, relações amadurecendo, ideias ganhando forma. É o sim da vida.",
 
   shadow:
     "Na sombra, a Imperatriz se torna possessividade maternal, dependência emocional, excesso de indulgência ou negligência criativa. É a mãe que sufoca, a abundância que vira gula, o prazer que se torna fuga. Na sombra, ela pergunta: você está nutrindo ou controlando? Está criando por amor ou por carência?",
