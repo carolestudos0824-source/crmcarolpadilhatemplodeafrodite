@@ -9,7 +9,24 @@ import {
 import { useProgress } from "@/hooks/use-progress";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
+import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/**
+ * Telemetria invisível da Fase 3 — dispara o hook do adaptador para validar
+ * que o piloto (Ás de Copas, Cinco de Paus, Seis de Espadas, Dez de Ouros)
+ * resolve via DB. Não altera UI nem comportamento.
+ */
+const PilotMenorProbe = ({
+  naipe,
+  posicao,
+}: {
+  naipe: Naipe;
+  posicao: number | string;
+}) => {
+  useResolvedArcanoMenorPilot(naipe, posicao);
+  return null;
+};
 
 const NAIPE_ROUTE_MAP: Record<string, Naipe> = {
   copas: "copas",
