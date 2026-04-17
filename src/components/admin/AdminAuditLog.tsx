@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ACTION_LABELS, type AdminAction } from "@/lib/admin-audit";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { ScrollText, Loader2 } from "lucide-react";
+import { ScrollText, Loader2, Eye } from "lucide-react";
+import { useRole } from "@/hooks/use-role";
 
 interface AuditRow {
   id: string;
