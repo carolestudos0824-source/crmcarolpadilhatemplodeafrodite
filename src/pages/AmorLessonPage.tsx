@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, MapPin, Heart } from "lucide-react";
 import { AMOR_LESSONS, getAmorLessonByOrder } from "@/data/amor";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedLesson } from "@/hooks/use-resolved-lesson";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 type Phase = "lesson" | "exercise" | "deepdive" | "quiz" | "complete";
@@ -20,6 +21,9 @@ const AmorLessonPage = () => {
   const lessonOrder = parseInt(order || "0", 10);
   const lesson = getAmorLessonByOrder(lessonOrder);
   const nextLesson = getAmorLessonByOrder(lessonOrder + 1);
+
+  // Fase 4B — telemetria invisível: lição via adaptador (DB-first com fallback).
+  useResolvedLesson("amor", lesson?.id ?? null);
 
   if (!lesson) {
     return (

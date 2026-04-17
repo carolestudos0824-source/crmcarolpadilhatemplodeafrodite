@@ -2,12 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
 import { COMBINACOES_LESSONS } from "@/data/combinacoes";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedModule } from "@/hooks/use-resolved-module";
 import { XPBar } from "@/components/XPBar";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const CombinacoesPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
+  useResolvedModule("combinacoes");
 
   const isLessonCompleted = (lessonId: string) =>
     progress.completedLessons.includes(lessonId);

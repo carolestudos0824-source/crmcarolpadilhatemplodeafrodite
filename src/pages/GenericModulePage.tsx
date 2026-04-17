@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedModule } from "@/hooks/use-resolved-module";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
 import mysticBg from "@/assets/mystic-bg.jpg";
@@ -26,6 +27,8 @@ interface GenericModulePageProps {
   editorialIntro?: string;
   /** Optional theme accent HSL values e.g. "210 45% 50%" */
   themeAccent?: string;
+  /** Fase 4B — slug do módulo no CMS para telemetria via adaptador (DB-first). */
+  moduleSlug?: string;
 }
 
 const GenericModulePage = ({
@@ -38,9 +41,12 @@ const GenericModulePage = ({
   categoryLabel,
   editorialIntro,
   themeAccent,
+  moduleSlug,
 }: GenericModulePageProps) => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  // Fase 4B — telemetria invisível via adaptador (DB-first com fallback).
+  useResolvedModule(moduleSlug ?? null);
 
   const isCompleted = (id: string) => progress.completedLessons.includes(id);
   const isUnlocked = (order: number) => {

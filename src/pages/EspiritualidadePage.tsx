@@ -11,6 +11,7 @@ const EspiritualidadePage = () => (
     themeAccent="280 30% 45%"
     lessons={ESPIRITUALIDADE_LESSONS}
     lessonRoutePrefix="/espiritualidade"
+    moduleSlug="espiritualidade"
   />
 );
 

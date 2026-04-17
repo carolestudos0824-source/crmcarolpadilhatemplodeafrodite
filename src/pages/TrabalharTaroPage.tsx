@@ -11,6 +11,7 @@ const TrabalharTaroPage = () => (
     themeAccent="260 25% 42%"
     lessons={TRABALHAR_TARO_LESSONS}
     lessonRoutePrefix="/trabalhar-taro"
+    moduleSlug="trabalhar-taro"
   />
 );
 

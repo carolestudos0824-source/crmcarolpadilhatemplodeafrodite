@@ -10,6 +10,7 @@ const ArquiteturaMenoresLessonPage = () => (
     moduleId="arquitetura-menores"
     categoryLabel="Arcanos Menores"
     themeAccent="36 38% 48%"
+    moduleSlug="arquitetura-menores"
   />
 );
 

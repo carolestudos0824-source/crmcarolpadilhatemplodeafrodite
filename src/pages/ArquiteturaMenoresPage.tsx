@@ -11,6 +11,7 @@ const ArquiteturaMenoresPage = () => (
     themeAccent="36 38% 48%"
     lessons={ARQUITETURA_MENORES_LESSONS}
     lessonRoutePrefix="/arquitetura-menores"
+    moduleSlug="arquitetura-menores"
   />
 );
 

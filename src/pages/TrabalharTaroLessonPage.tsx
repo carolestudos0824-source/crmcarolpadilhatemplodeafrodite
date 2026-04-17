@@ -10,6 +10,7 @@ const TrabalharTaroLessonPage = () => (
     moduleId="trabalhar-taro"
     categoryLabel="Profissionalização"
     themeAccent="260 25% 42%"
+    moduleSlug="trabalhar-taro"
   />
 );
 

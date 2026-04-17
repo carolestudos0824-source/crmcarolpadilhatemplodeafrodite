@@ -10,6 +10,7 @@ const LeituraSimbolicaLessonPage = () => (
     moduleId="leitura-simbolica"
     categoryLabel="Método"
     themeAccent="250 28% 48%"
+    moduleSlug="leitura-simbolica"
   />
 );
 
