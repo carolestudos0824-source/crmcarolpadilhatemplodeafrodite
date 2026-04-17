@@ -148,7 +148,7 @@ Deno.serve(async (req) => {
         .from("profiles")
         .update({
           is_premium: true,
-          premium_source: planCode === "annual" ? "store_annual" : "store_monthly",
+          premium_source: planCode === "yearly" || planCode === "annual" ? "store_annual" : "store_monthly",
           ...(premium_until ? { premium_until } : {}),
         })
         .eq("user_id", userId);

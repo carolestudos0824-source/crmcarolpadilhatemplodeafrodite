@@ -1,4 +1,5 @@
-// stripe-create-checkout — creates a Stripe Checkout Session for monthly/annual plans.
+// stripe-create-checkout — creates a Stripe Checkout Session for monthly/yearly plans.
+// Body: { "plan": "monthly" | "yearly" }  (legacy "annual" still accepted as alias).
 //
 // Auth: requires logged-in user (validates JWT in code, verify_jwt=false in config).
 // Returns: { url } — frontend redirects window.location.href to it.
@@ -52,18 +53,19 @@ Deno.serve(async (req) => {
   const userId = claims.claims.sub as string;
   const userEmail = (claims.claims.email as string) ?? undefined;
 
-  // Body
-  let plan: "monthly" | "annual";
+  // Body — accept "yearly" (official) or "annual" (legacy alias). Normalize to "yearly".
+  let plan: "monthly" | "yearly";
   try {
     const body = await req.json();
-    plan = body.plan === "annual" ? "annual" : "monthly";
+    const raw = String(body.plan ?? "").toLowerCase();
+    plan = raw === "yearly" || raw === "annual" ? "yearly" : "monthly";
   } catch {
     return json({ error: "Invalid JSON body" }, 400);
   }
 
-  const priceId = plan === "annual" ? PRICE_YEARLY : PRICE_MONTHLY;
+  const priceId = plan === "yearly" ? PRICE_YEARLY : PRICE_MONTHLY;
   if (!priceId) {
-    const envName = plan === "annual" ? "STRIPE_PRICE_YEARLY" : "STRIPE_PRICE_MONTHLY";
+    const envName = plan === "yearly" ? "STRIPE_PRICE_YEARLY" : "STRIPE_PRICE_MONTHLY";
     return json({ error: `Stripe pendente: ${envName} não configurado.` }, 503);
   }
 
