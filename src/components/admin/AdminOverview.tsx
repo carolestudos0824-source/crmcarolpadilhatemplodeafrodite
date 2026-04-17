@@ -74,20 +74,43 @@ const AdminOverview = () => {
         <p className="text-sm text-muted-foreground">Resumo operacional da plataforma em tempo real.</p>
       </div>
 
-      {/* Revenue & Conversions */}
+      {/* Revenue — Estimated */}
       <div>
-        <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60 mb-3">Receita & Conversão</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <KPICard icon={<DollarSign className="w-4 h-4" />} label="Receita Mensal (MRR)" value={`R$ ${stats.mrr.toFixed(2)}`} accent="text-green-600" />
-          <KPICard icon={<TrendingUp className="w-4 h-4" />} label="Conversão Premium" value={`${stats.conversionRate}%`} accent="text-blue-500" />
-          <KPICard icon={<XCircle className="w-4 h-4" />} label="Cancelamentos (30d)" value={stats.recentExpired} accent={stats.recentExpired > 0 ? "text-red-400" : "text-muted-foreground"} />
-          <KPICard icon={<UserPlus className="w-4 h-4" />} label="Novos (7 dias)" value={stats.recentSignups} accent="text-primary" />
+        <div className="flex items-baseline justify-between mb-3">
+          <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60">Receita estimada</h3>
+          <span className="text-[10px] uppercase tracking-wider text-amber-600/80">cálculo interno</span>
         </div>
+        <p className="text-[11px] text-muted-foreground mb-3 leading-relaxed">
+          Projeção baseada em assinantes ativos × preço de tabela. <strong className="text-foreground/80">Não reflete faturamento real</strong> — não considera reembolsos, cancelamentos no meio do ciclo, descontos ou impostos.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <KPICard icon={<DollarSign className="w-4 h-4" />} label="MRR estimado" value={`R$ ${stats.mrr.toFixed(2)}`} accent="text-amber-600" badge="est." />
+          <KPICard icon={<TrendingUp className="w-4 h-4" />} label="Conversão Premium" value={`${stats.conversionRate}%`} accent="text-blue-500" />
+          <KPICard icon={<XCircle className="w-4 h-4" />} label="Premiums expirados (30d)" value={stats.recentExpired} accent={stats.recentExpired > 0 ? "text-red-400" : "text-muted-foreground"} />
+          <KPICard icon={<UserPlus className="w-4 h-4" />} label="Novos cadastros (7d)" value={stats.recentSignups} accent="text-primary" />
+        </div>
+      </div>
+
+      {/* Revenue — Real (pending integration) */}
+      <div>
+        <div className="flex items-baseline justify-between mb-3">
+          <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60">Receita real</h3>
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground/60">pendente de integração</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <PlaceholderCard label="Faturamento confirmado" />
+          <PlaceholderCard label="Reembolsos" />
+          <PlaceholderCard label="Cancelamentos com motivo" />
+          <PlaceholderCard label="Churn real" />
+        </div>
+        <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
+          Estes valores serão preenchidos quando a integração de pagamento (Stripe / RevenueCat) for ativada. Até lá, use a receita estimada apenas como referência interna.
+        </p>
       </div>
 
       {/* User Breakdown */}
       <div>
-        <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60 mb-3">Usuários</h3>
+        <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60 mb-3">Assinantes & Usuários</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <KPICard icon={<Users className="w-4 h-4" />} label="Total de Usuários" value={stats.totalUsers} />
           <KPICard icon={<Crown className="w-4 h-4" />} label="Assinantes Ativos" value={stats.premiumUsers} accent="text-primary" />
@@ -106,22 +129,27 @@ const AdminOverview = () => {
           <KPICard icon={<BarChart3 className="w-4 h-4" />} label="Streaks Ativos" value={stats.activeStreaks} />
         </div>
       </div>
-
-      {/* Pending integrations */}
-      <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
-        <p className="text-sm text-foreground font-medium mb-1">📊 Métricas pendentes</p>
-        <p className="text-xs text-muted-foreground">
-          Receita real por período, cancelamentos com motivo e reembolsos serão exibidos quando a integração de pagamento (Stripe/RevenueCat) estiver ativa.
-        </p>
-      </div>
     </div>
   );
 };
 
-const KPICard = ({ icon, label, value, accent = "text-foreground" }: { icon: React.ReactNode; label: string; value: string | number; accent?: string }) => (
-  <div className="p-4 rounded-xl border border-border/50 bg-card/50">
+const KPICard = ({ icon, label, value, accent = "text-foreground", badge }: { icon: React.ReactNode; label: string; value: string | number; accent?: string; badge?: string }) => (
+  <div className="p-4 rounded-xl border border-border/50 bg-card/50 relative">
+    {badge && (
+      <span className="absolute top-2 right-2 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600">{badge}</span>
+    )}
     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-2">{icon}</div>
     <p className={`text-xl font-heading ${accent}`}>{value}</p>
+    <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
+  </div>
+);
+
+const PlaceholderCard = ({ label }: { label: string }) => (
+  <div className="p-4 rounded-xl border border-dashed border-border/40 bg-card/20">
+    <div className="w-8 h-8 rounded-lg bg-muted/40 flex items-center justify-center text-muted-foreground/50 mb-2">
+      <DollarSign className="w-4 h-4" />
+    </div>
+    <p className="text-xl font-heading text-muted-foreground/40">—</p>
     <p className="text-[10px] text-muted-foreground mt-0.5">{label}</p>
   </div>
 );
