@@ -60,7 +60,7 @@ const ReviewPage = () => {
       return ALL_FLASHCARDS.filter(f => dailyChallenge?.items.includes(f.id));
     }
     if (selectedArcano !== null) {
-      return getFlashcardsForArcano(selectedArcano);
+      return getFlashcardsForArcano(bundle, selectedArcano);
     }
     if (dueFlashcards.length > 0) {
       return ALL_FLASHCARDS.filter(f => dueFlashcards.includes(f.id));
@@ -130,6 +130,7 @@ const ReviewPage = () => {
   if (mode === "flashcards" && currentFlashcard) {
     return <FlashcardView
       card={currentFlashcard}
+      arcanoName={getArcanoName(currentFlashcard.arcanoId)}
       index={currentIndex}
       total={flashcardSet.length}
       flipped={flipped}
@@ -326,7 +327,7 @@ const ReviewPage = () => {
             </h2>
             <div className="space-y-2.5">
               {studiedArcanoIds.map(id => {
-                const cards = getFlashcardsForArcano(id);
+                const cards = getFlashcardsForArcano(bundle, id);
                 const reviewed = cards.filter(c => review.completedFlashcards.includes(c.id)).length;
                 return (
                   <button
