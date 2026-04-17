@@ -43,12 +43,15 @@ import {
   mapLegacyModuleToUI,
   mapLegacyQuizToUI,
 } from "./mappers-legacy";
+import { fetchJourneyFromDb } from "./repo-db-journey";
+import { fetchJourneyFromLegacy } from "./repo-legacy-journey";
 import type {
   ArcanoContent,
   LessonContent,
   ModuleContent,
   QuizContent,
 } from "./types";
+import type { JourneyContent } from "./journey-types";
 
 // ─── Helper genérico ───────────────────────────────────────────────
 

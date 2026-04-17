@@ -15,7 +15,7 @@
 
 export type ContentSourceMode = "fallback" | "auto" | "db";
 
-export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules";
+export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // Fase 2/3 — arcanos (Maiores, Menores e Cortes) já carregam via DB com
@@ -29,6 +29,9 @@ export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // continua resolvendo via legado e emite warn de telemetria.
   lessons: "auto",
   modules: "auto",
+  // Fase 5D — Jornada do Louco (4 fases + 22 papéis + meta) lê do DB
+  // primeiro; em vazio/erro cai no legado de `src/data/fools-journey.ts`.
+  journey: "auto",
 };
 
 export function getFlag(domain: ContentDomain): ContentSourceMode {
