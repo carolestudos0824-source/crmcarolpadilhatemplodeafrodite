@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { type LessonSection } from "@/data/fool-lesson-content";
+import { type LessonSection } from "@/lib/content/runtime-types";
 
 interface LessonSectionsProps {
   sections: LessonSection[];

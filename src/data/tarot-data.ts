@@ -18,7 +18,7 @@
  * `isModuleUnlocked` e `FREE_ARCANO_IDS` exportados pelo mesmo
  * `@/lib/content`.
  */
-import { type LessonSection } from "@/data/fool-lesson-content";
+import { type LessonSection } from "@/lib/content/runtime-types";
 import { getArcanoAsLegacy } from "./arcanos/index";
 
 export type { LessonSection };
