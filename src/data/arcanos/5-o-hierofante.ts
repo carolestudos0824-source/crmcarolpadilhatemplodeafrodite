@@ -26,7 +26,7 @@ export const O_HIEROFANTE: ArcanoMaiorEditorial = {
     "O Mestre, o Sacerdote, o Guardião da Tradição — aquele que transmite a sabedoria ancestral e conecta o indivíduo à comunidade espiritual.",
 
   light:
-    "Na luz, o Hierofante é sabedoria transmitida com humildade, tradição que guia sem aprisionar, fé genuína que une pessoas em torno do sagrado. É o professor que inspira, o mentor que ilumina, a cerimônia que dá significado à passagem. Quando encontrado na luz, indica que é hora de buscar ensinamento, de se conectar a uma tradição ou a um grupo que sustente seu crescimento.",
+    "Na luz, o Hierofante é sabedoria transmitida com humildade, tradição que guia sem aprisionar, fé genuína que une pessoas em torno do sagrado. É o professor que inspira, o mentor que ilumina, a cerimônia que dá significado à passagem. Aplicado, ele se manifesta como linhagens de estudo bem escolhidas, ritos que organizam a vida cotidiana e a confiança madura de quem aprende com os antigos sem abrir mão da própria voz. Quando encontrado na luz, indica que é hora de buscar ensinamento, de se conectar a uma tradição ou a um grupo que sustente seu crescimento.",
 
   shadow:
     "Na sombra, o Hierofante se torna dogmatismo cego, conformismo espiritual, abuso de autoridade religiosa e hipocrisia institucional. É o líder que exige obediência sem questionamento, a tradição que sufoca a verdade individual, a religião que controla em vez de libertar. Na sombra, ele pergunta: você está seguindo uma verdade ou apenas obedecendo por medo?",

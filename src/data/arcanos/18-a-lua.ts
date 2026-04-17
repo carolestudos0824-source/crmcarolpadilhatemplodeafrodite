@@ -26,7 +26,7 @@ export const A_LUA: ArcanoMaiorEditorial = {
     "A Sonhadora, a Guardiã do Inconsciente, a Ilusionista Sagrada — aquela que habita o limiar entre o real e o imaginário e guia pela intuição quando a razão falha.",
 
   light:
-    "Na luz, A Lua é intuição profunda, imaginação fértil, conexão com os sonhos e a capacidade de navegar a incerteza com sabedoria instintiva. É a artista que cria a partir do inconsciente, a terapeuta que lê entrelinhas, a mulher que sabe sem saber como sabe. Quando encontrada na luz, indica que é hora de confiar nos sonhos, nos pressentimentos e no que se sente abaixo da superfície.",
+    "Na luz, A Lua é intuição profunda, imaginação fértil, conexão com os sonhos e a capacidade de navegar a incerteza com sabedoria instintiva. É a artista que cria a partir do inconsciente, a terapeuta que lê entrelinhas, a mulher que sabe sem saber como sabe. Aplicada, ela se traduz em obras criativas que tocam o que a razão não alcança, períodos férteis de escuta de si e a capacidade rara de transitar pelo escuro sem perder o fio da própria identidade. Quando encontrada na luz, indica que é hora de confiar nos sonhos, nos pressentimentos e no que se sente abaixo da superfície.",
 
   shadow:
     "Na sombra, A Lua se torna medo irracional, confusão mental, autoengano, ansiedade e paranoia. É ver perigo onde não há, acreditar em fantasias como se fossem verdade, ou se perder nas próprias ilusões. Na sombra, ela pergunta: o que você está vendo é real ou é projeção do seu medo?",

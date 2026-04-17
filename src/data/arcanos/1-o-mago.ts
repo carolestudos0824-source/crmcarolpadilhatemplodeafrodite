@@ -28,7 +28,7 @@ export const O_MAGO: ArcanoMaiorEditorial = {
     "O Canal, o Alquimista, o Manifestador — aquele que conecta o céu à terra e transforma intenção em realidade.",
 
   light:
-    "Na luz, O Mago é maestria, concentração, habilidade e poder de realização. É a capacidade de transformar ideias em projetos concretos, sonhos em planos, intenções em resultados. Quando encontrado na luz, indica que você tem todos os recursos necessários — internos e externos — para manifestar o que deseja. É o momento de agir com clareza e propósito.",
+    "Na luz, O Mago é maestria, concentração, habilidade e poder de realização. É a capacidade de transformar ideias em projetos concretos, sonhos em planos, intenções em resultados. Aplicado, ele se traduz em discurso que convence sem manipular, talento técnico colocado a serviço de uma visão clara e a presença magnética de quem sabe exatamente o que está fazendo. Quando encontrado na luz, indica que você tem todos os recursos necessários — internos e externos — para manifestar o que deseja. É o momento de agir com clareza e propósito.",
 
   shadow:
     "Na sombra, O Mago se torna manipulação, charlatanismo, uso do poder para enganar. É a inteligência a serviço do ego, a habilidade usada para controlar os outros, a eloquência que seduz sem verdade. Na sombra, ele pergunta: você está usando seus dons para criar ou para dominar? Está sendo autêntico ou está performando uma versão falsa de si?",

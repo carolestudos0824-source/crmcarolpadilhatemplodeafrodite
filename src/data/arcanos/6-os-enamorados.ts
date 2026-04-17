@@ -26,7 +26,7 @@ export const OS_ENAMORADOS: ArcanoMaiorEditorial = {
     "O Amante, o Escolhedor, a União dos Opostos — aquele que descobre quem é através do encontro com o outro e da coragem de escolher.",
 
   light:
-    "Na luz, Os Enamorados representam amor verdadeiro, escolhas alinhadas com valores profundos, harmonia entre razão e emoção, e a coragem de se comprometer. É o momento em que você escolhe não pelo medo, mas pelo desejo genuíno. Quando encontrados na luz, indicam alinhamento interno, relações autênticas e decisões que honram quem você realmente é.",
+    "Na luz, Os Enamorados representam amor verdadeiro, escolhas alinhadas com valores profundos, harmonia entre razão e emoção, e a coragem de se comprometer. É o momento em que você escolhe não pelo medo, mas pelo desejo genuíno. Aplicados, traduzem-se em parcerias que crescem juntas, decisões éticas tomadas em encruzilhadas reais e a integridade rara de quem alinha sentimento, palavra e ato. Quando encontrados na luz, indicam alinhamento interno, relações autênticas e decisões que honram quem você realmente é.",
 
   shadow:
     "Na sombra, Os Enamorados se tornam indecisão paralisante, escolhas feitas por pressão externa, relações baseadas em projeção, ou a recusa de escolher para não perder nenhuma opção. Na sombra, eles perguntam: você está escolhendo com o coração ou evitando a responsabilidade de decidir?",

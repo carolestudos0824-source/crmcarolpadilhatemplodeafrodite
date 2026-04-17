@@ -26,7 +26,7 @@ export const O_EREMITA: ArcanoMaiorEditorial = {
     "O Sábio, o Mentor Interior, o Peregrino da Alma — aquele que encontrou a luz dentro de si e a oferece silenciosamente a quem busca.",
 
   light:
-    "Na luz, o Eremita é sabedoria conquistada pela experiência, introspecção profunda, mentoria silenciosa e a capacidade de estar sozinho sem se sentir solitário. É o professor que ensina pelo exemplo, o terapeuta que escuta sem julgar, o ancião que ilumina sem impor. Quando encontrado na luz, indica que é hora de se recolher, meditar e buscar respostas dentro de si.",
+    "Na luz, o Eremita é sabedoria conquistada pela experiência, introspecção profunda, mentoria silenciosa e a capacidade de estar sozinho sem se sentir solitário. É o professor que ensina pelo exemplo, o terapeuta que escuta sem julgar, o ancião que ilumina sem impor. Aplicado, ele se manifesta como retiros que reorganizam prioridades, estudo aprofundado de um único tema e a economia de palavras de quem só fala quando tem algo verdadeiro a dizer. Quando encontrado na luz, indica que é hora de se recolher, meditar e buscar respostas dentro de si.",
 
   shadow:
     "Na sombra, o Eremita se torna isolamento patológico, misantropia, superioridade espiritual ou recusa do mundo por medo. É quem usa a solidão como muralha, a sabedoria como escudo contra a vulnerabilidade, ou o desapego como desculpa para não se conectar. Na sombra, ele pergunta: você está se recolhendo para crescer ou se escondendo para não sofrer?",

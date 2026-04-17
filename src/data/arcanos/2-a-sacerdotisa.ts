@@ -27,7 +27,7 @@ export const A_SACERDOTISA: ArcanoMaiorEditorial = {
     "A Guardiã do Véu, a Mestra Silenciosa, a Sacerdotisa Lunar — aquela que conhece os segredos sem precisar revelá-los.",
 
   light:
-    "Na luz, a Sacerdotisa é intuição afinada, paciência profunda, conexão com o inconsciente e sabedoria que vem do silêncio. É aquele momento em que você 'simplesmente sabe' sem precisar de provas. Quando encontrada na luz, indica que a resposta não está fora — está dentro. É hora de meditar, contemplar e confiar na voz interior.",
+    "Na luz, a Sacerdotisa é intuição afinada, paciência profunda, conexão com o inconsciente e sabedoria que vem do silêncio. É aquele momento em que você 'simplesmente sabe' sem precisar de provas. Aplicada, ela se traduz em decisões tomadas sem pressa nem ruído, na capacidade de ler subtextos que escapam à lógica e na serenidade de quem confia no tempo da própria maturação. Quando encontrada na luz, indica que a resposta não está fora — está dentro. É hora de meditar, contemplar e confiar na voz interior.",
 
   shadow:
     "Na sombra, a Sacerdotisa se torna frieza emocional, isolamento excessivo, passividade paralisante e segredos que corroem. É guardar informações por poder, usar o silêncio como arma, ou se desconectar do mundo sob a desculpa da espiritualidade. Na sombra, ela pergunta: você está em contato com sua intuição ou está usando o mistério para evitar a vulnerabilidade?",

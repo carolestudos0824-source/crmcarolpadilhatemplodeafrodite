@@ -26,7 +26,7 @@ export const O_CARRO: ArcanoMaiorEditorial = {
     "O Guerreiro, o Conquistador, o Condutor — aquele que avança com determinação, domina forças opostas e vence pela clareza de propósito.",
 
   light:
-    "Na luz, O Carro é vitória merecida, determinação focada, superação de obstáculos pela força da vontade e progresso rápido. É a energia de quem sabe para onde vai e não se deixa desviar. Quando encontrado na luz, indica que o momento exige ação decisiva, foco absoluto e confiança na própria capacidade de vencer.",
+    "Na luz, O Carro é vitória merecida, determinação focada, superação de obstáculos pela força da vontade e progresso rápido. É a energia de quem sabe para onde vai e não se deixa desviar. Aplicado, ele se traduz em metas que avançam mesmo sob pressão, conflitos internos reconciliados em prol de uma direção clara, e a maturidade de conduzir a própria vida sem terceirizar o volante. Quando encontrado na luz, indica que o momento exige ação decisiva, foco absoluto e confiança na própria capacidade de vencer.",
 
   shadow:
     "Na sombra, O Carro se torna agressividade descontrolada, vitória a qualquer custo, obsessão por controle ou avanço sem direção real. É atropelar pessoas no caminho do sucesso, confundir teimosia com determinação, ou correr sem saber para onde. Na sombra, ele pergunta: você está avançando com propósito ou fugindo de algo que ficou para trás?",

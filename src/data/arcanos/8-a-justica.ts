@@ -26,7 +26,7 @@ export const A_JUSTICA: ArcanoMaiorEditorial = {
     "A Juíza, a Equilibradora, a Guardiã da Lei Natural — aquela que mede sem favoritismo e devolve a cada um exatamente o que é devido.",
 
   light:
-    "Na luz, a Justiça é honestidade radical, responsabilidade pessoal, decisões equilibradas e coragem de encarar a verdade. É o momento de prestar contas com integridade, de assumir as consequências das próprias escolhas e de agir com retidão. Quando encontrada na luz, indica que a verdade prevalecerá e que o equilíbrio será restaurado.",
+    "Na luz, a Justiça é honestidade radical, responsabilidade pessoal, decisões equilibradas e coragem de encarar a verdade. É o momento de prestar contas com integridade, de assumir as consequências das próprias escolhas e de agir com retidão. Aplicada, ela aparece como acordos justos, contratos honrados, conversas difíceis conduzidas com sobriedade e a paz interna de quem alinhou palavra, pensamento e ação. Quando encontrada na luz, indica que a verdade prevalecerá e que o equilíbrio será restaurado.",
 
   shadow:
     "Na sombra, a Justiça se torna rigidez legalista, frieza desumana, vingança disfarçada de equidade, ou incapacidade de perdoar. É a pessoa que usa 'a verdade' como arma, que cobra dos outros sem olhar para si, ou que confunde punição com justiça. Na sombra, ela pergunta: você está buscando equilíbrio ou querendo ter razão?",

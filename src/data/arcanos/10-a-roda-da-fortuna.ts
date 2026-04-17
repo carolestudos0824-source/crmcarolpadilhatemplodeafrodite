@@ -26,7 +26,7 @@ export const A_RODA_DA_FORTUNA: ArcanoMaiorEditorial = {
     "O Destino, o Ciclo, a Grande Mudança — a força impessoal que gira a roda da vida, lembrando que nada permanece igual e que toda fase é temporária.",
 
   light:
-    "Na luz, a Roda da Fortuna é oportunidade inesperada, mudança favorável, expansão, sorte e o momento certo que chega. É o ciclo ascendente — quando as coisas começam a fluir, portas se abrem e o universo parece conspirar a favor. Quando encontrada na luz, indica que o vento está a seu favor — aproveite o momento.",
+    "Na luz, a Roda da Fortuna é oportunidade inesperada, mudança favorável, expansão, sorte e o momento certo que chega. É o ciclo ascendente — quando as coisas começam a fluir, portas se abrem e o universo parece conspirar a favor. Aplicada, ela se manifesta como reviravoltas que reposicionam carreira, encontros que reorganizam afetos e a percepção lúcida de que o tempo da espera virou tempo de colheita. Quando encontrada na luz, indica que o vento está a seu favor — aproveite o momento com discernimento, não apenas com euforia.",
 
   shadow:
     "Na sombra, a Roda da Fortuna representa reversão de sorte, instabilidade, sensação de estar à mercê das circunstâncias e a dificuldade de aceitar que nem tudo está sob controle. É o ciclo descendente — quando o que parecia sólido se desestabiliza. Na sombra, ela pergunta: você está resistindo à mudança ou pode aprender a fluir com ela?",

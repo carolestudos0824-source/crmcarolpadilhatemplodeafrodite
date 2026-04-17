@@ -26,7 +26,7 @@ export const O_JULGAMENTO: ArcanoMaiorEditorial = {
     "O Arauto, o Despertador, a Voz do Chamado — a força que convoca a alma a se erguer, responder ao propósito e renascer para uma vida com significado.",
 
   light:
-    "Na luz, O Julgamento é despertar espiritual, chamado vocacional, absolvição do passado e a coragem de responder ao propósito da alma. É o momento em que você finalmente entende por que passou por tudo o que passou — e está pronta para agir a partir dessa compreensão. Quando encontrado na luz, indica que um chamado maior está soando — e você sabe disso.",
+    "Na luz, O Julgamento é despertar espiritual, chamado vocacional, absolvição do passado e a coragem de responder ao propósito da alma. É o momento em que você finalmente entende por que passou por tudo o que passou — e está pronta para agir a partir dessa compreensão. Aplicado, ele aparece como reconciliações que libertam memórias antigas, decisões vocacionais tomadas sem ruído externo e a leveza de quem se perdoa para poder finalmente se levantar inteiro. Quando encontrado na luz, indica que um chamado maior está soando — e você sabe disso.",
 
   shadow:
     "Na sombra, O Julgamento se torna autojulgamento destrutivo, incapacidade de perdoar o passado, medo de responder ao chamado, ou usar o julgamento como arma contra si e contra os outros. É a pessoa que não se perdoa, que revive os erros obsessivamente, ou que ignora o chamado interior por medo de não ser digna. Na sombra, ele pergunta: você está se julgando ou se libertando?",

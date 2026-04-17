@@ -26,7 +26,7 @@ export const O_MUNDO: ArcanoMaiorEditorial = {
     "A Dançarina Cósmica, a Alma Integrada, a Completude Viva — aquela que dança no centro de tudo porque compreendeu que ela é o centro de tudo.",
 
   light:
-    "Na luz, O Mundo é realização plena, integração de todas as partes do ser, conclusão de um ciclo com sabedoria e gratidão, e a dança da alma que sabe quem é. É a formatura, a conclusão do livro, o momento em que olhamos para trás e dizemos: 'Eu entendo.' Quando encontrado na luz, indica completude — algo se encerrou com perfeição e um novo ciclo pode começar.",
+    "Na luz, O Mundo é realização plena, integração de todas as partes do ser, conclusão de um ciclo com sabedoria e gratidão, e a dança da alma que sabe quem é. É a formatura, a conclusão do livro, o momento em que olhamos para trás e dizemos: 'Eu entendo.' Aplicado, ele se traduz em projetos entregues com excelência, viagens que ampliam o sentido de pertencimento e a sensação madura de habitar a própria vida sem dívidas internas. Quando encontrado na luz, indica completude — algo se encerrou com perfeição e um novo ciclo pode começar.",
 
   shadow:
     "Na sombra, O Mundo se torna estagnação por ter 'chegado lá', medo de começar um novo ciclo, apego à conclusão, ou sensação de vazio após a conquista. É a depressão pós-parto, a crise pós-sucesso, ou a incapacidade de soltar o que foi concluído para abraçar o que virá. Na sombra, ele pergunta: você está celebrando a completude ou se agarrando a ela por medo do que vem depois?",

@@ -26,7 +26,7 @@ export const A_ESTRELA: ArcanoMaiorEditorial = {
     "A Curadora, a Portadora da Esperança, a Estrela-Guia — aquela que ilumina o caminho após a escuridão e devolve a fé no sentido da jornada.",
 
   light:
-    "Na luz, A Estrela é esperança genuína, inspiração criativa, cura profunda e a serenidade de quem passou pela tempestade e encontrou terra firme. É a artista que cria a partir da dor, a sobrevivente que transforma trauma em sabedoria, a alma que brilha mais forte por ter sido quebrada. Quando encontrada na luz, indica que a cura está acontecendo — confie.",
+    "Na luz, A Estrela é esperança genuína, inspiração criativa, cura profunda e a serenidade de quem passou pela tempestade e encontrou terra firme. É a artista que cria a partir da dor, a sobrevivente que transforma trauma em sabedoria, a alma que brilha mais forte por ter sido quebrada. Aplicada, ela se manifesta como rotinas de cuidado que se tornam ritual, fé reconstruída sem ingenuidade e a doçura rara de quem volta a confiar na vida com olhos abertos. Quando encontrada na luz, indica que a cura está acontecendo — confie.",
 
   shadow:
     "Na sombra, A Estrela se torna desesperança disfarçada de resignação, esperança passiva sem ação, desconexão da realidade, ou vulnerabilidade que se torna fragilidade crônica. É esperar que o universo resolva sem fazer sua parte, ou se expor demais sem proteger o que é sagrado. Na sombra, ela pergunta: sua esperança é ativa ou é apenas desejo de que a dor passe?",
