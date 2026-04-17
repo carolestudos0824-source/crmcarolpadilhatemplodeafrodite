@@ -96,18 +96,40 @@ function buildEntry(c: ArcanoMenorEditorial): DeckEntry {
   };
 }
 
+// ─── Lazy registry (evita TDZ no ciclo ./index ↔ ./deck-registry) ─
+// ARCANOS_MENORES vem de ./index, que re-exporta deste arquivo.
+// Inicialização preguiçosa garante que ARCANOS_MENORES já esteja pronto
+// no momento do primeiro acesso, sem quebrar consumidores existentes.
+
+let _registry: readonly DeckEntry[] | null = null;
+let _byId: ReadonlyMap<string, DeckEntry> | null = null;
+let _bySlug: ReadonlyMap<string, DeckEntry> | null = null;
+
+function buildAll(): readonly DeckEntry[] {
+  if (_registry) return _registry;
+  _registry = ARCANOS_MENORES.map(buildEntry);
+  _byId = new Map(_registry.map(e => [e.id, e]));
+  _bySlug = new Map(_registry.map(e => [e.slug, e]));
+  return _registry;
+}
+
 /** Acervo oficial — 56 entradas, ordem canônica Copas→Paus→Espadas→Ouros, Ás→Rei */
-export const DECK_MENORES_REGISTRY: readonly DeckEntry[] = ARCANOS_MENORES.map(buildEntry);
+export const DECK_MENORES_REGISTRY: readonly DeckEntry[] = new Proxy([] as DeckEntry[], {
+  get(_t, prop, recv) { return Reflect.get(buildAll() as DeckEntry[], prop, recv); },
+  has(_t, prop) { return Reflect.has(buildAll() as DeckEntry[], prop); },
+  ownKeys() { return Reflect.ownKeys(buildAll() as DeckEntry[]); },
+  getOwnPropertyDescriptor(_t, prop) { return Reflect.getOwnPropertyDescriptor(buildAll() as DeckEntry[], prop); },
+}) as readonly DeckEntry[];
 
 /** Mapa O(1) por id */
-export const DECK_BY_ID: ReadonlyMap<string, DeckEntry> = new Map(
-  DECK_MENORES_REGISTRY.map(e => [e.id, e])
-);
+export const DECK_BY_ID: ReadonlyMap<string, DeckEntry> = new Proxy(new Map<string, DeckEntry>(), {
+  get(_t, prop, recv) { buildAll(); return Reflect.get(_byId!, prop, recv).bind?.(_byId) ?? Reflect.get(_byId!, prop, recv); },
+}) as ReadonlyMap<string, DeckEntry>;
 
 /** Mapa O(1) por slug */
-export const DECK_BY_SLUG: ReadonlyMap<string, DeckEntry> = new Map(
-  DECK_MENORES_REGISTRY.map(e => [e.slug, e])
-);
+export const DECK_BY_SLUG: ReadonlyMap<string, DeckEntry> = new Proxy(new Map<string, DeckEntry>(), {
+  get(_t, prop, recv) { buildAll(); return Reflect.get(_bySlug!, prop, recv).bind?.(_bySlug) ?? Reflect.get(_bySlug!, prop, recv); },
+}) as ReadonlyMap<string, DeckEntry>;
 
 // ─── API pública ──────────────────────────────────────────────────
 
