@@ -8,6 +8,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getArcanoContent,
+  getCertificatesContent,
   getJourneyContent,
   getLessonContent,
   getModuleContent,
@@ -27,6 +28,7 @@ import type {
 } from "@/lib/content/types";
 import type { JourneyContent } from "@/lib/content/journey-types";
 import type { SymbolsContent } from "@/lib/content/symbols-types";
+import type { CertificatesContent } from "@/lib/content/certificates-types";
 
 const STALE_MS = 5 * 60 * 1000;
 const GC_MS = 30 * 60 * 1000;
@@ -155,6 +157,18 @@ export function useSymbolsContent(): UseContentResult<SymbolsContent | null> {
   const query = useQuery<SymbolsContent | null>({
     queryKey: ["content", "symbols"],
     queryFn: () => getSymbolsContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+// ─── Certificates ──────────────────────────────────────────────────
+
+export function useCertificatesContent(): UseContentResult<CertificatesContent | null> {
+  const query = useQuery<CertificatesContent | null>({
+    queryKey: ["content", "certificates"],
+    queryFn: () => getCertificatesContent(),
     staleTime: STALE_MS,
     gcTime: GC_MS,
   });

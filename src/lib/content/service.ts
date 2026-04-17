@@ -47,6 +47,8 @@ import { fetchJourneyFromDb } from "./repo-db-journey";
 import { fetchJourneyFromLegacy } from "./repo-legacy-journey";
 import { fetchSymbolsFromDb } from "./repo-db-symbols";
 import { fetchSymbolsFromLegacy } from "./repo-legacy-symbols";
+import { fetchCertificatesFromDb } from "./repo-db-certificates";
+import { fetchCertificatesFromLegacy } from "./repo-legacy-certificates";
 import type {
   ArcanoContent,
   LessonContent,
@@ -55,6 +57,7 @@ import type {
 } from "./types";
 import type { JourneyContent } from "./journey-types";
 import type { SymbolsContent } from "./symbols-types";
+import type { CertificatesContent } from "./certificates-types";
 
 // ─── Helper genérico ───────────────────────────────────────────────
 
@@ -286,5 +289,16 @@ export async function getSymbolsContent(): Promise<SymbolsContent | null> {
     "library",
     () => fetchSymbolsFromDb(),
     () => fetchSymbolsFromLegacy(),
+  );
+}
+
+// ─── CERTIFICATES ──────────────────────────────────────────────────
+
+export async function getCertificatesContent(): Promise<CertificatesContent | null> {
+  return withFallback<CertificatesContent>(
+    "certificates",
+    "list",
+    () => fetchCertificatesFromDb(),
+    () => fetchCertificatesFromLegacy(),
   );
 }

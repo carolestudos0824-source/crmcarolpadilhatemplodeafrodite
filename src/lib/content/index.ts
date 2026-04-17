@@ -10,6 +10,7 @@ export {
   getArcanoContent,
   getJourneyContent,
   getSymbolsContent,
+  getCertificatesContent,
   listArcanosContent,
   getQuizContent,
   getLessonContent,
@@ -31,6 +32,12 @@ export type {
   SymbolCategoryContent,
   SymbolItemContent,
 } from "./symbols-types";
+
+export type {
+  CertificateContent,
+  CertificatesContent,
+  CertificateStatus,
+} from "./certificates-types";
 
 // Fase 6.0 — tipos canônicos de runtime (extraídos de tarot-data.ts).
 export type {

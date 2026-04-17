@@ -2,25 +2,35 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download, X, Lock } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
-import { CERTIFICATES, isCertificateEarned, type EarnedCertificate } from "@/data/certificates";
+import { useCertificatesContent } from "@/hooks/use-content";
+import {
+  buildEarnedCertificate,
+  isCertificateEarned,
+  type EarnedCertificateView,
+} from "@/lib/certificates/emission";
 import CertificateCard, { FullCertificate } from "@/components/CertificateCard";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const CertificatesPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
-  const [viewing, setViewing] = useState<EarnedCertificate | null>(null);
+  const { data: certsData } = useCertificatesContent();
+  const [viewing, setViewing] = useState<EarnedCertificateView | null>(null);
 
   const studentName = progress.studentName || "Estudante";
+  const allCerts = certsData?.items ?? [];
 
-  const earned: EarnedCertificate[] = CERTIFICATES.filter(c => isCertificateEarned(c, progress.completedModules))
-    .map(c => ({
-      ...c,
-      earnedAt: progress.certificatesEarned?.[c.id] || new Date().toISOString(),
-      studentName,
-    }));
+  const earned: EarnedCertificateView[] = allCerts
+    .filter((c) => isCertificateEarned(c, progress.completedModules))
+    .map((c) =>
+      buildEarnedCertificate(
+        c,
+        progress.certificatesEarned?.[c.id] || new Date().toISOString(),
+        studentName,
+      ),
+    );
 
-  const locked = CERTIFICATES.filter(c => !isCertificateEarned(c, progress.completedModules));
+  const locked = allCerts.filter((c) => !isCertificateEarned(c, progress.completedModules));
 
   return (
     <div className="min-h-screen bg-background text-foreground">

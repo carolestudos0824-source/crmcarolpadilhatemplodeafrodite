@@ -3,10 +3,12 @@
  * Visual-only; used both inline and in a full-view modal.
  */
 import { useRef } from "react";
-import type { EarnedCertificate } from "@/data/certificates";
+import type { EarnedCertificateView } from "@/lib/certificates/emission";
+
+export type EarnedCertificate = EarnedCertificateView;
 
 interface Props {
-  certificate: EarnedCertificate;
+  certificate: EarnedCertificateView;
   compact?: boolean;
   onView?: () => void;
 }
@@ -59,7 +61,7 @@ const CertificateCard = ({ certificate, compact = false, onView }: Props) => {
 };
 
 /** Full-size certificate for viewing / downloading */
-export const FullCertificate = ({ certificate }: { certificate: EarnedCertificate }) => {
+export const FullCertificate = ({ certificate }: { certificate: EarnedCertificateView }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const formattedDate = new Date(certificate.earnedAt).toLocaleDateString("pt-BR", {
