@@ -3,7 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import { CARTAS_CORTE } from "@/data/arcanos-menores/cartas-corte";
 import { NAIPES, type Naipe } from "@/data/arcanos-menores";
+import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/**
+ * Telemetria invisível da Fase 3 — dispara o hook do adaptador para validar
+ * que o piloto das cortes (Pajem de Ouros, Cavaleiro de Copas, Rainha de
+ * Espadas, Rei de Paus) resolve via DB. Não altera UI nem comportamento.
+ */
+const PilotCortePilots = () => {
+  useResolvedArcanoMenorPilot("ouros", "pajem");
+  useResolvedArcanoMenorPilot("copas", "cavaleiro");
+  useResolvedArcanoMenorPilot("espadas", "rainha");
+  useResolvedArcanoMenorPilot("paus", "rei");
+  return null;
+};
 
 const CartasCortePage = () => {
   const navigate = useNavigate();
