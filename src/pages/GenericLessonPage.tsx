@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, BookOpen, Brain, Lightbulb, CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedLesson } from "@/hooks/use-resolved-lesson";
 import { StreakCounter } from "@/components/StreakCounter";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
@@ -40,9 +41,11 @@ interface Props {
   themeAccent?: string;
   /** Optional category label */
   categoryLabel?: string;
+  /** Fase 4B — slug do módulo no CMS para telemetria via adaptador. */
+  moduleSlug?: string;
 }
 
-const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName, moduleId, themeAccent, categoryLabel }: Props) => {
+const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName, moduleId, themeAccent, categoryLabel, moduleSlug }: Props) => {
   const { order } = useParams();
   const navigate = useNavigate();
   const { progress, addXP, completeLesson, completeQuiz, completeModule } = useProgress();
@@ -55,6 +58,9 @@ const GenericLessonPage = ({ lessons, getLessonByOrder, moduleRoute, moduleName,
   const lessonOrder = parseInt(order || "0", 10);
   const lesson = getLessonByOrder(lessonOrder);
   const nextLesson = getLessonByOrder(lessonOrder + 1);
+
+  // Fase 4B — telemetria invisível via adaptador (DB-first com fallback).
+  useResolvedLesson(moduleSlug ?? null, lesson?.id ?? null);
   const totalLessons = lessons.length;
 
   const accent = themeAccent || "36 42% 44%";
