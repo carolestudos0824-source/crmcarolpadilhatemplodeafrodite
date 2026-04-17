@@ -206,6 +206,135 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_certificates: {
+        Row: {
+          accent_color: string | null
+          completion_check: string
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          order_index: number
+          slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          accent_color?: string | null
+          completion_check: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          order_index?: number
+          slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          accent_color?: string | null
+          completion_check?: string
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          order_index?: number
+          slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_court_cards: {
+        Row: {
+          created_at: string
+          exemplos_interpretacao: string[]
+          explicacao_simbolica: string | null
+          id: string
+          leitura_pratica: string | null
+          leitura_psicologica: string | null
+          manifestacao_copas_texto: string | null
+          manifestacao_copas_titulo: string | null
+          manifestacao_espadas_texto: string | null
+          manifestacao_espadas_titulo: string | null
+          manifestacao_ouros_texto: string | null
+          manifestacao_ouros_titulo: string | null
+          manifestacao_paus_texto: string | null
+          manifestacao_paus_titulo: string | null
+          nome: string
+          order_index: number
+          palavras_chave: string[]
+          principio: string | null
+          reflexao: string | null
+          simbolo: string | null
+          slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          subtitulo: string | null
+          texto_principal: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          exemplos_interpretacao?: string[]
+          explicacao_simbolica?: string | null
+          id?: string
+          leitura_pratica?: string | null
+          leitura_psicologica?: string | null
+          manifestacao_copas_texto?: string | null
+          manifestacao_copas_titulo?: string | null
+          manifestacao_espadas_texto?: string | null
+          manifestacao_espadas_titulo?: string | null
+          manifestacao_ouros_texto?: string | null
+          manifestacao_ouros_titulo?: string | null
+          manifestacao_paus_texto?: string | null
+          manifestacao_paus_titulo?: string | null
+          nome: string
+          order_index?: number
+          palavras_chave?: string[]
+          principio?: string | null
+          reflexao?: string | null
+          simbolo?: string | null
+          slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitulo?: string | null
+          texto_principal: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          exemplos_interpretacao?: string[]
+          explicacao_simbolica?: string | null
+          id?: string
+          leitura_pratica?: string | null
+          leitura_psicologica?: string | null
+          manifestacao_copas_texto?: string | null
+          manifestacao_copas_titulo?: string | null
+          manifestacao_espadas_texto?: string | null
+          manifestacao_espadas_titulo?: string | null
+          manifestacao_ouros_texto?: string | null
+          manifestacao_ouros_titulo?: string | null
+          manifestacao_paus_texto?: string | null
+          manifestacao_paus_titulo?: string | null
+          nome?: string
+          order_index?: number
+          palavras_chave?: string[]
+          principio?: string | null
+          reflexao?: string | null
+          simbolo?: string | null
+          slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitulo?: string | null
+          texto_principal?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cms_journey_arcanos: {
         Row: {
           arcano_number: number
@@ -441,6 +570,66 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_numerologia: {
+        Row: {
+          aprofundamento: string | null
+          created_at: string
+          descricao: string
+          id: string
+          manifestacao_copas: string | null
+          manifestacao_espadas: string | null
+          manifestacao_ouros: string | null
+          manifestacao_paus: string | null
+          nome: string
+          numero: number
+          palavras_chave: string[]
+          principio: string | null
+          reflexao: string | null
+          simbolo: string | null
+          status: Database["public"]["Enums"]["module_status"]
+          subtitulo: string | null
+          updated_at: string
+        }
+        Insert: {
+          aprofundamento?: string | null
+          created_at?: string
+          descricao: string
+          id?: string
+          manifestacao_copas?: string | null
+          manifestacao_espadas?: string | null
+          manifestacao_ouros?: string | null
+          manifestacao_paus?: string | null
+          nome: string
+          numero: number
+          palavras_chave?: string[]
+          principio?: string | null
+          reflexao?: string | null
+          simbolo?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitulo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          aprofundamento?: string | null
+          created_at?: string
+          descricao?: string
+          id?: string
+          manifestacao_copas?: string | null
+          manifestacao_espadas?: string | null
+          manifestacao_ouros?: string | null
+          manifestacao_paus?: string | null
+          nome?: string
+          numero?: number
+          palavras_chave?: string[]
+          principio?: string | null
+          reflexao?: string | null
+          simbolo?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitulo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cms_quiz_questions: {
         Row: {
           correct_index: number
@@ -540,6 +729,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cms_suits: {
+        Row: {
+          atmosfera: string | null
+          created_at: string
+          desafios: string | null
+          elemento: string | null
+          essencia: string | null
+          frase_abertura: string | null
+          funcao_na_leitura: string | null
+          icone: string | null
+          id: string
+          linguagem_editorial: string | null
+          naipe: Database["public"]["Enums"]["arcano_naipe"]
+          nome: string
+          palavras_ancora: string[]
+          potencial: string | null
+          simbolo_elemento: string | null
+          status: Database["public"]["Enums"]["module_status"]
+          subtitulo: string | null
+          updated_at: string
+        }
+        Insert: {
+          atmosfera?: string | null
+          created_at?: string
+          desafios?: string | null
+          elemento?: string | null
+          essencia?: string | null
+          frase_abertura?: string | null
+          funcao_na_leitura?: string | null
+          icone?: string | null
+          id?: string
+          linguagem_editorial?: string | null
+          naipe: Database["public"]["Enums"]["arcano_naipe"]
+          nome: string
+          palavras_ancora?: string[]
+          potencial?: string | null
+          simbolo_elemento?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitulo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          atmosfera?: string | null
+          created_at?: string
+          desafios?: string | null
+          elemento?: string | null
+          essencia?: string | null
+          frase_abertura?: string | null
+          funcao_na_leitura?: string | null
+          icone?: string | null
+          id?: string
+          linguagem_editorial?: string | null
+          naipe?: Database["public"]["Enums"]["arcano_naipe"]
+          nome?: string
+          palavras_ancora?: string[]
+          potencial?: string | null
+          simbolo_elemento?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitulo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       cms_symbol_categories: {
         Row: {
