@@ -3,16 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, RotateCcw, Check, X, Zap, BookOpen, Sparkles, ChevronRight, RefreshCw } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { useReview } from "@/hooks/use-review";
+import { useArcanosList } from "@/hooks/use-content";
 import {
-  ALL_FLASHCARDS,
-  ALL_REVIEW_QUIZZES,
-  ALL_QUICK_REVIEWS,
+  buildReviewBundle,
   generateDailyChallenge,
-  getArcanoName,
-  getArcanoNumeral,
+  getArcanoNameFromBundle,
+  getArcanoNumeralFromBundle,
   getFlashcardsForArcano,
   type Flashcard,
-} from "@/data/review-data";
+} from "@/lib/review/builders";
 import { QuickReviewCard } from "@/components/QuickReviewCard";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
@@ -23,6 +22,14 @@ const ReviewPage = () => {
   const navigate = useNavigate();
   const { progress, addXP } = useProgress();
   const review = useReview();
+  const { data: arcanos } = useArcanosList({ tipo: "maior" });
+
+  const bundle = useMemo(() => buildReviewBundle(arcanos ?? []), [arcanos]);
+  const ALL_FLASHCARDS = bundle.allFlashcards;
+  const ALL_REVIEW_QUIZZES = bundle.allReviewQuizzes;
+  const ALL_QUICK_REVIEWS = bundle.allQuickReviews;
+  const getArcanoName = (id: number) => getArcanoNameFromBundle(bundle, id);
+  const getArcanoNumeral = (id: number) => getArcanoNumeralFromBundle(bundle, id);
 
   const [mode, setMode] = useState<ReviewMode>("home");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,7 +39,10 @@ const ReviewPage = () => {
   const [showExplanation, setShowExplanation] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
-  const dailyChallenge = generateDailyChallenge(today, progress.completedLessons);
+  const dailyChallenge = useMemo(
+    () => generateDailyChallenge(bundle, today, progress.completedLessons),
+    [bundle, today, progress.completedLessons],
+  );
   const isDailyDone = review.completedDailyChallenges.includes(`daily-${today}`);
   const dueFlashcards = review.getDueFlashcards();
 
