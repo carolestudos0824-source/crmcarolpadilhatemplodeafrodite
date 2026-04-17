@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
-import { CARTAS_CORTE } from "@/data/arcanos-menores/cartas-corte";
+import { useCourtCardsContent } from "@/hooks/use-content";
 import { NAIPES, type Naipe } from "@/data/arcanos-menores";
 import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
 import mysticBg from "@/assets/mystic-bg.jpg";
@@ -39,6 +39,8 @@ const CartasCortePage = () => {
   const navigate = useNavigate();
   const [openCard, setOpenCard] = useState<string | null>(null);
   const [openNaipe, setOpenNaipe] = useState<string | null>(null);
+  const { data: courtData } = useCourtCardsContent();
+  const CARTAS_CORTE = courtData?.items ?? [];
 
   const progressColors = [
     { bg: "hsl(36 45% 58% / 0.10)", border: "hsl(36 45% 58% / 0.30)", accent: "hsl(36 45% 45%)" },
@@ -231,7 +233,7 @@ const CartasCortePage = () => {
                       <div className="space-y-2">
                         {(["copas", "paus", "espadas", "ouros"] as const).map((naipe) => {
                           const info = NAIPES[naipe];
-                          const manifest = carta.comoSeManifesta[naipe];
+                          const manifest = carta.manifestacao[naipe];
                           const naipeKey = `${carta.id}-${naipe}`;
                           const isNaipeOpen = openNaipe === naipeKey;
 

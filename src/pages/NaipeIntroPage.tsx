@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import { type Naipe, NAIPES } from "@/data/arcanos-menores";
-import { getNaipePedagogico } from "@/data/arcanos-menores/naipes-pedagogico";
+import { useSuitIntroContent } from "@/hooks/use-content";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const NAIPE_ROUTE_MAP: Record<string, Naipe> = {
@@ -18,6 +18,8 @@ const NaipeIntroPage = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
 
   const naipe = NAIPE_ROUTE_MAP[naipeParam || ""];
+  const { data: ped, isLoading } = useSuitIntroContent(naipe ?? null);
+
   if (!naipe) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
@@ -27,7 +29,14 @@ const NaipeIntroPage = () => {
   }
 
   const info = NAIPES[naipe];
-  const ped = getNaipePedagogico(naipe);
+
+  if (isLoading || !ped) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
+        <p className="font-accent italic text-sm" style={{ color: "hsl(230 20% 25% / 0.55)" }}>Carregando…</p>
+      </div>
+    );
+  }
 
   const renderContent = (text: string) => {
     const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -40,11 +49,11 @@ const NaipeIntroPage = () => {
   };
 
   const sections = [
-    { id: "elemental", icon: info.elementSymbol, title: ped.eixoElemental.titulo, content: ped.eixoElemental.texto },
-    { id: "psicologico", icon: "🧠", title: ped.eixoPsicologico.titulo, content: ped.eixoPsicologico.texto },
-    { id: "pratico", icon: "🎯", title: ped.eixoPratico.titulo, content: ped.eixoPratico.texto },
-    { id: "simbolico", icon: "◎", title: "Aprofundamento Simbólico", content: ped.aprofundamentoSimbolico },
-  ];
+    { id: "elemental", icon: info.elementSymbol, title: `${ped.elemento ?? info.element} — O Elemento de ${info.name.replace("Naipe de ", "")}`, content: ped.atmosfera ?? "" },
+    { id: "psicologico", icon: "🧠", title: "A Psicologia do Naipe", content: ped.potencial ?? "" },
+    { id: "pratico", icon: "🎯", title: `${info.name.replace("Naipe de ", "")} na Vida Real`, content: ped.funcaoNaLeitura ?? "" },
+    { id: "simbolico", icon: "◎", title: "Aprofundamento Simbólico", content: ped.linguagemEditorial ?? "" },
+  ].filter((s) => s.content && s.content.length > 0);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -88,22 +97,24 @@ const NaipeIntroPage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            {info.name}
+            {ped.nome ?? info.name}
           </h1>
           <p className="font-accent text-base italic" style={{ color: "hsl(230 20% 25% / 0.60)" }}>
-            {info.subtitle}
+            {ped.subtitulo ?? info.subtitle}
           </p>
-          <p className="font-accent text-sm italic max-w-md mx-auto leading-relaxed" style={{
-            color: info.color.primary,
-            filter: "brightness(0.85)",
-          }}>
-            "{ped.fraseAbertura}"
-          </p>
+          {ped.fraseAbertura && (
+            <p className="font-accent text-sm italic max-w-md mx-auto leading-relaxed" style={{
+              color: info.color.primary,
+              filter: "brightness(0.85)",
+            }}>
+              "{ped.fraseAbertura}"
+            </p>
+          )}
         </div>
 
         {/* Keywords */}
         <div className="flex flex-wrap justify-center gap-2 mb-8" style={{ animation: "fade-up 0.5s ease-out 0.1s both" }}>
-          {info.keywords.map((kw) => (
+          {(ped.palavrasAncora.length > 0 ? ped.palavrasAncora : info.keywords).map((kw) => (
             <span key={kw} className="text-xs font-heading tracking-wider px-3 py-1.5 rounded-full" style={{
               background: info.color.surface,
               border: `1px solid ${info.color.border}`,
@@ -115,17 +126,19 @@ const NaipeIntroPage = () => {
         </div>
 
         {/* Main text */}
-        <div className="rounded-xl p-6 mb-8" style={{
-          background: "hsl(38 30% 95% / 0.85)",
-          border: "1px solid hsl(36 45% 58% / 0.15)",
-          animation: "fade-up 0.5s ease-out 0.2s both",
-        }}>
-          {ped.textoPrincipal.split("\n\n").map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed mb-4 last:mb-0" style={{ color: "hsl(230 20% 25%)" }}>
-              {renderContent(p)}
-            </p>
-          ))}
-        </div>
+        {ped.essencia && (
+          <div className="rounded-xl p-6 mb-8" style={{
+            background: "hsl(38 30% 95% / 0.85)",
+            border: "1px solid hsl(36 45% 58% / 0.15)",
+            animation: "fade-up 0.5s ease-out 0.2s both",
+          }}>
+            {ped.essencia.split("\n\n").map((p, i) => (
+              <p key={i} className="text-sm leading-relaxed mb-4 last:mb-0" style={{ color: "hsl(230 20% 25%)" }}>
+                {renderContent(p)}
+              </p>
+            ))}
+          </div>
+        )}
 
         {/* Expandable sections */}
         <div className="space-y-3 mb-8">
@@ -183,37 +196,41 @@ const NaipeIntroPage = () => {
         </div>
 
         {/* Applications in reading */}
-        <div className="rounded-xl p-6 mb-8" style={{
-          background: `${info.color.primary}08`,
-          border: `1px solid ${info.color.border}`,
-          animation: "fade-up 0.5s ease-out 0.4s both",
-        }}>
-          <h3 className="font-heading text-xs tracking-[0.2em] uppercase mb-4" style={{ color: info.color.primary }}>
-            ✦ Aplicações em Leitura
-          </h3>
-          <ul className="space-y-2.5">
-            {ped.aplicacoesLeitura.map((app, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm leading-relaxed" style={{ color: "hsl(230 20% 20%)" }}>
-                <span style={{ color: info.color.primary }} className="mt-0.5 shrink-0">◆</span>
-                {app}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {ped.aplicacoesLeitura.length > 0 && (
+          <div className="rounded-xl p-6 mb-8" style={{
+            background: `${info.color.primary}08`,
+            border: `1px solid ${info.color.border}`,
+            animation: "fade-up 0.5s ease-out 0.4s both",
+          }}>
+            <h3 className="font-heading text-xs tracking-[0.2em] uppercase mb-4" style={{ color: info.color.primary }}>
+              ✦ Aplicações em Leitura
+            </h3>
+            <ul className="space-y-2.5">
+              {ped.aplicacoesLeitura.map((app, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm leading-relaxed" style={{ color: "hsl(230 20% 20%)" }}>
+                  <span style={{ color: info.color.primary }} className="mt-0.5 shrink-0">◆</span>
+                  {app}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Reflection */}
-        <div className="rounded-xl p-5 mb-8" style={{
-          background: "hsl(340 42% 28% / 0.04)",
-          border: "1px solid hsl(340 42% 28% / 0.15)",
-          animation: "fade-up 0.5s ease-out 0.5s both",
-        }}>
-          <h3 className="font-heading text-xs tracking-[0.2em] uppercase mb-3" style={{ color: "hsl(340 42% 26%)" }}>
-            💭 Reflexão
-          </h3>
-          <p className="font-accent text-sm italic leading-relaxed" style={{ color: "hsl(230 20% 25% / 0.70)" }}>
-            {ped.reflexao}
-          </p>
-        </div>
+        {ped.reflexao && (
+          <div className="rounded-xl p-5 mb-8" style={{
+            background: "hsl(340 42% 28% / 0.04)",
+            border: "1px solid hsl(340 42% 28% / 0.15)",
+            animation: "fade-up 0.5s ease-out 0.5s both",
+          }}>
+            <h3 className="font-heading text-xs tracking-[0.2em] uppercase mb-3" style={{ color: "hsl(340 42% 26%)" }}>
+              💭 Reflexão
+            </h3>
+            <p className="font-accent text-sm italic leading-relaxed" style={{ color: "hsl(230 20% 25% / 0.70)" }}>
+              {ped.reflexao}
+            </p>
+          </div>
+        )}
 
         {/* CTA */}
         <div className="flex flex-col items-center gap-4 pt-4" style={{ animation: "fade-up 0.5s ease-out 0.6s both" }}>

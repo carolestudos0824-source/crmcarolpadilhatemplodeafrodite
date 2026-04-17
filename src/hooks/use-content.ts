@@ -9,10 +9,14 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getArcanoContent,
   getCertificatesContent,
+  getCourtCardsContent,
   getJourneyContent,
   getLessonContent,
   getModuleContent,
+  getNumerologyContent,
   getQuizContent,
+  getSuitContent,
+  getSuitsContent,
   getSymbolsContent,
   listArcanosContent,
   type GetArcanoParams,
@@ -21,6 +25,7 @@ import {
 } from "@/lib/content/service";
 import type {
   ArcanoContent,
+  ContentNaipe,
   LessonContent,
   ModuleContent,
   QuizContent,
@@ -29,6 +34,9 @@ import type {
 import type { JourneyContent } from "@/lib/content/journey-types";
 import type { SymbolsContent } from "@/lib/content/symbols-types";
 import type { CertificatesContent } from "@/lib/content/certificates-types";
+import type { NumerologyContent } from "@/lib/content/numerology-types";
+import type { SuitContent, SuitsContent } from "@/lib/content/suits-types";
+import type { CourtCardsContent } from "@/lib/content/court-types";
 
 const STALE_MS = 5 * 60 * 1000;
 const GC_MS = 30 * 60 * 1000;
@@ -169,6 +177,66 @@ export function useCertificatesContent(): UseContentResult<CertificatesContent |
   const query = useQuery<CertificatesContent | null>({
     queryKey: ["content", "certificates"],
     queryFn: () => getCertificatesContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+// ─── Numerology ────────────────────────────────────────────────────
+
+export function useNumerologyContent(): UseContentResult<NumerologyContent | null> {
+  const query = useQuery<NumerologyContent | null>({
+    queryKey: ["content", "numerology"],
+    queryFn: () => getNumerologyContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+// ─── Suits (Naipe Intro) ───────────────────────────────────────────
+
+export function useSuitsContent(): UseContentResult<SuitsContent | null> {
+  const query = useQuery<SuitsContent | null>({
+    queryKey: ["content", "suits"],
+    queryFn: () => getSuitsContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+export function useSuitIntroContent(
+  naipe: ContentNaipe | null,
+): UseContentResult<SuitContent | null> {
+  const query = useQuery<SuitContent | null>({
+    queryKey: ["content", "suit", naipe],
+    queryFn: () => (naipe ? getSuitContent(naipe) : Promise.resolve(null)),
+    enabled: !!naipe,
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  // SuitContent não tem metadata; usamos o wrapper da lista para sourceUsed.
+  const data = (query.data ?? null) as SuitContent | null;
+  return {
+    data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    error: (query.error as Error | null) ?? null,
+    sourceUsed: data ? "db" : null,
+    usedFallback: false,
+    refetch: () => query.refetch(),
+    isFetching: query.isFetching,
+  };
+}
+
+// ─── Court Cards (pedagógicas) ─────────────────────────────────────
+
+export function useCourtCardsContent(): UseContentResult<CourtCardsContent | null> {
+  const query = useQuery<CourtCardsContent | null>({
+    queryKey: ["content", "court-cards"],
+    queryFn: () => getCourtCardsContent(),
     staleTime: STALE_MS,
     gcTime: GC_MS,
   });
