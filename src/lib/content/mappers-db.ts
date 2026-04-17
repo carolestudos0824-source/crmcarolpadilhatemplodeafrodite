@@ -259,27 +259,26 @@ export function mapDbModuleToUI(
   row: DbModuleRow,
   lessons: DbLessonRow[],
 ): ModuleContent {
+  const ctx: DbLessonContext = {
+    moduleSlug: row.slug,
+    moduleName: row.name,
+    moduleTier: row.tier,
+    moduleStatus: row.status,
+  };
   return {
     id: row.id,
     slug: row.slug,
     nome: row.name,
-    categoria: row.category ?? undefined,
+    categoryLabel: row.category ?? undefined,
     descricaoCurta: row.short_description ?? undefined,
     descricaoEditorial: row.editorial_description ?? undefined,
-    icone: row.icon ?? undefined,
-    rotaPrefixo: row.route_prefix ?? undefined,
     ordem: row.order_index,
     tier: parseTier(row.tier),
     status: parseStatus(row.status),
-    corTema: row.theme_color ?? undefined,
+    themeColor: row.theme_color ?? undefined,
     licoes: [...lessons]
       .sort((a, b) => a.order_index - b.order_index)
-      .map((l) => ({
-        id: l.id,
-        slug: l.lesson_id,
-        titulo: l.title,
-        ordem: l.order_index,
-      })),
-    metadata: { source: "db" },
+      .map((l) => mapDbLessonToUI(l, ctx)),
+    metadata: { source: "db", sourceId: row.id },
   };
 }

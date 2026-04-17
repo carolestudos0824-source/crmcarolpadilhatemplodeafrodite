@@ -255,23 +255,16 @@ export function mapLegacyModuleToUI(
     id: `legacy-module-${slug}`,
     slug,
     nome: name,
-    categoria: undefined,
+    categoryLabel: undefined,
     descricaoCurta: undefined,
     descricaoEditorial: undefined,
-    icone: undefined,
-    rotaPrefixo: `/module/${slug}`,
     ordem: 0,
     tier: "premium",
     status: "publicado",
-    corTema: undefined,
+    themeColor: undefined,
     licoes: [...lessons]
       .sort((a, b) => a.order - b.order)
-      .map((l) => ({
-        id: `legacy-lesson-${l.id}`,
-        slug: l.id,
-        titulo: l.title,
-        ordem: l.order,
-      })),
-    metadata: { source: "legacy" },
+      .map((l) => mapLegacyLessonToUI(l, slug, name)),
+    metadata: { source: "legacy", sourceId: slug, usedFallback: true },
   };
 }

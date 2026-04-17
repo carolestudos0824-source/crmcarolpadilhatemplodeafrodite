@@ -141,26 +141,20 @@ export interface ModuleContent {
   id: string;
   slug: string;
   nome: string;
-  categoria?: string;
+  categoryLabel?: string;
   descricaoCurta?: string;
   descricaoEditorial?: string;
-  icone?: string;
-  rotaPrefixo?: string;
   ordem: number;
   tier: ContentTier;
   status: ContentStatus;
-  corTema?: string;
+  themeColor?: string;
 
-  /** Lista resumida das lições do módulo (para tela do módulo). */
-  licoes: Array<{
-    id: string;
-    slug: string;
-    titulo: string;
-    ordem: number;
-  }>;
+  licoes: LessonContent[];
 
   metadata: {
     source: ContentSource;
+    sourceId?: string;
+    usedFallback?: boolean;
   };
 }
 
