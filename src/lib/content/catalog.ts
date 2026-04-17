@@ -21,9 +21,9 @@ import {
   getArcanoById as legacyGetArcanoById,
   type LearningModule,
   type ArcanoSummary,
-  type ArcanoData,
   type ModuleCategory,
 } from "@/data/tarot-data";
+import type { ArcanoData } from "./runtime-types";
 
 export type { LearningModule, ArcanoSummary, ArcanoData, ModuleCategory };
 

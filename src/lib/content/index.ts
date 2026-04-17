@@ -63,7 +63,6 @@ export {
   getArcanoFull,
   type LearningModule,
   type ArcanoSummary,
-  type ArcanoData,
   type ModuleCategory,
 } from "./catalog";
 
