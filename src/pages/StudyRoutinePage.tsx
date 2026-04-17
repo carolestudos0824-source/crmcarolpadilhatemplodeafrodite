@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Flame, BookOpen, RefreshCw, Sun, Target, TrendingUp, Check } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
-import { MODULES, ARCANOS_MAIORES, getArcanoById, isModuleUnlocked } from "@/data/tarot-data";
+import { MODULES_CATALOG as MODULES, ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, getArcanoFull as getArcanoById, isModuleUnlocked } from "@/lib/content";
 import { getDailyChallenges } from "@/data/daily-challenges";
 import ornamentDivider from "@/assets/ornament-divider.png";
 

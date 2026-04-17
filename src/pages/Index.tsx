@@ -6,7 +6,7 @@ import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
 import { JourneyMap } from "@/components/JourneyMap";
 import { useProgress } from "@/hooks/use-progress";
-import { ARCANOS_MAIORES, getArcanoById } from "@/data/tarot-data";
+import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, getArcanoFull as getArcanoById } from "@/lib/content";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 

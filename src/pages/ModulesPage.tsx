@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Check, ChevronRight, Sparkles, Crown, User } from "lucide-react";
-import { MODULES, isModuleUnlocked, type LearningModule, type ModuleCategory, ARCANOS_MAIORES } from "@/data/tarot-data";
+import { MODULES_CATALOG as MODULES, isModuleUnlocked, ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, type LearningModule, type ModuleCategory } from "@/lib/content";
 import { useProgress } from "@/hooks/use-progress";
 import { useTrackEvent } from "@/hooks/use-track-event";
 import OnboardingPage from "./OnboardingPage";
