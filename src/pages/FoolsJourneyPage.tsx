@@ -2,57 +2,37 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedArcanosMaiores } from "@/hooks/use-resolved-arcanos-maiores";
-import {
-  JOURNEY_INTRO,
-  JOURNEY_PHASES,
-  JOURNEY_ARCANOS,
-  JOURNEY_CLOSING,
-  type JourneyPhase,
-} from "@/data/fools-journey";
+import { useJourneyContent } from "@/hooks/use-content";
+import { CORES_FASE, JOURNEY_MOTION } from "@/data/fools-journey-visual";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
-
-const PHASE_COLORS: Record<JourneyPhase["theme"], { main: string; soft: string; border: string; gradient: string }> = {
-  gold: {
-    main: "hsl(36 42% 42%)",
-    soft: "hsl(36 42% 44% / 0.10)",
-    border: "hsl(36 42% 44% / 0.25)",
-    gradient: "linear-gradient(135deg, hsl(36 42% 42%), hsl(36 45% 55%))",
-  },
-  wine: {
-    main: "hsl(340 42% 28%)",
-    soft: "hsl(340 42% 28% / 0.08)",
-    border: "hsl(340 42% 28% / 0.20)",
-    gradient: "linear-gradient(135deg, hsl(340 42% 22%), hsl(340 42% 35%))",
-  },
-  plum: {
-    main: "hsl(280 30% 30%)",
-    soft: "hsl(280 30% 30% / 0.08)",
-    border: "hsl(280 30% 30% / 0.18)",
-    gradient: "linear-gradient(135deg, hsl(280 30% 25%), hsl(280 30% 40%))",
-  },
-  moonlight: {
-    main: "hsl(210 35% 35%)",
-    soft: "hsl(210 35% 35% / 0.08)",
-    border: "hsl(210 35% 35% / 0.18)",
-    gradient: "linear-gradient(135deg, hsl(210 35% 30%), hsl(210 45% 50%))",
-  },
-};
 
 const FoolsJourneyPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
 
-  // Fase 2C: lista agregada dos 22 Arcanos Maiores também passa pelo adaptador.
-  // A UI continua usando JOURNEY_ARCANOS / JOURNEY_PHASES (legado) para
-  // preservar journeyRole, narrativeText, ordenação narrativa e estados
-  // visuais. O probe garante sourceUsed='db'/usedFallback=false e expõe
-  // telemetria, sem alterar layout, ordem ou comportamento de premium.
+  // Fase 2C: lista agregada dos 22 Arcanos Maiores também passa pelo adaptador
+  // (telemetria sourceUsed='db'/usedFallback=false).
   const resolvedMaiores = useResolvedArcanosMaiores();
   void resolvedMaiores;
 
+  // Fase 5D: estrutura editorial da Jornada vem do CMS via adapter.
+  const { data: journey, isLoading } = useJourneyContent();
+
   const isStudied = (arcanoId: number) =>
     progress.completedLessons.includes(`arcano-${arcanoId}`);
+
+  if (isLoading || !journey) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="font-accent italic text-sm" style={{ color: "hsl(36 42% 45% / 0.60)" }}>
+          Preparando a travessia…
+        </div>
+      </div>
+    );
+  }
+
+  const { meta, fases, arcanos } = journey;
 
   return (
     <div className="min-h-screen relative overflow-hidden">
