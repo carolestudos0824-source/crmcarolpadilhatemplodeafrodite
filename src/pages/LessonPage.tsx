@@ -15,6 +15,7 @@ import { QuizSection } from "@/components/QuizSection";
 import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
+import { useResolvedArcano } from "@/hooks/use-resolved-arcano";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 
@@ -44,7 +45,16 @@ const LessonPage = () => {
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
 
-  // Phase 1: quiz vem do content-adapter (DB → fallback legado).
+  // Fase 2A: leitura do arcano também passa pelo adaptador.
+  // A UI continua usando o objeto legado (`arcano`) para preservar 100% do
+  // layout, animação e estrutura. O adaptador atua aqui como fonte canônica
+  // hidratada do DB com fallback automático para o legado quando a row não
+  // existir, expondo `sourceUsed` para telemetria.
+  const resolvedArcano = useResolvedArcano(
+    arcano ? { tipo: "maior", numero: arcanoId } : null,
+  );
+
+  // Fase 1: quiz vem do content-adapter (DB → fallback legado).
   // O `legacyQuiz` continua como rede de segurança caso o adapter retorne null.
   const resolvedQuiz = useResolvedQuiz({
     params: arcano
@@ -59,6 +69,9 @@ const LessonPage = () => {
       `[content-adapter] quiz arcano=${arcanoId} source=${resolvedQuiz.sourceUsed} fallback=${resolvedQuiz.usedFallback}`,
     );
   }
+
+  // Marca para o linter — o probe é intencional, mantém referência para evitar tree-shake.
+  void resolvedArcano;
 
   useEffect(() => {
     if (arcano) trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
