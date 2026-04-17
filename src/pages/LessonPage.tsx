@@ -14,6 +14,7 @@ import { ExerciseSection } from "@/components/ExerciseSection";
 import { QuizSection } from "@/components/QuizSection";
 import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
+import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 
