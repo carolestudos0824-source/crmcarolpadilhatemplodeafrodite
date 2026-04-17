@@ -277,3 +277,14 @@ export async function getJourneyContent(): Promise<JourneyContent | null> {
     () => fetchJourneyFromLegacy(),
   );
 }
+
+// ─── SYMBOLS ───────────────────────────────────────────────────────
+
+export async function getSymbolsContent(): Promise<SymbolsContent | null> {
+  return withFallback<SymbolsContent>(
+    "symbols",
+    "library",
+    () => fetchSymbolsFromDb(),
+    () => fetchSymbolsFromLegacy(),
+  );
+}
