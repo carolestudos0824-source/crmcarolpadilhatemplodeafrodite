@@ -41,6 +41,14 @@ const FundamentosLessonPage = () => {
     })) ?? null,
   });
 
+  // Fase 4A — telemetria invisível: lição via adaptador (DB-first), restrito
+  // ao piloto fund-1/2/3. Demais lições não disparam query (slug = null).
+  const isPilotLesson = lesson ? FASE_4A_PILOT_LESSONS.has(lesson.id) : false;
+  useResolvedLesson(
+    isPilotLesson ? "fundamentos" : null,
+    isPilotLesson && lesson ? lesson.id : null,
+  );
+
   if (import.meta.env.DEV && lesson && resolvedQuiz.sourceUsed) {
     // eslint-disable-next-line no-console
     console.info(
