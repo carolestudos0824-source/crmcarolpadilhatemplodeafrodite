@@ -56,6 +56,8 @@ const CartasCortePage = () => {
       </header>
 
       <main className="relative z-10 container max-w-3xl px-4 py-8">
+        {/* Fase 3 — telemetria invisível dos itens-piloto das cortes */}
+        <PilotCortePilots />
         {/* Hero */}
         <div className="text-center space-y-4 mb-10" style={{ animation: "fade-up 0.6s ease-out" }}>
           <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-2xl" style={{
