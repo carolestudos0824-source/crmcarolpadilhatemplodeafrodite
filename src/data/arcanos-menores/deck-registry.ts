@@ -1,0 +1,193 @@
+/**
+ * REGISTRY OFICIAL — Acervo dos 56 Arcanos Menores.
+ *
+ * Fonte canônica única para id, nome, naipe, posição, slug, imagem,
+ * status visual (imagem disponível) e status editorial (conteúdo pronto).
+ *
+ * Derivado automaticamente de ARCANOS_MENORES — não duplica conteúdo.
+ * Use este registry no admin, jornada, lições e quizzes para garantir
+ * que toda a plataforma fala sobre as mesmas 56 cartas.
+ */
+
+import {
+  ARCANOS_MENORES,
+  type ArcanoMenorEditorial,
+  type Naipe,
+  type CartaPosicao,
+  isCourtCard,
+} from "./index";
+
+export type StatusValidacao = "validado" | "pendente" | "ausente";
+
+export interface DeckEntry {
+  /** ID canônico: "{naipe}-{posicao}" — ex.: "copas-1", "espadas-rainha" */
+  id: string;
+  /** Nome canônico em português — ex.: "Ás de Copas" */
+  nome: string;
+  /** Slug URL-safe — ex.: "as-de-copas", "rainha-de-espadas" */
+  slug: string;
+  /** Naipe oficial */
+  naipe: Naipe;
+  /** Posição: 1-10 (numérica) ou "pajem"|"cavaleiro"|"rainha"|"rei" */
+  posicao: CartaPosicao;
+  /** Tipo derivado para filtros */
+  tipo: "numerada" | "corte";
+  /** Caminho oficial da imagem RWS */
+  cardImage: string;
+  /** Status visual: imagem está pronta? */
+  statusVisual: StatusValidacao;
+  /** Status editorial: conteúdo está pronto e auditado? */
+  statusEditorial: StatusValidacao;
+}
+
+// ─── Slug helpers ─────────────────────────────────────────────────
+
+const NUMERAL_SLUG: Record<number, string> = {
+  1: "as", 2: "dois", 3: "tres", 4: "quatro", 5: "cinco",
+  6: "seis", 7: "sete", 8: "oito", 9: "nove", 10: "dez",
+};
+
+function getCardSlug(posicao: CartaPosicao, naipe: Naipe): string {
+  const pos = typeof posicao === "number" ? NUMERAL_SLUG[posicao] : posicao;
+  return `${pos}-de-${naipe}`;
+}
+
+// ─── Validação editorial (mesma régua das outras auditorias) ──────
+
+const REQ_FIELDS = [
+  "subtitulo", "essencia", "simbolosCentrais", "arquetipo",
+  "luz", "sombra", "licaoPratica",
+  "interpretacaoAmor", "interpretacaoTrabalho", "interpretacaoEspiritualidade",
+  "vozDaCarta", "aprofundamento",
+] as const;
+
+function isEditorialReady(c: ArcanoMenorEditorial): boolean {
+  const allFields = REQ_FIELDS.every(k => c[k] && c[k].length > 0);
+  const aprofOk = (c.aprofundamento?.length ?? 0) >= 300;
+  const quizOk = (c.quiz?.length ?? 0) >= 3;
+  const rrOk = !!c.revisaoRapida?.palavraChave;
+  return allFields && aprofOk && quizOk && rrOk;
+}
+
+// ─── Status visual ────────────────────────────────────────────────
+// Cartas com imagem oficial confirmada. Atualize ao adicionar arte.
+// Por padrão, marcamos todas como "pendente" — promova para "validado"
+// quando o asset estiver realmente disponível em /assets/arcanos-menores/.
+const VISUAL_VALIDATED: ReadonlySet<string> = new Set<string>([
+  // ex.: "copas-1", "ouros-rainha"  (preencher conforme arte real)
+]);
+
+// ─── Build do Registry ────────────────────────────────────────────
+
+function buildEntry(c: ArcanoMenorEditorial): DeckEntry {
+  return {
+    id: c.id,
+    nome: c.nome,
+    slug: getCardSlug(c.posicao, c.naipe),
+    naipe: c.naipe,
+    posicao: c.posicao,
+    tipo: isCourtCard(c.posicao) ? "corte" : "numerada",
+    cardImage: c.cardImage,
+    statusVisual: VISUAL_VALIDATED.has(c.id) ? "validado" : "pendente",
+    statusEditorial: isEditorialReady(c) ? "validado" : "pendente",
+  };
+}
+
+/** Acervo oficial — 56 entradas, ordem canônica Copas→Paus→Espadas→Ouros, Ás→Rei */
+export const DECK_MENORES_REGISTRY: readonly DeckEntry[] = ARCANOS_MENORES.map(buildEntry);
+
+/** Mapa O(1) por id */
+export const DECK_BY_ID: ReadonlyMap<string, DeckEntry> = new Map(
+  DECK_MENORES_REGISTRY.map(e => [e.id, e])
+);
+
+/** Mapa O(1) por slug */
+export const DECK_BY_SLUG: ReadonlyMap<string, DeckEntry> = new Map(
+  DECK_MENORES_REGISTRY.map(e => [e.slug, e])
+);
+
+// ─── API pública ──────────────────────────────────────────────────
+
+export function getDeckEntry(id: string): DeckEntry | undefined {
+  return DECK_BY_ID.get(id);
+}
+
+export function getDeckEntryBySlug(slug: string): DeckEntry | undefined {
+  return DECK_BY_SLUG.get(slug);
+}
+
+export function getDeckByNaipe(naipe: Naipe): DeckEntry[] {
+  return DECK_MENORES_REGISTRY.filter(e => e.naipe === naipe);
+}
+
+export function getDeckByTipo(tipo: "numerada" | "corte"): DeckEntry[] {
+  return DECK_MENORES_REGISTRY.filter(e => e.tipo === tipo);
+}
+
+/** Stats agregadas para painel admin */
+export function getDeckStats() {
+  const total = DECK_MENORES_REGISTRY.length;
+  const editorialOk = DECK_MENORES_REGISTRY.filter(e => e.statusEditorial === "validado").length;
+  const visualOk = DECK_MENORES_REGISTRY.filter(e => e.statusVisual === "validado").length;
+  return {
+    total,
+    numeradas: getDeckByTipo("numerada").length,
+    corte: getDeckByTipo("corte").length,
+    editorial: { validado: editorialOk, pendente: total - editorialOk },
+    visual: { validado: visualOk, pendente: total - visualOk },
+  };
+}
+
+// ─── Guard de integridade (executável em testes) ──────────────────
+
+export interface DeckIntegrityIssue {
+  id: string;
+  problema: string;
+  detalhe?: unknown;
+}
+
+/** Valida toda a estrutura do deck. Retorna [] se tudo está perfeito. */
+export function validateDeckIntegrity(): DeckIntegrityIssue[] {
+  const issues: DeckIntegrityIssue[] = [];
+
+  // 1. Cardinalidade
+  if (DECK_MENORES_REGISTRY.length !== 56) {
+    issues.push({ id: "_deck_", problema: "cardinalidade ≠ 56", detalhe: DECK_MENORES_REGISTRY.length });
+  }
+  if (getDeckByTipo("numerada").length !== 40) {
+    issues.push({ id: "_deck_", problema: "numeradas ≠ 40" });
+  }
+  if (getDeckByTipo("corte").length !== 16) {
+    issues.push({ id: "_deck_", problema: "cortes ≠ 16" });
+  }
+
+  // 2. IDs e slugs únicos
+  const ids = new Set<string>();
+  const slugs = new Set<string>();
+  for (const e of DECK_MENORES_REGISTRY) {
+    if (ids.has(e.id)) issues.push({ id: e.id, problema: "id duplicado" });
+    if (slugs.has(e.slug)) issues.push({ id: e.id, problema: "slug duplicado", detalhe: e.slug });
+    ids.add(e.id);
+    slugs.add(e.slug);
+  }
+
+  // 3. Coerência id ↔ naipe ↔ posição
+  for (const e of DECK_MENORES_REGISTRY) {
+    const expectedId = `${e.naipe}-${e.posicao}`;
+    if (e.id !== expectedId) {
+      issues.push({ id: e.id, problema: "id não bate com naipe+posição", detalhe: expectedId });
+    }
+    if (!e.cardImage.includes(e.id)) {
+      issues.push({ id: e.id, problema: "imagem não referencia o id", detalhe: e.cardImage });
+    }
+  }
+
+  // 4. Cobertura completa: 4 naipes × 14 posições
+  const naipes: Naipe[] = ["copas", "paus", "espadas", "ouros"];
+  const positions: CartaPosicao[] = [1,2,3,4,5,6,7,8,9,10,"pajem","cavaleiro","rainha","rei"];
+  for (const n of naipes) for (const p of positions) {
+    if (!ids.has(`${n}-${p}`)) issues.push({ id: `${n}-${p}`, problema: "carta faltante" });
+  }
+
+  return issues;
+}

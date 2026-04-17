@@ -332,6 +332,22 @@ export {
   type NaipeOficial,
 } from "./naipes-oficial";
 
+// ─── Registry oficial do deck (acervo dos 56 menores) ─────────────
+export {
+  DECK_MENORES_REGISTRY,
+  DECK_BY_ID,
+  DECK_BY_SLUG,
+  getDeckEntry,
+  getDeckEntryBySlug,
+  getDeckByNaipe,
+  getDeckByTipo,
+  getDeckStats,
+  validateDeckIntegrity,
+  type DeckEntry,
+  type StatusValidacao,
+  type DeckIntegrityIssue,
+} from "./deck-registry";
+
 /** Check if position is a court card */
 export function isCourtCard(posicao: CartaPosicao): boolean {
   return typeof posicao === "string";
