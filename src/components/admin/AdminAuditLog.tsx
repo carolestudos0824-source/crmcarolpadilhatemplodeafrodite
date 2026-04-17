@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ACTION_LABELS, type AdminAction } from "@/lib/admin-audit";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { ScrollText, Loader2 } from "lucide-react";
+import { ScrollText, Loader2, Eye } from "lucide-react";
+import { useRole } from "@/hooks/use-role";
 
 interface AuditRow {
   id: string;
@@ -25,6 +26,7 @@ const PERIODS = [
 ];
 
 const AdminAuditLog = () => {
+  const { isAdmin } = useRole();
   const [rows, setRows] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionFilter, setActionFilter] = useState<string>("all");
@@ -75,6 +77,15 @@ const AdminAuditLog = () => {
         </h2>
         <p className="text-sm text-muted-foreground">Rastro completo e imutável de todas as ações administrativas.</p>
       </div>
+
+      {!isAdmin && (
+        <div className="flex items-start gap-2 rounded-lg border border-border/50 bg-muted/30 p-3 text-xs text-muted-foreground">
+          <Eye className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>
+            <strong className="text-foreground">Modo leitura:</strong> moderadores podem visualizar a auditoria, mas apenas administradores geram novos registros.
+          </span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Select value={actionFilter} onValueChange={setActionFilter}>
