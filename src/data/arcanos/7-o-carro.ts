@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_CARRO: ArcanoMaiorEditorial = {
   number: 7,
@@ -6,7 +7,7 @@ export const O_CARRO: ArcanoMaiorEditorial = {
   numeral: "VII",
   subtitle: "A Vontade em Movimento",
   slug: "o-carro",
-  cardImage: "/assets/the-chariot-card.jpg",
+  cardImage,
   keywords: ["Determinação", "Conquista", "Direção", "Vitória", "Controle"],
 
   essence:

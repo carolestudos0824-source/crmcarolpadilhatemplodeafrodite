@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_EREMITA: ArcanoMaiorEditorial = {
   number: 9,
@@ -6,7 +7,7 @@ export const O_EREMITA: ArcanoMaiorEditorial = {
   numeral: "IX",
   subtitle: "A Luz Interior",
   slug: "o-eremita",
-  cardImage: "/assets/the-hermit-card.jpg",
+  cardImage,
   keywords: ["Introspecção", "Sabedoria", "Solidão", "Busca Interior", "Guia"],
 
   essence:

@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_JUSTICA: ArcanoMaiorEditorial = {
   number: 8,
@@ -6,7 +7,7 @@ export const A_JUSTICA: ArcanoMaiorEditorial = {
   numeral: "VIII",
   subtitle: "O Equilíbrio Kármico",
   slug: "a-justica",
-  cardImage: "/assets/justice-card.jpg",
+  cardImage,
   keywords: ["Equilíbrio", "Verdade", "Consequência", "Responsabilidade", "Karma"],
 
   essence:

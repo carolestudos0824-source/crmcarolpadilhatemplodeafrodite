@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_RODA_DA_FORTUNA: ArcanoMaiorEditorial = {
   number: 10,
@@ -6,7 +7,7 @@ export const A_RODA_DA_FORTUNA: ArcanoMaiorEditorial = {
   numeral: "X",
   subtitle: "Os Ciclos do Destino",
   slug: "a-roda-da-fortuna",
-  cardImage: "/assets/wheel-of-fortune-card.jpg",
+  cardImage,
   keywords: ["Ciclos", "Destino", "Mudança", "Sorte", "Impermanência"],
 
   essence:

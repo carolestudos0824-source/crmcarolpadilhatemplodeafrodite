@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_IMPERATRIZ: ArcanoMaiorEditorial = {
   number: 3,
@@ -6,7 +7,7 @@ export const A_IMPERATRIZ: ArcanoMaiorEditorial = {
   numeral: "III",
   subtitle: "A Abundância Criativa",
   slug: "a-imperatriz",
-  cardImage: "/assets/the-empress-card.jpg",
+  cardImage,
   keywords: ["Fertilidade", "Abundância", "Criação", "Sensualidade", "Natureza"],
 
   essence:

@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_ESTRELA: ArcanoMaiorEditorial = {
   number: 17,
@@ -6,7 +7,7 @@ export const A_ESTRELA: ArcanoMaiorEditorial = {
   numeral: "XVII",
   subtitle: "A Esperança Renovada",
   slug: "a-estrela",
-  cardImage: "/assets/the-star-card.jpg",
+  cardImage,
   keywords: ["Esperança", "Inspiração", "Cura", "Serenidade", "Propósito"],
 
   essence:

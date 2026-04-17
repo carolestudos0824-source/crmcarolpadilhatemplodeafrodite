@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_SOL: ArcanoMaiorEditorial = {
   number: 19,
@@ -6,7 +7,7 @@ export const O_SOL: ArcanoMaiorEditorial = {
   numeral: "XIX",
   subtitle: "A Alegria Radiante",
   slug: "o-sol",
-  cardImage: "/assets/the-sun-card.jpg",
+  cardImage,
   keywords: ["Alegria", "Vitalidade", "Clareza", "Sucesso", "Verdade"],
 
   essence:

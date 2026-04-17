@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_MORTE: ArcanoMaiorEditorial = {
   number: 13,
@@ -6,7 +7,7 @@ export const A_MORTE: ArcanoMaiorEditorial = {
   numeral: "XIII",
   subtitle: "A Grande Transformação",
   slug: "a-morte",
-  cardImage: "/assets/death-card.jpg",
+  cardImage,
   keywords: ["Transformação", "Fim", "Renascimento", "Liberação", "Ciclo"],
 
   essence:

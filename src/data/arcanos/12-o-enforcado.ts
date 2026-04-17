@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_ENFORCADO: ArcanoMaiorEditorial = {
   number: 12,
@@ -6,7 +7,7 @@ export const O_ENFORCADO: ArcanoMaiorEditorial = {
   numeral: "XII",
   subtitle: "A Rendição Sagrada",
   slug: "o-enforcado",
-  cardImage: "/assets/the-hanged-man-card.jpg",
+  cardImage,
   keywords: ["Rendição", "Suspensão", "Sacrifício", "Perspectiva", "Entrega"],
 
   essence:

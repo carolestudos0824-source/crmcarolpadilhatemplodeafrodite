@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_TORRE: ArcanoMaiorEditorial = {
   number: 16,
@@ -6,7 +7,7 @@ export const A_TORRE: ArcanoMaiorEditorial = {
   numeral: "XVI",
   subtitle: "A Revelação Súbita",
   slug: "a-torre",
-  cardImage: "/assets/the-tower-card.jpg",
+  cardImage,
   keywords: ["Destruição", "Revelação", "Colapso", "Libertação", "Verdade"],
 
   essence:
