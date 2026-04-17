@@ -1,10 +1,13 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Search, Crown, Gift, Clock, BarChart3, BookOpen, ArrowUpDown } from "lucide-react";
+import { Users, Search, Crown, Gift, RotateCcw, Shield, ArrowUpDown, X, Mail, Calendar, Activity, Award, Flame, BookOpen, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
 
-interface UserRow {
+interface ProfileRow {
   user_id: string;
   display_name: string | null;
   is_premium: boolean;
@@ -25,31 +28,52 @@ interface ProgressRow {
   level: number;
 }
 
-type StatusFilter = "all" | "premium" | "free" | "gift" | "expired";
+interface AuthLite {
+  id: string;
+  email: string | null;
+  last_sign_in_at: string | null;
+}
+
+type StatusFilter = "all" | "premium" | "free" | "gift" | "expired" | "admin";
 type SortField = "created_at" | "last_active" | "xp" | "lessons";
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState<UserRow[]>([]);
+  const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [progress, setProgress] = useState<ProgressRow[]>([]);
+  const [emails, setEmails] = useState<Record<string, AuthLite>>({});
+  const [adminIds, setAdminIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sortBy, setSortBy] = useState<SortField>("created_at");
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<string | null>(null);
 
-  useEffect(() => {
-    const load = async () => {
-      const [{ data: prof }, { data: prog }] = await Promise.all([
-        supabase.from("profiles").select("user_id, display_name, is_premium, premium_until, premium_source, created_at, updated_at").order("created_at", { ascending: false }),
-        supabase.from("user_progress").select("user_id, completed_lessons, completed_modules, completed_quizzes, last_active, streak, xp, level"),
-      ]);
-      setUsers(prof || []);
-      setProgress(prog || []);
-      setLoading(false);
-    };
-    load();
+  const load = useCallback(async () => {
+    setLoading(true);
+    const [{ data: prof }, { data: prog }, { data: roles }] = await Promise.all([
+      supabase.from("profiles").select("user_id, display_name, is_premium, premium_until, premium_source, created_at, updated_at").order("created_at", { ascending: false }),
+      supabase.from("user_progress").select("user_id, completed_lessons, completed_modules, completed_quizzes, last_active, streak, xp, level"),
+      supabase.from("user_roles").select("user_id, role").eq("role", "admin"),
+    ]);
+    setProfiles(prof || []);
+    setProgress(prog || []);
+    setAdminIds(new Set((roles || []).map((r: any) => r.user_id)));
+
+    // Fetch emails via edge function
+    const { data: emailData } = await supabase.functions.invoke("admin-manage", {
+      body: { action: "list_users", perPage: 200 },
+    });
+    if (emailData?.users) {
+      const map: Record<string, AuthLite> = {};
+      emailData.users.forEach((u: AuthLite) => { map[u.id] = u; });
+      setEmails(map);
+    }
+    setLoading(false);
   }, []);
 
-  const now = useMemo(() => new Date(), []);
+  useEffect(() => { load(); }, [load]);
+
+  const now = useMemo(() => new Date(), [profiles]);
 
   const progressMap = useMemo(() => {
     const map: Record<string, ProgressRow> = {};
@@ -57,7 +81,8 @@ const AdminUsers = () => {
     return map;
   }, [progress]);
 
-  const getStatus = (u: UserRow) => {
+  const getStatus = (u: ProfileRow) => {
+    if (adminIds.has(u.user_id)) return { label: "Admin", cls: "bg-amber-500/10 text-amber-600", key: "admin" as const };
     if (!u.is_premium) return { label: "Gratuito", cls: "bg-muted text-muted-foreground", key: "free" as const };
     const until = u.premium_until ? new Date(u.premium_until) : null;
     if (until && until <= now) return { label: "Expirado", cls: "bg-destructive/10 text-destructive", key: "expired" as const };
@@ -66,26 +91,27 @@ const AdminUsers = () => {
   };
 
   const enriched = useMemo(() => {
-    return users.map(u => ({
+    return profiles.map(u => ({
       ...u,
       status: getStatus(u),
+      email: emails[u.user_id]?.email || null,
       progress: progressMap[u.user_id],
     }));
-  }, [users, progressMap, now]);
+  }, [profiles, progressMap, emails, adminIds, now]);
 
   const filtered = useMemo(() => {
     let list = enriched;
-
     if (search) {
       const q = search.toLowerCase();
-      list = list.filter(u => (u.display_name || "").toLowerCase().includes(q) || u.user_id.toLowerCase().includes(q));
+      list = list.filter(u =>
+        (u.display_name || "").toLowerCase().includes(q) ||
+        (u.email || "").toLowerCase().includes(q) ||
+        u.user_id.toLowerCase().includes(q)
+      );
     }
-
     if (statusFilter !== "all") {
       list = list.filter(u => u.status.key === statusFilter);
     }
-
-    // Sort
     list = [...list].sort((a, b) => {
       switch (sortBy) {
         case "last_active":
@@ -98,9 +124,15 @@ const AdminUsers = () => {
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       }
     });
-
     return list;
   }, [enriched, search, statusFilter, sortBy]);
+
+  const stats = useMemo(() => ({
+    total: profiles.length,
+    premium: profiles.filter(u => u.is_premium && (!u.premium_until || new Date(u.premium_until) > now)).length,
+    expired: profiles.filter(u => u.is_premium && u.premium_until && new Date(u.premium_until) <= now).length,
+    admins: adminIds.size,
+  }), [profiles, adminIds, now]);
 
   if (loading) return <div className="p-8 text-center text-sm text-muted-foreground">Carregando usuários...</div>;
 
@@ -108,32 +140,41 @@ const AdminUsers = () => {
     <div className="space-y-6">
       <div>
         <h2 className="font-heading text-lg text-foreground">Usuários</h2>
-        <p className="text-sm text-muted-foreground">{users.length} cadastrados · {users.filter(u => u.is_premium).length} premium</p>
+        <p className="text-sm text-muted-foreground">Gestão completa de pessoas, acesso e progresso.</p>
+      </div>
+
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <StatCard icon={<Users className="w-4 h-4" />} label="Total" value={stats.total} />
+        <StatCard icon={<Crown className="w-4 h-4" />} label="Premium ativos" value={stats.premium} accent />
+        <StatCard icon={<AlertTriangle className="w-4 h-4" />} label="Expirados" value={stats.expired} />
+        <StatCard icon={<Shield className="w-4 h-4" />} label="Admins" value={stats.admins} />
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nome ou ID..." className="pl-8 h-9 text-sm" />
+          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nome ou e-mail..." className="pl-8 h-9 text-sm" />
         </div>
         <Select value={statusFilter} onValueChange={v => setStatusFilter(v as StatusFilter)}>
-          <SelectTrigger className="w-32 h-9 text-xs"><SelectValue /></SelectTrigger>
+          <SelectTrigger className="w-36 h-9 text-xs"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="premium">Assinantes</SelectItem>
             <SelectItem value="free">Gratuitos</SelectItem>
+            <SelectItem value="premium">Assinantes</SelectItem>
             <SelectItem value="gift">Presenteados</SelectItem>
             <SelectItem value="expired">Expirados</SelectItem>
+            <SelectItem value="admin">Admins</SelectItem>
           </SelectContent>
         </Select>
         <Select value={sortBy} onValueChange={v => setSortBy(v as SortField)}>
-          <SelectTrigger className="w-36 h-9 text-xs">
+          <SelectTrigger className="w-40 h-9 text-xs">
             <ArrowUpDown className="w-3 h-3 mr-1" />
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="created_at">Data de cadastro</SelectItem>
+            <SelectItem value="created_at">Cadastro recente</SelectItem>
             <SelectItem value="last_active">Última atividade</SelectItem>
             <SelectItem value="xp">XP</SelectItem>
             <SelectItem value="lessons">Lições concluídas</SelectItem>
@@ -151,32 +192,33 @@ const AdminUsers = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/30">
-                  <th className="text-left p-3 text-xs text-muted-foreground font-medium">Nome</th>
+                <tr className="border-b border-border/30 bg-card/60">
+                  <th className="text-left p-3 text-xs text-muted-foreground font-medium">Usuário</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Status</th>
-                  <th className="text-center p-3 text-xs text-muted-foreground font-medium">Origem</th>
+                  <th className="text-center p-3 text-xs text-muted-foreground font-medium">Plano</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Cadastro</th>
-                  <th className="text-center p-3 text-xs text-muted-foreground font-medium">Última atividade</th>
+                  <th className="text-center p-3 text-xs text-muted-foreground font-medium">Último acesso</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Lições</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">XP</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Streak</th>
+                  <th className="text-right p-3 text-xs text-muted-foreground font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.slice(0, 100).map(u => (
                   <tr key={u.user_id} className="border-b border-border/10 last:border-0 hover:bg-card/80 transition-colors">
                     <td className="p-3">
-                      <div>
-                        <p className="text-foreground font-medium">{u.display_name || "Sem nome"}</p>
-                        <p className="text-[10px] text-muted-foreground font-mono">{u.user_id.slice(0, 8)}...</p>
-                      </div>
+                      <p className="text-foreground font-medium leading-tight">{u.display_name || "Sem nome"}</p>
+                      <p className="text-[11px] text-muted-foreground">{u.email || `${u.user_id.slice(0, 8)}...`}</p>
                     </td>
                     <td className="p-3 text-center">
                       <span className={`text-[10px] font-heading tracking-wide px-2 py-0.5 rounded-full ${u.status.cls}`}>
                         {u.status.label}
                       </span>
                     </td>
-                    <td className="p-3 text-center text-muted-foreground text-xs">{u.premium_source || "—"}</td>
+                    <td className="p-3 text-center text-muted-foreground text-xs">
+                      {u.premium_until ? new Date(u.premium_until).toLocaleDateString("pt-BR") : "—"}
+                    </td>
                     <td className="p-3 text-center text-muted-foreground text-xs">{new Date(u.created_at).toLocaleDateString("pt-BR")}</td>
                     <td className="p-3 text-center text-muted-foreground text-xs">
                       {u.progress?.last_active ? new Date(u.progress.last_active).toLocaleDateString("pt-BR") : "—"}
@@ -185,12 +227,13 @@ const AdminUsers = () => {
                     <td className="p-3 text-center text-muted-foreground text-xs">{u.progress?.xp || 0}</td>
                     <td className="p-3 text-center">
                       {u.progress?.streak ? (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
-                          🔥 {u.progress.streak}
-                        </span>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">—</span>
-                      )}
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">🔥 {u.progress.streak}</span>
+                      ) : <span className="text-xs text-muted-foreground">—</span>}
+                    </td>
+                    <td className="p-3 text-right">
+                      <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setSelected(u.user_id)}>
+                        Abrir
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -204,8 +247,172 @@ const AdminUsers = () => {
           )}
         </div>
       )}
+
+      <UserDetailDialog
+        userId={selected}
+        onClose={() => setSelected(null)}
+        onChanged={load}
+      />
     </div>
   );
 };
+
+const StatCard = ({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: number; accent?: boolean }) => (
+  <div className={`rounded-xl border border-border/50 bg-card/50 p-3 ${accent ? "ring-1 ring-primary/20" : ""}`}>
+    <div className="flex items-center justify-between">
+      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className={accent ? "text-primary" : "text-muted-foreground"}>{icon}</span>
+    </div>
+    <p className="font-heading text-2xl text-foreground mt-1">{value}</p>
+  </div>
+);
+
+// ============== USER DETAIL DIALOG ==============
+
+interface UserDetail {
+  auth: { email: string | null; created_at: string | null; last_sign_in_at: string | null } | null;
+  profile: ProfileRow | null;
+  progress: ProgressRow | null;
+  roles: string[];
+  redemptions: { redeemed_at: string; gift_code_id: string }[] | null;
+}
+
+const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | null; onClose: () => void; onChanged: () => void }) => {
+  const [data, setData] = useState<UserDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [days, setDays] = useState("30");
+
+  useEffect(() => {
+    if (!userId) { setData(null); return; }
+    setLoading(true);
+    supabase.functions
+      .invoke("admin-manage", { body: { action: "user_detail", target_user_id: userId } })
+      .then(({ data, error }) => {
+        if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
+        else setData(data);
+        setLoading(false);
+      });
+  }, [userId]);
+
+  const run = async (action: string, body: Record<string, unknown> = {}, successMsg = "Atualizado") => {
+    if (!userId) return;
+    setBusy(action);
+    const { data: res, error } = await supabase.functions.invoke("admin-manage", {
+      body: { action, target_user_id: userId, ...body },
+    });
+    setBusy(null);
+    if (error || res?.error) {
+      toast({ title: "Erro", description: error?.message || res?.error, variant: "destructive" });
+      return;
+    }
+    toast({ title: successMsg });
+    // Refresh detail and outer list
+    const { data: refreshed } = await supabase.functions.invoke("admin-manage", {
+      body: { action: "user_detail", target_user_id: userId },
+    });
+    if (refreshed) setData(refreshed);
+    onChanged();
+  };
+
+  return (
+    <Dialog open={!!userId} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="font-heading">Perfil administrativo</DialogTitle>
+        </DialogHeader>
+
+        {loading || !data ? (
+          <div className="p-8 text-center text-sm text-muted-foreground">Carregando...</div>
+        ) : (
+          <div className="space-y-5">
+            {/* Header */}
+            <div className="rounded-xl border border-border/50 bg-card/50 p-4">
+              <p className="font-heading text-lg text-foreground">{data.profile?.display_name || "Sem nome"}</p>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5"><Mail className="w-3 h-3" />{data.auth?.email || "—"}</span>
+                <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3" />Criado {data.auth?.created_at ? new Date(data.auth.created_at).toLocaleDateString("pt-BR") : "—"}</span>
+                <span className="flex items-center gap-1.5"><Activity className="w-3 h-3" />Último login {data.auth?.last_sign_in_at ? new Date(data.auth.last_sign_in_at).toLocaleDateString("pt-BR") : "—"}</span>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {data.roles.includes("admin") && <span className="text-[10px] font-heading tracking-wide px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600">ADMIN</span>}
+                {data.profile?.is_premium ? (
+                  <span className="text-[10px] font-heading tracking-wide px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                    PREMIUM · {data.profile.premium_source || "—"}
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-heading tracking-wide px-2 py-0.5 rounded-full bg-muted text-muted-foreground">GRATUITO</span>
+                )}
+                {data.profile?.premium_until && (
+                  <span className="text-[10px] text-muted-foreground">até {new Date(data.profile.premium_until).toLocaleDateString("pt-BR")}</span>
+                )}
+              </div>
+            </div>
+
+            {/* Progress stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <ProgressStat icon={<Award className="w-3.5 h-3.5" />} label="XP" value={data.progress?.xp ?? 0} />
+              <ProgressStat icon={<Flame className="w-3.5 h-3.5" />} label="Streak" value={data.progress?.streak ?? 0} />
+              <ProgressStat icon={<BookOpen className="w-3.5 h-3.5" />} label="Lições" value={data.progress?.completed_lessons?.length ?? 0} />
+              <ProgressStat icon={<CheckCircle2 className="w-3.5 h-3.5" />} label="Quizzes" value={data.progress?.completed_quizzes?.length ?? 0} />
+            </div>
+
+            <div className="text-xs text-muted-foreground">
+              Módulos concluídos: <span className="text-foreground font-medium">{data.progress?.completed_modules?.length ?? 0}</span> · Nível: <span className="text-foreground font-medium">{data.progress?.level ?? 1}</span> · Resgates de presente: <span className="text-foreground font-medium">{data.redemptions?.length ?? 0}</span>
+            </div>
+
+            {/* Premium controls */}
+            <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
+              <p className="text-xs font-heading tracking-wider text-muted-foreground uppercase">Acesso premium</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Input type="number" value={days} onChange={(e) => setDays(e.target.value)} className="w-20 h-9 text-sm" min={1} />
+                <span className="text-xs text-muted-foreground">dias</span>
+                <Button size="sm" onClick={() => run("grant_premium", { days: Number(days), source: "admin" }, "Premium concedido")} disabled={busy === "grant_premium"}>
+                  <Crown className="w-3.5 h-3.5" /> Conceder premium
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => run("grant_premium", { days: Number(days), source: "gift" }, "Presente concedido")} disabled={busy === "grant_premium"}>
+                  <Gift className="w-3.5 h-3.5" /> Presentear
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => run("revoke_premium", {}, "Premium removido")} disabled={busy === "revoke_premium" || !data.profile?.is_premium}>
+                  Remover premium
+                </Button>
+              </div>
+            </div>
+
+            {/* Role + Reset */}
+            <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
+              <p className="text-xs font-heading tracking-wider text-muted-foreground uppercase">Funções e progresso</p>
+              <div className="flex flex-wrap gap-2">
+                {data.roles.includes("admin") ? (
+                  <Button size="sm" variant="outline" onClick={() => run("demote", {}, "Admin removido")} disabled={busy === "demote"}>
+                    <Shield className="w-3.5 h-3.5" /> Remover admin
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" onClick={() => run("promote", {}, "Promovido a admin")} disabled={busy === "promote"}>
+                    <Shield className="w-3.5 h-3.5" /> Tornar admin
+                  </Button>
+                )}
+                <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => {
+                  if (confirm("Tem certeza? Isso zera XP, streak, lições e módulos concluídos.")) run("reset_progress", {}, "Progresso resetado");
+                }} disabled={busy === "reset_progress"}>
+                  <RotateCcw className="w-3.5 h-3.5" /> Resetar progresso
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const ProgressStat = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) => (
+  <div className="rounded-lg border border-border/40 bg-card/40 p-2.5">
+    <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+      {icon}{label}
+    </div>
+    <p className="font-heading text-lg text-foreground">{value}</p>
+  </div>
+);
 
 export default AdminUsers;
