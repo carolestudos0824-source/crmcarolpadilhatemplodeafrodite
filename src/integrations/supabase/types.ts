@@ -247,6 +247,106 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_quiz_questions: {
+        Row: {
+          correct_index: number
+          created_at: string
+          explanation: string | null
+          id: string
+          options: Json
+          order_index: number
+          prompt: string
+          quiz_id: string
+          updated_at: string
+        }
+        Insert: {
+          correct_index?: number
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          options?: Json
+          order_index?: number
+          prompt: string
+          quiz_id: string
+          updated_at?: string
+        }
+        Update: {
+          correct_index?: number
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          options?: Json
+          order_index?: number
+          prompt?: string
+          quiz_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_quiz_questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "cms_quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_quizzes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          difficulty: Database["public"]["Enums"]["quiz_difficulty"]
+          external_id: string | null
+          id: string
+          linked_to: string | null
+          module_id: string | null
+          result_text: string | null
+          review_link: string | null
+          status: Database["public"]["Enums"]["module_status"]
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          difficulty?: Database["public"]["Enums"]["quiz_difficulty"]
+          external_id?: string | null
+          id?: string
+          linked_to?: string | null
+          module_id?: string | null
+          result_text?: string | null
+          review_link?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          difficulty?: Database["public"]["Enums"]["quiz_difficulty"]
+          external_id?: string | null
+          id?: string
+          linked_to?: string | null
+          module_id?: string | null
+          result_text?: string | null
+          review_link?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          title?: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "cms_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_challenge_completions: {
         Row: {
           challenge_date: string
@@ -548,6 +648,7 @@ export type Database = {
       arcano_type: "maior" | "menor"
       module_status: "empty" | "partial" | "draft" | "published"
       module_tier: "free" | "premium"
+      quiz_difficulty: "easy" | "medium" | "hard"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -680,6 +781,7 @@ export const Constants = {
       arcano_type: ["maior", "menor"],
       module_status: ["empty", "partial", "draft", "published"],
       module_tier: ["free", "premium"],
+      quiz_difficulty: ["easy", "medium", "hard"],
     },
   },
 } as const
