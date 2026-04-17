@@ -36,8 +36,8 @@ export const A_SACERDOTISA: ArcanoMaiorEditorial = {
     "A lição da Sacerdotisa é aprender que nem tudo precisa ser dito, feito ou explicado. Ela nos ensina que há uma sabedoria no silêncio, que a paciência é uma forma de poder, e que a intuição é tão válida quanto a razão. A Sacerdotisa nos convida a desenvolver a escuta interior — aquela voz sutil que fala antes do pensamento, que sente antes da análise.",
 
   love: {
-    light: "No amor, a Sacerdotisa indica uma fase de introspecção, mistério e conexão profunda não-verbal. Pode representar uma atração magnética e silenciosa, um amor que se desenvolve nas entrelinhas, ou a necessidade de ouvir o coração antes de agir.",
-    shadow: "Na sombra amorosa, avisa sobre frieza emocional, jogos de poder pelo silêncio, ou guardar sentimentos que precisam ser expressos.",
+    light: "No amor, a Sacerdotisa indica uma fase de introspecção, mistério e conexão profunda não-verbal. Pode representar uma atração magnética e silenciosa, um amor que se desenvolve nas entrelinhas, ou a necessidade de ouvir o coração antes de agir. Aplicada, fala de vínculos onde o que não é dito sustenta mais do que a palavra, da intimidade construída por presença e tempo, e da maturidade de não responder a partir do impulso, mas a partir do que se reconhece como verdadeiro por dentro.",
+    shadow: "Na sombra amorosa, avisa sobre frieza emocional, jogos de poder pelo silêncio, ou guardar sentimentos que precisam ser expressos. Pode indicar quem usa o mistério como muro, parceiros que punem com retraimento, ou a tendência a esperar que o outro adivinhe em vez de assumir o próprio desejo.",
   },
 
   work: {

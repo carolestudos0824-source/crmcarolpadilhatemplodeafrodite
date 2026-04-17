@@ -37,8 +37,8 @@ export const O_MAGO: ArcanoMaiorEditorial = {
     "A lição do Mago é aprender que poder verdadeiro vem do alinhamento entre intenção, ação e verdade interior. Ele nos ensina que manifestar não é forçar — é canalizar. Que dominar os elementos não é controlá-los, mas compreendê-los e trabalhar com eles. O Mago nos convida a reconhecer nossos recursos, alinhar nosso propósito e agir com maestria consciente.",
 
   love: {
-    light: "No amor, O Mago indica comunicação magnética, atração consciente e poder de conquista. Pode representar alguém carismático que sabe exatamente o que dizer, uma fase de encantamento mútuo, ou a capacidade de criar a relação que deseja.",
-    shadow: "Na sombra amorosa, avisa sobre sedução manipuladora, promessas vazias, alguém que usa charme como ferramenta de controle.",
+    light: "No amor, O Mago indica comunicação magnética, atração consciente e poder de conquista. Pode representar alguém carismático que sabe exatamente o que dizer, uma fase de encantamento mútuo, ou a capacidade de criar a relação que deseja. Aplicado, fala de quem usa palavra e presença para revelar — não para encantar — , de casais que sabem nomear o que sentem antes que vire ressentimento, e da arte rara de transformar desejo em vínculo concreto.",
+    shadow: "Na sombra amorosa, avisa sobre sedução manipuladora, promessas vazias, alguém que usa charme como ferramenta de controle. Pode indicar a relação que vive de performance, parceiros que dominam a narrativa para obscurecer fatos, ou o talento de prometer mais do que se está disposto a sustentar.",
   },
 
   work: {
