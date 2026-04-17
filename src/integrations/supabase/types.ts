@@ -732,6 +732,7 @@ export type Database = {
       }
       cms_suits: {
         Row: {
+          aplicacoes_leitura: string[]
           atmosfera: string | null
           created_at: string
           desafios: string | null
@@ -746,12 +747,14 @@ export type Database = {
           nome: string
           palavras_ancora: string[]
           potencial: string | null
+          reflexao: string | null
           simbolo_elemento: string | null
           status: Database["public"]["Enums"]["module_status"]
           subtitulo: string | null
           updated_at: string
         }
         Insert: {
+          aplicacoes_leitura?: string[]
           atmosfera?: string | null
           created_at?: string
           desafios?: string | null
@@ -766,12 +769,14 @@ export type Database = {
           nome: string
           palavras_ancora?: string[]
           potencial?: string | null
+          reflexao?: string | null
           simbolo_elemento?: string | null
           status?: Database["public"]["Enums"]["module_status"]
           subtitulo?: string | null
           updated_at?: string
         }
         Update: {
+          aplicacoes_leitura?: string[]
           atmosfera?: string | null
           created_at?: string
           desafios?: string | null
@@ -786,6 +791,7 @@ export type Database = {
           nome?: string
           palavras_ancora?: string[]
           potencial?: string | null
+          reflexao?: string | null
           simbolo_elemento?: string | null
           status?: Database["public"]["Enums"]["module_status"]
           subtitulo?: string | null
