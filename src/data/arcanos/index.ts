@@ -7,7 +7,7 @@
 
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
 import { validateArcano, createEmptyArcano, editorialToLegacy } from "../arcano-editorial";
-import type { ArcanoData } from "../tarot-data";
+import type { ArcanoData } from "@/lib/content/runtime-types";
 
 import { O_LOUCO } from "./0-o-louco";
 import { O_MAGO } from "./1-o-mago";

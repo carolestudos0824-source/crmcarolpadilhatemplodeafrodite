@@ -4,35 +4,33 @@
  *
  * REGRA DE OURO:
  * - Telas globais (Index, Profile, JourneyMap, Trails, StudyRoutine,
- *   ModulesPage, ContinuityCard) devem importar daqui.
- * - NUNCA mais importar `MODULES`, `ARCANOS_MAIORES`, `getArcanoById`
- *   diretamente de `@/data/tarot-data`.
+ *   ModulesPage, ContinuityCard) devem importar daqui (via @/lib/content).
+ * - NUNCA importar de `@/data/tarot-data` no runtime principal.
  *
- * STATUS:
- * Internamente ainda lê do legado (espelho 1:1) porque `cms_modules` está
- * publicado parcialmente e a UI precisa do catálogo completo de imediato.
- * Quando o CMS tiver os 17 módulos publicados + 22 arcanos com `order_index`
- * estável, basta trocar a fonte interna deste arquivo — as telas não mudam.
+ * STATUS (Fase 6.0):
+ * Lê dos SEEDS formais (`seed-modules`, `seed-arcanos-summary`) e do
+ * registro editorial canônico (`@/data/arcanos`). `tarot-data.ts` foi
+ * removido do caminho de importação do runtime principal.
  */
 
-import {
-  MODULES as LEGACY_MODULES,
-  ARCANOS_MAIORES as LEGACY_ARCANOS_MAIORES,
-  getArcanoById as legacyGetArcanoById,
-  type LearningModule,
-  type ArcanoSummary,
-  type ModuleCategory,
-} from "@/data/tarot-data";
-import type { ArcanoData } from "./runtime-types";
+import type {
+  LearningModule,
+  ArcanoSummary,
+  ArcanoData,
+  ModuleCategory,
+} from "./runtime-types";
+import { MODULES_SEED } from "./seed-modules";
+import { ARCANOS_MAIORES_SEED } from "./seed-arcanos-summary";
+import { getArcanoAsLegacy } from "@/data/arcanos";
 
 export type { LearningModule, ArcanoSummary, ArcanoData, ModuleCategory };
 
 /** Catálogo completo de módulos do produto. Ordenado por `order`. */
-export const MODULES_CATALOG: readonly LearningModule[] = LEGACY_MODULES;
+export const MODULES_CATALOG: readonly LearningModule[] = MODULES_SEED;
 
 /** Catálogo completo dos 22 Arcanos Maiores. Ordenado por `id`. */
 export const ARCANOS_MAIORES_CATALOG: readonly ArcanoSummary[] =
-  LEGACY_ARCANOS_MAIORES;
+  ARCANOS_MAIORES_SEED;
 
 export function getModuleFromCatalog(id: string): LearningModule | undefined {
   return MODULES_CATALOG.find((m) => m.id === id);
@@ -46,8 +44,8 @@ export function getArcanoSummaryFromCatalog(
 
 /**
  * Resolução completa de um arcano (editorial + visual + quiz).
- * Internamente usa o registro editorial canônico.
+ * Internamente usa o registro editorial canônico em `@/data/arcanos`.
  */
 export function getArcanoFull(id: number): ArcanoData | undefined {
-  return legacyGetArcanoById(id);
+  return getArcanoAsLegacy(id, true);
 }
