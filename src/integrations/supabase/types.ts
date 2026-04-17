@@ -44,6 +44,95 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_module_lessons: {
+        Row: {
+          created_at: string
+          id: string
+          lesson_id: string
+          module_id: string
+          order_index: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lesson_id: string
+          module_id: string
+          order_index?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          module_id?: string
+          order_index?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_module_lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "cms_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_modules: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          editorial_description: string | null
+          icon: string | null
+          id: string
+          name: string
+          order_index: number
+          route_prefix: string | null
+          short_description: string | null
+          slug: string
+          status: Database["public"]["Enums"]["module_status"]
+          theme_color: string | null
+          tier: Database["public"]["Enums"]["module_tier"]
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          editorial_description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          order_index?: number
+          route_prefix?: string | null
+          short_description?: string | null
+          slug: string
+          status?: Database["public"]["Enums"]["module_status"]
+          theme_color?: string | null
+          tier?: Database["public"]["Enums"]["module_tier"]
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          editorial_description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          order_index?: number
+          route_prefix?: string | null
+          short_description?: string | null
+          slug?: string
+          status?: Database["public"]["Enums"]["module_status"]
+          theme_color?: string | null
+          tier?: Database["public"]["Enums"]["module_tier"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       daily_challenge_completions: {
         Row: {
           challenge_date: string
@@ -341,6 +430,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      module_status: "empty" | "partial" | "draft" | "published"
+      module_tier: "free" | "premium"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -469,6 +560,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      module_status: ["empty", "partial", "draft", "published"],
+      module_tier: ["free", "premium"],
     },
   },
 } as const
