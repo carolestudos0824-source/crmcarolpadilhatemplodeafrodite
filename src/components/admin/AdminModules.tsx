@@ -1,148 +1,770 @@
-import { useState } from "react";
-import { Plus, Edit, GripVertical, Eye, EyeOff, LockIcon } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Plus,
+  Edit,
+  ArrowUp,
+  ArrowDown,
+  Eye,
+  EyeOff,
+  LockIcon,
+  Unlock,
+  ArrowLeft,
+  Trash2,
+  Layers,
+  CheckCircle2,
+  Circle,
+  CircleDashed,
+  AlertCircle,
+  Users,
+  BookOpen,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import type { Database } from "@/integrations/supabase/types";
 
-interface Module {
-  id: string;
-  title: string;
-  subtitle: string;
-  icon: string;
-  order: number;
-  published: boolean;
-  premium: boolean;
+type ModuleStatus = Database["public"]["Enums"]["module_status"];
+type ModuleTier = Database["public"]["Enums"]["module_tier"];
+type ModuleRow = Database["public"]["Tables"]["cms_modules"]["Row"];
+type LessonRow = Database["public"]["Tables"]["cms_module_lessons"]["Row"];
+
+interface ModuleWithStats extends ModuleRow {
   lessonsCount: number;
+  avgProgress: number;
+  completionRate: number;
 }
 
-const defaultModules: Module[] = [
-  { id: "fundamentos", title: "Fundamentos do Tarô", subtitle: "Bases essenciais", icon: "📖", order: 1, published: true, premium: false, lessonsCount: 10 },
-  { id: "arcanos-maiores", title: "Arcanos Maiores", subtitle: "Os 22 trunfos", icon: "🌟", order: 2, published: true, premium: false, lessonsCount: 22 },
-  { id: "copas", title: "Naipe de Copas", subtitle: "Emoções e relacionamentos", icon: "💧", order: 3, published: true, premium: false, lessonsCount: 14 },
-  { id: "ouros", title: "Naipe de Ouros", subtitle: "Material e prático", icon: "🪙", order: 4, published: true, premium: false, lessonsCount: 14 },
-  { id: "espadas", title: "Naipe de Espadas", subtitle: "Mente e conflitos", icon: "⚔️", order: 5, published: true, premium: false, lessonsCount: 14 },
-  { id: "paus", title: "Naipe de Paus", subtitle: "Ação e criatividade", icon: "🔥", order: 6, published: true, premium: false, lessonsCount: 14 },
-  { id: "combinacoes", title: "Combinações", subtitle: "Leitura cruzada", icon: "🔗", order: 7, published: true, premium: true, lessonsCount: 8 },
-  { id: "tiragens", title: "Tiragens", subtitle: "Métodos de leitura", icon: "🎴", order: 8, published: true, premium: true, lessonsCount: 6 },
-  { id: "amor", title: "Tarô e Amor", subtitle: "Leituras afetivas", icon: "💜", order: 9, published: true, premium: true, lessonsCount: 6 },
-  { id: "pratica", title: "Prática Guiada", subtitle: "Exercícios reais", icon: "🔮", order: 10, published: true, premium: true, lessonsCount: 5 },
-];
+const STATUS_LABEL: Record<ModuleStatus, string> = {
+  empty: "Vazio",
+  partial: "Parcial",
+  draft: "Rascunho",
+  published: "Publicado",
+};
+
+const STATUS_TONE: Record<ModuleStatus, string> = {
+  empty: "bg-muted/40 text-muted-foreground border-border/50",
+  partial: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  draft: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  published: "bg-primary/10 text-primary border-primary/20",
+};
+
+const StatusIcon = ({ status }: { status: ModuleStatus }) => {
+  switch (status) {
+    case "published":
+      return <CheckCircle2 className="w-3 h-3" />;
+    case "draft":
+      return <CircleDashed className="w-3 h-3" />;
+    case "partial":
+      return <AlertCircle className="w-3 h-3" />;
+    default:
+      return <Circle className="w-3 h-3" />;
+  }
+};
+
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const emptyDraft: Partial<ModuleRow> = {
+  name: "",
+  slug: "",
+  category: "",
+  short_description: "",
+  editorial_description: "",
+  icon: "📖",
+  theme_color: "",
+  order_index: 0,
+  status: "draft",
+  tier: "premium",
+  route_prefix: "",
+};
+
+const computeStatus = (current: ModuleStatus, lessonsCount: number): ModuleStatus => {
+  // Auto-classify only when not explicitly published/draft by editor
+  if (current === "published") return "published";
+  if (current === "draft") return "draft";
+  if (lessonsCount === 0) return "empty";
+  return "partial";
+};
 
 const AdminModules = () => {
-  const [modules, setModules] = useState<Module[]>(defaultModules);
-  const [editingModule, setEditingModule] = useState<Module | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [modules, setModules] = useState<ModuleWithStats[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<Partial<ModuleRow> | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [drillModule, setDrillModule] = useState<ModuleWithStats | null>(null);
 
-  const handleTogglePublish = (id: string) => {
-    setModules(prev => prev.map(m => m.id === id ? { ...m, published: !m.published } : m));
-  };
+  const loadModules = async () => {
+    setLoading(true);
+    const [{ data: mods, error }, { data: lessons }, { data: progress }] = await Promise.all([
+      supabase.from("cms_modules").select("*").order("order_index", { ascending: true }),
+      supabase.from("cms_module_lessons").select("module_id, lesson_id"),
+      supabase.from("user_progress").select("completed_lessons, completed_modules"),
+    ]);
 
-  const handleTogglePremium = (id: string) => {
-    setModules(prev => prev.map(m => m.id === id ? { ...m, premium: !m.premium } : m));
-  };
-
-  const handleSave = () => {
-    if (editingModule) {
-      setModules(prev => {
-        const exists = prev.find(m => m.id === editingModule.id);
-        if (exists) return prev.map(m => m.id === editingModule.id ? editingModule : m);
-        return [...prev, editingModule];
-      });
-      setEditingModule(null);
-      setIsOpen(false);
+    if (error) {
+      toast({ title: "Erro ao carregar módulos", description: error.message, variant: "destructive" });
+      setLoading(false);
+      return;
     }
+
+    const lessonsByModule = new Map<string, string[]>();
+    (lessons ?? []).forEach((l) => {
+      const arr = lessonsByModule.get(l.module_id) ?? [];
+      arr.push(l.lesson_id);
+      lessonsByModule.set(l.module_id, arr);
+    });
+
+    const totalUsers = progress?.length ?? 0;
+
+    const enriched: ModuleWithStats[] = (mods ?? []).map((m) => {
+      const lessonIds = lessonsByModule.get(m.id) ?? [];
+      const lessonsCount = lessonIds.length;
+
+      let progressSum = 0;
+      let completedUsers = 0;
+      (progress ?? []).forEach((p) => {
+        const completed = p.completed_lessons ?? [];
+        if (lessonsCount > 0) {
+          const matches = completed.filter((cl) => lessonIds.includes(cl)).length;
+          progressSum += matches / lessonsCount;
+          if (matches === lessonsCount) completedUsers += 1;
+        }
+        if ((p.completed_modules ?? []).includes(m.slug)) completedUsers += 0; // already counted
+      });
+
+      const avgProgress = totalUsers > 0 ? Math.round((progressSum / totalUsers) * 100) : 0;
+      const completionRate = totalUsers > 0 ? Math.round((completedUsers / totalUsers) * 100) : 0;
+
+      return {
+        ...m,
+        lessonsCount,
+        avgProgress,
+        completionRate,
+      };
+    });
+
+    setModules(enriched);
+    setLoading(false);
   };
+
+  useEffect(() => {
+    loadModules();
+  }, []);
+
+  const openCreate = () => {
+    setEditing({ ...emptyDraft, order_index: modules.length + 1 });
+    setDialogOpen(true);
+  };
+
+  const openEdit = (m: ModuleRow) => {
+    setEditing({ ...m });
+    setDialogOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!editing) return;
+    if (!editing.name?.trim()) {
+      toast({ title: "Nome obrigatório", variant: "destructive" });
+      return;
+    }
+    const slug = editing.slug?.trim() || slugify(editing.name);
+
+    const payload = {
+      name: editing.name.trim(),
+      slug,
+      category: editing.category?.trim() || null,
+      short_description: editing.short_description?.trim() || null,
+      editorial_description: editing.editorial_description?.trim() || null,
+      icon: editing.icon?.trim() || null,
+      theme_color: editing.theme_color?.trim() || null,
+      order_index: Number(editing.order_index ?? 0),
+      status: (editing.status ?? "draft") as ModuleStatus,
+      tier: (editing.tier ?? "premium") as ModuleTier,
+      route_prefix: editing.route_prefix?.trim() || null,
+    };
+
+    const { error } = editing.id
+      ? await supabase.from("cms_modules").update(payload).eq("id", editing.id)
+      : await supabase.from("cms_modules").insert(payload);
+
+    if (error) {
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: editing.id ? "Módulo atualizado" : "Módulo criado" });
+    setDialogOpen(false);
+    setEditing(null);
+    await loadModules();
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Remover este módulo? As lições vinculadas também serão apagadas.")) return;
+    const { error } = await supabase.from("cms_modules").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Módulo removido" });
+    await loadModules();
+  };
+
+  const handleTogglePublish = async (m: ModuleWithStats) => {
+    const next: ModuleStatus = m.status === "published" ? "draft" : "published";
+    const { error } = await supabase.from("cms_modules").update({ status: next }).eq("id", m.id);
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    await loadModules();
+  };
+
+  const handleToggleTier = async (m: ModuleWithStats) => {
+    const next: ModuleTier = m.tier === "premium" ? "free" : "premium";
+    const { error } = await supabase.from("cms_modules").update({ tier: next }).eq("id", m.id);
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    await loadModules();
+  };
+
+  const handleMove = async (m: ModuleWithStats, direction: -1 | 1) => {
+    const sorted = [...modules].sort((a, b) => a.order_index - b.order_index);
+    const idx = sorted.findIndex((x) => x.id === m.id);
+    const swapIdx = idx + direction;
+    if (swapIdx < 0 || swapIdx >= sorted.length) return;
+    const a = sorted[idx];
+    const b = sorted[swapIdx];
+    const { error } = await supabase.from("cms_modules").upsert([
+      { ...a, order_index: b.order_index },
+      { ...b, order_index: a.order_index },
+    ]);
+    if (error) {
+      toast({ title: "Erro ao reordenar", description: error.message, variant: "destructive" });
+      return;
+    }
+    await loadModules();
+  };
+
+  const counts = useMemo(() => {
+    const by: Record<ModuleStatus, number> = { empty: 0, partial: 0, draft: 0, published: 0 };
+    modules.forEach((m) => {
+      const effective = computeStatus(m.status, m.lessonsCount);
+      by[effective] += 1;
+    });
+    return by;
+  }, [modules]);
+
+  if (drillModule) {
+    return <ModuleLessonsView module={drillModule} onBack={() => { setDrillModule(null); loadModules(); }} />;
+  }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="font-heading text-lg text-foreground">Módulos</h2>
-          <p className="text-sm text-muted-foreground">{modules.length} módulos cadastrados</p>
+          <h2 className="font-heading text-lg text-foreground">Módulos do Curso</h2>
+          <p className="text-sm text-muted-foreground">
+            Central editorial — crie, organize e publique todos os módulos da plataforma.
+          </p>
         </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button 
-              size="sm" 
-              className="gap-2"
-              onClick={() => setEditingModule({ id: "", title: "", subtitle: "", icon: "📖", order: modules.length + 1, published: false, premium: false, lessonsCount: 0 })}
-            >
-              <Plus className="w-4 h-4" /> Novo Módulo
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle className="font-heading">{editingModule?.id ? "Editar Módulo" : "Novo Módulo"}</DialogTitle>
-            </DialogHeader>
-            {editingModule && (
-              <div className="space-y-4 mt-2">
-                <div>
-                  <label className="text-sm text-muted-foreground mb-1 block">Título</label>
-                  <Input value={editingModule.title} onChange={e => setEditingModule({ ...editingModule, title: e.target.value })} />
-                </div>
-                <div>
-                  <label className="text-sm text-muted-foreground mb-1 block">Subtítulo</label>
-                  <Input value={editingModule.subtitle} onChange={e => setEditingModule({ ...editingModule, subtitle: e.target.value })} />
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <label className="text-sm text-muted-foreground mb-1 block">Ícone</label>
-                    <Input value={editingModule.icon} onChange={e => setEditingModule({ ...editingModule, icon: e.target.value })} />
-                  </div>
-                  <div className="flex-1">
-                    <label className="text-sm text-muted-foreground mb-1 block">Ordem</label>
-                    <Input type="number" value={editingModule.order} onChange={e => setEditingModule({ ...editingModule, order: Number(e.target.value) })} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Premium</span>
-                  <Switch checked={editingModule.premium} onCheckedChange={v => setEditingModule({ ...editingModule, premium: v })} />
-                </div>
-                <Button onClick={handleSave} className="w-full">Salvar</Button>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
+        <Button size="sm" className="gap-2" onClick={openCreate}>
+          <Plus className="w-4 h-4" /> Novo Módulo
+        </Button>
       </div>
 
-      <div className="space-y-2">
-        {modules.sort((a, b) => a.order - b.order).map(mod => (
-          <div key={mod.id} className="flex items-center gap-3 p-3 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 transition-colors group">
-            <GripVertical className="w-4 h-4 text-muted-foreground/30 cursor-grab" />
-            <span className="text-xl w-8 text-center">{mod.icon}</span>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-medium text-foreground truncate">{mod.title}</h3>
-                {mod.premium && <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Premium</span>}
-              </div>
-              <p className="text-xs text-muted-foreground">{mod.subtitle} · {mod.lessonsCount} lições</p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {(["published", "draft", "partial", "empty"] as ModuleStatus[]).map((s) => (
+          <div key={s} className={`p-3 rounded-xl border ${STATUS_TONE[s]}`}>
+            <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider opacity-80">
+              <StatusIcon status={s} />
+              {STATUS_LABEL[s]}
             </div>
-            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button 
-                variant="ghost" size="sm" className="h-8 w-8 p-0"
-                onClick={() => handleTogglePremium(mod.id)}
-                title={mod.premium ? "Tornar gratuito" : "Tornar premium"}
-              >
-                <LockIcon className={`w-3.5 h-3.5 ${mod.premium ? "text-primary" : "text-muted-foreground"}`} />
-              </Button>
-              <Button 
-                variant="ghost" size="sm" className="h-8 w-8 p-0"
-                onClick={() => handleTogglePublish(mod.id)}
-              >
-                {mod.published ? <Eye className="w-3.5 h-3.5 text-primary" /> : <EyeOff className="w-3.5 h-3.5 text-muted-foreground" />}
-              </Button>
-              <Button 
-                variant="ghost" size="sm" className="h-8 w-8 p-0"
-                onClick={() => { setEditingModule(mod); setIsOpen(true); }}
-              >
-                <Edit className="w-3.5 h-3.5" />
-              </Button>
-            </div>
+            <div className="text-2xl font-heading mt-1">{counts[s]}</div>
           </div>
         ))}
       </div>
+
+      {loading ? (
+        <div className="text-sm text-muted-foreground py-8 text-center">Carregando módulos...</div>
+      ) : modules.length === 0 ? (
+        <div className="p-8 text-center border border-dashed border-border/50 rounded-xl">
+          <Layers className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
+          <p className="text-sm text-muted-foreground">Nenhum módulo cadastrado.</p>
+          <Button size="sm" variant="outline" className="mt-3 gap-2" onClick={openCreate}>
+            <Plus className="w-3.5 h-3.5" /> Criar primeiro módulo
+          </Button>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {modules
+            .sort((a, b) => a.order_index - b.order_index)
+            .map((mod, idx, arr) => {
+              const effectiveStatus = computeStatus(mod.status, mod.lessonsCount);
+              return (
+                <div
+                  key={mod.id}
+                  className="group rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 transition-colors overflow-hidden"
+                >
+                  <div className="flex items-center gap-3 p-3">
+                    <div className="flex flex-col gap-0.5">
+                      <button
+                        onClick={() => handleMove(mod, -1)}
+                        disabled={idx === 0}
+                        className="p-0.5 text-muted-foreground/40 hover:text-foreground disabled:opacity-20"
+                      >
+                        <ArrowUp className="w-3 h-3" />
+                      </button>
+                      <button
+                        onClick={() => handleMove(mod, 1)}
+                        disabled={idx === arr.length - 1}
+                        className="p-0.5 text-muted-foreground/40 hover:text-foreground disabled:opacity-20"
+                      >
+                        <ArrowDown className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <span
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-lg shrink-0"
+                      style={{
+                        backgroundColor: mod.theme_color
+                          ? `hsl(${mod.theme_color} / 0.15)`
+                          : "hsl(var(--primary) / 0.1)",
+                      }}
+                    >
+                      {mod.icon ?? "📖"}
+                    </span>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="text-sm font-medium text-foreground truncate">{mod.name}</h3>
+                        <span
+                          className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${STATUS_TONE[effectiveStatus]}`}
+                        >
+                          <StatusIcon status={effectiveStatus} />
+                          {STATUS_LABEL[effectiveStatus]}
+                        </span>
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                            mod.tier === "premium"
+                              ? "bg-primary/10 text-primary"
+                              : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          }`}
+                        >
+                          {mod.tier === "premium" ? "Premium" : "Gratuito"}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+                        {mod.short_description || mod.category || mod.slug}
+                      </p>
+                      <div className="flex items-center gap-3 mt-1.5 text-[10px] text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <BookOpen className="w-3 h-3" /> {mod.lessonsCount} lições
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Users className="w-3 h-3" /> {mod.avgProgress}% progresso médio
+                        </span>
+                        <span>· {mod.completionRate}% concluíram</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleToggleTier(mod)}
+                        title={mod.tier === "premium" ? "Tornar gratuito" : "Tornar premium"}
+                      >
+                        {mod.tier === "premium" ? (
+                          <LockIcon className="w-3.5 h-3.5 text-primary" />
+                        ) : (
+                          <Unlock className="w-3.5 h-3.5 text-emerald-500" />
+                        )}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleTogglePublish(mod)}
+                        title={mod.status === "published" ? "Despublicar" : "Publicar"}
+                      >
+                        {mod.status === "published" ? (
+                          <Eye className="w-3.5 h-3.5 text-primary" />
+                        ) : (
+                          <EyeOff className="w-3.5 h-3.5 text-muted-foreground" />
+                        )}
+                      </Button>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => openEdit(mod)}>
+                        <Edit className="w-3.5 h-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 text-xs gap-1"
+                        onClick={() => setDrillModule(mod)}
+                      >
+                        Lições
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-destructive/70 hover:text-destructive"
+                        onClick={() => handleDelete(mod.id)}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="h-1 bg-muted/30">
+                    <div
+                      className="h-full bg-primary/60 transition-all"
+                      style={{ width: `${mod.avgProgress}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      )}
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading">
+              {editing?.id ? "Editar Módulo" : "Novo Módulo"}
+            </DialogTitle>
+          </DialogHeader>
+          {editing && (
+            <div className="space-y-3 mt-2">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="col-span-2">
+                  <label className="text-xs text-muted-foreground mb-1 block">Nome</label>
+                  <Input
+                    value={editing.name ?? ""}
+                    onChange={(e) =>
+                      setEditing({
+                        ...editing,
+                        name: e.target.value,
+                        slug: editing.id ? editing.slug : slugify(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Slug</label>
+                  <Input
+                    value={editing.slug ?? ""}
+                    onChange={(e) => setEditing({ ...editing, slug: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Categoria</label>
+                  <Input
+                    value={editing.category ?? ""}
+                    onChange={(e) => setEditing({ ...editing, category: e.target.value })}
+                    placeholder="Fundamentos, Método..."
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Descrição curta</label>
+                <Input
+                  value={editing.short_description ?? ""}
+                  onChange={(e) => setEditing({ ...editing, short_description: e.target.value })}
+                  placeholder="Frase de apresentação"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Descrição editorial</label>
+                <Textarea
+                  rows={4}
+                  value={editing.editorial_description ?? ""}
+                  onChange={(e) => setEditing({ ...editing, editorial_description: e.target.value })}
+                  placeholder="Texto que aparece na abertura do módulo"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Ícone</label>
+                  <Input
+                    value={editing.icon ?? ""}
+                    onChange={(e) => setEditing({ ...editing, icon: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Cor (HSL)</label>
+                  <Input
+                    value={editing.theme_color ?? ""}
+                    onChange={(e) => setEditing({ ...editing, theme_color: e.target.value })}
+                    placeholder="280 30% 45%"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Ordem</label>
+                  <Input
+                    type="number"
+                    value={editing.order_index ?? 0}
+                    onChange={(e) => setEditing({ ...editing, order_index: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Prefixo de rota</label>
+                <Input
+                  value={editing.route_prefix ?? ""}
+                  onChange={(e) => setEditing({ ...editing, route_prefix: e.target.value })}
+                  placeholder="/fundamentos"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Status</label>
+                  <Select
+                    value={editing.status ?? "draft"}
+                    onValueChange={(v) => setEditing({ ...editing, status: v as ModuleStatus })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="empty">Vazio</SelectItem>
+                      <SelectItem value="partial">Parcial</SelectItem>
+                      <SelectItem value="draft">Rascunho</SelectItem>
+                      <SelectItem value="published">Publicado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Acesso</label>
+                  <Select
+                    value={editing.tier ?? "premium"}
+                    onValueChange={(v) => setEditing({ ...editing, tier: v as ModuleTier })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="free">Gratuito</SelectItem>
+                      <SelectItem value="premium">Premium</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter className="gap-2 mt-4">
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSave}>Salvar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+/* ═══════════ DRILL DOWN: lições do módulo ═══════════ */
+
+const ModuleLessonsView = ({
+  module,
+  onBack,
+}: {
+  module: ModuleWithStats;
+  onBack: () => void;
+}) => {
+  const [lessons, setLessons] = useState<LessonRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<Partial<LessonRow> | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("cms_module_lessons")
+      .select("*")
+      .eq("module_id", module.id)
+      .order("order_index", { ascending: true });
+    if (error) {
+      toast({ title: "Erro ao carregar lições", description: error.message, variant: "destructive" });
+    }
+    setLessons(data ?? []);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    load();
+  }, [module.id]);
+
+  const openCreate = () => {
+    setEditing({ module_id: module.id, lesson_id: "", title: "", order_index: lessons.length + 1 });
+    setOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!editing) return;
+    if (!editing.title?.trim() || !editing.lesson_id?.trim()) {
+      toast({ title: "Preencha título e ID da lição", variant: "destructive" });
+      return;
+    }
+    const payload = {
+      module_id: module.id,
+      lesson_id: editing.lesson_id.trim(),
+      title: editing.title.trim(),
+      order_index: Number(editing.order_index ?? 0),
+    };
+    const { error } = editing.id
+      ? await supabase.from("cms_module_lessons").update(payload).eq("id", editing.id)
+      : await supabase.from("cms_module_lessons").insert(payload);
+    if (error) {
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+      return;
+    }
+    setOpen(false);
+    setEditing(null);
+    await load();
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Remover esta lição do módulo?")) return;
+    const { error } = await supabase.from("cms_module_lessons").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    await load();
+  };
+
+  return (
+    <div className="space-y-4">
+      <button
+        onClick={onBack}
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" /> Voltar para módulos
+      </button>
+
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{module.icon ?? "📖"}</span>
+          <div>
+            <h2 className="font-heading text-lg text-foreground">{module.name}</h2>
+            <p className="text-xs text-muted-foreground">
+              {module.lessonsCount} lições · {module.avgProgress}% progresso médio
+            </p>
+          </div>
+        </div>
+        <Button size="sm" className="gap-2" onClick={openCreate}>
+          <Plus className="w-4 h-4" /> Vincular lição
+        </Button>
+      </div>
+
+      {loading ? (
+        <div className="text-sm text-muted-foreground py-6 text-center">Carregando...</div>
+      ) : lessons.length === 0 ? (
+        <div className="p-8 text-center border border-dashed border-border/50 rounded-xl">
+          <BookOpen className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
+          <p className="text-sm text-muted-foreground">Nenhuma lição vinculada ainda.</p>
+        </div>
+      ) : (
+        <div className="space-y-1.5">
+          {lessons.map((l) => (
+            <div
+              key={l.id}
+              className="flex items-center gap-3 p-3 rounded-lg border border-border/50 bg-card/50 group"
+            >
+              <span className="text-xs font-heading text-muted-foreground w-8">
+                {String(l.order_index).padStart(2, "0")}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">{l.title}</p>
+                <p className="text-[10px] text-muted-foreground font-mono truncate">{l.lesson_id}</p>
+              </div>
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => {
+                    setEditing(l);
+                    setOpen(true);
+                  }}
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 text-destructive/70 hover:text-destructive"
+                  onClick={() => handleDelete(l.id)}
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-heading">
+              {editing?.id ? "Editar Lição" : "Vincular Lição"}
+            </DialogTitle>
+          </DialogHeader>
+          {editing && (
+            <div className="space-y-3 mt-2">
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Título</label>
+                <Input
+                  value={editing.title ?? ""}
+                  onChange={(e) => setEditing({ ...editing, title: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">ID da lição (slug)</label>
+                <Input
+                  value={editing.lesson_id ?? ""}
+                  onChange={(e) => setEditing({ ...editing, lesson_id: e.target.value })}
+                  placeholder="ex: o-louco, fundamentos-1"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Ordem</label>
+                <Input
+                  type="number"
+                  value={editing.order_index ?? 0}
+                  onChange={(e) => setEditing({ ...editing, order_index: Number(e.target.value) })}
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter className="gap-2 mt-4">
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSave}>Salvar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
