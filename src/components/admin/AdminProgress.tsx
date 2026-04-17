@@ -156,7 +156,7 @@ const AdminProgress = () => {
       abandonRate,
       neverStarted,
     };
-  }, [progress, profiles, period]);
+  }, [progress, profiles, period, formatLessonName]);
 
   if (loading) return <div className="p-8 text-center text-sm text-muted-foreground">Carregando dados de uso...</div>;
 
