@@ -14,12 +14,12 @@ export const A_JUSTICA: ArcanoMaiorEditorial = {
     "A Justiça é o Arcano VIII — a lei implacável de causa e efeito, o espelho que reflete sem distorção. Ela não julga com emoção; ela mede com precisão. Sentada entre as duas colunas da objetividade, segura a espada da verdade em uma mão e a balança do equilíbrio na outra. Herdeira de Ma'at egípcia, Themis grega e Astreia romana, encarna o princípio cósmico de que toda ação produz reação proporcional, independentemente de quem a pratique. Quando a Justiça aparece, ela diz: o que você plantou, colherá. Não com punição — com exatidão.",
 
   symbols: [
-    { name: "Espada erguida", meaning: "Verdade que corta — discernimento, clareza mental e decisão firme" },
-    { name: "Balança equilibrada", meaning: "Equilíbrio, imparcialidade e a pesagem de todas as partes" },
-    { name: "Coroa com quadrado", meaning: "Pensamento ordenado e julgamento estruturado" },
-    { name: "Manto vermelho", meaning: "Ação e poder — a justiça não é passiva, ela age" },
-    { name: "Véu roxo ao fundo", meaning: "A compaixão que sustenta a justiça — sem ela, vira crueldade" },
-    { name: "Duas colunas", meaning: "Estrutura e equilíbrio — a lei se sustenta em pilares firmes" },
+    { name: "Espada erguida na mão direita", meaning: "Verdade que corta — discernimento, clareza mental e decisão firme. Erguida na vertical, indica que a verdade não se inclina a um lado: ela permanece reta." },
+    { name: "Balança equilibrada na mão esquerda", meaning: "Equilíbrio, imparcialidade e a pesagem de todas as partes. Está na mão receptiva, lembrando que julgar bem começa por escutar bem." },
+    { name: "Coroa com pedra quadrada azul", meaning: "Pensamento ordenado e julgamento estruturado. O quadrado azul ao centro indica clareza intelectual fundada em princípios estáveis, não em humor." },
+    { name: "Manto vermelho", meaning: "Ação e poder — a justiça não é passiva, ela age. O vermelho lembra que a verdade, quando reconhecida, exige decisão concreta e movimento no mundo." },
+    { name: "Véu roxo entre as colunas", meaning: "A compaixão que sustenta a justiça — sem ela, vira crueldade. O roxo une realeza e espírito: lembra que toda lei serve, no fundo, a um princípio maior." },
+    { name: "Duas colunas de pedra", meaning: "Estrutura e equilíbrio — a lei se sustenta em pilares firmes. As mesmas colunas da Sacerdotisa retornam aqui, agora atravessadas pela consciência que decide entre os opostos." },
   ],
 
   archetype:
