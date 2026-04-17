@@ -134,3 +134,15 @@ export function useModuleContent(
   });
   return wrap(query);
 }
+
+// ─── Journey ───────────────────────────────────────────────────────
+
+export function useJourneyContent(): UseContentResult<JourneyContent | null> {
+  const query = useQuery<JourneyContent | null>({
+    queryKey: ["content", "journey"],
+    queryFn: () => getJourneyContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
