@@ -78,7 +78,21 @@
   }
 }
 
+/* Altura oficial da BottomNav (ícone+label+padding+border) — fonte única para clearance. */
+:root {
+  --bottom-nav-h: 68px;
+}
+
 @layer utilities {
+  /**
+   * Aplica padding-bottom seguro em qualquer página dentro do AppShell,
+   * evitando que conteúdo final fique escondido atrás da BottomNav fixa.
+   * Soma a altura da nav + safe-area-inset-bottom (notch iOS).
+   */
+  .pb-bottom-nav {
+    padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
   .text-gradient-gold {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, hsl(36 40% 42%), hsl(36 45% 58%), hsl(38 40% 65%));
