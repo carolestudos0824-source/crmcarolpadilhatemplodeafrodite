@@ -43,6 +43,14 @@ const FoolsJourneyPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
 
+  // Fase 2C: lista agregada dos 22 Arcanos Maiores também passa pelo adaptador.
+  // A UI continua usando JOURNEY_ARCANOS / JOURNEY_PHASES (legado) para
+  // preservar journeyRole, narrativeText, ordenação narrativa e estados
+  // visuais. O probe garante sourceUsed='db'/usedFallback=false e expõe
+  // telemetria, sem alterar layout, ordem ou comportamento de premium.
+  const resolvedMaiores = useResolvedArcanosMaiores();
+  void resolvedMaiores;
+
   const isStudied = (arcanoId: number) =>
     progress.completedLessons.includes(`arcano-${arcanoId}`);
 
