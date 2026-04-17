@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Users, Crown, Gift, BookOpen, Sparkles, HelpCircle,
-  BarChart3, HeadphonesIcon, Settings, ScrollText,
+  BarChart3, HeadphonesIcon, Settings, ScrollText, Shield,
 } from "lucide-react";
 
 export type AdminSection =
@@ -12,6 +12,7 @@ export type AdminSection =
   | "arcanos"
   | "quizzes"
   | "progress"
+  | "roles"
   | "audit"
   | "support"
   | "settings";
@@ -30,6 +31,7 @@ const sections: { id: AdminSection; label: string; icon: React.ReactNode; group:
   { id: "arcanos", label: "Arcanos", icon: <Sparkles className="w-4 h-4" />, group: "Curso" },
   { id: "quizzes", label: "Quizzes", icon: <HelpCircle className="w-4 h-4" />, group: "Curso" },
   { id: "progress", label: "Progresso & Uso", icon: <BarChart3 className="w-4 h-4" />, group: "Curso" },
+  { id: "roles", label: "Funções", icon: <Shield className="w-4 h-4" />, group: "Operação" },
   { id: "audit", label: "Auditoria", icon: <ScrollText className="w-4 h-4" />, group: "Operação" },
   { id: "support", label: "Suporte", icon: <HeadphonesIcon className="w-4 h-4" />, group: "Operação" },
   { id: "settings", label: "Configurações", icon: <Settings className="w-4 h-4" />, group: "Operação" },

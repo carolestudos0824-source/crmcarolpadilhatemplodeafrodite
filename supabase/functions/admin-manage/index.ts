@@ -40,12 +40,14 @@ Deno.serve(async (req) => {
 
     const body = await req.json();
     const { action, email, target_user_id, days, source, gift_code_id } = body;
+    const requestedRole: "admin" | "moderator" = body.role === "moderator" ? "moderator" : "admin";
 
     if (action === "list") {
+      // Returns admins AND moderators with role distinction
       const { data: roles } = await admin
         .from("user_roles")
         .select("id, user_id, role")
-        .eq("role", "admin");
+        .in("role", ["admin", "moderator"]);
 
       const ids = (roles ?? []).map((r) => r.user_id);
       const { data: profiles } = await admin
@@ -60,6 +62,7 @@ Deno.serve(async (req) => {
           return {
             id: r.id,
             user_id: r.user_id,
+            role: r.role,
             email: u?.user?.email ?? null,
             display_name: profile?.display_name ?? null,
             created_at: u?.user?.created_at ?? null,
@@ -86,21 +89,23 @@ Deno.serve(async (req) => {
       if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
       const { error } = await admin
         .from("user_roles")
-        .insert({ user_id: target_user_id, role: "admin" });
+        .insert({ user_id: target_user_id, role: requestedRole });
       if (error && !error.message.includes("duplicate")) return json({ error: error.message }, 500);
-      return json({ success: true });
+      return json({ success: true, role: requestedRole });
     }
 
     if (action === "demote") {
       if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
-      if (target_user_id === user.id) return json({ error: "Você não pode remover a si mesmo" }, 400);
+      if (target_user_id === user.id && requestedRole === "admin") {
+        return json({ error: "Você não pode remover a si mesmo como admin" }, 400);
+      }
       const { error } = await admin
         .from("user_roles")
         .delete()
         .eq("user_id", target_user_id)
-        .eq("role", "admin");
+        .eq("role", requestedRole);
       if (error) return json({ error: error.message }, 500);
-      return json({ success: true });
+      return json({ success: true, role: requestedRole });
     }
 
     // List all users with email enrichment (paginated)
