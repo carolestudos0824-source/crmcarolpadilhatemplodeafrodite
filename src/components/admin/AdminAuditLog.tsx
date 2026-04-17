@@ -26,6 +26,7 @@ const PERIODS = [
 ];
 
 const AdminAuditLog = () => {
+  const { isAdmin } = useRole();
   const [rows, setRows] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionFilter, setActionFilter] = useState<string>("all");
