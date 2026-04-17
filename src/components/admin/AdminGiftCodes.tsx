@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { logAdminAction } from "@/lib/admin-audit";
 
 interface GiftCode {
   id: string;
@@ -119,10 +120,18 @@ const AdminGiftCodes = () => {
       created_by: user.id,
       expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
     }));
-    const { error } = await supabase.from("gift_codes").insert(rows);
+    const { data: created, error } = await supabase.from("gift_codes").insert(rows).select();
     if (error) toast.error("Erro ao criar: " + error.message);
     else {
       toast.success(`${rows.length} código${rows.length > 1 ? "s" : ""} criado${rows.length > 1 ? "s" : ""}!`);
+      // Audit each created code
+      await Promise.all((created ?? []).map(c => logAdminAction({
+        action: "gift_code.create",
+        targetType: "gift_code",
+        targetId: c.id,
+        targetLabel: c.code,
+        details: { duration_days: c.duration_days, max_uses: c.max_uses, plan },
+      })));
       fetchAll();
     }
     setCreating(false);
@@ -131,7 +140,19 @@ const AdminGiftCodes = () => {
   const toggleActive = async (gc: GiftCode) => {
     const { error } = await supabase.from("gift_codes").update({ is_active: !gc.is_active }).eq("id", gc.id);
     if (error) toast.error(error.message);
-    else { toast.success(gc.is_active ? "Código desativado" : "Código reativado"); fetchAll(); }
+    else {
+      toast.success(gc.is_active ? "Código desativado" : "Código reativado");
+      // Only audit deactivation (per requirement)
+      if (gc.is_active) {
+        await logAdminAction({
+          action: "gift_code.deactivate",
+          targetType: "gift_code",
+          targetId: gc.id,
+          targetLabel: gc.code,
+        });
+      }
+      fetchAll();
+    }
   };
 
   const copyCode = (code: string) => {

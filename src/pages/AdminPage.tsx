@@ -12,6 +12,7 @@ import AdminQuizzes from "@/components/admin/AdminQuizzes";
 import AdminProgress from "@/components/admin/AdminProgress";
 import AdminSupport from "@/components/admin/AdminSupport";
 import AdminSettings from "@/components/admin/AdminSettings";
+import AdminAuditLog from "@/components/admin/AdminAuditLog";
 
 const sectionComponents: Record<AdminSection, React.ComponentType> = {
   overview: AdminOverview,
@@ -22,6 +23,7 @@ const sectionComponents: Record<AdminSection, React.ComponentType> = {
   arcanos: AdminArcanos,
   quizzes: AdminQuizzes,
   progress: AdminProgress,
+  audit: AdminAuditLog,
   support: AdminSupport,
   settings: AdminSettings,
 };
