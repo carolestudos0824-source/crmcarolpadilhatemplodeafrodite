@@ -4,7 +4,11 @@ import { ArrowLeft, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { FUNDAMENTOS_LESSONS, getFundamentosLessonByOrder } from "@/data/fundamentos";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
+import { useResolvedLesson } from "@/hooks/use-resolved-lesson";
 import mysticBg from "@/assets/mystic-bg.jpg";
+
+/** Fase 4A — piloto restrito a 3 lições reais de Fundamentos. */
+const FASE_4A_PILOT_LESSONS = new Set(["fund-1", "fund-2", "fund-3"]);
 
 type Phase = "lesson" | "exercise" | "deepdive" | "quiz" | "complete";
 
