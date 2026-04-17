@@ -9,9 +9,17 @@
  * do CMS via `@/lib/content`.
  */
 
-import type { LessonSection } from "@/data/fool-lesson-content";
-
-export type { LessonSection };
+/**
+ * Estrutura de uma seção pedagógica de lição (Arcano Vivo / Lessons).
+ * Tipo técnico — o conteúdo das seções vem do CMS (`cms_arcanos`).
+ */
+export interface LessonSection {
+  id: string;
+  title: string;
+  icon: string;
+  content: string;
+  accent?: "gold" | "wine" | "plum";
+}
 
 // ─── Lesson / Library ──────────────────────────────────────────────
 

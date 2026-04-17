@@ -1,10 +1,14 @@
-export interface LessonSection {
-  id: string;
-  title: string;
-  icon: string;
-  content: string;
-  accent?: "gold" | "wine" | "plum";
-}
+/**
+ * @deprecated (Fase 6.3) — NÃO importe deste arquivo no runtime.
+ *
+ * O tipo `LessonSection` foi movido para `@/lib/content/runtime-types`.
+ * O texto editorial de O Louco (`FOOL_VOICE_TEXT`, `FOOL_LESSON_SECTIONS`)
+ * agora vive em `cms_arcanos` (campos `voz_do_arcano`, `essencia`,
+ * `simbolos_centrais`, `luz`, `sombra`, `amor`, `trabalho`,
+ * `espiritualidade`). Este arquivo permanece apenas como SEED histórico.
+ */
+import type { LessonSection } from "@/lib/content/runtime-types";
+export type { LessonSection };
 
 export const FOOL_VOICE_TEXT = `Eu sou o Louco.
 Sou o primeiro passo antes da certeza.
