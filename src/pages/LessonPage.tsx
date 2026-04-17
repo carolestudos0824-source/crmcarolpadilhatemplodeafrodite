@@ -14,6 +14,7 @@ import { ExerciseSection } from "@/components/ExerciseSection";
 import { QuizSection } from "@/components/QuizSection";
 import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
+import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 
@@ -42,6 +43,22 @@ const LessonPage = () => {
 
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
+
+  // Phase 1: quiz vem do content-adapter (DB → fallback legado).
+  // O `legacyQuiz` continua como rede de segurança caso o adapter retorne null.
+  const resolvedQuiz = useResolvedQuiz({
+    params: arcano
+      ? { linkedTo: `arcano-maior-${arcanoId}`, arcanoNumero: arcanoId }
+      : null,
+    legacyQuiz: arcano?.quiz ?? null,
+  });
+
+  if (import.meta.env.DEV && arcano && resolvedQuiz.sourceUsed) {
+    // eslint-disable-next-line no-console
+    console.info(
+      `[content-adapter] quiz arcano=${arcanoId} source=${resolvedQuiz.sourceUsed} fallback=${resolvedQuiz.usedFallback}`,
+    );
+  }
 
   useEffect(() => {
     if (arcano) trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
@@ -303,7 +320,10 @@ const LessonPage = () => {
               border: "1px solid hsl(36 45% 58% / 0.15)",
               boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)",
             }}>
-              <QuizSection questions={arcano.quiz} onComplete={handleQuizComplete} />
+              <QuizSection
+                questions={resolvedQuiz.questions ?? arcano.quiz}
+                onComplete={handleQuizComplete}
+              />
             </div>
             <div className="flex justify-center">
               <button onClick={() => navigate("/module/arcanos-maiores")} className="text-sm flex items-center gap-2" style={{ color: "hsl(230 10% 45%)" }}>

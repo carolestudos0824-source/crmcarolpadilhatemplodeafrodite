@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { FUNDAMENTOS_LESSONS, getFundamentosLessonByOrder } from "@/data/fundamentos";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 type Phase = "lesson" | "exercise" | "deepdive" | "quiz" | "complete";
@@ -20,6 +21,30 @@ const FundamentosLessonPage = () => {
   const lessonOrder = parseInt(order || "0", 10);
   const lesson = getFundamentosLessonByOrder(lessonOrder);
   const nextLesson = getFundamentosLessonByOrder(lessonOrder + 1);
+
+  // Phase 1: quiz vem do content-adapter (DB → fallback legado).
+  const resolvedQuiz = useResolvedQuiz({
+    params: lesson
+      ? { linkedTo: `lesson:${lesson.id}`, moduleSlug: "fundamentos", lessonSlug: lesson.id }
+      : null,
+    legacyQuiz: lesson?.quiz?.map((q) => ({
+      id: q.id,
+      question: q.question,
+      type: "multiple-choice" as const,
+      options: q.options,
+      correctIndex: q.correctIndex,
+      explanation: q.explanation,
+    })) ?? null,
+  });
+
+  if (import.meta.env.DEV && lesson && resolvedQuiz.sourceUsed) {
+    // eslint-disable-next-line no-console
+    console.info(
+      `[content-adapter] quiz lesson=${lesson.id} source=${resolvedQuiz.sourceUsed} fallback=${resolvedQuiz.usedFallback}`,
+    );
+  }
+
+  const quizQuestions = resolvedQuiz.questions ?? lesson?.quiz ?? [];
 
   if (!lesson) {
     return (
@@ -47,14 +72,14 @@ const FundamentosLessonPage = () => {
     if (selectedAnswer !== null) return;
     setSelectedAnswer(idx);
     setShowExplanation(true);
-    if (idx === lesson.quiz[quizIndex].correctIndex) {
+    if (idx === quizQuestions[quizIndex].correctIndex) {
       setScore((s) => s + 1);
       addXP(5);
     }
   };
 
   const handleNextQuestion = () => {
-    if (quizIndex < lesson.quiz.length - 1) {
+    if (quizIndex < quizQuestions.length - 1) {
       setQuizIndex((i) => i + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
@@ -280,17 +305,17 @@ const FundamentosLessonPage = () => {
                 Quiz de Fixação
               </h2>
               <p className="text-xs" style={{ color: "hsl(230 10% 45%)" }}>
-                Pergunta {quizIndex + 1} de {lesson.quiz.length}
+                Pergunta {quizIndex + 1} de {quizQuestions.length}
               </p>
             </div>
 
             <div className="rounded-xl p-6" style={{ background: "hsl(38 30% 95% / 0.85)", border: "1px solid hsl(36 45% 58% / 0.15)", boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)" }}>
               <p className="font-heading text-sm tracking-wide mb-5" style={{ color: "hsl(230 25% 15%)" }}>
-                {lesson.quiz[quizIndex].question}
+                {quizQuestions[quizIndex].question}
               </p>
               <div className="space-y-2.5">
-                {lesson.quiz[quizIndex].options.map((opt, i) => {
-                  const isCorrect = i === lesson.quiz[quizIndex].correctIndex;
+                {quizQuestions[quizIndex].options.map((opt, i) => {
+                  const isCorrect = i === quizQuestions[quizIndex].correctIndex;
                   const isSelected = selectedAnswer === i;
                   let optStyle: React.CSSProperties = {
                     background: "hsl(36 33% 97% / 0.8)",
@@ -328,7 +353,7 @@ const FundamentosLessonPage = () => {
               {showExplanation && (
                 <div className="mt-4 p-4 rounded-lg" style={{ background: "hsl(36 45% 58% / 0.06)", border: "1px solid hsl(36 45% 58% / 0.15)" }}>
                   <p className="text-xs leading-relaxed" style={{ color: "hsl(230 20% 25% / 0.80)" }}>
-                    {lesson.quiz[quizIndex].explanation}
+                    {quizQuestions[quizIndex].explanation}
                   </p>
                   <button
                     onClick={handleNextQuestion}
@@ -338,7 +363,7 @@ const FundamentosLessonPage = () => {
                       color: "hsl(36 33% 97%)",
                     }}
                   >
-                    {quizIndex < lesson.quiz.length - 1 ? "Próxima →" : "Concluir Quiz ✦"}
+                    {quizIndex < quizQuestions.length - 1 ? "Próxima →" : "Concluir Quiz ✦"}
                   </button>
                 </div>
               )}
@@ -362,7 +387,7 @@ const FundamentosLessonPage = () => {
               Lição Completa!
             </h2>
             <p className="text-sm" style={{ color: "hsl(230 20% 30%)" }}>
-              Você acertou <strong>{score}/{lesson.quiz.length}</strong> perguntas.
+              Você acertou <strong>{score}/{quizQuestions.length}</strong> perguntas.
             </p>
 
             <div className="flex flex-col items-center gap-4 pt-4">

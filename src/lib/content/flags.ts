@@ -16,7 +16,9 @@ export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   arcanos: "fallback",
-  quizzes: "fallback",
+  // Fase 1 — quizzes promovidos para 'auto':
+  // tenta DB primeiro; ausência ou erro cai automaticamente no legado com warn.
+  quizzes: "auto",
   lessons: "fallback",
   modules: "fallback",
 };
