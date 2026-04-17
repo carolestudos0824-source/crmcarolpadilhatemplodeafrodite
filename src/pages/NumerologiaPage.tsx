@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronDown } from "lucide-react";
-import { NUMEROLOGIA } from "@/data/arcanos-menores/numerologia";
+import { useNumerologyContent } from "@/hooks/use-content";
 import { NAIPES } from "@/data/arcanos-menores";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const NumerologiaPage = () => {
   const navigate = useNavigate();
   const [openCard, setOpenCard] = useState<number | null>(null);
+  const { data: numerology, isLoading } = useNumerologyContent();
+  const NUMEROLOGIA = numerology?.items ?? [];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
