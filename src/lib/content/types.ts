@@ -32,18 +32,26 @@ export interface QuizQuestionContent {
   explicacao?: string;
 }
 
+export type QuizDificuldade = "basico" | "intermediario" | "avancado";
+
 export interface QuizContent {
   id: string;
   titulo: string;
-  status: "rascunho" | "publicado";
+  subtitulo?: string;
+  status: ContentStatus;
+  tier: ContentTier;
   xp: number;
+  dificuldade?: QuizDificuldade;
   perguntas: QuizQuestionContent[];
   vinculo: {
     tipo: "modulo" | "licao" | "arcano";
     id: string;
+    slug?: string;
   };
   metadata: {
     source: ContentSource;
+    sourceId?: string;
+    usedFallback?: boolean;
   };
 }
 
