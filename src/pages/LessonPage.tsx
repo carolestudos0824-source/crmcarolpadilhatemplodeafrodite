@@ -15,6 +15,7 @@ import { QuizSection } from "@/components/QuizSection";
 import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
+import { useResolvedArcano } from "@/hooks/use-resolved-arcano";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 
