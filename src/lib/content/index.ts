@@ -33,3 +33,23 @@ export type {
 } from "./types";
 
 export { CONTENT_FLAGS, getFlag, type ContentDomain, type ContentSourceMode } from "./flags";
+
+// ─── Catálogo formal e serviço de acesso (Fase 5C) ─────────────────
+export {
+  MODULES_CATALOG,
+  ARCANOS_MAIORES_CATALOG,
+  getModuleFromCatalog,
+  getArcanoSummaryFromCatalog,
+  getArcanoFull,
+  type LearningModule,
+  type ArcanoSummary,
+  type ArcanoData,
+  type ModuleCategory,
+} from "./catalog";
+
+export {
+  FREE_ARCANO_IDS,
+  isArcanoFree,
+  isModuleUnlocked,
+  getNextUnlockedModuleId,
+} from "./access";

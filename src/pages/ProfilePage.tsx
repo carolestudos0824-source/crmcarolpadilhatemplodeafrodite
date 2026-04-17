@@ -5,7 +5,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
 import { useProgress } from "@/hooks/use-progress";
 import { usePremium } from "@/hooks/use-premium";
 import { useGiftCode } from "@/hooks/use-gift-code";
-import { ARCANOS_MAIORES, MODULES, getArcanoById } from "@/data/tarot-data";
+import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, MODULES_CATALOG as MODULES, getArcanoFull as getArcanoById } from "@/lib/content";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";

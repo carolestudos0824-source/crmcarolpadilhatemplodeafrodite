@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, RefreshCw, Sparkles } from "lucide-react";
-import { MODULES, ARCANOS_MAIORES, type LearningModule } from "@/data/tarot-data";
+import { MODULES_CATALOG as MODULES, ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, type LearningModule } from "@/lib/content";
 
 /** Module lesson prefix mapping for detecting last completed lesson per module */
 const MODULE_PREFIX_MAP: Record<string, { prefix: string; route: (order: number) => string; getLessonName?: (id: string) => string }> = {

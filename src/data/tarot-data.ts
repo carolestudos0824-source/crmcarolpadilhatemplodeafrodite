@@ -107,6 +107,19 @@ export interface LearningModule {
   route: string;
 }
 
+/**
+ * @deprecated (Fase 5C) Não importe `MODULES`, `ARCANOS_MAIORES`,
+ * `FREE_ARCANO_IDS` ou `isModuleUnlocked` daqui. Use:
+ *   import { MODULES_CATALOG, ARCANOS_MAIORES_CATALOG,
+ *            FREE_ARCANO_IDS, isModuleUnlocked } from "@/lib/content";
+ *
+ * Este arquivo permanece apenas como espelho legado consumido internamente
+ * pelo catálogo (`@/lib/content/catalog`) e como fonte dos tipos
+ * `LearningModule`, `ArcanoSummary`, `ArcanoData`, `UserProgress`,
+ * `Badge`, `QuizQuestion`, `ExtraMaterial`, `LessonLayer`, `ModuleCategory`
+ * e do `DEFAULT_PROGRESS`. Não é mais lido diretamente por telas/runtime
+ * principal.
+ */
 export const MODULES: LearningModule[] = [
   // ─── Fundação ───
   { id: "fundamentos",         name: "Fundamentos do Tarô",           subtitle: "A Base de Tudo",             description: "O que é o tarô, estrutura do baralho, simbologia, intuição, ética e como estudar",  icon: "📖", symbol: "◈",  order: 0,  category: "foundation",    totalLessons: 10, route: "/module/fundamentos" },
