@@ -24,6 +24,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Database } from "@/integrations/supabase/types";
+import { logAdminAction } from "@/lib/admin-audit";
 
 type QuizRow = Database["public"]["Tables"]["cms_quizzes"]["Row"];
 type QuestionRow = Database["public"]["Tables"]["cms_quiz_questions"]["Row"];
@@ -137,6 +138,13 @@ const AdminQuizzes = () => {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: next === "published" ? "quiz.publish" : "quiz.unpublish",
+      targetType: "quiz",
+      targetId: q.id,
+      targetLabel: q.title,
+      details: { from: q.status, to: next },
+    });
     await load();
   };
 
@@ -147,6 +155,12 @@ const AdminQuizzes = () => {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "quiz.delete",
+      targetType: "quiz",
+      targetId: q.id,
+      targetLabel: q.title,
+    });
     toast({ title: "Quiz removido" });
     await load();
   };
@@ -410,6 +424,13 @@ const QuizEditor = ({
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "quiz.update",
+      targetType: "quiz",
+      targetId: draft.id,
+      targetLabel: draft.title,
+      details: { difficulty: draft.difficulty, xp_reward: draft.xp_reward, status: draft.status },
+    });
     toast({ title: "Quiz salvo" });
   };
 
@@ -448,15 +469,23 @@ const QuizEditor = ({
       order_index: Number(editingQuestion.order_index ?? 0),
     };
 
-    const { error } = editingQuestion.id
-      ? await supabase.from("cms_quiz_questions").update(payload).eq("id", editingQuestion.id)
+    const isUpdate = !!editingQuestion.id;
+    const { error } = isUpdate
+      ? await supabase.from("cms_quiz_questions").update(payload).eq("id", editingQuestion.id!)
       : await supabase.from("cms_quiz_questions").insert(payload);
 
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: editingQuestion.id ? "Pergunta atualizada" : "Pergunta criada" });
+    await logAdminAction({
+      action: isUpdate ? "quiz_question.update" : "quiz_question.create",
+      targetType: "quiz_question",
+      targetId: editingQuestion.id ?? null,
+      targetLabel: payload.prompt.slice(0, 60),
+      details: { quiz_id: quiz.id, quiz_title: draft.title, correct_index: correct, options_count: cleanOpts.length },
+    });
+    toast({ title: isUpdate ? "Pergunta atualizada" : "Pergunta criada" });
     setQuestionOpen(false);
     setEditingQuestion(null);
     await loadQuestions();
@@ -464,11 +493,19 @@ const QuizEditor = ({
 
   const handleDeleteQuestion = async (id: string) => {
     if (!confirm("Remover esta pergunta?")) return;
+    const target = questions.find((q) => q.id === id);
     const { error } = await supabase.from("cms_quiz_questions").delete().eq("id", id);
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "quiz_question.delete",
+      targetType: "quiz_question",
+      targetId: id,
+      targetLabel: target?.prompt.slice(0, 60) ?? null,
+      details: { quiz_id: quiz.id, quiz_title: draft.title },
+    });
     await loadQuestions();
   };
 
@@ -486,6 +523,13 @@ const QuizEditor = ({
       toast({ title: "Erro ao reordenar", variant: "destructive" });
       return;
     }
+    await logAdminAction({
+      action: "quiz_question.reorder",
+      targetType: "quiz_question",
+      targetId: a.id,
+      targetLabel: a.prompt.slice(0, 60),
+      details: { quiz_id: quiz.id, direction: dir },
+    });
     await loadQuestions();
   };
 
