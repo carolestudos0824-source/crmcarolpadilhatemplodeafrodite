@@ -156,6 +156,7 @@ const ReviewPage = () => {
   if (mode === "daily-challenge" && dailyChallenge && currentFlashcard) {
     return <FlashcardView
       card={currentFlashcard}
+      arcanoName={getArcanoName(currentFlashcard.arcanoId)}
       index={currentIndex}
       total={flashcardSet.length}
       flipped={flipped}
@@ -418,6 +419,7 @@ const ReviewPage = () => {
 
 interface FlashcardViewProps {
   card: Flashcard;
+  arcanoName: string;
   index: number;
   total: number;
   flipped: boolean;
@@ -427,7 +429,7 @@ interface FlashcardViewProps {
   isDaily?: boolean;
 }
 
-const FlashcardView = ({ card, index, total, flipped, onFlip, onAnswer, onBack, isDaily }: FlashcardViewProps) => (
+const FlashcardView = ({ card, arcanoName, index, total, flipped, onFlip, onAnswer, onBack, isDaily }: FlashcardViewProps) => (
   <div className="min-h-screen flex flex-col" style={{
     background: "linear-gradient(180deg, hsl(36 33% 96%), hsl(38 28% 93%))",
   }}>
@@ -487,7 +489,7 @@ const FlashcardView = ({ card, index, total, flipped, onFlip, onAnswer, onBack, 
               border: "1px solid hsl(36 45% 50% / 0.15)",
               color: "hsl(36 42% 40%)",
             }}>
-              {getArcanoName(card.arcanoId)} · {
+              {arcanoName} · {
                 card.category === "symbol" ? "Símbolo" :
                 card.category === "archetype" ? "Arquétipo" :
                 card.category === "light-shadow" ? "Luz & Sombra" :
