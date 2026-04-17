@@ -39,9 +39,7 @@ function wrap<T extends { metadata: { source: "db" | "legacy" } } | null>(
     error: (query.error as Error | null) ?? null,
     sourceUsed,
     usedFallback: sourceUsed === "legacy",
-    refetch: () => {
-      void query.refetch();
-    },
+    refetch: () => query.refetch(),
     isFetching: query.isFetching,
   };
 }
@@ -58,9 +56,7 @@ function wrapList<T extends { metadata: { source: "db" | "legacy" } }>(
     error: (query.error as Error | null) ?? null,
     sourceUsed,
     usedFallback: sourceUsed === "legacy",
-    refetch: () => {
-      void query.refetch();
-    },
+    refetch: () => query.refetch(),
     isFetching: query.isFetching,
   };
 }
