@@ -25,6 +25,18 @@ export type {
   JourneyPhaseContent,
 } from "./journey-types";
 
+// Fase 6.0 — tipos canônicos de runtime (extraídos de tarot-data.ts).
+export type {
+  ArcanoData,
+  Badge,
+  ExtraMaterial,
+  LessonLayer,
+  LessonSection,
+  QuizQuestion,
+  UserProgress,
+} from "./runtime-types";
+export { DEFAULT_PROGRESS } from "./runtime-types";
+
 export type {
   ArcanoContent,
   QuizContent,
@@ -51,7 +63,6 @@ export {
   getArcanoFull,
   type LearningModule,
   type ArcanoSummary,
-  type ArcanoData,
   type ModuleCategory,
 } from "./catalog";
 

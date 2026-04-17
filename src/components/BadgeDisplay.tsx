@@ -1,4 +1,4 @@
-import { Badge } from "@/data/tarot-data";
+import type { Badge } from "@/lib/content";
 
 const BADGE_SYMBOLS: Record<string, string> = {
   "first-step": "✦",

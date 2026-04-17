@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { QuizQuestion } from "@/data/tarot-data";
+import type { QuizQuestion } from "@/lib/content";
 import { Check, X, ArrowRight, Trophy, RotateCcw, Sparkles } from "lucide-react";
 
 interface QuizSectionProps {

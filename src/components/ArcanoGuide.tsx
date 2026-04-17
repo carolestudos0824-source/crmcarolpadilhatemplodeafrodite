@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ArcanoData } from "@/data/tarot-data";
+import type { ArcanoData } from "@/lib/content";
 import foolCardImage from "@/assets/the-fool-card.jpg";
 import { Volume2, VolumeX, ChevronDown } from "lucide-react";
 
