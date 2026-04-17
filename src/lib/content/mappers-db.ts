@@ -265,6 +265,8 @@ export function mapDbModuleToUI(
     moduleTier: row.tier,
     moduleStatus: row.status,
   };
+  const moduleTier = parseTier(row.tier);
+  const moduleStatus = parseStatus(row.status);
   return {
     id: row.id,
     slug: row.slug,
@@ -272,13 +274,28 @@ export function mapDbModuleToUI(
     categoryLabel: row.category ?? undefined,
     descricaoCurta: row.short_description ?? undefined,
     descricaoEditorial: row.editorial_description ?? undefined,
+    editorialIntro: undefined,
     ordem: row.order_index,
-    tier: parseTier(row.tier),
-    status: parseStatus(row.status),
+    tier: moduleTier,
+    status: moduleStatus,
     themeColor: row.theme_color ?? undefined,
     licoes: [...lessons]
       .sort((a, b) => a.order_index - b.order_index)
-      .map((l) => mapDbLessonToUI(l, ctx)),
+      .map((l) => ({
+        id: l.id,
+        slug: l.lesson_id,
+        titulo: l.title,
+        subtitulo: l.subtitle ?? undefined,
+        ordem: l.order_index ?? 0,
+        tier: moduleTier,
+        status: moduleStatus,
+        quizDisponivel: false,
+        arcanoSlug: undefined,
+      })),
     metadata: { source: "db", sourceId: row.id },
   };
 }
+
+// Mantém referência usada para tipagem de contexto exportado
+void mapDbLessonToUI;
+void ((_ctx: DbLessonContext) => _ctx);

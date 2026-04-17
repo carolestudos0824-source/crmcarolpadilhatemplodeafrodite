@@ -137,6 +137,19 @@ export interface LessonContent {
 
 // ─── Módulo ────────────────────────────────────────────────────────
 
+/** Resumo leve de uma lição para listagens em telas de módulo. */
+export interface LessonSummary {
+  id: string;
+  slug: string;
+  titulo: string;
+  subtitulo?: string;
+  ordem: number;
+  tier: ContentTier;
+  status: ContentStatus;
+  quizDisponivel: boolean;
+  arcanoSlug?: string;
+}
+
 export interface ModuleContent {
   id: string;
   slug: string;
@@ -144,12 +157,13 @@ export interface ModuleContent {
   categoryLabel?: string;
   descricaoCurta?: string;
   descricaoEditorial?: string;
+  editorialIntro?: string;
   ordem: number;
   tier: ContentTier;
   status: ContentStatus;
   themeColor?: string;
 
-  licoes: LessonContent[];
+  licoes: LessonSummary[];
 
   metadata: {
     source: ContentSource;
