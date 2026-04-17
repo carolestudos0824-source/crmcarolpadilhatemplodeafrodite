@@ -1,4 +1,4 @@
-// Admin management edge function — search users by email and manage admin roles
+// Admin management edge function — search users, manage admin roles, premium and progress
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -38,7 +38,8 @@ Deno.serve(async (req) => {
       .maybeSingle();
     if (!isAdminData) return json({ error: "Forbidden" }, 403);
 
-    const { action, email, target_user_id } = await req.json();
+    const body = await req.json();
+    const { action, email, target_user_id, days, source, gift_code_id } = body;
 
     if (action === "list") {
       const { data: roles } = await admin
@@ -71,7 +72,6 @@ Deno.serve(async (req) => {
 
     if (action === "search") {
       if (!email || typeof email !== "string") return json({ error: "Email obrigatório" }, 400);
-      // Search auth users by email substring
       const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
       if (error) return json({ error: error.message }, 500);
       const q = email.toLowerCase().trim();
@@ -99,6 +99,83 @@ Deno.serve(async (req) => {
         .delete()
         .eq("user_id", target_user_id)
         .eq("role", "admin");
+      if (error) return json({ error: error.message }, 500);
+      return json({ success: true });
+    }
+
+    // List all users with email enrichment (paginated)
+    if (action === "list_users") {
+      const page = body.page ?? 1;
+      const perPage = body.perPage ?? 200;
+      const { data: authList, error: authErr } = await admin.auth.admin.listUsers({ page, perPage });
+      if (authErr) return json({ error: authErr.message }, 500);
+      const users = (authList?.users ?? []).map((u) => ({
+        id: u.id,
+        email: u.email,
+        created_at: u.created_at,
+        last_sign_in_at: u.last_sign_in_at,
+      }));
+      return json({ users });
+    }
+
+    // Get a single user's full details for admin profile view
+    if (action === "user_detail") {
+      if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
+      const { data: au } = await admin.auth.admin.getUserById(target_user_id);
+      const [{ data: profile }, { data: progress }, { data: roles }, { data: redemptions }] = await Promise.all([
+        admin.from("profiles").select("*").eq("user_id", target_user_id).maybeSingle(),
+        admin.from("user_progress").select("*").eq("user_id", target_user_id).maybeSingle(),
+        admin.from("user_roles").select("role").eq("user_id", target_user_id),
+        admin.from("gift_redemptions").select("redeemed_at, gift_code_id").eq("user_id", target_user_id),
+      ]);
+      return json({
+        auth: au?.user ? { email: au.user.email, created_at: au.user.created_at, last_sign_in_at: au.user.last_sign_in_at } : null,
+        profile,
+        progress,
+        roles: (roles ?? []).map((r) => r.role),
+        redemptions,
+      });
+    }
+
+    if (action === "grant_premium") {
+      if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
+      const d = Number(days) > 0 ? Number(days) : 30;
+      const src = source === "gift" ? "gift" : "admin";
+      const { data: cur } = await admin.from("profiles").select("premium_until").eq("user_id", target_user_id).maybeSingle();
+      const base = cur?.premium_until && new Date(cur.premium_until) > new Date() ? new Date(cur.premium_until) : new Date();
+      base.setDate(base.getDate() + d);
+      const { error } = await admin
+        .from("profiles")
+        .update({ is_premium: true, premium_source: src, premium_until: base.toISOString() })
+        .eq("user_id", target_user_id);
+      if (error) return json({ error: error.message }, 500);
+      return json({ success: true, premium_until: base.toISOString() });
+    }
+
+    if (action === "revoke_premium") {
+      if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
+      const { error } = await admin
+        .from("profiles")
+        .update({ is_premium: false, premium_source: null, premium_until: null })
+        .eq("user_id", target_user_id);
+      if (error) return json({ error: error.message }, 500);
+      return json({ success: true });
+    }
+
+    if (action === "reset_progress") {
+      if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
+      const { error } = await admin
+        .from("user_progress")
+        .update({
+          completed_lessons: [],
+          completed_modules: [],
+          completed_quizzes: [],
+          completed_exercises: [],
+          xp: 0,
+          level: 1,
+          streak: 0,
+        })
+        .eq("user_id", target_user_id);
       if (error) return json({ error: error.message }, 500);
       return json({ success: true });
     }
