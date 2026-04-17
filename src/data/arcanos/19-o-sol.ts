@@ -11,7 +11,7 @@ export const O_SOL: ArcanoMaiorEditorial = {
   keywords: ["Alegria", "Vitalidade", "Clareza", "Sucesso", "Verdade"],
 
   essence:
-    "O Sol é o Arcano XIX — a clareza absoluta após a confusão d'A Lua, a alegria que nasce quando a verdade finalmente se revela sem sombras. A criança nua sobre o cavalo branco não tem medo, não tem dúvida, não tem vergonha. Ela celebra a vida com a inocência de quem atravessou a noite e encontrou o amanhecer. Quando O Sol aparece, ele diz: sim. A resposta é sim.",
+    "O Sol é o Arcano XIX — a clareza absoluta após a confusão d'A Lua, a alegria que nasce quando a verdade finalmente se revela sem sombras. A criança nua sobre o cavalo branco não tem medo, não tem dúvida, não tem vergonha. Ela celebra a vida com a inocência de quem atravessou a noite e encontrou o amanhecer. Como arquétipo solar universal, é a Criança Divina que existe em todas as mitologias — Hórus, Apolo, o Menino Jesus — encarnando a consciência adulta que reconquistou a alegria sem perder a lucidez. Quando O Sol aparece, ele diz: sim. A resposta é sim.",
 
   symbols: [
     { name: "Sol radiante com rosto", meaning: "Consciência plena — a verdade que ilumina tudo sem deixar sombras" },

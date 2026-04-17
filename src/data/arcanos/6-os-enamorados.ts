@@ -11,7 +11,7 @@ export const OS_ENAMORADOS: ArcanoMaiorEditorial = {
   keywords: ["Escolha", "União", "Amor", "Valores", "Dualidade"],
 
   essence:
-    "Os Enamorados é o Arcano VI — o momento sagrado da escolha consciente. Não se trata apenas de romance: é o encontro com o outro que revela quem somos. É a encruzilhada onde cabeça e coração precisam se alinhar, onde escolher é também renunciar. Sob a bênção do anjo Rafael, os Enamorados nos lembram que toda grande decisão é, no fundo, uma decisão sobre quem queremos ser.",
+    "Os Enamorados é o Arcano VI — o momento sagrado da escolha consciente. Não se trata apenas de romance: é o encontro com o outro que revela quem somos. É a encruzilhada onde cabeça e coração precisam se alinhar, onde escolher é também renunciar. Sob a bênção do anjo Rafael, os Enamorados nos lembram que toda grande decisão é, no fundo, uma decisão sobre quem queremos ser. Reencenação do mito edênico — Adão, Eva e o anjo entre as árvores do Conhecimento e da Vida — eleva o desejo humano à categoria de via espiritual: amar é assumir uma direção. Sob a bênção do anjo, escolher é também consagrar.",
 
   symbols: [
     { name: "Anjo Rafael", meaning: "Bênção divina, cura e proteção sobre a escolha — o amor como força espiritual" },

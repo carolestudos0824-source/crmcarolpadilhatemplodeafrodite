@@ -11,7 +11,7 @@ export const O_ENFORCADO: ArcanoMaiorEditorial = {
   keywords: ["Rendição", "Suspensão", "Sacrifício", "Perspectiva", "Entrega"],
 
   essence:
-    "O Enforcado é o Arcano XII — a pausa radical, a inversão de perspectiva que só acontece quando paramos de lutar. Ele não está preso — está suspenso por escolha própria. Pendurado de cabeça para baixo, vê o mundo de um ângulo que ninguém mais vê. Seu rosto é sereno, não atormentado. Quando O Enforcado aparece, ele diz: pare de forçar. A resposta vem quando você solta.",
+    "O Enforcado é o Arcano XII — a pausa radical, a inversão de perspectiva que só acontece quando paramos de lutar. Ele não está preso — está suspenso por escolha própria. Pendurado de cabeça para baixo, vê o mundo de um ângulo que ninguém mais vê. Seu rosto é sereno, não atormentado. Arquétipo do Sacrifício iniciático — irmão de Odin pendurado em Yggdrasil em busca das runas — encarna a sabedoria que só se conquista quando o ego aceita ficar de cabeça para baixo. Quando O Enforcado aparece, ele diz: pare de forçar. A resposta vem quando você solta.",
 
   symbols: [
     { name: "Homem pendurado pelo pé", meaning: "Inversão voluntária — ver o mundo de uma perspectiva completamente nova" },

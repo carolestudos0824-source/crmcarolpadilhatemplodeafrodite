@@ -11,7 +11,7 @@ export const O_MAGO: ArcanoMaiorEditorial = {
   keywords: ["Vontade", "Manifestação", "Domínio", "Ação Consciente", "Poder Criativo"],
 
   essence:
-    "O Mago é o Arcano I — a primeira manifestação consciente da vontade. Enquanto O Louco é potencial puro, O Mago é o potencial canalizado. Ele é o momento em que a intenção se torna ação, em que o desejo ganha forma. Com uma mão apontando para o céu e outra para a terra, ele é o canal perfeito entre o divino e o material. Quando O Mago aparece, ele diz: você tem tudo o que precisa — agora use.",
+    "O Mago é o Arcano I — a primeira manifestação consciente da vontade. Enquanto O Louco é potencial puro, O Mago é o potencial canalizado. Ele é o momento em que a intenção se torna ação, em que o desejo ganha forma. Com uma mão apontando para o céu e outra para a terra, ele é o canal perfeito entre o divino e o material. Herdeiro de Hermes-Thoth e do princípio hermético 'como em cima, assim embaixo', encarna o arquétipo do iniciador — aquele que reúne os quatro elementos sobre a mesa e os transforma em obra concreta. Quando O Mago aparece, ele diz: você tem tudo o que precisa — agora use.",
 
   symbols: [
     { name: "Mesa com quatro elementos", meaning: "Espada (ar/mente), cálice (água/emoções), bastão (fogo/vontade), pentáculo (terra/matéria) — domínio completo" },

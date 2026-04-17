@@ -11,7 +11,7 @@ export const A_MORTE: ArcanoMaiorEditorial = {
   keywords: ["Transformação", "Fim", "Renascimento", "Liberação", "Ciclo"],
 
   essence:
-    "A Morte é o Arcano XIII — a transformação inevitável, o fim que é também começo. Ela não é destruição: é a foice que ceifa o que já cumpriu seu propósito para que algo novo possa nascer. O cavaleiro esquelético não faz distinção — passa por reis, bispos, crianças e donzelas igualmente. Quando A Morte aparece, ela diz: algo precisa terminar para que você possa seguir. Não resista.",
+    "A Morte é o Arcano XIII — a transformação inevitável, o fim que é também começo. Ela não é destruição: é a foice que ceifa o que já cumpriu seu propósito para que algo novo possa nascer. O cavaleiro esquelético não faz distinção — passa por reis, bispos, crianças e donzelas igualmente. Encarnação do princípio alquímico do nigredo — a putrefação que precede toda transmutação — é também o Ceifeiro arquetípico que aparece de Saturno a Yama, lembrando que nenhuma forma viva atravessa o tempo sem se desfazer. Quando A Morte aparece, ela diz: algo precisa terminar para que você possa seguir. Não resista.",
 
   symbols: [
     { name: "Cavaleiro esquelético em armadura negra", meaning: "A morte como força invencível e imparcial — não pode ser comprada ou evitada" },

@@ -11,7 +11,7 @@ export const O_LOUCO: ArcanoMaiorEditorial = {
   keywords: ["Liberdade", "Coragem", "Travessia", "Impulso", "Desapego"],
 
   essence:
-    "O Louco é o Arcano Zero — o vazio fértil, o potencial puro antes de qualquer manifestação. Ele não é o início; é a coragem de iniciar. É o sopro antes da primeira palavra, o passo antes do caminho existir. Carrega consigo a energia da possibilidade infinita, do momento em que tudo ainda pode ser. Quando o Louco aparece, ele convida a soltar o controle e confiar no desconhecido.",
+    "O Louco é o Arcano Zero — o vazio fértil, o potencial puro antes de qualquer manifestação. Ele não é o início; é a coragem de iniciar. É o sopro antes da primeira palavra, o passo antes do caminho existir. Carrega consigo a energia da possibilidade infinita, do momento em que tudo ainda pode ser. Arquétipo universal do Bobo Sagrado e do Peregrino — irmão do bobo da corte shakespeariano e dos santos loucos da tradição cristã —, é o único que percorre todos os outros 21 arcanos sem se fixar em nenhum. Quando o Louco aparece, ele convida a soltar o controle e confiar no desconhecido.",
 
   symbols: [
     { name: "Trouxa sobre o ombro", meaning: "Karma — experiências que carregamos sem consciência, bagagem da alma" },

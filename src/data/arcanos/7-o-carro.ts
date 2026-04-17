@@ -11,7 +11,7 @@ export const O_CARRO: ArcanoMaiorEditorial = {
   keywords: ["Determinação", "Conquista", "Direção", "Vitória", "Controle"],
 
   essence:
-    "O Carro é o Arcano VII — a vontade em movimento, a determinação que vence obstáculos pela força do propósito. Ele não avança pela força bruta, mas pelo domínio de forças opostas que trabalham em uníssono. O guerreiro no carro não luta — ele dirige. Não destrói — ele ultrapassa. Quando O Carro aparece, o caminho está aberto para quem tem coragem e foco para seguir em frente.",
+    "O Carro é o Arcano VII — a vontade em movimento, a determinação que vence obstáculos pela força do propósito. Ele não avança pela força bruta, mas pelo domínio de forças opostas que trabalham em uníssono. O guerreiro no carro não luta — ele dirige. Não destrói — ele ultrapassa. Herdeiro do herói triunfal de Roma e do auriga platônico que rege os corcéis da alma, encarna o ego maduro que conquistou autonomia depois de ter sido formado pelo Imperador e abençoado pelos Enamorados. Quando O Carro aparece, o caminho está aberto para quem tem coragem e foco para seguir em frente.",
 
   symbols: [
     { name: "Duas esfinges (branca e negra)", meaning: "Forças opostas que precisam ser harmonizadas — razão e emoção, consciente e inconsciente" },
