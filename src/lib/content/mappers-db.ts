@@ -202,6 +202,7 @@ export interface DbLessonRow {
 }
 
 export interface DbLessonContext {
+  moduleSlug: string;
   moduleName: string;
   moduleTier: string;
   moduleStatus: string;
@@ -217,7 +218,9 @@ export function mapDbLessonToUI(
     titulo: row.title,
     subtitulo: row.subtitle ?? undefined,
     moduloId: row.module_id,
+    moduloSlug: ctx.moduleSlug,
     moduloNome: ctx.moduleName,
+    ordem: row.order_index ?? 0,
     tier: parseTier(ctx.moduleTier),
     status: parseStatus(ctx.moduleStatus),
     editorial: {
@@ -227,9 +230,11 @@ export function mapDbLessonToUI(
       exemploPratico: parseEditorialField(row.practical_example),
       exercicio: parseEditorialField(row.exercise),
       revisaoRapida: parseEditorialField(row.quick_review),
+      citacao: undefined,
+      pratica: undefined,
     },
     quiz: null, // lazy
-    metadata: { source: "db" },
+    metadata: { source: "db", sourceId: row.id },
   };
 }
 
