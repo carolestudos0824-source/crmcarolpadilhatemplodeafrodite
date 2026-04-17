@@ -44,6 +44,120 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_arcanos: {
+        Row: {
+          amor: string | null
+          aprofundamento: string | null
+          arquetipos: string | null
+          astrologia: string | null
+          cabala: string | null
+          citacao: string | null
+          created_at: string
+          created_by: string | null
+          elemento: string | null
+          espiritualidade: string | null
+          essencia: string | null
+          id: string
+          image_url: string | null
+          jornada: string | null
+          keywords: string[]
+          luz: string | null
+          naipe: Database["public"]["Enums"]["arcano_naipe"] | null
+          name: string
+          number: number
+          numeral: string | null
+          numerologia: string | null
+          pratica: string | null
+          quiz_id: string | null
+          revisao_rapida: string | null
+          simbolos_centrais: string | null
+          sombra: string | null
+          status: Database["public"]["Enums"]["module_status"]
+          subtitle: string | null
+          tags: string[]
+          tier: Database["public"]["Enums"]["module_tier"]
+          trabalho: string | null
+          type: Database["public"]["Enums"]["arcano_type"]
+          updated_at: string
+          validated: boolean
+          voz_do_arcano: string | null
+        }
+        Insert: {
+          amor?: string | null
+          aprofundamento?: string | null
+          arquetipos?: string | null
+          astrologia?: string | null
+          cabala?: string | null
+          citacao?: string | null
+          created_at?: string
+          created_by?: string | null
+          elemento?: string | null
+          espiritualidade?: string | null
+          essencia?: string | null
+          id?: string
+          image_url?: string | null
+          jornada?: string | null
+          keywords?: string[]
+          luz?: string | null
+          naipe?: Database["public"]["Enums"]["arcano_naipe"] | null
+          name: string
+          number: number
+          numeral?: string | null
+          numerologia?: string | null
+          pratica?: string | null
+          quiz_id?: string | null
+          revisao_rapida?: string | null
+          simbolos_centrais?: string | null
+          sombra?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitle?: string | null
+          tags?: string[]
+          tier?: Database["public"]["Enums"]["module_tier"]
+          trabalho?: string | null
+          type: Database["public"]["Enums"]["arcano_type"]
+          updated_at?: string
+          validated?: boolean
+          voz_do_arcano?: string | null
+        }
+        Update: {
+          amor?: string | null
+          aprofundamento?: string | null
+          arquetipos?: string | null
+          astrologia?: string | null
+          cabala?: string | null
+          citacao?: string | null
+          created_at?: string
+          created_by?: string | null
+          elemento?: string | null
+          espiritualidade?: string | null
+          essencia?: string | null
+          id?: string
+          image_url?: string | null
+          jornada?: string | null
+          keywords?: string[]
+          luz?: string | null
+          naipe?: Database["public"]["Enums"]["arcano_naipe"] | null
+          name?: string
+          number?: number
+          numeral?: string | null
+          numerologia?: string | null
+          pratica?: string | null
+          quiz_id?: string | null
+          revisao_rapida?: string | null
+          simbolos_centrais?: string | null
+          sombra?: string | null
+          status?: Database["public"]["Enums"]["module_status"]
+          subtitle?: string | null
+          tags?: string[]
+          tier?: Database["public"]["Enums"]["module_tier"]
+          trabalho?: string | null
+          type?: Database["public"]["Enums"]["arcano_type"]
+          updated_at?: string
+          validated?: boolean
+          voz_do_arcano?: string | null
+        }
+        Relationships: []
+      }
       cms_module_lessons: {
         Row: {
           created_at: string
@@ -430,6 +544,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      arcano_naipe: "copas" | "ouros" | "espadas" | "paus"
+      arcano_type: "maior" | "menor"
       module_status: "empty" | "partial" | "draft" | "published"
       module_tier: "free" | "premium"
     }
@@ -560,6 +676,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      arcano_naipe: ["copas", "ouros", "espadas", "paus"],
+      arcano_type: ["maior", "menor"],
       module_status: ["empty", "partial", "draft", "published"],
       module_tier: ["free", "premium"],
     },
