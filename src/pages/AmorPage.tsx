@@ -2,11 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight, Heart } from "lucide-react";
 import { AMOR_LESSONS } from "@/data/amor";
 import { useProgress } from "@/hooks/use-progress";
+import { useResolvedModule } from "@/hooks/use-resolved-module";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const AmorPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
+  useResolvedModule("amor");
 
   const isLessonCompleted = (lessonId: string) =>
     progress.completedLessons.includes(lessonId);
