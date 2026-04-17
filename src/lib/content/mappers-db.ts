@@ -12,6 +12,7 @@ import type {
 } from "./types";
 import {
   parseEditorialField,
+  parseQuizDificuldade,
   parseQuizStatus,
   parseStatus,
   parseStringArray,
@@ -129,6 +130,8 @@ export interface DbQuizRow {
   xp_reward: number;
   module_id: string | null;
   linked_to: string | null;
+  difficulty?: string | null;
+  result_text?: string | null;
 }
 
 export interface DbQuizQuestionRow {
@@ -160,11 +163,14 @@ export function mapDbQuizToUI(
   return {
     id: quiz.id,
     titulo: quiz.title,
+    subtitulo: quiz.result_text ?? undefined,
     status: parseQuizStatus(quiz.status),
+    tier: "premium",
     xp: quiz.xp_reward ?? 0,
+    dificuldade: parseQuizDificuldade(quiz.difficulty),
     perguntas,
     vinculo,
-    metadata: { source: "db" },
+    metadata: { source: "db", sourceId: quiz.id },
   };
 }
 

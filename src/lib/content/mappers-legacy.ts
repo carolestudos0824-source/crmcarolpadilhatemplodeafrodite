@@ -178,6 +178,7 @@ export function mapLegacyQuizToUI(
     id: `legacy-quiz-${contextId}`,
     titulo,
     status: "publicado",
+    tier: "premium",
     xp,
     perguntas: questions.map((q, idx) => ({
       id: q.id,
@@ -188,7 +189,7 @@ export function mapLegacyQuizToUI(
       explicacao: q.explanation,
     })),
     vinculo,
-    metadata: { source: "legacy" },
+    metadata: { source: "legacy", sourceId: contextId, usedFallback: true },
   };
 }
 

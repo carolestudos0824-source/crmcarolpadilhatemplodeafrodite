@@ -21,9 +21,21 @@ export function parseStatus(raw: string | null | undefined): ContentStatus {
   }
 }
 
-/** Quiz só conhece publicado vs rascunho. */
-export function parseQuizStatus(raw: string | null | undefined): "rascunho" | "publicado" {
-  return raw === "published" ? "publicado" : "rascunho";
+/** Quiz usa o mesmo conjunto de status canônicos. */
+export function parseQuizStatus(raw: string | null | undefined): import("./types").ContentStatus {
+  return parseStatus(raw);
+}
+
+/** Traduz enum DB `quiz_difficulty` → dificuldade canônica PT. */
+export function parseQuizDificuldade(
+  raw: string | null | undefined,
+): import("./types").QuizDificuldade | undefined {
+  switch (raw) {
+    case "easy": return "basico";
+    case "medium": return "intermediario";
+    case "hard": return "avancado";
+    default: return undefined;
+  }
 }
 
 export function parseTier(raw: string | null | undefined): ContentTier {
