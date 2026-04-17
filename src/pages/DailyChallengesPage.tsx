@@ -2,16 +2,22 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, ChevronRight, Flame, Gift, Star, X } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useArcanosList, useSymbolsContent } from "@/hooks/use-content";
 import {
-  getDailyChallenges,
-  getCartaDoDia,
-  getPerguntasDoDia,
-  getSimboloDoDia,
-  getCombinacaoDoDia,
-  getMiniInterpretacao,
+  buildDailyChallenges,
+  buildCartaDoDia,
+  buildPerguntasDoDia,
+  buildSimboloDoDia,
+  buildCombinacaoDoDia,
+  buildMiniInterpretacao,
   DAILY_TOTAL_XP,
   type DailyChallengeItem,
-} from "@/data/daily-challenges";
+  type CartaDoDia,
+  type PerguntasDoDia,
+  type SimboloDoDia,
+  type CombinacaoDoDia,
+  type MiniInterpretacao,
+} from "@/lib/daily/builders";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -19,6 +25,15 @@ const today = () => new Date().toISOString().slice(0, 10);
 const DailyChallengesPage = () => {
   const navigate = useNavigate();
   const { progress, addXP, updateStreak } = useProgress();
+  const { data: arcanos } = useArcanosList({ tipo: "maior" });
+  const { data: symbols } = useSymbolsContent();
+
+  const arcanosList = arcanos ?? [];
+  const cartaDoDia = useMemo(() => buildCartaDoDia(arcanosList), [arcanosList]);
+  const perguntasDoDia = useMemo(() => buildPerguntasDoDia(arcanosList), [arcanosList]);
+  const simboloDoDia = useMemo(() => buildSimboloDoDia(symbols), [symbols]);
+  const combinacaoDoDia = useMemo(() => buildCombinacaoDoDia(arcanosList), [arcanosList]);
+  const miniInterpretacao = useMemo(() => buildMiniInterpretacao(arcanosList), [arcanosList]);
 
   const [challenges, setChallenges] = useState<DailyChallengeItem[]>(() => {
     const saved = localStorage.getItem("daily-challenges");
@@ -28,7 +43,7 @@ const DailyChallengesPage = () => {
         if (parsed.date === today()) return parsed.items;
       } catch {}
     }
-    return getDailyChallenges();
+    return buildDailyChallenges();
   });
 
   const [activeChallenge, setActiveChallenge] = useState<DailyChallengeItem | null>(null);
