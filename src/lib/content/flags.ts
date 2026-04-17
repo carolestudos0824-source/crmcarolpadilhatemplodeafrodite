@@ -15,7 +15,12 @@ export type ContentSourceMode = "fallback" | "auto" | "db";
 export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
-  arcanos: "fallback",
+  // Fase 2A — arcanos promovidos para 'auto' apenas para o piloto (Louco, Mago,
+  // Sacerdotisa). Para os 19 arcanos restantes a leitura também tenta DB
+  // (todos já existem em cms_arcanos como 'published'), mas a UI continua
+  // baseada no objeto legado para preservar animação, voz, deepDive e símbolos
+  // que ainda não estão totalmente no schema canônico.
+  arcanos: "auto",
   // Fase 1 — quizzes promovidos para 'auto':
   // tenta DB primeiro; ausência ou erro cai automaticamente no legado com warn.
   quizzes: "auto",
