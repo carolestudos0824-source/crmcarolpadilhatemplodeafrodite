@@ -49,6 +49,12 @@ import { fetchSymbolsFromDb } from "./repo-db-symbols";
 import { fetchSymbolsFromLegacy } from "./repo-legacy-symbols";
 import { fetchCertificatesFromDb } from "./repo-db-certificates";
 import { fetchCertificatesFromLegacy } from "./repo-legacy-certificates";
+import { fetchNumerologyFromDb } from "./repo-db-numerology";
+import { fetchNumerologyFromLegacy } from "./repo-legacy-numerology";
+import { fetchSuitsFromDb } from "./repo-db-suits";
+import { fetchSuitsFromLegacy } from "./repo-legacy-suits";
+import { fetchCourtCardsFromDb } from "./repo-db-court";
+import { fetchCourtCardsFromLegacy } from "./repo-legacy-court";
 import type {
   ArcanoContent,
   LessonContent,
@@ -58,6 +64,9 @@ import type {
 import type { JourneyContent } from "./journey-types";
 import type { SymbolsContent } from "./symbols-types";
 import type { CertificatesContent } from "./certificates-types";
+import type { NumerologyContent } from "./numerology-types";
+import type { SuitContent, SuitsContent } from "./suits-types";
+import type { CourtCardsContent } from "./court-types";
 
 // ─── Helper genérico ───────────────────────────────────────────────
 
@@ -300,5 +309,46 @@ export async function getCertificatesContent(): Promise<CertificatesContent | nu
     "list",
     () => fetchCertificatesFromDb(),
     () => fetchCertificatesFromLegacy(),
+  );
+}
+
+// ─── NUMEROLOGY ────────────────────────────────────────────────────
+
+export async function getNumerologyContent(): Promise<NumerologyContent | null> {
+  return withFallback<NumerologyContent>(
+    "numerology",
+    "list",
+    () => fetchNumerologyFromDb(),
+    () => fetchNumerologyFromLegacy(),
+  );
+}
+
+// ─── SUITS (Naipe Intro) ───────────────────────────────────────────
+
+export async function getSuitsContent(): Promise<SuitsContent | null> {
+  return withFallback<SuitsContent>(
+    "suits",
+    "list",
+    () => fetchSuitsFromDb(),
+    () => fetchSuitsFromLegacy(),
+  );
+}
+
+export async function getSuitContent(
+  naipe: "copas" | "paus" | "espadas" | "ouros",
+): Promise<SuitContent | null> {
+  const all = await getSuitsContent();
+  if (!all) return null;
+  return all.items.find((s) => s.naipe === naipe) ?? null;
+}
+
+// ─── COURT CARDS (pedagógicas) ─────────────────────────────────────
+
+export async function getCourtCardsContent(): Promise<CourtCardsContent | null> {
+  return withFallback<CourtCardsContent>(
+    "court",
+    "list",
+    () => fetchCourtCardsFromDb(),
+    () => fetchCourtCardsFromLegacy(),
   );
 }

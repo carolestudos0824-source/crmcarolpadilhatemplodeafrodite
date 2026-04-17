@@ -9,10 +9,14 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getArcanoContent,
   getCertificatesContent,
+  getCourtCardsContent,
   getJourneyContent,
   getLessonContent,
   getModuleContent,
+  getNumerologyContent,
   getQuizContent,
+  getSuitContent,
+  getSuitsContent,
   getSymbolsContent,
   listArcanosContent,
   type GetArcanoParams,
@@ -21,6 +25,7 @@ import {
 } from "@/lib/content/service";
 import type {
   ArcanoContent,
+  ContentNaipe,
   LessonContent,
   ModuleContent,
   QuizContent,
@@ -29,6 +34,9 @@ import type {
 import type { JourneyContent } from "@/lib/content/journey-types";
 import type { SymbolsContent } from "@/lib/content/symbols-types";
 import type { CertificatesContent } from "@/lib/content/certificates-types";
+import type { NumerologyContent } from "@/lib/content/numerology-types";
+import type { SuitContent, SuitsContent } from "@/lib/content/suits-types";
+import type { CourtCardsContent } from "@/lib/content/court-types";
 
 const STALE_MS = 5 * 60 * 1000;
 const GC_MS = 30 * 60 * 1000;
