@@ -83,8 +83,9 @@ const SOURCE_LABELS: Record<string, string> = {
   admin: "Admin",
 };
 
-const MONTHLY_PRICE = 29.9;
-const ANNUAL_PRICE = 197;
+// Prices come from src/lib/billing.ts (single source of truth, ready for Stripe).
+const MONTHLY_PRICE = PLAN_PRICES.monthly.priceBRL;
+const ANNUAL_PRICE = PLAN_PRICES.annual.priceBRL;
 
 /* ═══════════ FILTERS ═══════════ */
 
