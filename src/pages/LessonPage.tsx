@@ -44,6 +44,22 @@ const LessonPage = () => {
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
 
+  // Phase 1: quiz vem do content-adapter (DB → fallback legado).
+  // O `legacyQuiz` continua como rede de segurança caso o adapter retorne null.
+  const resolvedQuiz = useResolvedQuiz({
+    params: arcano
+      ? { linkedTo: `arcano-maior-${arcanoId}`, arcanoNumero: arcanoId }
+      : null,
+    legacyQuiz: arcano?.quiz ?? null,
+  });
+
+  if (import.meta.env.DEV && arcano && resolvedQuiz.sourceUsed) {
+    // eslint-disable-next-line no-console
+    console.info(
+      `[content-adapter] quiz arcano=${arcanoId} source=${resolvedQuiz.sourceUsed} fallback=${resolvedQuiz.usedFallback}`,
+    );
+  }
+
   useEffect(() => {
     if (arcano) trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
   }, [arcanoId]);
