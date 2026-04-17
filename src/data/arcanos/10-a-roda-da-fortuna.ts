@@ -11,7 +11,7 @@ export const A_RODA_DA_FORTUNA: ArcanoMaiorEditorial = {
   keywords: ["Ciclos", "Destino", "Mudança", "Sorte", "Impermanência"],
 
   essence:
-    "A Roda da Fortuna é o Arcano X — o ponto de virada, o lembrete cósmico de que tudo gira. O que sobe, desce. O que termina, recomeça. Ela não é controlada por nenhuma figura humana — é a lei dos ciclos operando além da vontade individual. Quando a Roda aparece, ela diz: algo está mudando, querendo você ou não. A questão não é parar a roda — é como você dança com ela.",
+    "A Roda da Fortuna é o Arcano X — o ponto de virada, o lembrete cósmico de que tudo gira. O que sobe, desce. O que termina, recomeça. Ela não é controlada por nenhuma figura humana — é a lei dos ciclos operando além da vontade individual. Arquétipo do Destino e do Tempo cíclico, ecoa a Rota Fortunae medieval e a Roda do Samsara oriental: o movimento que nenhum poder humano interrompe e que ensina, em cada giro, a sabedoria do desapego. Quando a Roda aparece, ela diz: algo está mudando, querendo você ou não. A questão não é parar a roda — é como você dança com ela.",
 
   symbols: [
     { name: "Roda com letras TARO/ROTA", meaning: "O Tarô como roda eterna — Rota (roda), Taro, Orat (fala), Tora (lei), Ator (ação)" },

@@ -11,7 +11,7 @@ export const O_MUNDO: ArcanoMaiorEditorial = {
   keywords: ["Completude", "Integração", "Realização", "Totalidade", "Dança"],
 
   essence:
-    "O Mundo é o Arcano XXI — o último, o mais alto, a dança da completude. É a integração total de tudo o que foi vivido: luz e sombra, matéria e espírito, ação e contemplação. A dançarina no centro da guirlanda de louros não está parada — ela gira, celebrando a totalidade da existência. Quando O Mundo aparece, ele diz: você chegou. Não ao fim — ao centro. Ao lugar onde tudo faz sentido.",
+    "O Mundo é o Arcano XXI — o último, o mais alto, a dança da completude. É a integração total de tudo o que foi vivido: luz e sombra, matéria e espírito, ação e contemplação. A dançarina no centro da guirlanda de louros não está parada — ela gira, celebrando a totalidade da existência. Coroamento do Grande Arcano — eco do Anima Mundi neoplatônico e do hieros gamos alquímico — reúne os quatro viventes nas pontas do baralho num único símbolo de cosmo reconciliado. Quando O Mundo aparece, ele diz: você chegou. Não ao fim — ao centro. Ao lugar onde tudo faz sentido.",
 
   symbols: [
     { name: "Dançarina/figura andrógina no centro", meaning: "A alma integrada — masculino e feminino, humano e divino, unidos na dança" },

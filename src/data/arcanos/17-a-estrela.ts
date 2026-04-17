@@ -11,7 +11,7 @@ export const A_ESTRELA: ArcanoMaiorEditorial = {
   keywords: ["Esperança", "Inspiração", "Cura", "Serenidade", "Propósito"],
 
   essence:
-    "A Estrela é o Arcano XVII — a cura que vem após a destruição, a esperança que brilha após a noite mais escura. Após o colapso d'A Torre, A Estrela chega como um bálsamo: nua, vulnerável, serena, despejando água na terra e no rio. Ela não promete que o sofrimento acabou — promete que há sentido nele. Quando A Estrela aparece, ela diz: respire. Há luz depois da tempestade.",
+    "A Estrela é o Arcano XVII — a cura que vem após a destruição, a esperança que brilha após a noite mais escura. Após o colapso d'A Torre, A Estrela chega como um bálsamo: nua, vulnerável, serena, despejando água na terra e no rio. Ela não promete que o sofrimento acabou — promete que há sentido nele. Reflexo da deusa Ísis derramando as águas do Nilo e da Estrela Polar que orienta os navegantes na escuridão, é o arquétipo da fé reencontrada — não cega, mas reconciliada com a vida. Quando A Estrela aparece, ela diz: respire. Há luz depois da tempestade.",
 
   symbols: [
     { name: "Mulher nua à beira d'água", meaning: "Vulnerabilidade sem vergonha — a alma exposta após a purificação" },

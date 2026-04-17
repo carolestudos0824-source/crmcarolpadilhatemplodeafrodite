@@ -11,7 +11,7 @@ export const A_TORRE: ArcanoMaiorEditorial = {
   keywords: ["Destruição", "Revelação", "Colapso", "Libertação", "Verdade"],
 
   essence:
-    "A Torre é o Arcano XVI — o raio que destrói o que foi construído sobre fundamentos falsos. Não é punição divina: é revelação súbita. A estrutura que desmorona não era sólida — era ilusão de segurança. As figuras que caem não estão morrendo — estão sendo libertadas à força do que as aprisionava. Quando A Torre aparece, ela diz: o que não pode se sustentar na verdade, cairá.",
+    "A Torre é o Arcano XVI — o raio que destrói o que foi construído sobre fundamentos falsos. Não é punição divina: é revelação súbita. A estrutura que desmorona não era sólida — era ilusão de segurança. As figuras que caem não estão morrendo — estão sendo libertadas à força do que as aprisionava. Eco da Torre de Babel e do mito prometeico do fogo roubado, é o arquétipo da revelação cataclísmica: o instante em que o céu intervém para impedir que o ego construa mais alto do que sua própria verdade suporta. Quando A Torre aparece, ela diz: o que não pode se sustentar na verdade, cairá.",
 
   symbols: [
     { name: "Torre atingida por raio", meaning: "Estrutura do ego ou falsa segurança destruída pela verdade divina" },
