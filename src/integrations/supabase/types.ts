@@ -559,6 +559,54 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_events: {
+        Row: {
+          amount_cents: number | null
+          created_at: string
+          currency: string | null
+          event_type: Database["public"]["Enums"]["subscription_event_type"]
+          id: string
+          occurred_at: string
+          plan_code: string | null
+          provider: Database["public"]["Enums"]["billing_provider"]
+          provider_customer_id: string | null
+          provider_event_id: string | null
+          provider_subscription_id: string | null
+          raw_payload: Json
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          created_at?: string
+          currency?: string | null
+          event_type: Database["public"]["Enums"]["subscription_event_type"]
+          id?: string
+          occurred_at?: string
+          plan_code?: string | null
+          provider: Database["public"]["Enums"]["billing_provider"]
+          provider_customer_id?: string | null
+          provider_event_id?: string | null
+          provider_subscription_id?: string | null
+          raw_payload?: Json
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number | null
+          created_at?: string
+          currency?: string | null
+          event_type?: Database["public"]["Enums"]["subscription_event_type"]
+          id?: string
+          occurred_at?: string
+          plan_code?: string | null
+          provider?: Database["public"]["Enums"]["billing_provider"]
+          provider_customer_id?: string | null
+          provider_event_id?: string | null
+          provider_subscription_id?: string | null
+          raw_payload?: Json
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_events: {
         Row: {
           created_at: string
@@ -694,10 +742,20 @@ export type Database = {
       app_role: "admin" | "moderator" | "user"
       arcano_naipe: "copas" | "ouros" | "espadas" | "paus"
       arcano_type: "maior" | "menor"
+      billing_provider: "stripe" | "paddle" | "revenuecat" | "manual"
       feedback_status: "aberto" | "em_andamento" | "resolvido"
       module_status: "empty" | "partial" | "draft" | "published"
       module_tier: "free" | "premium"
       quiz_difficulty: "easy" | "medium" | "hard"
+      subscription_event_type:
+        | "checkout_completed"
+        | "subscription_created"
+        | "subscription_renewed"
+        | "subscription_cancelled"
+        | "subscription_expired"
+        | "payment_succeeded"
+        | "payment_failed"
+        | "refund_issued"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -828,10 +886,21 @@ export const Constants = {
       app_role: ["admin", "moderator", "user"],
       arcano_naipe: ["copas", "ouros", "espadas", "paus"],
       arcano_type: ["maior", "menor"],
+      billing_provider: ["stripe", "paddle", "revenuecat", "manual"],
       feedback_status: ["aberto", "em_andamento", "resolvido"],
       module_status: ["empty", "partial", "draft", "published"],
       module_tier: ["free", "premium"],
       quiz_difficulty: ["easy", "medium", "hard"],
+      subscription_event_type: [
+        "checkout_completed",
+        "subscription_created",
+        "subscription_renewed",
+        "subscription_cancelled",
+        "subscription_expired",
+        "payment_succeeded",
+        "payment_failed",
+        "refund_issued",
+      ],
     },
   },
 } as const
