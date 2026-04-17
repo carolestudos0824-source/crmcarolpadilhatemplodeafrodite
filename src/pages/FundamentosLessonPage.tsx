@@ -22,6 +22,30 @@ const FundamentosLessonPage = () => {
   const lesson = getFundamentosLessonByOrder(lessonOrder);
   const nextLesson = getFundamentosLessonByOrder(lessonOrder + 1);
 
+  // Phase 1: quiz vem do content-adapter (DB → fallback legado).
+  const resolvedQuiz = useResolvedQuiz({
+    params: lesson
+      ? { linkedTo: `lesson:${lesson.id}`, moduleSlug: "fundamentos", lessonSlug: lesson.id }
+      : null,
+    legacyQuiz: lesson?.quiz?.map((q) => ({
+      id: q.id,
+      question: q.question,
+      type: "multiple-choice" as const,
+      options: q.options,
+      correctIndex: q.correctIndex,
+      explanation: q.explanation,
+    })) ?? null,
+  });
+
+  if (import.meta.env.DEV && lesson && resolvedQuiz.sourceUsed) {
+    // eslint-disable-next-line no-console
+    console.info(
+      `[content-adapter] quiz lesson=${lesson.id} source=${resolvedQuiz.sourceUsed} fallback=${resolvedQuiz.usedFallback}`,
+    );
+  }
+
+  const quizQuestions = resolvedQuiz.questions ?? lesson?.quiz ?? [];
+
   if (!lesson) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "hsl(36 33% 97%)" }}>
