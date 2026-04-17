@@ -1,27 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, X } from "lucide-react";
-import { SYMBOL_CATEGORIES, type SymbolCategory, type TarotSymbol } from "@/data/symbol-library";
+import { useSymbolsContent } from "@/hooks/use-content";
+import type { SymbolItemContent } from "@/lib/content";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const SymbolLibraryPage = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [selectedSymbol, setSelectedSymbol] = useState<TarotSymbol | null>(null);
+  const [selectedSymbol, setSelectedSymbol] = useState<SymbolItemContent | null>(null);
   const [search, setSearch] = useState("");
 
+  // Fase 6.1 — Biblioteca de Símbolos vem do CMS via adapter.
+  const { data: symbolsContent, isLoading } = useSymbolsContent();
+  const categorias = symbolsContent?.categorias ?? [];
+
+  const term = search.toLowerCase();
   const filteredCategories = search
-    ? SYMBOL_CATEGORIES.map(cat => ({
+    ? categorias.map((cat) => ({
         ...cat,
-        symbols: cat.symbols.filter(s =>
-          s.name.toLowerCase().includes(search.toLowerCase()) ||
-          s.explanation.toLowerCase().includes(search.toLowerCase())
+        simbolos: cat.simbolos.filter(
+          (s) =>
+            s.nome.toLowerCase().includes(term) ||
+            s.explicacao.toLowerCase().includes(term),
         ),
-      })).filter(cat => cat.symbols.length > 0)
+      })).filter((cat) => cat.simbolos.length > 0)
     : activeCategory
-    ? SYMBOL_CATEGORIES.filter(c => c.id === activeCategory)
-    : SYMBOL_CATEGORIES;
+    ? categorias.filter((c) => c.slug === activeCategory)
+    : categorias;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="font-accent italic text-sm" style={{ color: "hsl(36 42% 45% / 0.60)" }}>
+          Abrindo a biblioteca…
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -100,12 +118,12 @@ const SymbolLibraryPage = () => {
             >
               Todos
             </button>
-            {SYMBOL_CATEGORIES.map(cat => (
+            {categorias.map(cat => (
               <button
-                key={cat.id}
-                onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
+                key={cat.slug}
+                onClick={() => setActiveCategory(activeCategory === cat.slug ? null : cat.slug)}
                 className="px-3.5 py-1.5 rounded-full text-[10px] font-heading tracking-wider uppercase transition-all duration-300"
-                style={activeCategory === cat.id ? {
+                style={activeCategory === cat.slug ? {
                   background: "linear-gradient(135deg, hsl(340 42% 26%), hsl(36 42% 44%))",
                   color: "hsl(36 33% 97%)",
                   boxShadow: "0 3px 12px hsl(340 42% 28% / 0.18)"
@@ -115,7 +133,7 @@ const SymbolLibraryPage = () => {
                   color: "hsl(230 20% 15% / 0.60)"
                 }}
               >
-                {cat.icon} {cat.name}
+                {cat.icone} {cat.nome}
               </button>
             ))}
           </div>
@@ -123,19 +141,19 @@ const SymbolLibraryPage = () => {
 
         {/* Categories and symbols */}
         {filteredCategories.map(cat => (
-          <section key={cat.id} className="mb-8">
+          <section key={cat.slug} className="mb-8">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-lg">{cat.icon}</span>
+              <span className="text-lg">{cat.icone}</span>
               <h2 className="font-heading text-base tracking-wide" style={{ color: "hsl(340 42% 22%)" }}>
-                {cat.name}
+                {cat.nome}
               </h2>
             </div>
             <p className="text-[11px] font-accent italic mb-4" style={{ color: "hsl(230 20% 15% / 0.50)" }}>
-              {cat.description}
+              {cat.descricao}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {cat.symbols.map(sym => (
+              {cat.simbolos.map(sym => (
                 <button
                   key={sym.id}
                   onClick={() => setSelectedSymbol(selectedSymbol?.id === sym.id ? null : sym)}
@@ -155,7 +173,7 @@ const SymbolLibraryPage = () => {
                   }}>
                     <div className="p-4">
                       <h3 className="font-heading text-sm tracking-wide mb-1.5" style={{ color: "hsl(230 20% 12%)" }}>
-                        {sym.name}
+                        {sym.nome}
                       </h3>
                       <p className="text-xs font-body leading-relaxed mb-0" style={{
                         color: "hsl(230 20% 15% / 0.60)",
@@ -164,7 +182,7 @@ const SymbolLibraryPage = () => {
                         WebkitBoxOrient: "vertical",
                         overflow: selectedSymbol?.id === sym.id ? "visible" : "hidden",
                       }}>
-                        {sym.explanation}
+                        {sym.explicacao}
                       </p>
 
                       {/* Expanded content */}
@@ -176,7 +194,7 @@ const SymbolLibraryPage = () => {
                               Possíveis Leituras
                             </h4>
                             <div className="flex flex-wrap gap-1.5">
-                              {sym.readings.map((r, i) => (
+                              {sym.leituras.map((r, i) => (
                                 <span key={i} className="px-2.5 py-1 rounded-full text-[10px] font-body" style={{
                                   background: "hsl(36 45% 55% / 0.10)",
                                   border: "1px solid hsl(36 45% 50% / 0.18)",
@@ -194,7 +212,7 @@ const SymbolLibraryPage = () => {
                               Aparece em
                             </h4>
                             <div className="flex flex-wrap gap-1.5">
-                              {sym.cards.map((c, i) => (
+                              {sym.cartas.map((c, i) => (
                                 <span key={i} className="px-2.5 py-1 rounded-full text-[10px] font-heading tracking-wider" style={{
                                   background: "hsl(340 42% 28% / 0.08)",
                                   border: "1px solid hsl(340 42% 28% / 0.18)",

@@ -45,6 +45,8 @@ import {
 } from "./mappers-legacy";
 import { fetchJourneyFromDb } from "./repo-db-journey";
 import { fetchJourneyFromLegacy } from "./repo-legacy-journey";
+import { fetchSymbolsFromDb } from "./repo-db-symbols";
+import { fetchSymbolsFromLegacy } from "./repo-legacy-symbols";
 import type {
   ArcanoContent,
   LessonContent,
@@ -52,6 +54,7 @@ import type {
   QuizContent,
 } from "./types";
 import type { JourneyContent } from "./journey-types";
+import type { SymbolsContent } from "./symbols-types";
 
 // ─── Helper genérico ───────────────────────────────────────────────
 
@@ -272,5 +275,16 @@ export async function getJourneyContent(): Promise<JourneyContent | null> {
     "fools-journey",
     () => fetchJourneyFromDb(),
     () => fetchJourneyFromLegacy(),
+  );
+}
+
+// ─── SYMBOLS ───────────────────────────────────────────────────────
+
+export async function getSymbolsContent(): Promise<SymbolsContent | null> {
+  return withFallback<SymbolsContent>(
+    "symbols",
+    "library",
+    () => fetchSymbolsFromDb(),
+    () => fetchSymbolsFromLegacy(),
   );
 }

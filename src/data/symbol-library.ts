@@ -1,3 +1,14 @@
+/**
+ * @deprecated (Fase 6.1) — NÃO importe deste arquivo no runtime.
+ *
+ * A Biblioteca de Símbolos agora vem do CMS (`cms_symbol_categories` +
+ * `cms_symbols`) através do adapter:
+ *
+ *   import { useSymbolsContent } from "@/hooks/use-content";
+ *
+ * Este arquivo permanece apenas como SEED / FALLBACK consumido por
+ * `src/lib/content/repo-legacy-symbols.ts`.
+ */
 export interface TarotSymbol {
   id: string;
   name: string;

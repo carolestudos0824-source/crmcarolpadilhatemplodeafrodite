@@ -12,6 +12,7 @@ import {
   getLessonContent,
   getModuleContent,
   getQuizContent,
+  getSymbolsContent,
   listArcanosContent,
   type GetArcanoParams,
   type GetLessonParams,
@@ -25,6 +26,7 @@ import type {
   UseContentResult,
 } from "@/lib/content/types";
 import type { JourneyContent } from "@/lib/content/journey-types";
+import type { SymbolsContent } from "@/lib/content/symbols-types";
 
 const STALE_MS = 5 * 60 * 1000;
 const GC_MS = 30 * 60 * 1000;
@@ -141,6 +143,18 @@ export function useJourneyContent(): UseContentResult<JourneyContent | null> {
   const query = useQuery<JourneyContent | null>({
     queryKey: ["content", "journey"],
     queryFn: () => getJourneyContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}
+
+// ─── Symbols ───────────────────────────────────────────────────────
+
+export function useSymbolsContent(): UseContentResult<SymbolsContent | null> {
+  const query = useQuery<SymbolsContent | null>({
+    queryKey: ["content", "symbols"],
+    queryFn: () => getSymbolsContent(),
     staleTime: STALE_MS,
     gcTime: GC_MS,
   });

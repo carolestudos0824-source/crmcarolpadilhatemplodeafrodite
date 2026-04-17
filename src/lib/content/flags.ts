@@ -15,7 +15,7 @@
 
 export type ContentSourceMode = "fallback" | "auto" | "db";
 
-export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey";
+export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey" | "symbols";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // Fase 2/3 — arcanos (Maiores, Menores e Cortes) já carregam via DB com
@@ -32,6 +32,9 @@ export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // Fase 5D — Jornada do Louco (4 fases + 22 papéis + meta) lê do DB
   // primeiro; em vazio/erro cai no legado de `src/data/fools-journey.ts`.
   journey: "auto",
+  // Fase 6.1 — Biblioteca de Símbolos (12 categorias + 41 símbolos) lê do DB
+  // primeiro; em vazio/erro cai no legado de `src/data/symbol-library.ts`.
+  symbols: "auto",
 };
 
 export function getFlag(domain: ContentDomain): ContentSourceMode {
