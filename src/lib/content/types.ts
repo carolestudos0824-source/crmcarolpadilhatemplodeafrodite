@@ -174,8 +174,14 @@ export interface ModuleContent {
 
 // ─── Wrapper de retorno dos hooks ──────────────────────────────────
 
+/**
+ * `T` aqui já é o tipo do payload. Não envolvemos em `T | null` para evitar
+ * dupla nulidade (`(X | null) | null`) quando os callers passam `Foo | null`.
+ * Ainda assim, `data` pode ser `null` em runtime — o tipo de cada hook
+ * declara explicitamente `UseContentResult<Foo | null>`.
+ */
 export interface UseContentResult<T> {
-  data: T | null;
+  data: T;
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
