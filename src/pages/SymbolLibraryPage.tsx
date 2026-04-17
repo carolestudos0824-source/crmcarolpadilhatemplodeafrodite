@@ -1,27 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, X } from "lucide-react";
-import { SYMBOL_CATEGORIES, type SymbolCategory, type TarotSymbol } from "@/data/symbol-library";
+import { useSymbolsContent } from "@/hooks/use-content";
+import type { SymbolItemContent } from "@/lib/content";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const SymbolLibraryPage = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [selectedSymbol, setSelectedSymbol] = useState<TarotSymbol | null>(null);
+  const [selectedSymbol, setSelectedSymbol] = useState<SymbolItemContent | null>(null);
   const [search, setSearch] = useState("");
 
+  // Fase 6.1 — Biblioteca de Símbolos vem do CMS via adapter.
+  const { data: symbolsContent, isLoading } = useSymbolsContent();
+  const categorias = symbolsContent?.categorias ?? [];
+
+  const term = search.toLowerCase();
   const filteredCategories = search
-    ? SYMBOL_CATEGORIES.map(cat => ({
+    ? categorias.map((cat) => ({
         ...cat,
-        symbols: cat.symbols.filter(s =>
-          s.name.toLowerCase().includes(search.toLowerCase()) ||
-          s.explanation.toLowerCase().includes(search.toLowerCase())
+        simbolos: cat.simbolos.filter(
+          (s) =>
+            s.nome.toLowerCase().includes(term) ||
+            s.explicacao.toLowerCase().includes(term),
         ),
-      })).filter(cat => cat.symbols.length > 0)
+      })).filter((cat) => cat.simbolos.length > 0)
     : activeCategory
-    ? SYMBOL_CATEGORIES.filter(c => c.id === activeCategory)
-    : SYMBOL_CATEGORIES;
+    ? categorias.filter((c) => c.slug === activeCategory)
+    : categorias;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="font-accent italic text-sm" style={{ color: "hsl(36 42% 45% / 0.60)" }}>
+          Abrindo a biblioteca…
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen relative overflow-hidden">

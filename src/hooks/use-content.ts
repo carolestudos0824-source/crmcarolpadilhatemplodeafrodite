@@ -148,3 +148,15 @@ export function useJourneyContent(): UseContentResult<JourneyContent | null> {
   });
   return wrap(query);
 }
+
+// ─── Symbols ───────────────────────────────────────────────────────
+
+export function useSymbolsContent(): UseContentResult<SymbolsContent | null> {
+  const query = useQuery<SymbolsContent | null>({
+    queryKey: ["content", "symbols"],
+    queryFn: () => getSymbolsContent(),
+    staleTime: STALE_MS,
+    gcTime: GC_MS,
+  });
+  return wrap(query);
+}

@@ -9,6 +9,7 @@
 export {
   getArcanoContent,
   getJourneyContent,
+  getSymbolsContent,
   listArcanosContent,
   getQuizContent,
   getLessonContent,
@@ -24,6 +25,12 @@ export type {
   JourneyMetaContent,
   JourneyPhaseContent,
 } from "./journey-types";
+
+export type {
+  SymbolsContent,
+  SymbolCategoryContent,
+  SymbolItemContent,
+} from "./symbols-types";
 
 // Fase 6.0 — tipos canônicos de runtime (extraídos de tarot-data.ts).
 export type {
