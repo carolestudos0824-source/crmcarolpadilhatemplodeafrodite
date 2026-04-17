@@ -15,7 +15,7 @@
 
 export type ContentSourceMode = "fallback" | "auto" | "db";
 
-export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey";
+export type ContentDomain = "arcanos" | "quizzes" | "lessons" | "modules" | "journey" | "symbols";
 
 export const CONTENT_FLAGS: Record<ContentDomain, ContentSourceMode> = {
   // Fase 2/3 — arcanos (Maiores, Menores e Cortes) já carregam via DB com
