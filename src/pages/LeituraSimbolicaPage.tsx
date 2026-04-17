@@ -11,6 +11,7 @@ const LeituraSimbolicaPage = () => (
     themeAccent="250 28% 48%"
     lessons={LEITURA_SIMBOLICA_LESSONS}
     lessonRoutePrefix="/leitura-simbolica"
+    moduleSlug="leitura-simbolica"
   />
 );
 

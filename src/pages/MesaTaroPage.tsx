@@ -11,6 +11,7 @@ const MesaTaroPage = () => (
     themeAccent="28 35% 45%"
     lessons={MESA_TARO_LESSONS}
     lessonRoutePrefix="/mesa-taro"
+    moduleSlug="mesa-taro"
   />
 );
 

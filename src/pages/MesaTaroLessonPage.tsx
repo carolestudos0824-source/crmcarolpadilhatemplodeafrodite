@@ -10,6 +10,7 @@ const MesaTaroLessonPage = () => (
     moduleId="mesa-taro"
     categoryLabel="Método"
     themeAccent="28 35% 45%"
+    moduleSlug="mesa-taro"
   />
 );
 

@@ -10,6 +10,7 @@ const LeituraAplicadaLessonPage = () => (
     moduleId="leitura-aplicada"
     categoryLabel="Prática Guiada"
     themeAccent="180 30% 40%"
+    moduleSlug="leitura-aplicada"
   />
 );
 

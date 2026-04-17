@@ -11,6 +11,7 @@ const LeituraAplicadaPage = () => (
     themeAccent="180 30% 40%"
     lessons={LEITURA_APLICADA_LESSONS}
     lessonRoutePrefix="/leitura-aplicada"
+    moduleSlug="leitura-aplicada"
   />
 );
 

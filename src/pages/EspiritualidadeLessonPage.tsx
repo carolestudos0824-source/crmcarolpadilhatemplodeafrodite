@@ -10,6 +10,7 @@ const EspiritualidadeLessonPage = () => (
     moduleId="espiritualidade"
     categoryLabel="Espiritualidade"
     themeAccent="280 30% 45%"
+    moduleSlug="espiritualidade"
   />
 );
 
