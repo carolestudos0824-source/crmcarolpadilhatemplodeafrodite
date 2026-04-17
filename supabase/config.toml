@@ -2,3 +2,7 @@ project_id = "qgmafelvslfbwxrogslm"
 
 [functions.admin-manage]
 verify_jwt = true
+
+[functions.stripe-webhook]
+verify_jwt = false
+
