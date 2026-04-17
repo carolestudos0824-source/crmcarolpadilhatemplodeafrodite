@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_MUNDO: ArcanoMaiorEditorial = {
   number: 21,
@@ -6,7 +7,7 @@ export const O_MUNDO: ArcanoMaiorEditorial = {
   numeral: "XXI",
   subtitle: "A Completude Sagrada",
   slug: "o-mundo",
-  cardImage: "/assets/the-world-card.jpg",
+  cardImage,
   keywords: ["Completude", "Integração", "Realização", "Totalidade", "Dança"],
 
   essence:

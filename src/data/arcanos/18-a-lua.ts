@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_LUA: ArcanoMaiorEditorial = {
   number: 18,
@@ -6,7 +7,7 @@ export const A_LUA: ArcanoMaiorEditorial = {
   numeral: "XVIII",
   subtitle: "O Caminho da Intuição",
   slug: "a-lua",
-  cardImage: "/assets/the-moon-card.jpg",
+  cardImage,
   keywords: ["Intuição", "Ilusão", "Medo", "Inconsciente", "Imaginação"],
 
   essence:

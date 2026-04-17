@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_JULGAMENTO: ArcanoMaiorEditorial = {
   number: 20,
@@ -6,7 +7,7 @@ export const O_JULGAMENTO: ArcanoMaiorEditorial = {
   numeral: "XX",
   subtitle: "O Despertar Final",
   slug: "o-julgamento",
-  cardImage: "/assets/judgement-card.jpg",
+  cardImage,
   keywords: ["Despertar", "Renascimento", "Chamado", "Absolvição", "Propósito"],
 
   essence:

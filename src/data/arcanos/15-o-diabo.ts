@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_DIABO: ArcanoMaiorEditorial = {
   number: 15,
@@ -6,7 +7,7 @@ export const O_DIABO: ArcanoMaiorEditorial = {
   numeral: "XV",
   subtitle: "As Correntes da Ilusão",
   slug: "o-diabo",
-  cardImage: "/assets/the-devil-card.jpg",
+  cardImage,
   keywords: ["Ilusão", "Apego", "Sombra", "Dependência", "Materialismo"],
 
   essence:

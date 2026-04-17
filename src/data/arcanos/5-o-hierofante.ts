@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_HIEROFANTE: ArcanoMaiorEditorial = {
   number: 5,
@@ -6,7 +7,7 @@ export const O_HIEROFANTE: ArcanoMaiorEditorial = {
   numeral: "V",
   subtitle: "A Tradição Sagrada",
   slug: "o-hierofante",
-  cardImage: "/assets/the-hierophant-card.jpg",
+  cardImage,
   keywords: ["Tradição", "Ensinamento", "Fé", "Ritual", "Iniciação"],
 
   essence:

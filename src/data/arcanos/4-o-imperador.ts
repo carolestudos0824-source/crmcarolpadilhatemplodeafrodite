@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const O_IMPERADOR: ArcanoMaiorEditorial = {
   number: 4,
@@ -6,7 +7,7 @@ export const O_IMPERADOR: ArcanoMaiorEditorial = {
   numeral: "IV",
   subtitle: "A Estrutura e a Ordem",
   slug: "o-imperador",
-  cardImage: "/assets/the-emperor-card.jpg",
+  cardImage,
   keywords: ["Autoridade", "Estrutura", "Ordem", "Proteção", "Disciplina"],
 
   essence:

@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_TEMPERANCA: ArcanoMaiorEditorial = {
   number: 14,
@@ -6,7 +7,7 @@ export const A_TEMPERANCA: ArcanoMaiorEditorial = {
   numeral: "XIV",
   subtitle: "A Alquimia Interior",
   slug: "a-temperanca",
-  cardImage: "/assets/temperance-card.jpg",
+  cardImage,
   keywords: ["Equilíbrio", "Integração", "Paciência", "Alquimia", "Harmonia"],
 
   essence:

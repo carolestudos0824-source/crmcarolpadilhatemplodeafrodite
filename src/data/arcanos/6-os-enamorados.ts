@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const OS_ENAMORADOS: ArcanoMaiorEditorial = {
   number: 6,
@@ -6,7 +7,7 @@ export const OS_ENAMORADOS: ArcanoMaiorEditorial = {
   numeral: "VI",
   subtitle: "A Escolha do Coração",
   slug: "os-enamorados",
-  cardImage: "/assets/the-lovers-card.jpg",
+  cardImage,
   keywords: ["Escolha", "União", "Amor", "Valores", "Dualidade"],
 
   essence:

@@ -1,4 +1,5 @@
 import type { ArcanoMaiorEditorial } from "../arcano-editorial";
+import cardImage from "@/assets/arcano-placeholder.jpg";
 
 export const A_FORCA: ArcanoMaiorEditorial = {
   number: 11,
@@ -6,7 +7,7 @@ export const A_FORCA: ArcanoMaiorEditorial = {
   numeral: "XI",
   subtitle: "O Poder Interior",
   slug: "a-forca",
-  cardImage: "/assets/strength-card.jpg",
+  cardImage,
   keywords: ["Coragem", "Compaixão", "Domínio Interior", "Paciência", "Poder Suave"],
 
   essence:
