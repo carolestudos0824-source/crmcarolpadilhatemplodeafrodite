@@ -279,5 +279,3 @@ export function mapLegacyModuleToUI(
     metadata: { source: "legacy", sourceId: slug, usedFallback: true },
   };
 }
-
-void mapLegacyLessonToUI;

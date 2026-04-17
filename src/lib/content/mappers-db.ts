@@ -295,7 +295,3 @@ export function mapDbModuleToUI(
     metadata: { source: "db", sourceId: row.id },
   };
 }
-
-// Mantém referência usada para tipagem de contexto exportado
-void mapDbLessonToUI;
-void ((_ctx: DbLessonContext) => _ctx);
