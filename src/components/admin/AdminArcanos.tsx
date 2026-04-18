@@ -94,22 +94,58 @@ const NAIPE_LABEL: Record<ArcanoNaipe, string> = {
 
 function effectiveStatus(a: ArcanoRow): ArcanoStatus {
   if (a.status === "published" || a.status === "draft") return a.status;
-  const filled = EDITORIAL_FIELDS.filter((f) => {
-    const v = a[f.key];
-    return typeof v === "string" && v.trim().length > 0;
-  }).length;
+  const filled = countFilled(a);
   if (filled === 0) return "empty";
   if (filled < EDITORIAL_FIELDS.length) return "partial";
   return "draft";
 }
 
-function completionPercent(a: ArcanoRow): number {
-  const filled = EDITORIAL_FIELDS.filter((f) => {
+function countFilled(a: ArcanoRow): number {
+  return EDITORIAL_FIELDS.filter((f) => {
     const v = a[f.key];
     return typeof v === "string" && v.trim().length > 0;
   }).length;
-  return Math.round((filled / EDITORIAL_FIELDS.length) * 100);
 }
+
+function missingFields(a: ArcanoRow): string[] {
+  return EDITORIAL_FIELDS.filter((f) => {
+    const v = a[f.key];
+    return !(typeof v === "string" && v.trim().length > 0);
+  }).map((f) => f.label);
+}
+
+function completionPercent(a: ArcanoRow): number {
+  return Math.round((countFilled(a) / EDITORIAL_FIELDS.length) * 100);
+}
+
+/** Régua editorial de prioridade */
+export type Priority = "validated" | "almost" | "incomplete" | "critical";
+
+function priorityOf(a: ArcanoRow): Priority {
+  if (a.validated) return "validated";
+  const filled = countFilled(a);
+  const total = EDITORIAL_FIELDS.length;
+  // Crítico: publicado sem validação E com menos de 30% preenchido
+  if (a.status === "published" && filled / total < 0.3) return "critical";
+  // Quase pronto: faltam 3 campos ou menos
+  if (total - filled <= 3) return "almost";
+  // Incompleto: estrutura existe, mas faltam vários
+  return "incomplete";
+}
+
+const PRIORITY_LABEL: Record<Priority, string> = {
+  validated: "Validado",
+  almost: "Quase pronto",
+  incomplete: "Incompleto",
+  critical: "Crítico",
+};
+
+const PRIORITY_TONE: Record<Priority, string> = {
+  validated: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  almost: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  incomplete: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  critical: "bg-destructive/10 text-destructive border-destructive/30",
+};
 
 function checkInconsistency(a: ArcanoRow): string | null {
   if (a.type !== "maior") return null;
@@ -130,6 +166,7 @@ const AdminArcanos = () => {
   const [filterTier, setFilterTier] = useState<"all" | ArcanoTier>("all");
   const [filterValidated, setFilterValidated] = useState<"all" | "yes" | "no">("all");
   const [filterNaipe, setFilterNaipe] = useState<"all" | ArcanoNaipe>("all");
+  const [filterPriority, setFilterPriority] = useState<"all" | Priority | "published_unvalidated">("all");
   const [drill, setDrill] = useState<ArcanoRow | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
 
@@ -160,20 +197,28 @@ const AdminArcanos = () => {
       if (filterTier !== "all" && a.tier !== filterTier) return false;
       if (filterValidated === "yes" && !a.validated) return false;
       if (filterValidated === "no" && a.validated) return false;
+      if (filterPriority !== "all") {
+        if (filterPriority === "published_unvalidated") {
+          if (!(a.status === "published" && !a.validated)) return false;
+        } else if (priorityOf(a) !== filterPriority) return false;
+      }
       if (search.trim()) {
         const q = search.toLowerCase();
         if (!a.name.toLowerCase().includes(q) && !(a.subtitle ?? "").toLowerCase().includes(q)) return false;
       }
       return true;
     });
-  }, [arcanos, filterType, filterStatus, filterTier, filterValidated, filterNaipe, search]);
+  }, [arcanos, filterType, filterStatus, filterTier, filterValidated, filterNaipe, filterPriority, search]);
 
   const stats = useMemo(() => {
     const total = arcanos.length;
     const published = arcanos.filter((a) => a.status === "published").length;
     const validated = arcanos.filter((a) => a.validated).length;
     const inconsistent = arcanos.filter((a) => checkInconsistency(a)).length;
-    return { total, published, validated, inconsistent };
+    const critical = arcanos.filter((a) => priorityOf(a) === "critical").length;
+    const almost = arcanos.filter((a) => priorityOf(a) === "almost").length;
+    const publishedUnvalidated = arcanos.filter((a) => a.status === "published" && !a.validated).length;
+    return { total, published, validated, inconsistent, critical, almost, publishedUnvalidated };
   }, [arcanos]);
 
   if (drill) {
@@ -202,11 +247,26 @@ const AdminArcanos = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      {stats.critical > 0 && (
+        <button
+          onClick={() => setFilterPriority("critical")}
+          className="w-full text-left p-3 rounded-xl border border-destructive/30 bg-destructive/5 flex items-start gap-2 hover:bg-destructive/10 transition-colors"
+        >
+          <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+          <div className="text-xs text-destructive">
+            <strong>{stats.critical} arcano{stats.critical > 1 ? "s" : ""} crítico{stats.critical > 1 ? "s" : ""}</strong>{" "}
+            — publicado{stats.critical > 1 ? "s" : ""} sem validação e com menos de 30% do conteúdo editorial. Clique para filtrar.
+          </div>
+        </button>
+      )}
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
         <StatCard label="Total" value={stats.total} />
         <StatCard label="Publicados" value={stats.published} tone="primary" />
         <StatCard label="Validados" value={stats.validated} tone="emerald" />
-        <StatCard label="Inconsistentes" value={stats.inconsistent} tone="amber" />
+        <StatCard label="Pub. s/ validação" value={stats.publishedUnvalidated} tone="amber" />
+        <StatCard label="Críticos" value={stats.critical} tone="destructive" />
+        <StatCard label="Quase prontos" value={stats.almost} tone="blue" />
       </div>
 
       <Tabs
@@ -260,6 +320,19 @@ const AdminArcanos = () => {
             <SelectItem value="no">Pendentes</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={filterPriority} onValueChange={(v) => setFilterPriority(v as typeof filterPriority)}>
+          <SelectTrigger className="h-9 text-xs">
+            <SelectValue placeholder="Prioridade" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todas prioridades</SelectItem>
+            <SelectItem value="critical">🔴 Críticos</SelectItem>
+            <SelectItem value="incomplete">🟡 Incompletos</SelectItem>
+            <SelectItem value="almost">🔵 Quase prontos</SelectItem>
+            <SelectItem value="validated">🟢 Validados</SelectItem>
+            <SelectItem value="published_unvalidated">⚠️ Publicados sem validação</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {filterType === "menor" && (
@@ -286,11 +359,20 @@ const AdminArcanos = () => {
           {filtered.map((a) => {
             const eff = effectiveStatus(a);
             const inc = checkInconsistency(a);
+            const filled = countFilled(a);
+            const total = EDITORIAL_FIELDS.length;
+            const missing = missingFields(a);
+            const prio = priorityOf(a);
+            const isPubUnvalidated = a.status === "published" && !a.validated;
             return (
               <button
                 key={a.id}
                 onClick={() => setDrill(a)}
-                className="text-left flex items-center gap-3 p-2.5 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/30 transition-all"
+                className={`text-left flex items-center gap-3 p-2.5 rounded-xl border transition-all ${
+                  prio === "critical"
+                    ? "border-destructive/30 bg-destructive/5 hover:bg-destructive/10"
+                    : "border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/30"
+                }`}
               >
                 <span className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center font-heading text-xs text-primary shrink-0">
                   {a.numeral || a.number}
@@ -301,6 +383,11 @@ const AdminArcanos = () => {
                     {a.naipe && (
                       <span className="text-[10px] text-muted-foreground">de {NAIPE_LABEL[a.naipe]}</span>
                     )}
+                    <span
+                      className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${PRIORITY_TONE[prio]}`}
+                    >
+                      {PRIORITY_LABEL[prio]}
+                    </span>
                     <span
                       className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${STATUS_TONE[eff]}`}
                     >
@@ -316,13 +403,9 @@ const AdminArcanos = () => {
                     >
                       {a.tier === "premium" ? "Premium" : "Gratuito"}
                     </span>
-                    {a.validated ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400">
-                        <ShieldCheck className="w-3 h-3" /> Validado
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-                        <ShieldAlert className="w-3 h-3" /> Pendente
+                    {isPubUnvalidated && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-400">
+                        <ShieldAlert className="w-3 h-3" /> Publicado sem validação
                       </span>
                     )}
                     {inc && (
@@ -332,11 +415,16 @@ const AdminArcanos = () => {
                     )}
                   </div>
                   {a.subtitle && <p className="text-[11px] text-muted-foreground truncate">{a.subtitle}</p>}
-                  <div className="mt-1 flex items-center gap-2">
-                    <div className="flex-1 h-1 bg-muted/40 rounded-full overflow-hidden max-w-[200px]">
-                      <div className="h-full bg-primary/60" style={{ width: `${completionPercent(a)}%` }} />
-                    </div>
-                    <span className="text-[10px] text-muted-foreground">{completionPercent(a)}%</span>
+                  <div className="mt-1 flex items-center gap-2 flex-wrap">
+                    <span className="text-[11px] font-medium text-foreground">
+                      {filled}/{total} campos
+                    </span>
+                    {missing.length > 0 && (
+                      <span className="text-[10px] text-muted-foreground truncate">
+                        · faltam: {missing.slice(0, 3).join(", ")}
+                        {missing.length > 3 && ` +${missing.length - 3}`}
+                      </span>
+                    )}
                   </div>
                 </div>
               </button>
@@ -367,13 +455,15 @@ const StatCard = ({
 }: {
   label: string;
   value: number;
-  tone?: "default" | "primary" | "emerald" | "amber";
+  tone?: "default" | "primary" | "emerald" | "amber" | "destructive" | "blue";
 }) => {
   const toneClass = {
     default: "border-border/50 text-foreground",
     primary: "border-primary/20 text-primary bg-primary/5",
     emerald: "border-emerald-500/20 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5",
     amber: "border-amber-500/20 text-amber-600 dark:text-amber-400 bg-amber-500/5",
+    destructive: "border-destructive/30 text-destructive bg-destructive/5",
+    blue: "border-blue-500/20 text-blue-600 dark:text-blue-400 bg-blue-500/5",
   }[tone];
   return (
     <div className={`p-3 rounded-xl border ${toneClass}`}>
