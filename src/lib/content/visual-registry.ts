@@ -9,8 +9,8 @@
  * Para Maiores: tabela mínima derivada de EDITORIAL_REGISTRY.
  */
 
-import { DECK_BY_ID, DECK_BY_SLUG, type DeckEntry } from "@/data/arcanos-menores/deck-registry";
-import { EDITORIAL_REGISTRY } from "@/data/arcanos";
+import { DECK_BY_ID, DECK_BY_SLUG, type DeckEntry } from "@/content/arcanos-menores/deck-registry";
+import { EDITORIAL_REGISTRY } from "@/content/arcanos-maiores";
 import type { ContentNaipe } from "./types";
 
 export interface VisualResolution {

@@ -26,7 +26,7 @@ export {
   getPositionLabel,
   hasContent,
   isCourtCard,
-} from "@/data/arcanos-menores";
+} from "@/content/arcanos-menores";
 
 // eslint-disable-next-line no-restricted-imports
 export type {
@@ -37,4 +37,4 @@ export type {
   QuizQuestion,
   RevisaoRapida,
   ArcanoMenorEditorial,
-} from "@/data/arcanos-menores";
+} from "@/content/arcanos-menores";

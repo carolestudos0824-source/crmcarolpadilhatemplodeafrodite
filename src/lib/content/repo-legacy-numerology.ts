@@ -3,7 +3,7 @@
  * Única importação autorizada de `@/data/arcanos-menores/numerologia`.
  */
 
-import { NUMEROLOGIA } from "@/data/arcanos-menores/numerologia";
+import { NUMEROLOGIA } from "@/content/arcanos-menores/numerologia";
 import type {
   NumerologyContent,
   NumerologyItemContent,

@@ -5,8 +5,8 @@
  * fora dos próprios mappers. Centralizar aqui facilita o cleanup da Fase 8.
  */
 
-import { EDITORIAL_REGISTRY } from "@/data/arcanos";
-import { ARCANOS_MENORES, getArcanoMenorByPosition } from "@/data/arcanos-menores";
+import { EDITORIAL_REGISTRY } from "@/content/arcanos-maiores";
+import { ARCANOS_MENORES, getArcanoMenorByPosition } from "@/content/arcanos-menores";
 import type { LegacyArcanoMaior, LegacyArcanoMenor, LegacyLesson } from "./mappers-legacy";
 
 // ─── Arcanos ───────────────────────────────────────────────────────

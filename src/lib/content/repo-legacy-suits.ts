@@ -3,7 +3,7 @@
  * Única importação autorizada de `@/data/arcanos-menores/naipes-pedagogico`.
  */
 
-import { NAIPES_PEDAGOGICO } from "@/data/arcanos-menores/naipes-pedagogico";
+import { NAIPES_PEDAGOGICO } from "@/content/arcanos-menores/naipes-pedagogico";
 import type { ContentNaipe } from "./types";
 import type { SuitContent, SuitsContent } from "./suits-types";
 
