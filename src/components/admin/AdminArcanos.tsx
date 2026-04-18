@@ -247,11 +247,26 @@ const AdminArcanos = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      {stats.critical > 0 && (
+        <button
+          onClick={() => setFilterPriority("critical")}
+          className="w-full text-left p-3 rounded-xl border border-destructive/30 bg-destructive/5 flex items-start gap-2 hover:bg-destructive/10 transition-colors"
+        >
+          <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+          <div className="text-xs text-destructive">
+            <strong>{stats.critical} arcano{stats.critical > 1 ? "s" : ""} crítico{stats.critical > 1 ? "s" : ""}</strong>{" "}
+            — publicado{stats.critical > 1 ? "s" : ""} sem validação e com menos de 30% do conteúdo editorial. Clique para filtrar.
+          </div>
+        </button>
+      )}
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
         <StatCard label="Total" value={stats.total} />
         <StatCard label="Publicados" value={stats.published} tone="primary" />
         <StatCard label="Validados" value={stats.validated} tone="emerald" />
-        <StatCard label="Inconsistentes" value={stats.inconsistent} tone="amber" />
+        <StatCard label="Pub. s/ validação" value={stats.publishedUnvalidated} tone="amber" />
+        <StatCard label="Críticos" value={stats.critical} tone="destructive" />
+        <StatCard label="Quase prontos" value={stats.almost} tone="blue" />
       </div>
 
       <Tabs
