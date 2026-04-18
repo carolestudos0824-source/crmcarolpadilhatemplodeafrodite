@@ -1222,6 +1222,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cms_arcanos_essential_count: {
+        Args: { a: Database["public"]["Tables"]["cms_arcanos"]["Row"] }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
