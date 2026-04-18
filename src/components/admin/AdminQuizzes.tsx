@@ -57,16 +57,17 @@ const QUEUE_TONE: Record<QuizQueue, string> = {
   critico: "bg-rose-500/10 text-rose-700 dark:text-rose-400",
 };
 
-function classifyQuiz(q: QuizRow, validCount: number): { queue: QuizQueue; blockers: string[] } {
+function classifyQuiz(q: QuizRow, validCount: number, missingExplanations = 0): { queue: QuizQueue; blockers: string[] } {
   const blockers: string[] = [];
   if (!q.linked_to) blockers.push("sem vínculo");
   if (q.xp_reward <= 0) blockers.push("XP inválido");
   if (validCount === 0) blockers.push("sem perguntas válidas");
   else if (validCount < 3) blockers.push(`apenas ${validCount} pergunta(s) válida(s)`);
+  if (validCount >= 3 && missingExplanations > 0) blockers.push(`${missingExplanations} sem explicação`);
 
   let queue: QuizQueue;
   if (validCount === 0 || !q.linked_to || q.xp_reward <= 0) queue = "critico";
-  else if (validCount >= 5 && blockers.length === 0) queue = "validado";
+  else if (validCount >= 3 && missingExplanations === 0) queue = "validado";
   else if (validCount >= 3) queue = "quase";
   else queue = "incompleto";
   return { queue, blockers };
