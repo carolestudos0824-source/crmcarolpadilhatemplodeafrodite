@@ -32,10 +32,44 @@ type QuizStatus = Database["public"]["Enums"]["module_status"];
 type Difficulty = Database["public"]["Enums"]["quiz_difficulty"];
 type ModuleRow = Database["public"]["Tables"]["cms_modules"]["Row"];
 
+type QuizQueue = "validado" | "quase" | "incompleto" | "critico";
+
 interface QuizWithStats extends QuizRow {
   questionsCount: number;
+  validQuestionsCount: number;
   accuracyRate: number;
   completionCount: number;
+  queue: QuizQueue;
+  blockers: string[];
+}
+
+const QUEUE_LABEL: Record<QuizQueue, string> = {
+  validado: "Validado",
+  quase: "Quase pronto",
+  incompleto: "Incompleto",
+  critico: "Crítico",
+};
+
+const QUEUE_TONE: Record<QuizQueue, string> = {
+  validado: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+  quase: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+  incompleto: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
+  critico: "bg-rose-500/10 text-rose-700 dark:text-rose-400",
+};
+
+function classifyQuiz(q: QuizRow, validCount: number): { queue: QuizQueue; blockers: string[] } {
+  const blockers: string[] = [];
+  if (!q.linked_to) blockers.push("sem vínculo");
+  if (q.xp_reward <= 0) blockers.push("XP inválido");
+  if (validCount === 0) blockers.push("sem perguntas válidas");
+  else if (validCount < 3) blockers.push(`apenas ${validCount} pergunta(s) válida(s)`);
+
+  let queue: QuizQueue;
+  if (validCount === 0 || !q.linked_to || q.xp_reward <= 0) queue = "critico";
+  else if (validCount >= 5 && blockers.length === 0) queue = "validado";
+  else if (validCount >= 3) queue = "quase";
+  else queue = "incompleto";
+  return { queue, blockers };
 }
 
 const DIFFICULTY_LABEL: Record<Difficulty, string> = {
@@ -65,13 +99,14 @@ const AdminQuizzes = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"all" | "draft" | "published">("all");
   const [filterModule, setFilterModule] = useState<string>("all");
+  const [filterQueue, setFilterQueue] = useState<"all" | QuizQueue>("all");
 
   const load = async () => {
     setLoading(true);
     const [qRes, mRes, questionsRes, responsesRes] = await Promise.all([
       supabase.from("cms_quizzes").select("*").order("created_at", { ascending: false }),
       supabase.from("cms_modules").select("*").order("order_index", { ascending: true }),
-      supabase.from("cms_quiz_questions").select("quiz_id"),
+      supabase.from("cms_quiz_questions").select("quiz_id, options, correct_index"),
       supabase.from("quiz_responses").select("quiz_id, is_correct, user_id"),
     ]);
 
@@ -82,11 +117,16 @@ const AdminQuizzes = () => {
     }
 
     const countByQuiz = new Map<string, number>();
-    (questionsRes.data ?? []).forEach((q) => {
-      countByQuiz.set(q.quiz_id, (countByQuiz.get(q.quiz_id) ?? 0) + 1);
+    const validByQuiz = new Map<string, number>();
+    (questionsRes.data ?? []).forEach((qq) => {
+      countByQuiz.set(qq.quiz_id, (countByQuiz.get(qq.quiz_id) ?? 0) + 1);
+      const opts = Array.isArray(qq.options) ? qq.options : [];
+      const ci = qq.correct_index ?? -1;
+      if (opts.length >= 2 && ci >= 0 && ci < opts.length) {
+        validByQuiz.set(qq.quiz_id, (validByQuiz.get(qq.quiz_id) ?? 0) + 1);
+      }
     });
 
-    // Match by external_id (slug) since user responses use string ids
     const externalIdMap = new Map<string, string>();
     (qRes.data ?? []).forEach((q) => {
       if (q.external_id) externalIdMap.set(q.external_id, q.id);
@@ -106,11 +146,16 @@ const AdminQuizzes = () => {
 
     const enriched: QuizWithStats[] = (qRes.data ?? []).map((q) => {
       const s = statsByQuiz.get(q.id);
+      const validCount = validByQuiz.get(q.id) ?? 0;
+      const { queue, blockers } = classifyQuiz(q, validCount);
       return {
         ...q,
         questionsCount: countByQuiz.get(q.id) ?? 0,
+        validQuestionsCount: validCount,
         accuracyRate: s && s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0,
         completionCount: s?.users.size ?? 0,
+        queue,
+        blockers,
       };
     });
 
@@ -127,9 +172,10 @@ const AdminQuizzes = () => {
     return quizzes.filter((q) => {
       if (filterStatus !== "all" && q.status !== filterStatus) return false;
       if (filterModule !== "all" && q.module_id !== filterModule) return false;
+      if (filterQueue !== "all" && q.queue !== filterQueue) return false;
       return true;
     });
-  }, [quizzes, filterStatus, filterModule]);
+  }, [quizzes, filterStatus, filterModule, filterQueue]);
 
   const togglePublish = async (q: QuizWithStats) => {
     const next: QuizStatus = q.status === "published" ? "draft" : "published";
@@ -199,42 +245,47 @@ const AdminQuizzes = () => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <StatCard label="Total" value={quizzes.length} />
         <StatCard label="Publicados" value={quizzes.filter((q) => q.status === "published").length} tone="primary" />
-        <StatCard label="Perguntas" value={quizzes.reduce((s, q) => s + q.questionsCount, 0)} tone="emerald" />
+        <StatCard label="Validados" value={quizzes.filter((q) => q.queue === "validado").length} tone="emerald" />
         <StatCard label="Acerto médio" value={avgAccuracy} suffix="%" tone="amber" />
       </div>
 
-      {/* Régua de auditoria pedagógica — perguntas por quiz */}
+      {/* Régua editorial — fila de fechamento */}
       <div className="rounded-xl border border-border/50 bg-card/30 p-3 space-y-2">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-heading tracking-[0.2em] uppercase text-muted-foreground">Auditoria pedagógica</h3>
-          <span className="text-[10px] text-muted-foreground">régua: ≥5 validado · 3-4 quase pronto · 1-2 incompleto · 0 crítico</span>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h3 className="text-xs font-heading tracking-[0.2em] uppercase text-muted-foreground">Fila editorial</h3>
+          <span className="text-[10px] text-muted-foreground">régua: ≥5 perguntas válidas + vínculo + XP &gt; 0</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-          <button
-            onClick={() => setFilterStatus("all")}
-            className="rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 px-2 py-1.5 text-left"
-          >
-            <div className="font-semibold">{quizzes.filter(q => q.questionsCount >= 5).length}</div>
-            <div className="text-[10px] opacity-80">validado (≥5)</div>
-          </button>
-          <div className="rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 px-2 py-1.5">
-            <div className="font-semibold">{quizzes.filter(q => q.questionsCount >= 3 && q.questionsCount <= 4).length}</div>
-            <div className="text-[10px] opacity-80">quase pronto (3-4)</div>
-          </div>
-          <div className="rounded-lg bg-orange-500/10 text-orange-700 dark:text-orange-400 px-2 py-1.5">
-            <div className="font-semibold">{quizzes.filter(q => q.questionsCount >= 1 && q.questionsCount <= 2).length}</div>
-            <div className="text-[10px] opacity-80">incompleto (1-2)</div>
-          </div>
-          <div className="rounded-lg bg-rose-500/10 text-rose-700 dark:text-rose-400 px-2 py-1.5">
-            <div className="font-semibold">{quizzes.filter(q => q.questionsCount === 0).length}</div>
-            <div className="text-[10px] opacity-80">crítico (0)</div>
-          </div>
+          {(["validado", "quase", "incompleto", "critico"] as QuizQueue[]).map((q) => {
+            const count = quizzes.filter((x) => x.queue === q).length;
+            const active = filterQueue === q;
+            return (
+              <button
+                key={q}
+                onClick={() => setFilterQueue(active ? "all" : q)}
+                className={`rounded-lg px-2 py-1.5 text-left transition-all ${QUEUE_TONE[q]} ${active ? "ring-2 ring-current" : "opacity-90 hover:opacity-100"}`}
+              >
+                <div className="font-semibold">{count}</div>
+                <div className="text-[10px] opacity-80">{QUEUE_LABEL[q].toLowerCase()}</div>
+              </button>
+            );
+          })}
         </div>
-        {quizzes.filter(q => q.status === "published" && q.questionsCount < 3).length > 0 && (
-          <div className="text-[11px] text-rose-700 dark:text-rose-400 bg-rose-500/5 rounded-md px-2 py-1.5">
-            ⚠ {quizzes.filter(q => q.status === "published" && q.questionsCount < 3).length} quiz(zes) publicados com menos de 3 perguntas — considere rebaixar para rascunho.
-          </div>
-        )}
+        {(() => {
+          const subMin = quizzes.filter((q) => q.status === "published" && q.queue !== "validado" && q.queue !== "quase").length;
+          if (subMin === 0) {
+            return (
+              <div className="text-[11px] text-emerald-700 dark:text-emerald-400 bg-emerald-500/5 rounded-md px-2 py-1.5">
+                ✓ Régua mínima aplicada — nenhum quiz publicado abaixo do limite editorial.
+              </div>
+            );
+          }
+          return (
+            <div className="text-[11px] text-rose-700 dark:text-rose-400 bg-rose-500/5 rounded-md px-2 py-1.5">
+              ⚠ {subMin} quiz(zes) publicados abaixo da régua mínima — devem voltar para rascunho.
+            </div>
+          );
+        })()}
       </div>
 
       <div className="grid grid-cols-2 gap-2">
@@ -305,13 +356,16 @@ const AdminQuizzes = () => {
                       >
                         {DIFFICULTY_LABEL[q.difficulty]}
                       </span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${QUEUE_TONE[q.queue]}`}>
+                        {QUEUE_LABEL[q.queue]}
+                      </span>
                     </div>
                     <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                      {mod?.name ?? "Sem módulo"} · {q.linked_to ?? "—"}
+                      {mod?.name ?? "Sem módulo"} · {q.linked_to ?? "sem vínculo"}
                     </p>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
-                        <HelpCircle className="w-3 h-3" /> {q.questionsCount} perguntas
+                        <HelpCircle className="w-3 h-3" /> {q.validQuestionsCount}/{q.questionsCount} válidas
                       </span>
                       <span className="inline-flex items-center gap-1">
                         <Trophy className="w-3 h-3" /> {q.xp_reward} XP
@@ -321,6 +375,11 @@ const AdminQuizzes = () => {
                       </span>
                       <span>· {q.completionCount} conclusões</span>
                     </div>
+                    {q.blockers.length > 0 && (
+                      <p className="text-[10px] text-rose-600 dark:text-rose-400 mt-1 truncate">
+                        ⚠ {q.blockers.join(" · ")}
+                      </p>
+                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <Button
@@ -365,7 +424,14 @@ const AdminQuizzes = () => {
         onCreated={(row) => {
           setCreateOpen(false);
           load();
-          setDrill({ ...row, questionsCount: 0, accuracyRate: 0, completionCount: 0 });
+          setDrill({
+            ...row,
+            questionsCount: 0,
+            validQuestionsCount: 0,
+            accuracyRate: 0,
+            completionCount: 0,
+            ...classifyQuiz(row, 0),
+          });
         }}
       />
     </div>
