@@ -1,4 +1,11 @@
 /**
+ * @deprecated [Fase 6.6 — Faxina final]
+ * Arquivo legado mantido apenas como SEED / BACKUP / ROLLBACK.
+ * NÃO importar no runtime (páginas, componentes, hooks).
+ * Runtime principal: @/lib/content (DB) + @/content/** + @/config/** + @/registry/**.
+ * Importação fora de src/lib/content/**, src/data/** ou src/components/admin/** é bloqueada por ESLint.
+ */
+/**
  * Arcanos Menores — Data Architecture
  * 56 cards across 4 suits, ready for content expansion.
  */
