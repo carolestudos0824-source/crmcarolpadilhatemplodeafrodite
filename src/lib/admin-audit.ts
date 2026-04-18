@@ -31,6 +31,7 @@ export type AdminAction =
   | "arcano.unpublish"
   | "arcano.tier_change"
   | "arcano.validate"
+  | "arcano.bulk_demote_critical"
   // Quizzes
   | "quiz.create"
   | "quiz.update"
@@ -118,6 +119,7 @@ export const ACTION_LABELS: Record<AdminAction, string> = {
   "arcano.unpublish": "Despublicou arcano",
   "arcano.tier_change": "Alterou tier do arcano",
   "arcano.validate": "Alterou validação do arcano",
+  "arcano.bulk_demote_critical": "Rebaixou arcanos críticos em massa",
   "quiz.create": "Criou quiz",
   "quiz.update": "Editou quiz",
   "quiz.delete": "Removeu quiz",

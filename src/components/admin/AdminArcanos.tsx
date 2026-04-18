@@ -296,16 +296,48 @@ const AdminArcanos = () => {
       </div>
 
       {stats.critical > 0 && (
-        <button
-          onClick={() => setFilterPriority("critical")}
-          className="w-full text-left p-3 rounded-xl border border-destructive/30 bg-destructive/5 flex items-start gap-2 hover:bg-destructive/10 transition-colors"
-        >
-          <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
-          <div className="text-xs text-destructive">
-            <strong>{stats.critical} arcano{stats.critical > 1 ? "s" : ""} crítico{stats.critical > 1 ? "s" : ""}</strong>{" "}
-            — publicado{stats.critical > 1 ? "s" : ""} sem validação e com menos de 30% do conteúdo editorial. Clique para filtrar.
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-3 space-y-2">
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+            <div className="text-xs text-destructive flex-1">
+              <strong>Contenção editorial ativa.</strong> {stats.critical} arcano{stats.critical > 1 ? "s estão" : " está"} publicado{stats.critical > 1 ? "s" : ""} sem validação e com menos de 30% do conteúdo editorial preenchido no DB.
+              <div className="mt-1 text-[11px] text-destructive/80">
+                Regra objetiva: <strong>validação só é permitida com ≥6 dos 10 campos essenciais</strong> (essência, símbolos, luz, sombra, amor, trabalho, espiritualidade, voz, revisão rápida, palavras-chave). O DB bloqueia automaticamente validações abaixo desse limite. Conteúdo é servido por arquivos editoriais até a sincronização.
+              </div>
+            </div>
           </div>
-        </button>
+          <div className="flex gap-2 flex-wrap pl-6">
+            <button
+              onClick={() => setFilterPriority("critical")}
+              className="text-[11px] px-2.5 py-1 rounded-full border border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
+            >
+              Filtrar críticos
+            </button>
+            <button
+              onClick={async () => {
+                if (!confirm(`Rebaixar ${stats.critical} arcano(s) críticos para rascunho? A exibição no app será contida até atingirem a régua editorial.`)) return;
+                const ids = arcanos.filter((a) => priorityOf(a) === "critical").map((a) => a.id);
+                const { error } = await supabase.from("cms_arcanos").update({ status: "draft" }).in("id", ids);
+                if (error) {
+                  toast({ title: "Erro", description: error.message, variant: "destructive" });
+                  return;
+                }
+                await logAdminAction({
+                  action: "arcano.bulk_demote_critical",
+                  targetType: "arcano",
+                  targetId: null,
+                  targetLabel: `${ids.length} críticos`,
+                  details: { count: ids.length, ids },
+                });
+                toast({ title: `${ids.length} arcano(s) rebaixados para rascunho` });
+                load();
+              }}
+              className="text-[11px] px-2.5 py-1 rounded-full border border-destructive/40 bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors"
+            >
+              Rebaixar todos para rascunho
+            </button>
+          </div>
+        </div>
       )}
 
       {stats.queue.length > 0 && (
