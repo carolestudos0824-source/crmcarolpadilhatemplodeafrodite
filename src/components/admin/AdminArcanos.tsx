@@ -359,11 +359,20 @@ const AdminArcanos = () => {
           {filtered.map((a) => {
             const eff = effectiveStatus(a);
             const inc = checkInconsistency(a);
+            const filled = countFilled(a);
+            const total = EDITORIAL_FIELDS.length;
+            const missing = missingFields(a);
+            const prio = priorityOf(a);
+            const isPubUnvalidated = a.status === "published" && !a.validated;
             return (
               <button
                 key={a.id}
                 onClick={() => setDrill(a)}
-                className="text-left flex items-center gap-3 p-2.5 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/30 transition-all"
+                className={`text-left flex items-center gap-3 p-2.5 rounded-xl border transition-all ${
+                  prio === "critical"
+                    ? "border-destructive/30 bg-destructive/5 hover:bg-destructive/10"
+                    : "border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/30"
+                }`}
               >
                 <span className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center font-heading text-xs text-primary shrink-0">
                   {a.numeral || a.number}
@@ -374,6 +383,11 @@ const AdminArcanos = () => {
                     {a.naipe && (
                       <span className="text-[10px] text-muted-foreground">de {NAIPE_LABEL[a.naipe]}</span>
                     )}
+                    <span
+                      className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${PRIORITY_TONE[prio]}`}
+                    >
+                      {PRIORITY_LABEL[prio]}
+                    </span>
                     <span
                       className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${STATUS_TONE[eff]}`}
                     >
@@ -389,13 +403,9 @@ const AdminArcanos = () => {
                     >
                       {a.tier === "premium" ? "Premium" : "Gratuito"}
                     </span>
-                    {a.validated ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400">
-                        <ShieldCheck className="w-3 h-3" /> Validado
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-                        <ShieldAlert className="w-3 h-3" /> Pendente
+                    {isPubUnvalidated && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-400">
+                        <ShieldAlert className="w-3 h-3" /> Publicado sem validação
                       </span>
                     )}
                     {inc && (
@@ -405,11 +415,16 @@ const AdminArcanos = () => {
                     )}
                   </div>
                   {a.subtitle && <p className="text-[11px] text-muted-foreground truncate">{a.subtitle}</p>}
-                  <div className="mt-1 flex items-center gap-2">
-                    <div className="flex-1 h-1 bg-muted/40 rounded-full overflow-hidden max-w-[200px]">
-                      <div className="h-full bg-primary/60" style={{ width: `${completionPercent(a)}%` }} />
-                    </div>
-                    <span className="text-[10px] text-muted-foreground">{completionPercent(a)}%</span>
+                  <div className="mt-1 flex items-center gap-2 flex-wrap">
+                    <span className="text-[11px] font-medium text-foreground">
+                      {filled}/{total} campos
+                    </span>
+                    {missing.length > 0 && (
+                      <span className="text-[10px] text-muted-foreground truncate">
+                        · faltam: {missing.slice(0, 3).join(", ")}
+                        {missing.length > 3 && ` +${missing.length - 3}`}
+                      </span>
+                    )}
                   </div>
                 </div>
               </button>
