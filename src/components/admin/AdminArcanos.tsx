@@ -622,6 +622,16 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
 
   const togglePublish = async () => {
     const next: ArcanoStatus = draft.status === "published" ? "draft" : "published";
+    // Régua endurecida: bloquear publicação se não atender à barra mínima (8 essenciais)
+    if (next === "published" && !meetsPublishBar(draft)) {
+      const filledEss = countEssentialFilled(draft);
+      toast({
+        title: "Publicação bloqueada",
+        description: `Faltam ${ESSENTIAL_FIELDS.length - filledEss} de ${ESSENTIAL_FIELDS.length} campos essenciais. Complete-os antes de publicar.`,
+        variant: "destructive",
+      });
+      return;
+    }
     const { error } = await supabase.from("cms_arcanos").update({ status: next }).eq("id", draft.id);
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
@@ -633,7 +643,7 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
       targetType: "arcano",
       targetId: draft.id,
       targetLabel: draft.name,
-      details: { from: draft.status, to: next },
+      details: { from: draft.status, to: next, essential_filled: countEssentialFilled(draft) },
     });
     toast({ title: next === "published" ? "Publicado" : "Despublicado" });
   };
@@ -654,6 +664,14 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
 
   const toggleValidated = async () => {
     const next = !draft.validated;
+    if (next && !meetsValidationBar(draft)) {
+      toast({
+        title: "Validação bloqueada",
+        description: "Para validar é preciso ter os 8 essenciais + revisão rápida + palavras-chave preenchidos.",
+        variant: "destructive",
+      });
+      return;
+    }
     const { error } = await supabase.from("cms_arcanos").update({ validated: next }).eq("id", draft.id);
     if (error) return;
     update("validated", next);
