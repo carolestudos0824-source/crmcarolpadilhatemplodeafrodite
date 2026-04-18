@@ -5,7 +5,7 @@ import {
   NAIPES,
   getCardsByNaipe,
   hasContent,
-} from "@/data/arcanos-menores";
+} from "@/registry/naipes";
 import { useProgress } from "@/hooks/use-progress";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";

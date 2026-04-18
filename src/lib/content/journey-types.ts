@@ -6,7 +6,7 @@
  */
 
 import type { ContentSource, ContentStatus, ContentTier } from "./types";
-import type { JourneyTheme } from "@/data/fools-journey-visual";
+import type { JourneyTheme } from "@/config/journey-visual";
 
 export interface JourneyPhaseContent {
   id: string;

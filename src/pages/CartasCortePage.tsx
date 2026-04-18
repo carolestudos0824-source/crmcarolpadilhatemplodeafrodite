@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import { useCourtCardsContent } from "@/hooks/use-content";
-import { NAIPES, type Naipe } from "@/data/arcanos-menores";
+import { NAIPES, type Naipe } from "@/registry/naipes";
 import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
