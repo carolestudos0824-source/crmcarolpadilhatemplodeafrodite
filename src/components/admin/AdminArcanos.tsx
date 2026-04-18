@@ -308,6 +308,73 @@ const AdminArcanos = () => {
         </button>
       )}
 
+      {stats.queue.length > 0 && (
+        <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 className="font-heading text-sm tracking-wider text-foreground">Fila de fechamento editorial</h3>
+              <p className="text-[11px] text-muted-foreground">
+                {stats.queue.length} arcano{stats.queue.length > 1 ? "s" : ""} pendente{stats.queue.length > 1 ? "s" : ""} até {stats.total}/{stats.total} validados.
+                Ordem: quase prontos → críticos gratuitos → críticos premium maiores → críticos premium menores → incompletos.
+              </p>
+            </div>
+            <div className="flex gap-1.5 flex-wrap">
+              <button
+                onClick={() => setFilterPriority("almost")}
+                className="text-[11px] px-2 py-1 rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+              >
+                {stats.almost} quase prontos
+              </button>
+              <button
+                onClick={() => setFilterPriority("incomplete")}
+                className="text-[11px] px-2 py-1 rounded-full border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+              >
+                {stats.incomplete} incompletos
+              </button>
+              <button
+                onClick={() => setFilterPriority("critical")}
+                className="text-[11px] px-2 py-1 rounded-full border border-destructive/30 bg-destructive/10 text-destructive"
+              >
+                {stats.critical} críticos
+              </button>
+            </div>
+          </div>
+          <div className="grid gap-1">
+            {stats.queue.slice(0, 5).map((a, idx) => {
+              const filled = countFilled(a);
+              const total = EDITORIAL_FIELDS.length;
+              const missing = missingFields(a);
+              const prio = priorityOf(a);
+              return (
+                <button
+                  key={a.id}
+                  onClick={() => setDrill(a)}
+                  className="text-left flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors"
+                >
+                  <span className="text-[10px] font-mono text-muted-foreground w-5">#{idx + 1}</span>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${PRIORITY_TONE[prio]}`}
+                  >
+                    {PRIORITY_LABEL[prio]}
+                  </span>
+                  <span className="text-xs font-medium text-foreground truncate flex-1">
+                    {a.name} <span className="text-muted-foreground">· {a.type === "maior" ? "Maior" : `Menor (${a.naipe ?? ""})`} · {a.tier}</span>
+                  </span>
+                  <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                    {filled}/{total} · faltam {missing.length}
+                  </span>
+                </button>
+              );
+            })}
+            {stats.queue.length > 5 && (
+              <p className="text-[11px] text-muted-foreground text-center pt-1">
+                +{stats.queue.length - 5} na fila — use o filtro abaixo para ver todos.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
         <StatCard label="Total" value={stats.total} />
         <StatCard label="Publicados" value={stats.published} tone="primary" />
