@@ -107,7 +107,7 @@ const AdminQuizzes = () => {
     const [qRes, mRes, questionsRes, responsesRes] = await Promise.all([
       supabase.from("cms_quizzes").select("*").order("created_at", { ascending: false }),
       supabase.from("cms_modules").select("*").order("order_index", { ascending: true }),
-      supabase.from("cms_quiz_questions").select("quiz_id, options, correct_index"),
+      supabase.from("cms_quiz_questions").select("quiz_id, options, correct_index, explanation"),
       supabase.from("quiz_responses").select("quiz_id, is_correct, user_id"),
     ]);
 
