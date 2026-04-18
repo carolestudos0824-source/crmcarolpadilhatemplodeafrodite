@@ -32,10 +32,44 @@ type QuizStatus = Database["public"]["Enums"]["module_status"];
 type Difficulty = Database["public"]["Enums"]["quiz_difficulty"];
 type ModuleRow = Database["public"]["Tables"]["cms_modules"]["Row"];
 
+type QuizQueue = "validado" | "quase" | "incompleto" | "critico";
+
 interface QuizWithStats extends QuizRow {
   questionsCount: number;
+  validQuestionsCount: number;
   accuracyRate: number;
   completionCount: number;
+  queue: QuizQueue;
+  blockers: string[];
+}
+
+const QUEUE_LABEL: Record<QuizQueue, string> = {
+  validado: "Validado",
+  quase: "Quase pronto",
+  incompleto: "Incompleto",
+  critico: "Crítico",
+};
+
+const QUEUE_TONE: Record<QuizQueue, string> = {
+  validado: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+  quase: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+  incompleto: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
+  critico: "bg-rose-500/10 text-rose-700 dark:text-rose-400",
+};
+
+function classifyQuiz(q: QuizRow, validCount: number): { queue: QuizQueue; blockers: string[] } {
+  const blockers: string[] = [];
+  if (!q.linked_to) blockers.push("sem vínculo");
+  if (q.xp_reward <= 0) blockers.push("XP inválido");
+  if (validCount === 0) blockers.push("sem perguntas válidas");
+  else if (validCount < 3) blockers.push(`apenas ${validCount} pergunta(s) válida(s)`);
+
+  let queue: QuizQueue;
+  if (validCount === 0 || !q.linked_to || q.xp_reward <= 0) queue = "critico";
+  else if (validCount >= 5 && blockers.length === 0) queue = "validado";
+  else if (validCount >= 3) queue = "quase";
+  else queue = "incompleto";
+  return { queue, blockers };
 }
 
 const DIFFICULTY_LABEL: Record<Difficulty, string> = {
