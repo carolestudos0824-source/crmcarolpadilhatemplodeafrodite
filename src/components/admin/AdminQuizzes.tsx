@@ -57,16 +57,17 @@ const QUEUE_TONE: Record<QuizQueue, string> = {
   critico: "bg-rose-500/10 text-rose-700 dark:text-rose-400",
 };
 
-function classifyQuiz(q: QuizRow, validCount: number): { queue: QuizQueue; blockers: string[] } {
+function classifyQuiz(q: QuizRow, validCount: number, missingExplanations = 0): { queue: QuizQueue; blockers: string[] } {
   const blockers: string[] = [];
   if (!q.linked_to) blockers.push("sem vínculo");
   if (q.xp_reward <= 0) blockers.push("XP inválido");
   if (validCount === 0) blockers.push("sem perguntas válidas");
   else if (validCount < 3) blockers.push(`apenas ${validCount} pergunta(s) válida(s)`);
+  if (validCount >= 3 && missingExplanations > 0) blockers.push(`${missingExplanations} sem explicação`);
 
   let queue: QuizQueue;
   if (validCount === 0 || !q.linked_to || q.xp_reward <= 0) queue = "critico";
-  else if (validCount >= 5 && blockers.length === 0) queue = "validado";
+  else if (validCount >= 3 && missingExplanations === 0) queue = "validado";
   else if (validCount >= 3) queue = "quase";
   else queue = "incompleto";
   return { queue, blockers };
@@ -106,7 +107,7 @@ const AdminQuizzes = () => {
     const [qRes, mRes, questionsRes, responsesRes] = await Promise.all([
       supabase.from("cms_quizzes").select("*").order("created_at", { ascending: false }),
       supabase.from("cms_modules").select("*").order("order_index", { ascending: true }),
-      supabase.from("cms_quiz_questions").select("quiz_id, options, correct_index"),
+      supabase.from("cms_quiz_questions").select("quiz_id, options, correct_index, explanation"),
       supabase.from("quiz_responses").select("quiz_id, is_correct, user_id"),
     ]);
 
@@ -118,12 +119,17 @@ const AdminQuizzes = () => {
 
     const countByQuiz = new Map<string, number>();
     const validByQuiz = new Map<string, number>();
+    const missingExplByQuiz = new Map<string, number>();
     (questionsRes.data ?? []).forEach((qq) => {
       countByQuiz.set(qq.quiz_id, (countByQuiz.get(qq.quiz_id) ?? 0) + 1);
       const opts = Array.isArray(qq.options) ? qq.options : [];
       const ci = qq.correct_index ?? -1;
-      if (opts.length >= 2 && ci >= 0 && ci < opts.length) {
+      const isValid = opts.length >= 2 && ci >= 0 && ci < opts.length;
+      if (isValid) {
         validByQuiz.set(qq.quiz_id, (validByQuiz.get(qq.quiz_id) ?? 0) + 1);
+        if (!qq.explanation || qq.explanation.trim() === "") {
+          missingExplByQuiz.set(qq.quiz_id, (missingExplByQuiz.get(qq.quiz_id) ?? 0) + 1);
+        }
       }
     });
 
@@ -147,7 +153,8 @@ const AdminQuizzes = () => {
     const enriched: QuizWithStats[] = (qRes.data ?? []).map((q) => {
       const s = statsByQuiz.get(q.id);
       const validCount = validByQuiz.get(q.id) ?? 0;
-      const { queue, blockers } = classifyQuiz(q, validCount);
+      const missingExpl = missingExplByQuiz.get(q.id) ?? 0;
+      const { queue, blockers } = classifyQuiz(q, validCount, missingExpl);
       return {
         ...q,
         questionsCount: countByQuiz.get(q.id) ?? 0,
