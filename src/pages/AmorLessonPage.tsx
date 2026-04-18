@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, MapPin, Heart } from "lucide-react";
-import { AMOR_LESSONS, getAmorLessonByOrder } from "@/data/amor";
+import { AMOR_LESSONS, getAmorLessonByOrder } from "@/content/lessons/amor";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedLesson } from "@/hooks/use-resolved-lesson";
 import mysticBg from "@/assets/mystic-bg.jpg";

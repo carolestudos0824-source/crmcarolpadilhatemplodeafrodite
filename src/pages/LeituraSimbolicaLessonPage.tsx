@@ -1,4 +1,4 @@
-import { LEITURA_SIMBOLICA_LESSONS } from "@/data/leitura-simbolica";
+import { LEITURA_SIMBOLICA_LESSONS } from "@/content/lessons/leitura-simbolica";
 import GenericLessonPage from "./GenericLessonPage";
 
 const LeituraSimbolicaLessonPage = () => (

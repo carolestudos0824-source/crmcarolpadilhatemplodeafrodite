@@ -1,4 +1,4 @@
-import { LEITURA_APLICADA_LESSONS } from "@/data/leitura-aplicada";
+import { LEITURA_APLICADA_LESSONS } from "@/content/lessons/leitura-aplicada";
 import GenericModulePage from "./GenericModulePage";
 
 const LeituraAplicadaPage = () => (

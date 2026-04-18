@@ -1,4 +1,4 @@
-import { ARQUITETURA_MENORES_LESSONS } from "@/data/arquitetura-menores";
+import { ARQUITETURA_MENORES_LESSONS } from "@/content/lessons/arquitetura-menores";
 import GenericModulePage from "./GenericModulePage";
 
 const ArquiteturaMenoresPage = () => (

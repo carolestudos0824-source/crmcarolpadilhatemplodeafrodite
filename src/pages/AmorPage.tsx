@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight, Heart } from "lucide-react";
-import { AMOR_LESSONS } from "@/data/amor";
+import { AMOR_LESSONS } from "@/content/lessons/amor";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedModule } from "@/hooks/use-resolved-module";
 import mysticBg from "@/assets/mystic-bg.jpg";

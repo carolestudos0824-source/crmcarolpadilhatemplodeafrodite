@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight, Sparkles } from "lucide-react";
-import { PRATICA_LESSONS } from "@/data/pratica";
+import { PRATICA_LESSONS } from "@/content/lessons/pratica";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedModule } from "@/hooks/use-resolved-module";
 import mysticBg from "@/assets/mystic-bg.jpg";

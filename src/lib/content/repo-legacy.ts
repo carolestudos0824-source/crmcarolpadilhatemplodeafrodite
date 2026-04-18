@@ -46,47 +46,47 @@ type LessonsLoader = () => Promise<{ lessons: LegacyLesson[]; name: string }>;
 
 const LESSONS_REGISTRY: Record<string, LessonsLoader> = {
   espiritualidade: async () => {
-    const m = await import("@/data/espiritualidade");
+    const m = await import("@/content/lessons/espiritualidade");
     return { lessons: m.ESPIRITUALIDADE_LESSONS as unknown as LegacyLesson[], name: "Tarô e Espiritualidade" };
   },
   amor: async () => {
-    const m = await import("@/data/amor");
+    const m = await import("@/content/lessons/amor");
     return { lessons: m.AMOR_LESSONS as unknown as LegacyLesson[], name: "Tarô e Amor" };
   },
   fundamentos: async () => {
-    const m = await import("@/data/fundamentos");
+    const m = await import("@/content/lessons/fundamentos");
     return { lessons: m.FUNDAMENTOS_LESSONS as unknown as LegacyLesson[], name: "Fundamentos" };
   },
   pratica: async () => {
-    const m = await import("@/data/pratica");
+    const m = await import("@/content/lessons/pratica");
     return { lessons: m.PRATICA_LESSONS as unknown as LegacyLesson[], name: "Prática Guiada" };
   },
   tiragens: async () => {
-    const m = await import("@/data/tiragens");
+    const m = await import("@/content/lessons/tiragens");
     return { lessons: m.TIRAGENS_LESSONS as unknown as LegacyLesson[], name: "Tiragens" };
   },
   "mesa-taro": async () => {
-    const m = await import("@/data/mesa-taro");
+    const m = await import("@/content/lessons/mesa-taro");
     return { lessons: m.MESA_TARO_LESSONS as unknown as LegacyLesson[], name: "A Mesa do Tarô" };
   },
   "leitura-simbolica": async () => {
-    const m = await import("@/data/leitura-simbolica");
+    const m = await import("@/content/lessons/leitura-simbolica");
     return { lessons: m.LEITURA_SIMBOLICA_LESSONS as unknown as LegacyLesson[], name: "Leitura Simbólica" };
   },
   "leitura-aplicada": async () => {
-    const m = await import("@/data/leitura-aplicada");
+    const m = await import("@/content/lessons/leitura-aplicada");
     return { lessons: m.LEITURA_APLICADA_LESSONS as unknown as LegacyLesson[], name: "Leitura Aplicada" };
   },
   "trabalhar-taro": async () => {
-    const m = await import("@/data/trabalhar-taro");
+    const m = await import("@/content/lessons/trabalhar-taro");
     return { lessons: m.TRABALHAR_TARO_LESSONS as unknown as LegacyLesson[], name: "Trabalhar com o Tarô" };
   },
   combinacoes: async () => {
-    const m = await import("@/data/combinacoes");
+    const m = await import("@/content/lessons/combinacoes");
     return { lessons: m.COMBINACOES_LESSONS as unknown as LegacyLesson[], name: "Combinações" };
   },
   "arquitetura-menores": async () => {
-    const m = await import("@/data/arquitetura-menores");
+    const m = await import("@/content/lessons/arquitetura-menores");
     return { lessons: m.ARQUITETURA_MENORES_LESSONS as unknown as LegacyLesson[], name: "Arquitetura dos Menores" };
   },
 };

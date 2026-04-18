@@ -1,4 +1,4 @@
-import { MESA_TARO_LESSONS } from "@/data/mesa-taro";
+import { MESA_TARO_LESSONS } from "@/content/lessons/mesa-taro";
 import GenericModulePage from "./GenericModulePage";
 
 const MesaTaroPage = () => (
