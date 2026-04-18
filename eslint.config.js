@@ -48,7 +48,28 @@ const LEGACY_CONTENT_PATTERNS = [
       "@/data/arcanos-maiores-oficial",
     ],
     message:
-      "[Fase 5B] Conteúdo de lições/módulos só via @/lib/content (getModuleContent / getLessonContent / getQuizContent).",
+      "[Fase 5B] Conteúdo de lições/módulos só via @/content/lessons ou @/lib/content.",
+  },
+  {
+    group: [
+      "@/data/deck-registry",
+      "@/data/arcano-vivo-config",
+      "@/data/fools-journey-visual",
+    ],
+    message:
+      "[Fase 6.6 — Faxina final] Configs técnicas movidas. Use @/registry/* ou @/config/*.",
+  },
+  {
+    group: [
+      "@/data/daily-challenges",
+      "@/data/certificates",
+      "@/data/symbol-library",
+      "@/data/fools-journey",
+      "@/data/review-data",
+      "@/data/tarot-data",
+    ],
+    message:
+      "[Fase 6.6 — Faxina final] Conteúdo legado. Use @/lib/content (adaptador).",
   },
 ];
 
