@@ -356,13 +356,16 @@ const AdminQuizzes = () => {
                       >
                         {DIFFICULTY_LABEL[q.difficulty]}
                       </span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${QUEUE_TONE[q.queue]}`}>
+                        {QUEUE_LABEL[q.queue]}
+                      </span>
                     </div>
                     <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                      {mod?.name ?? "Sem módulo"} · {q.linked_to ?? "—"}
+                      {mod?.name ?? "Sem módulo"} · {q.linked_to ?? "sem vínculo"}
                     </p>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
-                        <HelpCircle className="w-3 h-3" /> {q.questionsCount} perguntas
+                        <HelpCircle className="w-3 h-3" /> {q.validQuestionsCount}/{q.questionsCount} válidas
                       </span>
                       <span className="inline-flex items-center gap-1">
                         <Trophy className="w-3 h-3" /> {q.xp_reward} XP
@@ -372,6 +375,11 @@ const AdminQuizzes = () => {
                       </span>
                       <span>· {q.completionCount} conclusões</span>
                     </div>
+                    {q.blockers.length > 0 && (
+                      <p className="text-[10px] text-rose-600 dark:text-rose-400 mt-1 truncate">
+                        ⚠ {q.blockers.join(" · ")}
+                      </p>
+                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <Button
