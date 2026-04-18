@@ -21,7 +21,7 @@ import type {
 } from "./runtime-types";
 import { MODULES_SEED } from "./seed-modules";
 import { ARCANOS_MAIORES_SEED } from "./seed-arcanos-summary";
-import { getArcanoAsLegacy } from "@/data/arcanos";
+import { getArcanoAsLegacy } from "@/content/arcanos-maiores";
 
 export type { LearningModule, ArcanoSummary, ArcanoData, ModuleCategory };
 

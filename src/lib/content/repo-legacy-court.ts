@@ -3,7 +3,7 @@
  * Única importação autorizada de `@/data/arcanos-menores/cartas-corte`.
  */
 
-import { CARTAS_CORTE } from "@/data/arcanos-menores/cartas-corte";
+import { CARTAS_CORTE } from "@/content/arcanos-menores/cartas-corte";
 import type {
   CourtCardContent,
   CourtCardsContent,

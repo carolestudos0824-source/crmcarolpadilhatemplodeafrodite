@@ -27,7 +27,7 @@ import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Database } from "@/integrations/supabase/types";
-import { EDITORIAL_REGISTRY } from "@/data/arcanos/index";
+import { EDITORIAL_REGISTRY } from "@/content/arcanos-maiores";
 import { logAdminAction } from "@/lib/admin-audit";
 
 type ArcanoStatus = Database["public"]["Enums"]["module_status"];
