@@ -63,16 +63,16 @@ const StatusIcon = ({ status }: { status: ArcanoStatus }) => {
   }
 };
 
-// 17 editorial fields config
-const EDITORIAL_FIELDS: Array<{ key: keyof ArcanoRow; label: string; long?: boolean }> = [
-  { key: "essencia", label: "Essência", long: true },
-  { key: "simbolos_centrais", label: "Símbolos centrais", long: true },
-  { key: "luz", label: "Luz", long: true },
-  { key: "sombra", label: "Sombra", long: true },
-  { key: "amor", label: "Amor", long: true },
-  { key: "trabalho", label: "Trabalho", long: true },
-  { key: "espiritualidade", label: "Espiritualidade", long: true },
-  { key: "voz_do_arcano", label: "Voz do arcano", long: true },
+// 17 editorial fields config — `essential: true` define campos obrigatórios para validação
+const EDITORIAL_FIELDS: Array<{ key: keyof ArcanoRow; label: string; long?: boolean; essential?: boolean }> = [
+  { key: "essencia", label: "Essência", long: true, essential: true },
+  { key: "simbolos_centrais", label: "Símbolos centrais", long: true, essential: true },
+  { key: "luz", label: "Luz", long: true, essential: true },
+  { key: "sombra", label: "Sombra", long: true, essential: true },
+  { key: "amor", label: "Amor", long: true, essential: true },
+  { key: "trabalho", label: "Trabalho", long: true, essential: true },
+  { key: "espiritualidade", label: "Espiritualidade", long: true, essential: true },
+  { key: "voz_do_arcano", label: "Voz do arcano", long: true, essential: true },
   { key: "aprofundamento", label: "Aprofundamento", long: true },
   { key: "arquetipos", label: "Arquétipos" },
   { key: "numerologia", label: "Numerologia" },
@@ -83,6 +83,44 @@ const EDITORIAL_FIELDS: Array<{ key: keyof ArcanoRow; label: string; long?: bool
   { key: "pratica", label: "Prática" },
   { key: "citacao", label: "Citação" },
 ];
+
+const ESSENTIAL_FIELDS = EDITORIAL_FIELDS.filter((f) => f.essential);
+
+/** Quantos dos 8 campos essenciais estão preenchidos */
+function countEssentialFilled(a: ArcanoRow): number {
+  return ESSENTIAL_FIELDS.filter((f) => {
+    const v = a[f.key];
+    return typeof v === "string" && v.trim().length > 0;
+  }).length;
+}
+
+/** Régua mínima para publicar: 100% dos essenciais */
+function meetsPublishBar(a: ArcanoRow): boolean {
+  return countEssentialFilled(a) === ESSENTIAL_FIELDS.length;
+}
+
+/** Régua mínima para validar: essenciais + revisão rápida + keywords */
+function meetsValidationBar(a: ArcanoRow): boolean {
+  const revOk = typeof a.revisao_rapida === "string" && a.revisao_rapida.trim().length > 0;
+  const kwOk = Array.isArray(a.keywords) && a.keywords.length > 0;
+  return meetsPublishBar(a) && revOk && kwOk;
+}
+
+/** Ordem de prioridade da fila de fechamento editorial */
+function queueRank(a: ArcanoRow): number {
+  if (a.validated) return 999;
+  const prio = priorityOf(a);
+  // 1) quase prontos primeiro
+  if (prio === "almost") return 0;
+  // 2) críticos gratuitos
+  if (prio === "critical" && a.tier === "free") return 1;
+  // 3) críticos premium maiores (mais centrais)
+  if (prio === "critical" && a.tier === "premium" && a.type === "maior") return 2;
+  // 4) críticos premium menores
+  if (prio === "critical") return 3;
+  // 5) incompletos
+  return 4;
+}
 
 const NAIPES: ArcanoNaipe[] = ["copas", "ouros", "espadas", "paus"];
 const NAIPE_LABEL: Record<ArcanoNaipe, string> = {
