@@ -97,6 +97,38 @@ const computeStatus = (current: ModuleStatus, lessonsCount: number): ModuleStatu
   return "partial";
 };
 
+/**
+ * Régua editorial do módulo (governança híbrida):
+ * - validado:    publicado + ≥3 lições + descrição breve + descrição editorial (≥120 chars)
+ * - quase_pronto: publicado + ≥3 lições, mas falta descrição breve OU editorial
+ * - incompleto:  rascunho/parcial OU lições < 3
+ * - critico:     vazio OU sem lição vinculada
+ */
+type EditorialRank = "validado" | "quase_pronto" | "incompleto" | "critico";
+
+const computeRank = (m: { status: ModuleStatus; short_description: string | null; editorial_description: string | null; lessonsCount: number }): EditorialRank => {
+  if (m.status === "empty" || m.lessonsCount === 0) return "critico";
+  const hasShort = !!(m.short_description && m.short_description.trim().length >= 20);
+  const hasEditorial = !!(m.editorial_description && m.editorial_description.trim().length >= 120);
+  if (m.status === "published" && m.lessonsCount >= 3 && hasShort && hasEditorial) return "validado";
+  if (m.status === "published" && m.lessonsCount >= 3) return "quase_pronto";
+  return "incompleto";
+};
+
+const RANK_LABEL: Record<EditorialRank, string> = {
+  validado: "Validado",
+  quase_pronto: "Quase pronto",
+  incompleto: "Incompleto",
+  critico: "Crítico",
+};
+
+const RANK_TONE: Record<EditorialRank, string> = {
+  validado: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  quase_pronto: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  incompleto: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  critico: "bg-destructive/10 text-destructive border-destructive/20",
+};
+
 const AdminModules = () => {
   const [modules, setModules] = useState<ModuleWithStats[]>([]);
   const [loading, setLoading] = useState(true);
@@ -294,11 +326,10 @@ const AdminModules = () => {
     await loadModules();
   };
 
-  const counts = useMemo(() => {
-    const by: Record<ModuleStatus, number> = { empty: 0, partial: 0, draft: 0, published: 0 };
+  const ranks = useMemo(() => {
+    const by: Record<EditorialRank, number> = { validado: 0, quase_pronto: 0, incompleto: 0, critico: 0 };
     modules.forEach((m) => {
-      const effective = computeStatus(m.status, m.lessonsCount);
-      by[effective] += 1;
+      by[computeRank(m)] += 1;
     });
     return by;
   }, [modules]);
@@ -321,16 +352,23 @@ const AdminModules = () => {
         </Button>
       </div>
 
+      {/* Régua editorial */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {(["published", "draft", "partial", "empty"] as ModuleStatus[]).map((s) => (
-          <div key={s} className={`p-3 rounded-xl border ${STATUS_TONE[s]}`}>
-            <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider opacity-80">
-              <StatusIcon status={s} />
-              {STATUS_LABEL[s]}
-            </div>
-            <div className="text-2xl font-heading mt-1">{counts[s]}</div>
+        {(["validado", "quase_pronto", "incompleto", "critico"] as EditorialRank[]).map((r) => (
+          <div key={r} className={`p-3 rounded-xl border ${RANK_TONE[r]}`}>
+            <div className="text-[10px] uppercase tracking-wider opacity-80">{RANK_LABEL[r]}</div>
+            <div className="text-2xl font-heading mt-1">{ranks[r]}</div>
           </div>
         ))}
+      </div>
+
+      {/* Nota de governança híbrida */}
+      <div className="rounded-xl border border-border/50 bg-muted/30 p-3 text-[11px] text-muted-foreground leading-relaxed">
+        <span className="font-medium text-foreground">Governança híbrida:</span> a estrutura do módulo
+        (descrição, ordem, tier, status, vínculo de lições) é editada aqui no painel.
+        O <span className="font-medium text-foreground">corpo editorial das lições</span> (texto principal,
+        deepDive, exercícios) é versionado em <code className="px-1 rounded bg-background/60">src/content/lessons/**</code>
+        e atualizado por release. Isto não é pendência — é a arquitetura oficial.
       </div>
 
       {loading ? (
@@ -728,6 +766,15 @@ const ModuleLessonsView = ({
         <Button size="sm" className="gap-2" onClick={openCreate}>
           <Plus className="w-4 h-4" /> Vincular lição
         </Button>
+      </div>
+
+      <div className="rounded-xl border border-border/50 bg-muted/30 p-3 text-[11px] text-muted-foreground leading-relaxed">
+        <span className="font-medium text-foreground">Governança híbrida:</span> aqui você gerencia
+        a <span className="font-medium text-foreground">estrutura</span> da lição (vínculo, ID, título, ordem).
+        O <span className="font-medium text-foreground">corpo editorial</span>
+        (texto principal, deepDive, exercícios, quiz) vive em
+        <code className="px-1 mx-1 rounded bg-background/60">src/content/lessons/{module.slug}.ts</code>
+        e é atualizado por release. Isto é arquitetura oficial, não pendência.
       </div>
 
       {loading ? (
