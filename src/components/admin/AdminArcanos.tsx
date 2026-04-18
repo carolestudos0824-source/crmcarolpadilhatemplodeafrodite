@@ -427,13 +427,15 @@ const StatCard = ({
 }: {
   label: string;
   value: number;
-  tone?: "default" | "primary" | "emerald" | "amber";
+  tone?: "default" | "primary" | "emerald" | "amber" | "destructive" | "blue";
 }) => {
   const toneClass = {
     default: "border-border/50 text-foreground",
     primary: "border-primary/20 text-primary bg-primary/5",
     emerald: "border-emerald-500/20 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5",
     amber: "border-amber-500/20 text-amber-600 dark:text-amber-400 bg-amber-500/5",
+    destructive: "border-destructive/30 text-destructive bg-destructive/5",
+    blue: "border-blue-500/20 text-blue-600 dark:text-blue-400 bg-blue-500/5",
   }[tone];
   return (
     <div className={`p-3 rounded-xl border ${toneClass}`}>
