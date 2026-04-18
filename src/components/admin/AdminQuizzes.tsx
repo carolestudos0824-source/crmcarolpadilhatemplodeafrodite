@@ -99,6 +99,7 @@ const AdminQuizzes = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"all" | "draft" | "published">("all");
   const [filterModule, setFilterModule] = useState<string>("all");
+  const [filterQueue, setFilterQueue] = useState<"all" | QuizQueue>("all");
 
   const load = async () => {
     setLoading(true);
