@@ -10,8 +10,8 @@ import type {
   JourneyMetaContent,
   JourneyPhaseContent,
 } from "./journey-types";
-import type { JourneyTheme } from "@/data/fools-journey-visual";
-import { isJourneyTheme } from "@/data/fools-journey-visual";
+import type { JourneyTheme } from "@/config/journey-visual";
+import { isJourneyTheme } from "@/config/journey-visual";
 
 type DbStatus = "empty" | "partial" | "draft" | "published";
 

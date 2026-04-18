@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDeckEntry, getCanonicalNumeral } from "@/data/deck-registry";
+import { getDeckEntry, getCanonicalNumeral } from "@/registry/deck-registry";
 
 interface ArcanoCardDisplayProps {
   name: string;

@@ -3,7 +3,7 @@ import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedArcanosMaiores } from "@/hooks/use-resolved-arcanos-maiores";
 import { useJourneyContent } from "@/hooks/use-content";
-import { CORES_FASE, JOURNEY_MOTION } from "@/data/fools-journey-visual";
+import { CORES_FASE, JOURNEY_MOTION } from "@/config/journey-visual";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
 

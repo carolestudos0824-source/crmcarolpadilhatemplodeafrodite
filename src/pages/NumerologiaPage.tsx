@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import { useNumerologyContent } from "@/hooks/use-content";
-import { NAIPES } from "@/data/arcanos-menores";
+import { NAIPES } from "@/registry/naipes";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const NumerologiaPage = () => {

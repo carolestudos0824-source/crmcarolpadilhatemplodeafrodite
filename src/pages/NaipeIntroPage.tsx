@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
-import { type Naipe, NAIPES } from "@/data/arcanos-menores";
+import { type Naipe, NAIPES } from "@/registry/naipes";
 import { useSuitIntroContent } from "@/hooks/use-content";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
