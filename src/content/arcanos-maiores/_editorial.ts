@@ -13,7 +13,7 @@
  * - Expansão futura (minor arcana, combinações)
  */
 
-import { getDeckEntry, getCanonicalNumeral } from "./deck-registry";
+import { getDeckEntry, getCanonicalNumeral } from "@/registry/deck-registry";
 
 // ─── Tipos auxiliares ───
 
