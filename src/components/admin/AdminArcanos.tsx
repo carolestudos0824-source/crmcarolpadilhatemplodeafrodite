@@ -320,6 +320,19 @@ const AdminArcanos = () => {
             <SelectItem value="no">Pendentes</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={filterPriority} onValueChange={(v) => setFilterPriority(v as typeof filterPriority)}>
+          <SelectTrigger className="h-9 text-xs">
+            <SelectValue placeholder="Prioridade" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todas prioridades</SelectItem>
+            <SelectItem value="critical">🔴 Críticos</SelectItem>
+            <SelectItem value="incomplete">🟡 Incompletos</SelectItem>
+            <SelectItem value="almost">🔵 Quase prontos</SelectItem>
+            <SelectItem value="validated">🟢 Validados</SelectItem>
+            <SelectItem value="published_unvalidated">⚠️ Publicados sem validação</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {filterType === "menor" && (
