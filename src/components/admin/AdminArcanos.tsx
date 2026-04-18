@@ -63,16 +63,16 @@ const StatusIcon = ({ status }: { status: ArcanoStatus }) => {
   }
 };
 
-// 17 editorial fields config
-const EDITORIAL_FIELDS: Array<{ key: keyof ArcanoRow; label: string; long?: boolean }> = [
-  { key: "essencia", label: "Essência", long: true },
-  { key: "simbolos_centrais", label: "Símbolos centrais", long: true },
-  { key: "luz", label: "Luz", long: true },
-  { key: "sombra", label: "Sombra", long: true },
-  { key: "amor", label: "Amor", long: true },
-  { key: "trabalho", label: "Trabalho", long: true },
-  { key: "espiritualidade", label: "Espiritualidade", long: true },
-  { key: "voz_do_arcano", label: "Voz do arcano", long: true },
+// 17 editorial fields config — `essential: true` define campos obrigatórios para validação
+const EDITORIAL_FIELDS: Array<{ key: keyof ArcanoRow; label: string; long?: boolean; essential?: boolean }> = [
+  { key: "essencia", label: "Essência", long: true, essential: true },
+  { key: "simbolos_centrais", label: "Símbolos centrais", long: true, essential: true },
+  { key: "luz", label: "Luz", long: true, essential: true },
+  { key: "sombra", label: "Sombra", long: true, essential: true },
+  { key: "amor", label: "Amor", long: true, essential: true },
+  { key: "trabalho", label: "Trabalho", long: true, essential: true },
+  { key: "espiritualidade", label: "Espiritualidade", long: true, essential: true },
+  { key: "voz_do_arcano", label: "Voz do arcano", long: true, essential: true },
   { key: "aprofundamento", label: "Aprofundamento", long: true },
   { key: "arquetipos", label: "Arquétipos" },
   { key: "numerologia", label: "Numerologia" },
@@ -83,6 +83,44 @@ const EDITORIAL_FIELDS: Array<{ key: keyof ArcanoRow; label: string; long?: bool
   { key: "pratica", label: "Prática" },
   { key: "citacao", label: "Citação" },
 ];
+
+const ESSENTIAL_FIELDS = EDITORIAL_FIELDS.filter((f) => f.essential);
+
+/** Quantos dos 8 campos essenciais estão preenchidos */
+function countEssentialFilled(a: ArcanoRow): number {
+  return ESSENTIAL_FIELDS.filter((f) => {
+    const v = a[f.key];
+    return typeof v === "string" && v.trim().length > 0;
+  }).length;
+}
+
+/** Régua mínima para publicar: 100% dos essenciais */
+function meetsPublishBar(a: ArcanoRow): boolean {
+  return countEssentialFilled(a) === ESSENTIAL_FIELDS.length;
+}
+
+/** Régua mínima para validar: essenciais + revisão rápida + keywords */
+function meetsValidationBar(a: ArcanoRow): boolean {
+  const revOk = typeof a.revisao_rapida === "string" && a.revisao_rapida.trim().length > 0;
+  const kwOk = Array.isArray(a.keywords) && a.keywords.length > 0;
+  return meetsPublishBar(a) && revOk && kwOk;
+}
+
+/** Ordem de prioridade da fila de fechamento editorial */
+function queueRank(a: ArcanoRow): number {
+  if (a.validated) return 999;
+  const prio = priorityOf(a);
+  // 1) quase prontos primeiro
+  if (prio === "almost") return 0;
+  // 2) críticos gratuitos
+  if (prio === "critical" && a.tier === "free") return 1;
+  // 3) críticos premium maiores (mais centrais)
+  if (prio === "critical" && a.tier === "premium" && a.type === "maior") return 2;
+  // 4) críticos premium menores
+  if (prio === "critical") return 3;
+  // 5) incompletos
+  return 4;
+}
 
 const NAIPES: ArcanoNaipe[] = ["copas", "ouros", "espadas", "paus"];
 const NAIPE_LABEL: Record<ArcanoNaipe, string> = {
@@ -190,7 +228,7 @@ const AdminArcanos = () => {
   }, []);
 
   const filtered = useMemo(() => {
-    return arcanos.filter((a) => {
+    const list = arcanos.filter((a) => {
       if (filterType !== "all" && a.type !== filterType) return false;
       if (filterNaipe !== "all" && a.naipe !== filterNaipe) return false;
       if (filterStatus !== "all" && a.status !== filterStatus) return false;
@@ -208,6 +246,14 @@ const AdminArcanos = () => {
       }
       return true;
     });
+    // ordenação por fila editorial: quase prontos → críticos free → críticos premium maiores → críticos premium menores → incompletos → validados
+    return list.sort((a, b) => {
+      const ra = queueRank(a);
+      const rb = queueRank(b);
+      if (ra !== rb) return ra - rb;
+      // dentro do mesmo grupo: mais completos primeiro
+      return countFilled(b) - countFilled(a);
+    });
   }, [arcanos, filterType, filterStatus, filterTier, filterValidated, filterNaipe, filterPriority, search]);
 
   const stats = useMemo(() => {
@@ -217,8 +263,10 @@ const AdminArcanos = () => {
     const inconsistent = arcanos.filter((a) => checkInconsistency(a)).length;
     const critical = arcanos.filter((a) => priorityOf(a) === "critical").length;
     const almost = arcanos.filter((a) => priorityOf(a) === "almost").length;
+    const incomplete = arcanos.filter((a) => priorityOf(a) === "incomplete").length;
     const publishedUnvalidated = arcanos.filter((a) => a.status === "published" && !a.validated).length;
-    return { total, published, validated, inconsistent, critical, almost, publishedUnvalidated };
+    const queue = arcanos.filter((a) => !a.validated).sort((a, b) => queueRank(a) - queueRank(b));
+    return { total, published, validated, inconsistent, critical, almost, incomplete, publishedUnvalidated, queue };
   }, [arcanos]);
 
   if (drill) {
@@ -258,6 +306,73 @@ const AdminArcanos = () => {
             — publicado{stats.critical > 1 ? "s" : ""} sem validação e com menos de 30% do conteúdo editorial. Clique para filtrar.
           </div>
         </button>
+      )}
+
+      {stats.queue.length > 0 && (
+        <div className="rounded-xl border border-border/50 bg-card/30 p-4 space-y-3">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 className="font-heading text-sm tracking-wider text-foreground">Fila de fechamento editorial</h3>
+              <p className="text-[11px] text-muted-foreground">
+                {stats.queue.length} arcano{stats.queue.length > 1 ? "s" : ""} pendente{stats.queue.length > 1 ? "s" : ""} até {stats.total}/{stats.total} validados.
+                Ordem: quase prontos → críticos gratuitos → críticos premium maiores → críticos premium menores → incompletos.
+              </p>
+            </div>
+            <div className="flex gap-1.5 flex-wrap">
+              <button
+                onClick={() => setFilterPriority("almost")}
+                className="text-[11px] px-2 py-1 rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400"
+              >
+                {stats.almost} quase prontos
+              </button>
+              <button
+                onClick={() => setFilterPriority("incomplete")}
+                className="text-[11px] px-2 py-1 rounded-full border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+              >
+                {stats.incomplete} incompletos
+              </button>
+              <button
+                onClick={() => setFilterPriority("critical")}
+                className="text-[11px] px-2 py-1 rounded-full border border-destructive/30 bg-destructive/10 text-destructive"
+              >
+                {stats.critical} críticos
+              </button>
+            </div>
+          </div>
+          <div className="grid gap-1">
+            {stats.queue.slice(0, 5).map((a, idx) => {
+              const filled = countFilled(a);
+              const total = EDITORIAL_FIELDS.length;
+              const missing = missingFields(a);
+              const prio = priorityOf(a);
+              return (
+                <button
+                  key={a.id}
+                  onClick={() => setDrill(a)}
+                  className="text-left flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors"
+                >
+                  <span className="text-[10px] font-mono text-muted-foreground w-5">#{idx + 1}</span>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${PRIORITY_TONE[prio]}`}
+                  >
+                    {PRIORITY_LABEL[prio]}
+                  </span>
+                  <span className="text-xs font-medium text-foreground truncate flex-1">
+                    {a.name} <span className="text-muted-foreground">· {a.type === "maior" ? "Maior" : `Menor (${a.naipe ?? ""})`} · {a.tier}</span>
+                  </span>
+                  <span className="text-[11px] text-muted-foreground whitespace-nowrap">
+                    {filled}/{total} · faltam {missing.length}
+                  </span>
+                </button>
+              );
+            })}
+            {stats.queue.length > 5 && (
+              <p className="text-[11px] text-muted-foreground text-center pt-1">
+                +{stats.queue.length - 5} na fila — use o filtro abaixo para ver todos.
+              </p>
+            )}
+          </div>
+        </div>
       )}
 
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
@@ -507,6 +622,16 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
 
   const togglePublish = async () => {
     const next: ArcanoStatus = draft.status === "published" ? "draft" : "published";
+    // Régua endurecida: bloquear publicação se não atender à barra mínima (8 essenciais)
+    if (next === "published" && !meetsPublishBar(draft)) {
+      const filledEss = countEssentialFilled(draft);
+      toast({
+        title: "Publicação bloqueada",
+        description: `Faltam ${ESSENTIAL_FIELDS.length - filledEss} de ${ESSENTIAL_FIELDS.length} campos essenciais. Complete-os antes de publicar.`,
+        variant: "destructive",
+      });
+      return;
+    }
     const { error } = await supabase.from("cms_arcanos").update({ status: next }).eq("id", draft.id);
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
@@ -518,7 +643,7 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
       targetType: "arcano",
       targetId: draft.id,
       targetLabel: draft.name,
-      details: { from: draft.status, to: next },
+      details: { from: draft.status, to: next, essential_filled: countEssentialFilled(draft) },
     });
     toast({ title: next === "published" ? "Publicado" : "Despublicado" });
   };
@@ -539,6 +664,14 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
 
   const toggleValidated = async () => {
     const next = !draft.validated;
+    if (next && !meetsValidationBar(draft)) {
+      toast({
+        title: "Validação bloqueada",
+        description: "Para validar é preciso ter os 8 essenciais + revisão rápida + palavras-chave preenchidos.",
+        variant: "destructive",
+      });
+      return;
+    }
     const { error } = await supabase.from("cms_arcanos").update({ validated: next }).eq("id", draft.id);
     if (error) return;
     update("validated", next);
