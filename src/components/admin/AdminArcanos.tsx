@@ -94,22 +94,58 @@ const NAIPE_LABEL: Record<ArcanoNaipe, string> = {
 
 function effectiveStatus(a: ArcanoRow): ArcanoStatus {
   if (a.status === "published" || a.status === "draft") return a.status;
-  const filled = EDITORIAL_FIELDS.filter((f) => {
-    const v = a[f.key];
-    return typeof v === "string" && v.trim().length > 0;
-  }).length;
+  const filled = countFilled(a);
   if (filled === 0) return "empty";
   if (filled < EDITORIAL_FIELDS.length) return "partial";
   return "draft";
 }
 
-function completionPercent(a: ArcanoRow): number {
-  const filled = EDITORIAL_FIELDS.filter((f) => {
+function countFilled(a: ArcanoRow): number {
+  return EDITORIAL_FIELDS.filter((f) => {
     const v = a[f.key];
     return typeof v === "string" && v.trim().length > 0;
   }).length;
-  return Math.round((filled / EDITORIAL_FIELDS.length) * 100);
 }
+
+function missingFields(a: ArcanoRow): string[] {
+  return EDITORIAL_FIELDS.filter((f) => {
+    const v = a[f.key];
+    return !(typeof v === "string" && v.trim().length > 0);
+  }).map((f) => f.label);
+}
+
+function completionPercent(a: ArcanoRow): number {
+  return Math.round((countFilled(a) / EDITORIAL_FIELDS.length) * 100);
+}
+
+/** Régua editorial de prioridade */
+export type Priority = "validated" | "almost" | "incomplete" | "critical";
+
+function priorityOf(a: ArcanoRow): Priority {
+  if (a.validated) return "validated";
+  const filled = countFilled(a);
+  const total = EDITORIAL_FIELDS.length;
+  // Crítico: publicado sem validação E com menos de 30% preenchido
+  if (a.status === "published" && filled / total < 0.3) return "critical";
+  // Quase pronto: faltam 3 campos ou menos
+  if (total - filled <= 3) return "almost";
+  // Incompleto: estrutura existe, mas faltam vários
+  return "incomplete";
+}
+
+const PRIORITY_LABEL: Record<Priority, string> = {
+  validated: "Validado",
+  almost: "Quase pronto",
+  incomplete: "Incompleto",
+  critical: "Crítico",
+};
+
+const PRIORITY_TONE: Record<Priority, string> = {
+  validated: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  almost: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+  incomplete: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+  critical: "bg-destructive/10 text-destructive border-destructive/30",
+};
 
 function checkInconsistency(a: ArcanoRow): string | null {
   if (a.type !== "maior") return null;
