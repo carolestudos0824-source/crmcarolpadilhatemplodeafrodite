@@ -411,7 +411,14 @@ const AdminQuizzes = () => {
         onCreated={(row) => {
           setCreateOpen(false);
           load();
-          setDrill({ ...row, questionsCount: 0, accuracyRate: 0, completionCount: 0 });
+          setDrill({
+            ...row,
+            questionsCount: 0,
+            validQuestionsCount: 0,
+            accuracyRate: 0,
+            completionCount: 0,
+            ...classifyQuiz(row, 0),
+          });
         }}
       />
     </div>
