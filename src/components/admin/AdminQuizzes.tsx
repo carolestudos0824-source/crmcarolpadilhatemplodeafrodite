@@ -119,12 +119,17 @@ const AdminQuizzes = () => {
 
     const countByQuiz = new Map<string, number>();
     const validByQuiz = new Map<string, number>();
+    const missingExplByQuiz = new Map<string, number>();
     (questionsRes.data ?? []).forEach((qq) => {
       countByQuiz.set(qq.quiz_id, (countByQuiz.get(qq.quiz_id) ?? 0) + 1);
       const opts = Array.isArray(qq.options) ? qq.options : [];
       const ci = qq.correct_index ?? -1;
-      if (opts.length >= 2 && ci >= 0 && ci < opts.length) {
+      const isValid = opts.length >= 2 && ci >= 0 && ci < opts.length;
+      if (isValid) {
         validByQuiz.set(qq.quiz_id, (validByQuiz.get(qq.quiz_id) ?? 0) + 1);
+        if (!qq.explanation || qq.explanation.trim() === "") {
+          missingExplByQuiz.set(qq.quiz_id, (missingExplByQuiz.get(qq.quiz_id) ?? 0) + 1);
+        }
       }
     });
 
@@ -148,7 +153,8 @@ const AdminQuizzes = () => {
     const enriched: QuizWithStats[] = (qRes.data ?? []).map((q) => {
       const s = statsByQuiz.get(q.id);
       const validCount = validByQuiz.get(q.id) ?? 0;
-      const { queue, blockers } = classifyQuiz(q, validCount);
+      const missingExpl = missingExplByQuiz.get(q.id) ?? 0;
+      const { queue, blockers } = classifyQuiz(q, validCount, missingExpl);
       return {
         ...q,
         questionsCount: countByQuiz.get(q.id) ?? 0,
