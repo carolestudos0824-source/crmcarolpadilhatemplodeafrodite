@@ -166,6 +166,7 @@ const AdminArcanos = () => {
   const [filterTier, setFilterTier] = useState<"all" | ArcanoTier>("all");
   const [filterValidated, setFilterValidated] = useState<"all" | "yes" | "no">("all");
   const [filterNaipe, setFilterNaipe] = useState<"all" | ArcanoNaipe>("all");
+  const [filterPriority, setFilterPriority] = useState<"all" | Priority | "published_unvalidated">("all");
   const [drill, setDrill] = useState<ArcanoRow | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
 
@@ -196,20 +197,28 @@ const AdminArcanos = () => {
       if (filterTier !== "all" && a.tier !== filterTier) return false;
       if (filterValidated === "yes" && !a.validated) return false;
       if (filterValidated === "no" && a.validated) return false;
+      if (filterPriority !== "all") {
+        if (filterPriority === "published_unvalidated") {
+          if (!(a.status === "published" && !a.validated)) return false;
+        } else if (priorityOf(a) !== filterPriority) return false;
+      }
       if (search.trim()) {
         const q = search.toLowerCase();
         if (!a.name.toLowerCase().includes(q) && !(a.subtitle ?? "").toLowerCase().includes(q)) return false;
       }
       return true;
     });
-  }, [arcanos, filterType, filterStatus, filterTier, filterValidated, filterNaipe, search]);
+  }, [arcanos, filterType, filterStatus, filterTier, filterValidated, filterNaipe, filterPriority, search]);
 
   const stats = useMemo(() => {
     const total = arcanos.length;
     const published = arcanos.filter((a) => a.status === "published").length;
     const validated = arcanos.filter((a) => a.validated).length;
     const inconsistent = arcanos.filter((a) => checkInconsistency(a)).length;
-    return { total, published, validated, inconsistent };
+    const critical = arcanos.filter((a) => priorityOf(a) === "critical").length;
+    const almost = arcanos.filter((a) => priorityOf(a) === "almost").length;
+    const publishedUnvalidated = arcanos.filter((a) => a.status === "published" && !a.validated).length;
+    return { total, published, validated, inconsistent, critical, almost, publishedUnvalidated };
   }, [arcanos]);
 
   if (drill) {
