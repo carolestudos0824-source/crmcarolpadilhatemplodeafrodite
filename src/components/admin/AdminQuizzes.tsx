@@ -203,6 +203,40 @@ const AdminQuizzes = () => {
         <StatCard label="Acerto médio" value={avgAccuracy} suffix="%" tone="amber" />
       </div>
 
+      {/* Régua de auditoria pedagógica — perguntas por quiz */}
+      <div className="rounded-xl border border-border/50 bg-card/30 p-3 space-y-2">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-heading tracking-[0.2em] uppercase text-muted-foreground">Auditoria pedagógica</h3>
+          <span className="text-[10px] text-muted-foreground">régua: ≥5 validado · 3-4 quase pronto · 1-2 incompleto · 0 crítico</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <button
+            onClick={() => setFilterStatus("all")}
+            className="rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 px-2 py-1.5 text-left"
+          >
+            <div className="font-semibold">{quizzes.filter(q => q.questionsCount >= 5).length}</div>
+            <div className="text-[10px] opacity-80">validado (≥5)</div>
+          </button>
+          <div className="rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 px-2 py-1.5">
+            <div className="font-semibold">{quizzes.filter(q => q.questionsCount >= 3 && q.questionsCount <= 4).length}</div>
+            <div className="text-[10px] opacity-80">quase pronto (3-4)</div>
+          </div>
+          <div className="rounded-lg bg-orange-500/10 text-orange-700 dark:text-orange-400 px-2 py-1.5">
+            <div className="font-semibold">{quizzes.filter(q => q.questionsCount >= 1 && q.questionsCount <= 2).length}</div>
+            <div className="text-[10px] opacity-80">incompleto (1-2)</div>
+          </div>
+          <div className="rounded-lg bg-rose-500/10 text-rose-700 dark:text-rose-400 px-2 py-1.5">
+            <div className="font-semibold">{quizzes.filter(q => q.questionsCount === 0).length}</div>
+            <div className="text-[10px] opacity-80">crítico (0)</div>
+          </div>
+        </div>
+        {quizzes.filter(q => q.status === "published" && q.questionsCount < 3).length > 0 && (
+          <div className="text-[11px] text-rose-700 dark:text-rose-400 bg-rose-500/5 rounded-md px-2 py-1.5">
+            ⚠ {quizzes.filter(q => q.status === "published" && q.questionsCount < 3).length} quiz(zes) publicados com menos de 3 perguntas — considere rebaixar para rascunho.
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-2 gap-2">
         <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v as typeof filterStatus)}>
           <SelectTrigger className="h-9 text-xs">
