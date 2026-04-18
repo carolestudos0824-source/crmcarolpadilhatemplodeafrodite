@@ -106,7 +106,7 @@ const AdminQuizzes = () => {
     const [qRes, mRes, questionsRes, responsesRes] = await Promise.all([
       supabase.from("cms_quizzes").select("*").order("created_at", { ascending: false }),
       supabase.from("cms_modules").select("*").order("order_index", { ascending: true }),
-      supabase.from("cms_quiz_questions").select("quiz_id"),
+      supabase.from("cms_quiz_questions").select("quiz_id, options, correct_index"),
       supabase.from("quiz_responses").select("quiz_id, is_correct, user_id"),
     ]);
 
@@ -117,11 +117,16 @@ const AdminQuizzes = () => {
     }
 
     const countByQuiz = new Map<string, number>();
-    (questionsRes.data ?? []).forEach((q) => {
-      countByQuiz.set(q.quiz_id, (countByQuiz.get(q.quiz_id) ?? 0) + 1);
+    const validByQuiz = new Map<string, number>();
+    (questionsRes.data ?? []).forEach((qq) => {
+      countByQuiz.set(qq.quiz_id, (countByQuiz.get(qq.quiz_id) ?? 0) + 1);
+      const opts = Array.isArray(qq.options) ? qq.options : [];
+      const ci = qq.correct_index ?? -1;
+      if (opts.length >= 2 && ci >= 0 && ci < opts.length) {
+        validByQuiz.set(qq.quiz_id, (validByQuiz.get(qq.quiz_id) ?? 0) + 1);
+      }
     });
 
-    // Match by external_id (slug) since user responses use string ids
     const externalIdMap = new Map<string, string>();
     (qRes.data ?? []).forEach((q) => {
       if (q.external_id) externalIdMap.set(q.external_id, q.id);
@@ -141,11 +146,16 @@ const AdminQuizzes = () => {
 
     const enriched: QuizWithStats[] = (qRes.data ?? []).map((q) => {
       const s = statsByQuiz.get(q.id);
+      const validCount = validByQuiz.get(q.id) ?? 0;
+      const { queue, blockers } = classifyQuiz(q, validCount);
       return {
         ...q,
         questionsCount: countByQuiz.get(q.id) ?? 0,
+        validQuestionsCount: validCount,
         accuracyRate: s && s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0,
         completionCount: s?.users.size ?? 0,
+        queue,
+        blockers,
       };
     });
 
@@ -162,9 +172,10 @@ const AdminQuizzes = () => {
     return quizzes.filter((q) => {
       if (filterStatus !== "all" && q.status !== filterStatus) return false;
       if (filterModule !== "all" && q.module_id !== filterModule) return false;
+      if (filterQueue !== "all" && q.queue !== filterQueue) return false;
       return true;
     });
-  }, [quizzes, filterStatus, filterModule]);
+  }, [quizzes, filterStatus, filterModule, filterQueue]);
 
   const togglePublish = async (q: QuizWithStats) => {
     const next: QuizStatus = q.status === "published" ? "draft" : "published";
