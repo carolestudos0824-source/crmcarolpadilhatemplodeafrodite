@@ -768,6 +768,15 @@ const ModuleLessonsView = ({
         </Button>
       </div>
 
+      <div className="rounded-xl border border-border/50 bg-muted/30 p-3 text-[11px] text-muted-foreground leading-relaxed">
+        <span className="font-medium text-foreground">Governança híbrida:</span> aqui você gerencia
+        a <span className="font-medium text-foreground">estrutura</span> da lição (vínculo, ID, título, ordem).
+        O <span className="font-medium text-foreground">corpo editorial</span>
+        (texto principal, deepDive, exercícios, quiz) vive em
+        <code className="px-1 mx-1 rounded bg-background/60">src/content/lessons/{module.slug}.ts</code>
+        e é atualizado por release. Isto é arquitetura oficial, não pendência.
+      </div>
+
       {loading ? (
         <div className="text-sm text-muted-foreground py-6 text-center">Carregando...</div>
       ) : lessons.length === 0 ? (
