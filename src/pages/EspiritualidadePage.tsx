@@ -1,4 +1,4 @@
-import { ESPIRITUALIDADE_LESSONS } from "@/data/espiritualidade";
+import { ESPIRITUALIDADE_LESSONS } from "@/content/lessons/espiritualidade";
 import GenericModulePage from "./GenericModulePage";
 
 const EspiritualidadePage = () => (

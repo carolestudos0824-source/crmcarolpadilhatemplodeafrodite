@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, MapPin } from "lucide-react";
-import { TIRAGENS_LESSONS, getTiragensLessonByOrder } from "@/data/tiragens";
+import { TIRAGENS_LESSONS, getTiragensLessonByOrder } from "@/content/lessons/tiragens";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedLesson } from "@/hooks/use-resolved-lesson";
 import mysticBg from "@/assets/mystic-bg.jpg";

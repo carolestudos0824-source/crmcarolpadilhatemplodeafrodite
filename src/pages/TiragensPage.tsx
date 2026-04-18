@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
-import { TIRAGENS_LESSONS } from "@/data/tiragens";
+import { TIRAGENS_LESSONS } from "@/content/lessons/tiragens";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedModule } from "@/hooks/use-resolved-module";
 import mysticBg from "@/assets/mystic-bg.jpg";

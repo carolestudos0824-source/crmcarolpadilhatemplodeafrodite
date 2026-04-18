@@ -1,4 +1,4 @@
-import { TRABALHAR_TARO_LESSONS } from "@/data/trabalhar-taro";
+import { TRABALHAR_TARO_LESSONS } from "@/content/lessons/trabalhar-taro";
 import GenericModulePage from "./GenericModulePage";
 
 const TrabalharTaroPage = () => (

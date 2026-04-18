@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
-import { COMBINACOES_LESSONS } from "@/data/combinacoes";
+import { COMBINACOES_LESSONS } from "@/content/lessons/combinacoes";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedModule } from "@/hooks/use-resolved-module";
 import { XPBar } from "@/components/XPBar";
