@@ -326,11 +326,10 @@ const AdminModules = () => {
     await loadModules();
   };
 
-  const counts = useMemo(() => {
-    const by: Record<ModuleStatus, number> = { empty: 0, partial: 0, draft: 0, published: 0 };
+  const ranks = useMemo(() => {
+    const by: Record<EditorialRank, number> = { validado: 0, quase_pronto: 0, incompleto: 0, critico: 0 };
     modules.forEach((m) => {
-      const effective = computeStatus(m.status, m.lessonsCount);
-      by[effective] += 1;
+      by[computeRank(m)] += 1;
     });
     return by;
   }, [modules]);
@@ -353,16 +352,23 @@ const AdminModules = () => {
         </Button>
       </div>
 
+      {/* Régua editorial */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {(["published", "draft", "partial", "empty"] as ModuleStatus[]).map((s) => (
-          <div key={s} className={`p-3 rounded-xl border ${STATUS_TONE[s]}`}>
-            <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider opacity-80">
-              <StatusIcon status={s} />
-              {STATUS_LABEL[s]}
-            </div>
-            <div className="text-2xl font-heading mt-1">{counts[s]}</div>
+        {(["validado", "quase_pronto", "incompleto", "critico"] as EditorialRank[]).map((r) => (
+          <div key={r} className={`p-3 rounded-xl border ${RANK_TONE[r]}`}>
+            <div className="text-[10px] uppercase tracking-wider opacity-80">{RANK_LABEL[r]}</div>
+            <div className="text-2xl font-heading mt-1">{ranks[r]}</div>
           </div>
         ))}
+      </div>
+
+      {/* Nota de governança híbrida */}
+      <div className="rounded-xl border border-border/50 bg-muted/30 p-3 text-[11px] text-muted-foreground leading-relaxed">
+        <span className="font-medium text-foreground">Governança híbrida:</span> a estrutura do módulo
+        (descrição, ordem, tier, status, vínculo de lições) é editada aqui no painel.
+        O <span className="font-medium text-foreground">corpo editorial das lições</span> (texto principal,
+        deepDive, exercícios) é versionado em <code className="px-1 rounded bg-background/60">src/content/lessons/**</code>
+        e atualizado por release. Isto não é pendência — é a arquitetura oficial.
       </div>
 
       {loading ? (
