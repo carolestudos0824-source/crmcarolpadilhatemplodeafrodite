@@ -1,10 +1,9 @@
 /**
- * @deprecated Faxina Final (Fase 6.6).
- * Movido para localização técnica oficial:
- *   - deck-registry         -> @/registry/deck-registry
- *   - arcano-vivo-config    -> @/config/arcano-vivo
- *   - fools-journey-visual  -> @/config/journey-visual
+ * @deprecated Faxina Final (Fase 6.6) — movido para `@/registry/deck-registry`.
  *
- * Mantido como placeholder histórico. Não importe daqui — bloqueado por ESLint.
+ * Este arquivo permanece APENAS como compatibilidade interna para arquivos
+ * dentro de `src/data/**` (seed/legacy). Telas, hooks e componentes são
+ * bloqueados por ESLint de importar daqui — usar `@/registry/deck-registry`.
  */
-export {};
+// eslint-disable-next-line no-restricted-imports
+export * from "@/registry/deck-registry";
