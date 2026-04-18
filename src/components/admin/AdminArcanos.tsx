@@ -228,7 +228,7 @@ const AdminArcanos = () => {
   }, []);
 
   const filtered = useMemo(() => {
-    return arcanos.filter((a) => {
+    const list = arcanos.filter((a) => {
       if (filterType !== "all" && a.type !== filterType) return false;
       if (filterNaipe !== "all" && a.naipe !== filterNaipe) return false;
       if (filterStatus !== "all" && a.status !== filterStatus) return false;
@@ -246,6 +246,14 @@ const AdminArcanos = () => {
       }
       return true;
     });
+    // ordenação por fila editorial: quase prontos → críticos free → críticos premium maiores → críticos premium menores → incompletos → validados
+    return list.sort((a, b) => {
+      const ra = queueRank(a);
+      const rb = queueRank(b);
+      if (ra !== rb) return ra - rb;
+      // dentro do mesmo grupo: mais completos primeiro
+      return countFilled(b) - countFilled(a);
+    });
   }, [arcanos, filterType, filterStatus, filterTier, filterValidated, filterNaipe, filterPriority, search]);
 
   const stats = useMemo(() => {
@@ -255,8 +263,10 @@ const AdminArcanos = () => {
     const inconsistent = arcanos.filter((a) => checkInconsistency(a)).length;
     const critical = arcanos.filter((a) => priorityOf(a) === "critical").length;
     const almost = arcanos.filter((a) => priorityOf(a) === "almost").length;
+    const incomplete = arcanos.filter((a) => priorityOf(a) === "incomplete").length;
     const publishedUnvalidated = arcanos.filter((a) => a.status === "published" && !a.validated).length;
-    return { total, published, validated, inconsistent, critical, almost, publishedUnvalidated };
+    const queue = arcanos.filter((a) => !a.validated).sort((a, b) => queueRank(a) - queueRank(b));
+    return { total, published, validated, inconsistent, critical, almost, incomplete, publishedUnvalidated, queue };
   }, [arcanos]);
 
   if (drill) {
