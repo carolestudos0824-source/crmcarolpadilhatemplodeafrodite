@@ -13,6 +13,16 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
+const isAllowedResetRedirect = (value: unknown) => {
+  if (typeof value !== "string") return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.pathname === "/reset-password";
+  } catch {
+    return false;
+  }
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -204,6 +214,34 @@ Deno.serve(async (req) => {
         .eq("user_id", target_user_id);
       if (error) return json({ error: error.message }, 500);
       return json({ success: true });
+    }
+
+    if (action === "generate_password_reset_link") {
+      if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
+      const redirectTo = body.redirect_to;
+      if (!isAllowedResetRedirect(redirectTo)) {
+        return json({ error: "URL de redefinição inválida" }, 400);
+      }
+
+      const { data: targetUserData, error: targetUserError } = await admin.auth.admin.getUserById(target_user_id);
+      const targetEmail = targetUserData?.user?.email;
+
+      if (targetUserError || !targetEmail) {
+        return json({ error: "Usuário não encontrado para redefinição" }, 404);
+      }
+
+      const { data: generated, error } = await admin.auth.admin.generateLink({
+        type: "recovery",
+        email: targetEmail,
+        options: { redirectTo },
+      });
+
+      if (error) return json({ error: error.message }, 500);
+
+      const actionLink = generated?.properties?.action_link ?? generated?.action_link ?? null;
+      if (!actionLink) return json({ error: "Não foi possível gerar o link de redefinição" }, 500);
+
+      return json({ success: true, action_link: actionLink, email: targetEmail });
     }
 
     return json({ error: "Ação inválida" }, 400);

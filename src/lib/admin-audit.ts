@@ -4,6 +4,7 @@ export type AdminAction =
   // Premium
   | "premium.grant"
   | "premium.revoke"
+  | "auth.password_reset_email"
   // Gift codes
   | "gift_code.create"
   | "gift_code.deactivate"
@@ -97,6 +98,7 @@ export const logAdminAction = async ({
 export const ACTION_LABELS: Record<AdminAction, string> = {
   "premium.grant": "Concedeu premium",
   "premium.revoke": "Removeu premium",
+  "auth.password_reset_email": "Enviou e-mail de redefinição de senha",
   "gift_code.create": "Criou código presente",
   "gift_code.deactivate": "Desativou código presente",
   "gift_code.activate": "Reativou código presente",
