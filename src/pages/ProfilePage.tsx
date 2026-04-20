@@ -90,15 +90,27 @@ const ProfilePage = () => {
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-body">Voltar</span>
             </button>
-            {!adminLoading && isAdmin && (
+            <div className="flex items-center gap-2">
+              {!adminLoading && isAdmin && (
+                <button
+                  onClick={() => navigate("/admin")}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                >
+                  <Shield className="w-4 h-4" />
+                  <span className="hidden sm:inline">Painel Admin</span>
+                </button>
+              )}
               <button
-                onClick={() => navigate("/admin")}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                onClick={handleSignOut}
+                disabled={signingOut}
+                aria-label="Sair"
+                title="Sair"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors disabled:opacity-60"
               >
-                <Shield className="w-4 h-4" />
-                <span>Painel Admin</span>
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline">Sair</span>
               </button>
-            )}
+            </div>
           </div>
 
           {/* Avatar / Level */}
