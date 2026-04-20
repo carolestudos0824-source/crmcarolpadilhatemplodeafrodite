@@ -103,12 +103,18 @@ const ProfilePage = () => {
               <button
                 onClick={handleSignOut}
                 disabled={signingOut}
-                aria-label="Sair"
-                title="Sair"
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors disabled:opacity-60"
+                aria-label="Sair da conta"
+                title="Sair da conta"
+                data-testid="profile-signout-header"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-heading tracking-wide transition-colors disabled:opacity-60"
+                style={{
+                  background: "hsl(340 42% 28% / 0.08)",
+                  color: "hsl(340 42% 28%)",
+                  border: "1px solid hsl(340 42% 28% / 0.25)",
+                }}
               >
                 <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Sair</span>
+                <span>{signingOut ? "Saindo..." : "Sair"}</span>
               </button>
             </div>
           </div>
