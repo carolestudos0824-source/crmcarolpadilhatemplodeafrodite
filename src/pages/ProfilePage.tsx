@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift, Shield, LogOut } from "lucide-react";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useProgress } from "@/hooks/use-progress";
