@@ -7,6 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTrackEvent } from "@/hooks/use-track-event";
 import { usePremium, type SubscriptionStatus } from "@/hooks/use-premium";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 /* ═══════════════ DATA ═══════════════ */
@@ -223,7 +224,23 @@ const ActiveSubscriberView = ({
 
             {isCancelledWithAccess && (
               <button
-                onClick={() => toast.info("Reassinatura será ativada com a integração de pagamento.")}
+                onClick={async () => {
+                  const loadingToast = toast.loading("Abrindo checkout seguro...");
+                  try {
+                    const { data, error } = await supabase.functions.invoke("stripe-create-checkout", {
+                      body: { plan: "monthly" },
+                    });
+                    toast.dismiss(loadingToast);
+                    if (error || !data?.url) {
+                      toast.error("Não foi possível abrir o checkout. Tente novamente.");
+                      return;
+                    }
+                    window.location.href = data.url as string;
+                  } catch {
+                    toast.dismiss(loadingToast);
+                    toast.error("Erro inesperado ao abrir o checkout.");
+                  }
+                }}
                 className="text-[11px] font-heading tracking-wider uppercase px-4 py-2 rounded-lg transition-colors"
                 style={{
                   background: "hsl(var(--secondary) / 0.06)",
@@ -402,9 +419,38 @@ const PremiumPage = () => {
   // Expired or cancelled — return/reactivation view
   const isReturnUser = subscriptionStatus === "expired" || subscriptionStatus === "cancelled_expired";
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     trackEvent(isReturnUser ? "premium_reactivate_clicked" : "premium_subscribe_clicked", { plan: selectedPlan });
-    toast.info("Assinatura será ativada em breve. Estamos finalizando a integração de pagamento.");
+    const plan = selectedPlan === "annual" ? "yearly" : "monthly";
+    const loadingToast = toast.loading("Abrindo checkout seguro...");
+    try {
+      const { data, error } = await supabase.functions.invoke("stripe-create-checkout", {
+        body: { plan },
+      });
+      toast.dismiss(loadingToast);
+      if (error) {
+        // Try to extract structured error from edge function response
+        const ctx = (error as { context?: Response }).context;
+        let detail = error.message || "Erro desconhecido";
+        if (ctx && typeof ctx.json === "function") {
+          try {
+            const body = await ctx.json();
+            if (body?.error) detail = body.error;
+          } catch { /* noop */ }
+        }
+        toast.error(`Falha ao abrir checkout: ${detail}`);
+        return;
+      }
+      if (!data?.url) {
+        toast.error("Checkout indisponível: resposta sem URL do Stripe.");
+        return;
+      }
+      window.location.href = data.url as string;
+    } catch (e) {
+      toast.dismiss(loadingToast);
+      const msg = e instanceof Error ? e.message : "Erro inesperado";
+      toast.error(`Falha ao abrir checkout: ${msg}`);
+    }
   };
 
   const handleRestore = () => {
