@@ -132,6 +132,43 @@ Deno.serve(async (req) => {
     return json({ error: "DB insert failed" }, 500);
   }
 
+  // Extract period end from multiple possible locations (Stripe API 2024+ moved
+  // current_period_end from the subscription root to items.data[0]).
+  // Priority order:
+  //   1. subscription.items.data[0].current_period_end (new API)
+  //   2. subscription.current_period_end (legacy fallback)
+  //   3. invoice.lines.data[0].period.end (invoice events)
+  //   4. retrieve parent subscription if we only have a subscription_id
+  const extractPeriodEndUnix = async (): Promise<number | null> => {
+    // Subscription object — new API location
+    const items = (obj.items as { data?: Array<{ current_period_end?: number }> } | undefined);
+    const itemCpe = items?.data?.[0]?.current_period_end;
+    if (typeof itemCpe === "number") return itemCpe;
+
+    // Subscription object — legacy root location
+    const rootCpe = obj.current_period_end as number | undefined;
+    if (typeof rootCpe === "number") return rootCpe;
+
+    // Invoice object — line item period end
+    const lines = (obj.lines as { data?: Array<{ period?: { end?: number } }> } | undefined);
+    const linePeriodEnd = lines?.data?.[0]?.period?.end;
+    if (typeof linePeriodEnd === "number") return linePeriodEnd;
+
+    // Last resort: fetch parent subscription
+    if (subscriptionId && !event.type.startsWith("customer.subscription")) {
+      try {
+        const sub = await stripe.subscriptions.retrieve(subscriptionId);
+        const subItem = sub.items?.data?.[0] as { current_period_end?: number } | undefined;
+        if (typeof subItem?.current_period_end === "number") return subItem.current_period_end;
+        const subRoot = (sub as unknown as { current_period_end?: number }).current_period_end;
+        if (typeof subRoot === "number") return subRoot;
+      } catch (e) {
+        console.warn("[stripe-webhook] could not retrieve subscription for period end", e);
+      }
+    }
+    return null;
+  };
+
   // Mirror to profiles.is_premium for fast access checks.
   if (userId) {
     if (
@@ -140,7 +177,7 @@ Deno.serve(async (req) => {
       internalType === "payment_succeeded" ||
       internalType === "checkout_completed"
     ) {
-      const periodEndUnix = (obj.current_period_end as number) ?? null;
+      const periodEndUnix = await extractPeriodEndUnix();
       const premium_until = periodEndUnix
         ? new Date(periodEndUnix * 1000).toISOString()
         : null;
@@ -155,7 +192,7 @@ Deno.serve(async (req) => {
     } else if (internalType === "subscription_cancelled") {
       // Don't revoke instantly — let access run until current_period_end.
       // Flip is_premium=false so renewal stops; premium_until preserves grace window.
-      const periodEndUnix = (obj.current_period_end as number) ?? null;
+      const periodEndUnix = await extractPeriodEndUnix();
       const premium_until = periodEndUnix
         ? new Date(periodEndUnix * 1000).toISOString()
         : null;
