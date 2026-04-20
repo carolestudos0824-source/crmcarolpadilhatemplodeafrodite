@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Crown, Eye, EyeOff } from "lucide-react";
 
-type RecoveryState = "checking" | "ready" | "invalid" | "expired";
+type RecoveryState = "checking" | "ready" | "invalid" | "expired" | "misconfigured" | "not_started";
 
 /**
  * Snapshot da URL ANTES que o cliente Supabase (com detectSessionInUrl=true)
@@ -26,6 +26,8 @@ const captureUrlContext = () => {
   const refreshToken = hashParams.get("refresh_token");
 
   return {
+    path: window.location.pathname,
+    referrer: document.referrer || "",
     type,
     code,
     accessToken,
@@ -35,6 +37,15 @@ const captureUrlContext = () => {
     errorDescription,
     hasAnyAuthParam: !!(type || code || accessToken || error),
   };
+};
+
+const wait = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+const classifyErrorState = (message: string): Exclude<RecoveryState, "checking" | "ready" | "invalid"> => {
+  const normalized = message.toLowerCase();
+  if (normalized.includes("redirect")) return "misconfigured";
+  if (normalized.includes("session") || normalized.includes("token")) return "not_started";
+  return "expired";
 };
 
 const ResetPasswordPage = () => {
@@ -58,6 +69,12 @@ const ResetPasswordPage = () => {
       window.history.replaceState({}, document.title, `${window.location.origin}/reset-password`);
     };
 
+    const setFailureState = (state: Exclude<RecoveryState, "checking" | "ready">, msg: string) => {
+      if (!isMounted) return;
+      setRecoveryState(state);
+      setErrorMessage(msg);
+    };
+
     const markReady = () => {
       if (!isMounted) return;
       setRecoveryState("ready");
@@ -65,52 +82,55 @@ const ResetPasswordPage = () => {
       clearUrl();
     };
 
-    const markExpired = (msg?: string) => {
-      if (!isMounted) return;
-      setRecoveryState("expired");
-      if (msg) setErrorMessage(msg);
+    const waitForSession = async () => {
+      for (let attempt = 0; attempt < 12; attempt += 1) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return true;
+        if (session?.user) {
+          markReady();
+          return true;
+        }
+        await wait(250);
+      }
+      return false;
     };
 
-    const markInvalid = () => {
-      if (!isMounted) return;
-      setRecoveryState("invalid");
-    };
-
-    // 1) Erro explícito vindo do Supabase no link (expirado, usado, etc.)
+    // 1) Erro explícito vindo do backend de auth
     if (ctx.error || ctx.errorCode) {
       const desc = ctx.errorDescription?.replace(/\+/g, " ") || ctx.error || "Link inválido";
-      markExpired(decodeURIComponent(desc));
+      const decoded = decodeURIComponent(desc);
+      setFailureState(classifyErrorState(decoded), decoded);
       return () => { isMounted = false; };
     }
 
-    // 2) Listener para PASSWORD_RECOVERY ou SIGNED_IN — disparado pelo detectSessionInUrl
+    if (ctx.path !== "/reset-password") {
+      setFailureState("invalid", "A rota de redefinição não foi encontrada corretamente.");
+      return () => { isMounted = false; };
+    }
+
+    // 2) Listener para recovery/sessão restaurada
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
+      if ((event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") && session?.user) {
         markReady();
-        return;
-      }
-      if (event === "SIGNED_IN" && session) {
-        // Se chegamos aqui via link de recovery, está OK editar a senha
-        if (ctx.hasAnyAuthParam || ctx.type === "recovery") {
-          markReady();
-        }
       }
     });
 
     const resolve = async () => {
-      // 3) Se temos um code (PKCE flow), trocar por sessão
+      if (await waitForSession()) return;
+
+      // 3) Flow com code
       if (ctx.code) {
         const { error } = await supabase.auth.exchangeCodeForSession(ctx.code);
         if (!isMounted) return;
         if (error) {
-          markExpired("O link já foi usado ou expirou. Solicite um novo e-mail.");
+          setFailureState(classifyErrorState(error.message), "O link já foi usado, expirou ou não pôde iniciar a sessão de recovery. Solicite um novo e-mail.");
           return;
         }
         markReady();
         return;
       }
 
-      // 4) Se temos tokens no hash, setar a sessão manualmente
+      // 4) Flow com tokens no hash
       if (ctx.accessToken && ctx.refreshToken) {
         const { error } = await supabase.auth.setSession({
           access_token: ctx.accessToken,
@@ -118,32 +138,28 @@ const ResetPasswordPage = () => {
         });
         if (!isMounted) return;
         if (error) {
-          markExpired("Não conseguimos abrir sua sessão de recuperação. Solicite um novo link.");
+          setFailureState(classifyErrorState(error.message), "Não conseguimos abrir sua sessão de recuperação. Solicite um novo link e abra o e-mail mais recente.");
           return;
         }
         markReady();
         return;
       }
 
-      // 5) Sem code/tokens explícitos — talvez o cliente Supabase já consumiu o hash.
-      //    Esperar um tick e checar se há sessão ativa ou se evento PASSWORD_RECOVERY chegou.
-      await new Promise((r) => setTimeout(r, 600));
-      if (!isMounted) return;
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!isMounted) return;
-
-      if (session && (ctx.hasAnyAuthParam || ctx.type === "recovery")) {
-        markReady();
+      // 5) Sessão pode demorar a ser restaurada pelo cliente
+      if (await waitForSession()) {
         return;
       }
 
-      // 6) Nenhum sinal de recovery — link inválido
-      if (!ctx.hasAnyAuthParam) {
-        markInvalid();
-      } else {
-        markExpired("O link já foi usado ou expirou. Solicite um novo e-mail para redefinir sua senha.");
+      // 6) Diagnóstico final
+      if (ctx.hasAnyAuthParam || ctx.referrer.includes("/auth/v1/verify")) {
+        setFailureState(
+          "not_started",
+          "A sessão de recuperação não foi iniciada. Isso geralmente acontece quando o link é aberto por um verificador automático do e-mail antes de você. Solicite um novo link e use o mais recente.",
+        );
+        return;
       }
+
+      setFailureState("invalid", "Esta rota existe, mas o link aberto não trouxe um token de recuperação válido.");
     };
 
     void resolve();
@@ -165,9 +181,11 @@ const ResetPasswordPage = () => {
       setLoading(false);
       return;
     }
+
+    await supabase.auth.signOut();
     setSuccess(true);
     setLoading(false);
-    window.setTimeout(() => navigate("/perfil", { replace: true }), 1200);
+    window.setTimeout(() => navigate("/auth?reset=success", { replace: true }), 1200);
   };
 
   if (recoveryState === "checking" && !success) {
@@ -181,7 +199,26 @@ const ResetPasswordPage = () => {
   }
 
   if (recoveryState !== "ready" && !success) {
-    const isExpired = recoveryState === "expired";
+    const variants: Record<Exclude<RecoveryState, "checking" | "ready">, { title: string; message: string }> = {
+      expired: {
+        title: "Link expirado",
+        message: errorMessage || "O link já foi usado ou venceu. Solicite um novo e-mail para redefinir sua senha.",
+      },
+      invalid: {
+        title: "Link inválido",
+        message: errorMessage || "Abra esta página a partir do link enviado por e-mail para redefinir sua senha.",
+      },
+      misconfigured: {
+        title: "Redirect mal configurado",
+        message: errorMessage || "A URL de retorno do fluxo de recuperação está incorreta. Solicite um novo link após a correção.",
+      },
+      not_started: {
+        title: "Sessão de recovery não iniciada",
+        message: errorMessage || "O token chegou à rota, mas não iniciou a sessão de redefinição. Solicite um novo link e abra o e-mail mais recente.",
+      },
+    };
+    const variant = variants[recoveryState];
+
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
         <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 text-center space-y-4 shadow-sm">
@@ -189,15 +226,11 @@ const ResetPasswordPage = () => {
             <Crown className="w-5 h-5" />
           </div>
           <div className="space-y-2">
-            <h1 className="font-heading text-xl tracking-wide">{isExpired ? "Link expirado" : "Link inválido"}</h1>
-            <p className="text-sm text-muted-foreground">
-              {isExpired
-                ? errorMessage || "O link já foi usado ou venceu. Solicite um novo e-mail para redefinir sua senha."
-                : "Abra esta página a partir do link enviado por e-mail para redefinir sua senha."}
-            </p>
+            <h1 className="font-heading text-xl tracking-wide">{variant.title}</h1>
+            <p className="text-sm text-muted-foreground">{variant.message}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Button onClick={() => navigate("/auth", { replace: true })}>Solicitar novo link</Button>
+            <Button onClick={() => navigate("/auth?mode=forgot", { replace: true })}>Solicitar novo link</Button>
             <Button variant="outline" onClick={() => navigate("/auth", { replace: true })}>Voltar ao login</Button>
           </div>
         </div>
@@ -216,7 +249,7 @@ const ResetPasswordPage = () => {
             {success ? "Senha atualizada!" : "Nova senha"}
           </h1>
           {success && (
-            <p className="text-sm text-muted-foreground">Redirecionando para o seu perfil...</p>
+            <p className="text-sm text-muted-foreground">Redirecionando para o login...</p>
           )}
         </div>
 
