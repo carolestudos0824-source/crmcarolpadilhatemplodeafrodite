@@ -369,7 +369,7 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
         ) : (
           <div className="space-y-5">
             {Array.isArray(data.warnings) && data.warnings.length > 0 && (
-              <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-[11px] text-amber-700 space-y-1">
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-[11px] text-destructive space-y-1">
                 <p className="font-medium">Perfil parcial — alguns dados não puderam ser carregados:</p>
                 <ul className="list-disc list-inside">
                   {data.warnings.map((w, i) => (
