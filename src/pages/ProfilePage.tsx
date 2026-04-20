@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift, Shield } from "lucide-react";
+import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift, Shield, LogOut } from "lucide-react";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useProgress } from "@/hooks/use-progress";
 import { usePremium } from "@/hooks/use-premium";
 import { useGiftCode } from "@/hooks/use-gift-code";
+import { useAuth } from "@/hooks/use-auth";
 import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, MODULES_CATALOG as MODULES, getArcanoFull as getArcanoById } from "@/lib/content";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
