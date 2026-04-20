@@ -157,19 +157,43 @@ Deno.serve(async (req) => {
     // Get a single user's full details for admin profile view
     if (action === "user_detail") {
       if (!target_user_id) return json({ error: "Usuário obrigatório" }, 400);
-      const { data: au } = await admin.auth.admin.getUserById(target_user_id);
-      const [{ data: profile }, { data: progress }, { data: roles }, { data: redemptions }] = await Promise.all([
-        admin.from("profiles").select("*").eq("user_id", target_user_id).maybeSingle(),
-        admin.from("user_progress").select("*").eq("user_id", target_user_id).maybeSingle(),
-        admin.from("user_roles").select("role").eq("user_id", target_user_id),
-        admin.from("gift_redemptions").select("redeemed_at, gift_code_id").eq("user_id", target_user_id),
+
+      // Each lookup is isolated so a single failure (missing row, table issue,
+      // schema drift) never blocks the whole modal. We collect partial data
+      // and report which fragments failed in `warnings`.
+      const warnings: { source: string; message: string }[] = [];
+      const safe = async <T,>(source: string, fn: () => Promise<{ data: T | null; error: { message: string } | null }>): Promise<T | null> => {
+        try {
+          const { data, error } = await fn();
+          if (error) {
+            warnings.push({ source, message: error.message });
+            return null;
+          }
+          return data;
+        } catch (err) {
+          warnings.push({ source, message: (err as Error).message });
+          return null;
+        }
+      };
+
+      const [authUser, profile, progress, rolesRows, redemptions] = await Promise.all([
+        safe("auth", async () => {
+          const res = await admin.auth.admin.getUserById(target_user_id);
+          return { data: res.data?.user ?? null, error: res.error ? { message: res.error.message } : null };
+        }),
+        safe("profile", () => admin.from("profiles").select("*").eq("user_id", target_user_id).maybeSingle()),
+        safe("progress", () => admin.from("user_progress").select("*").eq("user_id", target_user_id).maybeSingle()),
+        safe("roles", () => admin.from("user_roles").select("role").eq("user_id", target_user_id)),
+        safe("redemptions", () => admin.from("gift_redemptions").select("redeemed_at, gift_code_id").eq("user_id", target_user_id)),
       ]);
+
       return json({
-        auth: au?.user ? { email: au.user.email, created_at: au.user.created_at, last_sign_in_at: au.user.last_sign_in_at } : null,
-        profile,
-        progress,
-        roles: (roles ?? []).map((r) => r.role),
-        redemptions,
+        auth: authUser ? { email: authUser.email ?? null, created_at: authUser.created_at ?? null, last_sign_in_at: authUser.last_sign_in_at ?? null } : null,
+        profile: profile ?? null,
+        progress: progress ?? null,
+        roles: Array.isArray(rolesRows) ? rolesRows.map((r: { role: string }) => r.role) : [],
+        redemptions: redemptions ?? [],
+        warnings,
       });
     }
 

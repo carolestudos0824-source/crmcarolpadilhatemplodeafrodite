@@ -277,23 +277,34 @@ interface UserDetail {
   progress: ProgressRow | null;
   roles: string[];
   redemptions: { redeemed_at: string; gift_code_id: string }[] | null;
+  warnings?: { source: string; message: string }[];
 }
 
 const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | null; onClose: () => void; onChanged: () => void }) => {
   const { isAdmin } = useRole();
   const [data, setData] = useState<UserDetail | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [days, setDays] = useState("30");
 
   useEffect(() => {
-    if (!userId) { setData(null); return; }
+    if (!userId) { setData(null); setLoadError(null); return; }
     setLoading(true);
+    setLoadError(null);
     supabase.functions
       .invoke("admin-manage", { body: { action: "user_detail", target_user_id: userId } })
       .then(({ data, error }) => {
-        if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
-        else setData(data);
+        if (error) {
+          const msg = error.message || "Falha ao carregar perfil administrativo.";
+          setLoadError(msg);
+          toast({ title: "Erro ao abrir perfil", description: msg, variant: "destructive" });
+        } else if (data?.error) {
+          setLoadError(data.error);
+          toast({ title: "Erro ao abrir perfil", description: data.error, variant: "destructive" });
+        } else {
+          setData(data);
+        }
         setLoading(false);
       });
   }, [userId]);
@@ -344,10 +355,29 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
           <DialogTitle className="font-heading">Perfil administrativo</DialogTitle>
         </DialogHeader>
 
-        {loading || !data ? (
+        {loading ? (
           <div className="p-8 text-center text-sm text-muted-foreground">Carregando...</div>
+        ) : loadError ? (
+          <div className="p-6 space-y-3 text-center">
+            <AlertTriangle className="w-8 h-8 mx-auto text-destructive" />
+            <p className="text-sm text-foreground font-medium">Não foi possível abrir o perfil</p>
+            <p className="text-xs text-muted-foreground break-words">{loadError}</p>
+            <Button size="sm" variant="outline" onClick={onClose}>Fechar</Button>
+          </div>
+        ) : !data ? (
+          <div className="p-8 text-center text-sm text-muted-foreground">Sem dados.</div>
         ) : (
           <div className="space-y-5">
+            {Array.isArray(data.warnings) && data.warnings.length > 0 && (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-[11px] text-destructive space-y-1">
+                <p className="font-medium">Perfil parcial — alguns dados não puderam ser carregados:</p>
+                <ul className="list-disc list-inside">
+                  {data.warnings.map((w, i) => (
+                    <li key={i}><span className="font-mono">{w.source}</span>: {w.message}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {/* Header */}
             <div className="rounded-xl border border-border/50 bg-card/50 p-4">
               <p className="font-heading text-lg text-foreground">{data.profile?.display_name || "Sem nome"}</p>
