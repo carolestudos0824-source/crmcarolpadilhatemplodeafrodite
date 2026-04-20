@@ -33,8 +33,23 @@ const ProfilePage = () => {
   const { progress, completedCount, journeyProgress, getCurrentArcanoId } = useProgress();
   const { isPremium, premiumUntil, premiumSource } = usePremium();
   const { redeem, loading: redeemLoading } = useGiftCode();
+  const { signOut, user } = useAuth();
   const [giftCode, setGiftCode] = useState("");
   const [showGiftInput, setShowGiftInput] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await signOut();
+      toast.success("Sessão encerrada.");
+      navigate("/auth", { replace: true });
+    } catch (e) {
+      toast.error("Não foi possível sair. Tente novamente.");
+      setSigningOut(false);
+    }
+  };
   const earnedBadges = progress.badges.filter(b => b.earned);
   const unearnedBadges = progress.badges.filter(b => !b.earned);
   const xpInLevel = progress.xp % 100;
