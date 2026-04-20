@@ -29,6 +29,7 @@ const getLevelTitle = (level: number) => LEVEL_TITLES[Math.min(level, 10)] || "I
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
   const { progress, completedCount, journeyProgress, getCurrentArcanoId } = useProgress();
   const { isPremium, premiumUntil, premiumSource } = usePremium();
@@ -37,6 +38,16 @@ const ProfilePage = () => {
   const [giftCode, setGiftCode] = useState("");
   const [showGiftInput, setShowGiftInput] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+
+  useEffect(() => {
+    const checkout = searchParams.get("checkout");
+    if (checkout === "success") {
+      toast.success("Pagamento confirmado! Seu acesso premium será ativado em instantes.");
+      const next = new URLSearchParams(searchParams);
+      next.delete("checkout");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleSignOut = async () => {
     if (signingOut) return;
