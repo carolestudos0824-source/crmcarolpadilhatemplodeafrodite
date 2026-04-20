@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
   }
 
   const origin = req.headers.get("origin") ?? req.headers.get("referer") ?? "";
-  const successUrl = `${origin}/profile?checkout=success`;
+  const successUrl = `${origin}/perfil?checkout=success`;
   const cancelUrl = `${origin}/premium?checkout=cancelled`;
 
   const session = await stripe.checkout.sessions.create({
