@@ -278,7 +278,32 @@ interface UserDetail {
   roles: string[];
   redemptions: { redeemed_at: string; gift_code_id: string }[] | null;
   warnings?: { source: string; message: string }[];
+  diagnostics?: { action?: string; target_user_id?: string | null; error_stage?: string; http_status?: number; warnings_count?: number };
 }
+
+interface AdminManageResponse<T> {
+  ok?: boolean;
+  error?: string;
+  diagnostics?: { action?: string; target_user_id?: string | null; error_stage?: string; http_status?: number; warnings_count?: number };
+  success?: boolean;
+  users?: AuthLite[];
+  admins?: unknown[];
+  current_user_id?: string;
+  role?: string;
+  premium_until?: string;
+  action_link?: string;
+  email?: string;
+}
+
+const getAdminManageErrorMessage = (error?: { message?: string | null } | null, payload?: AdminManageResponse<UserDetail> | null) => {
+  if (payload?.ok === false) {
+    const stage = payload.diagnostics?.error_stage ? ` (${payload.diagnostics.error_stage})` : "";
+    return `${payload.error || "Falha ao carregar perfil administrativo."}${stage}`;
+  }
+  if (payload?.error) return payload.error;
+  if (error?.message) return error.message;
+  return "Falha ao carregar perfil administrativo.";
+};
 
 const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | null; onClose: () => void; onChanged: () => void }) => {
   const { isAdmin } = useRole();
@@ -295,15 +320,13 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
     supabase.functions
       .invoke("admin-manage", { body: { action: "user_detail", target_user_id: userId } })
       .then(({ data, error }) => {
-        if (error) {
-          const msg = error.message || "Falha ao carregar perfil administrativo.";
+        const payload = (data ?? null) as (UserDetail & AdminManageResponse<UserDetail>) | null;
+        if (error || payload?.ok === false || payload?.error) {
+          const msg = getAdminManageErrorMessage(error, payload);
           setLoadError(msg);
           toast({ title: "Erro ao abrir perfil", description: msg, variant: "destructive" });
-        } else if (data?.error) {
-          setLoadError(data.error);
-          toast({ title: "Erro ao abrir perfil", description: data.error, variant: "destructive" });
         } else {
-          setData(data);
+          setData(payload);
         }
         setLoading(false);
       });
@@ -316,8 +339,9 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
       body: { action, target_user_id: userId, ...body },
     });
     setBusy(null);
-    if (error || res?.error) {
-      toast({ title: "Erro", description: error?.message || res?.error, variant: "destructive" });
+    const payload = (res ?? null) as AdminManageResponse<UserDetail> | null;
+    if (error || payload?.ok === false || payload?.error) {
+      toast({ title: "Erro", description: getAdminManageErrorMessage(error, payload), variant: "destructive" });
       return;
     }
     toast({ title: successMsg });
@@ -344,7 +368,8 @@ const UserDetailDialog = ({ userId, onClose, onChanged }: { userId: string | nul
     const { data: refreshed } = await supabase.functions.invoke("admin-manage", {
       body: { action: "user_detail", target_user_id: userId },
     });
-    if (refreshed) setData(refreshed);
+    const refreshedPayload = (refreshed ?? null) as (UserDetail & AdminManageResponse<UserDetail>) | null;
+    if (refreshedPayload?.ok !== false) setData(refreshedPayload);
     onChanged();
   };
 
