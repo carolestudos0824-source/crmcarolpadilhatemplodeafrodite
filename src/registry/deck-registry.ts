@@ -313,20 +313,68 @@ const COURTS: CourtRank[] = ["pajem", "cavaleiro", "rainha", "rei"];
 const numberName = (n: number) =>
   n === 1 ? "Ás" : ["Dois","Três","Quatro","Cinco","Seis","Sete","Oito","Nove","Dez"][n - 2];
 
+/**
+ * Overrides oficiais dos Menores — scans Rider-Waite-Smith (Wikimedia Commons, domínio público).
+ *
+ * Cada entrada substitui o placeholder padrão e fornece símbolos canônicos da cena RWS
+ * (não pip decorativo). Entradas ausentes permanecem como placeholder até oficialização.
+ */
+const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
+  cardImage: string;
+  canonicalSymbols: string[];
+  subtitle: string;
+}>> = {
+  "copas-1": {
+    cardImage: menorCopas1,
+    subtitle: "O Cálice Transbordante",
+    canonicalSymbols: [
+      "mão divina emergindo da nuvem",
+      "cálice dourado com a letra W (Water)",
+      "pomba descendo com hóstia em cruz",
+      "cinco jatos de água",
+      "lago coberto de lótus",
+    ],
+  },
+  "copas-2": {
+    cardImage: menorCopas2,
+    subtitle: "A União dos Opostos",
+    canonicalSymbols: [
+      "casal trocando cálices",
+      "caduceu de Hermes entre eles",
+      "cabeça de leão alada coroando o caduceu",
+      "guirlanda de louros na mulher",
+      "casa ao fundo na colina",
+    ],
+  },
+  "copas-3": {
+    cardImage: menorCopas3,
+    subtitle: "A Celebração da Comunhão",
+    canonicalSymbols: [
+      "três mulheres dançando em círculo",
+      "três cálices erguidos em brinde",
+      "guirlandas de flores e frutas",
+      "abóboras e uvas aos pés (abundância)",
+      "céu aberto sem nuvens",
+    ],
+  },
+};
+
 /** 40 Arcanos Menores numerados (1-10 × 4 naipes) */
 export const MENORES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
   Array.from({ length: 10 }, (_, i) => {
     const pos = i + 1;
     const meta = SUIT_META[suit];
+    const id = `${suit}-${pos}`;
+    const override = MENORES_OFFICIAL_OVERRIDES[id];
     return {
-      id: `${suit}-${pos}`,
+      id,
       category: "menor" as const,
       name: `${numberName(pos)} de ${meta.name}`,
-      slug: `${suit}-${pos}`,
-      subtitle: `${meta.element} · posição ${pos}`,
-      cardImage: placeholderImage,
-      assetStatus: "placeholder" as const,
-      canonicalSymbols: meta.symbols,
+      slug: id,
+      subtitle: override?.subtitle ?? `${meta.element} · posição ${pos}`,
+      cardImage: override?.cardImage ?? placeholderImage,
+      assetStatus: (override ? "official" : "placeholder") as "official" | "placeholder",
+      canonicalSymbols: override?.canonicalSymbols ?? meta.symbols,
       naipe: suit,
       position: pos,
     };
