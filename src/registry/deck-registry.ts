@@ -19,6 +19,9 @@ import placeholderImage from "@/assets/arcano-placeholder.jpg";
 import menorCopas1 from "@/assets/menor-copas-1.jpg";
 import menorCopas2 from "@/assets/menor-copas-2.jpg";
 import menorCopas3 from "@/assets/menor-copas-3.jpg";
+import menorCopas4 from "@/assets/menor-copas-4.jpg";
+import menorCopas5 from "@/assets/menor-copas-5.jpg";
+import menorCopas6 from "@/assets/menor-copas-6.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
