@@ -17,6 +17,9 @@ import placeholderImage from "@/assets/arcano-placeholder.jpg";
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
 import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
+import imperatrizImage from "@/assets/arcano-3-imperatriz.jpg";
+import imperadorImage from "@/assets/arcano-4-imperador.jpg";
+import hierofanteImage from "@/assets/arcano-5-hierofante.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -91,19 +94,19 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 3, numeral: "III", name: "A Imperatriz", slug: "a-imperatriz",
     subtitle: "A Abundância Criativa",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: imperatrizImage, assetStatus: "official",
     canonicalSymbols: ["coroa de 12 estrelas", "campo de trigo", "cetro", "escudo de Vênus", "rio fluindo"],
   },
   {
     number: 4, numeral: "IV", name: "O Imperador", slug: "o-imperador",
     subtitle: "A Estrutura e a Ordem",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: imperadorImage, assetStatus: "official",
     canonicalSymbols: ["trono de pedra com cabeças de carneiro", "cetro ankh", "armadura", "montanhas áridas", "barba branca"],
   },
   {
     number: 5, numeral: "V", name: "O Hierofante", slug: "o-hierofante",
     subtitle: "A Tradição Sagrada",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: hierofanteImage, assetStatus: "official",
     canonicalSymbols: ["tríplice coroa", "cetro papal", "dois discípulos", "duas chaves cruzadas", "colunas"],
   },
   {
