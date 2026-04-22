@@ -72,17 +72,17 @@ export function ArcanoVivoIntro({
           timers.push(setTimeout(() => {
             setActiveSpotlight(i);
             setShowSpotlightLabel(true);
-            // Hide label after 2s
-            timers.push(setTimeout(() => setShowSpotlightLabel(false), 2000));
+            // Tempo mínimo de leitura por símbolo: 4.2s (antes 2s — não dava tempo de ler)
+            timers.push(setTimeout(() => setShowSpotlightLabel(false), 4200));
           }, symbolStart + spot.delay));
         });
 
-        // Voice phase after all symbols
+        // Voice phase after all symbols — espera a última legenda terminar de ser lida
         const lastDelay = config.symbolSpotlights[config.symbolSpotlights.length - 1].delay;
         timers.push(setTimeout(() => {
           setPhase("voice");
           setActiveSpotlight(-1);
-        }, symbolStart + lastDelay + 2500));
+        }, symbolStart + lastDelay + 4800));
       } else {
         timers.push(setTimeout(() => setPhase("voice"), config.emergenceDelay + 2500));
       }
@@ -100,8 +100,9 @@ export function ArcanoVivoIntro({
       if (phase === "voice") setPhase("ready");
       return;
     }
-    const speed = config.voiceStyle === "mystical" ? 30 : config.voiceStyle === "gentle" ? 26 : 22;
-    const t = setTimeout(() => setCharIndex(i => i + 1), speed);
+    // Velocidade de digitação confortável: ~25 cps base, +30% para textos longos
+    const baseSpeed = config.voiceStyle === "mystical" ? 42 : config.voiceStyle === "gentle" ? 38 : 34;
+    const t = setTimeout(() => setCharIndex(i => i + 1), baseSpeed);
     return () => clearTimeout(t);
   }, [phase, charIndex, activeText, config.voiceStyle]);
 
@@ -374,16 +375,16 @@ export function ArcanoVivoIntro({
                     }}
                   >
                     <div
-                      className="px-2.5 py-1 rounded-lg text-[9px] font-heading tracking-wider whitespace-nowrap"
+                      className="px-3.5 py-2 rounded-lg text-[11px] font-heading tracking-wider whitespace-nowrap"
                       style={{
-                        background: "hsl(230 25% 8% / 0.85)",
+                        background: "hsl(230 25% 8% / 0.92)",
                         color: `hsl(${spot.color})`,
-                        border: `1px solid hsl(${spot.color} / 0.3)`,
-                        boxShadow: `0 4px 16px hsl(${spot.color} / 0.2)`,
-                        maxWidth: "180px",
+                        border: `1px solid hsl(${spot.color} / 0.4)`,
+                        boxShadow: `0 6px 20px hsl(${spot.color} / 0.25)`,
+                        maxWidth: "220px",
                         whiteSpace: "normal",
                         textAlign: "center",
-                        lineHeight: "1.4",
+                        lineHeight: "1.5",
                       }}
                     >
                       {spot.label}
@@ -456,15 +457,15 @@ export function ArcanoVivoIntro({
         )}
       </div>
 
-      {/* Subtitle & keywords */}
+      {/* Subtitle & keywords — hierarquia clara: subtítulo discreto, keywords como apoio, arquétipo como bloco editorial */}
       <div
-        className="mt-7 text-center transition-all duration-700"
+        className="mt-8 text-center transition-all duration-700 max-w-md"
         style={{ opacity: isAwakened ? 1 : 0, transform: isAwakened ? "translateY(0)" : "translateY(8px)" }}
       >
-        <p className="text-[11px] font-heading tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(36 38% 36%)" }}>
+        <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-4" style={{ color: "hsl(36 38% 36% / 0.85)" }}>
           {subtitle}
         </p>
-        <div className="flex flex-wrap justify-center gap-1.5">
+        <div className="flex flex-wrap justify-center gap-2">
           {keywords.map((kw) => (
             <span
               key={kw}
@@ -481,10 +482,10 @@ export function ArcanoVivoIntro({
         </div>
       </div>
 
-      {/* Archetype */}
+      {/* Archetype — bloco editorial separado, com respiro maior e tipografia mais legível */}
       <p
-        className="mt-5 text-center text-sm font-accent italic leading-relaxed max-w-xs transition-all duration-700"
-        style={{ color: "hsl(230 22% 22% / 0.78)", opacity: isBreathing ? 1 : 0 }}
+        className="mt-6 text-center text-base font-accent italic leading-[1.7] max-w-sm transition-all duration-700"
+        style={{ color: "hsl(230 22% 22% / 0.82)", opacity: isBreathing ? 1 : 0 }}
       >
         {archetype}
       </p>
