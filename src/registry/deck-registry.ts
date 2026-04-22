@@ -26,6 +26,9 @@ import justicaImage from "@/assets/arcano-8-justica.jpg";
 import eremitaImage from "@/assets/arcano-9-eremita.jpg";
 import rodaFortunaImage from "@/assets/arcano-10-roda-fortuna.jpg";
 import forcaImage from "@/assets/arcano-11-forca.jpg";
+import enforcadoImage from "@/assets/arcano-12-enforcado.jpg";
+import morteImage from "@/assets/arcano-13-morte.jpg";
+import temperancaImage from "@/assets/arcano-14-temperanca.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -154,19 +157,19 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 12, numeral: "XII", name: "O Enforcado", slug: "o-enforcado",
     subtitle: "A Rendição Iluminada",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: enforcadoImage, assetStatus: "official",
     canonicalSymbols: ["homem suspenso de cabeça para baixo", "halo dourado", "cruz em T (Tau)", "perna dobrada formando 4", "expressão serena"],
   },
   {
     number: 13, numeral: "XIII", name: "A Morte", slug: "a-morte",
     subtitle: "A Grande Transformação",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: morteImage, assetStatus: "official",
     canonicalSymbols: ["esqueleto em armadura preta", "estandarte com rosa branca de cinco pétalas", "cavalo branco", "sol nascendo entre torres", "rio"],
   },
   {
     number: 14, numeral: "XIV", name: "A Temperança", slug: "a-temperanca",
     subtitle: "A Alquimia Interior",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: temperancaImage, assetStatus: "official",
     canonicalSymbols: ["arcanjo com asas", "dois cálices com líquido fluindo", "um pé na água outro na terra", "triângulo no peito", "íris no caminho"],
   },
   {
