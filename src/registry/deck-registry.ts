@@ -35,6 +35,7 @@ import estrelaImage from "@/assets/arcano-17-estrela.jpg";
 import luaImage from "@/assets/arcano-18-lua.jpg";
 import solImage from "@/assets/arcano-19-sol.jpg";
 import julgamentoImage from "@/assets/arcano-20-julgamento.jpg";
+import mundoImage from "@/assets/arcano-21-mundo.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -217,7 +218,7 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 21, numeral: "XXI", name: "O Mundo", slug: "o-mundo",
     subtitle: "A Completude Sagrada",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: mundoImage, assetStatus: "official",
     canonicalSymbols: ["dançarina nua envolta em estola", "guirlanda oval (mandorla)", "duas varinhas", "quatro criaturas vivas nos cantos (Tetramorfo)", "céu aberto"],
   },
 ];
