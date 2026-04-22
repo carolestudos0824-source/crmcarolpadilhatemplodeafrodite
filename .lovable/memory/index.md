@@ -13,6 +13,7 @@ Planos: Gratuito (O Louco + Fundamentos) | Mensal R$29,90 | Anual R$197 (45% off
 7 estados de assinatura: free, monthly_active, annual_active, gift_active, expired, cancelled_with_access, cancelled_expired.
 Monetização 100% fechada. Pendente apenas integração IAP (RevenueCat) para mobile.
 Beta = 5 módulos (Fundamentos, Louco, Mago, Sacerdotisa, Leitura Simbólica). V1 = +6 módulos. Futuro = +4 módulos.
+Toda revisão de arcano DEVE seguir a régua de 5 perguntas (mem://features/arcano-approval-rubric). Reprovação se qualquer NÃO.
 
 ## Memories
 - [**🏛 Product Bible**](mem://product-bible) — Complete product document: identity, course, beta, arcanos vivos, monetization, admin, mobile, stack, status
@@ -24,6 +25,7 @@ Beta = 5 módulos (Fundamentos, Louco, Mago, Sacerdotisa, Leitura Simbólica). V
 - [Lesson structure](mem://features/lesson-layers) — 5-layer pedagogical model with skip logic
 - [Editorial guideline](mem://features/editorial-guideline) — Rider-Waite-Smith como base simbólica principal
 - [**🎴 Deck fidelity standard**](mem://features/deck-fidelity-standard) — Scan canônico RWS para todas as 78 cartas, UI ao redor, pipeline de instalação
+- [**✅ Régua de aprovação de arcano**](mem://features/arcano-approval-rubric) — 5 perguntas obrigatórias + formato fixo de resposta para toda revisão
 - [Arcano editorial model](mem://features/arcano-editorial-model) — 17-field standardized structure for all 22 Major Arcana
 - [Arcano Vivo system](mem://features/arcano-vivo-system) — 5 phases, 3 intensity levels, body/voice/gesture specs
 - [Naipes oficiais](mem://features/naipes-oficiais) — Definição canônica dos 4 naipes: essência, atmosfera, função, desafios, potencial, linguagem, cor, motion
