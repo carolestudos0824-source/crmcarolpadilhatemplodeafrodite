@@ -72,17 +72,17 @@ export function ArcanoVivoIntro({
           timers.push(setTimeout(() => {
             setActiveSpotlight(i);
             setShowSpotlightLabel(true);
-            // Hide label after 2s
-            timers.push(setTimeout(() => setShowSpotlightLabel(false), 2000));
+            // Tempo mínimo de leitura por símbolo: 4.2s (antes 2s — não dava tempo de ler)
+            timers.push(setTimeout(() => setShowSpotlightLabel(false), 4200));
           }, symbolStart + spot.delay));
         });
 
-        // Voice phase after all symbols
+        // Voice phase after all symbols — espera a última legenda terminar de ser lida
         const lastDelay = config.symbolSpotlights[config.symbolSpotlights.length - 1].delay;
         timers.push(setTimeout(() => {
           setPhase("voice");
           setActiveSpotlight(-1);
-        }, symbolStart + lastDelay + 2500));
+        }, symbolStart + lastDelay + 4800));
       } else {
         timers.push(setTimeout(() => setPhase("voice"), config.emergenceDelay + 2500));
       }
@@ -100,8 +100,9 @@ export function ArcanoVivoIntro({
       if (phase === "voice") setPhase("ready");
       return;
     }
-    const speed = config.voiceStyle === "mystical" ? 30 : config.voiceStyle === "gentle" ? 26 : 22;
-    const t = setTimeout(() => setCharIndex(i => i + 1), speed);
+    // Velocidade de digitação confortável: ~25 cps base, +30% para textos longos
+    const baseSpeed = config.voiceStyle === "mystical" ? 42 : config.voiceStyle === "gentle" ? 38 : 34;
+    const t = setTimeout(() => setCharIndex(i => i + 1), baseSpeed);
     return () => clearTimeout(t);
   }, [phase, charIndex, activeText, config.voiceStyle]);
 
