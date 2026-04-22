@@ -29,6 +29,9 @@ import forcaImage from "@/assets/arcano-11-forca.jpg";
 import enforcadoImage from "@/assets/arcano-12-enforcado.jpg";
 import morteImage from "@/assets/arcano-13-morte.jpg";
 import temperancaImage from "@/assets/arcano-14-temperanca.jpg";
+import diaboImage from "@/assets/arcano-15-diabo.jpg";
+import torreImage from "@/assets/arcano-16-torre.jpg";
+import estrelaImage from "@/assets/arcano-17-estrela.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -175,19 +178,19 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 15, numeral: "XV", name: "O Diabo", slug: "o-diabo",
     subtitle: "A Sombra das Amarras",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: diaboImage, assetStatus: "official",
     canonicalSymbols: ["Baphomet com chifres e asas", "pentagrama invertido na testa", "casal acorrentado", "tocha invertida", "pedestal preto"],
   },
   {
     number: 16, numeral: "XVI", name: "A Torre", slug: "a-torre",
     subtitle: "A Revelação Súbita",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: torreImage, assetStatus: "official",
     canonicalSymbols: ["torre atingida por raio", "coroa caindo", "duas figuras despencando", "22 chamas iod", "céu noturno"],
   },
   {
     number: 17, numeral: "XVII", name: "A Estrela", slug: "a-estrela",
     subtitle: "A Esperança Renovada",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: estrelaImage, assetStatus: "official",
     canonicalSymbols: ["mulher nua ajoelhada", "estrela de oito pontas central", "sete estrelas menores", "dois cântaros (água na terra e no rio)", "íbis na árvore"],
   },
   {
