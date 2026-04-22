@@ -83,7 +83,10 @@ Validar visualmente: numeral, título e composição canônicos.
 - [x] **0 — O Louco** (piloto validado, v1.0)
 - [x] **1 — O Mago** (asset oficial instalado)
 - [x] **2 — A Sacerdotisa** (asset oficial instalado)
-- [ ] 3–21 Maiores
+- [x] **3 — A Imperatriz** (asset oficial instalado)
+- [x] **4 — O Imperador** (asset oficial instalado)
+- [x] **5 — O Hierofante** (asset oficial instalado)
+- [ ] 6–21 Maiores
 - [ ] 56 Menores
 
 ## 9. Restrições absolutas
