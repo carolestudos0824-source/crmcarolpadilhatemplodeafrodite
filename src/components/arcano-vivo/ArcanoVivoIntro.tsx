@@ -439,19 +439,19 @@ export function ArcanoVivoIntro({
         )}
       </div>
 
-      {/* Subtitle & keywords — hierarquia clara: subtítulo discreto, keywords como apoio, arquétipo como bloco editorial */}
+      {/* Subtitle & keywords — abaixo da carta, hierarquia clara */}
       <div
-        className="mt-8 text-center transition-all duration-700 max-w-md"
+        className="mt-6 sm:mt-8 text-center transition-all duration-700 max-w-md px-2"
         style={{ opacity: isAwakened ? 1 : 0, transform: isAwakened ? "translateY(0)" : "translateY(8px)" }}
       >
-        <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-4" style={{ color: "hsl(36 38% 36% / 0.85)" }}>
+        <p className="text-[10px] sm:text-[11px] font-heading tracking-[0.4em] uppercase mb-3 sm:mb-4" style={{ color: "hsl(36 38% 36% / 0.85)" }}>
           {subtitle}
         </p>
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
           {keywords.map((kw) => (
             <span
               key={kw}
-              className="px-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
+              className="px-2.5 sm:px-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
               style={{
                 background: `hsl(${config.glowColor} / 0.10)`,
                 border: `1px solid hsl(${config.glowColor} / 0.22)`,
@@ -464,9 +464,9 @@ export function ArcanoVivoIntro({
         </div>
       </div>
 
-      {/* Archetype — bloco editorial separado, com respiro maior e tipografia mais legível */}
+      {/* Archetype — bloco editorial com respiro generoso */}
       <p
-        className="mt-6 text-center text-base font-accent italic leading-[1.7] max-w-sm transition-all duration-700"
+        className="mt-5 sm:mt-6 text-center text-[15px] sm:text-base font-accent italic leading-[1.7] max-w-sm px-4 transition-all duration-700"
         style={{ color: "hsl(230 22% 22% / 0.82)", opacity: isBreathing ? 1 : 0 }}
       >
         {archetype}
