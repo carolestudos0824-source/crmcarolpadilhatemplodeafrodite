@@ -14,6 +14,12 @@
  */
 
 import placeholderImage from "@/assets/arcano-placeholder.jpg";
+
+// ─── Menores oficiais (scans RWS, domínio público) ───
+import menorCopas1 from "@/assets/menor-copas-1.jpg";
+import menorCopas2 from "@/assets/menor-copas-2.jpg";
+import menorCopas3 from "@/assets/menor-copas-3.jpg";
+
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
 import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
