@@ -19,6 +19,9 @@ import placeholderImage from "@/assets/arcano-placeholder.jpg";
 import menorCopas1 from "@/assets/menor-copas-1.jpg";
 import menorCopas2 from "@/assets/menor-copas-2.jpg";
 import menorCopas3 from "@/assets/menor-copas-3.jpg";
+import menorCopas4 from "@/assets/menor-copas-4.jpg";
+import menorCopas5 from "@/assets/menor-copas-5.jpg";
+import menorCopas6 from "@/assets/menor-copas-6.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -355,6 +358,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "guirlandas de flores e frutas",
       "abóboras e uvas aos pés (abundância)",
       "céu aberto sem nuvens",
+    ],
+  },
+  "copas-4": {
+    cardImage: menorCopas4,
+    subtitle: "A Apatia e o Cálice Oferecido",
+    canonicalSymbols: [
+      "jovem sentado sob a árvore com braços cruzados",
+      "três cálices alinhados no chão à sua frente",
+      "quarto cálice oferecido por mão emergindo da nuvem",
+      "olhar contemplativo e desinteressado",
+      "colina verde isolando a cena",
+    ],
+  },
+  "copas-5": {
+    cardImage: menorCopas5,
+    subtitle: "O Luto e o que Permanece",
+    canonicalSymbols: [
+      "figura encapuzada de manto negro",
+      "três cálices derramados aos pés",
+      "dois cálices ainda em pé atrás dela",
+      "rio escuro a separar a margem",
+      "ponte ao fundo levando ao castelo",
+    ],
+  },
+  "copas-6": {
+    cardImage: menorCopas6,
+    subtitle: "A Memória e a Inocência",
+    canonicalSymbols: [
+      "criança maior entregando cálice com flor branca",
+      "criança menor recebendo a oferta",
+      "seis cálices floridos com flores brancas de cinco pétalas",
+      "vila medieval ao fundo",
+      "sentinela em xadrez se afastando",
     ],
   },
 };
