@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   CheckCircle2,
   Clock,
-  AlertCircle,
   Code2,
   Database,
   Store,
@@ -17,9 +16,12 @@ import {
   Settings2,
   Wrench,
   Cloud,
+  Smartphone,
+  Sparkles,
+  MoonStar,
 } from "lucide-react";
 
-type Status = "ativo" | "pendente" | "nao_implementado";
+type Status = "ativo" | "pendente" | "opcional" | "proxima_fase" | "fora_de_escopo";
 type Dependency = "externa" | "codigo" | "ambas" | "nenhuma";
 
 interface Item {
@@ -34,7 +36,10 @@ interface Item {
   externalLink?: { label: string; url: string };
 }
 
-const STATUS_META: Record<Status, { label: string; icon: typeof CheckCircle2; cls: string; dot: string }> = {
+const STATUS_META: Record<
+  Status,
+  { label: string; icon: typeof CheckCircle2; cls: string; dot: string; muted?: boolean }
+> = {
   ativo: {
     label: "Ativo",
     icon: CheckCircle2,
@@ -42,16 +47,30 @@ const STATUS_META: Record<Status, { label: string; icon: typeof CheckCircle2; cl
     dot: "bg-primary",
   },
   pendente: {
-    label: "Pendente",
+    label: "Pendente desta fase",
     icon: Clock,
     cls: "bg-amber-500/10 text-amber-600 border-amber-500/20",
     dot: "bg-amber-500",
   },
-  nao_implementado: {
-    label: "Não implementado",
-    icon: AlertCircle,
-    cls: "bg-muted/50 text-muted-foreground border-border/40",
-    dot: "bg-muted-foreground/40",
+  opcional: {
+    label: "Opcional · não bloqueia",
+    icon: Sparkles,
+    cls: "bg-sky-500/10 text-sky-600 border-sky-500/20",
+    dot: "bg-sky-500",
+  },
+  proxima_fase: {
+    label: "Próxima fase",
+    icon: MoonStar,
+    cls: "bg-violet-500/10 text-violet-600 border-violet-500/20",
+    dot: "bg-violet-500",
+    muted: true,
+  },
+  fora_de_escopo: {
+    label: "Fora do escopo desta fase",
+    icon: Smartphone,
+    cls: "bg-muted/40 text-muted-foreground border-border/40",
+    dot: "bg-muted-foreground/30",
+    muted: true,
   },
 };
 
@@ -87,7 +106,7 @@ const AUTH: Item[] = [
   {
     id: "auth-email",
     name: "Autenticação por e-mail e senha",
-    detail: "Login e cadastro padrão",
+    detail: "Login, cadastro e recuperação de senha",
     icon: KeyRound,
     status: "ativo",
     dependency: "nenhuma",
@@ -107,15 +126,16 @@ const AUTH: Item[] = [
     name: "OAuth Google / Apple",
     detail: "Login social com provedores",
     icon: LogIn,
-    status: "nao_implementado",
+    status: "opcional",
     dependency: "ambas",
     whatsMissing: [
       "Configurar Client ID e Secret no Google Cloud",
-      "Configurar Service ID na Apple Developer",
+      "Configurar Service ID na Apple Developer (necessário só no app mobile)",
       "Habilitar provedores no backend",
       "Adicionar botões de login social na tela de Auth",
     ],
-    nextStep: "Decidir prioridade pós-beta. Não bloqueia lançamento.",
+    nextStep:
+      "Opcional para o lançamento web. E-mail e senha já cobrem o fluxo. Pode ser ativado em qualquer momento sem refatoração.",
   },
 ];
 
@@ -125,17 +145,10 @@ const COMERCIAL: Item[] = [
     name: "Stripe (web)",
     detail: "Cobrança recorrente mensal e anual",
     icon: CreditCard,
-    status: "pendente",
+    status: "ativo",
     dependency: "externa",
-    whatsMissing: [
-      "Criar produtos Mensal (R$ 29,90) e Anual (R$ 197) no Stripe",
-      "Definir STRIPE_SECRET_KEY no backend",
-      "Definir STRIPE_WEBHOOK_SECRET no backend",
-      "Definir STRIPE_PRICE_MONTHLY e STRIPE_PRICE_YEARLY",
-      "Apontar webhook do Stripe para a função stripe-webhook",
-      "Validar checkout end-to-end com cartão de teste",
-    ],
-    nextStep: "Configurar credenciais e disparar checkout de teste para validar persistência em subscription_events.",
+    nextStep:
+      "Checkout, webhook e mirror de premium_until validados em produção. Monitorar eventos em Assinaturas.",
     externalLink: { label: "Stripe Dashboard", url: "https://dashboard.stripe.com" },
   },
   {
@@ -143,15 +156,15 @@ const COMERCIAL: Item[] = [
     name: "RevenueCat (mobile)",
     detail: "Assinaturas via App Store e Google Play",
     icon: Store,
-    status: "nao_implementado",
+    status: "fora_de_escopo",
     dependency: "ambas",
     whatsMissing: [
       "Criar app no RevenueCat e linkar com App Store / Play Console",
       "Configurar produtos IAP nas lojas",
-      "Implementar SDK no app mobile (fase pós-web)",
+      "Implementar SDK no app mobile",
       "Conectar webhook do RevenueCat ao backend",
     ],
-    nextStep: "Aguardar lançamento do app mobile. Não aplicável na fase web.",
+    nextStep: "Planejado para a fase mobile. Não aplicável ao lançamento web.",
     externalLink: { label: "RevenueCat", url: "https://www.revenuecat.com" },
   },
 ];
@@ -162,7 +175,7 @@ const ENGAJAMENTO: Item[] = [
     name: "Notificações push",
     detail: "Lembretes diários e retenção",
     icon: Bell,
-    status: "nao_implementado",
+    status: "fora_de_escopo",
     dependency: "ambas",
     whatsMissing: [
       "Definir provedor (OneSignal, Firebase ou nativo)",
@@ -170,7 +183,8 @@ const ENGAJAMENTO: Item[] = [
       "Implementar opt-in e gerenciamento de preferências",
       "Criar fluxos de envio (streak, lembrete diário, lições novas)",
     ],
-    nextStep: "Planejar pós-beta. Web push é opcional; mobile push depende do app nativo.",
+    nextStep:
+      "Planejado para a fase mobile. No web a retenção é tratada por e-mail e in-app banners.",
   },
 ];
 
@@ -208,10 +222,13 @@ const ItemRow = ({ item, onClick }: { item: Item; onClick: () => void }) => {
   const Icon = item.icon;
   const StatusIcon = meta.icon;
   const active = item.status === "ativo";
+  const muted = meta.muted;
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 p-3 rounded-lg border border-border/40 bg-card/30 hover:bg-card/60 hover:border-border/60 transition-all text-left group"
+      className={`w-full flex items-center gap-3 p-3 rounded-lg border border-border/40 bg-card/30 hover:bg-card/60 hover:border-border/60 transition-all text-left group ${
+        muted ? "opacity-70 hover:opacity-100" : ""
+      }`}
     >
       <div
         className={`w-9 h-9 rounded-md flex items-center justify-center shrink-0 ${
@@ -284,7 +301,7 @@ const ItemDetailDrawer = ({ item, onClose }: { item: Item; onClose: () => void }
           {item.whatsMissing && item.whatsMissing.length > 0 && (
             <div className="space-y-2">
               <h4 className="text-[10px] font-heading tracking-[0.18em] uppercase text-muted-foreground/70">
-                O que falta
+                O que envolve
               </h4>
               <ul className="space-y-1.5">
                 {item.whatsMissing.map((m, i) => (
@@ -331,32 +348,37 @@ const ItemDetailDrawer = ({ item, onClose }: { item: Item; onClose: () => void }
 const AdminSettings = () => {
   const [selected, setSelected] = useState<Item | null>(null);
 
-  const active = ALL_ITEMS.filter((i) => i.status === "ativo").length;
-  const pending = ALL_ITEMS.filter((i) => i.status === "pendente").length;
-  const missing = ALL_ITEMS.filter((i) => i.status === "nao_implementado").length;
+  // Apenas estes contam para "saúde da fase web atual".
+  const ativos = ALL_ITEMS.filter((i) => i.status === "ativo").length;
+  const pendentes = ALL_ITEMS.filter((i) => i.status === "pendente").length;
+  const opcionais = ALL_ITEMS.filter((i) => i.status === "opcional").length;
+  const proximaFase = ALL_ITEMS.filter(
+    (i) => i.status === "proxima_fase" || i.status === "fora_de_escopo",
+  ).length;
 
   return (
     <div className="space-y-10">
       <header>
         <h2 className="font-heading text-lg text-foreground">Configurações</h2>
         <p className="text-sm text-muted-foreground">
-          Central operacional de governança e configuração da plataforma.
+          Governança da plataforma — escopo da fase web atual.
         </p>
       </header>
 
-      {/* ═══ CAMADA 1: VISÃO GERAL DE STATUS ═══ */}
+      {/* ═══ CAMADA 1: VISÃO GERAL POR ESCOPO ═══ */}
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <Settings2 className="w-3.5 h-3.5 text-muted-foreground" />
           <h3 className="font-heading text-xs tracking-[0.2em] uppercase text-muted-foreground/70">
-            Visão geral de status
+            Saúde da fase web
           </h3>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            { label: "Ativos", value: active, status: "ativo" as Status },
-            { label: "Pendentes", value: pending, status: "pendente" as Status },
-            { label: "Não implementados", value: missing, status: "nao_implementado" as Status },
+            { label: "Ativos", value: ativos, status: "ativo" as Status },
+            { label: "Pendentes", value: pendentes, status: "pendente" as Status },
+            { label: "Opcionais", value: opcionais, status: "opcional" as Status },
+            { label: "Próxima fase", value: proximaFase, status: "proxima_fase" as Status },
           ].map((s) => {
             const meta = STATUS_META[s.status];
             return (
@@ -376,16 +398,19 @@ const AdminSettings = () => {
           })}
         </div>
         <p className="text-[11px] text-muted-foreground/80 leading-relaxed px-1">
-          Toque em qualquer item abaixo para ver o que falta, dependências e o próximo passo concreto.
+          Apenas itens <span className="text-foreground">Ativos</span> e{" "}
+          <span className="text-foreground">Pendentes</span> impactam o lançamento web.{" "}
+          <span className="text-foreground">Opcionais</span> não bloqueiam.{" "}
+          <span className="text-foreground">Próxima fase</span> entra no roadmap mobile.
         </p>
       </section>
 
-      {/* ═══ CAMADA 2: AÇÕES E CONFIGURAÇÕES REAIS ═══ */}
+      {/* ═══ CAMADA 2: ITENS POR ÁREA ═══ */}
       <section className="space-y-6">
         <div className="flex items-center gap-2">
           <Wrench className="w-3.5 h-3.5 text-muted-foreground" />
           <h3 className="font-heading text-xs tracking-[0.2em] uppercase text-muted-foreground/70">
-            Ações e configurações reais
+            Itens por área
           </h3>
         </div>
 
