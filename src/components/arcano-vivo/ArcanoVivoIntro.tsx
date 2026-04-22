@@ -457,15 +457,15 @@ export function ArcanoVivoIntro({
         )}
       </div>
 
-      {/* Subtitle & keywords */}
+      {/* Subtitle & keywords — hierarquia clara: subtítulo discreto, keywords como apoio, arquétipo como bloco editorial */}
       <div
-        className="mt-7 text-center transition-all duration-700"
+        className="mt-8 text-center transition-all duration-700 max-w-md"
         style={{ opacity: isAwakened ? 1 : 0, transform: isAwakened ? "translateY(0)" : "translateY(8px)" }}
       >
-        <p className="text-[11px] font-heading tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(36 38% 36%)" }}>
+        <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-4" style={{ color: "hsl(36 38% 36% / 0.85)" }}>
           {subtitle}
         </p>
-        <div className="flex flex-wrap justify-center gap-1.5">
+        <div className="flex flex-wrap justify-center gap-2">
           {keywords.map((kw) => (
             <span
               key={kw}
@@ -482,10 +482,10 @@ export function ArcanoVivoIntro({
         </div>
       </div>
 
-      {/* Archetype */}
+      {/* Archetype — bloco editorial separado, com respiro maior e tipografia mais legível */}
       <p
-        className="mt-5 text-center text-sm font-accent italic leading-relaxed max-w-xs transition-all duration-700"
-        style={{ color: "hsl(230 22% 22% / 0.78)", opacity: isBreathing ? 1 : 0 }}
+        className="mt-6 text-center text-base font-accent italic leading-[1.7] max-w-sm transition-all duration-700"
+        style={{ color: "hsl(230 22% 22% / 0.82)", opacity: isBreathing ? 1 : 0 }}
       >
         {archetype}
       </p>
