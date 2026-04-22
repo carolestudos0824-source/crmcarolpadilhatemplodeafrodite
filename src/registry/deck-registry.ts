@@ -23,6 +23,9 @@ import hierofanteImage from "@/assets/arcano-5-hierofante.jpg";
 import enamoradosImage from "@/assets/arcano-6-enamorados.jpg";
 import carroImage from "@/assets/arcano-7-carro.jpg";
 import justicaImage from "@/assets/arcano-8-justica.jpg";
+import eremitaImage from "@/assets/arcano-9-eremita.jpg";
+import rodaFortunaImage from "@/assets/arcano-10-roda-fortuna.jpg";
+import forcaImage from "@/assets/arcano-11-forca.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -133,19 +136,19 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 9, numeral: "IX", name: "O Eremita", slug: "o-eremita",
     subtitle: "A Luz Interior",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: eremitaImage, assetStatus: "official",
     canonicalSymbols: ["lanterna com estrela de seis pontas", "cajado", "manto cinza", "montanha gelada", "cabeça baixa"],
   },
   {
     number: 10, numeral: "X", name: "A Roda da Fortuna", slug: "a-roda-da-fortuna",
     subtitle: "Os Ciclos do Destino",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: rodaFortunaImage, assetStatus: "official",
     canonicalSymbols: ["roda com letras TARO/YHVH", "esfinge no topo", "serpente descendo", "Anúbis subindo", "quatro criaturas aladas nos cantos"],
   },
   {
     number: 11, numeral: "XI", name: "A Força", slug: "a-forca",
     subtitle: "A Coragem Suave",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: forcaImage, assetStatus: "official",
     canonicalSymbols: ["mulher acariciando leão", "lemniscata sobre a cabeça", "guirlanda de flores", "vestido branco", "montanha ao fundo"],
   },
   {
