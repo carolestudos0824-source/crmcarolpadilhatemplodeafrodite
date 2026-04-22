@@ -23,6 +23,7 @@ Beta = 5 módulos (Fundamentos, Louco, Mago, Sacerdotisa, Leitura Simbólica). V
 - [Motion language](mem://design/motion-language) — Microanimation specs per element: buttons, cards, quiz, progress, premium, journeymap
 - [Lesson structure](mem://features/lesson-layers) — 5-layer pedagogical model with skip logic
 - [Editorial guideline](mem://features/editorial-guideline) — Rider-Waite-Smith como base simbólica principal
+- [**🎴 Deck fidelity standard**](mem://features/deck-fidelity-standard) — Scan canônico RWS para todas as 78 cartas, UI ao redor, pipeline de instalação
 - [Arcano editorial model](mem://features/arcano-editorial-model) — 17-field standardized structure for all 22 Major Arcana
 - [Arcano Vivo system](mem://features/arcano-vivo-system) — 5 phases, 3 intensity levels, body/voice/gesture specs
 - [Naipes oficiais](mem://features/naipes-oficiais) — Definição canônica dos 4 naipes: essência, atmosfera, função, desafios, potencial, linguagem, cor, motion
