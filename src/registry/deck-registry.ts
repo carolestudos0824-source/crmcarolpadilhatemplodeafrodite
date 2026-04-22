@@ -360,6 +360,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "céu aberto sem nuvens",
     ],
   },
+  "copas-4": {
+    cardImage: menorCopas4,
+    subtitle: "A Apatia e o Cálice Oferecido",
+    canonicalSymbols: [
+      "jovem sentado sob a árvore com braços cruzados",
+      "três cálices alinhados no chão à sua frente",
+      "quarto cálice oferecido por mão emergindo da nuvem",
+      "olhar contemplativo e desinteressado",
+      "colina verde isolando a cena",
+    ],
+  },
+  "copas-5": {
+    cardImage: menorCopas5,
+    subtitle: "O Luto e o que Permanece",
+    canonicalSymbols: [
+      "figura encapuzada de manto negro",
+      "três cálices derramados aos pés",
+      "dois cálices ainda em pé atrás dela",
+      "rio escuro a separar a margem",
+      "ponte ao fundo levando ao castelo",
+    ],
+  },
+  "copas-6": {
+    cardImage: menorCopas6,
+    subtitle: "A Memória e a Inocência",
+    canonicalSymbols: [
+      "criança maior entregando cálice com flor branca",
+      "criança menor recebendo a oferta",
+      "seis cálices floridos com flores brancas de cinco pétalas",
+      "vila medieval ao fundo",
+      "sentinela em xadrez se afastando",
+    ],
+  },
 };
 
 /** 40 Arcanos Menores numerados (1-10 × 4 naipes) */
