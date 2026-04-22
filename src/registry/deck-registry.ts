@@ -23,6 +23,9 @@ import hierofanteImage from "@/assets/arcano-5-hierofante.jpg";
 import enamoradosImage from "@/assets/arcano-6-enamorados.jpg";
 import carroImage from "@/assets/arcano-7-carro.jpg";
 import justicaImage from "@/assets/arcano-8-justica.jpg";
+import eremitaImage from "@/assets/arcano-9-eremita.jpg";
+import rodaFortunaImage from "@/assets/arcano-10-roda-fortuna.jpg";
+import forcaImage from "@/assets/arcano-11-forca.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
