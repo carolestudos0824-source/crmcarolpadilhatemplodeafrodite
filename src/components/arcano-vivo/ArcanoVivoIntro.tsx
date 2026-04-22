@@ -375,16 +375,16 @@ export function ArcanoVivoIntro({
                     }}
                   >
                     <div
-                      className="px-2.5 py-1 rounded-lg text-[9px] font-heading tracking-wider whitespace-nowrap"
+                      className="px-3.5 py-2 rounded-lg text-[11px] font-heading tracking-wider whitespace-nowrap"
                       style={{
-                        background: "hsl(230 25% 8% / 0.85)",
+                        background: "hsl(230 25% 8% / 0.92)",
                         color: `hsl(${spot.color})`,
-                        border: `1px solid hsl(${spot.color} / 0.3)`,
-                        boxShadow: `0 4px 16px hsl(${spot.color} / 0.2)`,
-                        maxWidth: "180px",
+                        border: `1px solid hsl(${spot.color} / 0.4)`,
+                        boxShadow: `0 6px 20px hsl(${spot.color} / 0.25)`,
+                        maxWidth: "220px",
                         whiteSpace: "normal",
                         textAlign: "center",
-                        lineHeight: "1.4",
+                        lineHeight: "1.5",
                       }}
                     >
                       {spot.label}
