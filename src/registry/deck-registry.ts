@@ -20,6 +20,9 @@ import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
 import imperatrizImage from "@/assets/arcano-3-imperatriz.jpg";
 import imperadorImage from "@/assets/arcano-4-imperador.jpg";
 import hierofanteImage from "@/assets/arcano-5-hierofante.jpg";
+import enamoradosImage from "@/assets/arcano-6-enamorados.jpg";
+import carroImage from "@/assets/arcano-7-carro.jpg";
+import justicaImage from "@/assets/arcano-8-justica.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -112,19 +115,19 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 6, numeral: "VI", name: "Os Enamorados", slug: "os-enamorados",
     subtitle: "A Escolha do Coração",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: enamoradosImage, assetStatus: "official",
     canonicalSymbols: ["arcanjo Rafael", "homem e mulher nus", "árvore da vida com chamas", "árvore do conhecimento com serpente", "sol radiante"],
   },
   {
     number: 7, numeral: "VII", name: "O Carro", slug: "o-carro",
     subtitle: "A Vitória da Vontade",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: carroImage, assetStatus: "official",
     canonicalSymbols: ["duas esfinges (preta e branca)", "dossel estrelado", "armadura com luas nos ombros", "cidade ao fundo", "lemniscata"],
   },
   {
     number: 8, numeral: "VIII", name: "A Justiça", slug: "a-justica",
     subtitle: "O Equilíbrio Kármico",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: justicaImage, assetStatus: "official",
     canonicalSymbols: ["espada erguida", "balança", "coroa com pedra azul", "manto vermelho", "véu entre colunas"],
   },
   {
