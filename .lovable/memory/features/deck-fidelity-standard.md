@@ -1,63 +1,94 @@
 ---
 name: deck-fidelity-standard
-description: Padrão oficial de fidelidade visual do deck — scan canônico Rider-Waite-Smith para todas as 78 cartas, com UI do app ao redor
+description: Padrão CONGELADO de fidelidade visual do deck — scan canônico Rider-Waite-Smith para todas as 78 cartas, com UI do app ao redor. Versão v1.0 (validada com O Louco).
 type: feature
 ---
 
-# Padrão de Fidelidade do Deck (Rider-Waite-Smith)
+# Padrão CONGELADO do Arcano Vivo (v1.0)
 
-## Decisão definitiva
+> Padrão validado com O Louco como carta piloto. **Não alterar sem reabrir auditoria.**
 
-O app ensina **Rider-Waite-Smith (1909)**. A imagem da carta é **canônica**, nunca reilustrada por IA.
+## 1. Decisão visual definitiva
 
-## Regra das camadas
+O app ensina **Rider-Waite-Smith (1909)**. A imagem da carta é **canônica e imutável**.
+**Proibido** usar `imagegen--generate_image` ou `imagegen--edit_image` para gerar/editar arte de carta.
 
-| Camada | Tratamento |
+## 2. Regra das camadas (inviolável)
+
+| Camada | Tratamento | Quem manda |
+|---|---|---|
+| **Carta (asset)** | Scan oficial RWS de Pamela Colman Smith, 1909. PD-US. | Wikimedia Commons |
+| **Fundo / atmosfera** | Gradientes radiais, partículas, glow âmbar/dourado | App (config por arcano) |
+| **Moldura** | Borda dourada, sombra, corner ornaments | App |
+| **Tipografia externa** | Cinzel (heading), Cormorant (accent), Inter (body) | App |
+| **Animações** | Respirar, shimmer, spotlights — sempre por cima/ao redor | App |
+
+## 3. Fonte canônica
+
+- Wikimedia Commons — coleção "Rider-Waite Tarot deck" (PD-US, 1909)
+- Padrão de URL: `https://upload.wikimedia.org/wikipedia/commons/{a}/{ab}/RWS_Tarot_{NN}_{Name}.jpg`
+- Referência confirmada:
+  - 0 — `9/90/RWS_Tarot_00_Fool.jpg`
+  - 1 — `d/de/RWS_Tarot_01_Magician.jpg`
+  - 2 — `8/88/RWS_Tarot_02_High_Priestess.jpg`
+
+## 4. Pipeline de instalação (por carta)
+
+```bash
+curl -sSL -A "Mozilla/5.0" -o /tmp/{slug}.jpg "{wikimedia_url}"
+```
+```python
+from PIL import Image
+img = Image.open('/tmp/{slug}.jpg').convert('RGB')
+w, h = img.size
+if w > 800: img = img.resize((800, int(h*800/w)), Image.LANCZOS)
+img.save('src/assets/arcano-{NN}-{slug}.jpg', 'JPEG', quality=88, optimize=True, progressive=True)
+```
+Validar visualmente: numeral, título e composição canônicos.
+
+## 5. Hierarquia tipográfica fixa (intro)
+
+| Elemento | Tamanho | Tracking | Peso/estilo | Cor |
+|---|---|---|---|---|
+| Numeral (sobre carta) | text-xs (12px) | 0.4em | font-heading | glow accent |
+| Nome (sobre carta) | text-2xl (24px) | wide | font-heading | hsl(36 33% 95%) |
+| Subtítulo (abaixo) | 10px | 0.4em uppercase | font-heading | hsl(36 38% 36% / 0.85) |
+| Keywords (pílulas) | 11px | wide | font-medium | hsl(36 38% 30%) |
+| Arquétipo (bloco editorial) | text-base (16px) | normal | italic, leading-1.7 | hsl(230 22% 22% / 0.82) |
+| Voz do arcano | text-base/lg (16-18px) | normal | italic, leading-relaxed | hsl(230 28% 14%) |
+| Legenda spotlight | 11px | wider | font-heading | glow.color |
+
+## 6. Timing mínimo de leitura (fixo)
+
+| Evento | Duração |
 |---|---|
-| **Carta** (asset) | Scan oficial RWS de Pamela Colman Smith, 1909. Domínio público nos EUA. NUNCA reilustrar. |
-| **Fundo / atmosfera** | Identidade do app: gradientes radiais, partículas, glow âmbar/dourado. Pode variar por arcano. |
-| **Moldura da carta** | UI do app: borda dourada, sombra, corner ornaments. Não desenhar sobre a arte. |
-| **Tipografia externa** | Fontes do app (Cinzel, Cormorant Garamond, Inter). Numeral e título exibidos FORA da carta também, como reforço pedagógico. |
-| **Animações** | Vivência simbólica do app: respirar, shimmer, spotlights. Sempre por cima/ao redor — nunca alterando a arte. |
+| Spotlight de símbolo visível | **4.2s** |
+| Pausa entre último spotlight e voz | **4.8s** |
+| Velocidade typewriter (normal) | 34ms/char |
+| Velocidade typewriter (gentle) | 38ms/char |
+| Velocidade typewriter (mystical) | 42ms/char |
+| Botão "Pular animação" | sempre visível em fases não-finais |
+| Botão "Revelar" | durante typewriter |
 
-## Fonte canônica
+## 7. Regras de mobile (fixas)
 
-- **Wikimedia Commons** — coleção `Rider-Waite Tarot deck` (PD-US, 1909)
-- URL base: `https://upload.wikimedia.org/wikipedia/commons/`
-- O Louco (piloto): `9/90/RWS_Tarot_00_Fool.jpg`
+- Carta nunca menor que `w-48 h-72` (192×288px)
+- Subtítulo + keywords + arquétipo empilhados verticalmente, com gap mínimo de 16px
+- Voz do arcano: max-w-md, padding interno mínimo de 20px
+- Legendas de spotlight: max-w-220px com `whiteSpace: normal`
+- Não permitir overflow horizontal
 
-## Pipeline de instalação (por carta)
+## 8. Status do roll-out
 
-1. `curl` do scan original
-2. Resize para 800px de largura (Pillow LANCZOS)
-3. `JPEG quality=88, optimize, progressive` → ~350KB
-4. Salvar em `src/assets/arcano-{NN}-{slug}.jpg` (Maiores) ou padrão equivalente para Menores
-5. Verificar visualmente: numeral correto, título correto, composição canônica
+- [x] **0 — O Louco** (piloto validado, v1.0)
+- [x] **1 — O Mago** (asset oficial instalado)
+- [x] **2 — A Sacerdotisa** (asset oficial instalado)
+- [ ] 3–21 Maiores
+- [ ] 56 Menores
 
-## Tempos de leitura (intro cinematográfica)
+## 9. Restrições absolutas
 
-- Spotlight de símbolo: **4.2s** mínimo (antes 2s — não dava tempo de ler)
-- Pausa entre fim do último spotlight e voz do arcano: **4.8s**
-- Velocidade de digitação: **34ms/char** (normal) / 38 (gentle) / 42 (mystical)
-- Botão "Pular animação" sempre visível durante fases não-finais
-- Botão "Revelar" (skip typing) durante a digitação
-
-## Hierarquia visual (intro)
-
-1. **Carta** — protagonista, centralizada, com glow
-2. **Numeral + Nome** — sobreposto na carta (bottom)
-3. **Subtítulo** — 10px, tracking 0.4em, opacidade 0.85 — discreto
-4. **Keywords** — 11px, pílulas com fundo translúcido
-5. **Arquétipo** — 16px italic, leading 1.7 — bloco editorial com respiro
-6. **Voz do arcano** — card destacado, 16-18px, leading relaxed
-
-## Status do roll-out
-
-- [x] **0 — O Louco** (piloto, scan oficial instalado)
-- [ ] 1–21 Maiores (a aplicar mesmo pipeline)
-- [ ] 56 Menores (a aplicar mesmo pipeline)
-
-## Restrições
-
-- Não usar `imagegen--generate_image` ou `edit_image` para gerar/editar arte de carta
-- Reservar IA generativa apenas para: fundos atmosféricos, decorações da UI, ícones
+- ❌ IA generativa não toca arte de carta
+- ❌ Não desenhar por cima da carta (numerais externos sim, decoração da arte não)
+- ❌ Não substituir scan por releitura "moderna"
+- ✅ IA pode ser usada para fundos, ícones, decorações da UI
