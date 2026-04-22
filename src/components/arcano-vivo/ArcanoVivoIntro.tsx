@@ -241,6 +241,25 @@ export function ArcanoVivoIntro({
         </>
       )}
 
+      {/* Card identity ABOVE the card — numeral + nome fora da arte para protagonismo total */}
+      <div
+        className="text-center mb-5 sm:mb-6 transition-all duration-1000"
+        style={{ opacity: isAwakened ? 1 : 0, transform: isAwakened ? "translateY(0)" : "translateY(-8px)" }}
+      >
+        <p
+          className="font-heading text-[11px] sm:text-xs tracking-[0.45em] mb-2"
+          style={{ color: `hsl(${config.glowColor})` }}
+        >
+          {numeral}
+        </p>
+        <h1
+          className="font-heading text-2xl sm:text-3xl tracking-wide"
+          style={{ color: "hsl(36 38% 22%)" }}
+        >
+          {name}
+        </h1>
+      </div>
+
       {/* Card container with perspective */}
       <div className="relative" style={{ perspective: "800px" }}>
         {/* Outer aura (breathing) */}
@@ -252,9 +271,9 @@ export function ArcanoVivoIntro({
           }}
         />
 
-        {/* The card itself — with living breathe and emergence */}
+        {/* The card itself — clean, art has total protagonism */}
         <div
-          className="arcano-vivo-card relative w-60 h-[22rem] sm:w-72 sm:h-[26rem] rounded-2xl overflow-hidden"
+          className="arcano-vivo-card relative w-56 h-[21rem] sm:w-72 sm:h-[26rem] rounded-2xl overflow-hidden"
           style={{
             border: `2px solid hsl(${config.glowColor} / 0.40)`,
             transformStyle: "preserve-3d",
@@ -272,7 +291,7 @@ export function ArcanoVivoIntro({
             transition: "box-shadow 1.5s ease-out",
           }}
         >
-          {/* Card image */}
+          {/* Card image — full bleed, no overlays cobrindo a arte */}
           <img
             src={cardImage}
             alt={name}
@@ -286,30 +305,30 @@ export function ArcanoVivoIntro({
             }}
           />
 
-          {/* Shimmer sweep */}
+          {/* Shimmer sweep — efêmero, passa rapidamente sobre a arte */}
           {isShimmering && (
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: `linear-gradient(105deg, transparent 30%, hsl(${config.glowColor} / 0.35) 50%, transparent 70%)`,
+                background: `linear-gradient(105deg, transparent 30%, hsl(${config.glowColor} / 0.25) 50%, transparent 70%)`,
                 animation: "arcano-shimmer-sweep 1.2s ease-in-out forwards",
               }}
             />
           )}
 
-          {/* Light crack before emergence */}
+          {/* Light crack before emergence — opacidade reduzida para não cobrir a arte */}
           {phase === "emerge" && (
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: `linear-gradient(180deg, hsl(${config.glowColor} / 0.6), hsl(${config.ambientColor} / 0.3))`,
+                background: `linear-gradient(180deg, hsl(${config.glowColor} / 0.25), transparent 60%)`,
                 animation: "arcano-light-crack 1.5s ease-out forwards",
                 mixBlendMode: "screen",
               }}
             />
           )}
 
-          {/* Fabric flow overlays */}
+          {/* Fabric flow overlays — sutis, mixBlendMode overlay preserva a arte */}
           {isBreathing && config.fabricRegions?.map((region, i) => (
             <div
               key={`fabric-${i}`}
@@ -327,7 +346,7 @@ export function ArcanoVivoIntro({
             />
           ))}
 
-          {/* Eye gaze highlight */}
+          {/* Eye gaze highlight — sutil, não cobre */}
           {isBreathing && config.gazePosition && (
             <div
               className="absolute pointer-events-none rounded-full"
@@ -343,55 +362,24 @@ export function ArcanoVivoIntro({
             />
           )}
 
-          {/* Symbol spotlights */}
+          {/* Symbol spotlights — APENAS o glow circular fica sobre a carta. Labels foram movidas para fora. */}
           {config.symbolSpotlights?.map((spot, i) => {
             const isActive = showSymbols && i <= activeSpotlight;
-            const isCurrent = showSymbols && i === activeSpotlight;
             return (
-              <div key={`spot-${i}`}>
-                {/* Glow */}
-                <div
-                  className="absolute pointer-events-none rounded-full arcano-vivo-spotlight transition-opacity duration-700"
-                  style={{
-                    left: `${spot.x}%`,
-                    top: `${spot.y}%`,
-                    width: `${spot.size}px`,
-                    height: `${spot.size}px`,
-                    opacity: isActive ? 1 : 0,
-                    "--symbol-color": spot.color,
-                    animation: isActive ? `arcano-symbol-pulse ${spot.duration}s ease-in-out infinite` : undefined,
-                    background: `radial-gradient(circle, hsl(${spot.color} / 0.35) 0%, transparent 70%)`,
-                  } as React.CSSProperties}
-                />
-                {/* Label */}
-                {isCurrent && showSpotlightLabel && (
-                  <div
-                    className="absolute z-10 pointer-events-none"
-                    style={{
-                      left: `${spot.x}%`,
-                      top: `${Math.min(spot.y + 8, 90)}%`,
-                      transform: "translateX(-50%)",
-                      animation: "arcano-voice-emerge 0.4s ease-out",
-                    }}
-                  >
-                    <div
-                      className="px-3.5 py-2 rounded-lg text-[11px] font-heading tracking-wider whitespace-nowrap"
-                      style={{
-                        background: "hsl(230 25% 8% / 0.92)",
-                        color: `hsl(${spot.color})`,
-                        border: `1px solid hsl(${spot.color} / 0.4)`,
-                        boxShadow: `0 6px 20px hsl(${spot.color} / 0.25)`,
-                        maxWidth: "220px",
-                        whiteSpace: "normal",
-                        textAlign: "center",
-                        lineHeight: "1.5",
-                      }}
-                    >
-                      {spot.label}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <div
+                key={`spot-${i}`}
+                className="absolute pointer-events-none rounded-full arcano-vivo-spotlight transition-opacity duration-700"
+                style={{
+                  left: `${spot.x}%`,
+                  top: `${spot.y}%`,
+                  width: `${spot.size}px`,
+                  height: `${spot.size}px`,
+                  opacity: isActive ? 1 : 0,
+                  "--symbol-color": spot.color,
+                  animation: isActive ? `arcano-symbol-pulse ${spot.duration}s ease-in-out infinite` : undefined,
+                  background: `radial-gradient(circle, hsl(${spot.color} / 0.35) 0%, transparent 70%)`,
+                } as React.CSSProperties}
+              />
             );
           })}
 
@@ -407,30 +395,6 @@ export function ArcanoVivoIntro({
               }}
             />
           )}
-
-          {/* Bottom gradient overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `linear-gradient(to top, hsl(230 25% 6% / 0.75) 0%, hsl(230 25% 8% / 0.2) 35%, transparent 65%)`,
-            }}
-          />
-
-          {/* Card identity */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-            <p
-              className="font-heading text-xs tracking-[0.4em] mb-1.5 transition-opacity duration-1000"
-              style={{ color: `hsl(${config.glowColor})`, opacity: isAwakened ? 1 : 0 }}
-            >
-              {numeral}
-            </p>
-            <h1
-              className="font-heading text-2xl tracking-wide transition-opacity duration-1000"
-              style={{ color: "hsl(36 33% 95%)", opacity: isAwakened ? 1 : 0, textShadow: "0 2px 12px hsl(230 25% 6% / 0.6)" }}
-            >
-              {name}
-            </h1>
-          </div>
         </div>
 
         {/* Corner ornaments with breathing */}
@@ -457,19 +421,37 @@ export function ArcanoVivoIntro({
         )}
       </div>
 
-      {/* Subtitle & keywords — hierarquia clara: subtítulo discreto, keywords como apoio, arquétipo como bloco editorial */}
+      {/* Spotlight label — FORA da carta, em área dedicada abaixo. Reserva altura fixa para evitar saltos de layout. */}
+      <div className="mt-5 min-h-[60px] flex items-center justify-center w-full max-w-sm px-2">
+        {showSymbols && activeSpotlight >= 0 && showSpotlightLabel && config.symbolSpotlights?.[activeSpotlight] && (
+          <div
+            className="px-4 py-2.5 rounded-xl text-[12px] sm:text-[13px] font-heading tracking-wide text-center"
+            style={{
+              background: `hsl(${config.symbolSpotlights[activeSpotlight].color} / 0.08)`,
+              color: `hsl(${config.symbolSpotlights[activeSpotlight].color})`,
+              border: `1px solid hsl(${config.symbolSpotlights[activeSpotlight].color} / 0.30)`,
+              animation: "arcano-voice-emerge 0.4s ease-out",
+              lineHeight: "1.5",
+            }}
+          >
+            {config.symbolSpotlights[activeSpotlight].label}
+          </div>
+        )}
+      </div>
+
+      {/* Subtitle & keywords — abaixo da carta, hierarquia clara */}
       <div
-        className="mt-8 text-center transition-all duration-700 max-w-md"
+        className="mt-6 sm:mt-8 text-center transition-all duration-700 max-w-md px-2"
         style={{ opacity: isAwakened ? 1 : 0, transform: isAwakened ? "translateY(0)" : "translateY(8px)" }}
       >
-        <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-4" style={{ color: "hsl(36 38% 36% / 0.85)" }}>
+        <p className="text-[10px] sm:text-[11px] font-heading tracking-[0.4em] uppercase mb-3 sm:mb-4" style={{ color: "hsl(36 38% 36% / 0.85)" }}>
           {subtitle}
         </p>
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
           {keywords.map((kw) => (
             <span
               key={kw}
-              className="px-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
+              className="px-2.5 sm:px-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
               style={{
                 background: `hsl(${config.glowColor} / 0.10)`,
                 border: `1px solid hsl(${config.glowColor} / 0.22)`,
@@ -482,9 +464,9 @@ export function ArcanoVivoIntro({
         </div>
       </div>
 
-      {/* Archetype — bloco editorial separado, com respiro maior e tipografia mais legível */}
+      {/* Archetype — bloco editorial com respiro generoso */}
       <p
-        className="mt-6 text-center text-base font-accent italic leading-[1.7] max-w-sm transition-all duration-700"
+        className="mt-5 sm:mt-6 text-center text-[15px] sm:text-base font-accent italic leading-[1.7] max-w-sm px-4 transition-all duration-700"
         style={{ color: "hsl(230 22% 22% / 0.82)", opacity: isBreathing ? 1 : 0 }}
       >
         {archetype}
