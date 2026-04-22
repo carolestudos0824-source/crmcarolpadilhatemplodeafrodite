@@ -32,6 +32,9 @@ import temperancaImage from "@/assets/arcano-14-temperanca.jpg";
 import diaboImage from "@/assets/arcano-15-diabo.jpg";
 import torreImage from "@/assets/arcano-16-torre.jpg";
 import estrelaImage from "@/assets/arcano-17-estrela.jpg";
+import luaImage from "@/assets/arcano-18-lua.jpg";
+import solImage from "@/assets/arcano-19-sol.jpg";
+import julgamentoImage from "@/assets/arcano-20-julgamento.jpg";
 
 // ─── Tipos canônicos ─────────────────────────────────────────────
 export type CardCategory = "maior" | "menor" | "corte";
@@ -196,19 +199,19 @@ export const DECK_REGISTRY: readonly DeckEntry[] = [
   {
     number: 18, numeral: "XVIII", name: "A Lua", slug: "a-lua",
     subtitle: "O Caminho da Intuição",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: luaImage, assetStatus: "official",
     canonicalSymbols: ["lua com rosto de perfil", "15 gotas iod caindo", "cão e lobo uivando", "lagostim saindo da água", "duas torres ao fundo"],
   },
   {
     number: 19, numeral: "XIX", name: "O Sol", slug: "o-sol",
     subtitle: "A Alegria Radiante",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: solImage, assetStatus: "official",
     canonicalSymbols: ["sol antropomorfizado central", "criança nua sobre cavalo branco", "girassóis", "estandarte vermelho", "muro de pedra"],
   },
   {
     number: 20, numeral: "XX", name: "O Julgamento", slug: "o-julgamento",
     subtitle: "O Despertar Final",
-    cardImage: placeholderImage, assetStatus: "placeholder",
+    cardImage: julgamentoImage, assetStatus: "official",
     canonicalSymbols: ["arcanjo Gabriel com trombeta", "estandarte com cruz vermelha", "figuras se erguendo de caixões", "montanhas geladas", "águas"],
   },
   {
