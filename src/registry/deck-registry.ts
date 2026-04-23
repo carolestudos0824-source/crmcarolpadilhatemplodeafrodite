@@ -39,6 +39,9 @@ import menorPaus10 from "@/assets/menor-paus-10.jpg";
 import menorOuros1 from "@/assets/menor-ouros-1.jpg";
 import menorOuros2 from "@/assets/menor-ouros-2.jpg";
 import menorOuros3 from "@/assets/menor-ouros-3.jpg";
+import menorOuros4 from "@/assets/menor-ouros-4.jpg";
+import menorOuros5 from "@/assets/menor-ouros-5.jpg";
+import menorOuros6 from "@/assets/menor-ouros-6.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -595,6 +598,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "três pentáculos esculpidos em alto-relevo no arco",
       "interior de pedra de catedral em construção",
       "diálogo silencioso entre execução, projeto e ofício sagrado",
+    ],
+  },
+  "ouros-4": {
+    cardImage: menorOuros4,
+    subtitle: "O Guardião do Tesouro",
+    canonicalSymbols: [
+      "figura coroada sentada agarrando um pentáculo contra o peito",
+      "pentáculo equilibrado sobre a coroa selando a mente",
+      "dois pentáculos sob os pés firmando a base",
+      "postura rígida e fechada — controle do que se tem",
+      "cidade ao fundo da qual a figura se isola",
+    ],
+  },
+  "ouros-5": {
+    cardImage: menorOuros5,
+    subtitle: "A Travessia no Frio",
+    canonicalSymbols: [
+      "dois mendigos atravessando a neve sob a nevasca",
+      "figura coxa apoiada em muleta",
+      "companheira encapuzada caminhando ao lado",
+      "vitral iluminado com cinco pentáculos no alto",
+      "igreja ao fundo — refúgio próximo, mas ignorado",
+    ],
+  },
+  "ouros-6": {
+    cardImage: menorOuros6,
+    subtitle: "A Balança da Caridade",
+    canonicalSymbols: [
+      "mercador em vestes ricas distribuindo moedas",
+      "balança equilibrada erguida na mão esquerda",
+      "dois mendigos ajoelhados recebendo a esmola",
+      "seis pentáculos suspensos no ar entre eles",
+      "trocas medidas — quem dá, quem recebe e por quê",
     ],
   },
 };
