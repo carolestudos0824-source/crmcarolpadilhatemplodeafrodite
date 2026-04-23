@@ -49,6 +49,9 @@ import menorOuros10 from "@/assets/menor-ouros-10.jpg";
 import menorEspadas1 from "@/assets/menor-espadas-1.jpg";
 import menorEspadas2 from "@/assets/menor-espadas-2.jpg";
 import menorEspadas3 from "@/assets/menor-espadas-3.jpg";
+import menorEspadas4 from "@/assets/menor-espadas-4.jpg";
+import menorEspadas5 from "@/assets/menor-espadas-5.jpg";
+import menorEspadas6 from "@/assets/menor-espadas-6.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -715,6 +718,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "chuva oblíqua caindo sobre toda a cena",
       "ausência total de figura humana — a dor é o protagonista",
       "composição central e simétrica — luto que não se evita",
+    ],
+  },
+  "espadas-4": {
+    cardImage: menorEspadas4,
+    subtitle: "O Repouso do Cavaleiro",
+    canonicalSymbols: [
+      "cavaleiro deitado em efígie sobre tumba de pedra dentro de uma capela",
+      "mãos unidas em prece — pausa, recolhimento, retiro",
+      "três espadas suspensas na parede acima da figura",
+      "uma espada gravada horizontalmente sob o corpo — o conflito guardado",
+      "vitral colorido ao fundo com cena de bênção — silêncio sagrado",
+    ],
+  },
+  "espadas-5": {
+    cardImage: menorEspadas5,
+    subtitle: "A Vitória Amarga",
+    canonicalSymbols: [
+      "homem em primeiro plano recolhendo três espadas com sorriso ambíguo",
+      "duas figuras afastadas de costas — derrota, humilhação, retirada",
+      "céu rasgado por nuvens irregulares e ventosas",
+      "duas espadas caídas no chão — abandono, rendição",
+      "água agitada ao fundo — emoções turvas após o conflito",
+    ],
+  },
+  "espadas-6": {
+    cardImage: menorEspadas6,
+    subtitle: "A Travessia das Águas",
+    canonicalSymbols: [
+      "barqueiro conduzindo barca silenciosa sobre águas calmas",
+      "mulher encapuzada e criança sentadas, voltadas para a outra margem",
+      "seis espadas fincadas verticalmente na proa — peso transportado",
+      "água lisa do lado direito, ondulada do lado esquerdo — partida do turbulento",
+      "margem distante ao horizonte — destino ainda não revelado",
     ],
   },
 };
