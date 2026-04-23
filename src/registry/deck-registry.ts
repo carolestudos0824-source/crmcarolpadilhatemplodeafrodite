@@ -36,6 +36,9 @@ import menorPaus7 from "@/assets/menor-paus-7.jpg";
 import menorPaus8 from "@/assets/menor-paus-8.jpg";
 import menorPaus9 from "@/assets/menor-paus-9.jpg";
 import menorPaus10 from "@/assets/menor-paus-10.jpg";
+import menorOuros1 from "@/assets/menor-ouros-1.jpg";
+import menorOuros2 from "@/assets/menor-ouros-2.jpg";
+import menorOuros3 from "@/assets/menor-ouros-3.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -559,6 +562,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "casa e vila ao fundo, próximas mas ainda distantes",
       "campo arado mostrando a jornada já cumprida",
       "céu claro indicando que o peso é responsabilidade, não punição",
+    ],
+  },
+  "ouros-1": {
+    cardImage: menorOuros1,
+    subtitle: "A Semente de Ouro",
+    canonicalSymbols: [
+      "mão divina emergindo da nuvem segurando o pentáculo",
+      "grande moeda dourada com pentagrama inscrito",
+      "jardim florido de lírios brancos abaixo",
+      "arco de sebe formando portal verde",
+      "montanhas distantes apontando o objetivo de longo prazo",
+    ],
+  },
+  "ouros-2": {
+    cardImage: menorOuros2,
+    subtitle: "A Dança do Equilíbrio",
+    canonicalSymbols: [
+      "jovem dançando equilibrando dois pentáculos",
+      "lemniscata (∞) verde unindo as duas moedas",
+      "chapéu pontudo vermelho em movimento",
+      "mar agitado ao fundo com dois navios em ondas altas",
+      "postura em passo de dança — equilíbrio dinâmico, não estático",
+    ],
+  },
+  "ouros-3": {
+    cardImage: menorOuros3,
+    subtitle: "A Obra das Mãos",
+    canonicalSymbols: [
+      "escultor sobre o banco trabalhando o arco da catedral",
+      "monge e arquiteto consultando os planos abertos",
+      "três pentáculos esculpidos em alto-relevo no arco",
+      "interior de pedra de catedral em construção",
+      "diálogo silencioso entre execução, projeto e ofício sagrado",
     ],
   },
 };
