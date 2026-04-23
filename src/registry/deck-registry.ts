@@ -22,6 +22,10 @@ import menorCopas3 from "@/assets/menor-copas-3.jpg";
 import menorCopas4 from "@/assets/menor-copas-4.jpg";
 import menorCopas5 from "@/assets/menor-copas-5.jpg";
 import menorCopas6 from "@/assets/menor-copas-6.jpg";
+import menorCopas7 from "@/assets/menor-copas-7.jpg";
+import menorCopas8 from "@/assets/menor-copas-8.jpg";
+import menorCopas9 from "@/assets/menor-copas-9.jpg";
+import menorCopas10 from "@/assets/menor-copas-10.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -391,6 +395,50 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "seis cálices floridos com flores brancas de cinco pétalas",
       "vila medieval ao fundo",
       "sentinela em xadrez se afastando",
+    ],
+  },
+  "copas-7": {
+    cardImage: menorCopas7,
+    subtitle: "As Visões e a Ilusão",
+    canonicalSymbols: [
+      "figura em silhueta diante de sete cálices nas nuvens",
+      "cálice com cabeça humana (desejo)",
+      "cálice com figura velada luminosa (espiritualidade)",
+      "cálice com serpente (sabedoria/tentação)",
+      "cálice com castelo (ambição), joias (riqueza), louros (vitória) e dragão (medo)",
+    ],
+  },
+  "copas-8": {
+    cardImage: menorCopas8,
+    subtitle: "A Partida Silenciosa",
+    canonicalSymbols: [
+      "figura encapuzada de manto vermelho se afastando",
+      "bastão na mão apoiando a caminhada",
+      "oito cálices empilhados deixados para trás (cinco embaixo, três em cima)",
+      "lua eclipsando o sol no céu",
+      "rio e montanhas indicando a travessia",
+    ],
+  },
+  "copas-9": {
+    cardImage: menorCopas9,
+    subtitle: "A Satisfação Plena",
+    canonicalSymbols: [
+      "homem sentado em banco baixo, braços cruzados",
+      "chapéu vermelho com pluma",
+      "nove cálices alinhados em arco sobre mesa coberta de tecido azul",
+      "expressão satisfeita e segura",
+      "fundo amarelo dourado uniforme (plenitude material)",
+    ],
+  },
+  "copas-10": {
+    cardImage: menorCopas10,
+    subtitle: "O Arco-Íris da Família",
+    canonicalSymbols: [
+      "casal de braços abertos celebrando o céu",
+      "duas crianças dançando de mãos dadas",
+      "arco-íris formado por dez cálices no alto",
+      "casa entre as árvores ao fundo",
+      "rio sereno cortando o vale verde",
     ],
   },
 };
