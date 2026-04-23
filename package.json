@@ -4,11 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/preflight.mjs",
     "dev": "vite",
+    "dev:safe": "node scripts/preflight.mjs && vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "healthcheck": "node scripts/healthcheck.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
