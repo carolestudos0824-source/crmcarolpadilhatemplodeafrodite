@@ -517,6 +517,25 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
 
 /** 40 Arcanos Menores numerados (1-10 × 4 naipes) */
 export const MENORES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
+  Array.from({ length: 10 }, (_, i) => {
+    const pos = i + 1;
+    const meta = SUIT_META[suit];
+    const id = `${suit}-${pos}`;
+    const override = MENORES_OFFICIAL_OVERRIDES[id];
+    return {
+      id,
+      category: "menor" as const,
+      name: `${POSITION_NAMES[pos]} de ${meta.name}`,
+      slug: `${POSITION_SLUGS[pos]}-de-${suit}`,
+      subtitle: override?.subtitle ?? `${meta.name} · ${meta.element}`,
+      cardImage: override?.cardImage ?? placeholderImage,
+      assetStatus: (override?.cardImage ? "official" : "placeholder") as "official" | "placeholder",
+      canonicalSymbols: override?.canonicalSymbols ?? meta.symbols,
+      naipe: suit,
+      position: pos,
+    };
+  })
+);
 
 /** 16 Cartas da Corte (4 ranks × 4 naipes) */
 export const CORTES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
