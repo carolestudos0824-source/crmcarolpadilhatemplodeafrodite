@@ -480,29 +480,43 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "manto vermelho e verde sinalizando ação e crescimento",
     ],
   },
+  "paus-4": {
+    cardImage: menorPaus4,
+    subtitle: "O Pórtico da Celebração",
+    canonicalSymbols: [
+      "quatro bastões fincados formando um pórtico",
+      "guirlanda de flores e frutos pendurada entre os bastões",
+      "duas figuras erguendo buquês em saudação",
+      "castelo amuralhado dourado ao fundo",
+      "céu amarelo aberto de festa e abundância",
+    ],
+  },
+  "paus-5": {
+    cardImage: menorPaus5,
+    subtitle: "O Embate Aberto",
+    canonicalSymbols: [
+      "cinco jovens cruzando bastões em pleno ar",
+      "vestes coloridas distintas (cada um por si)",
+      "gestos de embate sem sangue, energia em conflito",
+      "chão verde de terreno aberto",
+      "céu claro sem inimigo real ao fundo",
+    ],
+  },
+  "paus-6": {
+    cardImage: menorPaus6,
+    subtitle: "O Retorno do Vencedor",
+    canonicalSymbols: [
+      "cavaleiro montado em cavalo branco ornamentado",
+      "coroa de louros sobre o bastão erguido",
+      "guirlanda de louros sobre a cabeça do cavaleiro",
+      "cinco bastões erguidos pelos seguidores ao redor",
+      "manto vermelho como signo de vitória",
+    ],
+  },
 };
 
 /** 40 Arcanos Menores numerados (1-10 × 4 naipes) */
 export const MENORES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
-  Array.from({ length: 10 }, (_, i) => {
-    const pos = i + 1;
-    const meta = SUIT_META[suit];
-    const id = `${suit}-${pos}`;
-    const override = MENORES_OFFICIAL_OVERRIDES[id];
-    return {
-      id,
-      category: "menor" as const,
-      name: `${numberName(pos)} de ${meta.name}`,
-      slug: id,
-      subtitle: override?.subtitle ?? `${meta.element} · posição ${pos}`,
-      cardImage: override?.cardImage ?? placeholderImage,
-      assetStatus: (override ? "official" : "placeholder") as "official" | "placeholder",
-      canonicalSymbols: override?.canonicalSymbols ?? meta.symbols,
-      naipe: suit,
-      position: pos,
-    };
-  })
-);
 
 /** 16 Cartas da Corte (4 ranks × 4 naipes) */
 export const CORTES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
