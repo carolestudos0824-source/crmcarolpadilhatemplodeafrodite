@@ -42,6 +42,10 @@ import menorOuros3 from "@/assets/menor-ouros-3.jpg";
 import menorOuros4 from "@/assets/menor-ouros-4.jpg";
 import menorOuros5 from "@/assets/menor-ouros-5.jpg";
 import menorOuros6 from "@/assets/menor-ouros-6.jpg";
+import menorOuros7 from "@/assets/menor-ouros-7.jpg";
+import menorOuros8 from "@/assets/menor-ouros-8.jpg";
+import menorOuros9 from "@/assets/menor-ouros-9.jpg";
+import menorOuros10 from "@/assets/menor-ouros-10.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -631,6 +635,50 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "dois mendigos ajoelhados recebendo a esmola",
       "seis pentáculos suspensos no ar entre eles",
       "trocas medidas — quem dá, quem recebe e por quê",
+    ],
+  },
+  "ouros-7": {
+    cardImage: menorOuros7,
+    subtitle: "A Pausa do Cultivador",
+    canonicalSymbols: [
+      "jovem agricultor apoiado em sua enxada",
+      "olhar contemplativo sobre o arbusto carregado",
+      "sete pentáculos crescidos entre folhas e ramos",
+      "um pentáculo isolado aos pés — semente futura",
+      "pausa pensativa antes da colheita — vale a pena seguir?",
+    ],
+  },
+  "ouros-8": {
+    cardImage: menorOuros8,
+    subtitle: "O Aprendiz Paciente",
+    canonicalSymbols: [
+      "artesão sentado em banco de madeira batendo a cinzel",
+      "avental de trabalho e ferramentas em mãos",
+      "seis pentáculos já cravados em pilastra vertical",
+      "um sétimo recém-trabalhado, um oitavo aos pés",
+      "cidade distante ao fundo — escolha do recolhimento",
+    ],
+  },
+  "ouros-9": {
+    cardImage: menorOuros9,
+    subtitle: "O Jardim da Maturidade",
+    canonicalSymbols: [
+      "mulher elegante em vestido bordado em jardim próprio",
+      "falcão encapuzado pousado sobre a luva — instinto domado",
+      "videira carregada de uvas e nove pentáculos",
+      "caracol no chão — paciência, ritmo lento da abundância",
+      "mansão ao fundo — colheita de uma vida inteira de cuidado",
+    ],
+  },
+  "ouros-10": {
+    cardImage: menorOuros10,
+    subtitle: "A Casa das Gerações",
+    canonicalSymbols: [
+      "patriarca idoso sentado sob o arco, acompanhado por dois cães",
+      "casal jovem conversando ao lado, criança puxando a saia da mãe",
+      "dez pentáculos dispostos no padrão da árvore da vida",
+      "estandarte de torres e balança — brasão da linhagem",
+      "muralha da cidade ao fundo — patrimônio que atravessa o tempo",
     ],
   },
 };
