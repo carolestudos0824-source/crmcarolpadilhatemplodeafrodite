@@ -32,6 +32,10 @@ import menorPaus3 from "@/assets/menor-paus-3.jpg";
 import menorPaus4 from "@/assets/menor-paus-4.jpg";
 import menorPaus5 from "@/assets/menor-paus-5.jpg";
 import menorPaus6 from "@/assets/menor-paus-6.jpg";
+import menorPaus7 from "@/assets/menor-paus-7.jpg";
+import menorPaus8 from "@/assets/menor-paus-8.jpg";
+import menorPaus9 from "@/assets/menor-paus-9.jpg";
+import menorPaus10 from "@/assets/menor-paus-10.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -511,6 +515,50 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "guirlanda de louros sobre a cabeça do cavaleiro",
       "cinco bastões erguidos pelos seguidores ao redor",
       "manto vermelho como signo de vitória",
+    ],
+  },
+  "paus-7": {
+    cardImage: menorPaus7,
+    subtitle: "O Último Bastião",
+    canonicalSymbols: [
+      "figura no topo da colina defendendo a posição com um bastão",
+      "seis bastões avançando de baixo contra a figura",
+      "sapatos diferentes (um marrom, um verde) — defesa improvisada",
+      "expressão firme e determinada de resistência",
+      "vantagem do terreno alto sobre os atacantes",
+    ],
+  },
+  "paus-8": {
+    cardImage: menorPaus8,
+    subtitle: "As Flechas no Céu",
+    canonicalSymbols: [
+      "oito bastões em pleno voo paralelos pelo céu",
+      "ausência de figura humana — energia pura em movimento",
+      "rio sereno cortando a paisagem ao fundo",
+      "campo verde abaixo dos bastões",
+      "céu aberto e claro indicando trajeto livre",
+    ],
+  },
+  "paus-9": {
+    cardImage: menorPaus9,
+    subtitle: "A Sentinela Ferida",
+    canonicalSymbols: [
+      "figura apoiada em um bastão com bandagem na cabeça",
+      "oito bastões erguidos em fila atrás como cerca defensiva",
+      "olhar atento e cansado vigiando o horizonte",
+      "postura de quem já lutou e ainda espera por mais",
+      "terreno claro de vigília sob luz neutra",
+    ],
+  },
+  "paus-10": {
+    cardImage: menorPaus10,
+    subtitle: "O Peso da Conquista",
+    canonicalSymbols: [
+      "figura curvada carregando dez bastões nos braços",
+      "carga concentrada à frente, bloqueando a visão",
+      "casa e vila ao fundo, próximas mas ainda distantes",
+      "campo arado mostrando a jornada já cumprida",
+      "céu claro indicando que o peso é responsabilidade, não punição",
     ],
   },
 };
