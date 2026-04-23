@@ -26,6 +26,9 @@ import menorCopas7 from "@/assets/menor-copas-7.jpg";
 import menorCopas8 from "@/assets/menor-copas-8.jpg";
 import menorCopas9 from "@/assets/menor-copas-9.jpg";
 import menorCopas10 from "@/assets/menor-copas-10.jpg";
+import menorPaus1 from "@/assets/menor-paus-1.jpg";
+import menorPaus2 from "@/assets/menor-paus-2.jpg";
+import menorPaus3 from "@/assets/menor-paus-3.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -439,6 +442,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "arco-íris formado por dez cálices no alto",
       "casa entre as árvores ao fundo",
       "rio sereno cortando o vale verde",
+    ],
+  },
+  "paus-1": {
+    cardImage: menorPaus1,
+    subtitle: "A Centelha Criadora",
+    canonicalSymbols: [
+      "mão divina emergindo da nuvem segurando o bastão",
+      "bastão verde florescendo com folhas vivas",
+      "oito folhas caindo em forma de yod (chama hebraica)",
+      "castelo no alto da colina ao fundo",
+      "vale verde fértil sob o bastão",
+    ],
+  },
+  "paus-2": {
+    cardImage: menorPaus2,
+    subtitle: "O Mundo na Palma da Mão",
+    canonicalSymbols: [
+      "homem nobre vestido em manto vermelho no parapeito",
+      "globo terrestre seguro na mão direita",
+      "bastão à esquerda fixo no chão, segundo bastão preso à muralha",
+      "rosas e lírios cruzados em emblema (paixão e pureza)",
+      "vista do alto sobre o mar e a costa",
+    ],
+  },
+  "paus-3": {
+    cardImage: menorPaus3,
+    subtitle: "A Espera no Horizonte",
+    canonicalSymbols: [
+      "figura de costas no alto do penhasco",
+      "três bastões fincados no chão à sua volta",
+      "mão apoiada num dos bastões em postura de vigília",
+      "navios partindo no mar amarelo dourado",
+      "manto vermelho e verde sinalizando ação e crescimento",
     ],
   },
 };
