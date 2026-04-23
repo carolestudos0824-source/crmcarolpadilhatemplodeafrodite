@@ -57,6 +57,12 @@ import menorEspadas8 from "@/assets/menor-espadas-8.jpg";
 import menorEspadas9 from "@/assets/menor-espadas-9.jpg";
 import menorEspadas10 from "@/assets/menor-espadas-10.jpg";
 
+// ─── Cortes oficiais (scans RWS, domínio público) ───
+import corteCopasPajem from "@/assets/menor-copas-pajem.jpg";
+import corteCopasCavaleiro from "@/assets/menor-copas-cavaleiro.jpg";
+import corteCopasRainha from "@/assets/menor-copas-rainha.jpg";
+import corteCopasRei from "@/assets/menor-copas-rei.jpg";
+
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
 import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
