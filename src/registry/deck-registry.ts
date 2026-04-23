@@ -57,6 +57,12 @@ import menorEspadas8 from "@/assets/menor-espadas-8.jpg";
 import menorEspadas9 from "@/assets/menor-espadas-9.jpg";
 import menorEspadas10 from "@/assets/menor-espadas-10.jpg";
 
+// ─── Cortes oficiais (scans RWS, domínio público) ───
+import corteCopasPajem from "@/assets/menor-copas-pajem.jpg";
+import corteCopasCavaleiro from "@/assets/menor-copas-cavaleiro.jpg";
+import corteCopasRainha from "@/assets/menor-copas-rainha.jpg";
+import corteCopasRei from "@/assets/menor-copas-rei.jpg";
+
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
 import sacerdotisaImage from "@/assets/arcano-2-sacerdotisa.jpg";
@@ -825,20 +831,78 @@ export const MENORES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =
   })
 );
 
+/**
+ * Overrides oficiais para Cartas da Corte (scans RWS).
+ * Substituem placeholder + symbols genéricos por arte e símbolos canônicos.
+ * Entradas ausentes permanecem como placeholder até oficialização.
+ */
+const CORTES_OFFICIAL_OVERRIDES: Partial<Record<string, {
+  cardImage: string;
+  canonicalSymbols: string[];
+  subtitle: string;
+}>> = {
+  "copas-pajem": {
+    cardImage: corteCopasPajem,
+    subtitle: "O Mensageiro do Sentimento",
+    canonicalSymbols: [
+      "jovem em túnica azul florida com lírios estampados — sensibilidade jovem",
+      "boina azul macia com lenço esvoaçante caindo sobre o ombro — leveza intuitiva",
+      "cálice dourado erguido na mão direita do qual emerge um peixe — mensagem do inconsciente",
+      "olhar curioso e surpreso voltado para o peixe — abertura ao que vem do fundo",
+      "mar agitado ao fundo — emoção viva, ainda não dominada",
+    ],
+  },
+  "copas-cavaleiro": {
+    cardImage: corteCopasCavaleiro,
+    subtitle: "O Romântico em Marcha",
+    canonicalSymbols: [
+      "cavaleiro em armadura de prata avançando lentamente em cavalo branco",
+      "elmo e botas alados — Mercúrio, mensageiro entre mundos",
+      "túnica vermelha estampada com peixes — paixão a serviço da emoção",
+      "cálice oferecido à frente em gesto cerimonial — proposta, convite, oferta",
+      "rio sereno cortando o vale verde — caminho fluido de quem segue o coração",
+    ],
+  },
+  "copas-rainha": {
+    cardImage: corteCopasRainha,
+    subtitle: "A Guardiã da Alma",
+    canonicalSymbols: [
+      "rainha sentada em trono ricamente esculpido com anjos e conchas",
+      "trono à beira-mar com pés tocando a água — domínio total sobre a emoção",
+      "cálice ornamentado e fechado, com torres em forma de cruz — vaso sagrado, mistério guardado",
+      "olhar contemplativo voltado para o cálice — atenção plena ao que sente",
+      "manto fluido confundindo-se com o mar e as pedras — empatia que se mistura ao mundo",
+    ],
+  },
+  "copas-rei": {
+    cardImage: corteCopasRei,
+    subtitle: "O Soberano da Emoção",
+    canonicalSymbols: [
+      "rei sentado em trono de pedra flutuando sobre o mar agitado — estabilidade em meio à emoção",
+      "manto azul e túnica vermelha — domínio sereno sobre paixão e sentimento",
+      "cálice equilibrado na mão direita, cetro na esquerda — afeto e autoridade lado a lado",
+      "colar com peixe pendurado no peito — vínculo consciente com o inconsciente",
+      "navio à esquerda e peixe saltando à direita — comércio e instinto coexistindo sob seu governo",
+    ],
+  },
+};
+
 /** 16 Cartas da Corte (4 ranks × 4 naipes) */
 export const CORTES_REGISTRY: readonly DeckCardEntry[] = SUITS.flatMap((suit) =>
   COURTS.map((rank) => {
     const sm = SUIT_META[suit];
     const cm = COURT_META[rank];
+    const id = `${suit}-${rank}`;
+    const override = CORTES_OFFICIAL_OVERRIDES[id];
     return {
-      id: `${suit}-${rank}`,
+      id,
       category: "corte" as const,
       name: `${cm.name} de ${sm.name}`,
-      slug: `${suit}-${rank}`,
-      subtitle: `${cm.archetype} · ${sm.element}`,
-      cardImage: placeholderImage,
-      assetStatus: "placeholder" as const,
-      canonicalSymbols: sm.symbols,
+      slug: id,
+      subtitle: override?.subtitle ?? `${cm.archetype} · ${sm.element}`,
+      cardImage: override?.cardImage ?? placeholderImage,
+      assetStatus: (override ? "official" : "placeholder") as "official" | "placeholder",
+      canonicalSymbols: override?.canonicalSymbols ?? sm.symbols,
       naipe: suit,
       court: rank,
     };
