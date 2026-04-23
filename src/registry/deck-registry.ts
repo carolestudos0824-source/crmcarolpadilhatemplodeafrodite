@@ -42,6 +42,10 @@ import menorOuros3 from "@/assets/menor-ouros-3.jpg";
 import menorOuros4 from "@/assets/menor-ouros-4.jpg";
 import menorOuros5 from "@/assets/menor-ouros-5.jpg";
 import menorOuros6 from "@/assets/menor-ouros-6.jpg";
+import menorOuros7 from "@/assets/menor-ouros-7.jpg";
+import menorOuros8 from "@/assets/menor-ouros-8.jpg";
+import menorOuros9 from "@/assets/menor-ouros-9.jpg";
+import menorOuros10 from "@/assets/menor-ouros-10.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
