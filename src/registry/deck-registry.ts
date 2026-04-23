@@ -29,6 +29,9 @@ import menorCopas10 from "@/assets/menor-copas-10.jpg";
 import menorPaus1 from "@/assets/menor-paus-1.jpg";
 import menorPaus2 from "@/assets/menor-paus-2.jpg";
 import menorPaus3 from "@/assets/menor-paus-3.jpg";
+import menorPaus4 from "@/assets/menor-paus-4.jpg";
+import menorPaus5 from "@/assets/menor-paus-5.jpg";
+import menorPaus6 from "@/assets/menor-paus-6.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
