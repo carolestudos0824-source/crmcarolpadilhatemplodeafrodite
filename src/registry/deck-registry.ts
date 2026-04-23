@@ -46,6 +46,9 @@ import menorOuros7 from "@/assets/menor-ouros-7.jpg";
 import menorOuros8 from "@/assets/menor-ouros-8.jpg";
 import menorOuros9 from "@/assets/menor-ouros-9.jpg";
 import menorOuros10 from "@/assets/menor-ouros-10.jpg";
+import menorEspadas1 from "@/assets/menor-espadas-1.jpg";
+import menorEspadas2 from "@/assets/menor-espadas-2.jpg";
+import menorEspadas3 from "@/assets/menor-espadas-3.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -679,6 +682,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "dez pentáculos dispostos no padrão da árvore da vida",
       "estandarte de torres e balança — brasão da linhagem",
       "muralha da cidade ao fundo — patrimônio que atravessa o tempo",
+    ],
+  },
+  "espadas-1": {
+    cardImage: menorEspadas1,
+    subtitle: "A Espada da Verdade",
+    canonicalSymbols: [
+      "mão divina emergindo da nuvem segurando uma única espada ereta",
+      "coroa dourada atravessada pela lâmina — vitória da clareza",
+      "guirlanda de louro e ramo de palma pendurados na coroa",
+      "seis gotas em forma de yods caindo ao redor — bênção do alto",
+      "montanhas escarpadas ao fundo — o terreno árduo da verdade",
+    ],
+  },
+  "espadas-2": {
+    cardImage: menorEspadas2,
+    subtitle: "O Pacto do Silêncio",
+    canonicalSymbols: [
+      "mulher vendada sentada de costas para o mar",
+      "duas espadas cruzadas sustentadas em equilíbrio sobre o peito",
+      "lua crescente no alto — intuição velada pela razão",
+      "rochas pontiagudas emergindo da água escura ao fundo",
+      "manto cinza — neutralidade imposta, trégua frágil",
+    ],
+  },
+  "espadas-3": {
+    cardImage: menorEspadas3,
+    subtitle: "O Coração Atravessado",
+    canonicalSymbols: [
+      "coração vermelho atravessado por três espadas idênticas",
+      "céu cinza carregado de nuvens densas",
+      "chuva oblíqua caindo sobre toda a cena",
+      "ausência total de figura humana — a dor é o protagonista",
+      "composição central e simétrica — luto que não se evita",
     ],
   },
 };
