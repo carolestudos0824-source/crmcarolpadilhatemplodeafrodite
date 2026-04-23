@@ -29,6 +29,9 @@ import menorCopas10 from "@/assets/menor-copas-10.jpg";
 import menorPaus1 from "@/assets/menor-paus-1.jpg";
 import menorPaus2 from "@/assets/menor-paus-2.jpg";
 import menorPaus3 from "@/assets/menor-paus-3.jpg";
+import menorPaus4 from "@/assets/menor-paus-4.jpg";
+import menorPaus5 from "@/assets/menor-paus-5.jpg";
+import menorPaus6 from "@/assets/menor-paus-6.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -475,6 +478,39 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "mão apoiada num dos bastões em postura de vigília",
       "navios partindo no mar amarelo dourado",
       "manto vermelho e verde sinalizando ação e crescimento",
+    ],
+  },
+  "paus-4": {
+    cardImage: menorPaus4,
+    subtitle: "O Pórtico da Celebração",
+    canonicalSymbols: [
+      "quatro bastões fincados formando um pórtico",
+      "guirlanda de flores e frutos pendurada entre os bastões",
+      "duas figuras erguendo buquês em saudação",
+      "castelo amuralhado dourado ao fundo",
+      "céu amarelo aberto de festa e abundância",
+    ],
+  },
+  "paus-5": {
+    cardImage: menorPaus5,
+    subtitle: "O Embate Aberto",
+    canonicalSymbols: [
+      "cinco jovens cruzando bastões em pleno ar",
+      "vestes coloridas distintas (cada um por si)",
+      "gestos de embate sem sangue, energia em conflito",
+      "chão verde de terreno aberto",
+      "céu claro sem inimigo real ao fundo",
+    ],
+  },
+  "paus-6": {
+    cardImage: menorPaus6,
+    subtitle: "O Retorno do Vencedor",
+    canonicalSymbols: [
+      "cavaleiro montado em cavalo branco ornamentado",
+      "coroa de louros sobre o bastão erguido",
+      "guirlanda de louros sobre a cabeça do cavaleiro",
+      "cinco bastões erguidos pelos seguidores ao redor",
+      "manto vermelho como signo de vitória",
     ],
   },
 };
