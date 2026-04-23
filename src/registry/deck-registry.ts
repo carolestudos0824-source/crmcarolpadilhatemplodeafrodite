@@ -52,6 +52,10 @@ import menorEspadas3 from "@/assets/menor-espadas-3.jpg";
 import menorEspadas4 from "@/assets/menor-espadas-4.jpg";
 import menorEspadas5 from "@/assets/menor-espadas-5.jpg";
 import menorEspadas6 from "@/assets/menor-espadas-6.jpg";
+import menorEspadas7 from "@/assets/menor-espadas-7.jpg";
+import menorEspadas8 from "@/assets/menor-espadas-8.jpg";
+import menorEspadas9 from "@/assets/menor-espadas-9.jpg";
+import menorEspadas10 from "@/assets/menor-espadas-10.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -751,6 +755,50 @@ const MENORES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "seis espadas fincadas verticalmente na proa — peso transportado",
       "água lisa do lado direito, ondulada do lado esquerdo — partida do turbulento",
       "margem distante ao horizonte — destino ainda não revelado",
+    ],
+  },
+  "espadas-7": {
+    cardImage: menorEspadas7,
+    subtitle: "O Furto Silencioso",
+    canonicalSymbols: [
+      "homem afastando-se furtivamente de um acampamento militar carregando cinco espadas",
+      "duas espadas deixadas para trás fincadas no chão — o que não pôde levar",
+      "tendas coloridas ao fundo com figuras distantes — vigilância adormecida",
+      "olhar virado para trás com sorriso ambíguo — astúcia, esquiva, traição sutil",
+      "céu amarelo plano — luz crua sem sombra para se esconder",
+    ],
+  },
+  "espadas-8": {
+    cardImage: menorEspadas8,
+    subtitle: "A Prisão da Mente",
+    canonicalSymbols: [
+      "mulher amarrada e vendada em pé sobre solo lamacento",
+      "oito espadas fincadas em volta formando uma cerca incompleta — prisão imaginada",
+      "vestes vermelhas presas ao corpo — vitalidade contida",
+      "castelo distante no alto da colina — saída visível mas inalcançável",
+      "céu cinzento e terra encharcada — paralisia, autoengano, impotência aprendida",
+    ],
+  },
+  "espadas-9": {
+    cardImage: menorEspadas9,
+    subtitle: "A Vigília da Angústia",
+    canonicalSymbols: [
+      "figura sentada na cama com as mãos cobrindo o rosto — despertar em sofrimento",
+      "nove espadas suspensas horizontalmente na parede escura — pensamentos repetidos",
+      "colcha colorida com símbolos de rosas e signos zodiacais — vida que continua sob a dor",
+      "lateral da cama esculpida com cena de duelo — o conflito que precede o pesadelo",
+      "fundo totalmente preto — noite sem horizonte, insônia da alma",
+    ],
+  },
+  "espadas-10": {
+    cardImage: menorEspadas10,
+    subtitle: "O Fim da Lâmina",
+    canonicalSymbols: [
+      "homem caído de bruços com dez espadas cravadas nas costas — derrota final",
+      "manto vermelho cobrindo as pernas — vitalidade que se esvai",
+      "céu negro pesando sobre o horizonte — ponto mais baixo da travessia",
+      "água parada ao fundo — emoção paralisada após o golpe",
+      "raio de luz amarela rompendo no horizonte distante — o pior já passou, o sol volta",
     ],
   },
 };
