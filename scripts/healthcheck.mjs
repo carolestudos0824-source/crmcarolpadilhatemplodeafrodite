@@ -6,8 +6,9 @@
  * Usage: node scripts/healthcheck.mjs [url] [timeoutMs]
  * Defaults: http://localhost:8080  / 30000ms
  */
-const url = process.argv[2] || "http://localhost:8080";
-const timeoutMs = Number(process.argv[3] || 30000);
+const DEFAULT_URL = "http://localhost:8080";
+const url = process.argv[2] || process.env.HEALTHCHECK_URL || DEFAULT_URL;
+const timeoutMs = Number(process.argv[3] || process.env.HEALTHCHECK_TIMEOUT_MS || 30000);
 const intervalMs = 1000;
 const deadline = Date.now() + timeoutMs;
 
