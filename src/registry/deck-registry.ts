@@ -70,6 +70,10 @@ import corteOurosPajem from "@/assets/menor-ouros-pajem.jpg";
 import corteOurosCavaleiro from "@/assets/menor-ouros-cavaleiro.jpg";
 import corteOurosRainha from "@/assets/menor-ouros-rainha.jpg";
 import corteOurosRei from "@/assets/menor-ouros-rei.jpg";
+import corteEspadasPajem from "@/assets/menor-espadas-pajem.jpg";
+import corteEspadasCavaleiro from "@/assets/menor-espadas-cavaleiro.jpg";
+import corteEspadasRainha from "@/assets/menor-espadas-rainha.jpg";
+import corteEspadasRei from "@/assets/menor-espadas-rei.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -985,6 +989,54 @@ const CORTES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "pentáculo dourado pousado sobre o joelho direito, mão repousada sobre ele — patrimônio assegurado com mão firme",
       "cetro real florido segurado com a mão esquerda — vontade que governa o que cultivou",
       "castelo ao fundo erguido sobre vinhedos e jardins — império construído tijolo a tijolo",
+    ],
+  },
+  "espadas-pajem": {
+    cardImage: corteEspadasPajem,
+    subtitle: "O Vigia da Verdade",
+    canonicalSymbols: [
+      "jovem em pé sobre terreno acidentado, corpo torcido em alerta — vigilância tensa, prontidão constante",
+      "espada erguida com as duas mãos acima do ombro direito, lâmina apontada ao céu — pensamento em guarda",
+      "túnica curta esvoaçando ao vento, botas vermelhas firmes no chão — mente ágil ainda buscando equilíbrio",
+      "cabelos e nuvens correndo na mesma direção — pensamento veloz movido pelo ar",
+      "bando de pássaros cruzando o céu agitado ao fundo — ideias dispersas, vento intelectual em movimento",
+      "olhar voltado para trás por cima do ombro — desconfiança, escuta do que vem de fora",
+    ],
+  },
+  "espadas-cavaleiro": {
+    cardImage: corteEspadasCavaleiro,
+    subtitle: "A Carga da Mente",
+    canonicalSymbols: [
+      "cavaleiro em armadura completa avançando em galope furioso sobre cavalo branco — pensamento lançado em ataque total",
+      "espada erguida bem alto na mão direita, pronta para cair — convicção transformada em arma",
+      "manto vermelho esvoaçando para trás na velocidade — paixão arrastada pela razão",
+      "elmo encimado por plumas vermelhas em chamas — mente incendiada pela ideia fixa",
+      "rédeas tensas, cavalo com olhos arregalados e crina ao vento — instinto forçado a obedecer ao ímpeto",
+      "céu carregado de nuvens revoltas e árvores curvadas pelo vento — tempestade mental em curso",
+    ],
+  },
+  "espadas-rainha": {
+    cardImage: corteEspadasRainha,
+    subtitle: "A Lucidez Solitária",
+    canonicalSymbols: [
+      "rainha sentada de perfil em trono de pedra ornado com querubins, nuvens e borboletas — clareza lapidada pela perda",
+      "espada erguida na vertical com a mão direita, lâmina apontada ao céu — verdade que não se curva",
+      "mão esquerda estendida à frente em gesto de chamado — convite ao diálogo, sem doçura",
+      "manto azul-cinza fluindo como nuvem sobre o trono — pensamento que se confunde com o ar",
+      "coroa de borboletas e nuvens ao redor da cabeça — alma que atravessou metamorfose",
+      "pássaro solitário voando alto ao fundo — discernimento que olha de cima",
+    ],
+  },
+  "espadas-rei": {
+    cardImage: corteEspadasRei,
+    subtitle: "O Juiz Sereno",
+    canonicalSymbols: [
+      "rei sentado de frente em trono de pedra ornado com borboletas, ninfas e luas crescentes — autoridade do pensamento amadurecido",
+      "espada erguida na vertical levemente inclinada para a direita — palavra firme, decisão tomada",
+      "manto azul sobre túnica violeta — clareza fria sobre profundidade interior",
+      "coroa rígida e simples — razão coroada sem ornamento supérfluo",
+      "olhar fixo à frente, postura ereta — juízo aplicado sem hesitação",
+      "céu límpido com poucas nuvens e dois pássaros distantes — mente serena após a tempestade",
     ],
   },
 };
