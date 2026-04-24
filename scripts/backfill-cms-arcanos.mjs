@@ -104,13 +104,23 @@ function mapMenor(c) {
       ].filter(Boolean).join("\n")
     : null;
 
-  // Keywords derivadas: usa revisaoRapida.palavraChave + arquétipo + naipe
+  // Keywords derivadas: prioriza palavraChave, naipeKw, posição, e primeiros tokens curtos.
   const naipeKw = { copas: "Emoção", paus: "Ação", espadas: "Mente", ouros: "Matéria" }[c.naipe];
-  const keywordsRaw = [r?.palavraChave, c.arquetipo, naipeKw, r?.luz, r?.sombra]
-    .filter(Boolean)
-    .map((s) => String(s).split(/[,;]/)[0].trim())
-    .filter((s) => s.length > 0 && s.length < 40);
-  const keywords = Array.from(new Set(keywordsRaw)).slice(0, 5);
+  const posicaoKw = typeof c.posicao === "number"
+    ? ({ 1: "Início", 2: "Equilíbrio", 3: "Expansão", 4: "Estrutura", 5: "Crise", 6: "Harmonia", 7: "Reflexão", 8: "Maestria", 9: "Plenitude", 10: "Conclusão" }[c.posicao])
+    : ({ pajem: "Aprendiz", cavaleiro: "Movimento", rainha: "Maturidade", rei: "Domínio" }[c.posicao]);
+  const tokens = [
+    r?.palavraChave,
+    naipeKw,
+    posicaoKw,
+    // Primeiros tokens curtos extraídos de luz/sombra/arquetipo
+    ...[r?.luz, r?.sombra, c.arquetipo]
+      .filter(Boolean)
+      .flatMap((s) => String(s).split(/[\s,;:.\-—]+/))
+      .filter((w) => w && w.length >= 4 && w.length < 25 && /^[A-Za-zÀ-ÿ]+$/.test(w))
+      .map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase()),
+  ].filter(Boolean);
+  const keywords = Array.from(new Set(tokens)).slice(0, 5);
 
   // Posição numérica para a coluna `number`: 1-10 ou 11=pajem, 12=cavaleiro, 13=rainha, 14=rei
   const courtMap = { pajem: 11, cavaleiro: 12, rainha: 13, rei: 14 };
