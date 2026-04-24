@@ -70,6 +70,10 @@ import corteOurosPajem from "@/assets/menor-ouros-pajem.jpg";
 import corteOurosCavaleiro from "@/assets/menor-ouros-cavaleiro.jpg";
 import corteOurosRainha from "@/assets/menor-ouros-rainha.jpg";
 import corteOurosRei from "@/assets/menor-ouros-rei.jpg";
+import corteEspadasPajem from "@/assets/menor-espadas-pajem.jpg";
+import corteEspadasCavaleiro from "@/assets/menor-espadas-cavaleiro.jpg";
+import corteEspadasRainha from "@/assets/menor-espadas-rainha.jpg";
+import corteEspadasRei from "@/assets/menor-espadas-rei.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
