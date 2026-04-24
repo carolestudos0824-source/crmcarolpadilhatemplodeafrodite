@@ -287,7 +287,7 @@ const AdminArcanos = () => {
         <div>
           <h2 className="font-heading text-lg text-foreground">Arcanos</h2>
           <p className="text-sm text-muted-foreground">
-            CMS editorial — gerencie Arcanos Maiores e Menores com seus 17 campos.
+            CMS editorial — duas réguas: <strong className="text-foreground">essencial de publicação</strong> ({ESSENTIAL_FIELDS.length} campos · obrigatórios) e <strong className="text-foreground">editorial total</strong> ({EDITORIAL_FIELDS.length} campos · contador completo do admin).
           </p>
         </div>
         <Button size="sm" className="gap-2" onClick={() => setCreateOpen(true)}>
@@ -392,8 +392,8 @@ const AdminArcanos = () => {
                   <span className="text-xs font-medium text-foreground truncate flex-1">
                     {a.name} <span className="text-muted-foreground">· {a.type === "maior" ? "Maior" : `Menor (${a.naipe ?? ""})`} · {a.tier}</span>
                   </span>
-                  <span className="text-[11px] text-muted-foreground whitespace-nowrap">
-                    {filled}/{total} · faltam {missing.length}
+                  <span className="text-[11px] text-muted-foreground whitespace-nowrap" title={`Essencial ${countEssentialFilled(a)}/${ESSENTIAL_FIELDS.length} · Editorial ${filled}/${total}`}>
+                    Ess {countEssentialFilled(a)}/{ESSENTIAL_FIELDS.length} · Ed {filled}/{total}
                   </span>
                 </button>
               );
@@ -875,15 +875,15 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
         </div>
       </Section>
 
-      {/* SECTION: Conteúdo editorial (17 campos) */}
+      {/* SECTION: Conteúdo editorial (17 campos = 8 essenciais + 9 complementares) */}
       <Section
-        title="Conteúdo editorial (17 campos)"
+        title={`Conteúdo editorial (${EDITORIAL_FIELDS.length} campos · ${ESSENTIAL_FIELDS.length} essenciais marcados ★)`}
         onSave={() => saveSection(EDITORIAL_FIELDS.map((f) => f.key))}
         disabled={saving}
       >
         <div className="grid gap-3">
           {EDITORIAL_FIELDS.map((f) => (
-            <Field key={String(f.key)} label={f.label} full>
+            <Field key={String(f.key)} label={`${f.essential ? "★ " : ""}${f.label}${f.essential ? " (essencial)" : ""}`} full>
               {f.long ? (
                 <Textarea
                   rows={3}
