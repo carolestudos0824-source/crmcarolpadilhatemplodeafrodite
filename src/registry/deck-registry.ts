@@ -62,6 +62,10 @@ import corteCopasPajem from "@/assets/menor-copas-pajem.jpg";
 import corteCopasCavaleiro from "@/assets/menor-copas-cavaleiro.jpg";
 import corteCopasRainha from "@/assets/menor-copas-rainha.jpg";
 import corteCopasRei from "@/assets/menor-copas-rei.jpg";
+import cortePausPajem from "@/assets/menor-paus-pajem.jpg";
+import cortePausCavaleiro from "@/assets/menor-paus-cavaleiro.jpg";
+import cortePausRainha from "@/assets/menor-paus-rainha.jpg";
+import cortePausRei from "@/assets/menor-paus-rei.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -883,6 +887,54 @@ const CORTES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "cálice equilibrado na mão direita, cetro na esquerda — afeto e autoridade lado a lado",
       "colar com peixe pendurado no peito — vínculo consciente com o inconsciente",
       "navio à esquerda e peixe saltando à direita — comércio e instinto coexistindo sob seu governo",
+    ],
+  },
+  "paus-pajem": {
+    cardImage: cortePausPajem,
+    subtitle: "A Centelha do Anúncio",
+    canonicalSymbols: [
+      "jovem em pé firme em terreno desértico — entusiasmo plantado em chão árido",
+      "túnica amarela estampada com salamandras vermelhas — fogo vivo, transformação ainda em formação",
+      "boina ornada com longa pluma vermelha — impulso criativo, ar quente subindo",
+      "longo bastão verde brotando folhas seguro com as duas mãos — ideia jovem que ainda cresce",
+      "olhar erguido para o topo do bastão — atenção voltada à promessa, não ao chão",
+      "três pirâmides ao fundo — horizonte amplo, terra a ser conquistada",
+    ],
+  },
+  "paus-cavaleiro": {
+    cardImage: cortePausCavaleiro,
+    subtitle: "O Ímpeto em Galope",
+    canonicalSymbols: [
+      "cavaleiro em armadura avançando em cavalo ruivo empinado — ação impulsiva, energia em disparo",
+      "túnica amarela coberta de salamandras formando círculo — fogo total, paixão por inteiro",
+      "elmo encimado por longas plumas vermelhas em chamas — pensamento incendiado",
+      "bastão verde florido erguido firme na mão direita — desejo apontado adiante",
+      "três pirâmides desérticas ao fundo — terreno hostil que não freia o ímpeto",
+      "cavalo com crina selvagem em movimento — força instintiva mal contida",
+    ],
+  },
+  "paus-rainha": {
+    cardImage: cortePausRainha,
+    subtitle: "O Calor que Comanda",
+    canonicalSymbols: [
+      "rainha sentada de frente em trono de pedra ornado com leões e girassóis — autoridade solar, presença magnética",
+      "manto branco e vestido amarelo — luz interna que aquece sem queimar",
+      "bastão florido erguido na mão direita — vontade criativa firme e fértil",
+      "girassol seguro na mão esquerda — generosidade, calor que se oferece",
+      "gato preto sentado aos pés do trono — instinto desperto, lado oculto consciente",
+      "leões esculpidos no encosto e nos braços do trono — coragem governada com graça",
+    ],
+  },
+  "paus-rei": {
+    cardImage: cortePausRei,
+    subtitle: "O Fogo que Reina",
+    canonicalSymbols: [
+      "rei sentado em trono ornado com leões e salamandras — autoridade ígnea consolidada",
+      "manto verde e túnica vermelha bordada — vitalidade fértil sob domínio do fogo",
+      "coroa em forma de chamas estilizadas — pensamento iluminado pelo desejo",
+      "bastão verde florido segurado firme com a mão direita — vontade direcionada com método",
+      "salamandra mordendo a própria cauda aos pés do trono — fogo eterno, ciclo da paixão dominada",
+      "postura ligeiramente inclinada à frente — liderança ativa, pronta para agir",
     ],
   },
 };
