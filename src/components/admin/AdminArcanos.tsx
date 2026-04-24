@@ -875,15 +875,15 @@ const ArcanoEditor = ({ arcano, onBack }: { arcano: ArcanoRow; onBack: () => voi
         </div>
       </Section>
 
-      {/* SECTION: Conteúdo editorial (17 campos) */}
+      {/* SECTION: Conteúdo editorial (17 campos = 8 essenciais + 9 complementares) */}
       <Section
-        title="Conteúdo editorial (17 campos)"
+        title={`Conteúdo editorial (${EDITORIAL_FIELDS.length} campos · ${ESSENTIAL_FIELDS.length} essenciais marcados ★)`}
         onSave={() => saveSection(EDITORIAL_FIELDS.map((f) => f.key))}
         disabled={saving}
       >
         <div className="grid gap-3">
           {EDITORIAL_FIELDS.map((f) => (
-            <Field key={String(f.key)} label={f.label} full>
+            <Field key={String(f.key)} label={`${f.essential ? "★ " : ""}${f.label}${f.essential ? " (essencial)" : ""}`} full>
               {f.long ? (
                 <Textarea
                   rows={3}
