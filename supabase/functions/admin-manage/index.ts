@@ -185,7 +185,7 @@ Deno.serve(async (req) => {
       if (!target_user_id) return fail("Usuário obrigatório", { action, error_stage: "validate_target", http_status: 400 });
 
       const warnings: { source: string; message: string }[] = [];
-      const safe = async <T,>(sourceName: string, fn: () => Promise<{ data: T | null; error: { message: string } | null }>) => {
+      const safe = async <T,>(sourceName: string, fn: () => PromiseLike<{ data: T | null; error: { message: string } | null }>) => {
         try {
           const { data, error } = await fn();
           if (error) {
@@ -322,7 +322,7 @@ Deno.serve(async (req) => {
       });
       if (error) return fail(error.message, { action, target_user_id, error_stage: "generate_recovery_link", http_status: 500 });
 
-      const actionLink = generated?.properties?.action_link ?? generated?.action_link ?? null;
+      const actionLink = (generated as any)?.properties?.action_link ?? (generated as any)?.action_link ?? null;
       if (!actionLink) {
         return fail("Não foi possível gerar o link de redefinição", { action, target_user_id, error_stage: "missing_action_link", http_status: 500 });
       }
