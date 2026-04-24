@@ -226,7 +226,7 @@ const ArcanoMenorLessonPage = () => {
         </div>
       </header>
 
-      <main className="relative z-10 container max-w-3xl py-6 px-6 pb-56">
+      <main className="relative z-10 container max-w-3xl py-6 px-6 pb-72">
         {/* Carta — sempre visível, motion leve por fase */}
         <div
           key={`card-${phase}`}
@@ -298,9 +298,9 @@ const ArcanoMenorLessonPage = () => {
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
           background:
-            "linear-gradient(180deg, hsl(36 33% 96% / 0.0) 0%, hsl(36 33% 96% / 0.98) 35%)",
-          paddingTop: "32px",
-          paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 88px)",
+            "linear-gradient(180deg, hsl(36 33% 96% / 0.0) 0%, hsl(36 33% 96% / 0.95) 40%, hsl(36 33% 96% / 1) 70%)",
+          paddingTop: "40px",
+          paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 80px)",
         }}
       >
         <div className="container max-w-3xl px-6">
