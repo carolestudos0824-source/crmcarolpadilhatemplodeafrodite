@@ -185,7 +185,7 @@ Deno.serve(async (req) => {
       if (!target_user_id) return fail("Usuário obrigatório", { action, error_stage: "validate_target", http_status: 400 });
 
       const warnings: { source: string; message: string }[] = [];
-      const safe = async <T,>(sourceName: string, fn: () => Promise<{ data: T | null; error: { message: string } | null }>) => {
+      const safe = async <T,>(sourceName: string, fn: () => PromiseLike<{ data: T | null; error: { message: string } | null }>) => {
         try {
           const { data, error } = await fn();
           if (error) {
