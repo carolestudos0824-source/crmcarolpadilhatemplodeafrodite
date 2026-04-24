@@ -209,6 +209,26 @@ const AuthPage = () => {
             </button>
           </p>
         </div>
+
+        {isPreviewHost && (
+          <div className="pt-2 border-t border-dashed" style={{ borderColor: "hsl(36 45% 58% / 0.25)" }}>
+            <p className="text-[10px] text-center mb-2 font-heading tracking-[0.18em] uppercase" style={{ color: "hsl(36 45% 35%)" }}>
+              ✦ Modo Auditoria (Preview)
+            </p>
+            <Button
+              type="button"
+              onClick={handleAuditorLogin}
+              disabled={auditorLoading}
+              variant="outline"
+              className="w-full text-[11px] tracking-wide"
+            >
+              {auditorLoading ? "Provisionando..." : "Entrar como Auditor"}
+            </Button>
+            <p className="text-[10px] text-center mt-1.5 text-muted-foreground">
+              Conta premium temporária só para auditoria visual.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
