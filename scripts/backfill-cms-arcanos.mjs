@@ -153,9 +153,10 @@ for (const c of ARCANOS_MENORES) {
   if (c.essencia) records.push(mapMenor(c));
 }
 
-// ─── Gera SQL ───
+// ─── Gera SQL + JSON payload ───
 const sqlParts = [];
 const report = [];
+const payload = [];
 
 for (const r of records) {
   const filled = essentialCount({
@@ -164,49 +165,16 @@ for (const r of records) {
     voz: r.voz, revisao: r.revisao, keywords: r.keywords,
   });
 
-  // Status sugerido (o trigger vai aplicar a régua final, mas fixamos aqui também)
   let status = "empty";
   if (filled === 10) status = "published";
   else if (filled >= 6) status = "draft";
   else if (filled >= 1) status = "partial";
 
-  report.push({
-    type: r.type, naipe: r.naipe || "-", number: r.number, name: r.name,
-    filled, status,
-  });
-
-  // Identificador único: type + (naipe se menor) + number
-  const naipeWhere = r.naipe ? `AND naipe = '${r.naipe}'::arcano_naipe` : "AND naipe IS NULL";
-
-  sqlParts.push(`
-UPDATE public.cms_arcanos SET
-  name = ${esc(r.name)},
-  subtitle = ${esc(r.subtitle)},
-  numeral = ${esc(r.numeral)},
-  essencia = ${esc(r.essencia)},
-  simbolos_centrais = ${esc(r.simbolos)},
-  luz = ${esc(r.luz)},
-  sombra = ${esc(r.sombra)},
-  amor = ${esc(r.amor)},
-  trabalho = ${esc(r.trabalho)},
-  espiritualidade = ${esc(r.espiritualidade)},
-  voz_do_arcano = ${esc(r.voz)},
-  revisao_rapida = ${esc(r.revisao)},
-  aprofundamento = ${esc(r.aprofundamento)},
-  cabala = ${esc(r.cabala)},
-  arquetipos = ${esc(r.arquetipos)},
-  numerologia = ${esc(r.numerologia)},
-  astrologia = ${esc(r.astrologia)},
-  elemento = ${esc(r.elemento)},
-  jornada = ${esc(r.jornada)},
-  keywords = ${arr(r.keywords)},
-  tags = ${arr(r.tags)},
-  status = '${status}'::module_status,
-  updated_at = now()
-WHERE type = '${r.type}'::arcano_type AND number = ${r.number} ${naipeWhere};`);
+  report.push({ type: r.type, naipe: r.naipe || "-", number: r.number, name: r.name, filled, status });
+  payload.push({ ...r, status });
 }
 
-writeFileSync("/tmp/backfill-arcanos.sql", sqlParts.join("\n"));
+writeFileSync("/tmp/backfill-payload.json", JSON.stringify(payload));
 writeFileSync("/tmp/backfill-arcanos-report.json", JSON.stringify(report, null, 2));
 
 console.log("=== BACKFILL REPORT ===");
@@ -219,4 +187,4 @@ if (incompletas.length > 0) {
   console.log("Detalhe das incompletas:");
   console.table(incompletas);
 }
-console.log("SQL: /tmp/backfill-arcanos.sql");
+console.log("Payload JSON: /tmp/backfill-payload.json");
