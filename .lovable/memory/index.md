@@ -38,3 +38,5 @@ Toda revisão de arcano DEVE seguir a régua de 5 perguntas (mem://features/arca
 - [Beta setup](mem://features/beta-setup) — Auth flow, DB tables, beta badge, feedback, bottom nav
 - [Mobile monetization](mem://features/mobile-monetization) — IAP strategy: RevenueCat, receipt validation, webhooks
 - [Inclusive language](mem://constraints/inclusive-language) — Plataforma para qualquer pessoa, não apenas mulheres
+- [Arcano Menor lesson model](mem://features/arcano-menor-lesson-model) — Mapeamento dos 18 campos em 5 camadas / multi-fase carrossel
+- [Menor approval rubric](mem://features/menor-approval-rubric) — 6 critérios oficiais de aprovação por carta antes de escalar

@@ -31,6 +31,7 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 // Module pages
 const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
 const NaipeIntroPage = lazy(() => import("./pages/NaipeIntroPage.tsx"));
+const ArcanoMenorLessonPage = lazy(() => import("./pages/ArcanoMenorLessonPage.tsx"));
 const CombinacoesPage = lazy(() => import("./pages/CombinacoesPage.tsx"));
 const CombinacoesLessonPage = lazy(() => import("./pages/CombinacoesLessonPage.tsx"));
 const TiragensPage = lazy(() => import("./pages/TiragensPage.tsx"));
@@ -146,7 +147,7 @@ const AppShell = () => (
         <Route path="/module/cartas-corte" element={<P><CartasCortePage /></P>} />
         <Route path="/cartas-corte" element={<Navigate to="/module/cartas-corte" replace />} />
         <Route path="/numerologia" element={<P><NumerologiaPage /></P>} />
-        <Route path="/arcano-menor/:id" element={<P><NaipePage /></P>} />
+        <Route path="/arcano-menor/:id" element={<P><ArcanoMenorLessonPage /></P>} />
 
         {/* Combinações */}
         <Route path="/module/combinacoes" element={<P><CombinacoesPage /></P>} />
