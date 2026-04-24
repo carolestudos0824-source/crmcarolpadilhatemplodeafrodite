@@ -298,8 +298,8 @@ const ArcanoMenorLessonPage = () => {
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
           background:
-            "linear-gradient(180deg, hsl(36 33% 96% / 0.0) 0%, hsl(36 33% 96% / 0.98) 35%)",
-          paddingTop: "32px",
+            "linear-gradient(180deg, hsl(36 33% 96% / 0.0) 0%, hsl(36 33% 96% / 0.85) 30%, hsl(36 33% 96% / 1) 60%)",
+          paddingTop: "48px",
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 88px)",
         }}
       >
