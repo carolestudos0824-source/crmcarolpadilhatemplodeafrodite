@@ -17,8 +17,48 @@ const AuthPage = () => {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
+  const [auditorLoading, setAuditorLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn, signUp } = useAuth();
+
+  // Preview-only: show auditor login button on lovable preview hosts (NOT production)
+  const isPreviewHost = (() => {
+    if (typeof window === "undefined") return false;
+    const h = window.location.hostname;
+    if (h === "apptaro.lovable.app") return false;
+    return (
+      h.endsWith(".lovable.app") ||
+      h.endsWith(".lovableproject.com") ||
+      h.endsWith(".lovable.dev") ||
+      h === "localhost" ||
+      h === "127.0.0.1"
+    );
+  })();
+
+  const handleAuditorLogin = async () => {
+    setError("");
+    setInfo("");
+    setAuditorLoading(true);
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke("seed-preview-auditor", { body: {} });
+      if (fnErr || !data?.ok) {
+        setError(data?.error || fnErr?.message || "Falha ao provisionar auditor");
+        setAuditorLoading(false);
+        return;
+      }
+      const { error: signErr } = await signIn(data.email, data.password);
+      if (signErr) {
+        setError(signErr.message);
+        setAuditorLoading(false);
+        return;
+      }
+      setAuditorLoading(false);
+      navigate("/app");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+      setAuditorLoading(false);
+    }
+  };
 
   // Mensagem de sucesso após redefinição de senha
   useEffect(() => {
