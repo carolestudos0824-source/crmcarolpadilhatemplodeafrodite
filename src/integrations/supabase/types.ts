@@ -1222,6 +1222,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_arcano_backfill: { Args: { _payload: Json }; Returns: Json }
       cms_arcanos_essential_count: {
         Args: { a: Database["public"]["Tables"]["cms_arcanos"]["Row"] }
         Returns: number
