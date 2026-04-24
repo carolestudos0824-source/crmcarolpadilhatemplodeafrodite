@@ -240,11 +240,15 @@ function createEmptyCard(posicao: CartaPosicao, naipe: Naipe): ArcanoMenorEditor
       fraseFixacao: "",
     },
     desbloqueado: false,
-    cardImage: `/assets/arcanos-menores/${id}.jpg`,
+    cardImage: getDeckVisualCard(id)?.cardImage ?? `/assets/arcanos-menores/${id}.jpg`,
   };
 }
 
 // ─── Content Imports ──────────────────────────────────────────────
+
+// Resolve cardImage oficial via registry visual (assets bundled by Vite).
+// Fallback para o caminho /public legado caso o id ainda não esteja no registry.
+import { getCard as getDeckVisualCard } from "@/registry/deck-registry";
 
 import { COPAS_1_5 } from "./copas-1-5";
 import { COPAS_6_10 } from "./copas-6-10";
