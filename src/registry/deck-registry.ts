@@ -66,6 +66,10 @@ import cortePausPajem from "@/assets/menor-paus-pajem.jpg";
 import cortePausCavaleiro from "@/assets/menor-paus-cavaleiro.jpg";
 import cortePausRainha from "@/assets/menor-paus-rainha.jpg";
 import cortePausRei from "@/assets/menor-paus-rei.jpg";
+import corteOurosPajem from "@/assets/menor-ouros-pajem.jpg";
+import corteOurosCavaleiro from "@/assets/menor-ouros-cavaleiro.jpg";
+import corteOurosRainha from "@/assets/menor-ouros-rainha.jpg";
+import corteOurosRei from "@/assets/menor-ouros-rei.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
@@ -935,6 +939,52 @@ const CORTES_OFFICIAL_OVERRIDES: Partial<Record<string, {
       "bastão verde florido segurado firme com a mão direita — vontade direcionada com método",
       "salamandra mordendo a própria cauda aos pés do trono — fogo eterno, ciclo da paixão dominada",
       "postura ligeiramente inclinada à frente — liderança ativa, pronta para agir",
+    ],
+  },
+  "ouros-pajem": {
+    cardImage: corteOurosPajem,
+    subtitle: "O Estudante do Concreto",
+    canonicalSymbols: [
+      "jovem em pé em campo florido contemplando atentamente o pentáculo erguido nas duas mãos — atenção devotada ao que é tangível",
+      "túnica verde e chapéu com tiara vermelha — terra fértil coroada por vitalidade jovem",
+      "pentáculo dourado segurado à altura do rosto, olhar fixo nele — estudo paciente do valor",
+      "campo verde com flores amarelas e árvores ao fundo — solo fértil ainda a ser cultivado",
+      "postura firme e contemplativa, pés bem plantados — aprendiz do real, sem pressa",
+    ],
+  },
+  "ouros-cavaleiro": {
+    cardImage: corteOurosCavaleiro,
+    subtitle: "O Guardião do Método",
+    canonicalSymbols: [
+      "cavaleiro estático sobre cavalo negro parado em campo arado — ação medida, deliberadamente sem pressa",
+      "armadura completa coberta por túnica vermelha estampada — disciplina protegendo a vontade",
+      "elmo encimado por folhagem verde, mesma folhagem na cabeça do cavalo — paciência verde-fértil",
+      "pentáculo dourado seguro firme à frente em ambas as mãos — patrimônio ofertado com responsabilidade",
+      "campo arado, montanhas e horizonte calmo ao fundo — terreno preparado, trabalho já feito",
+    ],
+  },
+  "ouros-rainha": {
+    cardImage: corteOurosRainha,
+    subtitle: "A Mãe da Abundância",
+    canonicalSymbols: [
+      "rainha sentada em trono ornado com cabeças de cabra, anjos, frutas e querubins — fertilidade governando a natureza",
+      "manto vermelho e vestido cinza-pedra cobrindo o colo — calor abrigado pela solidez",
+      "pentáculo dourado pousado no colo, segurado com as duas mãos em gesto contemplativo — riqueza acolhida, não exibida",
+      "guirlanda de rosas vermelhas emoldurando o trono — beleza enraizada no real",
+      "coelho saltando aos pés do trono — fertilidade viva, ciclo da terra que se renova",
+      "jardim florido e montanhas verdes ao fundo — domínio sereno sobre o concreto",
+    ],
+  },
+  "ouros-rei": {
+    cardImage: corteOurosRei,
+    subtitle: "O Senhor do Patrimônio",
+    canonicalSymbols: [
+      "rei sentado em trono massivo ornado com cabeças de touro — autoridade terrena consolidada",
+      "manto preto bordado com videiras, uvas e flores cobrindo armadura completa — riqueza enraizada protegida por método",
+      "coroa de ouro encimada por louros e flores — poder coroado pela colheita",
+      "pentáculo dourado pousado sobre o joelho direito, mão repousada sobre ele — patrimônio assegurado com mão firme",
+      "cetro real florido segurado com a mão esquerda — vontade que governa o que cultivou",
+      "castelo ao fundo erguido sobre vinhedos e jardins — império construído tijolo a tijolo",
     ],
   },
 };
