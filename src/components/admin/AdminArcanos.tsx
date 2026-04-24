@@ -287,7 +287,7 @@ const AdminArcanos = () => {
         <div>
           <h2 className="font-heading text-lg text-foreground">Arcanos</h2>
           <p className="text-sm text-muted-foreground">
-            CMS editorial — gerencie Arcanos Maiores e Menores com seus 17 campos.
+            CMS editorial — duas réguas: <strong className="text-foreground">essencial de publicação</strong> ({ESSENTIAL_FIELDS.length} campos · obrigatórios) e <strong className="text-foreground">editorial total</strong> ({EDITORIAL_FIELDS.length} campos · contador completo do admin).
           </p>
         </div>
         <Button size="sm" className="gap-2" onClick={() => setCreateOpen(true)}>
