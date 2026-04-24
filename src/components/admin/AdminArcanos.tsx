@@ -392,8 +392,8 @@ const AdminArcanos = () => {
                   <span className="text-xs font-medium text-foreground truncate flex-1">
                     {a.name} <span className="text-muted-foreground">· {a.type === "maior" ? "Maior" : `Menor (${a.naipe ?? ""})`} · {a.tier}</span>
                   </span>
-                  <span className="text-[11px] text-muted-foreground whitespace-nowrap">
-                    {filled}/{total} · faltam {missing.length}
+                  <span className="text-[11px] text-muted-foreground whitespace-nowrap" title={`Essencial ${countEssentialFilled(a)}/${ESSENTIAL_FIELDS.length} · Editorial ${filled}/${total}`}>
+                    Ess {countEssentialFilled(a)}/{ESSENTIAL_FIELDS.length} · Ed {filled}/{total}
                   </span>
                 </button>
               );
