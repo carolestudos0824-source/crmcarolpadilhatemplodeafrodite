@@ -226,7 +226,7 @@ const ArcanoMenorLessonPage = () => {
         </div>
       </header>
 
-      <main className="relative z-10 container max-w-3xl py-6 px-6 pb-56">
+      <main className="relative z-10 container max-w-3xl py-6 px-6 pb-72">
         {/* Carta — sempre visível, motion leve por fase */}
         <div
           key={`card-${phase}`}
