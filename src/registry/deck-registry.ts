@@ -62,6 +62,10 @@ import corteCopasPajem from "@/assets/menor-copas-pajem.jpg";
 import corteCopasCavaleiro from "@/assets/menor-copas-cavaleiro.jpg";
 import corteCopasRainha from "@/assets/menor-copas-rainha.jpg";
 import corteCopasRei from "@/assets/menor-copas-rei.jpg";
+import cortePausPajem from "@/assets/menor-paus-pajem.jpg";
+import cortePausCavaleiro from "@/assets/menor-paus-cavaleiro.jpg";
+import cortePausRainha from "@/assets/menor-paus-rainha.jpg";
+import cortePausRei from "@/assets/menor-paus-rei.jpg";
 
 import loucoImage from "@/assets/arcano-0-louco.jpg";
 import magoImage from "@/assets/arcano-1-mago.jpg";
