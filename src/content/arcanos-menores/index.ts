@@ -240,7 +240,7 @@ function createEmptyCard(posicao: CartaPosicao, naipe: Naipe): ArcanoMenorEditor
       fraseFixacao: "",
     },
     desbloqueado: false,
-    cardImage: `/assets/arcanos-menores/${id}.jpg`,
+    cardImage: getDeckVisualCard(id)?.cardImage ?? `/assets/arcanos-menores/${id}.jpg`,
   };
 }
 
