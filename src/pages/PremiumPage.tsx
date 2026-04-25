@@ -250,6 +250,21 @@ const ActiveSubscriberView = ({
               Continuar estudando
             </Button>
 
+            {canManageSubscription && (
+              <button
+                onClick={handleOpenPortal}
+                disabled={portalLoading}
+                className="text-[11px] font-heading tracking-wider uppercase px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+                style={{
+                  background: "hsl(var(--mystic-surface))",
+                  color: "hsl(var(--midnight))",
+                  border: "1px solid hsl(var(--gold) / 0.30)",
+                }}
+              >
+                {portalLoading ? "Abrindo..." : "Gerenciar assinatura"}
+              </button>
+            )}
+
             {isCancelledWithAccess && (
               <button
                 onClick={async () => {
