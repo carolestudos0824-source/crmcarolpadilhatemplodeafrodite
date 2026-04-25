@@ -16,6 +16,8 @@ import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
 import { useResolvedArcano } from "@/hooks/use-resolved-arcano";
+import { useAuth } from "@/hooks/use-auth";
+import { persistQuizResponse } from "@/lib/quiz-persistence";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 
@@ -28,6 +30,7 @@ const LessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addXP, completeLesson, completeQuiz, earnBadge, isArcanoCompleted } = useProgress();
+  const { user } = useAuth();
   const { trackEvent } = useTrackEvent();
   const { isPremium, loading: premiumLoading } = usePremium();
   const { isAdmin } = useIsAdmin();
@@ -336,6 +339,16 @@ const LessonPage = () => {
               <QuizSection
                 questions={resolvedQuiz.questions ?? arcano.quiz}
                 onComplete={handleQuizComplete}
+                onAnswer={(qIdx, optIdx, isCorrect) => {
+                  if (!user) return;
+                  persistQuizResponse({
+                    userId: user.id,
+                    quizId: `quiz-arcano-${arcano.id}`,
+                    questionIndex: qIdx,
+                    selectedAnswer: optIdx,
+                    isCorrect,
+                  });
+                }}
               />
             </div>
             <div className="flex justify-center">
