@@ -77,6 +77,14 @@
     font-size: 17px;
   }
 
+  /* Accessibility — global font-size scale (controlled by FontSizeContext) */
+  html.font-large {
+    font-size: 19px;
+  }
+  html.font-xl {
+    font-size: 22px;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
     line-height: 1.7;
