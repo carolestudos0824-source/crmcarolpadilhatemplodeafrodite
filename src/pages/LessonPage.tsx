@@ -210,11 +210,11 @@ const LessonPage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background */}
+      {/* Background — fundo aquarelado vivo, overlay leve só p/ legibilidade */}
       <div className="fixed inset-0 z-0">
         <img src={mysticBg} alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0" style={{
-          background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.88), hsl(36 33% 97% / 0.82), hsl(36 33% 97% / 0.92))",
+          background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.30), hsl(36 33% 97% / 0.22), hsl(36 33% 97% / 0.32))",
         }} />
       </div>
 
