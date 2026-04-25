@@ -186,7 +186,7 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
 
   // Active quiz
   return (
-    <div className="space-y-6">
+    <div className="bg-white/75 backdrop-blur-md rounded-2xl p-8 space-y-6 shadow-sm border border-[#c9a96e]/20">
       {/* Progress dots */}
       <div className="flex items-center gap-1.5">
         {questions.map((_, i) => (
@@ -201,38 +201,40 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
       </div>
 
       <div style={{ animation: "fade-up 0.4s ease-out" }}>
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs font-heading tracking-[0.15em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xs tracking-widest font-body uppercase opacity-60" style={{ color: "#3d1f2e" }}>
             {isTrueFalse ? "Verdadeiro ou Falso" : "Múltipla Escolha"}
           </span>
-          <span className="text-xs" style={{ color: "hsl(230 10% 55%)" }}>
+          <span className="text-xs tracking-widest font-body uppercase opacity-60" style={{ color: "#3d1f2e" }}>
             — {currentIndex + 1}/{questions.length}
           </span>
         </div>
 
-        <h4 className="font-accent text-lg leading-relaxed mb-6" style={{ color: "hsl(230 25% 15%)" }}>
-          {current.question}
+        <h4 className="font-display text-xl font-semibold leading-relaxed mb-6 flex items-start gap-2" style={{ color: "#3d1f2e" }}>
+          <span className="text-[#c9a96e] mt-1 shrink-0" aria-hidden="true">✦</span>
+          <span>{current.question}</span>
         </h4>
 
         <div className={`grid gap-3 ${isTrueFalse ? "grid-cols-2" : "grid-cols-1"}`}>
           {current.options.map((option, i) => {
-            let bg = "hsl(38 25% 93% / 0.7)";
-            let border = "transparent";
-            let textColor = "hsl(230 20% 25%)";
-            let iconColor = "hsl(230 10% 55%)";
+            const isCorrectAnswer = isAnswered && i === current.correctIndex;
+            const isWrongSelected = isAnswered && i === selectedOption && i !== current.correctIndex;
 
-            if (isAnswered) {
-              if (i === current.correctIndex) {
-                bg = "hsl(120 30% 92%)";
-                border = "hsl(120 35% 60% / 0.4)";
-                textColor = "hsl(120 30% 25%)";
-                iconColor = "hsl(120 35% 40%)";
-              } else if (i === selectedOption) {
-                bg = "hsl(0 40% 94%)";
-                border = "hsl(0 50% 65% / 0.4)";
-                textColor = "hsl(0 40% 30%)";
-                iconColor = "hsl(0 50% 45%)";
-              }
+            let optionClass =
+              "bg-white/70 backdrop-blur-sm border-[#c9a96e]/30 hover:bg-white/90 hover:border-[#c9a96e]/60 hover:shadow-sm";
+            let textColorStyle: string = "#3d1f2e";
+            let iconColor = "#c9a96e";
+
+            if (isCorrectAnswer) {
+              optionClass = "bg-[#2d5a3d]/15 border-[#2d5a3d]/50";
+              textColorStyle = "#2d5a3d";
+              iconColor = "#2d5a3d";
+            } else if (isWrongSelected) {
+              optionClass = "bg-[#8b1a2e]/15 border-[#8b1a2e]/50";
+              textColorStyle = "#8b1a2e";
+              iconColor = "#8b1a2e";
+            } else if (isAnswered) {
+              optionClass = "bg-white/50 backdrop-blur-sm border-[#c9a96e]/20 opacity-70";
             }
 
             return (
@@ -240,22 +242,17 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
                 key={i}
                 onClick={() => handleSelect(i)}
                 disabled={isAnswered}
-                className={`text-left p-4 rounded-xl flex items-center gap-3 transition-all duration-300 ${
-                  !isAnswered ? "hover:scale-[1.02] active:scale-[0.98] cursor-pointer" : ""
+                className={`text-left rounded-xl px-5 py-4 text-base font-body cursor-pointer transition-all duration-200 border flex items-center gap-3 ${optionClass} ${
+                  !isAnswered ? "active:scale-[0.99]" : "cursor-default"
                 } ${isTrueFalse ? "justify-center text-center" : ""}`}
-                style={{
-                  background: bg,
-                  border: `1.5px solid ${border}`,
-                  boxShadow: isAnswered && (i === current.correctIndex || i === selectedOption) ? "0 2px 12px hsl(0 0% 0% / 0.04)" : "none",
-                }}
               >
                 <span
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-heading shrink-0"
-                  style={{ border: `1.5px solid ${iconColor}`, color: iconColor }}
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-display shrink-0 border-[1.5px]"
+                  style={{ borderColor: iconColor, color: iconColor }}
                 >
-                  {isAnswered && i === current.correctIndex ? (
+                  {isCorrectAnswer ? (
                     <Check className="w-3.5 h-3.5" />
-                  ) : isAnswered && i === selectedOption ? (
+                  ) : isWrongSelected ? (
                     <X className="w-3.5 h-3.5" />
                   ) : isTrueFalse ? (
                     i === 0 ? "V" : "F"
@@ -263,7 +260,7 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
                     String.fromCharCode(65 + i)
                   )}
                 </span>
-                <span className="text-sm" style={{ color: textColor }}>{option}</span>
+                <span style={{ color: textColorStyle }}>{option}</span>
               </button>
             );
           })}
@@ -273,8 +270,8 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
           <div
             className="mt-5 p-4 rounded-xl"
             style={{
-              background: "hsl(36 45% 58% / 0.06)",
-              border: "1px solid hsl(36 45% 58% / 0.12)",
+              background: "hsl(36 45% 58% / 0.08)",
+              border: "1px solid hsl(36 45% 58% / 0.18)",
               animation: "fade-up 0.3s ease-out",
             }}
           >
