@@ -7,6 +7,8 @@ import {
   type ArcanoMenorEditorial,
 } from "@/registry/naipes";
 import { useProgress } from "@/hooks/use-progress";
+import { useAuth } from "@/hooks/use-auth";
+import { persistQuizResponse } from "@/lib/quiz-persistence";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 /**
@@ -64,6 +66,7 @@ const ArcanoMenorLessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { progress, completeLesson, addXP } = useProgress();
+  const { user } = useAuth();
 
   const card = useMemo(
     () => (id ? getArcanoMenor(id) : undefined),
@@ -132,6 +135,18 @@ const ArcanoMenorLessonPage = () => {
     if (quizSubmitted[qIdx]) return;
     setQuizAnswers((s) => ({ ...s, [qIdx]: optIdx }));
     setQuizSubmitted((s) => ({ ...s, [qIdx]: true }));
+
+    // Fire-and-forget persistence to quiz_responses
+    if (user && card.quiz?.[qIdx]) {
+      const correctIdx = card.quiz[qIdx].correctIndex;
+      persistQuizResponse({
+        userId: user.id,
+        quizId: `quiz-menor-${card.id}`,
+        questionIndex: qIdx,
+        selectedAnswer: optIdx,
+        isCorrect: optIdx === correctIdx,
+      });
+    }
   };
 
   const progressPct = Math.round(((phaseIdx + 1) / PHASE_ORDER.length) * 100);

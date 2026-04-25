@@ -5,9 +5,11 @@ import { Check, X, ArrowRight, Trophy, RotateCcw, Sparkles } from "lucide-react"
 interface QuizSectionProps {
   questions: QuizQuestion[];
   onComplete: (score: number, total: number) => void;
+  /** Called once per answered question — fire-and-forget telemetry hook. */
+  onAnswer?: (questionIndex: number, selectedIndex: number, isCorrect: boolean) => void;
 }
 
-export function QuizSection({ questions, onComplete }: QuizSectionProps) {
+export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -24,11 +26,13 @@ export function QuizSection({ questions, onComplete }: QuizSectionProps) {
     if (isAnswered) return;
     setSelectedOption(optionIndex);
     setIsAnswered(true);
-    if (optionIndex === current.correctIndex) {
+    const isCorrect = optionIndex === current.correctIndex;
+    if (isCorrect) {
       setScore((s) => s + 1);
     } else {
       setMistakes((m) => [...m, { question: current, selected: optionIndex }]);
     }
+    onAnswer?.(currentIndex, optionIndex, isCorrect);
   };
 
   const handleNext = () => {
