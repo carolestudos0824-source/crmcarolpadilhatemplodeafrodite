@@ -80,6 +80,19 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     line-height: 1.7;
+    background-image:
+      linear-gradient(hsl(0 0% 0% / 0.06), hsl(0 0% 0% / 0.06)),
+      url('/mystic-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      background-attachment: scroll;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -155,7 +168,10 @@
   }
 
   .card-mystic {
-    @apply bg-card border rounded-xl;
+    @apply border rounded-xl;
+    background-color: hsl(var(--card) / 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-color: hsl(36 45% 58% / 0.2);
     box-shadow: 
       0 4px 20px hsl(36 45% 58% / 0.06),
@@ -163,7 +179,10 @@
   }
 
   .card-mystic-active {
-    @apply bg-card border rounded-xl;
+    @apply border rounded-xl;
+    background-color: hsl(var(--card) / 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-color: hsl(340 42% 30% / 0.3);
     box-shadow: 
       0 8px 30px hsl(36 45% 58% / 0.1),
