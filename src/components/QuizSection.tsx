@@ -242,13 +242,14 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
                 key={i}
                 onClick={() => handleSelect(i)}
                 disabled={isAnswered}
-                className={`text-left rounded-xl px-5 py-4 text-base font-body cursor-pointer transition-all duration-200 border flex items-center gap-3 ${optionClass} ${
+                className={`w-full text-left rounded-xl px-5 py-4 text-base font-body cursor-pointer transition-all duration-200 border flex items-center gap-3 ${optionClass} ${
                   !isAnswered ? "active:scale-[0.99]" : "cursor-default"
                 } ${isTrueFalse ? "justify-center text-center" : ""}`}
               >
                 <span
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-display shrink-0 border-[1.5px]"
-                  style={{ borderColor: iconColor, color: iconColor }}
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 border"
+                  style={{ borderColor: iconColor, color: iconColor, borderWidth: "1.5px" }}
+                  aria-hidden="true"
                 >
                   {isCorrectAnswer ? (
                     <Check className="w-3.5 h-3.5" />
@@ -260,7 +261,12 @@ export function QuizSection({ questions, onComplete, onAnswer }: QuizSectionProp
                     String.fromCharCode(65 + i)
                   )}
                 </span>
-                <span style={{ color: textColorStyle }}>{option}</span>
+                <span
+                  className="flex-1 break-words"
+                  style={{ color: textColorStyle, whiteSpace: "normal" }}
+                >
+                  {String(option ?? "")}
+                </span>
               </button>
             );
           })}
