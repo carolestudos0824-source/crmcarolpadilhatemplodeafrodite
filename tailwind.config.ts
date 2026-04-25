@@ -15,7 +15,9 @@ export default {
     extend: {
       fontFamily: {
         heading: ["Cinzel", "serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["Cormorant Garamond", "Georgia", "serif"],
+        body: ["DM Sans", "Inter", "system-ui", "sans-serif"],
+        sans: ["DM Sans", "Inter", "system-ui", "sans-serif"],
         accent: ["Cormorant Garamond", "serif"],
       },
       colors: {
