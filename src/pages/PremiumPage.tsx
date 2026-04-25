@@ -125,6 +125,34 @@ const ActiveSubscriberView = ({
 }) => {
   const navigate = useNavigate();
   const isCancelledWithAccess = subscriptionStatus === "cancelled_with_access";
+  const canManageSubscription =
+    subscriptionStatus === "monthly_active" ||
+    subscriptionStatus === "annual_active" ||
+    subscriptionStatus === "cancelled_with_access";
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const handleOpenPortal = async () => {
+    if (portalLoading) return;
+    setPortalLoading(true);
+    const loadingToast = toast.loading("Abrindo portal de assinatura...");
+    try {
+      const { data, error } = await supabase.functions.invoke("stripe-customer-portal", {
+        body: {},
+      });
+      toast.dismiss(loadingToast);
+      if (error || !data?.url) {
+        const msg = (data as { message?: string } | null)?.message;
+        toast.error(msg || "Não foi possível abrir o portal. Tente novamente.");
+        setPortalLoading(false);
+        return;
+      }
+      window.location.href = data.url as string;
+    } catch {
+      toast.dismiss(loadingToast);
+      toast.error("Erro inesperado ao abrir o portal.");
+      setPortalLoading(false);
+    }
+  };
 
   const sourceLabel = premiumSource === "gift" ? "Presente" : premiumSource === "admin" ? "Acesso administrativo" : "Assinatura";
   const untilFormatted = premiumUntil
@@ -221,6 +249,21 @@ const ActiveSubscriberView = ({
             >
               Continuar estudando
             </Button>
+
+            {canManageSubscription && (
+              <button
+                onClick={handleOpenPortal}
+                disabled={portalLoading}
+                className="text-[11px] font-heading tracking-wider uppercase px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+                style={{
+                  background: "hsl(var(--mystic-surface))",
+                  color: "hsl(var(--midnight))",
+                  border: "1px solid hsl(var(--gold) / 0.30)",
+                }}
+              >
+                {portalLoading ? "Abrindo..." : "Gerenciar assinatura"}
+              </button>
+            )}
 
             {isCancelledWithAccess && (
               <button
