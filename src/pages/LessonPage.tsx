@@ -167,7 +167,7 @@ const LessonPage = () => {
         <div className="fixed inset-0 z-0">
           <img src={mysticBg} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{
-            background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.92), hsl(36 33% 97% / 0.88))",
+            background: "linear-gradient(to bottom, hsl(36 33% 97% / 0.35), hsl(36 33% 97% / 0.30))",
           }} />
         </div>
         <header className="relative z-10 backdrop-blur-md" style={{
