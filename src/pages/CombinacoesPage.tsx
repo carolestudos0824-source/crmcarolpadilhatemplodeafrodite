@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
 import { COMBINACOES_LESSONS } from "@/content/lessons/combinacoes";
@@ -11,7 +10,7 @@ import mysticBg from "@/assets/mystic-bg.jpg";
 const CombinacoesPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
-  const { isAdmin, isPremium, bypassLocks } = useAccess();
+  const { bypassLocks } = useAccess();
   // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
   useResolvedModule("combinacoes");
 
@@ -31,29 +30,10 @@ const CombinacoesPage = () => {
 
   const progressPct = Math.round((completedCount / COMBINACOES_LESSONS.length) * 100);
 
-  useEffect(() => {
-    const isPreviewRuntime =
-      import.meta.env.DEV ||
-      window.location.hostname.includes("lovableproject.com") ||
-      window.location.hostname.includes("id-preview--") ||
-      window.location.hostname.includes("localhost");
-
-    if (!isPreviewRuntime) return;
-
-    COMBINACOES_LESSONS.forEach((lesson) => {
-      const completed = isLessonCompleted(lesson.id);
-      const unlocked = isLessonUnlocked(lesson.order);
-
-      console.log("[access-debug:combinacoes]", {
-        isAdmin,
-        isPremium,
-        bypassLocks,
-        lessonId: lesson.id,
-        completed,
-        unlocked,
-      });
-    });
-  }, [isAdmin, isPremium, bypassLocks, progress.completedLessons]);
+  const openLesson = (order: number, unlocked: boolean) => {
+    if (!bypassLocks && !unlocked) return;
+    navigate(`/combinacoes/${order}`);
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -132,8 +112,9 @@ const CombinacoesPage = () => {
             return (
               <button
                 key={lesson.id}
-                onClick={() => unlocked && navigate(`/combinacoes/${lesson.order}`)}
-                disabled={!unlocked}
+                type="button"
+                onClick={() => openLesson(lesson.order, unlocked)}
+                disabled={!bypassLocks && !unlocked}
                 className="w-full text-left group transition-all duration-500"
                 style={{ animation: `fade-up 0.5s ease-out both`, animationDelay: `${i * 60}ms` }}
               >
