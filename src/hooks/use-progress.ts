@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { DEFAULT_PROGRESS, type UserProgress } from "@/lib/content";
+import { DEFAULT_PROGRESS, type Badge, type UserProgress } from "@/lib/content";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -7,7 +7,13 @@ const LOCAL_EXTRAS_KEY = "tarot-journey-extras";
 
 /**
  * Fields stored in Supabase user_progress table.
- * Everything else (badges, currentModule, studentName, certificatesEarned) stays in localStorage.
+ *
+ * `badges`, `certificates_earned` and `current_module` were added in the
+ * cross-device sync migration; `student_name` lives on `profiles`.
+ *
+ * localStorage is kept as a write-through cache so the UI can render
+ * instantly on cold start before the DB fetch resolves (no flash of empty
+ * state). DB is the source of truth — on hydrate we overwrite the cache.
  */
 interface DbProgress {
   xp: number;
@@ -19,11 +25,13 @@ interface DbProgress {
   completed_quizzes: string[];
   completed_exercises: string[];
   completed_modules: string[];
+  badges: Badge[];
+  certificates_earned: Record<string, string>;
+  current_module: string;
 }
 
-/** Extra fields not in the DB — stored in localStorage as secondary/non-critical */
 interface LocalExtras {
-  badges: UserProgress["badges"];
+  badges: Badge[];
   currentModule: string;
   studentName: string;
   certificatesEarned: Record<string, string>;
@@ -51,10 +59,24 @@ function getLocalExtras(): LocalExtras {
 }
 
 function saveLocalExtras(extras: LocalExtras) {
-  localStorage.setItem(LOCAL_EXTRAS_KEY, JSON.stringify(extras));
+  try {
+    localStorage.setItem(LOCAL_EXTRAS_KEY, JSON.stringify(extras));
+  } catch { /* ignore */ }
 }
 
-function dbToProgress(row: DbProgress, extras: LocalExtras): UserProgress {
+/** Merge persisted badges (just `id` + `earned` + `earnedAt`) into the canonical DEFAULT_PROGRESS list to keep names/descriptions in sync with code. */
+function mergeBadges(persisted: Badge[] | null | undefined): Badge[] {
+  if (!persisted || !Array.isArray(persisted) || persisted.length === 0) {
+    return DEFAULT_PROGRESS.badges;
+  }
+  const earnedMap = new Map(persisted.map((b) => [b.id, b]));
+  return DEFAULT_PROGRESS.badges.map((b) => {
+    const p = earnedMap.get(b.id);
+    return p ? { ...b, earned: !!p.earned, earnedAt: p.earnedAt } : b;
+  });
+}
+
+function dbToProgress(row: DbProgress, studentName: string): UserProgress {
   return {
     xp: row.xp,
     level: row.level,
@@ -65,14 +87,14 @@ function dbToProgress(row: DbProgress, extras: LocalExtras): UserProgress {
     completedQuizzes: row.completed_quizzes ?? [],
     completedExercises: row.completed_exercises ?? [],
     completedModules: row.completed_modules ?? [],
-    badges: extras.badges,
-    currentModule: extras.currentModule,
-    studentName: extras.studentName,
-    certificatesEarned: extras.certificatesEarned,
+    badges: mergeBadges(row.badges),
+    currentModule: row.current_module ?? DEFAULT_PROGRESS.currentModule,
+    studentName: studentName ?? "",
+    certificatesEarned: (row.certificates_earned ?? {}) as Record<string, string>,
   };
 }
 
-function progressToDb(p: UserProgress): Partial<DbProgress> {
+function progressToDbCore(p: UserProgress) {
   return {
     xp: p.xp,
     level: p.level,
@@ -83,6 +105,9 @@ function progressToDb(p: UserProgress): Partial<DbProgress> {
     completed_quizzes: p.completedQuizzes,
     completed_exercises: p.completedExercises,
     completed_modules: p.completedModules,
+    badges: p.badges,
+    certificates_earned: p.certificatesEarned,
+    current_module: p.currentModule,
   };
 }
 
@@ -91,7 +116,8 @@ export function useProgress() {
   const [progress, setProgress] = useState<UserProgress>({ ...DEFAULT_PROGRESS, ...getLocalExtras() });
   const [loading, setLoading] = useState(true);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastSavedRef = useRef<string>("");
+  const lastSavedCoreRef = useRef<string>("");
+  const lastSavedNameRef = useRef<string>("");
 
   // ─── Fetch from Supabase when user is available ───
   useEffect(() => {
@@ -104,20 +130,28 @@ export function useProgress() {
     let cancelled = false;
 
     const fetchProgress = async () => {
-      const { data, error } = await supabase
-        .from("user_progress")
-        .select("*")
-        .eq("user_id", user.id)
-        .maybeSingle();
+      const [{ data: progressRow }, { data: profileRow }] = await Promise.all([
+        supabase.from("user_progress").select("*").eq("user_id", user.id).maybeSingle(),
+        // student_name lives on profiles; cast because generated types may lag the migration
+        supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle(),
+      ]);
 
       if (cancelled) return;
 
-      if (data && !error) {
-        const extras = getLocalExtras();
-        setProgress(dbToProgress(data as unknown as DbProgress, extras));
+      if (progressRow) {
+        const studentName = (profileRow as Record<string, unknown> | null)?.student_name as string
+          ?? getLocalExtras().studentName
+          ?? "";
+        const next = dbToProgress(progressRow as unknown as DbProgress, studentName);
+        setProgress(next);
+        // Refresh local cache to match DB
+        saveLocalExtras({
+          badges: next.badges,
+          currentModule: next.currentModule,
+          studentName: next.studentName,
+          certificatesEarned: next.certificatesEarned,
+        });
       }
-      // If no data exists, the trigger handle_new_user already creates a row,
-      // so we just keep defaults while it propagates.
       setLoading(false);
     };
 
@@ -125,17 +159,18 @@ export function useProgress() {
     return () => { cancelled = true; };
   }, [user]);
 
-  // ─── Debounced save to Supabase ───
+  // ─── Debounced save to Supabase (user_progress + profiles.student_name) ───
   useEffect(() => {
     if (!user || loading) return;
 
-    const dbPayload = progressToDb(progress);
-    const snapshot = JSON.stringify(dbPayload);
+    const corePayload = progressToDbCore(progress);
+    const coreSnapshot = JSON.stringify(corePayload);
+    const nameSnapshot = progress.studentName ?? "";
 
-    // Don't save if nothing changed
-    if (snapshot === lastSavedRef.current) return;
+    const coreChanged = coreSnapshot !== lastSavedCoreRef.current;
+    const nameChanged = nameSnapshot !== lastSavedNameRef.current;
 
-    // Save local extras immediately
+    // Always keep localStorage cache fresh
     saveLocalExtras({
       badges: progress.badges,
       currentModule: progress.currentModule,
@@ -143,14 +178,25 @@ export function useProgress() {
       certificatesEarned: progress.certificatesEarned,
     });
 
-    // Debounce DB writes (300ms)
+    if (!coreChanged && !nameChanged) return;
+
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(async () => {
-      lastSavedRef.current = snapshot;
-      await supabase
-        .from("user_progress")
-        .update(dbPayload)
-        .eq("user_id", user.id);
+      if (coreChanged) {
+        lastSavedCoreRef.current = coreSnapshot;
+        await supabase
+          .from("user_progress")
+          .update(corePayload)
+          .eq("user_id", user.id);
+      }
+      if (nameChanged) {
+        lastSavedNameRef.current = nameSnapshot;
+        await supabase
+          .from("profiles")
+          // student_name was just added; cast to keep TS happy until types regen
+          .update({ student_name: nameSnapshot } as never)
+          .eq("user_id", user.id);
+      }
     }, 300);
 
     return () => {
@@ -167,7 +213,6 @@ export function useProgress() {
 
     try {
       const parsed = JSON.parse(old);
-      // If old data has meaningful progress, merge it
       if (parsed.completedLessons?.length > 0 || parsed.xp > 0) {
         setProgress(prev => ({
           ...prev,
@@ -185,7 +230,6 @@ export function useProgress() {
       }
     } catch { /* ignore */ }
 
-    // Remove old key after migration
     localStorage.removeItem(oldKey);
   }, [user, loading]);
 
@@ -289,7 +333,11 @@ export function useProgress() {
     if (user) {
       await supabase
         .from("user_progress")
-        .update(progressToDb(DEFAULT_PROGRESS))
+        .update(progressToDbCore(DEFAULT_PROGRESS))
+        .eq("user_id", user.id);
+      await supabase
+        .from("profiles")
+        .update({ student_name: "" } as never)
         .eq("user_id", user.id);
     }
   }, [user]);
