@@ -10,6 +10,7 @@ import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, MODULES_CATALOG as MODULES,
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const LEVEL_TITLES: Record<number, string> = {
@@ -38,6 +39,30 @@ const ProfilePage = () => {
   const [giftCode, setGiftCode] = useState("");
   const [showGiftInput, setShowGiftInput] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const handleOpenPortal = async () => {
+    if (portalLoading) return;
+    setPortalLoading(true);
+    const loadingToast = toast.loading("Abrindo portal de assinatura...");
+    try {
+      const { data, error } = await supabase.functions.invoke("stripe-customer-portal", {
+        body: {},
+      });
+      toast.dismiss(loadingToast);
+      if (error || !data?.url) {
+        const msg = (data as { message?: string } | null)?.message;
+        toast.error(msg || "Não foi possível abrir o portal. Tente novamente.");
+        setPortalLoading(false);
+        return;
+      }
+      window.location.href = data.url as string;
+    } catch {
+      toast.dismiss(loadingToast);
+      toast.error("Erro inesperado ao abrir o portal.");
+      setPortalLoading(false);
+    }
+  };
 
   useEffect(() => {
     const checkout = searchParams.get("checkout");
@@ -366,11 +391,12 @@ const ProfilePage = () => {
                 )}
               </div>
               <button
-                onClick={() => navigate("/premium")}
-                className="mt-3 text-[10px] font-heading tracking-wider uppercase"
+                onClick={handleOpenPortal}
+                disabled={portalLoading || premiumSource === "gift" || premiumSource === "admin"}
+                className="mt-3 text-[10px] font-heading tracking-wider uppercase disabled:opacity-40 disabled:cursor-not-allowed"
                 style={{ color: "hsl(340 42% 28% / 0.55)" }}
               >
-                Gerenciar assinatura →
+                {portalLoading ? "Abrindo..." : "Gerenciar assinatura →"}
               </button>
             </div>
           ) : (
