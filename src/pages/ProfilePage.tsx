@@ -37,6 +37,7 @@ const ProfilePage = () => {
   const { isPremium, premiumUntil, premiumSource } = usePremium();
   const { redeem, loading: redeemLoading } = useGiftCode();
   const { signOut, user } = useAuth();
+  const { fontSize, setFontSize } = useFontSize();
   const [giftCode, setGiftCode] = useState("");
   const [showGiftInput, setShowGiftInput] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
