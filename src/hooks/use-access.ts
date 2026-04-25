@@ -1,5 +1,5 @@
 import { usePremium } from "@/hooks/use-premium";
-import { useIsAdmin } from "@/hooks/use-admin";
+import { useRole } from "@/hooks/use-role";
 
 /**
  * Hook unificado de acesso pedagógico ao conteúdo.
@@ -13,7 +13,7 @@ import { useIsAdmin } from "@/hooks/use-admin";
  */
 export function useAccess() {
   const { isPremium, subscriptionStatus, loading: premiumLoading } = usePremium();
-  const { isAdmin, loading: adminLoading } = useIsAdmin();
+  const { isAdmin, loading: roleLoading } = useRole();
 
   const hasFullAccess = isAdmin || isPremium;
 
@@ -23,6 +23,6 @@ export function useAccess() {
     subscriptionStatus,
     hasFullAccess,
     bypassLocks: hasFullAccess,
-    loading: premiumLoading || adminLoading,
+    loading: premiumLoading || roleLoading,
   };
 }
