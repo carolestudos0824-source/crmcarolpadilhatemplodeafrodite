@@ -15,7 +15,7 @@ const LandingPage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-hidden">
+    <div className="min-h-screen bg-transparent text-foreground overflow-hidden">
 
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-[92vh] flex flex-col items-center justify-center px-6">
