@@ -206,4 +206,153 @@ export const MESA_TARO_LESSONS: MesaTaroLesson[] = [
       { id: "mesa6-q1", question: "Por que lavar as mãos depois de um atendimento?", options: ["Higiene obrigatória", "Gesto simbólico de encerrar a energia do atendimento", "Tradição religiosa", "Para limpar a tinta das cartas"], correctIndex: 1, explanation: "Lavar as mãos é um gesto simbólico que marca o encerramento da energia do atendimento — separar a sessão da vida pessoal." },
     ],
   },
+  {
+    id: "mesa-7", order: 6, title: "A Mesa Portátil", subtitle: "Ler tarô fora do seu espaço habitual", icon: "🎒",
+    content: `Nem sempre você lê em casa. Eventos, viagens, atendimentos externos, encontros em cafés ou na casa do consulente — sua mesa precisa ser **portátil sem perder identidade**.
+
+**O kit mínimo portátil:**
+
+**1. Pano de leitura dobrável.** Tecido que não amasse muito (algodão grosso, feltro, veludo curto). Tamanho 50cm × 50cm é suficiente.
+
+**2. Baralho em estojo rígido.** Caixa de madeira, metal ou couro que proteja as cartas no transporte. Evite caixas de papelão originais — elas se desgastam.
+
+**3. Caderno pequeno + caneta.** Moleskine ou similar. A caneta deve ser confiável — nada pior que ficar sem tinta no meio de uma anotação.
+
+**4. Vela de viagem (opcional).** Vela LED a pilha é segura em qualquer ambiente — útil quando velas reais não são permitidas (hotéis, eventos corporativos).
+
+**5. Lenço ou pano para improviso.** Para limpar a superfície antes de montar.
+
+**Adaptações ao espaço alheio:**
+- Chegue 15 minutos antes para reconhecer o ambiente.
+- Identifique a melhor superfície disponível (mesa, bancada, chão com almofada).
+- Posicione-se de costas para a parede sempre que possível — dá segurança psicológica.
+- Negocie iluminação se a do local não for adequada (pedir abajur emprestado, mudar de cômodo).
+
+**O que NÃO levar:**
+- Excesso de objetos rituais que dependem do seu espaço.
+- Múltiplos baralhos — escolha um e domine.
+- Itens frágeis (cristais grandes, vela de cera derretível em local inadequado).
+
+**Lembre:** sua presença é o elemento mais importante da mesa. O resto é apoio.`,
+    keyPoints: ["Kit portátil: pano dobrável, baralho protegido, caderno, caneta", "Vela LED é alternativa segura em ambientes externos", "Chegar 15 min antes para reconhecer e adaptar o espaço", "Sua presença é o elemento essencial — o resto é apoio"],
+    deepDive: `Tarólogos itinerantes da Idade Média carregavam baralhos enrolados em panos de seda dentro de bolsas de couro — o equivalente medieval do kit portátil moderno. A ideia de "espaço sagrado portátil" não é nova: é uma adaptação prática de quem precisa exercer o ofício onde a vida pede. Hoje, com eventos corporativos contratando tarólogos, feiras esotéricas e atendimentos a domicílio, dominar a mesa portátil é parte do repertório profissional.`,
+    reflection: `Se alguém te chamasse para um atendimento externo amanhã, o que levaria? O exercício mental de montar o kit revela o que você considera essencial e o que é apenas hábito.`,
+    exercise: { instruction: "Monte seu kit portátil. Faça uma leitura fora de casa (na casa de uma amiga, num café tranquilo). Note: o que funcionou? O que faltou?", type: "practice" },
+    quiz: [
+      { id: "mesa7-q1", question: "Qual é o elemento mais importante de uma mesa portátil?", options: ["Vela acesa", "Baralho raro", "Sua presença", "Cristais"], correctIndex: 2, explanation: "Sua presença é o elemento essencial. Todos os objetos são apoio — sem presença, nenhum kit funciona." },
+    ],
+  },
+  {
+    id: "mesa-8", order: 7, title: "A Mesa para Grupos", subtitle: "Quando você lê para mais de uma pessoa", icon: "👥",
+    content: `Atendimentos em grupo (rodas de tarô, eventos, oficinas) exigem uma mesa pensada para **visibilidade coletiva e segurança individual**.
+
+**Tipos de atendimento em grupo:**
+
+**1. Roda de tarô.** Várias pessoas em círculo, cada uma recebe uma leitura curta (1-3 cartas) na frente das outras. Funciona para temas leves e iniciantes.
+
+**2. Oficina prática.** Você ensina e os participantes praticam entre si. A mesa serve de demonstração, não de atendimento.
+
+**3. Atendimentos paralelos em evento.** Várias pessoas aguardam, cada uma é atendida individualmente por 10-15 minutos. Cada sessão é privada, mas o ritmo é intenso.
+
+**Princípios para mesa coletiva:**
+
+**1. Visibilidade.** Todos precisam ver as cartas. Use uma mesa central elevada ou disponha as cartas na vertical (apoiadas em suporte) para grupos grandes.
+
+**2. Privacidade modular.** Em rodas, combine antes: "Vamos falar sobre temas leves — relacionamento profundo ou crise pessoal pedem leitura individual depois." Isso protege quem está vulnerável.
+
+**3. Tempo controlado.** Roda de tarô: 5-7 minutos por pessoa. Sem isso, vira maratona exaustiva.
+
+**4. Materiais extras.** Em grupos, leve baralho reserva (caso alguém queira tocar), cadernos pequenos para os participantes anotarem, água disponível.
+
+**Erros comuns em grupo:**
+- Tocar temas íntimos diante de estranhos.
+- Permitir que um participante domine o tempo.
+- Ler como se fosse atendimento individual (não é — o foco e a intimidade são diferentes).
+- Não preparar o ambiente para que todos se sintam acolhidos (não só o consulente da vez).`,
+    keyPoints: ["3 formatos: roda, oficina, atendimentos paralelos — cada um pede mesa diferente", "Visibilidade coletiva + privacidade modular: combinar antes o que será tratado", "Tempo controlado (5-7 min/pessoa em roda)", "Atendimento em grupo ≠ atendimento individual: foco e intimidade diferem"],
+    deepDive: `As rodas de tarô modernas têm raízes nos círculos de cura ancestrais — práticas em que a comunidade testemunha a passagem de cada membro. O testemunho coletivo tem poder terapêutico documentado (estudos sobre grupos de apoio mostram que ser ouvida em grupo amplifica o impacto da fala). Mas exige cuidado redobrado com vulnerabilidade: o que se diz no grupo permanece visível, ao contrário da sessão individual.`,
+    reflection: `Você se sentiria à vontade liderando uma roda de tarô para 8 pessoas? Se a resposta for "não", o que falta — técnica, presença ou prática? Identificar o que falta é o primeiro passo.`,
+    exercise: { instruction: "Convide 3-4 amigas para uma mini-roda de tarô. Tema leve (energia da semana, intenção do mês). Cada uma recebe 3 cartas em 5 minutos. Pratique o controle de tempo.", type: "practice" },
+    quiz: [
+      { id: "mesa8-q1", question: "Qual é a duração ideal de uma leitura por pessoa numa roda de tarô?", options: ["1-2 minutos", "5-7 minutos", "20-30 minutos", "Sem limite"], correctIndex: 1, explanation: "5-7 minutos por pessoa mantém o ritmo da roda viva sem virar maratona exaustiva para você ou para o grupo." },
+    ],
+  },
+  {
+    id: "mesa-9", order: 8, title: "A Mesa Online", subtitle: "Adaptar a mesa física para a videochamada", icon: "💻",
+    content: `Atender online não é "atender pior" — é atender diferente. A mesa online tem suas próprias regras, e quem domina essas regras entrega leituras tão boas (ou melhores) que as presenciais.
+
+**Setup técnico essencial:**
+
+**1. Câmera dedicada.** Webcam externa ou celular em tripé. Câmera de notebook geralmente fica baixa demais.
+
+**2. Posicionamento da câmera.** Na altura dos seus olhos, mostrando rosto E cartas. Teste antes: o consulente deve ver as duas coisas sem você precisar inclinar a tela.
+
+**3. Iluminação frontal.** Luz natural de janela à frente, ou ring light. Nunca janela atrás (vira silhueta).
+
+**4. Microfone separado.** Microfone de lapela ou headset elimina ruído ambiente. Áudio ruim cansa mais que vídeo ruim.
+
+**5. Internet estável.** Cabo de rede sempre que possível. Wifi cai no meio da leitura — é constrangedor.
+
+**Setup visual:**
+
+**1. Fundo neutro.** Parede limpa, livros organizados, ou tecido suspenso. Evite cama desfeita, cozinha ou bagunça.
+
+**2. Mesa enquadrada.** O pano de leitura precisa caber no enquadramento. Pano menor (40cm × 40cm) funciona melhor que pano grande.
+
+**3. Cartas grandes ou viradas para a câmera.** Cartas pequenas ficam ilegíveis na tela. Use baralho de tamanho padrão e mostre cada carta de perto quando interpretar.
+
+**Adaptações na condução:**
+- Vá mais devagar — a conexão digital exige mais atenção.
+- Narre o que está fazendo: "Agora vou embaralhar", "Essa é a carta da posição central".
+- Pause depois de cada interpretação: "Isso ressoa com você?"
+- Após a sessão, envie foto das cartas + resumo escrito por WhatsApp ou e-mail.
+
+**Vantagens do atendimento online:**
+- Alcance geográfico ilimitado.
+- Sem deslocamento (você ou consulente).
+- Gravação opcional (com consentimento).
+- Custos operacionais menores.`,
+    keyPoints: ["Câmera externa na altura dos olhos, iluminação frontal, microfone dedicado", "Fundo neutro + mesa enquadrada (pano menor funciona melhor)", "Mostrar cartas de perto, narrar ações, ir mais devagar", "Após sessão: enviar foto das cartas + resumo por escrito"],
+    deepDive: `A pandemia de 2020 acelerou a profissionalização do atendimento online em todas as áreas — incluindo o tarô. Estudos sobre videoterapia mostram que a eficácia clínica é equivalente à presencial quando o setup é bem planejado. O mesmo se aplica ao tarô: o que muda é o canal, não a profundidade. Tarólogos que dominam o online relatam expansão real de público — alcançam clientes em outras cidades, países e fusos horários.`,
+    reflection: `Se você precisasse atender online amanhã, seu setup estaria pronto? O que faltaria? Listar o que falta é o primeiro passo para construir.`,
+    exercise: { instruction: "Faça uma chamada de teste com alguém de confiança. Posicione câmera, teste iluminação, mostre cartas. Peça feedback sobre imagem, áudio e clareza visual.", type: "practice" },
+    quiz: [
+      { id: "mesa9-q1", question: "Por que evitar luz vinda da janela atrás de você na videochamada?", options: ["Atrai energia ruim", "Vira silhueta — você fica escura no vídeo", "Cansa os olhos do consulente", "É proibido nas plataformas"], correctIndex: 1, explanation: "Luz atrás vira silhueta — sua imagem fica escura. A luz frontal (janela ou ring light na sua frente) ilumina o rosto adequadamente." },
+    ],
+  },
+  {
+    id: "mesa-10", order: 9, title: "Manutenção e Renovação da Mesa", subtitle: "A mesa viva: o que muda com o tempo", icon: "🔄",
+    content: `Sua mesa não é um setup fixo — ela **evolui com você**. Tarólogas iniciantes tendem a querer "a mesa perfeita" e congelar o setup. Tarólogas experientes sabem que a mesa é viva.
+
+**O que muda naturalmente com o tempo:**
+
+**1. O baralho.** Você pode começar com Rider-Waite-Smith e, anos depois, descobrir Marselha, Thoth ou edições contemporâneas. Cada baralho amplia sua linguagem.
+
+**2. O pano.** Pode trocar de cor conforme sua fase. Bordô para profundidade emocional, branco para fase de clareza, preto para foco e proteção.
+
+**3. Os objetos auxiliares.** Cristais, velas, incensos vão e vêm. Algumas práticas se mantêm por anos; outras passam.
+
+**4. O caderno.** Cadernos de leitura se acumulam. Guarde os antigos — relê-los anos depois é uma das experiências mais reveladoras do percurso.
+
+**Sinais de que a mesa precisa renovação:**
+- Você não sente mais conexão ao montar.
+- O ritual virou automático e perdeu significado.
+- Mudou de fase pessoal e o setup não acompanha (ex.: virou mãe, mudou de cidade, mudou o tipo de consulente).
+- Está cansada do pano, do baralho, da disposição.
+
+**Como renovar sem perder identidade:**
+1. Mude um elemento por vez (não refaça tudo).
+2. Teste por 30 dias antes de decidir se vale a pena.
+3. Mantenha o que funciona — só substitua o que não comunica mais.
+4. Documente: tire foto da mesa atual antes de mudar. Permite voltar se a renovação não funcionar.
+
+**A mesa como espelho:** A forma como sua mesa muda ao longo dos anos reflete sua jornada como leitora. Olhar fotos antigas da própria mesa é como olhar fotos antigas de si mesma — você reconhece quem era, e percebe quem se tornou.`,
+    keyPoints: ["A mesa evolui — baralho, pano, objetos, caderno mudam com o tempo", "Sinais de renovação: perda de conexão, ritual automático, mudança de fase", "Renovar um elemento por vez, testar 30 dias, documentar antes", "A mesa é espelho da jornada — releia cadernos antigos para ver quem você era"],
+    deepDive: `O conceito de "praxis viva" — prática que evolui em vez de se cristalizar — vem das tradições contemplativas orientais (zen, sufismo). Aplicado ao tarô, significa que a mesa é menos um altar fixo e mais um organismo. Tarólogas com 20+ anos de prática frequentemente dizem que sua mesa atual é irreconhecível em relação à dos primeiros anos — e isso é sinal de saúde, não de inconstância. O que se mantém é a essência (presença, intenção, ética); o que muda é a forma.`,
+    reflection: `Olhe sua mesa atual (real ou imaginária). Que elemento você ama profundamente? Qual está ali só por hábito? A resposta honesta orienta a próxima renovação.`,
+    exercise: { instruction: "Tire uma foto da sua mesa atual. Daqui a 6 meses, tire outra. Compare: o que mudou? O que se manteve? O que isso revela sobre você?", type: "practice" },
+    quiz: [
+      { id: "mesa10-q1", question: "Qual é o melhor sinal de uma mesa saudável ao longo dos anos?", options: ["Ela permanece idêntica desde o início", "Ela evolui acompanhando suas fases", "Ela tem cada vez mais objetos", "Ela é igual à mesa de outras tarólogas"], correctIndex: 1, explanation: "Uma mesa saudável evolui com você. Mantém a essência (presença, intenção, ética) e adapta a forma conforme suas fases." },
+    ],
+  },
 ];
