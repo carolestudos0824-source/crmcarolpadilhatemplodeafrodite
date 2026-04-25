@@ -137,7 +137,7 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
 
   return (
     <div className="mb-5">
-      <p className="text-[9px] tracking-[0.3em] uppercase font-body text-center mb-3" style={{ color: "hsl(340 42% 28% / 0.50)" }}>
+      <p className="t-section-title text-center mb-3" style={{ color: "hsl(340 42% 28% / 0.50)" }}>
         Continue sua jornada
       </p>
       <div className="space-y-2">
@@ -161,10 +161,10 @@ const ContinuityCard = ({ lastLessonId, lastLessonName, completedLessons, comple
                   <Icon className="w-4 h-4" style={{ color: "hsl(340 42% 26%)" }} />
                 </div>
                 <div className="flex-1 text-left min-w-0">
-                  <h4 className="font-heading text-[12px] tracking-wide truncate" style={{ color: "hsl(340 42% 22%)" }}>
+                  <h4 className="t-card-title truncate" style={{ color: "hsl(340 42% 22%)" }}>
                     {action.label}
                   </h4>
-                  <p className="font-body text-[10px]" style={{ color: "hsl(230 15% 30% / 0.45)" }}>
+                  <p className="t-card-subtitle" style={{ color: "hsl(230 15% 30% / 0.45)" }}>
                     {action.subtitle}
                   </p>
                 </div>

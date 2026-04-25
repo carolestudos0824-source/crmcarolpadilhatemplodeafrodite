@@ -45,10 +45,10 @@ const FeedbackNudge = ({ lessonsCompleted }: Props) => {
           <MessageCircle className="w-4 h-4" style={{ color: "hsl(280 30% 32%)" }} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-heading text-[12px] tracking-wide" style={{ color: "hsl(280 30% 25%)" }}>
+          <p className="t-card-title" style={{ color: "hsl(280 30% 25%)" }}>
             O que está achando até aqui?
           </p>
-          <p className="text-[10px] font-body" style={{ color: "hsl(230 15% 30% / 0.45)" }}>
+          <p className="t-card-subtitle" style={{ color: "hsl(230 15% 30% / 0.45)" }}>
             Sua opinião molda a plataforma.{" "}
             <button
               onClick={() => { dismiss(); navigate("/feedback"); }}
