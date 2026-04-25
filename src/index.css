@@ -77,6 +77,14 @@
     font-size: 17px;
   }
 
+  /* Accessibility — global font-size scale (controlled by FontSizeContext) */
+  html.font-large {
+    font-size: 19px;
+  }
+  html.font-xl {
+    font-size: 22px;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
     line-height: 1.7;
@@ -135,6 +143,26 @@
    */
   .pb-bottom-nav {
     padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
+  /* ═══════════════ TYPOGRAPHIC SCALE ═══════════════
+   * Padronização tipográfica do app. Use estas classes em vez de
+   * tamanhos avulsos para manter hierarquia consistente.
+   */
+  .t-section-title {
+    @apply text-xs tracking-widest font-body uppercase opacity-70;
+  }
+  .t-card-title {
+    @apply text-base font-semibold font-display;
+  }
+  .t-card-subtitle {
+    @apply text-sm font-body opacity-60;
+  }
+  .t-body {
+    @apply text-base leading-relaxed font-body;
+  }
+  .t-kicker {
+    @apply text-xs tracking-widest uppercase font-body;
   }
 
   .text-gradient-gold {

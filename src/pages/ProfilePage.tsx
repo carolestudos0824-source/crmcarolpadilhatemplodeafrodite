@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift, Shield, LogOut } from "lucide-react";
+import { ArrowLeft, Flame, Star, Trophy, BookOpen, ChevronRight, Sparkles, Target, Award, Crown, Gift, Shield, LogOut, Type } from "lucide-react";
 import { useIsAdmin } from "@/hooks/use-admin";
 import { useProgress } from "@/hooks/use-progress";
 import { usePremium } from "@/hooks/use-premium";
 import { useGiftCode } from "@/hooks/use-gift-code";
 import { useAuth } from "@/hooks/use-auth";
+import { useFontSize, type FontSize } from "@/contexts/font-size-context";
 import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, MODULES_CATALOG as MODULES, getArcanoFull as getArcanoById } from "@/lib/content";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ const ProfilePage = () => {
   const { isPremium, premiumUntil, premiumSource } = usePremium();
   const { redeem, loading: redeemLoading } = useGiftCode();
   const { signOut, user } = useAuth();
+  const { fontSize, setFontSize } = useFontSize();
   const [giftCode, setGiftCode] = useState("");
   const [showGiftInput, setShowGiftInput] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -339,6 +341,55 @@ const ProfilePage = () => {
             </div>
           </div>
         )}
+
+        {/* ═══════════════ TAMANHO DA FONTE ═══════════════ */}
+        <div>
+          <div className="flex items-center justify-center mb-3">
+            <img src={ornamentDivider} alt="" className="w-24 h-auto opacity-40" loading="lazy" width={800} height={512} />
+          </div>
+          <h2 className="t-section-title text-center mb-1" style={{ color: "hsl(340 42% 22%)" }}>
+            Tamanho da fonte
+          </h2>
+          <p className="t-card-subtitle text-center mb-4">
+            Ajuste o tamanho do texto em todo o app
+          </p>
+
+          <div
+            className="rounded-xl p-4 flex items-center justify-center gap-3"
+            style={{
+              background: "hsl(38 28% 93% / 0.75)",
+              border: "1px solid hsl(36 45% 50% / 0.18)",
+            }}
+          >
+            <Type className="w-4 h-4" style={{ color: "hsl(36 42% 40%)" }} aria-hidden="true" />
+            {([
+              { id: "normal", label: "A", size: "text-base", aria: "Tamanho normal" },
+              { id: "large",  label: "A+", size: "text-lg",  aria: "Tamanho grande" },
+              { id: "xl",     label: "A++", size: "text-xl", aria: "Tamanho extra grande" },
+            ] as Array<{ id: FontSize; label: string; size: string; aria: string }>).map((opt) => {
+              const active = fontSize === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => setFontSize(opt.id)}
+                  aria-pressed={active}
+                  aria-label={opt.aria}
+                  className={`${opt.size} font-display font-semibold rounded-lg px-4 py-2 transition-all duration-200`}
+                  style={{
+                    background: active ? "linear-gradient(135deg, hsl(340 42% 26%), hsl(36 42% 44%))" : "hsl(36 33% 96%)",
+                    color: active ? "hsl(36 33% 97%)" : "hsl(340 42% 22%)",
+                    border: active ? "1px solid hsl(36 45% 58% / 0.40)" : "1px solid hsl(36 25% 80% / 0.50)",
+                    boxShadow: active ? "0 2px 8px hsl(340 42% 28% / 0.20)" : "none",
+                    minWidth: "3rem",
+                  }}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         {/* ═══════════════ ASSINATURA ═══════════════ */}
         <div>
