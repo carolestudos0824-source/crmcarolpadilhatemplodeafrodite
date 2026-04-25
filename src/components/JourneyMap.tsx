@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Lock, Check, Sparkles, Crown } from "lucide-react";
 import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, FREE_ARCANO_IDS } from "@/lib/content";
 import type { UserProgress } from "@/lib/content";
+import { useAccess } from "@/hooks/use-access";
 
 interface JourneyMapProps {
   progress: UserProgress;
@@ -15,6 +16,7 @@ const ARCANO_SYMBOLS: Record<number, string> = {
 
 export function JourneyMap({ progress }: JourneyMapProps) {
   const navigate = useNavigate();
+  const { bypassLocks } = useAccess();
 
   return (
     <div className="relative max-w-2xl mx-auto pb-16">
