@@ -328,6 +328,10 @@ export function useProgress() {
     setProgress((prev) => ({ ...prev, onboardingCompleted: true }));
   }, []);
 
+  const setStudentName = useCallback((name: string) => {
+    setProgress((prev) => ({ ...prev, studentName: name }));
+  }, []);
+
   const resetProgress = useCallback(async () => {
     setProgress({ ...DEFAULT_PROGRESS });
     localStorage.removeItem(LOCAL_EXTRAS_KEY);
@@ -359,6 +363,7 @@ export function useProgress() {
     completedCount,
     journeyProgress,
     completeOnboarding,
+    setStudentName,
     resetProgress,
   };
 }
