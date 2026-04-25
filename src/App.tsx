@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import BetaBadge from "@/components/BetaBadge";
 import BetaFeedback from "@/components/BetaFeedback";
 import BottomNav from "@/components/BottomNav";
+import SessionInitializer from "@/components/SessionInitializer";
 
 // Eager: critical path
 import LandingPage from "./pages/LandingPage.tsx";
@@ -83,7 +84,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <LoadingFallback />;
   if (!user) return <Navigate to="/auth" replace />;
-  return <>{children}</>;
+  return (
+    <>
+      <SessionInitializer />
+      {children}
+    </>
+  );
 };
 
 /** Redirects to /app if already logged in */
