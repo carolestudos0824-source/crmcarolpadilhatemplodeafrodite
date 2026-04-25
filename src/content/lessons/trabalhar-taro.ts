@@ -287,4 +287,92 @@ export const TRABALHAR_TARO_LESSONS: TrabalharTaroLesson[] = [
       { id: "tt8-q1", question: "Por que voltar a reler os módulos do curso periodicamente?", options: ["Porque esquecemos tudo", "Porque mudamos e percebemos coisas novas", "Porque os módulos mudam", "Porque é obrigatório"], correctIndex: 1, explanation: "Quando você cresce, o tarô mostra mais. Relendo com novos olhos, percebe camadas que antes eram invisíveis." },
     ],
   },
+  {
+    id: "tt-9", order: 8, title: "Construção de Clientela", subtitle: "Como atrair os consulentes certos", icon: "🌱",
+    content: `Construir clientela é, talvez, o maior desafio prático de quem decide profissionalizar o ofício. Não basta ler bem — precisa ser encontrada por quem precisa de você.
+
+**Princípios da construção saudável de clientela:**
+
+**1. Atraia pelo que é, não pelo que finge ser.** Marketing autêntico funciona melhor a longo prazo. Se você é racional e estruturada, não tente parecer mística e etérea (e vice-versa).
+
+**2. Defina seu nicho.** Tarólogas que tentam atender "todo mundo" raramente atendem ninguém com profundidade. Pense: que tipo de consulente é seu ideal? Mulheres em transição? Empreendedores? Pessoas em busca espiritual?
+
+**3. Conteúdo educativo é a melhor propaganda.** Posts que ensinam algo concreto sobre tarô atraem pessoas que valorizam profundidade. Posts genéricos ("Áries hoje vai brilhar") atraem público volátil.
+
+**4. Depoimentos pesam mais que autopromoção.** Peça (com permissão) feedback de clientes satisfeitas. Um depoimento honesto vale mais que dez posts seus dizendo que é boa.
+
+**5. Indicações são ouro.** Cliente satisfeita indica. Crie experiência boa o suficiente para que indiquem espontaneamente.
+
+**Canais que funcionam (em 2024-2025):**
+- **Instagram:** Conteúdo visual + reels educativos.
+- **TikTok:** Curtos didáticos sobre cartas e símbolos.
+- **YouTube:** Vídeos longos para autoridade (interpretações de cartas, métodos de leitura).
+- **Newsletter:** Conteúdo direto na caixa de entrada — cria intimidade.
+- **Boca a boca:** Ainda o mais poderoso.
+
+**Erros comuns:**
+- Postar previsões genéricas para "viralizar" (público volátil, baixa conversão).
+- Brigar online com outros tarólogos (queima reputação).
+- Prometer resultados garantidos (atrai cliente errada e gera frustração).
+- Cobrar muito barato no início para "ganhar clientela" (atrai quem não valoriza).
+
+**A construção é lenta — e é assim que deve ser.** Clientela construída com pressa some com pressa. Clientela construída com presença permanece.`,
+    keyPoints: ["Atraia pelo que é — autenticidade vence marketing forçado", "Defina nicho: melhor ser referência para alguns que invisível para muitos", "Conteúdo educativo + depoimentos + indicações = base sólida", "Construção lenta gera clientela duradoura — pressa atrai volatilidade"],
+    deepDive: `O modelo de "1.000 fãs verdadeiros" do escritor Kevin Kelly aplica-se perfeitamente ao tarô profissional: você não precisa de milhões de seguidores. Precisa de algumas centenas de pessoas que confiem profundamente em você. Tarólogas com clientela fiel de 100-200 pessoas frequentemente faturam mais — e com mais qualidade de vida — do que aquelas que perseguem viralização constante.`,
+    reflection: `Pense em alguém que admira como profissional (de qualquer área). O que essa pessoa faz que você poderia adaptar? Não copie o estilo — entenda o princípio.`,
+    exercise: { instruction: "Defina por escrito: quem é seu consulente ideal? Idade, momento de vida, tipo de pergunta que costuma trazer, valores. Use isso para guiar todo o seu conteúdo.", type: "writing" },
+    quiz: [
+      { id: "tt9-q1", question: "Qual é a estratégia mais saudável para construir clientela?", options: ["Postar previsões diárias para viralizar", "Conteúdo educativo + depoimentos + nicho claro", "Cobrar muito barato para atrair muita gente", "Brigar online para ganhar visibilidade"], correctIndex: 1, explanation: "Conteúdo educativo atrai público de qualidade. Depoimentos geram confiança. Nicho claro evita dispersão. Essa combinação cria clientela duradoura." },
+    ],
+  },
+  {
+    id: "tt-10", order: 9, title: "Sustentar a Vocação a Longo Prazo", subtitle: "Como não desistir nem se perder no caminho", icon: "🔥",
+    content: `Muitas tarólogas começam com fogo intenso — e desistem em 1-2 anos. Outras se mantêm por décadas. A diferença não é talento; é **sustentação**.
+
+**Os principais riscos da prática profissional:**
+
+**1. Esgotamento emocional.** Atender pessoas em sofrimento é desgastante. Sem cuidados, você adoece.
+
+**2. Solidão profissional.** Tarólogas frequentemente trabalham sozinhas. A falta de colegas para conversar isola e adoece.
+
+**3. Crise de fé.** Vai chegar o momento em que você duvida de tudo: "Será que isso funciona mesmo? Será que estou ajudando ou enganando?" Essa crise é normal — e necessária.
+
+**4. Pressão financeira.** Renda variável estressa. Mês bom + mês ruim + mês ruim de novo = ansiedade.
+
+**5. Estagnação técnica.** Sem estudo contínuo, você repete os mesmos métodos por anos e perde profundidade.
+
+**Como sustentar a vocação:**
+
+**1. Tenha sua própria terapia.** Quem cuida de outros precisa ser cuidada. Terapia regular não é luxo — é ferramenta de trabalho.
+
+**2. Construa rede.** Outras tarólogas, mentoras, grupos de estudo, supervisão. Não atravesse sozinha.
+
+**3. Defina limites firmes.** Horário de atendimento, número máximo de sessões por dia, dias de descanso. Sem limites, esgota.
+
+**4. Continue estudando.** 1 livro novo a cada 3 meses. 1 curso novo por ano. 1 retiro ou imersão a cada 2 anos.
+
+**5. Diversifique a renda.** Atendimento individual + cursos + conteúdo pago + ebooks + mentoria. Renda diversificada reduz pressão.
+
+**6. Volte às bases.** Periodicamente, releia O Louco. Releia Os Fundamentos. A simplicidade é o que sustenta. A complexidade é o que cansa.
+
+**Sinais de que precisa parar (mesmo que seja temporário):**
+- Você sente repulsa pelas cartas.
+- Os atendimentos viraram fardo.
+- Não consegue mais separar trabalho de vida.
+- Sente que está enganando ou se enganando.
+- Sintomas físicos (insônia, dores, irritação) persistem.
+
+**Pausar não é desistir — é cuidar.** Voltar depois de uma pausa consciente é mais saudável que continuar arrastando.
+
+**A vocação a longo prazo se sustenta em três pilares:** prática regular, comunidade real, propósito claro. Quem cultiva os três, sustenta. Quem negligencia algum, eventualmente cai.
+
+**Você está construindo uma vida com o tarô — não apenas uma carreira.** Trate esse processo com a profundidade que ele merece. E lembre: A Estrela está sempre ali, depois da Torre. A esperança regenera. O caminho continua.`,
+    keyPoints: ["Riscos: esgotamento, solidão, crise de fé, pressão financeira, estagnação", "Sustentação: terapia + rede + limites + estudo + diversificação", "Pausar não é desistir — é cuidar", "Três pilares: prática regular + comunidade real + propósito claro"],
+    deepDive: `O burnout em profissionais que lidam com sofrimento alheio (terapeutas, médicos, tarólogos, conselheiros) é fenômeno bem documentado. A pesquisa de Christina Maslach identifica três dimensões do esgotamento: exaustão emocional, despersonalização (cinismo) e queda de realização. Tarólogas que atendem sem cuidar de si frequentemente desenvolvem todos os três sintomas. A prevenção exige supervisão, terapia e limites firmes — não é fraqueza, é higiene profissional.`,
+    reflection: `Imagine você daqui a 10 anos, ainda atendendo. O que precisa cuidar HOJE para chegar lá com saúde, sentido e fé? A resposta a essa pergunta orienta as próximas decisões.`,
+    exercise: { instruction: "Escreva seu 'pacto de sustentação': 5 compromissos concretos com você mesma para cuidar da vocação a longo prazo. Revise a cada 6 meses.", type: "writing" },
+    quiz: [
+      { id: "tt10-q1", question: "Qual é o sinal mais claro de que precisa pausar a prática (mesmo que temporariamente)?", options: ["Atender menos clientes que outros tarólogos", "Sentir repulsa pelas cartas e que os atendimentos viraram fardo", "Ter dúvidas sobre uma interpretação específica", "Cobrar menos que o mercado"], correctIndex: 1, explanation: "Repulsa pelas cartas e sensação de fardo são sinais de esgotamento. Pausar conscientemente é mais saudável que continuar arrastando." },
+    ],
+  },
 ];
