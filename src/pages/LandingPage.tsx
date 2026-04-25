@@ -54,15 +54,15 @@ const LandingPage = () => {
             Aprenda tarô como uma jornada viva de conhecimento, símbolo e presença.
           </h1>
 
-          <p className="font-body text-sm md:text-base leading-relaxed max-w-lg mx-auto mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+          <p className="font-body text-xl leading-relaxed max-w-xl mx-auto mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
             Uma plataforma imersiva de ensino de tarô com trilha gamificada, prática guiada, aprofundamento simbólico e experiências vivas com os arcanos.
           </p>
 
-          <p className="font-accent text-xs md:text-sm italic leading-relaxed max-w-md mx-auto mb-8" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
+          <p className="font-accent text-sm italic leading-relaxed max-w-md mx-auto opacity-60" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
             Base simbólica: Rider-Waite-Smith. Leituras arquetípicas, psicológicas e esotéricas.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               onClick={() => navigate("/auth")}
               className="group px-8 py-6 text-sm font-heading tracking-[0.2em] uppercase rounded-xl shadow-lg hover:shadow-xl transition-all duration-500"
