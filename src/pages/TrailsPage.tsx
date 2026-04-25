@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Lock, Check, Star, Sparkles, Crown } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useAccess } from "@/hooks/use-access";
 import { MODULES_CATALOG as MODULES, isModuleUnlocked } from "@/lib/content";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
@@ -67,12 +68,14 @@ const TRAIL_LEVELS: TrailLevel[] = [
 const TrailsPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  const { bypassLocks } = useAccess();
 
   const isLevelComplete = (level: TrailLevel): boolean => {
     return level.modules.every(m => progress.completedModules.includes(m));
   };
 
   const isLevelUnlocked = (level: TrailLevel): boolean => {
+    if (bypassLocks) return true;
     if (level.prerequisites.length === 0) return true;
     return level.prerequisites.every(preId => {
       const pre = TRAIL_LEVELS.find(t => t.id === preId);
@@ -251,7 +254,7 @@ const TrailsPage = () => {
                 {level.modules.map(modId => {
                   const mod = MODULES.find(m => m.id === modId);
                   if (!mod) return null;
-                  const modUnlocked = isModuleUnlocked(mod.id, progress.completedModules);
+                  const modUnlocked = bypassLocks || isModuleUnlocked(mod.id, progress.completedModules);
                   const modComplete = progress.completedModules.includes(mod.id);
                   const modCurrent = modUnlocked && !modComplete;
 

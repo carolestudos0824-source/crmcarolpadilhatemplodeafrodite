@@ -4,6 +4,7 @@ import { Lock, Check, ChevronRight, Sparkles, Crown, User } from "lucide-react";
 import { MODULES_CATALOG as MODULES, isModuleUnlocked, ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, type LearningModule, type ModuleCategory } from "@/lib/content";
 import { useProgress } from "@/hooks/use-progress";
 import { useTrackEvent } from "@/hooks/use-track-event";
+import { useAccess } from "@/hooks/use-access";
 import OnboardingPage from "./OnboardingPage";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
@@ -28,6 +29,7 @@ const ModulesPage = () => {
   const navigate = useNavigate();
   const { progress, loading: progressLoading, completeOnboarding } = useProgress();
   const { trackEvent } = useTrackEvent();
+  const { bypassLocks } = useAccess();
 
   // Track return visits
   useEffect(() => {
@@ -229,7 +231,7 @@ const ModulesPage = () => {
 
               <div className="space-y-3">
                 {mods.map((mod, i) => {
-                  const unlocked = isModuleUnlocked(mod.id, progress.completedModules);
+                  const unlocked = bypassLocks || isModuleUnlocked(mod.id, progress.completedModules);
                   const isCompleted = progress.completedModules.includes(mod.id);
                   const prog = getModuleProgress(mod);
                   const isCurrent = unlocked && !isCompleted;
