@@ -293,9 +293,12 @@ const ArcanoMenorLessonPage = () => {
         </section>
       </main>
 
-      {/* Footer fixo — botão de avanço (acima do BottomNav: z-50 > z-40) */}
+      {/* Footer fixo — botão de avanço (acima do BottomNav: z-50 > z-40)
+          O wrapper com o gradient é puramente visual (pointer-events-none) para
+          não interceptar cliques em opções de quiz que ficam visualmente atrás.
+          Apenas o container do botão reativa pointer-events. */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-50"
+        className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none"
         style={{
           background:
             "linear-gradient(180deg, hsl(36 33% 96% / 0.0) 0%, hsl(36 33% 96% / 0.95) 40%, hsl(36 33% 96% / 1) 70%)",
@@ -303,7 +306,7 @@ const ArcanoMenorLessonPage = () => {
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 80px)",
         }}
       >
-        <div className="container max-w-3xl px-6">
+        <div className="container max-w-3xl px-6 pointer-events-auto">
           <button
             onClick={goNext}
             disabled={phase === "quiz" && !allQuizSubmitted}
