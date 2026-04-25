@@ -80,6 +80,19 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     line-height: 1.7;
+    background-image:
+      linear-gradient(hsl(0 0% 0% / 0.06), hsl(0 0% 0% / 0.06)),
+      url('/mystic-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      background-attachment: scroll;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
