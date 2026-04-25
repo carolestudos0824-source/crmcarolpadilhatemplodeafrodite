@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import { useAccess } from "@/hooks/use-access";
 import { useResolvedModule } from "@/hooks/use-resolved-module";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
@@ -45,11 +46,13 @@ const GenericModulePage = ({
 }: GenericModulePageProps) => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  const { bypassLocks } = useAccess();
   // Fase 4B — telemetria invisível via adaptador (DB-first com fallback).
   useResolvedModule(moduleSlug ?? null);
 
   const isCompleted = (id: string) => progress.completedLessons.includes(id);
   const isUnlocked = (order: number) => {
+    if (bypassLocks) return true;
     if (order === 0) return true;
     const prev = lessons.find(l => l.order === order - 1);
     return prev ? isCompleted(prev.id) : false;
