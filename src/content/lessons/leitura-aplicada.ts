@@ -265,4 +265,94 @@ Separe as cartas em dois grupos:
       { id: "la8-q1", question: "O que fazer se um consulente está em crise aguda?", options: ["Fazer a leitura rapidamente", "Oferecer acolhimento humano e encaminhar para profissional", "Ignorar o estado emocional", "Ler mais cartas para acalmar"], correctIndex: 1, explanation: "Em crise aguda, o consulente precisa de acolhimento humano, não de tiragem. Se necessário, encaminhe para profissional." },
     ],
   },
+  {
+    id: "la-9", order: 8, title: "Leitura para Saúde Emocional", subtitle: "O tarô como apoio (não substituto) da terapia", icon: "💗",
+    content: `Saúde emocional é tema delicado. O tarô **apoia, mas não substitui** acompanhamento terapêutico. Saber a diferença é parte da ética do ofício.
+
+**O que o tarô PODE fazer em saúde emocional:**
+- Iluminar padrões emocionais recorrentes.
+- Dar nome a sentimentos difíceis de articular.
+- Oferecer perspectivas simbólicas que ampliam autoconhecimento.
+- Servir como apoio reflexivo entre sessões de terapia.
+
+**O que o tarô NÃO pode fazer:**
+- Diagnosticar transtornos (depressão, ansiedade, TOC, etc).
+- Substituir psicoterapia ou psiquiatria.
+- Garantir cura emocional.
+- Resolver crises agudas (luto recente, ideação suicida, surtos).
+
+**Tiragem de saúde emocional (4 cartas):**
+1. Como me sinto agora (consciente)
+2. O que está por trás desse sentimento (inconsciente)
+3. O que preciso acolher
+4. Que recurso posso ativar
+
+**Cartas relevantes em saúde emocional:**
+- **3 de Espadas** — Dor profunda, luto, traição emocional.
+- **9 de Espadas** — Ansiedade, insônia, pensamentos catastróficos.
+- **5 de Copas** — Tristeza, foco no que se perdeu.
+- **A Estrela** — Esperança, cura, fé renovada.
+- **6 de Copas** — Memória afetiva, infância, doçura.
+- **4 de Copas** — Apatia, melancolia, recusa do que é oferecido.
+
+**Quando encaminhar imediatamente:**
+- Consulente menciona ideação suicida → CVV (188).
+- Consulente em surto ou estado alterado → encaminhar para emergência psiquiátrica.
+- Consulente com sintomas persistentes (insônia crônica, paralisia, isolamento) → recomendar avaliação profissional.
+
+**A frase que protege:** "O tarô pode iluminar, mas o que você está vivendo merece acompanhamento profissional. Vamos pensar juntas em quem procurar?"`,
+    keyPoints: ["Tarô apoia, não substitui terapia ou psiquiatria", "Pode iluminar padrões, dar nome, oferecer perspectiva — não diagnostica", "Tiragem de 4: sinto / inconsciente / acolher / recurso", "Ideação suicida ou crise aguda exige encaminhamento imediato"],
+    deepDive: `A relação entre tarô e psicoterapia foi profundamente trabalhada por Sallie Nichols ("Jung and Tarot") e Arthur Rosengarten ("Tarot and Psychology"). Ambos defendem que o tarô pode ser ferramenta complementar — nunca substituta — do trabalho clínico. Em alguns países, terapeutas usam tarô em sessão como recurso projetivo, similar ao Rorschach. No Brasil, a fronteira é clara: terapia é trabalho de psicólogo registrado; tarô é ferramenta simbólica de apoio.`,
+    reflection: `Você já leu tarô para alguém em sofrimento emocional intenso? Como se sentiu? Saber identificar quando a leitura ajuda e quando ela não basta é uma das competências mais importantes do ofício.`,
+    exercise: { instruction: "Faça a tiragem de 4 cartas para saúde emocional sobre como você está agora. Foque na carta 4 (recurso): que ferramenta interna você pode ativar?", type: "practice" },
+    quiz: [
+      { id: "la9-q1", question: "Se um consulente menciona ideação suicida durante uma leitura, o que fazer?", options: ["Fazer uma tiragem de proteção", "Acolher e encaminhar imediatamente para CVV (188) ou emergência", "Continuar a leitura normalmente", "Dizer que vai melhorar"], correctIndex: 1, explanation: "Ideação suicida exige encaminhamento profissional imediato. Acolha humanamente e oriente sobre o CVV (188) ou emergência psiquiátrica." },
+    ],
+  },
+  {
+    id: "la-10", order: 9, title: "Leitura para Transições", subtitle: "Quando tudo está mudando ao mesmo tempo", icon: "🌗",
+    content: `Transições são momentos em que a vida muda de fase: mudança de cidade, fim ou início de relacionamento, troca de carreira, perda significativa, nascimento, entrada em nova década de vida. O tarô é especialmente útil nesses momentos porque oferece **estrutura simbólica para o que ainda não tem nome**.
+
+**Por que ler tarô em transições:**
+- A mente racional não dá conta do volume de mudança.
+- O simbólico organiza o caos antes que a lógica consiga.
+- Cartas oferecem perspectiva quando você está dentro demais para ver.
+- A leitura cria espaço de pausa em meio ao turbilhão.
+
+**Tiragem para transições (5 cartas):**
+1. O que estou deixando para trás
+2. O que ainda me prende
+3. O umbral que estou atravessando agora
+4. O que está nascendo
+5. O que preciso lembrar para sustentar a travessia
+
+**Cartas-chave em transições:**
+- **A Morte** — Fim necessário, transformação profunda.
+- **A Torre** — Colapso de estrutura antiga, revelação súbita.
+- **O Enforcado** — Suspensão, espera fértil, inversão de perspectiva.
+- **O Julgamento** — Renascimento, chamado interior, recomeço.
+- **A Roda da Fortuna** — Ciclos, mudança inevitável, novo capítulo.
+- **6 de Espadas** — Travessia, deixar para trás, atravessar águas.
+- **8 de Copas** — Partida, abandono consciente, busca de mais.
+
+**O que a transição pede:**
+- **Paciência.** Transições têm seu tempo. Forçar é destruir.
+- **Luto.** Toda mudança envolve perda — mesmo as boas.
+- **Cuidado.** Você está mais vulnerável durante transições. Reduza o ritmo.
+- **Apoio.** Não atravesse sozinha. Amigos, terapia, comunidade — peça ajuda.
+
+**O que evitar:**
+- Tomar decisões definitivas no meio do caos (mude um elemento por vez).
+- Buscar conforto em padrões antigos que você está justamente deixando.
+- Comparar sua transição com a de outras pessoas — cada travessia tem seu ritmo.
+
+**A leitura final em transições:** Não pergunte "quando termina?" — pergunte "o que esta passagem está me ensinando?" A primeira pergunta gera ansiedade; a segunda, sabedoria.`,
+    keyPoints: ["Transições pedem leitura por organizarem o caos simbolicamente", "Tiragem de 5: deixar / prender / umbral / nascer / lembrar", "Morte, Torre, Enforcado, Julgamento, Roda — cartas centrais", "Não tomar decisões definitivas em meio ao caos — pedir apoio"],
+    deepDive: `O antropólogo Arnold van Gennep estudou os "ritos de passagem" e identificou três fases universais: separação (deixar o antigo), liminaridade (estar entre, no umbral), e incorporação (entrar no novo). O tarô mapeia perfeitamente essas fases: A Morte é separação, O Enforcado é liminaridade, O Julgamento é incorporação. Saber identificar em qual fase o consulente está é meio caminho para uma leitura útil em transição.`,
+    reflection: `Você está numa transição agora — mesmo pequena? Que fase: separação, liminaridade, incorporação? Identificar a fase muda completamente o conselho que faz sentido.`,
+    exercise: { instruction: "Pense em uma transição atual ou recente. Faça a tiragem de 5 cartas. Foque na carta 3 (umbral): o que ela revela sobre o momento exato em que você está?", type: "practice" },
+    quiz: [
+      { id: "la10-q1", question: "Em meio a uma transição, qual pergunta gera mais sabedoria?", options: ["'Quando isso vai terminar?'", "'O que esta passagem está me ensinando?'", "'Por que isso aconteceu comigo?'", "'Quem é culpado?'"], correctIndex: 1, explanation: "'O que esta passagem está me ensinando?' transforma o caos em aprendizado. 'Quando termina?' apenas alimenta a ansiedade." },
+    ],
+  },
 ];
