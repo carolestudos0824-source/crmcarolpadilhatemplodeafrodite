@@ -993,6 +993,7 @@ export type Database = {
           is_premium: boolean
           premium_source: string | null
           premium_until: string | null
+          stripe_customer_id: string | null
           student_name: string | null
           updated_at: string
           user_id: string
@@ -1006,6 +1007,7 @@ export type Database = {
           is_premium?: boolean
           premium_source?: string | null
           premium_until?: string | null
+          stripe_customer_id?: string | null
           student_name?: string | null
           updated_at?: string
           user_id: string
@@ -1019,6 +1021,7 @@ export type Database = {
           is_premium?: boolean
           premium_source?: string | null
           premium_until?: string | null
+          stripe_customer_id?: string | null
           student_name?: string | null
           updated_at?: string
           user_id?: string
