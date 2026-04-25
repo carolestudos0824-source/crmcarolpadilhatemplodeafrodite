@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
 import { TIRAGENS_LESSONS } from "@/content/lessons/tiragens";
 import { useProgress } from "@/hooks/use-progress";
+import { useAccess } from "@/hooks/use-access";
 import { useResolvedModule } from "@/hooks/use-resolved-module";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 const TiragensPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  const { bypassLocks } = useAccess();
   // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
   useResolvedModule("tiragens");
 
@@ -15,6 +17,7 @@ const TiragensPage = () => {
     progress.completedLessons.includes(lessonId);
 
   const isLessonUnlocked = (order: number) => {
+    if (bypassLocks) return true;
     if (order === 0) return true;
     const prev = TIRAGENS_LESSONS.find((l) => l.order === order - 1);
     return prev ? isLessonCompleted(prev.id) : false;
