@@ -222,7 +222,7 @@ const ModulesPage = () => {
               <div className="flex items-center justify-center mb-3">
                 <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50" loading="lazy" width={800} height={512} />
               </div>
-              <h2 className="font-accent text-sm tracking-[0.25em] uppercase italic text-center mb-5" style={{
+              <h2 className="t-section-title text-center mb-5" style={{
                 color: "hsl(340 42% 24%)",
                 textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
               }}>
@@ -283,13 +283,13 @@ const ModulesPage = () => {
 
                           {/* Text */}
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-0.5">
-                              <span className="text-[10px] font-heading tracking-[0.3em] uppercase" style={{
+                          <div className="flex items-center gap-2 mb-0.5">
+                              <span className="t-kicker" style={{
                                 color: isCurrent ? "hsl(340 42% 22%)" : isCompleted ? "hsl(36 42% 40%)" : "hsl(230 10% 45% / 0.30)"
                               }}>
                                 {mod.symbol}
                               </span>
-                              <h3 className="font-heading text-base tracking-wide truncate" style={isCurrent ? {
+                              <h3 className="t-card-title truncate" style={isCurrent ? {
                                 background: "linear-gradient(135deg, hsl(340 42% 20%), hsl(36 35% 26%))",
                                 WebkitBackgroundClip: "text",
                                 WebkitTextFillColor: "transparent"
@@ -301,7 +301,7 @@ const ModulesPage = () => {
                                 {mod.name}
                               </h3>
                             </div>
-                            <p className="font-accent text-xs italic truncate" style={{
+                            <p className="t-card-subtitle truncate" style={{
                               color: isCurrent ? "hsl(230 20% 15% / 0.55)" : isCompleted ? "hsl(230 20% 15% / 0.45)" : "hsl(230 10% 45% / 0.18)"
                             }}>
                               {mod.subtitle}
@@ -338,7 +338,7 @@ const ModulesPage = () => {
           <div className="flex items-center justify-center mb-3">
             <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50" loading="lazy" width={800} height={512} />
           </div>
-          <h2 className="font-accent text-sm tracking-[0.25em] uppercase italic text-center mb-5" style={{
+          <h2 className="t-section-title text-center mb-5" style={{
             color: "hsl(340 42% 24%)",
             textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
           }}>
@@ -370,10 +370,10 @@ const ModulesPage = () => {
                     <span className="text-sm">{tool.icon}</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
+                    <h3 className="t-card-title" style={{ color: "hsl(230 20% 12% / 0.80)" }}>
                       {tool.label}
                     </h3>
-                    <p className="font-accent text-[11px] italic truncate" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                    <p className="t-card-subtitle truncate" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
                       {tool.desc}
                     </p>
                   </div>
@@ -403,10 +403,10 @@ const ModulesPage = () => {
                   <Crown className="w-5 h-5" style={{ color: "hsl(36 45% 50%)" }} />
                 </div>
                 <div className="flex-1 text-left">
-                  <h3 className="font-heading text-sm tracking-wide" style={{ color: "hsl(340 42% 24%)" }}>
+                  <h3 className="t-card-title" style={{ color: "hsl(340 42% 24%)" }}>
                     Jornada Completa
                   </h3>
-                  <p className="font-accent text-xs italic" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
+                  <p className="t-card-subtitle" style={{ color: "hsl(230 20% 15% / 0.45)" }}>
                     Acesse todos os aprofundamentos, trilhas e certificados
                   </p>
                 </div>
