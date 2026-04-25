@@ -105,8 +105,9 @@ function progressToDbCore(p: UserProgress) {
     completed_quizzes: p.completedQuizzes,
     completed_exercises: p.completedExercises,
     completed_modules: p.completedModules,
-    badges: p.badges,
-    certificates_earned: p.certificatesEarned,
+    // jsonb columns — Supabase generated types want `Json`; runtime accepts plain JS values
+    badges: p.badges as unknown as never,
+    certificates_earned: p.certificatesEarned as unknown as never,
     current_module: p.currentModule,
   };
 }
