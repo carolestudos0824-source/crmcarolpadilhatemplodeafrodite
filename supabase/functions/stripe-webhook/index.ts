@@ -187,6 +187,7 @@ Deno.serve(async (req) => {
           is_premium: true,
           premium_source: planCode === "yearly" || planCode === "annual" ? "store_annual" : "store_monthly",
           ...(premium_until ? { premium_until } : {}),
+          ...(customerId ? { stripe_customer_id: customerId } : {}),
         })
         .eq("user_id", userId);
     } else if (internalType === "subscription_cancelled") {
