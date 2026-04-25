@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { ChevronRight, Sparkles, Layers, Star, Moon, Sun, Eye } from "lucide-react";
+import { ChevronRight, Sparkles, Layers, Star, Moon, Sun, Eye, User } from "lucide-react";
+import { useProgress } from "@/hooks/use-progress";
 
 interface OnboardingStep {
   symbol: React.ReactNode;
@@ -23,6 +24,19 @@ const STEPS: OnboardingStep[] = [
       "Cada carta revela uma parte da sua história. Nenhuma resposta vem de fora.",
     ],
     accent: "gold",
+  },
+  {
+    symbol: <User className="w-6 h-6" />,
+    kicker: "Apresentação",
+    title: "Como posso te chamar?",
+    lines: [
+      "Antes de começar, deixe seu nome.",
+      "Ele aparecerá em momentos especiais da sua jornada — como saudação e nos seus certificados.",
+      "",
+      "Pode pular se preferir manter o anonimato.",
+    ],
+    accent: "wine",
+    detail: "name",
   },
   {
     symbol: <Star className="w-6 h-6" />,
@@ -138,12 +152,17 @@ interface Props {
 const OnboardingPage = ({ onComplete }: Props) => {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"in" | "out">("in");
+  const { progress, setStudentName } = useProgress();
+  const [nameInput, setNameInput] = useState(progress.studentName ?? "");
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
   const colors = ACCENT[current.accent];
 
   const goNext = useCallback(() => {
+    if (current.detail === "name") {
+      setStudentName(nameInput.trim());
+    }
     if (isLast) {
       setDirection("out");
       setTimeout(onComplete, 500);
@@ -154,7 +173,7 @@ const OnboardingPage = ({ onComplete }: Props) => {
       setStep(s => s + 1);
       setDirection("in");
     }, 320);
-  }, [isLast, onComplete]);
+  }, [isLast, onComplete, current.detail, nameInput, setStudentName]);
 
   const goBack = useCallback(() => {
     if (step === 0) return;
@@ -294,6 +313,41 @@ const OnboardingPage = ({ onComplete }: Props) => {
               ))}
               <p className="text-center text-[10px] italic font-accent mt-3" style={{ color: "hsl(230 15% 40% / 0.40)" }}>
                 Vá fundo quando quiser. Avance quando sentir que é hora.
+              </p>
+            </div>
+          )}
+
+          {/* Detail: Name capture */}
+          {current.detail === "name" && (
+            <div className="mb-4">
+              <label
+                htmlFor="onboarding-name"
+                className="block text-center text-[10px] font-heading tracking-[0.25em] uppercase mb-2"
+                style={{ color: colors.main }}
+              >
+                Como posso te chamar?
+              </label>
+              <input
+                id="onboarding-name"
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                placeholder="Seu nome"
+                autoComplete="given-name"
+                maxLength={60}
+                className="w-full px-4 py-3 rounded-xl text-center text-sm font-body outline-none transition-all"
+                style={{
+                  background: "hsl(38 28% 94% / 0.85)",
+                  border: `1px solid ${colors.border}`,
+                  color: "hsl(230 25% 15%)",
+                  boxShadow: `0 4px 18px ${colors.glow}`,
+                }}
+              />
+              <p
+                className="text-center text-[10px] italic font-accent mt-3"
+                style={{ color: "hsl(230 15% 40% / 0.45)" }}
+              >
+                Opcional. Pode deixar em branco e seguir.
               </p>
             </div>
           )}
