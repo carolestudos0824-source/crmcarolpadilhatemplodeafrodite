@@ -7,6 +7,7 @@ import {
   hasContent,
 } from "@/registry/naipes";
 import { useProgress } from "@/hooks/use-progress";
+import { useAccess } from "@/hooks/use-access";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
 import { useResolvedArcanoMenorPilot } from "@/hooks/use-resolved-arcanos-menores-pilot";
@@ -47,6 +48,7 @@ const NaipePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { progress } = useProgress();
+  const { bypassLocks } = useAccess();
 
   // Support both /module/:naipe route and /module/copas style routes
   const pathNaipe = location.pathname.split("/").pop() || "";
@@ -71,6 +73,7 @@ const NaipePage = () => {
 
   const isCardCompleted = (cardId: string) => progress.completedLessons.includes(cardId);
   const isCardUnlocked = (idx: number) => {
+    if (bypassLocks) return true;
     if (idx === 0) return true;
     const prevCard = cards[idx - 1];
     return prevCard ? isCardCompleted(prevCard.id) : false;
