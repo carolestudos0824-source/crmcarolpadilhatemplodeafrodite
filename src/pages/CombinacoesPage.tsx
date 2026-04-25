@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Lock, ChevronRight } from "lucide-react";
 import { COMBINACOES_LESSONS } from "@/content/lessons/combinacoes";
@@ -10,7 +11,7 @@ import mysticBg from "@/assets/mystic-bg.jpg";
 const CombinacoesPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
-  const { bypassLocks } = useAccess();
+  const { isAdmin, isPremium, bypassLocks } = useAccess();
   // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
   useResolvedModule("combinacoes");
 
@@ -29,6 +30,30 @@ const CombinacoesPage = () => {
   ).length;
 
   const progressPct = Math.round((completedCount / COMBINACOES_LESSONS.length) * 100);
+
+  useEffect(() => {
+    const isPreviewRuntime =
+      import.meta.env.DEV ||
+      window.location.hostname.includes("lovableproject.com") ||
+      window.location.hostname.includes("id-preview--") ||
+      window.location.hostname.includes("localhost");
+
+    if (!isPreviewRuntime) return;
+
+    COMBINACOES_LESSONS.forEach((lesson) => {
+      const completed = isLessonCompleted(lesson.id);
+      const unlocked = isLessonUnlocked(lesson.order);
+
+      console.log("[access-debug:combinacoes]", {
+        isAdmin,
+        isPremium,
+        bypassLocks,
+        lessonId: lesson.id,
+        completed,
+        unlocked,
+      });
+    });
+  }, [isAdmin, isPremium, bypassLocks, progress.completedLessons]);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
