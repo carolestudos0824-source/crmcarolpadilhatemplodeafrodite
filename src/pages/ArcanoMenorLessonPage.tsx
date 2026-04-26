@@ -270,7 +270,7 @@ const ArcanoMenorLessonPage = () => {
         {/* Fase atual */}
         <section
           key={`phase-${phase}`}
-          className="space-y-5"
+          className="space-y-5 bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-5"
           style={{ animation: "fade-up 0.5s ease-out" }}
         >
           {phase === "intro" && <PhaseIntro card={card} accent={naipeInfo.color.primary} />}
