@@ -274,7 +274,7 @@ const LessonPage = () => {
 
         {/* DEEP DIVE */}
         {phase === "deepdive" && (
-          <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
+          <div className="space-y-6 bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-5" style={{ animation: "fade-up 0.5s ease-out" }}>
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-heading tracking-[0.25em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>Aprofundamento</span>
               <button onClick={() => goToPhase("quiz")} className="text-[10px] font-heading tracking-wider" style={{ color: "hsl(36 45% 58%)" }}>Ir ao Quiz →</button>
@@ -295,7 +295,7 @@ const LessonPage = () => {
 
         {/* EXERCISE */}
         {phase === "exercise" && (
-          <div className="space-y-6" style={{ animation: "fade-up 0.5s ease-out" }}>
+          <div className="space-y-6 bg-white/60 backdrop-blur-sm rounded-2xl px-6 py-5" style={{ animation: "fade-up 0.5s ease-out" }}>
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-heading tracking-[0.25em] uppercase" style={{ color: "hsl(36 40% 42%)" }}>Exercício</span>
               <button onClick={() => goToPhase("quiz")} className="text-[10px] font-heading tracking-wider" style={{ color: "hsl(36 45% 58%)" }}>Ir ao Quiz →</button>
