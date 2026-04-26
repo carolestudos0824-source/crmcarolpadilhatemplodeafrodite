@@ -90,10 +90,7 @@ const LandingPage = () => {
       </section>
 
       {/* ═══════════════ O QUE É ═══════════════ */}
-      <section className="py-20 px-6" style={{
-        background: "linear-gradient(180deg, hsl(38 30% 95% / 0.50) 0%, hsl(36 33% 97%) 100%)",
-        borderTop: "1px solid hsl(36 25% 82% / 0.50)",
-      }}>
+      <section className="py-20 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
             ✦ O que é
@@ -170,7 +167,7 @@ const LandingPage = () => {
       </section>
 
       {/* ═══════════════ O QUE VOCÊ ENCONTRA NA BETA ═══════════════ */}
-      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+      <section className="py-20 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <Lock className="w-6 h-6 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
           <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
