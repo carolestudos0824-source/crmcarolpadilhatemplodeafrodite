@@ -167,7 +167,7 @@ const LandingPage = () => {
       </section>
 
       {/* ═══════════════ O QUE VOCÊ ENCONTRA NA BETA ═══════════════ */}
-      <section className="py-20 px-6" style={{ background: "hsl(38 30% 95% / 0.5)" }}>
+      <section className="py-20 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <Lock className="w-6 h-6 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
           <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
