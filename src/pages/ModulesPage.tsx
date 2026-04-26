@@ -141,11 +141,8 @@ const ModulesPage = () => {
       </div>
 
       {/* Header */}
-      <header className="relative z-10" style={{
-        borderBottom: "1px solid hsl(36 45% 50% / 0.35)",
-        background: "linear-gradient(180deg, hsl(36 33% 96% / 0.94) 0%, hsl(38 28% 93% / 0.92) 100%)",
-        backdropFilter: "blur(28px)",
-        boxShadow: "0 6px 36px hsl(36 45% 50% / 0.10), 0 1px 0 hsl(36 45% 58% / 0.20) inset"
+      <header className="relative z-10 bg-white/60 backdrop-blur-sm" style={{
+        borderBottom: "1px solid hsl(36 45% 50% / 0.20)",
       }}>
         <div className="container max-w-3xl py-5 px-6">
           <div className="flex items-center justify-between mb-4">
