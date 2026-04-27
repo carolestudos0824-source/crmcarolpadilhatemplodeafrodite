@@ -15,6 +15,9 @@ import ContinuityCard from "@/components/ContinuityCard";
 import ProgressCelebration from "@/components/ProgressCelebration";
 import mysticBg from "@/assets/mystic-bg.jpg";
 import ornamentDivider from "@/assets/ornament-divider.png";
+import imgLouco from "@/assets/arcano-0-louco.jpg";
+import imgSacerdotisa from "@/assets/arcano-2-sacerdotisa.jpg";
+import imgEstrela from "@/assets/arcano-17-estrela.jpg";
 
 const CATEGORY_LABELS: Record<ModuleCategory, string> = {
   "foundation": "Fundação",
@@ -147,12 +150,12 @@ const ModulesPage = () => {
         <div className="container max-w-3xl py-5 px-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(340 42% 28%)" }}>
+              <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(340 42% 28%)", opacity: 0.4 }}>
                 <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
                 A Jornada do Louco
                 <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
               </span>
-              <h1 className="font-heading text-2xl md:text-3xl tracking-wide" style={{
+              <h1 className="font-display font-normal text-3xl tracking-wide" style={{
                 background: "linear-gradient(135deg, hsl(340 42% 22%), hsl(36 35% 28%), hsl(36 45% 44%))",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -188,6 +191,13 @@ const ModulesPage = () => {
         {/* Beta welcome banner */}
         <BetaWelcomeBanner />
 
+        {/* Decorative tarot cards */}
+        <div className="flex justify-center gap-3 py-4">
+          <img src={imgLouco} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover -rotate-6" loading="lazy" />
+          <img src={imgSacerdotisa} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-0" loading="lazy" />
+          <img src={imgEstrela} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-6" loading="lazy" />
+        </div>
+
         {/* Retention banner - motivational messages */}
         <RetentionBanner
           streak={progress.streak}
@@ -221,6 +231,7 @@ const ModulesPage = () => {
               </div>
               <h2 className="t-section-title text-center mb-5" style={{
                 color: "hsl(340 42% 24%)",
+                opacity: 0.4,
                 textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
               }}>
                 {CATEGORY_LABELS[cat]}
@@ -353,6 +364,7 @@ const ModulesPage = () => {
           </div>
           <h2 className="t-section-title text-center mb-5" style={{
             color: "hsl(340 42% 24%)",
+            opacity: 0.4,
             textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
           }}>
             Ferramentas de Estudo

@@ -156,7 +156,7 @@
     @apply text-xs tracking-widest font-body uppercase opacity-70;
   }
   .t-card-title {
-    @apply text-base font-semibold font-display;
+    @apply text-base font-medium font-display;
   }
   .t-card-subtitle {
     @apply text-sm font-body opacity-60;

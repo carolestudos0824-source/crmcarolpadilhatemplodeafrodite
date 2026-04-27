@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Lock, Check, ChevronDown, Eye, Layers, BookOpen, Sparkles, Star, Flame, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import imgLouco from "@/assets/arcano-0-louco.jpg";
+import imgSacerdotisa from "@/assets/arcano-2-sacerdotisa.jpg";
+import imgEstrela from "@/assets/arcano-17-estrela.jpg";
 
 const faq = [
   { q: "O que é a plataforma?", a: "Uma plataforma de ensino de tarô com trilha gamificada, base simbólica clara e experiência imersiva de estudo." },
@@ -61,6 +64,13 @@ const LandingPage = () => {
           <p className="font-accent text-sm italic leading-relaxed max-w-md mx-auto opacity-60" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
             Base simbólica: Rider-Waite-Smith. Leituras arquetípicas, psicológicas e esotéricas.
           </p>
+
+          {/* Decorative tarot cards */}
+          <div className="flex justify-center gap-3 py-6">
+            <img src={imgLouco} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover -rotate-6" loading="lazy" />
+            <img src={imgSacerdotisa} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-0" loading="lazy" />
+            <img src={imgEstrela} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-6" loading="lazy" />
+          </div>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
