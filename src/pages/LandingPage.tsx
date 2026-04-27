@@ -65,6 +65,13 @@ const LandingPage = () => {
             Base simbólica: Rider-Waite-Smith. Leituras arquetípicas, psicológicas e esotéricas.
           </p>
 
+          {/* Decorative tarot cards */}
+          <div className="flex justify-center gap-3 py-6">
+            <img src={imgLouco} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover -rotate-6" loading="lazy" />
+            <img src={imgSacerdotisa} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-0" loading="lazy" />
+            <img src={imgEstrela} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-6" loading="lazy" />
+          </div>
+
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               onClick={() => navigate("/auth")}
