@@ -191,6 +191,13 @@ const ModulesPage = () => {
         {/* Beta welcome banner */}
         <BetaWelcomeBanner />
 
+        {/* Decorative tarot cards */}
+        <div className="flex justify-center gap-3 py-4">
+          <img src={imgLouco} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover -rotate-6" loading="lazy" />
+          <img src={imgSacerdotisa} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-0" loading="lazy" />
+          <img src={imgEstrela} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-6" loading="lazy" />
+        </div>
+
         {/* Retention banner - motivational messages */}
         <RetentionBanner
           streak={progress.streak}
