@@ -364,6 +364,7 @@ const ModulesPage = () => {
           </div>
           <h2 className="t-section-title text-center mb-5" style={{
             color: "hsl(340 42% 24%)",
+            opacity: 0.4,
             textShadow: "0 1px 2px hsl(340 42% 28% / 0.12)"
           }}>
             Ferramentas de Estudo
