@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, Lock, Check, ChevronDown, Eye, Layers, BookOpen, Sparkles, Star, Flame, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import imgLouco from "@/assets/arcano-0-louco.jpg";
-import imgSacerdotisa from "@/assets/arcano-2-sacerdotisa.jpg";
-import imgEstrela from "@/assets/arcano-17-estrela.jpg";
 
 const faq = [
   { q: "O que é a plataforma?", a: "Uma plataforma de ensino de tarô com trilha gamificada, base simbólica clara e experiência imersiva de estudo." },
@@ -30,49 +28,64 @@ const LandingPage = () => {
         <span className="absolute top-8 left-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✦</span>
         <span className="absolute top-8 right-8 text-2xl select-none" style={{ color: "hsl(36 45% 58% / 0.15)" }}>✧</span>
 
-        <div className="relative z-10 max-w-2xl text-center animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8" style={{
-            background: "linear-gradient(135deg, hsl(340 42% 28% / 0.08), hsl(280 30% 28% / 0.06))",
-            border: "1px solid hsl(36 45% 58% / 0.25)",
-          }}>
-            <Lock className="w-3 h-3" style={{ color: "hsl(36 45% 55%)" }} />
-            <span className="text-[10px] font-heading tracking-[0.35em] uppercase" style={{ color: "hsl(340 42% 28% / 0.70)" }}>
-              Beta Aberta · Vagas Limitadas
-            </span>
+        <div className="relative z-10 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            {/* Texto Hero - Esquerda no desktop, Topo no mobile */}
+            <div className="text-center md:text-left order-1">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6" style={{
+                background: "linear-gradient(135deg, hsl(340 42% 28% / 0.08), hsl(280 30% 28% / 0.06))",
+                border: "1px solid hsl(36 45% 58% / 0.25)",
+              }}>
+                <Lock className="w-3 h-3" style={{ color: "hsl(36 45% 55%)" }} />
+                <span className="text-[10px] font-heading tracking-[0.35em] uppercase" style={{ color: "hsl(340 42% 28% / 0.70)" }}>
+                  Beta Aberta · Vagas Limitadas
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                <div className="w-8 md:w-12 h-px" style={{ background: "linear-gradient(to right, transparent, hsl(36 45% 58% / 0.40))" }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase font-body" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
+                  A Jornada do Louco
+                </span>
+                <div className="w-8 md:w-12 h-px" style={{ background: "linear-gradient(to left, transparent, hsl(36 45% 58% / 0.40))" }} />
+              </div>
+
+              <h1 className="font-heading text-2xl md:text-3xl lg:text-4xl tracking-wide leading-tight mb-4" style={{
+                background: "linear-gradient(135deg, hsl(340 42% 18%), hsl(230 25% 12%), hsl(36 42% 38%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
+                Aprenda tarô como uma jornada viva de conhecimento, símbolo e presença.
+              </h1>
+
+              <p className="font-body text-base md:text-lg leading-relaxed max-w-md mx-auto md:mx-0 mb-3" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
+                Uma plataforma imersiva de ensino de tarô com trilha gamificada, prática guiada, aprofundamento simbólico e experiências vivas com os arcanos.
+              </p>
+
+              <p className="font-accent text-xs md:text-sm italic leading-relaxed max-w-sm mx-auto md:mx-0 opacity-60" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
+                Base simbólica: Rider-Waite-Smith. Leituras arquetípicas, psicológicas e esotéricas.
+              </p>
+            </div>
+
+            {/* Carta do Louco - Direita no desktop, centro no mobile */}
+            <div className="flex justify-center order-2">
+              <div className="relative">
+                <img
+                  src={imgLouco}
+                  alt="O Louco - Arcano 0"
+                  className="w-56 md:w-auto md:max-h-[500px] object-contain rounded-lg drop-shadow-[0_20px_60px_rgba(0,0,0,0.4)] ring-1 ring-[#c9a96e]/40"
+                  style={{
+                    filter: "brightness(1.05) contrast(1.02) drop-shadow(0 20px 60px rgba(0,0,0,0.4))",
+                    maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                  }}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="w-12 h-px" style={{ background: "linear-gradient(to right, transparent, hsl(36 45% 58% / 0.40))" }} />
-            <span className="text-[10px] tracking-[0.5em] uppercase font-body" style={{ color: "hsl(340 42% 28% / 0.55)" }}>
-              A Jornada do Louco
-            </span>
-            <div className="w-12 h-px" style={{ background: "linear-gradient(to left, transparent, hsl(36 45% 58% / 0.40))" }} />
-          </div>
-
-          <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl tracking-wide leading-tight mb-5" style={{
-            background: "linear-gradient(135deg, hsl(340 42% 18%), hsl(230 25% 12%), hsl(36 42% 38%))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}>
-            Aprenda tarô como uma jornada viva de conhecimento, símbolo e presença.
-          </h1>
-
-          <p className="font-body text-xl leading-relaxed max-w-xl mx-auto mb-4" style={{ color: "hsl(230 15% 30% / 0.65)" }}>
-            Uma plataforma imersiva de ensino de tarô com trilha gamificada, prática guiada, aprofundamento simbólico e experiências vivas com os arcanos.
-          </p>
-
-          <p className="font-accent text-sm italic leading-relaxed max-w-md mx-auto opacity-60" style={{ color: "hsl(36 45% 45% / 0.65)" }}>
-            Base simbólica: Rider-Waite-Smith. Leituras arquetípicas, psicológicas e esotéricas.
-          </p>
-
-          {/* Decorative tarot cards */}
-          <div className="flex justify-center gap-3 py-6">
-            <img src={imgLouco} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover -rotate-6" loading="lazy" />
-            <img src={imgSacerdotisa} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-0" loading="lazy" />
-            <img src={imgEstrela} alt="" className="w-16 rounded-lg shadow-md opacity-90 object-cover rotate-6" loading="lazy" />
-          </div>
-
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          {/* Botões CTA - Centralizados abaixo */}
+          <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               onClick={() => navigate("/auth")}
               className="group px-8 py-6 text-sm font-heading tracking-[0.2em] uppercase rounded-xl shadow-lg hover:shadow-xl transition-all duration-500"
