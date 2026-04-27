@@ -141,7 +141,7 @@ const ModulesPage = () => {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 bg-white/60 backdrop-blur-sm" style={{
+      <header className="relative z-10 bg-white/50 backdrop-blur-sm" style={{
         borderBottom: "1px solid hsl(36 45% 50% / 0.20)",
       }}>
         <div className="container max-w-3xl py-5 px-6">
