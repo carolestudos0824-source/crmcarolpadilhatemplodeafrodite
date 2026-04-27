@@ -88,19 +88,22 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     line-height: 1.7;
-    background-image:
-      linear-gradient(hsl(0 0% 0% / 0.06), hsl(0 0% 0% / 0.06)),
-      url('/mystic-bg.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background-color: #f5ede0;
+    background-image: none;
   }
 
-  @media (max-width: 768px) {
-    body {
-      background-attachment: scroll;
-    }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/mystic-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    pointer-events: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
