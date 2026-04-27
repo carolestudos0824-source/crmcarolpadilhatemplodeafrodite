@@ -12,3 +12,6 @@ verify_jwt = false
 [functions.seed-preview-auditor]
 verify_jwt = false
 
+[functions.stripe-admin-metrics]
+verify_jwt = false
+

@@ -9,10 +9,21 @@ import {
 const MONTHLY_PRICE = 29.9;
 const ANNUAL_PRICE = 197;
 
+type StripeMetrics = {
+  activeSubscriptions: number;
+  mrr: number;
+  totalRevenue: number;
+  currency?: string;
+  sampledCharges?: number;
+};
+
 const AdminOverview = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [progress, setProgress] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [stripeMetrics, setStripeMetrics] = useState<StripeMetrics | null>(null);
+  const [stripeError, setStripeError] = useState<string | null>(null);
+  const [stripeLoading, setStripeLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
@@ -25,6 +36,21 @@ const AdminOverview = () => {
       setLoading(false);
     };
     load();
+
+    const loadStripe = async () => {
+      setStripeLoading(true);
+      const { data, error } = await supabase.functions.invoke<StripeMetrics>("stripe-admin-metrics");
+      if (error) {
+        setStripeError(error.message);
+      } else if (data && "activeSubscriptions" in data) {
+        setStripeMetrics(data);
+        setStripeError(null);
+      } else if (data && (data as any).error) {
+        setStripeError((data as any).error);
+      }
+      setStripeLoading(false);
+    };
+    loadStripe();
   }, []);
 
   const stats = useMemo(() => {
@@ -91,20 +117,43 @@ const AdminOverview = () => {
         </div>
       </div>
 
-      {/* Revenue — Real (pending integration) */}
+      {/* Revenue — Real (Stripe) */}
       <div>
         <div className="flex items-baseline justify-between mb-3">
-          <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60">Receita real</h3>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground/60">pendente de integração</span>
+          <h3 className="font-heading text-xs tracking-[0.15em] uppercase text-muted-foreground/60">Receita real (Stripe)</h3>
+          <span className="text-[10px] uppercase tracking-wider text-emerald-600/80">
+            {stripeLoading ? "carregando…" : stripeError ? "erro" : "ao vivo"}
+          </span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <PlaceholderCard label="Faturamento confirmado" />
-          <PlaceholderCard label="Reembolsos" />
-          <PlaceholderCard label="Cancelamentos com motivo" />
-          <PlaceholderCard label="Churn real" />
-        </div>
+        {stripeError ? (
+          <div className="p-4 rounded-xl border border-dashed border-red-300/50 bg-red-50/40 text-[11px] text-red-700">
+            Não foi possível carregar dados do Stripe: {stripeError}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <KPICard
+              icon={<Crown className="w-4 h-4" />}
+              label="Assinaturas ativas (Stripe)"
+              value={stripeLoading ? "…" : stripeMetrics?.activeSubscriptions ?? 0}
+              accent="text-emerald-600"
+            />
+            <KPICard
+              icon={<DollarSign className="w-4 h-4" />}
+              label="MRR real"
+              value={stripeLoading ? "…" : `R$ ${(stripeMetrics?.mrr ?? 0).toFixed(2)}`}
+              accent="text-emerald-600"
+            />
+            <KPICard
+              icon={<TrendingUp className="w-4 h-4" />}
+              label="Receita (últ. 100 cobranças)"
+              value={stripeLoading ? "…" : `R$ ${(stripeMetrics?.totalRevenue ?? 0).toFixed(2)}`}
+              accent="text-emerald-600"
+            />
+            <PlaceholderCard label="Churn real (em breve)" />
+          </div>
+        )}
         <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
-          Estes valores serão preenchidos quando a integração de pagamento (Stripe / RevenueCat) for ativada. Até lá, use a receita estimada apenas como referência interna.
+          Dados consultados diretamente da API do Stripe. Receita considera as últimas 100 cobranças bem-sucedidas, líquido de reembolsos.
         </p>
       </div>
 
