@@ -9,10 +9,21 @@ import {
 const MONTHLY_PRICE = 29.9;
 const ANNUAL_PRICE = 197;
 
+type StripeMetrics = {
+  activeSubscriptions: number;
+  mrr: number;
+  totalRevenue: number;
+  currency?: string;
+  sampledCharges?: number;
+};
+
 const AdminOverview = () => {
   const [profiles, setProfiles] = useState<any[]>([]);
   const [progress, setProgress] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [stripeMetrics, setStripeMetrics] = useState<StripeMetrics | null>(null);
+  const [stripeError, setStripeError] = useState<string | null>(null);
+  const [stripeLoading, setStripeLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
@@ -25,6 +36,21 @@ const AdminOverview = () => {
       setLoading(false);
     };
     load();
+
+    const loadStripe = async () => {
+      setStripeLoading(true);
+      const { data, error } = await supabase.functions.invoke<StripeMetrics>("stripe-admin-metrics");
+      if (error) {
+        setStripeError(error.message);
+      } else if (data && "activeSubscriptions" in data) {
+        setStripeMetrics(data);
+        setStripeError(null);
+      } else if (data && (data as any).error) {
+        setStripeError((data as any).error);
+      }
+      setStripeLoading(false);
+    };
+    loadStripe();
   }, []);
 
   const stats = useMemo(() => {
