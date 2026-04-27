@@ -168,7 +168,7 @@ const LandingPage = () => {
 
       {/* ═══════════════ O QUE VOCÊ ENCONTRA NA BETA ═══════════════ */}
       <section className="py-20 px-6">
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-lg mx-auto text-center bg-white/60 backdrop-blur-sm rounded-2xl px-8 py-8">
           <Lock className="w-6 h-6 mx-auto mb-4" style={{ color: "hsl(36 45% 55% / 0.40)" }} />
           <p className="text-[10px] font-heading tracking-[0.4em] uppercase mb-6" style={{ color: "hsl(36 45% 55% / 0.6)" }}>
             ✦ A Beta
