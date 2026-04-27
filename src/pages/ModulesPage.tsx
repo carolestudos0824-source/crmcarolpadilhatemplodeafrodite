@@ -272,7 +272,23 @@ const ModulesPage = () => {
                             {isCompleted ? (
                               <Check className="w-5 h-5" style={{ color: "hsl(36 42% 38%)" }} />
                             ) : unlocked ? (
-                              <span className="text-lg">{mod.icon}</span>
+                              (() => {
+                                const suitGlyph: Record<string, string> = {
+                                  copas: "♥",
+                                  paus: "♣",
+                                  espadas: "♠",
+                                  ouros: "♦",
+                                };
+                                const glyph = suitGlyph[mod.id];
+                                if (glyph) {
+                                  return (
+                                    <span className="font-display text-lg leading-none" style={{ color: "hsl(340 42% 22%)" }}>
+                                      {glyph}
+                                    </span>
+                                  );
+                                }
+                                return <span className="text-lg">{mod.icon}</span>;
+                              })()
                             ) : (
                               <Lock className="w-4 h-4" style={{ color: "hsl(230 10% 45% / 0.30)" }} />
                             )}
