@@ -51,15 +51,15 @@ const LandingPage = () => {
               </div>
 
               {/* MARCA */}
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <div className="w-8 md:w-12 h-px" style={{ background: "linear-gradient(to right, transparent, hsl(36 45% 58% / 0.55))" }} />
-                <span className="text-[11px] tracking-[0.5em] uppercase font-heading font-semibold" style={{ color: INK_ACCENT }}>
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                <div className="w-10 md:w-16 h-px" style={{ background: "linear-gradient(to right, transparent, hsl(36 45% 58% / 0.55))" }} />
+                <span className="text-[13px] md:text-[15px] tracking-[0.45em] uppercase font-heading font-bold" style={{ color: INK_ACCENT }}>
                   Tarô 78 Chaves
                 </span>
-                <div className="w-8 md:w-12 h-px" style={{ background: "linear-gradient(to left, transparent, hsl(36 45% 58% / 0.55))" }} />
+                <div className="w-10 md:w-16 h-px" style={{ background: "linear-gradient(to left, transparent, hsl(36 45% 58% / 0.55))" }} />
               </div>
 
-              <p className="font-accent italic text-sm md:text-base mb-5" style={{ color: INK_ACCENT }}>
+              <p className="font-accent italic text-base md:text-lg mb-5" style={{ color: INK_ACCENT }}>
                 A jornada viva pelos 78 arcanos
               </p>
 
@@ -302,10 +302,14 @@ const LandingPage = () => {
               </Button>
               <button
                 onClick={() => navigate("/waitlist")}
-                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-4 py-2 font-semibold underline-offset-4 hover:underline"
-                style={{ color: INK_ACCENT }}
+                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-5 py-2.5 rounded-lg font-semibold border"
+                style={{
+                  color: INK_ACCENT,
+                  borderColor: "hsl(340 42% 28% / 0.35)",
+                  background: "hsl(36 33% 97% / 0.5)",
+                }}
               >
-                Lista de espera
+                Entrar na lista
               </button>
             </div>
           </div>
@@ -313,16 +317,16 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t" style={{ borderColor: "hsl(36 25% 75% / 0.6)" }}>
-        <div className="max-w-3xl mx-auto flex flex-col items-center gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-sm" style={{ color: GOLD_SOFT }}>✦</span>
-            <span className="font-heading text-sm tracking-widest font-semibold" style={{ color: INK_ACCENT }}>
+      <footer className="py-10 px-6 border-t" style={{ borderColor: "hsl(36 25% 75% / 0.6)", background: "hsl(36 33% 96% / 0.6)" }}>
+        <div className="max-w-3xl mx-auto flex flex-col items-center gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+            <span className="font-heading text-base tracking-[0.25em] font-bold" style={{ color: INK_ACCENT }}>
               TARÔ 78 CHAVES
             </span>
-            <span className="text-sm" style={{ color: GOLD_SOFT }}>✦</span>
+            <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
           </div>
-          <p className="font-accent text-xs italic" style={{ color: INK_MUTED }}>
+          <p className="font-accent text-sm italic" style={{ color: INK_MUTED }}>
             A jornada viva pelos 78 arcanos
           </p>
         </div>
