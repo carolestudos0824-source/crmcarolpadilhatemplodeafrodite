@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Lock, Check, ChevronDown, Eye, Layers, BookOpen, Sparkles, Star, Flame, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import imgLouco from "@/assets/arcano-0-louco.jpg";
+import imgSacerdotisa from "@/assets/arcano-2-sacerdotisa.jpg";
+import imgEstrela from "@/assets/arcano-17-estrela.jpg";
 
 const faq = [
   { q: "O que é a plataforma?", a: "Uma plataforma de ensino de tarô com trilha gamificada, base simbólica clara e experiência imersiva de estudo." },
