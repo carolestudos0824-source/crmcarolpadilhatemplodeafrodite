@@ -150,12 +150,12 @@ const ModulesPage = () => {
         <div className="container max-w-3xl py-5 px-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex flex-col">
-              <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(340 42% 28%)" }}>
+              <span className="text-[10px] tracking-[0.35em] uppercase font-body mb-1.5 flex items-center gap-1.5" style={{ color: "hsl(340 42% 28%)", opacity: 0.4 }}>
                 <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
                 A Jornada do Louco
                 <span style={{ color: "hsl(36 40% 42%)" }}>✦</span>
               </span>
-              <h1 className="font-heading text-2xl md:text-3xl tracking-wide" style={{
+              <h1 className="font-display font-normal text-3xl tracking-wide" style={{
                 background: "linear-gradient(135deg, hsl(340 42% 22%), hsl(36 35% 28%), hsl(36 45% 44%))",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
