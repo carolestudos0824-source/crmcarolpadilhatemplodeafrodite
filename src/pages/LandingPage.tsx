@@ -255,25 +255,27 @@ const LandingPage = () => {
             Se você deseja estudar tarô com mais profundidade, beleza e método, esta é a hora de entrar.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
-            <Button
-              onClick={() => navigate("/auth")}
-              className="group px-8 py-6 text-sm font-heading tracking-[0.2em] uppercase rounded-xl shadow-lg hover:shadow-xl transition-all duration-500"
-              style={{
-                background: "linear-gradient(135deg, hsl(340 42% 28%), hsl(340 38% 22%))",
-                border: "1px solid hsl(36 45% 58% / 0.25)",
-              }}
-            >
-              Entrar na beta
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <button
-              onClick={() => navigate("/waitlist")}
-              className="text-[11px] font-heading tracking-wider uppercase transition-colors px-4 py-2"
-              style={{ color: "hsl(340 42% 28% / 0.50)" }}
-            >
-              Entrar na lista de espera
-            </button>
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl px-8 py-6 max-w-md mx-auto mb-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                onClick={() => navigate("/auth")}
+                className="group px-8 py-6 text-sm font-heading tracking-[0.2em] uppercase rounded-xl shadow-lg hover:shadow-xl transition-all duration-500"
+                style={{
+                  background: "linear-gradient(135deg, hsl(340 42% 28%), hsl(340 38% 22%))",
+                  border: "1px solid hsl(36 45% 58% / 0.25)",
+                }}
+              >
+                Entrar na beta
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <button
+                onClick={() => navigate("/waitlist")}
+                className="text-[11px] font-heading tracking-wider uppercase transition-colors px-4 py-2"
+                style={{ color: "hsl(340 42% 28% / 0.85)" }}
+              >
+                Entrar na lista de espera
+              </button>
+            </div>
           </div>
         </div>
       </section>
