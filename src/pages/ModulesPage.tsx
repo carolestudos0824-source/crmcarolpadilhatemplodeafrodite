@@ -402,11 +402,7 @@ const ModulesPage = () => {
           <section className="mb-8">
             <button
               onClick={() => navigate("/premium")}
-              className="w-full group rounded-xl border transition-all duration-300 hover:shadow-md p-4"
-              style={{
-                borderColor: "hsl(36 45% 58% / 0.35)",
-                background: "linear-gradient(135deg, hsl(36 45% 58% / 0.06), hsl(340 42% 30% / 0.06))",
-              }}
+              className="w-full group rounded-2xl border border-white/40 bg-white/70 backdrop-blur-sm transition-all duration-300 hover:shadow-md p-4"
             >
               <div className="flex items-center gap-4">
                 <div className="flex items-center justify-center w-10 h-10 rounded-full shrink-0" style={{
