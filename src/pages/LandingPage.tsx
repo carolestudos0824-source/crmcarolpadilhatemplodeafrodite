@@ -209,8 +209,7 @@ const LandingPage = () => {
 
           <div className="space-y-2">
             {faq.map(({ q, a }, i) => (
-              <div key={i} className="rounded-xl overflow-hidden" style={{
-                background: "hsl(36 33% 97% / 0.7)",
+              <div key={i} className="rounded-xl overflow-hidden bg-white/60 backdrop-blur-sm" style={{
                 border: "1px solid hsl(36 25% 82% / 0.4)",
               }}>
                 <button
