@@ -141,7 +141,7 @@ const ModulesPage = () => {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 bg-white/60 backdrop-blur-sm" style={{
+      <header className="relative z-10 bg-white/50 backdrop-blur-sm" style={{
         borderBottom: "1px solid hsl(36 45% 50% / 0.20)",
       }}>
         <div className="container max-w-3xl py-5 px-6">
@@ -272,7 +272,23 @@ const ModulesPage = () => {
                             {isCompleted ? (
                               <Check className="w-5 h-5" style={{ color: "hsl(36 42% 38%)" }} />
                             ) : unlocked ? (
-                              <span className="text-lg">{mod.icon}</span>
+                              (() => {
+                                const suitGlyph: Record<string, string> = {
+                                  copas: "♥",
+                                  paus: "♣",
+                                  espadas: "♠",
+                                  ouros: "♦",
+                                };
+                                const glyph = suitGlyph[mod.id];
+                                if (glyph) {
+                                  return (
+                                    <span className="font-display text-lg leading-none" style={{ color: "hsl(340 42% 22%)" }}>
+                                      {glyph}
+                                    </span>
+                                  );
+                                }
+                                return <span className="text-lg">{mod.icon}</span>;
+                              })()
                             ) : (
                               <Lock className="w-4 h-4" style={{ color: "hsl(230 10% 45% / 0.30)" }} />
                             )}
@@ -386,11 +402,7 @@ const ModulesPage = () => {
           <section className="mb-8">
             <button
               onClick={() => navigate("/premium")}
-              className="w-full group rounded-xl border transition-all duration-300 hover:shadow-md p-4"
-              style={{
-                borderColor: "hsl(36 45% 58% / 0.35)",
-                background: "linear-gradient(135deg, hsl(36 45% 58% / 0.06), hsl(340 42% 30% / 0.06))",
-              }}
+              className="w-full group rounded-2xl border border-white/40 bg-white/70 backdrop-blur-sm transition-all duration-300 hover:shadow-md p-4"
             >
               <div className="flex items-center gap-4">
                 <div className="flex items-center justify-center w-10 h-10 rounded-full shrink-0" style={{
