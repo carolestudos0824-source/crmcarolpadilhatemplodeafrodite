@@ -278,7 +278,9 @@ const LandingPage = () => {
         </div>
 
         <div className="relative z-10 max-w-xl mx-auto text-center">
-          <span className="text-2xl block mb-4" style={{ color: "hsl(36 45% 58% / 0.40)" }}>✧</span>
+          <div className="divider-ornament mb-8" aria-hidden>
+            <span className="text-base">✦</span>
+          </div>
           <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4 leading-snug" style={{ color: INK_STRONG }}>
             Comece sua jornada no tarô com profundidade, método e presença.
           </h2>
