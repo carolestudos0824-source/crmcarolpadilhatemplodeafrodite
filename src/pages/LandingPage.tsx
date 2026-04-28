@@ -287,11 +287,11 @@ const LandingPage = () => {
             Se você deseja estudar tarô com mais profundidade, beleza e método, esta é a hora de entrar.
           </p>
 
-          <div className="bg-white/70 backdrop-blur-sm rounded-xl px-6 py-4 max-w-md mx-auto mb-4 border shadow-sm" style={{ borderColor: "hsl(36 25% 82% / 0.5)" }}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="bg-white/70 backdrop-blur-sm rounded-xl px-6 py-3 max-w-sm mx-auto mb-4 border shadow-sm" style={{ borderColor: "hsl(36 25% 82% / 0.5)" }}>
+            <div className="flex items-center justify-center">
               <Button
                 onClick={() => navigate("/auth")}
-                className="group h-12 px-8 text-sm font-heading tracking-[0.2em] uppercase rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-white font-semibold"
+                className="group h-12 px-10 text-sm font-heading tracking-[0.2em] uppercase rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-white font-semibold"
                 style={{
                   background: "linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%))",
                   border: "1px solid hsl(36 45% 58% / 0.40)",
@@ -300,17 +300,6 @@ const LandingPage = () => {
                 Entrar na beta
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <button
-                onClick={() => navigate("/waitlist")}
-                className="h-12 px-6 text-xs font-heading tracking-[0.18em] uppercase transition-colors rounded-lg font-semibold border whitespace-nowrap flex items-center justify-center"
-                style={{
-                  color: INK_ACCENT,
-                  borderColor: "hsl(340 42% 28% / 0.30)",
-                  background: "hsl(36 33% 97% / 0.6)",
-                }}
-              >
-                Entrar na lista
-              </button>
             </div>
           </div>
         </div>
