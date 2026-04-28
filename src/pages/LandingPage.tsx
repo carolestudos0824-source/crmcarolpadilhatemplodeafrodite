@@ -287,11 +287,11 @@ const LandingPage = () => {
             Se você deseja estudar tarô com mais profundidade, beleza e método, esta é a hora de entrar.
           </p>
 
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl px-8 py-6 max-w-md mx-auto mb-4 border" style={{ borderColor: "hsl(36 25% 75% / 0.6)" }}>
+          <div className="bg-white/70 backdrop-blur-sm rounded-xl px-6 py-4 max-w-md mx-auto mb-4 border shadow-sm" style={{ borderColor: "hsl(36 25% 82% / 0.5)" }}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button
                 onClick={() => navigate("/auth")}
-                className="group px-10 py-6 text-sm font-heading tracking-[0.22em] uppercase rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 text-white font-semibold"
+                className="group h-12 px-8 text-sm font-heading tracking-[0.2em] uppercase rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-white font-semibold"
                 style={{
                   background: "linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%))",
                   border: "1px solid hsl(36 45% 58% / 0.40)",
@@ -302,11 +302,11 @@ const LandingPage = () => {
               </Button>
               <button
                 onClick={() => navigate("/waitlist")}
-                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-6 py-2.5 rounded-lg font-semibold border whitespace-nowrap"
+                className="h-12 px-6 text-xs font-heading tracking-[0.18em] uppercase transition-colors rounded-lg font-semibold border whitespace-nowrap flex items-center justify-center"
                 style={{
                   color: INK_ACCENT,
-                  borderColor: "hsl(340 42% 28% / 0.35)",
-                  background: "hsl(36 33% 97% / 0.5)",
+                  borderColor: "hsl(340 42% 28% / 0.30)",
+                  background: "hsl(36 33% 97% / 0.6)",
                 }}
               >
                 Entrar na lista
