@@ -307,7 +307,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="py-10 px-6 border-t" style={{ borderColor: "hsl(36 25% 75% / 0.6)", background: "hsl(36 33% 96% / 0.6)" }}>
-        <div className="max-w-3xl mx-auto flex flex-col items-center">
+        <div className="max-w-3xl mx-auto flex flex-col items-center gap-5">
           <div className="bg-white/40 backdrop-blur-sm rounded-xl px-8 py-4 flex flex-col items-center gap-3">
             <div className="flex items-center gap-3">
               <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
@@ -320,6 +320,13 @@ const LandingPage = () => {
               A jornada viva pelos 78 arcanos
             </p>
           </div>
+
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs" style={{ color: INK_MUTED }}>
+            <a href="/privacidade" className="underline-offset-2 hover:underline">Privacidade</a>
+            <a href="/termos" className="underline-offset-2 hover:underline">Termos</a>
+            <a href="/suporte" className="underline-offset-2 hover:underline">Suporte</a>
+            <a href="/excluir-conta" className="underline-offset-2 hover:underline">Excluir conta</a>
+          </nav>
         </div>
       </footer>
     </div>

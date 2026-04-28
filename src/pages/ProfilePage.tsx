@@ -670,6 +670,14 @@ const ProfilePage = () => {
               <ChevronRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" style={{ color: "hsl(36 42% 45% / 0.40)" }} />
             </div>
           </button>
+
+          {/* Legal & compliance */}
+          <nav className="pt-6 mt-2 border-t flex flex-wrap justify-center gap-x-5 gap-y-2 text-[11px]" style={{ borderColor: "hsl(36 25% 75% / 0.4)", color: "hsl(230 20% 25% / 0.65)" }}>
+            <a href="/privacidade" className="hover:underline">Privacidade</a>
+            <a href="/termos" className="hover:underline">Termos</a>
+            <a href="/suporte" className="hover:underline">Suporte</a>
+            <a href="/excluir-conta" className="hover:underline">Excluir conta</a>
+          </nav>
         </div>
       </div>
     </div>

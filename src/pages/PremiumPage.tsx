@@ -9,6 +9,7 @@ import { useTrackEvent } from "@/hooks/use-track-event";
 import { usePremium, type SubscriptionStatus } from "@/hooks/use-premium";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { isWebCheckoutAllowed } from "@/lib/platform";
 
 /* ═══════════════ DATA ═══════════════ */
 
@@ -265,7 +266,7 @@ const ActiveSubscriberView = ({
               </button>
             )}
 
-            {isCancelledWithAccess && (
+            {isCancelledWithAccess && isWebCheckoutAllowed() && (
               <button
                 onClick={async () => {
                   const loadingToast = toast.loading("Abrindo checkout seguro...");
@@ -413,18 +414,26 @@ const ExpiredView = ({
           </div>
 
           <div className="flex flex-col items-center gap-3 pt-2">
-            <Button size="lg" onClick={onSubscribe} className="font-heading tracking-wide px-10 py-6 text-sm w-full sm:w-auto" style={{
-              background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
-              color: "hsl(var(--parchment))",
-              border: "1px solid hsl(var(--secondary) / 0.40)",
-              boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18)",
-            }}>
-              <Crown className="w-4 h-4 mr-2" />
-              Reativar minha jornada
-            </Button>
-            <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
-              Cancele quando quiser · Acesso imediato
-            </p>
+            {isWebCheckoutAllowed() ? (
+              <>
+                <Button size="lg" onClick={onSubscribe} className="font-heading tracking-wide px-10 py-6 text-sm w-full sm:w-auto" style={{
+                  background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+                  color: "hsl(var(--parchment))",
+                  border: "1px solid hsl(var(--secondary) / 0.40)",
+                  boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18)",
+                }}>
+                  <Crown className="w-4 h-4 mr-2" />
+                  Reativar minha jornada
+                </Button>
+                <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
+                  Cancele quando quiser · Acesso imediato
+                </p>
+              </>
+            ) : (
+              <p className="text-xs text-center max-w-xs" style={{ color: "hsl(var(--muted-foreground) / 0.70)" }}>
+                Para reativar sua assinatura, acesse <strong>taro78chaves.com</strong> pelo navegador.
+              </p>
+            )}
           </div>
         </section>
 
@@ -655,23 +664,31 @@ const PremiumPage = () => {
 
           {/* Subscribe CTA */}
           <div className="flex flex-col items-center gap-3 pt-2">
-            <Button
-              size="lg"
-              onClick={handleSubscribe}
-              className="font-heading tracking-wide px-10 py-6 text-sm w-full sm:w-auto"
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
-                color: "hsl(var(--parchment))",
-                border: "1px solid hsl(var(--secondary) / 0.40)",
-                boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18), inset 0 1px 0 hsl(var(--gold) / 0.10)",
-              }}
-            >
-              <Crown className="w-4 h-4 mr-2" />
-              Assinar {selectedPlan === "annual" ? "plano anual" : "plano mensal"}
-            </Button>
-            <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
-              Cancele quando quiser · Acesso imediato
-            </p>
+            {isWebCheckoutAllowed() ? (
+              <>
+                <Button
+                  size="lg"
+                  onClick={handleSubscribe}
+                  className="font-heading tracking-wide px-10 py-6 text-sm w-full sm:w-auto"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+                    color: "hsl(var(--parchment))",
+                    border: "1px solid hsl(var(--secondary) / 0.40)",
+                    boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18), inset 0 1px 0 hsl(var(--gold) / 0.10)",
+                  }}
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  Assinar {selectedPlan === "annual" ? "plano anual" : "plano mensal"}
+                </Button>
+                <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
+                  Cancele quando quiser · Acesso imediato
+                </p>
+              </>
+            ) : (
+              <p className="text-xs text-center max-w-xs" style={{ color: "hsl(var(--muted-foreground) / 0.70)" }}>
+                Assinatura disponível em <strong>taro78chaves.com</strong> pelo navegador.
+              </p>
+            )}
           </div>
         </section>
 
@@ -890,23 +907,31 @@ const PremiumPage = () => {
           </SectionTitle>
 
           <div className="flex flex-col items-center gap-3 pt-2">
-            <Button
-              size="lg"
-              onClick={handleSubscribe}
-              className="font-heading tracking-wide px-10 py-6 text-sm"
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
-                color: "hsl(var(--parchment))",
-                border: "1px solid hsl(var(--secondary) / 0.40)",
-                boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18), inset 0 1px 0 hsl(var(--gold) / 0.10)",
-              }}
-            >
-              <Crown className="w-4 h-4 mr-2" />
-              Assinar {selectedPlan === "annual" ? "plano anual" : "plano mensal"}
-            </Button>
-            <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
-              Cancele quando quiser · Acesso imediato
-            </p>
+            {isWebCheckoutAllowed() ? (
+              <>
+                <Button
+                  size="lg"
+                  onClick={handleSubscribe}
+                  className="font-heading tracking-wide px-10 py-6 text-sm"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--crimson-light)))",
+                    color: "hsl(var(--parchment))",
+                    border: "1px solid hsl(var(--secondary) / 0.40)",
+                    boxShadow: "0 6px 24px hsl(var(--secondary) / 0.18), inset 0 1px 0 hsl(var(--gold) / 0.10)",
+                  }}
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  Assinar {selectedPlan === "annual" ? "plano anual" : "plano mensal"}
+                </Button>
+                <p className="text-[10px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.40)" }}>
+                  Cancele quando quiser · Acesso imediato
+                </p>
+              </>
+            ) : (
+              <p className="text-xs text-center max-w-xs" style={{ color: "hsl(var(--muted-foreground) / 0.70)" }}>
+                Assinatura disponível em <strong>taro78chaves.com</strong> pelo navegador.
+              </p>
+            )}
           </div>
 
           {/* Restore purchase */}

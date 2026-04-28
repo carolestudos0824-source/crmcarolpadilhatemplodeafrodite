@@ -69,6 +69,12 @@ const NumerologiaPage = lazy(() => import("./pages/NumerologiaPage.tsx"));
 const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage.tsx"));
 
+// Legal / compliance pages
+const PrivacyPage = lazy(() => import("./pages/legal/PrivacyPage.tsx"));
+const TermsPage = lazy(() => import("./pages/legal/TermsPage.tsx"));
+const SupportPage = lazy(() => import("./pages/legal/SupportPage.tsx"));
+const DeleteAccountPage = lazy(() => import("./pages/legal/DeleteAccountPage.tsx"));
+
 const queryClient = new QueryClient();
 
 const LoadingFallback = () => (
@@ -117,6 +123,12 @@ const AppRoutes = () => (
       <Route path="/convite" element={<BetaInvitePage />} />
       <Route path="/waitlist" element={<WaitlistPage />} />
       <Route path="/apresentacao" element={<PresentationPage />} />
+
+      {/* ═══ Legal / compliance (public, no auth) ═══ */}
+      <Route path="/privacidade" element={<PrivacyPage />} />
+      <Route path="/termos" element={<TermsPage />} />
+      <Route path="/suporte" element={<SupportPage />} />
+      <Route path="/excluir-conta" element={<DeleteAccountPage />} />
 
       {/* ═══ App routes (with BottomNav + Beta overlays) ═══ */}
       <Route path="/*" element={<AppShell />} />
