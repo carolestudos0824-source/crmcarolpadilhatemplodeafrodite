@@ -9,6 +9,7 @@ import { useTrackEvent } from "@/hooks/use-track-event";
 import { usePremium, type SubscriptionStatus } from "@/hooks/use-premium";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { isWebCheckoutAllowed } from "@/lib/platform";
 
 /* ═══════════════ DATA ═══════════════ */
 
