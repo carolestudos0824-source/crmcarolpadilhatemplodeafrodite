@@ -10,14 +10,17 @@ import mysticBg from "@/assets/mystic-bg.jpg";
 const CombinacoesPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
-  const { bypassLocks } = useAccess();
+  const { bypassLocks, loading: accessLoading } = useAccess();
   // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
   useResolvedModule("combinacoes");
 
   const isLessonCompleted = (lessonId: string) =>
     progress.completedLessons.includes(lessonId);
 
+  // Regra unificada: enquanto o acesso carrega, NÃO travamos lições com cadeado
+  // (evita flash de bloqueio para admin/premium). Após carregar, regra normal.
   const isLessonUnlocked = (order: number) => {
+    if (accessLoading) return true;
     if (bypassLocks) return true;
     if (order === 0) return true;
     const prev = COMBINACOES_LESSONS.find((l) => l.order === order - 1);
@@ -31,7 +34,7 @@ const CombinacoesPage = () => {
   const progressPct = Math.round((completedCount / COMBINACOES_LESSONS.length) * 100);
 
   const openLesson = (order: number, unlocked: boolean) => {
-    if (!bypassLocks && !unlocked) return;
+    if (!unlocked) return;
     navigate(`/combinacoes/${order}`);
   };
 
@@ -114,7 +117,7 @@ const CombinacoesPage = () => {
                 key={lesson.id}
                 type="button"
                 onClick={() => openLesson(lesson.order, unlocked)}
-                disabled={!bypassLocks && !unlocked}
+                disabled={!unlocked}
                 className="w-full text-left group transition-all duration-500"
                 style={{ animation: `fade-up 0.5s ease-out both`, animationDelay: `${i * 60}ms` }}
               >
