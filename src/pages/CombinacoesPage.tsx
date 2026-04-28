@@ -34,7 +34,7 @@ const CombinacoesPage = () => {
   const progressPct = Math.round((completedCount / COMBINACOES_LESSONS.length) * 100);
 
   const openLesson = (order: number, unlocked: boolean) => {
-    if (!bypassLocks && !unlocked) return;
+    if (!unlocked) return;
     navigate(`/combinacoes/${order}`);
   };
 
