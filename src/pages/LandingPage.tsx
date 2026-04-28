@@ -318,17 +318,19 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="py-10 px-6 border-t" style={{ borderColor: "hsl(36 25% 75% / 0.6)", background: "hsl(36 33% 96% / 0.6)" }}>
-        <div className="max-w-3xl mx-auto flex flex-col items-center gap-3">
-          <div className="flex items-center gap-3">
-            <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
-            <span className="font-heading text-base tracking-[0.25em] font-bold" style={{ color: INK_ACCENT }}>
-              TARÔ 78 CHAVES
-            </span>
-            <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+        <div className="max-w-3xl mx-auto flex flex-col items-center">
+          <div className="bg-white/40 backdrop-blur-sm rounded-xl px-8 py-4 flex flex-col items-center gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+              <span className="font-heading text-base tracking-[0.25em] font-bold" style={{ color: INK_ACCENT }}>
+                TARÔ 78 CHAVES
+              </span>
+              <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+            </div>
+            <p className="font-accent text-sm italic" style={{ color: INK_MUTED }}>
+              A jornada viva pelos 78 arcanos
+            </p>
           </div>
-          <p className="font-accent text-sm italic" style={{ color: INK_MUTED }}>
-            A jornada viva pelos 78 arcanos
-          </p>
         </div>
       </footer>
     </div>
