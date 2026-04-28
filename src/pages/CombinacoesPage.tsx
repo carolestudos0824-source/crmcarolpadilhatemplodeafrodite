@@ -117,7 +117,7 @@ const CombinacoesPage = () => {
                 key={lesson.id}
                 type="button"
                 onClick={() => openLesson(lesson.order, unlocked)}
-                disabled={!bypassLocks && !unlocked}
+                disabled={!unlocked}
                 className="w-full text-left group transition-all duration-500"
                 style={{ animation: `fade-up 0.5s ease-out both`, animationDelay: `${i * 60}ms` }}
               >
