@@ -290,11 +290,7 @@ const LandingPage = () => {
             <div className="flex items-center justify-center">
               <Button
                 onClick={() => navigate("/auth")}
-                className="group h-12 px-10 text-sm font-heading tracking-[0.2em] uppercase rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-white font-semibold"
-                style={{
-                  background: "linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%))",
-                  border: "1px solid hsl(36 45% 58% / 0.40)",
-                }}
+                className="group btn-premium h-12 px-10 text-sm font-heading tracking-[0.2em] uppercase rounded-lg font-semibold"
               >
                 Entrar na beta
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
