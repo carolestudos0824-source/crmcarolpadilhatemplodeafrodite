@@ -102,11 +102,7 @@ const LandingPage = () => {
           <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               onClick={() => navigate("/auth")}
-              className="group px-10 py-6 text-sm font-heading tracking-[0.22em] uppercase rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 text-white font-semibold"
-              style={{
-                background: "linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%))",
-                border: "1px solid hsl(36 45% 58% / 0.40)",
-              }}
+              className="group btn-premium px-10 py-6 text-sm font-heading tracking-[0.22em] uppercase rounded-xl font-semibold"
             >
               Entrar na beta
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
