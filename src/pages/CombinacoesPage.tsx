@@ -10,14 +10,17 @@ import mysticBg from "@/assets/mystic-bg.jpg";
 const CombinacoesPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
-  const { bypassLocks } = useAccess();
+  const { bypassLocks, loading: accessLoading } = useAccess();
   // Fase 4B — telemetria invisível: módulo via adaptador (DB-first com fallback).
   useResolvedModule("combinacoes");
 
   const isLessonCompleted = (lessonId: string) =>
     progress.completedLessons.includes(lessonId);
 
+  // Regra unificada: enquanto o acesso carrega, NÃO travamos lições com cadeado
+  // (evita flash de bloqueio para admin/premium). Após carregar, regra normal.
   const isLessonUnlocked = (order: number) => {
+    if (accessLoading) return true;
     if (bypassLocks) return true;
     if (order === 0) return true;
     const prev = COMBINACOES_LESSONS.find((l) => l.order === order - 1);
