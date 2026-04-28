@@ -241,6 +241,99 @@
   .bg-surface-elevated {
     background: hsl(var(--mystic-elevated));
   }
+
+  /* ═══════════════ EDITORIAL / ORNAMENTAL ═══════════════ */
+
+  /* Pergaminho sutil — textura nobre quase imperceptível */
+  .bg-parchment-noise {
+    background-color: hsl(36 33% 96%);
+    background-image:
+      radial-gradient(circle at 20% 10%, hsl(36 45% 58% / 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 80% 90%, hsl(340 42% 30% / 0.04) 0%, transparent 45%),
+      radial-gradient(circle at 50% 50%, hsl(42 70% 80% / 0.06) 0%, transparent 70%);
+  }
+
+  /* Moldura editorial — borda dupla com filete dourado */
+  .frame-editorial {
+    position: relative;
+    border: 1px solid hsl(36 45% 58% / 0.35);
+    border-radius: 0.75rem;
+    box-shadow:
+      0 0 0 1px hsl(36 33% 97% / 0.6) inset,
+      0 0 0 2px hsl(36 45% 58% / 0.15) inset,
+      0 10px 30px -12px hsl(340 42% 30% / 0.15);
+  }
+  .frame-editorial::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid hsl(36 45% 58% / 0.18);
+    border-radius: calc(0.75rem - 4px);
+    pointer-events: none;
+  }
+
+  /* Divisor ornamental — filete + losango central */
+  .divider-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: hsl(36 45% 58% / 0.7);
+  }
+  .divider-ornament::before,
+  .divider-ornament::after {
+    content: "";
+    flex: 1;
+    max-width: 6rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(36 45% 58% / 0.45), transparent);
+  }
+
+  /* Cantos ornamentais — pseudo-elementos para decorar molduras */
+  .corner-ornaments {
+    position: relative;
+  }
+  .corner-ornaments::before,
+  .corner-ornaments::after {
+    content: "✦";
+    position: absolute;
+    color: hsl(36 45% 58% / 0.5);
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+  .corner-ornaments::before { top: 8px; left: 10px; }
+  .corner-ornaments::after { bottom: 8px; right: 10px; }
+
+  /* Botão premium — gradiente vinho com filete dourado */
+  .btn-premium {
+    background: linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%));
+    border: 1px solid hsl(36 45% 58% / 0.45);
+    color: hsl(36 33% 97%);
+    box-shadow:
+      0 0 0 1px hsl(36 45% 58% / 0.12) inset,
+      0 8px 24px -10px hsl(340 50% 18% / 0.5);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-premium:hover {
+    background: linear-gradient(135deg, hsl(340 50% 30%), hsl(340 45% 22%));
+    box-shadow:
+      0 0 0 1px hsl(36 45% 58% / 0.25) inset,
+      0 12px 32px -10px hsl(340 50% 18% / 0.6),
+      0 0 24px hsl(36 45% 58% / 0.18);
+    transform: translateY(-1px);
+  }
+
+  /* Card editorial — superfície clara com filete dourado */
+  .card-editorial {
+    background: linear-gradient(180deg, hsl(36 33% 97% / 0.92), hsl(38 30% 94% / 0.88));
+    border: 1px solid hsl(36 45% 58% / 0.25);
+    border-radius: 0.875rem;
+    box-shadow:
+      0 0 0 1px hsl(36 33% 97% / 0.5) inset,
+      0 4px 18px -8px hsl(340 42% 30% / 0.12);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
 }
 
 /* Scrollbar styling */

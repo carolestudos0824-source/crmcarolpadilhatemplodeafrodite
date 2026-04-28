@@ -78,17 +78,20 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Carta do Louco */}
+            {/* Carta do Louco com moldura ornamental */}
             <div className="flex justify-center order-2">
-              <div className="relative">
+              <div className="relative p-3 md:p-4 rounded-2xl frame-editorial corner-ornaments" style={{
+                background: "linear-gradient(180deg, hsl(36 33% 97% / 0.55), hsl(38 30% 92% / 0.35))",
+              }}>
+                <div aria-hidden className="absolute -inset-6 rounded-[2rem] pointer-events-none" style={{
+                  background: "radial-gradient(ellipse at center, hsl(42 70% 80% / 0.28) 0%, transparent 65%)",
+                }} />
                 <img
                   src={imgLouco}
                   alt="O Louco — Arcano 0 do Tarô Rider-Waite-Smith"
-                  className="w-48 sm:w-56 md:w-auto md:max-h-[500px] object-contain rounded-lg drop-shadow-[0_20px_60px_rgba(0,0,0,0.4)] ring-1 ring-[#c9a96e]/40"
+                  className="relative w-44 sm:w-52 md:w-auto md:max-h-[460px] object-contain rounded-md"
                   style={{
-                    filter: "brightness(1.05) contrast(1.02) drop-shadow(0 20px 60px rgba(0,0,0,0.4))",
-                    maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                    filter: "brightness(1.04) contrast(1.03) drop-shadow(0 18px 50px rgba(60, 20, 30, 0.35))",
                   }}
                 />
               </div>
@@ -99,11 +102,7 @@ const LandingPage = () => {
           <div className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               onClick={() => navigate("/auth")}
-              className="group px-10 py-6 text-sm font-heading tracking-[0.22em] uppercase rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 text-white font-semibold"
-              style={{
-                background: "linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%))",
-                border: "1px solid hsl(36 45% 58% / 0.40)",
-              }}
+              className="group btn-premium px-10 py-6 text-sm font-heading tracking-[0.22em] uppercase rounded-xl font-semibold"
             >
               Entrar na beta
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -279,7 +278,9 @@ const LandingPage = () => {
         </div>
 
         <div className="relative z-10 max-w-xl mx-auto text-center">
-          <span className="text-2xl block mb-4" style={{ color: "hsl(36 45% 58% / 0.40)" }}>✧</span>
+          <div className="divider-ornament mb-8" aria-hidden>
+            <span className="text-base">✦</span>
+          </div>
           <h2 className="font-heading text-2xl md:text-3xl tracking-wide mb-4 leading-snug" style={{ color: INK_STRONG }}>
             Comece sua jornada no tarô com profundidade, método e presença.
           </h2>
@@ -291,11 +292,7 @@ const LandingPage = () => {
             <div className="flex items-center justify-center">
               <Button
                 onClick={() => navigate("/auth")}
-                className="group h-12 px-10 text-sm font-heading tracking-[0.2em] uppercase rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-white font-semibold"
-                style={{
-                  background: "linear-gradient(135deg, hsl(340 50% 26%), hsl(340 45% 18%))",
-                  border: "1px solid hsl(36 45% 58% / 0.40)",
-                }}
+                className="group btn-premium h-12 px-10 text-sm font-heading tracking-[0.2em] uppercase rounded-lg font-semibold"
               >
                 Entrar na beta
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
