@@ -14,6 +14,7 @@ import AdminSupport from "@/components/admin/AdminSupport";
 import AdminSettings from "@/components/admin/AdminSettings";
 import AdminAuditLog from "@/components/admin/AdminAuditLog";
 import AdminRoles from "@/components/admin/AdminRoles";
+import AdminPlayStore from "@/components/admin/AdminPlayStore";
 import { useRole, canAccessSection } from "@/hooks/use-role";
 
 const sectionComponents: Record<AdminSection, React.ComponentType> = {
@@ -29,6 +30,7 @@ const sectionComponents: Record<AdminSection, React.ComponentType> = {
   audit: AdminAuditLog,
   support: AdminSupport,
   settings: AdminSettings,
+  playstore: AdminPlayStore,
 };
 
 const AdminPage = () => {

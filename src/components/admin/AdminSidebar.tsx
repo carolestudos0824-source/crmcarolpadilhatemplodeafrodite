@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Users, Crown, Gift, BookOpen, Sparkles, HelpCircle,
-  BarChart3, HeadphonesIcon, Settings, ScrollText, Shield,
+  BarChart3, HeadphonesIcon, Settings, ScrollText, Shield, Smartphone,
 } from "lucide-react";
 import { canAccessSection, type AppRole } from "@/hooks/use-role";
 
@@ -16,7 +16,8 @@ export type AdminSection =
   | "roles"
   | "audit"
   | "support"
-  | "settings";
+  | "settings"
+  | "playstore";
 
 interface AdminSidebarProps {
   active: AdminSection;
@@ -37,6 +38,7 @@ const sections: { id: AdminSection; label: string; icon: React.ReactNode; group:
   { id: "audit", label: "Auditoria", icon: <ScrollText className="w-4 h-4" />, group: "Operação" },
   { id: "support", label: "Suporte", icon: <HeadphonesIcon className="w-4 h-4" />, group: "Operação" },
   { id: "settings", label: "Configurações", icon: <Settings className="w-4 h-4" />, group: "Operação" },
+  { id: "playstore", label: "Play Store", icon: <Smartphone className="w-4 h-4" />, group: "Operação" },
 ];
 
 const AdminSidebar = ({ active, onChange, role }: AdminSidebarProps) => {
