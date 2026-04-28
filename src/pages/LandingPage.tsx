@@ -12,10 +12,10 @@ const faq = [
 ];
 
 // Cores firmes para legibilidade — fundo aquarelado preservado
-const INK_STRONG = "hsl(230 28% 14%)";        // títulos e texto principal
-const INK_BODY = "hsl(230 22% 22%)";           // corpo de texto
-const INK_MUTED = "hsl(230 18% 32%)";          // texto secundário
-const INK_ACCENT = "hsl(340 50% 26%)";         // vinho profundo
+const INK_STRONG = "#1a0f0a";                  // títulos e texto principal
+const INK_BODY = "#1a0f0a";                    // corpo de texto (contraste forte)
+const INK_MUTED = "hsl(20 30% 18%)";           // texto secundário (sempre legível)
+const INK_ACCENT = "hsl(340 50% 24%)";         // vinho profundo
 const GOLD = "hsl(36 55% 42%)";                // dourado mais saturado para contraste
 const GOLD_SOFT = "hsl(36 45% 50%)";
 
