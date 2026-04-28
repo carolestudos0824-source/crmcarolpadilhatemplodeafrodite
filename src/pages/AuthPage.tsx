@@ -229,6 +229,13 @@ const AuthPage = () => {
             </p>
           </div>
         )}
+
+        <nav className="pt-4 mt-2 border-t border-dashed flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[10px]" style={{ borderColor: "hsl(36 45% 58% / 0.20)", color: "hsl(230 15% 40% / 0.60)" }}>
+          <a href="/privacidade" className="hover:underline">Privacidade</a>
+          <a href="/termos" className="hover:underline">Termos</a>
+          <a href="/suporte" className="hover:underline">Suporte</a>
+          <a href="/excluir-conta" className="hover:underline">Excluir conta</a>
+        </nav>
       </div>
     </div>
   );
