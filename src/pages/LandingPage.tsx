@@ -302,7 +302,7 @@ const LandingPage = () => {
               </Button>
               <button
                 onClick={() => navigate("/waitlist")}
-                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-5 py-2.5 rounded-lg font-semibold border"
+                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-6 py-2.5 rounded-lg font-semibold border whitespace-nowrap"
                 style={{
                   color: INK_ACCENT,
                   borderColor: "hsl(340 42% 28% / 0.35)",
