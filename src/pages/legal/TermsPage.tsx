@@ -1,6 +1,6 @@
 import LegalLayout from "@/components/LegalLayout";
 
-const SUPPORT_EMAIL = "suporte@taro78chaves.com";
+const SUPPORT_EMAIL = "suporte@taro78chaves.com.br";
 
 const TermsPage = () => (
   <LegalLayout title="Termos de Serviço">
