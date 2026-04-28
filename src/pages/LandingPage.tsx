@@ -78,17 +78,20 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Carta do Louco */}
+            {/* Carta do Louco com moldura ornamental */}
             <div className="flex justify-center order-2">
-              <div className="relative">
+              <div className="relative p-3 md:p-4 rounded-2xl frame-editorial corner-ornaments" style={{
+                background: "linear-gradient(180deg, hsl(36 33% 97% / 0.55), hsl(38 30% 92% / 0.35))",
+              }}>
+                <div aria-hidden className="absolute -inset-6 rounded-[2rem] pointer-events-none" style={{
+                  background: "radial-gradient(ellipse at center, hsl(42 70% 80% / 0.28) 0%, transparent 65%)",
+                }} />
                 <img
                   src={imgLouco}
                   alt="O Louco — Arcano 0 do Tarô Rider-Waite-Smith"
-                  className="w-48 sm:w-56 md:w-auto md:max-h-[500px] object-contain rounded-lg drop-shadow-[0_20px_60px_rgba(0,0,0,0.4)] ring-1 ring-[#c9a96e]/40"
+                  className="relative w-44 sm:w-52 md:w-auto md:max-h-[460px] object-contain rounded-md"
                   style={{
-                    filter: "brightness(1.05) contrast(1.02) drop-shadow(0 20px 60px rgba(0,0,0,0.4))",
-                    maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-                    WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+                    filter: "brightness(1.04) contrast(1.03) drop-shadow(0 18px 50px rgba(60, 20, 30, 0.35))",
                   }}
                 />
               </div>
