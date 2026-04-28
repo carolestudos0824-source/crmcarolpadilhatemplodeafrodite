@@ -12,10 +12,10 @@ const faq = [
 ];
 
 // Cores firmes para legibilidade — fundo aquarelado preservado
-const INK_STRONG = "hsl(230 28% 14%)";        // títulos e texto principal
-const INK_BODY = "hsl(230 22% 22%)";           // corpo de texto
-const INK_MUTED = "hsl(230 18% 32%)";          // texto secundário
-const INK_ACCENT = "hsl(340 50% 26%)";         // vinho profundo
+const INK_STRONG = "#1a0f0a";                  // títulos e texto principal
+const INK_BODY = "#1a0f0a";                    // corpo de texto (contraste forte)
+const INK_MUTED = "hsl(20 30% 18%)";           // texto secundário (sempre legível)
+const INK_ACCENT = "hsl(340 50% 24%)";         // vinho profundo
 const GOLD = "hsl(36 55% 42%)";                // dourado mais saturado para contraste
 const GOLD_SOFT = "hsl(36 45% 50%)";
 
@@ -302,7 +302,7 @@ const LandingPage = () => {
               </Button>
               <button
                 onClick={() => navigate("/waitlist")}
-                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-5 py-2.5 rounded-lg font-semibold border"
+                className="text-xs font-heading tracking-[0.18em] uppercase transition-colors px-6 py-2.5 rounded-lg font-semibold border whitespace-nowrap"
                 style={{
                   color: INK_ACCENT,
                   borderColor: "hsl(340 42% 28% / 0.35)",
@@ -318,17 +318,19 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="py-10 px-6 border-t" style={{ borderColor: "hsl(36 25% 75% / 0.6)", background: "hsl(36 33% 96% / 0.6)" }}>
-        <div className="max-w-3xl mx-auto flex flex-col items-center gap-3">
-          <div className="flex items-center gap-3">
-            <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
-            <span className="font-heading text-base tracking-[0.25em] font-bold" style={{ color: INK_ACCENT }}>
-              TARÔ 78 CHAVES
-            </span>
-            <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+        <div className="max-w-3xl mx-auto flex flex-col items-center">
+          <div className="bg-white/40 backdrop-blur-sm rounded-xl px-8 py-4 flex flex-col items-center gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+              <span className="font-heading text-base tracking-[0.25em] font-bold" style={{ color: INK_ACCENT }}>
+                TARÔ 78 CHAVES
+              </span>
+              <span className="text-base" style={{ color: GOLD_SOFT }}>✦</span>
+            </div>
+            <p className="font-accent text-sm italic" style={{ color: INK_MUTED }}>
+              A jornada viva pelos 78 arcanos
+            </p>
           </div>
-          <p className="font-accent text-sm italic" style={{ color: INK_MUTED }}>
-            A jornada viva pelos 78 arcanos
-          </p>
         </div>
       </footer>
     </div>
