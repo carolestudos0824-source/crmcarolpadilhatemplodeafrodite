@@ -453,6 +453,9 @@ export function ArcanoVivoIntro({
           </>
         )}
       </div>
+        );
+      })()}
+
 
       {/* Spotlight label — FORA da carta, em área dedicada abaixo. Reserva altura fixa para evitar saltos de layout. */}
       <div className="mt-5 min-h-[60px] flex items-center justify-center w-full max-w-sm px-2">
