@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { getArcanoVivoConfig, type ArcanoVivoConfig, type SymbolSpotlight } from "@/config/arcano-vivo";
+import { getArcanoVideoSrc } from "@/config/arcano-videos";
+import { ArcanoVivoVideo } from "@/components/arcano-vivo/ArcanoVivoVideo";
 
 interface ArcanoVivoIntroProps {
   arcanoId: number;
@@ -260,8 +262,39 @@ export function ArcanoVivoIntro({
         </h1>
       </div>
 
-      {/* Card container with perspective */}
+      {/* Card container with perspective — substituído pelo Arcano Vivo Video quando disponível */}
+      {(() => {
+        const videoSrc = getArcanoVideoSrc(arcanoId);
+        if (videoSrc) {
+          return (
+            <div
+              className="w-56 sm:w-72 transition-opacity duration-700"
+              style={{ opacity: isRevealed ? 1 : 0 }}
+            >
+              <ArcanoVivoVideo
+                arcanoId={arcanoId}
+                videoSrc={videoSrc}
+                posterImage={cardImage}
+                arcanoName={name}
+                glowColor={config.glowColor}
+                fallback={
+                  <img
+                    src={cardImage}
+                    alt={name}
+                    className="w-full aspect-[9/16] object-cover rounded-2xl"
+                    style={{
+                      border: `2px solid hsl(${config.glowColor} / 0.40)`,
+                      boxShadow: `0 16px 48px hsl(${config.glowColor} / 0.15)`,
+                    }}
+                  />
+                }
+              />
+            </div>
+          );
+        }
+        return (
       <div className="relative" style={{ perspective: "800px" }}>
+
         {/* Outer aura (breathing) */}
         <div
           className="absolute -inset-6 rounded-3xl pointer-events-none arcano-vivo-aura transition-opacity duration-1000"
@@ -420,6 +453,9 @@ export function ArcanoVivoIntro({
           </>
         )}
       </div>
+        );
+      })()}
+
 
       {/* Spotlight label — FORA da carta, em área dedicada abaixo. Reserva altura fixa para evitar saltos de layout. */}
       <div className="mt-5 min-h-[60px] flex items-center justify-center w-full max-w-sm px-2">
