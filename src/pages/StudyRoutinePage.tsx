@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Flame, BookOpen, RefreshCw, Sun, Target, TrendingUp, Check } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 import { MODULES_CATALOG as MODULES, ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, getArcanoFull as getArcanoById, isModuleUnlocked } from "@/lib/content";
+import { useAccess } from "@/hooks/use-access";
 import ornamentDivider from "@/assets/ornament-divider.png";
 
 const WEEKDAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
@@ -9,13 +10,14 @@ const WEEKDAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const StudyRoutinePage = () => {
   const navigate = useNavigate();
   const { progress, isArcanoCompleted, isArcanoUnlocked, getCurrentArcanoId, completedCount, journeyProgress } = useProgress();
+  const { bypassLocks } = useAccess();
 
   // ─── Current lesson ───
   const currentArcanoId = getCurrentArcanoId();
   const currentArcano = getArcanoById(currentArcanoId);
   const currentModule = MODULES.find(m => {
     if (progress.completedModules.includes(m.id)) return false;
-    return isModuleUnlocked(m.id, progress.completedModules);
+    return bypassLocks || isModuleUnlocked(m.id, progress.completedModules);
   });
 
   // ─── Daily challenges status ───
@@ -232,7 +234,7 @@ const StudyRoutinePage = () => {
                   subtitle={nextMod.subtitle}
                   completed={false}
                   accent="hsl(230 15% 30%)"
-                  locked
+                  locked={!bypassLocks}
                 />
               );
             })()}
@@ -284,7 +286,7 @@ interface RoutineCardProps {
 const RoutineCard = ({ icon, iconColor, title, subtitle, completed, accent, locked, onClick }: RoutineCardProps) => (
   <button
     onClick={locked ? undefined : onClick}
-    disabled={locked}
+    disabled={!!locked}
     className="w-full text-left group transition-all duration-300"
   >
     <div className="rounded-xl p-4 flex items-center gap-3.5 transition-all duration-300" style={completed ? {
@@ -312,14 +314,14 @@ const RoutineCard = ({ icon, iconColor, title, subtitle, completed, accent, lock
       </div>
       <div className="flex-1 min-w-0">
         <h3 className="font-heading text-sm tracking-wide truncate" style={{
-          color: completed ? "hsl(230 20% 12% / 0.50)" : locked ? "hsl(230 10% 45% / 0.30)" : "hsl(340 42% 22%)",
+          color: completed ? "hsl(230 20% 12% / 0.50)" : (locked && !completed) ? "hsl(230 10% 45% / 0.30)" : "hsl(340 42% 22%)",
           textDecoration: completed ? "line-through" : "none",
           textDecorationColor: "hsl(36 45% 58% / 0.30)",
         }}>
           {title}
         </h3>
         <p className="font-accent text-[11px] italic truncate" style={{
-          color: completed ? "hsl(230 15% 30% / 0.30)" : locked ? "hsl(230 10% 45% / 0.18)" : "hsl(230 20% 15% / 0.50)",
+          color: completed ? "hsl(230 15% 30% / 0.30)" : (locked && !completed) ? "hsl(230 10% 45% / 0.18)" : "hsl(230 20% 15% / 0.50)",
         }}>
           {subtitle}
         </p>
