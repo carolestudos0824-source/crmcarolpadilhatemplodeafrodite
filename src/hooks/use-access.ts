@@ -13,13 +13,14 @@ import { useRole } from "@/hooks/use-role";
  */
 export function useAccess() {
   const { isPremium, subscriptionStatus, loading: premiumLoading } = usePremium();
-  const { isAdmin, loading: roleLoading } = useRole();
+  const { isAdmin, isAuditor, loading: roleLoading } = useRole();
 
-  const hasFullAccess = isAdmin || isPremium;
+  const hasFullAccess = isAdmin || isPremium || isAuditor;
 
   return {
     isAdmin,
     isPremium,
+    isAuditor,
     subscriptionStatus,
     hasFullAccess,
     bypassLocks: hasFullAccess,
