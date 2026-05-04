@@ -1,17 +1,1 @@
-project_id = "qgmafelvslfbwxrogslm"
-
-[functions.admin-manage]
-verify_jwt = false
-
-[functions.stripe-webhook]
-verify_jwt = false
-
-[functions.stripe-create-checkout]
-verify_jwt = false
-
-[functions.seed-preview-auditor]
-verify_jwt = false
-
-[functions.stripe-admin-metrics]
-verify_jwt = false
-
+project_id = "eibmhbnrbdlwjodzjkwr"
