@@ -109,7 +109,7 @@ const CombinacoesPage = () => {
         <div className="space-y-3">
           {COMBINACOES_LESSONS.map((lesson, i) => {
             const completed = isLessonCompleted(lesson.id);
-            const unlocked = isLessonUnlocked(lesson.order);
+            const unlocked = bypassLocks || isLessonUnlocked(lesson.order);
             const isCurrent = unlocked && !completed;
 
             return (
