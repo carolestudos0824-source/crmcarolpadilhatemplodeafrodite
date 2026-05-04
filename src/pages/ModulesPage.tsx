@@ -141,15 +141,19 @@ const ModulesPage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed top-0 left-0 bg-red-500 text-white text-[10px] px-2 py-1 z-[9999] flex gap-2 pointer-events-none shadow-lg">
-          <span>bypass:{String(bypassLocks)}</span>
-          <span>admin:{String(isAdmin)}</span>
-          <span>auditor:{String(isAuditor)}</span>
-          <span>premium:{String(isPremium)}</span>
-          <span>canSeeAll:{String(canSeeAll)}</span>
-        </div>
-      )}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 9999,
+        background: 'red',
+        color: 'white',
+        padding: '8px 12px',
+        fontSize: '12px',
+        fontFamily: 'monospace'
+      }}>
+        bypass:{String(bypassLocks)} | admin:{String(isAdmin)} | auditor:{String(isAuditor)} | canSeeAll:{String(canSeeAll)}
+      </div>
       <div className="fixed inset-0 z-0">
         <img src={mysticBg} alt="" className="w-full h-full object-cover" width={1920} height={1080} />
         <div className="absolute inset-0" style={{
