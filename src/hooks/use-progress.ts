@@ -35,6 +35,8 @@ interface LocalExtras {
   currentModule: string;
   studentName: string;
   certificatesEarned: Record<string, string>;
+  onboardingLevel: string;
+  onboardingGoal: string;
 }
 
 function getLocalExtras(): LocalExtras {
@@ -47,6 +49,8 @@ function getLocalExtras(): LocalExtras {
         currentModule: parsed.currentModule ?? DEFAULT_PROGRESS.currentModule,
         studentName: parsed.studentName ?? DEFAULT_PROGRESS.studentName,
         certificatesEarned: parsed.certificatesEarned ?? DEFAULT_PROGRESS.certificatesEarned,
+        onboardingLevel: parsed.onboardingLevel ?? DEFAULT_PROGRESS.onboardingLevel,
+        onboardingGoal: parsed.onboardingGoal ?? DEFAULT_PROGRESS.onboardingGoal,
       };
     }
   } catch { /* ignore */ }
@@ -55,6 +59,8 @@ function getLocalExtras(): LocalExtras {
     currentModule: DEFAULT_PROGRESS.currentModule,
     studentName: DEFAULT_PROGRESS.studentName,
     certificatesEarned: DEFAULT_PROGRESS.certificatesEarned,
+    onboardingLevel: DEFAULT_PROGRESS.onboardingLevel ?? "",
+    onboardingGoal: DEFAULT_PROGRESS.onboardingGoal ?? "",
   };
 }
 
@@ -151,6 +157,8 @@ export function useProgress() {
           currentModule: next.currentModule,
           studentName: next.studentName,
           certificatesEarned: next.certificatesEarned,
+          onboardingLevel: next.onboardingLevel,
+          onboardingGoal: next.onboardingGoal,
         });
       }
       setLoading(false);
