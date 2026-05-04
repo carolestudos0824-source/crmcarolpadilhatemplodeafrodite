@@ -32,8 +32,8 @@ const ModulesPage = () => {
   const navigate = useNavigate();
   const { progress, loading: progressLoading, completeOnboarding } = useProgress();
   const { trackEvent } = useTrackEvent();
-  const { bypassLocks, isAdmin, isPremium } = useAccess();
-  const canSeeAll = bypassLocks || isAdmin;
+  const { bypassLocks, isAdmin, isPremium, isAuditor } = useAccess();
+  const canSeeAll = bypassLocks || isAdmin || isAuditor;
   // Track return visits
   useEffect(() => {
     if (progress.onboardingCompleted) {
@@ -145,6 +145,7 @@ const ModulesPage = () => {
         <div className="fixed top-0 left-0 bg-red-500 text-white text-[10px] px-2 py-1 z-[9999] flex gap-2 pointer-events-none shadow-lg">
           <span>bypass:{String(bypassLocks)}</span>
           <span>admin:{String(isAdmin)}</span>
+          <span>auditor:{String(isAuditor)}</span>
           <span>premium:{String(isPremium)}</span>
           <span>canSeeAll:{String(canSeeAll)}</span>
         </div>

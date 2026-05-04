@@ -37,6 +37,7 @@ export const useRole = () => {
     loading,
     isAdmin: role === "admin",
     isModerator: role === "moderator",
+    isAuditor: role === "moderator", // No banco, auditores usam a role 'moderator'
     isStaff: role === "admin" || role === "moderator",
   };
 };
