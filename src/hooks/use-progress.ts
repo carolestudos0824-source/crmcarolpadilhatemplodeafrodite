@@ -185,6 +185,8 @@ export function useProgress() {
       currentModule: progress.currentModule,
       studentName: progress.studentName,
       certificatesEarned: progress.certificatesEarned,
+      onboardingLevel: progress.onboardingLevel ?? "",
+      onboardingGoal: progress.onboardingGoal ?? "",
     });
 
     if (!coreChanged && !nameChanged) return;
@@ -379,7 +381,7 @@ export function useProgress() {
     completedCount,
     journeyProgress,
     completeOnboarding,
-    setStudentName,
+    setStudentData,
     resetProgress,
   };
 }
