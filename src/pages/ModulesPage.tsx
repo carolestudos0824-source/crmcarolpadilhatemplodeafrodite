@@ -33,7 +33,7 @@ const ModulesPage = () => {
   const { progress, loading: progressLoading, completeOnboarding } = useProgress();
   const { trackEvent } = useTrackEvent();
   const { bypassLocks } = useAccess();
-
+  console.log('bypassLocks:', bypassLocks);
   // Track return visits
   useEffect(() => {
     if (progress.onboardingCompleted) {
