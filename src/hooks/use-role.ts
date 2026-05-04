@@ -9,7 +9,7 @@ export const useRole = () => {
   const [role, setRole] = useState<AppRole>("user");
   const [loading, setLoading] = useState(true);
 
-  console.log('[use-role] role:', role, 'isAdmin:', role === 'admin', 'isAuditor:', role === 'moderator');
+  
 
   useEffect(() => {
     if (authLoading) return;
