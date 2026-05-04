@@ -78,8 +78,8 @@ const LandingPage = () => {
 
             <h1 className="font-display text-5xl md:text-7xl font-bold text-[#1a0f0a] leading-tight">
               Aprenda tarô<br/>
-              <span className="text-[#4A7CB5] italic">como o Duolingo</span><br/>
-              ensina idiomas.
+              <span className="text-[#4A7CB5] italic">de forma progressiva</span><br/>
+              e viva.
             </h1>
 
             <p className="text-xl md:text-2xl text-[#3d2810] leading-relaxed max-w-xl">
@@ -215,7 +215,7 @@ const LandingPage = () => {
             { 
               bg: "#EBF4FF",
               icon: "📈",
-              title: "PROGRESSO COMO NO DUOLINGO", 
+              title: "PROGRESSO REAL E VIVO", 
               desc: "XP, streak diário, desbloqueio sequencial. Você sente que está evoluindo." 
             },
             { 
