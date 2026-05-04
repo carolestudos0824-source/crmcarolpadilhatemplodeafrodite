@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, Sparkles } from "lucide-react";
+import { useAccess } from "@/hooks/use-access";
 import { useProgress } from "@/hooks/use-progress";
 import { useResolvedArcanosMaiores } from "@/hooks/use-resolved-arcanos-maiores";
 import { useJourneyContent } from "@/hooks/use-content";
@@ -10,6 +11,7 @@ import ornamentDivider from "@/assets/ornament-divider.png";
 const FoolsJourneyPage = () => {
   const navigate = useNavigate();
   const { progress } = useProgress();
+  const { bypassLocks } = useAccess();
 
   // Fase 2C: lista agregada dos 22 Arcanos Maiores também passa pelo adaptador
   // (telemetria sourceUsed='db'/usedFallback=false).
@@ -20,7 +22,7 @@ const FoolsJourneyPage = () => {
   const { data: journey, isLoading } = useJourneyContent();
 
   const isStudied = (arcanoId: number) =>
-    progress.completedLessons.includes(`arcano-${arcanoId}`);
+    bypassLocks || progress.completedLessons.includes(`arcano-${arcanoId}`);
 
   if (isLoading || !journey) {
     return (
@@ -167,8 +169,8 @@ const FoolsJourneyPage = () => {
                   return (
                     <button
                       key={arcano.id}
-                      onClick={() => studied ? navigate(`/lesson/${arcano.arcanoNumero}`) : undefined}
-                      disabled={!studied}
+                      onClick={() => (bypassLocks || studied) ? navigate(`/lesson/${arcano.arcanoNumero}`) : undefined}
+                      disabled={!bypassLocks && !studied}
                       className="w-full text-left group transition-all duration-300"
                     >
                       <div
