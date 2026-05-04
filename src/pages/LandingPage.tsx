@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check, ChevronDown, Plus, Minus } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Plus, Minus, BookOpen, TrendingUp, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import imgLouco from "@/assets/arcano-0-louco.jpg";
+import imgBackground from "@/assets/mystic-bg.jpg";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -36,18 +37,18 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen selection:bg-gold/30" style={{ backgroundColor: colors.vinho }}>
-      {/* Background Aquarelado */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div 
-          className="absolute inset-0 opacity-40 mix-blend-overlay"
-          style={{ 
-            background: `radial-gradient(circle at 20% 30%, ${colors.azul} 0%, transparent 50%), 
-                         radial-gradient(circle at 80% 70%, ${colors.vinho} 0%, transparent 50%),
-                         radial-gradient(circle at 50% 50%, ${colors.dourado} 0%, transparent 70%)` 
-          }}
-        />
-      </div>
+    <div className="min-h-screen selection:bg-gold/30">
+      {/* Background Aquarelado Fixo */}
+      <div 
+        className="fixed inset-0 z-0 bg-cover bg-center"
+        style={{ 
+          backgroundImage: `url(${imgBackground})`,
+          backgroundColor: colors.vinho
+        }}
+      />
+      
+      {/* Overlay global opcional para suavizar a textura */}
+      <div className="fixed inset-0 z-[1] bg-black/30 pointer-events-none" />
 
       <div className="relative z-10 font-sans text-white/90">
         
@@ -108,7 +109,7 @@ const LandingPage = () => {
         </section>
 
         {/* SEÇÃO 2 — DOR */}
-        <section className="py-32 px-6">
+        <section className="py-32 px-6 bg-black/50 backdrop-blur-sm">
           <div className="max-w-4xl mx-auto">
             <div className="p-12 md:p-20 rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-xl text-center space-y-8">
               <p className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 italic">
@@ -128,21 +129,25 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { 
-                title: "🃏 UMA CARTA POR VEZ", 
+                icon: <BookOpen className="w-8 h-8 text-[#c9a96e]" />,
+                title: "UMA CARTA POR VEZ", 
                 desc: "Cada arcano tem sua própria lição completa: essência, símbolos, luz, sombra e voz." 
               },
               { 
-                title: "📈 PROGRESSO REAL", 
+                icon: <TrendingUp className="w-8 h-8 text-[#c9a96e]" />,
+                title: "PROGRESSO REAL", 
                 desc: "XP, streak diário e desbloqueio sequencial. Você sente que está avançando." 
               },
               { 
-                title: "🎯 QUIZ QUE FIXA", 
+                icon: <Target className="w-8 h-8 text-[#c9a96e]" />,
+                title: "QUIZ QUE FIXA", 
                 desc: "Não é decoreba. É compreensão testada com feedback imediato em cada questão." 
               }
             ].map((card, i) => (
-              <div key={i} className="p-10 rounded-3xl bg-white/80 backdrop-blur-sm border border-white/20 text-ink-strong shadow-xl flex flex-col items-center text-center space-y-4 hover:-translate-y-2 transition-transform duration-500">
+              <div key={i} className="p-10 rounded-3xl bg-white/80 backdrop-blur-sm border border-white/20 text-slate-900 shadow-xl flex flex-col items-center text-center space-y-4 hover:-translate-y-2 transition-transform duration-500">
+                <div className="mb-2">{card.icon}</div>
                 <h4 className="font-heading text-2xl font-bold text-vinho">{card.title}</h4>
-                <p className="text-lg text-ink-body font-body leading-relaxed">{card.desc}</p>
+                <p className="text-lg text-slate-700 font-body leading-relaxed">{card.desc}</p>
               </div>
             ))}
           </div>
@@ -169,9 +174,9 @@ const LandingPage = () => {
         </section>
 
         {/* SEÇÃO 5 — PREÇO */}
-        <section className="py-32 px-6">
+        <section className="py-32 px-6 bg-black/40 backdrop-blur-sm">
           <div className="max-w-4xl mx-auto text-center space-y-12">
-            <h2 className="font-heading text-5xl md:text-7xl text-white">JORNADA COMPLETA</h2>
+            <h2 className="font-display text-3xl md:text-5xl text-white">Jornada Completa</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Plano Mensal */}
@@ -191,16 +196,19 @@ const LandingPage = () => {
               </div>
 
               {/* Plano Anual */}
-              <div className="p-12 rounded-[40px] bg-white text-ink-strong relative shadow-2xl flex flex-col justify-between items-center space-y-6 overflow-hidden">
-                <div className="absolute top-6 right-6 px-3 py-1 bg-vinho text-white text-[10px] font-bold uppercase tracking-widest rounded-full">
-                  Melhor Valor
+              <div className="p-12 rounded-[40px] bg-white text-slate-900 relative shadow-2xl flex flex-col justify-between items-center space-y-6 overflow-hidden">
+                <div className="absolute top-6 right-6 px-4 py-1.5 bg-vinho text-white text-[10px] font-bold uppercase tracking-widest rounded-full">
+                  ✦ MELHOR VALOR
                 </div>
                 <h3 className="text-2xl font-heading text-vinho">Anual</h3>
                 <div className="space-y-1">
-                  <p className="text-5xl font-heading text-vinho">R$197</p>
-                  <p className="text-ink-muted">/ano</p>
-                  <p className="text-sm font-bold text-vinhoLight uppercase tracking-tighter">= R$16,42/mês</p>
-                  <p className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded inline-block">Economia de 45%</p>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-5xl font-heading text-vinho">R$197</span>
+                    <span className="text-slate-500">/ano</span>
+                  </div>
+                  <p className="text-sm font-bold text-vinhoLight uppercase tracking-tighter">
+                    = R$16,42/mês · Economia de 45%
+                  </p>
                 </div>
                 <Button 
                   onClick={() => navigate("/auth")}
@@ -270,7 +278,7 @@ const LandingPage = () => {
             <a href="/termos" className="hover:text-dourado transition-colors">Termos</a>
             <a href="/suporte" className="hover:text-dourado transition-colors">Suporte</a>
           </nav>
-          <p className="text-xs text-white/20">© 2024 Tarô 78 Chaves. Todos os direitos reservados.</p>
+          <p className="text-xs text-white/20">© {new Date().getFullYear()} Tarô 78 Chaves. Todos os direitos reservados.</p>
         </footer>
 
       </div>
