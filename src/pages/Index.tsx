@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, BookOpen, Check } from "lucide-react";
+import { useAccess } from "@/hooks/use-access";
 import PremiumGate from "@/components/PremiumGate";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
@@ -12,6 +13,7 @@ import ornamentDivider from "@/assets/ornament-divider.png";
 
 const Index = () => {
   const { progress, updateStreak, isArcanoCompleted, getCurrentArcanoId, completedCount, journeyProgress } = useProgress();
+  const { bypassLocks } = useAccess();
   const navigate = useNavigate();
 
   useEffect(() => {
