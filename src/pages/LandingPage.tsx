@@ -1,9 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check, ChevronDown, Plus, Minus, BookOpen, TrendingUp, Target } from "lucide-react";
+import { ArrowRight, Plus, Minus, BookOpen, TrendingUp, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+// Hero assets
 import imgLouco from "@/assets/arcano-0-louco.jpg";
-import imgBackground from "@/assets/mystic-bg.jpg";
+
+// Trail preview assets
+import img0 from "@/assets/arcano-0-louco.jpg";
+import img1 from "@/assets/arcano-1-mago.jpg";
+import img2 from "@/assets/arcano-2-sacerdotisa.jpg";
+import img3 from "@/assets/arcano-3-imperatriz.jpg";
+import img4 from "@/assets/arcano-4-imperador.jpg";
+import img5 from "@/assets/arcano-5-hierofante.jpg";
+import img6 from "@/assets/arcano-6-enamorados.jpg";
+import img7 from "@/assets/arcano-7-carro.jpg";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -11,11 +23,27 @@ const LandingPage = () => {
 
   const colors = {
     vinho: "#4a1528",
-    vinhoLight: "#6b1f35",
-    azul: "#1a2a4a",
-    dourado: "#c9a96e",
-    white80: "rgba(255, 255, 255, 0.8)",
+    creme: "#FFFDF7",
+    loucoAmarelo: "#F5C842",
+    loucoAzul: "#4A7CB5",
+    loucoBranco: "#FFF8DC",
+    maiores: "#F5C842",
+    copas: "#4A90D9",
+    paus: "#E87B35",
+    espadas: "#7B9BB5",
+    ouros: "#6B9E5E",
   };
+
+  const trailCards = [
+    { img: img0, name: "O Louco", color: colors.maiores },
+    { img: img1, name: "O Mago", color: colors.maiores },
+    { img: img2, name: "A Sacerdotisa", color: colors.maiores },
+    { img: img3, name: "A Imperatriz", color: colors.maiores },
+    { img: img4, name: "O Imperador", color: colors.maiores },
+    { img: img5, name: "O Hierofante", color: colors.maiores },
+    { img: img6, name: "Os Enamorados", color: colors.maiores },
+    { img: img7, name: "O Carro", color: colors.maiores },
+  ];
 
   const faq = [
     {
@@ -37,251 +65,293 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen selection:bg-gold/30">
-      {/* Background Aquarelado Fixo */}
-      <div 
-        className="fixed inset-0 z-0 bg-cover bg-center"
-        style={{ 
-          backgroundImage: `url(${imgBackground})`,
-          backgroundColor: colors.vinho
-        }}
-      />
+    <div className="min-h-screen bg-[#FFFDF7] font-body text-[#3d2810] selection:bg-[#F5C842]/30">
       
-      {/* Overlay global opcional para suavizar a textura */}
-      <div className="fixed inset-0 z-[1] bg-black/30 pointer-events-none" />
-
-      <div className="relative z-10 font-sans text-white/90">
-        
-        {/* SEÇÃO 1 — HERO */}
-        <section className="min-h-[95vh] flex items-center px-6 pt-12 pb-20 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-            {/* Texto Hero */}
-            <div className="order-2 lg:order-1 space-y-8 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-dourado">
-                  ✦ Método Arcano Vivo · Base Rider-Waite-Smith
-                </span>
-              </div>
-              
-              <h1 className="font-heading text-5xl md:text-7xl leading-[1.1] text-white">
-                Aprenda a ler o tarô <span className="text-dourado italic">de verdade.</span><br />
-                <span className="text-3xl md:text-5xl opacity-80">Não apenas decorar.</span>
-              </h1>
-
-              <p className="text-xl md:text-2xl font-light leading-relaxed max-w-xl mx-auto lg:mx-0 text-white/70">
-                78 cartas. 78 lições. Uma jornada progressiva com símbolos, quizzes e prática — do Louco ao Mundo.
-              </p>
-
-              <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                {["78 arcanos", "11 módulos", "R$16/mês no plano anual"].map((badge) => (
-                  <span key={badge} className="px-5 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium">
-                    [ {badge} ]
-                  </span>
-                ))}
-              </div>
-
-              <div className="pt-4 space-y-4">
-                <Button
-                  onClick={() => navigate("/auth")}
-                  className="group h-16 px-12 text-lg font-heading tracking-widest uppercase rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-2xl"
-                  style={{ background: `linear-gradient(135deg, ${colors.vinho}, ${colors.vinhoLight})` }}
-                >
-                  Começar grátis <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform" />
-                </Button>
-                <p className="text-sm text-white/40 italic">
-                  Primeiro arcano gratuito. Sem cartão de crédito.
-                </p>
-              </div>
+      {/* SEÇÃO 1 — HERO */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#F5C842] via-[#FFF8DC] to-[#FFFDF7] pt-20 pb-32 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Coluna Esquerda */}
+          <div className="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
+            <div className="bg-[#4A7CB5] text-white rounded-full px-4 py-1 text-sm font-bold inline-flex items-center gap-2 shadow-sm">
+              ✦ GRÁTIS PARA COMEÇAR
             </div>
 
-            {/* Hero Image */}
-            <div className="order-1 lg:order-2 flex justify-center items-center">
-              <div className="relative group">
-                <div className="absolute -inset-8 bg-dourado/20 rounded-full blur-[100px] animate-pulse" />
-                <img
-                  src={imgLouco}
-                  alt="O Louco — Arcano 0"
-                  className="relative w-64 md:w-80 lg:w-[400px] object-contain rounded-2xl shadow-[0_32px_64px_rgba(0,0,0,0.6)] border-4 border-white/10 transition-transform duration-700 group-hover:rotate-2 group-hover:scale-105"
+            <h1 className="font-display text-5xl md:text-7xl font-bold text-[#1a0f0a] leading-tight">
+              Aprenda tarô<br/>
+              <span className="text-[#4A7CB5] italic">como o Duolingo</span><br/>
+              ensina idiomas.
+            </h1>
+
+            <p className="text-xl md:text-2xl text-[#3d2810] leading-relaxed max-w-xl">
+              Uma lição por dia. 78 cartas.<br/>
+              XP, streaks e quizzes que fixam de verdade.
+            </p>
+
+            <div className="flex flex-wrap gap-4 text-sm font-bold text-[#3d2810]/70">
+              <span className="flex items-center gap-1">🔥 Streak diário</span>
+              <span className="opacity-30">|</span>
+              <span className="flex items-center gap-1">⭐ XP</span>
+              <span className="opacity-30">|</span>
+              <span className="flex items-center gap-1">🏆 Certificado</span>
+            </div>
+
+            <div className="pt-4 space-y-4">
+              <button 
+                onClick={() => navigate("/auth")}
+                className="bg-[#4A1528] text-white text-lg font-bold px-10 py-4 rounded-full shadow-lg hover:scale-105 transition-all active:scale-95 w-full sm:w-auto"
+              >
+                COMEÇAR GRÁTIS →
+              </button>
+              <p className="text-sm text-[#3d2810]/60">Primeiro arcano gratuito · Sem cartão de crédito</p>
+            </div>
+          </div>
+
+          {/* Coluna Direita — Card Gamificado */}
+          <div className="flex justify-center lg:justify-end animate-in fade-in slide-in-from-right duration-1000">
+            <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-8 max-w-sm w-full border border-white/50 backdrop-blur-sm">
+              {/* Carta do Louco */}
+              <div className="relative mb-6 group">
+                <div className="absolute inset-0 bg-yellow-400/20 blur-2xl rounded-full scale-0 group-hover:scale-100 transition-transform duration-500" />
+                <img 
+                  src={imgLouco} 
+                  alt="O Louco" 
+                  className="w-40 md:w-48 mx-auto rounded-xl shadow-md transform group-hover:rotate-2 transition-transform" 
                 />
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SEÇÃO 2 — DOR */}
-        <section className="py-32 px-6 bg-black/50 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto">
-            <div className="p-12 md:p-20 rounded-[40px] bg-white/5 border border-white/10 backdrop-blur-xl text-center space-y-8">
-              <p className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 italic">
-                "Você já tentou aprender tarô e ficou perdida em significados soltos, vídeos sem sequência e interpretações que não fazem sentido na hora da leitura?"
-              </p>
-              <div className="h-px w-24 bg-dourado/50 mx-auto" />
-              <h3 className="text-3xl md:text-5xl font-heading text-white">
-                Isso acontece porque falta método.<br />
-                <span className="text-dourado">Não falta talento.</span>
-              </h3>
-            </div>
-          </div>
-        </section>
-
-        {/* SEÇÃO 3 — SOLUÇÃO */}
-        <section className="py-32 px-6 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { 
-                icon: <BookOpen className="w-8 h-8 text-[#c9a96e]" />,
-                title: "UMA CARTA POR VEZ", 
-                desc: "Cada arcano tem sua própria lição completa: essência, símbolos, luz, sombra e voz." 
-              },
-              { 
-                icon: <TrendingUp className="w-8 h-8 text-[#c9a96e]" />,
-                title: "PROGRESSO REAL", 
-                desc: "XP, streak diário e desbloqueio sequencial. Você sente que está avançando." 
-              },
-              { 
-                icon: <Target className="w-8 h-8 text-[#c9a96e]" />,
-                title: "QUIZ QUE FIXA", 
-                desc: "Não é decoreba. É compreensão testada com feedback imediato em cada questão." 
-              }
-            ].map((card, i) => (
-              <div key={i} className="p-10 rounded-3xl bg-white/80 backdrop-blur-sm border border-white/20 text-slate-900 shadow-xl flex flex-col items-center text-center space-y-4 hover:-translate-y-2 transition-transform duration-500">
-                <div className="mb-2">{card.icon}</div>
-                <h4 className="font-heading text-2xl font-bold text-vinho">{card.title}</h4>
-                <p className="text-lg text-slate-700 font-body leading-relaxed">{card.desc}</p>
+              
+              {/* Info da lição */}
+              <div className="text-center">
+                <span className="text-[10px] font-bold text-[#4A7CB5] tracking-[0.2em] uppercase">Lição 1 · Arcanos Maiores</span>
+                <h3 className="font-display text-3xl font-bold text-[#1a0f0a] mt-1">O Louco</h3>
+                <p className="text-sm text-gray-500 mb-4">O início de toda jornada</p>
               </div>
-            ))}
+              
+              {/* Barra de progresso */}
+              <div className="space-y-2 mb-6">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                  <span>Progresso</span>
+                  <span>35%</span>
+                </div>
+                <div className="bg-gray-100 rounded-full h-3 overflow-hidden">
+                  <div className="bg-[#F5C842] h-full rounded-full w-[35%] transition-all duration-1000 ease-out" />
+                </div>
+              </div>
+              
+              {/* Badges */}
+              <div className="flex justify-center gap-3">
+                <div className="bg-orange-50 border border-orange-100 rounded-2xl px-3 py-2 text-center min-w-[70px]">
+                  <div className="text-xl mb-1">🔥</div>
+                  <div className="text-[10px] font-bold text-orange-600 uppercase">3 dias</div>
+                </div>
+                <div className="bg-yellow-50 border border-yellow-100 rounded-2xl px-3 py-2 text-center min-w-[70px]">
+                  <div className="text-xl mb-1">⭐</div>
+                  <div className="text-[10px] font-bold text-yellow-600 uppercase">+10 XP</div>
+                </div>
+                <div className="bg-green-50 border border-green-100 rounded-2xl px-3 py-2 text-center min-w-[70px]">
+                  <div className="text-xl mb-1">✓</div>
+                  <div className="text-[10px] font-bold text-green-600 uppercase">Foco</div>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* SEÇÃO 4 — COMO FUNCIONA */}
-        <section className="py-32 px-6 bg-white/5 border-y border-white/10">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-center font-heading text-4xl md:text-6xl text-white mb-20">Como funciona</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-              {[
-                { n: "①", t: "Comece pelo Louco", d: "Acesse agora e faça o primeiro módulo completo gratuitamente." },
-                { n: "②", t: "Avance um arcano por dia", d: "Nossa trilha foi desenhada para uma absorção diária sem sobrecarga." },
-                { n: "③", t: "Leia com profundidade", d: "Sinta a segurança de ler qualquer carta sem precisar de um manual." }
-              ].map((step, i) => (
-                <div key={i} className="space-y-4 text-center">
-                  <span className="text-5xl text-dourado block font-heading">{step.n}</span>
-                  <h5 className="text-2xl font-heading text-white">{step.t}</h5>
-                  <p className="text-white/60 leading-relaxed font-body">{step.d}</p>
+      {/* SEÇÃO 2 — TRILHA DE ARCANOS */}
+      <section className="py-24 overflow-hidden border-y border-[#3d2810]/5 bg-white">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <h2 className="font-display text-3xl font-bold text-center">Explore a Trilha do Conhecimento</h2>
+        </div>
+        
+        <div className="relative flex items-center">
+          {/* Linha conectora de fundo */}
+          <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-100 -translate-y-1/2 z-0" />
+          
+          <div className="flex gap-12 px-12 pb-8 overflow-x-auto scrollbar-hide snap-x relative z-10">
+            <TooltipProvider>
+              {trailCards.map((card, i) => (
+                <div key={i} className="flex-shrink-0 snap-center group">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div 
+                        className="w-20 h-20 rounded-full border-4 shadow-lg overflow-hidden transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-2 cursor-pointer"
+                        style={{ borderColor: card.color }}
+                      >
+                        <img src={card.img} alt={card.name} className="w-full h-full object-cover" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-[#1a0f0a] text-white border-none font-bold">
+                      {card.name}
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SEÇÃO 5 — PREÇO */}
-        <section className="py-32 px-6 bg-black/40 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto text-center space-y-12">
-            <h2 className="font-display text-3xl md:text-5xl text-white">Jornada Completa</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Plano Mensal */}
-              <div className="p-12 rounded-[40px] bg-white/5 border border-white/10 flex flex-col justify-between items-center space-y-6">
-                <h3 className="text-2xl font-heading text-white">Mensal</h3>
-                <div className="space-y-1">
-                  <p className="text-5xl font-heading text-white">R$29,90</p>
-                  <p className="text-white/40">/mês</p>
-                </div>
-                <Button 
-                  onClick={() => navigate("/auth")}
-                  variant="outline"
-                  className="w-full h-14 rounded-full border-white/20 text-white hover:bg-white/10"
-                >
-                  Assinar agora
-                </Button>
-              </div>
-
-              {/* Plano Anual */}
-              <div className="p-12 rounded-[40px] bg-white text-slate-900 relative shadow-2xl flex flex-col justify-between items-center space-y-6 overflow-hidden">
-                <div className="absolute top-6 right-6 px-4 py-1.5 bg-vinho text-white text-[10px] font-bold uppercase tracking-widest rounded-full">
-                  ✦ MELHOR VALOR
-                </div>
-                <h3 className="text-2xl font-heading text-vinho">Anual</h3>
-                <div className="space-y-1">
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl font-heading text-vinho">R$197</span>
-                    <span className="text-slate-500">/ano</span>
+              {/* Placeholder para outros naipes */}
+              {[colors.copas, colors.paus, colors.espadas, colors.ouros].map((color, i) => (
+                <div key={i} className="flex-shrink-0 snap-center">
+                   <div 
+                    className="w-20 h-20 rounded-full border-4 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center opacity-50"
+                    style={{ borderColor: color }}
+                  >
+                    <span className="text-2xl">?</span>
                   </div>
-                  <p className="text-sm font-bold text-vinhoLight uppercase tracking-tighter">
-                    = R$16,42/mês · Economia de 45%
-                  </p>
                 </div>
-                <Button 
-                  onClick={() => navigate("/auth")}
-                  className="w-full h-14 rounded-full font-bold shadow-lg shadow-vinho/20"
-                  style={{ background: `linear-gradient(135deg, ${colors.vinho}, ${colors.vinhoLight})` }}
-                >
-                  ASSINAR AGORA →
-                </Button>
+              ))}
+            </TooltipProvider>
+          </div>
+        </div>
+      </section>
+
+      {/* SEÇÃO 3 — COMO FUNCIONA */}
+      <section className="py-32 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { 
+              bg: "#FFF8DC",
+              icon: "🃏",
+              title: "UMA CARTA POR VEZ", 
+              desc: "Cada arcano tem lição própria: essência, símbolos, luz, sombra, quiz." 
+            },
+            { 
+              bg: "#EBF4FF",
+              icon: "📈",
+              title: "PROGRESSO COMO NO DUOLINGO", 
+              desc: "XP, streak diário, desbloqueio sequencial. Você sente que está evoluindo." 
+            },
+            { 
+              bg: "#EDFAF1",
+              icon: "🎯",
+              title: "QUIZ QUE REALMENTE FIXA", 
+              desc: "Não é decoreba. É compreensão testada com feedback imediato." 
+            }
+          ].map((card, i) => (
+            <div 
+              key={i} 
+              className="p-10 rounded-[32px] border border-black/5 shadow-sm space-y-6 hover:shadow-xl transition-all duration-500"
+              style={{ backgroundColor: card.bg }}
+            >
+              <div className="text-4xl">{card.icon}</div>
+              <h4 className="font-display text-2xl font-bold leading-tight text-[#1a0f0a]">{card.title}</h4>
+              <p className="text-lg text-[#3d2810]/70 font-body leading-relaxed">{card.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SEÇÃO 4 — PREÇO */}
+      <section className="py-32 px-6 bg-white border-y border-[#3d2810]/5">
+        <div className="max-w-4xl mx-auto text-center space-y-16">
+          <div className="space-y-4">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#1a0f0a]">Acesso Completo</h2>
+            <p className="text-xl text-[#3d2810]/60">Escolha o plano que melhor se adapta ao seu ritmo.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            {/* Plano Mensal */}
+            <div className="p-10 rounded-[32px] bg-gray-50 border border-gray-100 flex flex-col items-center space-y-8 transition-transform hover:scale-[1.02]">
+              <h3 className="text-xl font-bold text-gray-500 uppercase tracking-widest">Mensal</h3>
+              <div className="text-center">
+                <span className="text-5xl font-display font-bold text-[#1a0f0a]">R$29,90</span>
+                <span className="text-gray-400">/mês</span>
               </div>
+              <Button 
+                onClick={() => navigate("/auth")}
+                variant="outline"
+                className="w-full h-14 rounded-full border-gray-300 text-[#1a0f0a] font-bold hover:bg-white"
+              >
+                Assinar mensal
+              </Button>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6 pt-4 text-sm text-white/60">
-              <span className="flex items-center gap-2">✓ Cancele quando quiser</span>
-              <span className="flex items-center gap-2">✓ Acesso imediato</span>
-              <span className="flex items-center gap-2">✓ Primeiro arcano gratuito</span>
+            {/* Plano Anual */}
+            <div className="p-10 rounded-[32px] bg-white border-2 border-[#4A1528] relative shadow-2xl flex flex-col items-center space-y-8 transform md:scale-110 transition-transform">
+              <div className="absolute -top-4 px-4 py-1.5 bg-[#4A1528] text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-lg">
+                ✦ MELHOR VALOR
+              </div>
+              <h3 className="text-xl font-bold text-[#4A1528] uppercase tracking-widest">Anual</h3>
+              <div className="text-center">
+                <span className="text-6xl font-display font-bold text-[#1a0f0a]">R$197</span>
+                <span className="text-gray-400">/ano</span>
+                <div className="mt-2 text-[#4A1528] font-bold text-sm">
+                  = R$16,42/mês · Economia de 45%
+                </div>
+              </div>
+              <Button 
+                onClick={() => navigate("/auth")}
+                className="w-full h-14 rounded-full font-bold bg-[#4A1528] hover:bg-[#6b1f35] text-white shadow-lg"
+              >
+                ASSINAR ANUAL →
+              </Button>
             </div>
           </div>
-        </section>
 
-        {/* SEÇÃO 6 — FAQ */}
-        <section className="py-32 px-6 max-w-3xl mx-auto">
-          <h2 className="font-heading text-4xl text-center text-white mb-12">FAQ</h2>
+          <div className="flex flex-wrap justify-center gap-8 text-sm font-bold text-gray-400">
+            <span>✓ Cancele quando quiser</span>
+            <span>✓ Acesso imediato</span>
+            <span>✓ Primeiro arcano gratuito</span>
+          </div>
+        </div>
+      </section>
+
+      {/* SEÇÃO 5 — FAQ */}
+      <section className="py-32 px-6 bg-[#FFF8EE]">
+        <div className="max-w-3xl mx-auto space-y-12">
+          <h2 className="font-display text-4xl text-center font-bold text-[#1a0f0a]">Perguntas Frequentes</h2>
           <div className="space-y-4">
             {faq.map((item, i) => (
-              <div key={i} className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden transition-all duration-300">
+              <div key={i} className="rounded-2xl bg-white border border-black/5 overflow-hidden shadow-sm transition-all duration-300">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-8 text-left hover:bg-white/5 transition-colors"
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
                 >
-                  <span className="text-xl font-heading text-white">{item.q}</span>
-                  {openFaq === i ? <Minus className="text-dourado" /> : <Plus className="text-dourado" />}
+                  <span className="text-lg font-bold text-[#1a0f0a]">{item.q}</span>
+                  <div className="w-8 h-8 rounded-full bg-[#4A1528]/5 flex items-center justify-center text-[#4A1528]">
+                    {openFaq === i ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                  </div>
                 </button>
                 <div className={`transition-all duration-500 ease-in-out overflow-hidden ${openFaq === i ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                  <div className="p-8 pt-0 text-white/60 text-lg leading-relaxed font-body">
+                  <div className="p-6 pt-0 text-[#3d2810]/70 text-lg leading-relaxed border-t border-gray-50 mt-2">
                     {item.a}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* SEÇÃO 7 — CTA FINAL */}
-        <section className="py-40 px-6 text-center space-y-12">
-          <div className="space-y-4">
-            <h2 className="font-heading text-5xl md:text-7xl text-white">
-              Sua jornada começa hoje.<br />
-              <span className="text-dourado italic">Uma carta por vez.</span>
-            </h2>
-          </div>
+      {/* SEÇÃO 6 — CTA FINAL */}
+      <section className="py-40 px-6 text-center bg-gradient-to-t from-[#F5C842]/20 to-[#FFFDF7]">
+        <div className="max-w-4xl mx-auto space-y-12">
+          <h2 className="font-display text-5xl md:text-7xl font-bold text-[#1a0f0a] leading-tight">
+            Sua jornada começa hoje.<br />
+            <span className="text-[#4A7CB5] italic">Uma carta por vez.</span>
+          </h2>
           <Button
             onClick={() => navigate("/auth")}
-            className="group h-20 px-16 text-xl font-heading tracking-[0.2em] uppercase rounded-full font-bold shadow-2xl"
-            style={{ background: `linear-gradient(135deg, ${colors.vinho}, ${colors.vinhoLight})` }}
+            className="group h-20 px-16 text-xl font-bold bg-[#4A1528] hover:bg-[#6b1f35] text-white rounded-full shadow-2xl hover:scale-105 transition-all active:scale-95"
           >
             COMEÇAR PELO LOUCO — É GRÁTIS →
           </Button>
-        </section>
+        </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="py-20 px-6 border-t border-white/10 text-center space-y-8">
-          <div className="font-heading text-2xl tracking-[0.3em] font-bold text-white/50">
-            TARÔ 78 CHAVES
-          </div>
-          <nav className="flex flex-wrap justify-center gap-8 text-sm text-white/40 uppercase tracking-widest">
-            <a href="/privacidade" className="hover:text-dourado transition-colors">Privacidade</a>
-            <a href="/termos" className="hover:text-dourado transition-colors">Termos</a>
-            <a href="/suporte" className="hover:text-dourado transition-colors">Suporte</a>
-          </nav>
-          <p className="text-xs text-white/20">© {new Date().getFullYear()} Tarô 78 Chaves. Todos os direitos reservados.</p>
-        </footer>
+      {/* Footer */}
+      <footer className="py-20 px-6 bg-white border-t border-black/5 text-center space-y-10">
+        <div className="font-display text-2xl tracking-[0.4em] font-bold text-[#1a0f0a]">
+          TARÔ 78 CHAVES
+        </div>
+        <nav className="flex flex-wrap justify-center gap-8 text-sm font-bold text-[#3d2810]/40 uppercase tracking-widest">
+          <a href="/privacidade" className="hover:text-[#4A1528] transition-colors">Privacidade</a>
+          <a href="/termos" className="hover:text-[#4A1528] transition-colors">Termos</a>
+          <a href="/suporte" className="hover:text-[#4A1528] transition-colors">Suporte</a>
+        </nav>
+        <div className="space-y-2">
+          <p className="text-xs font-bold text-[#3d2810]/30 tracking-widest">© 2026 TARÔ 78 CHAVES</p>
+          <p className="text-[10px] text-[#3d2810]/20 uppercase font-bold">Feito para buscadores da verdade</p>
+        </div>
+      </footer>
 
-      </div>
     </div>
   );
 };
