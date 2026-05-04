@@ -141,19 +141,6 @@ const ModulesPage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 9999,
-        background: 'red',
-        color: 'white',
-        padding: '8px 12px',
-        fontSize: '12px',
-        fontFamily: 'monospace'
-      }}>
-        bypass:{String(bypassLocks)} | admin:{String(isAdmin)} | auditor:{String(isAuditor)} | canSeeAll:{String(canSeeAll)}
-      </div>
       <div className="fixed inset-0 z-0">
         <img src={mysticBg} alt="" className="w-full h-full object-cover" width={1920} height={1080} />
         <div className="absolute inset-0" style={{
