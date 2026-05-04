@@ -105,7 +105,7 @@ interface Props {
 const OnboardingPage = ({ onComplete }: Props) => {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"in" | "out">("in");
-  const { progress, setStudentData } = useProgress();
+  const { progress, addXP, completeOnboarding, setStudentData } = useProgress();
   const [nameInput, setNameInput] = useState(progress.studentName ?? "");
   const [selectedLevel, setSelectedLevel] = useState(progress.onboardingLevel ?? "");
   const [selectedGoal, setSelectedGoal] = useState(progress.onboardingGoal ?? "");
@@ -116,7 +116,13 @@ const OnboardingPage = ({ onComplete }: Props) => {
 
   const goNext = useCallback(() => {
     if (current.detail === "name") {
-      setStudentName(nameInput.trim());
+      setStudentData({ name: nameInput.trim() });
+    } else if (current.detail === "level") {
+      setStudentData({ level: selectedLevel });
+    } else if (current.detail === "goal") {
+      setStudentData({ goal: selectedGoal });
+    } else if (current.detail === "final") {
+        completeOnboarding();
     }
     if (isLast) {
       setDirection("out");
@@ -128,7 +134,7 @@ const OnboardingPage = ({ onComplete }: Props) => {
       setStep(s => s + 1);
       setDirection("in");
     }, 320);
-  }, [isLast, onComplete, current.detail, nameInput, setStudentName]);
+  }, [isLast, onComplete, current.detail, nameInput, selectedLevel, selectedGoal, setStudentData, completeOnboarding]);
 
   const goBack = useCallback(() => {
     if (step === 0) return;
@@ -245,30 +251,17 @@ const OnboardingPage = ({ onComplete }: Props) => {
             ))}
           </div>
 
-          {/* Detail: Layers */}
-          {current.detail === "layers" && (
-            <div className="space-y-2 mb-4">
-              {LAYER_ITEMS.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all"
-                  style={{
-                    background: "hsl(38 28% 94% / 0.7)",
-                    border: "1px solid hsl(36 25% 82% / 0.5)",
-                    animationDelay: `${i * 80}ms`,
-                    animation: direction === "in" ? `fade-in 0.4s ease-out ${i * 80}ms both` : "none",
-                  }}
-                >
-                  <span className="text-base w-6 text-center" style={{ color: colors.main }}>{item.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-heading tracking-wide" style={{ color: "hsl(230 25% 15%)" }}>{item.label}</p>
-                    <p className="text-[10px]" style={{ color: "hsl(230 15% 40% / 0.50)" }}>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-              <p className="text-center text-[10px] italic font-accent mt-3" style={{ color: "hsl(230 15% 40% / 0.40)" }}>
-                Vá fundo quando quiser. Avance quando sentir que é hora.
-              </p>
+          {current.detail === "name" && (
+            <div className="mb-4">
+              <input
+                id="onboarding-name"
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                placeholder="Seu nome"
+                className="w-full px-4 py-3 rounded-xl text-center text-sm font-body outline-none transition-all"
+                style={{ background: "hsl(38 28% 94% / 0.85)", border: `1px solid ${colors.border}`, color: "hsl(230 25% 15%)" }}
+              />
             </div>
           )}
 
@@ -295,46 +288,10 @@ const OnboardingPage = ({ onComplete }: Props) => {
               <img src="/arcano-0-louco.jpg" alt="O Louco" className="w-32 mx-auto rounded-lg mb-4" />
               <div className="space-y-3">
                 {["O início de uma jornada", "O fim de um ciclo", "A sabedoria acumulada", "O medo do desconhecido"].map((o, i) => (
-                  <button key={i} onClick={() => { if(i===0) { /* addXP logic + celebration */ goNext(); } }} className="w-full p-3 rounded-lg border">
+                  <button key={i} onClick={() => { if(i===0) { addXP(10); goNext(); } }} className="w-full p-3 rounded-lg border text-sm">
                     {o}
                   </button>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* Detail: Modules */}
-          {current.detail === "modules" && (
-            <div className="mb-4">
-              <div className="flex flex-wrap justify-center gap-1.5">
-                {MODULE_ITEMS.map((mod, i) => (
-                  <span
-                    key={i}
-                    className="text-[10px] px-2.5 py-1 rounded-full font-heading tracking-wide"
-                    style={{
-                      background: i < 3 ? "hsl(38 28% 93% / 0.8)" : colors.soft,
-                      border: `1px solid ${i < 3 ? "hsl(36 25% 82% / 0.4)" : colors.border}`,
-                      color: i < 3 ? "hsl(230 15% 30%)" : colors.main,
-                      animation: direction === "in" ? `fade-in 0.3s ease-out ${i * 60}ms both` : "none",
-                    }}
-                  >
-                    {mod.name}
-                  </span>
-                ))}
-              </div>
-              <div
-                className="mt-4 px-4 py-2.5 rounded-xl text-center"
-                style={{
-                  background: colors.soft,
-                  border: `1px solid ${colors.border}`,
-                }}
-              >
-                <p className="text-[10px] font-heading tracking-wider uppercase" style={{ color: colors.main }}>
-                  ✦ Área Premium
-                </p>
-                <p className="text-[10px] mt-0.5" style={{ color: "hsl(230 15% 40% / 0.45)" }}>
-                  Combinações, Tiragens, Amor e Prática — acesso exclusivo para quem quer ir além.
-                </p>
               </div>
             </div>
           )}
@@ -343,7 +300,6 @@ const OnboardingPage = ({ onComplete }: Props) => {
 
       {/* Bottom */}
       <div className="relative z-10 px-6 pb-8 space-y-3">
-        {/* Main CTA */}
         <button
           onClick={goNext}
           className="w-full max-w-sm mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl font-heading text-[11px] tracking-[0.18em] uppercase transition-all duration-300 active:scale-[0.98]"
@@ -351,38 +307,10 @@ const OnboardingPage = ({ onComplete }: Props) => {
             background: isLast ? colors.gradient : "hsl(38 28% 94% / 0.90)",
             border: isLast ? "none" : `1px solid ${colors.border}`,
             color: isLast ? "hsl(36 33% 97%)" : colors.main,
-            boxShadow: isLast ? `0 8px 32px ${colors.soft}` : "none",
-            backdropFilter: "blur(8px)",
           }}
         >
-          {isLast ? (
-            <>
-              <Sparkles className="w-4 h-4" />
-              Iniciar minha Jornada
-            </>
-          ) : (
-            <>
-              Continuar
-              <ChevronRight className="w-3.5 h-3.5" />
-            </>
-          )}
+          {isLast ? "Iniciar minha Jornada" : "Continuar"}
         </button>
-
-        {/* Back */}
-        {step > 0 && !isLast && (
-          <button
-            onClick={goBack}
-            className="block mx-auto text-[10px] font-accent italic transition-colors"
-            style={{ color: "hsl(230 15% 40% / 0.30)" }}
-          >
-            Voltar
-          </button>
-        )}
-
-        {/* Step counter */}
-        <p className="text-center text-[9px]" style={{ color: "hsl(230 15% 40% / 0.25)" }}>
-          {step + 1} de {STEPS.length}
-        </p>
       </div>
     </div>
   );
