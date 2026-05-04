@@ -32,8 +32,8 @@ const ModulesPage = () => {
   const navigate = useNavigate();
   const { progress, loading: progressLoading, completeOnboarding } = useProgress();
   const { trackEvent } = useTrackEvent();
-  const { bypassLocks } = useAccess();
-  console.log('bypassLocks:', bypassLocks);
+  const { bypassLocks, isAdmin, isPremium } = useAccess();
+  const canSeeAll = bypassLocks || isAdmin;
   // Track return visits
   useEffect(() => {
     if (progress.onboardingCompleted) {
@@ -54,6 +54,11 @@ const ModulesPage = () => {
   if (progressLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
+        {process.env.NODE_ENV === 'development' && (
+          <div className="fixed top-0 left-0 bg-red-500 text-white text-[10px] p-1 z-[9999] pointer-events-none">
+            DEBUG: loading...
+          </div>
+        )}
         <div className="text-center space-y-3">
           <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
           <p className="text-xs text-muted-foreground font-heading tracking-wider">Carregando...</p>
@@ -239,7 +244,8 @@ const ModulesPage = () => {
 
               <div className="space-y-3">
                 {mods.map((mod, i) => {
-                  const unlocked = bypassLocks || isModuleUnlocked(mod.id, progress.completedModules);
+                  const isLocked = !canSeeAll && !isModuleUnlocked(mod.id, progress.completedModules);
+                  const unlocked = !isLocked;
                   const isCompleted = progress.completedModules.includes(mod.id);
                   const prog = getModuleProgress(mod);
                   const isCurrent = unlocked && !isCompleted;
@@ -300,9 +306,9 @@ const ModulesPage = () => {
                                 }
                                 return <span className="text-lg">{mod.icon}</span>;
                               })()
-                            ) : (
+                            ) : isLocked ? (
                               <Lock className="w-4 h-4" style={{ color: "hsl(230 10% 45% / 0.30)" }} />
-                            )}
+                            ) : null}
                           </div>
 
                           {/* Text */}
