@@ -1,6 +1,7 @@
-import { useState, useCallback } from "react";
-import { ChevronRight, Sparkles, Layers, Star, Moon, Sun, Eye, User } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { Moon, User, Star, Sparkles, Sun, Eye } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
+import imgLouco from '@/assets/arcano-0-louco.jpg';
 
 interface OnboardingStep {
   symbol: React.ReactNode;
@@ -63,40 +64,27 @@ const STEPS: OnboardingStep[] = [
 
 const ACCENT = {
   gold: {
-    main: "hsl(36 45% 50%)",
-    soft: "hsl(36 45% 50% / 0.10)",
-    border: "hsl(36 45% 50% / 0.22)",
-    glow: "hsl(36 45% 50% / 0.06)",
-    gradient: "linear-gradient(135deg, hsl(36 45% 42%), hsl(36 50% 60%))",
+    main: "#c9a96e",
+    soft: "rgba(201, 169, 110, 0.1)",
+    border: "rgba(201, 169, 110, 0.3)",
+    glow: "rgba(201, 169, 110, 0.05)",
+    gradient: "linear-gradient(135deg, #3d1f2e, #c9a96e)",
   },
   wine: {
-    main: "hsl(340 42% 30%)",
-    soft: "hsl(340 42% 30% / 0.08)",
-    border: "hsl(340 42% 30% / 0.18)",
-    glow: "hsl(340 42% 30% / 0.04)",
-    gradient: "linear-gradient(135deg, hsl(340 42% 25%), hsl(340 38% 40%))",
+    main: "#3d1f2e",
+    soft: "rgba(61, 31, 46, 0.08)",
+    border: "rgba(61, 31, 46, 0.18)",
+    glow: "rgba(61, 31, 46, 0.04)",
+    gradient: "linear-gradient(135deg, #3d1f2e, #c9a96e)",
   },
   plum: {
-    main: "hsl(280 30% 32%)",
-    soft: "hsl(280 30% 32% / 0.08)",
-    border: "hsl(280 30% 32% / 0.16)",
-    glow: "hsl(280 30% 32% / 0.04)",
-    gradient: "linear-gradient(135deg, hsl(280 30% 26%), hsl(280 28% 42%))",
+    main: "#5c3d4e",
+    soft: "rgba(92, 61, 78, 0.08)",
+    border: "rgba(92, 61, 78, 0.16)",
+    glow: "rgba(92, 61, 78, 0.04)",
+    gradient: "linear-gradient(135deg, #3d1f2e, #c9a96e)",
   },
 };
-
-const LAYER_ITEMS = [
-  { label: "Essência", desc: "O coração vivo da carta", icon: "◉" },
-  { label: "Luz & Sombra", desc: "Forças e desafios que ela encarna", icon: "☯" },
-  { label: "Simbolismo", desc: "Cada detalhe visual tem propósito", icon: "⟡" },
-  { label: "Amor & Trabalho", desc: "Aplicações na vida real", icon: "♡" },
-  { label: "Quiz & Prática", desc: "Integre o que compreendeu", icon: "✦" },
-];
-
-const MODULE_ITEMS = [
-  { name: "Fundamentos", desc: "As raízes do Tarô" },
-  { name: "Arcanos Maiores", desc: "22 portais de sabedoria" },
-];
 
 interface Props {
   onComplete: () => void;
@@ -109,6 +97,7 @@ const OnboardingPage = ({ onComplete }: Props) => {
   const [nameInput, setNameInput] = useState(progress.studentName ?? "");
   const [selectedLevel, setSelectedLevel] = useState(progress.onboardingLevel ?? "");
   const [selectedGoal, setSelectedGoal] = useState(progress.onboardingGoal ?? "");
+  const [showXP, setShowXP] = useState(false);
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
@@ -124,11 +113,13 @@ const OnboardingPage = ({ onComplete }: Props) => {
     } else if (current.detail === "final") {
         completeOnboarding();
     }
+    
     if (isLast) {
       setDirection("out");
       setTimeout(onComplete, 500);
       return;
     }
+    
     setDirection("out");
     setTimeout(() => {
       setStep(s => s + 1);
@@ -136,46 +127,39 @@ const OnboardingPage = ({ onComplete }: Props) => {
     }, 320);
   }, [isLast, onComplete, current.detail, nameInput, selectedLevel, selectedGoal, setStudentData, completeOnboarding]);
 
-  const goBack = useCallback(() => {
-    if (step === 0) return;
-    setDirection("out");
-    setTimeout(() => {
-      setStep(s => s - 1);
-      setDirection("in");
-    }, 320);
-  }, [step]);
+  const handleQuizAnswer = (isCorrect: boolean) => {
+    if (isCorrect) {
+      addXP(10);
+      setShowXP(true);
+      setTimeout(() => {
+        setShowXP(false);
+        goNext();
+      }, 1500);
+    }
+  };
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden flex flex-col select-none"
+      className="min-h-screen relative flex flex-col select-none"
       style={{
-        background: "linear-gradient(170deg, hsl(36 33% 97%) 0%, hsl(38 28% 93%) 40%, hsl(36 30% 95%) 100%)",
         transition: "opacity 0.5s ease",
         opacity: direction === "out" && isLast ? 0 : 1,
       }}
     >
-      {/* Subtle texture overlay */}
-      <div className="fixed inset-0 z-0 pointer-events-none" style={{
-        background: `radial-gradient(ellipse at 50% 0%, ${colors.glow} 0%, transparent 70%)`,
-        transition: "background 0.5s ease",
-      }} />
-
       {/* Top bar: progress + skip */}
-      <div className="relative z-10 flex items-center justify-between px-6 pt-6 pb-2">
-        <div className="flex items-center gap-1.5">
+      <div className="relative z-10 flex items-center justify-between px-6 pt-8 pb-2">
+        <div className="flex items-center gap-1.5 flex-1 max-w-[200px]">
           {STEPS.map((_, i) => (
             <div
               key={i}
-              className="rounded-full transition-all duration-500"
+              className="h-1.5 rounded-full transition-all duration-500 flex-1"
               style={{
-                width: i === step ? 24 : 6,
-                height: 4,
                 background:
                   i < step
-                    ? "hsl(140 35% 50% / 0.40)"
+                    ? "rgba(34, 197, 94, 0.4)"
                     : i === step
-                    ? colors.main
-                    : "hsl(36 20% 70% / 0.30)",
+                    ? "#c9a96e"
+                    : "rgba(0, 0, 0, 0.05)",
               }}
             />
           ))}
@@ -183,8 +167,7 @@ const OnboardingPage = ({ onComplete }: Props) => {
         {!isLast && (
           <button
             onClick={onComplete}
-            className="text-[10px] font-accent italic transition-colors"
-            style={{ color: "hsl(230 15% 40% / 0.35)" }}
+            className="text-[10px] font-accent italic opacity-40 ml-4"
           >
             Pular
           </button>
@@ -202,116 +185,138 @@ const OnboardingPage = ({ onComplete }: Props) => {
             transition: "opacity 0.3s ease, transform 0.3s ease",
           }}
         >
-          {/* Icon */}
-          <div className="flex justify-center mb-5">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{
-                background: colors.soft,
-                border: `1px solid ${colors.border}`,
-                color: colors.main,
-                boxShadow: `0 8px 32px ${colors.glow}`,
-              }}
-            >
-              {current.symbol}
-            </div>
-          </div>
-
-          {/* Kicker */}
-          <p
-            className="text-center text-[9px] font-heading tracking-[0.35em] uppercase mb-2"
-            style={{ color: colors.main }}
-          >
-            {current.kicker}
-          </p>
-
-          {/* Title */}
-          <h1
-            className="text-center font-heading text-xl md:text-2xl tracking-wide leading-tight mb-5"
-            style={{ color: "hsl(230 25% 12%)" }}
-          >
-            {current.title}
-          </h1>
-
-          {/* Thin divider */}
-          <div className="flex justify-center mb-5">
-            <div className="w-8 h-px" style={{ background: colors.border }} />
-          </div>
-
-          {/* Body text */}
-          <div className="space-y-1 mb-6">
-            {current.lines.map((line, i) => (
-              <p
-                key={i}
-                className="text-center text-[13px] font-body leading-relaxed"
-                style={{ color: line === "" ? "transparent" : "hsl(230 15% 25% / 0.55)" }}
-              >
-                {line || "\u00A0"}
-              </p>
-            ))}
-          </div>
-
-          {current.detail === "name" && (
-            <div className="mb-4">
-              <input
-                id="onboarding-name"
-                type="text"
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                placeholder="Seu nome"
-                className="w-full px-4 py-3 rounded-xl text-center text-sm font-body outline-none transition-all"
-                style={{ background: "hsl(38 28% 94% / 0.85)", border: `1px solid ${colors.border}`, color: "hsl(230 25% 15%)" }}
-              />
-            </div>
-          )}
-
-          {current.detail === "level" && (
-            <div className="space-y-3">
-              {["🌱 Nunca estudei", "🌙 Conheço um pouco", "⭐ Já pratico"].map((l) => (
-                <button key={l} onClick={() => { setSelectedLevel(l); goNext(); }} className="w-full text-left p-4 rounded-xl transition-all" style={{ border: `1px solid ${colors.border}`, background: "white" }}>
-                  {l}
-                </button>
-              ))}
-            </div>
-          )}
-          {current.detail === "goal" && (
-            <div className="space-y-3">
-              {["🔮 Autoconhecimento", "🃏 Ler para outras pessoas", "✨ Curiosidade espiritual", "📚 Aprofundar o que já sei"].map((g) => (
-                <button key={g} onClick={() => { setSelectedGoal(g); goNext(); }} className="w-full text-left p-4 rounded-xl transition-all" style={{ border: `1px solid ${colors.border}`, background: "white" }}>
-                  {g}
-                </button>
-              ))}
-            </div>
-          )}
-          {current.detail === "quiz" && (
+          {step === 0 ? (
             <div className="text-center">
-              <img src="/arcano-0-louco.jpg" alt="O Louco" className="w-32 mx-auto rounded-lg mb-4" />
-              <div className="space-y-3">
-                {["O início de uma jornada", "O fim de um ciclo", "A sabedoria acumulada", "O medo do desconhecido"].map((o, i) => (
-                  <button key={i} onClick={() => { if(i===0) { addXP(10); goNext(); } }} className="w-full p-3 rounded-lg border text-sm">
-                    {o}
-                  </button>
-                ))}
-              </div>
+              <img src={imgLouco} alt="O Louco" className="w-32 h-auto rounded-xl shadow-lg mx-auto mb-6" />
+              <p className="text-[#c9a96e] text-[10px] tracking-[0.3em] uppercase mb-2 font-display">
+                {current.kicker}
+              </p>
+              <h1 className="font-display text-2xl text-[#3d1f2e] mb-4">
+                {current.title}
+              </h1>
+              <p className="text-[13px] font-body text-[#3d1f2e]/60 mb-8">
+                {current.lines[0]}
+              </p>
             </div>
+          ) : (
+            <>
+              {/* Kicker */}
+              <p className="text-center text-[10px] font-display tracking-[0.3em] uppercase mb-2 text-[#c9a96e]">
+                {current.detail === 'quiz' && showXP ? 'VITÓRIA' : current.kicker}
+              </p>
+
+              {/* Title */}
+              <h1 className="text-center font-display text-2xl text-[#3d1f2e] mb-8">
+                {current.title}
+              </h1>
+
+              {current.detail === "name" && (
+                <div className="mb-8">
+                  <input
+                    id="onboarding-name"
+                    type="text"
+                    value={nameInput}
+                    onChange={(e) => setNameInput(e.target.value)}
+                    placeholder="Seu nome"
+                    className="w-full px-4 py-4 rounded-2xl text-center text-sm font-body outline-none bg-white/70 backdrop-blur-sm border border-[#c9a96e]/30 shadow-sm focus:bg-white transition-all"
+                  />
+                </div>
+              )}
+
+              {current.detail === "level" && (
+                <div className="space-y-3">
+                  {["🌱 Nunca estudei", "🌙 Conheço um pouco", "⭐ Já pratico"].map((l) => (
+                    <button 
+                      key={l} 
+                      onClick={() => { setSelectedLevel(l); goNext(); }} 
+                      className="w-full text-left p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#c9a96e]/30 hover:bg-white/90 transition-all font-body text-sm text-[#3d1f2e]/80"
+                    >
+                      {l}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {current.detail === "goal" && (
+                <div className="space-y-3">
+                  {[
+                    "🔮 Autoconhecimento", 
+                    "🃏 Ler para outras pessoas", 
+                    "✨ Curiosidade espiritual", 
+                    "📚 Aprofundar o que já sei"
+                  ].map((g) => (
+                    <button 
+                      key={g} 
+                      onClick={() => { setSelectedGoal(g); goNext(); }} 
+                      className="w-full text-left p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#c9a96e]/30 hover:bg-white/90 transition-all font-body text-sm text-[#3d1f2e]/80"
+                    >
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {current.detail === "quiz" && (
+                <div className="text-center relative">
+                  <img src={imgLouco} alt="O Louco" className="w-32 h-auto rounded-xl shadow-lg mx-auto mb-6" />
+                  
+                  {showXP && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="animate-bounce text-green-600 font-bold text-2xl bg-white/90 px-4 py-2 rounded-full shadow-lg border border-green-200">
+                        +10 XP ✓
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-3">
+                    {[
+                      "O início de uma jornada", 
+                      "O fim de um ciclo", 
+                      "A sabedoria acumulada", 
+                      "O medo do desconhecido"
+                    ].map((o, i) => (
+                      <button 
+                        key={i} 
+                        onClick={() => handleQuizAnswer(i === 0)} 
+                        className="w-full p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-[#c9a96e]/30 hover:bg-white/90 transition-all font-body text-sm text-[#3d1f2e]/80"
+                      >
+                        {o}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {current.detail === "final" && (
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mx-auto mb-2 border border-[#c9a96e]/20">
+                    <Sparkles className="w-8 h-8 text-[#c9a96e]" />
+                  </div>
+                  <p className="text-[14px] font-body text-[#3d1f2e]/70 leading-relaxed px-4">
+                    Tudo pronto para você desbravar os mistérios dos Arcanos.
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="relative z-10 px-6 pb-8 space-y-3">
-        <button
-          onClick={goNext}
-          className="w-full max-w-sm mx-auto flex items-center justify-center gap-2 py-3.5 rounded-xl font-heading text-[11px] tracking-[0.18em] uppercase transition-all duration-300 active:scale-[0.98]"
-          style={{
-            background: isLast ? colors.gradient : "hsl(38 28% 94% / 0.90)",
-            border: isLast ? "none" : `1px solid ${colors.border}`,
-            color: isLast ? "hsl(36 33% 97%)" : colors.main,
-          }}
-        >
-          {isLast ? "Iniciar minha Jornada" : "Continuar"}
-        </button>
-      </div>
+      {/* Bottom Button */}
+      {(current.detail === "name" || current.detail === "final" || step === 0) && (
+        <div className="relative z-10 px-6 pb-12">
+          <button
+            onClick={goNext}
+            className="w-full max-w-sm mx-auto flex items-center justify-center gap-2 py-4 rounded-2xl font-display text-sm tracking-[0.1em] uppercase transition-all duration-300 active:scale-[0.98] shadow-md hover:shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #3d1f2e, #c9a96e)",
+              color: "white",
+            }}
+          >
+            {isLast ? "Começar minha Jornada" : "Continuar"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
