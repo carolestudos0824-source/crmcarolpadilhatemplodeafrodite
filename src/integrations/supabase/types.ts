@@ -991,6 +991,8 @@ export type Database = {
           id: string
           is_beta_tester: boolean
           is_premium: boolean
+          onboarding_goal: string | null
+          onboarding_level: string | null
           premium_source: string | null
           premium_until: string | null
           stripe_customer_id: string | null
@@ -1005,6 +1007,8 @@ export type Database = {
           id?: string
           is_beta_tester?: boolean
           is_premium?: boolean
+          onboarding_goal?: string | null
+          onboarding_level?: string | null
           premium_source?: string | null
           premium_until?: string | null
           stripe_customer_id?: string | null
@@ -1019,6 +1023,8 @@ export type Database = {
           id?: string
           is_beta_tester?: boolean
           is_premium?: boolean
+          onboarding_goal?: string | null
+          onboarding_level?: string | null
           premium_source?: string | null
           premium_until?: string | null
           stripe_customer_id?: string | null

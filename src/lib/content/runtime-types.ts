@@ -118,6 +118,8 @@ export interface UserProgress {
   onboardingCompleted: boolean;
   studentName: string;
   certificatesEarned: Record<string, string>;
+  onboardingLevel?: string;
+  onboardingGoal?: string;
 }
 
 export const DEFAULT_PROGRESS: UserProgress = {
@@ -142,6 +144,8 @@ export const DEFAULT_PROGRESS: UserProgress = {
   onboardingCompleted: false,
   studentName: "",
   certificatesEarned: {},
+  onboardingLevel: "",
+  onboardingGoal: "",
 };
 
 // ─── Catálogo (módulos & arcanos summary) ──────────────────────────

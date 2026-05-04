@@ -35,6 +35,8 @@ interface LocalExtras {
   currentModule: string;
   studentName: string;
   certificatesEarned: Record<string, string>;
+  onboardingLevel: string;
+  onboardingGoal: string;
 }
 
 function getLocalExtras(): LocalExtras {
@@ -47,6 +49,8 @@ function getLocalExtras(): LocalExtras {
         currentModule: parsed.currentModule ?? DEFAULT_PROGRESS.currentModule,
         studentName: parsed.studentName ?? DEFAULT_PROGRESS.studentName,
         certificatesEarned: parsed.certificatesEarned ?? DEFAULT_PROGRESS.certificatesEarned,
+        onboardingLevel: parsed.onboardingLevel ?? DEFAULT_PROGRESS.onboardingLevel,
+        onboardingGoal: parsed.onboardingGoal ?? DEFAULT_PROGRESS.onboardingGoal,
       };
     }
   } catch { /* ignore */ }
@@ -55,6 +59,8 @@ function getLocalExtras(): LocalExtras {
     currentModule: DEFAULT_PROGRESS.currentModule,
     studentName: DEFAULT_PROGRESS.studentName,
     certificatesEarned: DEFAULT_PROGRESS.certificatesEarned,
+    onboardingLevel: DEFAULT_PROGRESS.onboardingLevel ?? "",
+    onboardingGoal: DEFAULT_PROGRESS.onboardingGoal ?? "",
   };
 }
 
@@ -151,6 +157,8 @@ export function useProgress() {
           currentModule: next.currentModule,
           studentName: next.studentName,
           certificatesEarned: next.certificatesEarned,
+          onboardingLevel: next.onboardingLevel,
+          onboardingGoal: next.onboardingGoal,
         });
       }
       setLoading(false);
@@ -177,6 +185,8 @@ export function useProgress() {
       currentModule: progress.currentModule,
       studentName: progress.studentName,
       certificatesEarned: progress.certificatesEarned,
+      onboardingLevel: progress.onboardingLevel ?? "",
+      onboardingGoal: progress.onboardingGoal ?? "",
     });
 
     if (!coreChanged && !nameChanged) return;
@@ -194,8 +204,11 @@ export function useProgress() {
         lastSavedNameRef.current = nameSnapshot;
         await supabase
           .from("profiles")
-          // student_name was just added; cast to keep TS happy until types regen
-          .update({ student_name: nameSnapshot } as never)
+          .update({ 
+            student_name: nameSnapshot,
+            onboarding_level: progress.onboardingLevel,
+            onboarding_goal: progress.onboardingGoal 
+          } as never)
           .eq("user_id", user.id);
       }
     }, 300);
@@ -328,8 +341,13 @@ export function useProgress() {
     setProgress((prev) => ({ ...prev, onboardingCompleted: true }));
   }, []);
 
-  const setStudentName = useCallback((name: string) => {
-    setProgress((prev) => ({ ...prev, studentName: name }));
+  const setStudentData = useCallback((data: { name?: string, level?: string, goal?: string }) => {
+    setProgress((prev) => ({ 
+      ...prev, 
+      studentName: data.name ?? prev.studentName,
+      onboardingLevel: data.level ?? prev.onboardingLevel,
+      onboardingGoal: data.goal ?? prev.onboardingGoal 
+    }));
   }, []);
 
   const resetProgress = useCallback(async () => {
@@ -363,7 +381,7 @@ export function useProgress() {
     completedCount,
     journeyProgress,
     completeOnboarding,
-    setStudentName,
+    setStudentData,
     resetProgress,
   };
 }
