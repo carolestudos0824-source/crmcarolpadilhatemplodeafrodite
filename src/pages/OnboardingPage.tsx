@@ -15,96 +15,49 @@ const STEPS: OnboardingStep[] = [
   {
     symbol: <Moon className="w-6 h-6" />,
     kicker: "Boas-vindas",
-    title: "Você não veio aprender cartas.",
-    lines: [
-      "Você veio aprender a ler o que já existe dentro de si.",
-      "",
-      "Aqui, o Tarô é linguagem viva — espelho de arquétipos, forças e verdades que já te habitam.",
-      "",
-      "Cada carta revela uma parte da sua história. Nenhuma resposta vem de fora.",
-    ],
+    title: "Sua jornada começa agora.",
+    lines: ["Vamos personalizar sua experiência em 3 perguntas."],
     accent: "gold",
   },
   {
     symbol: <User className="w-6 h-6" />,
     kicker: "Apresentação",
     title: "Como posso te chamar?",
-    lines: [
-      "Antes de começar, deixe seu nome.",
-      "Ele aparecerá em momentos especiais da sua jornada — como saudação e nos seus certificados.",
-      "",
-      "Pode pular se preferir manter o anonimato.",
-    ],
+    lines: ["Opcional. Pode deixar em branco."],
     accent: "wine",
     detail: "name",
   },
   {
     symbol: <Star className="w-6 h-6" />,
-    kicker: "A Jornada do Louco",
-    title: "22 mestres. Uma travessia.",
-    lines: [
-      "Tudo começa no Arcano Zero — O Louco.",
-      "Ele é o viajante que salta sem garantias.",
-      "",
-      "Cada Arcano Maior é um portal de sabedoria:",
-      "O Mago ensina o poder da intenção consciente.",
-      "A Sacerdotisa revela o que está além do visível.",
-      "A Imperatriz desperta a força criadora.",
-      "",
-      "Você vai caminhar com todos eles — um a um.",
-    ],
-    accent: "wine",
-  },
-  {
-    symbol: <Layers className="w-6 h-6" />,
-    kicker: "Método em Camadas",
-    title: "Profundidade sem pressão.",
-    lines: [
-      "Cada arcano é estudado em camadas de significado:",
-    ],
+    kicker: "Nível",
+    title: "Qual é a sua relação com o tarô?",
+    lines: [],
     accent: "plum",
-    detail: "layers",
-  },
-  {
-    symbol: <Eye className="w-6 h-6" />,
-    kicker: "Arcanos Vivos",
-    title: "As cartas conversam com você.",
-    lines: [
-      "As cartas não estão presas em páginas.",
-      "Elas aparecem nos seus quizzes, nos desafios, nas revisões — e falam diretamente com você.",
-      "",
-      "Você não memoriza. Você convive.",
-      "E quanto mais convive, mais compreende.",
-    ],
-    accent: "gold",
-  },
-  {
-    symbol: <Sun className="w-6 h-6" />,
-    kicker: "A Jornada Completa",
-    title: "22 arcanos. 2 módulos. Uma travessia profunda.",
-    lines: [
-      "Comece pelos Fundamentos do Tarô — a base de tudo.",
-      "",
-      "Depois, entre na Jornada dos Arcanos Maiores — 22 portais de sabedoria, um a um.",
-      "",
-      "A plataforma cresce junto com você.",
-    ],
-    accent: "wine",
+    detail: "level",
   },
   {
     symbol: <Sparkles className="w-6 h-6" />,
+    kicker: "Objetivo",
+    title: "Por que você quer aprender tarô?",
+    lines: [],
+    accent: "gold",
+    detail: "goal",
+  },
+  {
+    symbol: <Sun className="w-6 h-6" />,
+    kicker: "Vitória",
+    title: "O Louco representa:",
+    lines: [],
+    accent: "wine",
+    detail: "quiz",
+  },
+  {
+    symbol: <Eye className="w-6 h-6" />,
     kicker: "Pronta?",
-    title: "O Louco espera por você.",
-    lines: [
-      "Não é preciso saber nada.",
-      "Não é preciso acreditar em nada.",
-      "",
-      "Só é preciso dar o primeiro passo.",
-      "",
-      "O precipício não é o fim.",
-      "É onde a jornada começa.",
-    ],
+    title: "Sua jornada está pronta.",
+    lines: ["Começar minha jornada"],
     accent: "plum",
+    detail: "final",
   },
 ];
 
@@ -152,8 +105,10 @@ interface Props {
 const OnboardingPage = ({ onComplete }: Props) => {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"in" | "out">("in");
-  const { progress, setStudentName } = useProgress();
+  const { progress, setStudentData } = useProgress();
   const [nameInput, setNameInput] = useState(progress.studentName ?? "");
+  const [selectedLevel, setSelectedLevel] = useState(progress.onboardingLevel ?? "");
+  const [selectedGoal, setSelectedGoal] = useState(progress.onboardingGoal ?? "");
 
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
@@ -317,38 +272,34 @@ const OnboardingPage = ({ onComplete }: Props) => {
             </div>
           )}
 
-          {/* Detail: Name capture */}
-          {current.detail === "name" && (
-            <div className="mb-4">
-              <label
-                htmlFor="onboarding-name"
-                className="block text-center text-[10px] font-heading tracking-[0.25em] uppercase mb-2"
-                style={{ color: colors.main }}
-              >
-                Como posso te chamar?
-              </label>
-              <input
-                id="onboarding-name"
-                type="text"
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                placeholder="Seu nome"
-                autoComplete="given-name"
-                maxLength={60}
-                className="w-full px-4 py-3 rounded-xl text-center text-sm font-body outline-none transition-all"
-                style={{
-                  background: "hsl(38 28% 94% / 0.85)",
-                  border: `1px solid ${colors.border}`,
-                  color: "hsl(230 25% 15%)",
-                  boxShadow: `0 4px 18px ${colors.glow}`,
-                }}
-              />
-              <p
-                className="text-center text-[10px] italic font-accent mt-3"
-                style={{ color: "hsl(230 15% 40% / 0.45)" }}
-              >
-                Opcional. Pode deixar em branco e seguir.
-              </p>
+          {current.detail === "level" && (
+            <div className="space-y-3">
+              {["🌱 Nunca estudei", "🌙 Conheço um pouco", "⭐ Já pratico"].map((l) => (
+                <button key={l} onClick={() => { setSelectedLevel(l); goNext(); }} className="w-full text-left p-4 rounded-xl transition-all" style={{ border: `1px solid ${colors.border}`, background: "white" }}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          )}
+          {current.detail === "goal" && (
+            <div className="space-y-3">
+              {["🔮 Autoconhecimento", "🃏 Ler para outras pessoas", "✨ Curiosidade espiritual", "📚 Aprofundar o que já sei"].map((g) => (
+                <button key={g} onClick={() => { setSelectedGoal(g); goNext(); }} className="w-full text-left p-4 rounded-xl transition-all" style={{ border: `1px solid ${colors.border}`, background: "white" }}>
+                  {g}
+                </button>
+              ))}
+            </div>
+          )}
+          {current.detail === "quiz" && (
+            <div className="text-center">
+              <img src="/arcano-0-louco.jpg" alt="O Louco" className="w-32 mx-auto rounded-lg mb-4" />
+              <div className="space-y-3">
+                {["O início de uma jornada", "O fim de um ciclo", "A sabedoria acumulada", "O medo do desconhecido"].map((o, i) => (
+                  <button key={i} onClick={() => { if(i===0) { /* addXP logic + celebration */ goNext(); } }} className="w-full p-3 rounded-lg border">
+                    {o}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 

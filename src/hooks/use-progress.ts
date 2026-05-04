@@ -194,8 +194,11 @@ export function useProgress() {
         lastSavedNameRef.current = nameSnapshot;
         await supabase
           .from("profiles")
-          // student_name was just added; cast to keep TS happy until types regen
-          .update({ student_name: nameSnapshot } as never)
+          .update({ 
+            student_name: nameSnapshot,
+            onboarding_level: progress.onboardingLevel,
+            onboarding_goal: progress.onboardingGoal 
+          } as never)
           .eq("user_id", user.id);
       }
     }, 300);
@@ -328,8 +331,13 @@ export function useProgress() {
     setProgress((prev) => ({ ...prev, onboardingCompleted: true }));
   }, []);
 
-  const setStudentName = useCallback((name: string) => {
-    setProgress((prev) => ({ ...prev, studentName: name }));
+  const setStudentData = useCallback((data: { name?: string, level?: string, goal?: string }) => {
+    setProgress((prev) => ({ 
+      ...prev, 
+      studentName: data.name ?? prev.studentName,
+      onboardingLevel: data.level ?? prev.onboardingLevel,
+      onboardingGoal: data.goal ?? prev.onboardingGoal 
+    }));
   }, []);
 
   const resetProgress = useCallback(async () => {
