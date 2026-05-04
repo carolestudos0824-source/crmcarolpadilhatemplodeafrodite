@@ -320,6 +320,94 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* SEÇÃO — INSTALE O APP */}
+      <section className="py-20 bg-[#FFF8EE]">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-[#4A1528] text-white rounded-full px-4 py-2 text-sm font-bold mb-6">
+            📱 DISPONÍVEL NO SEU CELULAR
+          </div>
+
+          <h2 className="font-display text-4xl font-bold text-[#1a0f0a] mb-4">
+            Instale no seu celular.<br/>
+            <span className="text-[#4A1528] italic">Sem passar pela loja de apps.</span>
+          </h2>
+
+          <p className="text-lg text-[#3d2810]/70 max-w-xl mx-auto mb-12">
+            O Tarô 78 Chaves funciona como um app nativo no seu iPhone ou Android — 
+            sem precisar baixar nada da App Store ou Google Play.
+          </p>
+
+          {/* Cards de instrução — iPhone e Android lado a lado */}
+          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12">
+            
+            {/* iPhone */}
+            <div className="bg-white rounded-2xl shadow-md p-6 text-left">
+              <div className="text-3xl mb-3">🍎</div>
+              <h3 className="font-display text-xl font-bold text-[#1a0f0a] mb-4">iPhone (Safari)</h3>
+              <ol className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                  <span className="text-sm text-gray-600">Abra o site no <strong>Safari</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                  <span className="text-sm text-gray-600">Toque no ícone de <strong>compartilhar</strong> (quadrado com seta)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                  <span className="text-sm text-gray-600">Selecione <strong>"Adicionar à Tela de Início"</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                  <span className="text-sm text-gray-600">Toque em <strong>Adicionar</strong> — pronto! ✓</span>
+                </li>
+              </ol>
+            </div>
+
+            {/* Android */}
+            <div className="bg-white rounded-2xl shadow-md p-6 text-left">
+              <div className="text-3xl mb-3">🤖</div>
+              <h3 className="font-display text-xl font-bold text-[#1a0f0a] mb-4">Android (Chrome)</h3>
+              <ol className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                  <span className="text-sm text-gray-600">Abra o site no <strong>Chrome</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                  <span className="text-sm text-gray-600">Toque nos <strong>3 pontos</strong> no canto superior direito</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                  <span className="text-sm text-gray-600">Selecione <strong>"Adicionar à tela inicial"</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="bg-[#4A1528] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                  <span className="text-sm text-gray-600">Confirme — o app aparece na sua tela! ✓</span>
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          {/* Benefícios */}
+          <div className="flex flex-wrap justify-center gap-4">
+            {[
+              "✓ Funciona sem internet (offline)",
+              "✓ Ícone na tela inicial",
+              "✓ Tela cheia sem barra do navegador",
+              "✓ Notificações de streak",
+            ].map((item) => (
+              <span key={item} className="bg-white border border-[#c9a96e]/30 rounded-full px-4 py-2 text-sm text-[#3d2810] font-medium shadow-sm">
+                {item}
+              </span>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
       {/* SEÇÃO 6 — CTA FINAL */}
       <section className="py-40 px-6 text-center bg-gradient-to-t from-[#F5C842]/20 to-[#FFFDF7]">
         <div className="max-w-4xl mx-auto space-y-12">
