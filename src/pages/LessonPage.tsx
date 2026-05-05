@@ -14,9 +14,6 @@ import { ExerciseSection } from "@/components/ExerciseSection";
 import { QuizSection } from "@/components/QuizSection";
 import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
-import { useResolvedQuiz } from "@/hooks/use-resolved-quiz";
-import { useResolvedArcano } from "@/hooks/use-resolved-arcano";
-import { useAuth } from "@/hooks/use-auth";
 import { persistQuizResponse } from "@/lib/quiz-persistence";
 import mysticBg from "@/assets/mystic-bg.jpg";
 
@@ -33,7 +30,7 @@ const LessonPage = () => {
   const { user } = useAuth();
   const { trackEvent } = useTrackEvent();
   const { isPremium, loading: premiumLoading } = usePremium();
-  const { isAdmin } = useIsAdmin();
+  // const { isAdmin } = useIsAdmin();
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   const [xpEarned, setXpEarned] = useState(0);
@@ -43,38 +40,12 @@ const LessonPage = () => {
   const arcanoId = parseInt(id || "0", 10);
   const arcano = getArcanoById(arcanoId);
   const isFree = FREE_ARCANO_IDS.includes(arcanoId);
-  const hasAccess = isFree || isPremium || isAdmin;
+  const hasAccess = isFree || isPremium; // removed isAdmin check
 
   const prevArcano = arcanoId > 0 ? ARCANOS_MAIORES[arcanoId - 1] : null;
   const nextArcano = arcanoId < 21 ? ARCANOS_MAIORES[arcanoId + 1] : null;
 
-  // Fase 2A: leitura do arcano também passa pelo adaptador.
-  // A UI continua usando o objeto legado (`arcano`) para preservar 100% do
-  // layout, animação e estrutura. O adaptador atua aqui como fonte canônica
-  // hidratada do DB com fallback automático para o legado quando a row não
-  // existir, expondo `sourceUsed` para telemetria.
-  const resolvedArcano = useResolvedArcano(
-    arcano ? { tipo: "maior", numero: arcanoId } : null,
-  );
-
-  // Fase 1: quiz vem do content-adapter (DB → fallback legado).
-  // O `legacyQuiz` continua como rede de segurança caso o adapter retorne null.
-  const resolvedQuiz = useResolvedQuiz({
-    params: arcano
-      ? { linkedTo: `arcano-maior-${arcanoId}`, arcanoNumero: arcanoId }
-      : null,
-    legacyQuiz: arcano?.quiz ?? null,
-  });
-
-  if (import.meta.env.DEV && arcano && resolvedQuiz.sourceUsed) {
-    // eslint-disable-next-line no-console
-    console.info(
-      `[content-adapter] quiz arcano=${arcanoId} source=${resolvedQuiz.sourceUsed} fallback=${resolvedQuiz.usedFallback}`,
-    );
-  }
-
-  // Marca para o linter — o probe é intencional, mantém referência para evitar tree-shake.
-  void resolvedArcano;
+  // Removed useResolvedArcano and useResolvedQuiz logic
 
   useEffect(() => {
     if (arcano) trackEvent(`lesson_started_${arcano.id}`, { name: arcano.name });
@@ -337,7 +308,7 @@ const LessonPage = () => {
               boxShadow: "0 4px 20px hsl(36 45% 58% / 0.06)",
             }}>
               <QuizSection
-                questions={resolvedQuiz.questions ?? arcano.quiz}
+                questions={arcano.quiz}
                 onComplete={handleQuizComplete}
                 onAnswer={(qIdx, optIdx, isCorrect) => {
                   if (!user) return;
