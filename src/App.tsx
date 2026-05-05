@@ -29,6 +29,7 @@ const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
 const BetaInvitePage = lazy(() => import("./pages/BetaInvitePage.tsx"));
 const WaitlistPage = lazy(() => import("./pages/WaitlistPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const LigasPage = lazy(() => import("./pages/LigasPage.tsx"));
 
 // Module pages
 const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
