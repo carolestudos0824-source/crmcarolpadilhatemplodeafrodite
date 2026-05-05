@@ -29,6 +29,7 @@ const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
 const BetaInvitePage = lazy(() => import("./pages/BetaInvitePage.tsx"));
 const WaitlistPage = lazy(() => import("./pages/WaitlistPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const LigasPage = lazy(() => import("./pages/LigasPage.tsx"));
 
 // Module pages
 const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
@@ -147,6 +148,7 @@ const AppShell = () => (
         {/* Dashboard */}
         <Route path="/app" element={<P><ModulesPage /></P>} />
         <Route path="/trilhas" element={<P><TrailsPage /></P>} />
+        <Route path="/ligas" element={<P><LigasPage /></P>} />
 
         {/* Fundamentos */}
         <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
