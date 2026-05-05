@@ -4,11 +4,11 @@ import { getArcanoFull as getArcanoById, ARCANOS_MAIORES_CATALOG as ARCANOS_MAIO
 import { useProgress } from "@/hooks/use-progress";
 import { useTrackEvent } from "@/hooks/use-track-event";
 import { usePremium } from "@/hooks/use-premium";
-import { useIsAdmin } from "@/hooks/use-admin";
+// Removed useIsAdmin import
 import { ArcanoVivoIntro } from "@/components/arcano-vivo/ArcanoVivoIntro";
 import { LessonContent } from "@/components/arcano-vivo/LessonContent";
 import { CompletionScreen } from "@/components/arcano-vivo/CompletionScreen";
-import { PhaseIndicator } from "@/components/arcano-vivo/PhaseIndicator";
+// Removed PhaseIndicator import
 import { DeepDiveSection } from "@/components/DeepDiveSection";
 import { ExerciseSection } from "@/components/ExerciseSection";
 import { QuizSection } from "@/components/QuizSection";
@@ -204,7 +204,7 @@ const LessonPage = () => {
           </div>
           <div className="flex-1" />
           <span className="text-[9px] font-body tracking-wider shrink-0" style={{ color: "hsl(230 10% 50%)" }}>{arcanoId + 1}/22</span>
-          <PhaseIndicator phases={PHASE_STEPS} currentIndex={currentIdx >= 0 ? currentIdx : PHASE_STEPS.length} />
+          {/* Removed PhaseIndicator UI */}
         </div>
       </header>
 

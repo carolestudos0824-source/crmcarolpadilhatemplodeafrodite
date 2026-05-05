@@ -19,7 +19,7 @@ import AuthPage from "./pages/AuthPage.tsx";
 // Lazy: everything else
 const Index = lazy(() => import("./pages/Index.tsx"));
 const LessonPage = lazy(() => import("./pages/LessonPage.tsx"));
-const AdminPage = lazy(() => import("./pages/AdminPage.tsx"));
+// Removed AdminPage import
 const PremiumPage = lazy(() => import("./pages/PremiumPage.tsx"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage.tsx"));
 const FoolsJourneyPage = lazy(() => import("./pages/FoolsJourneyPage.tsx"));
@@ -218,7 +218,7 @@ const AppShell = () => (
         <Route path="/premium" element={<P><PremiumPage /></P>} />
         <Route path="/perfil" element={<P><ProfilePage /></P>} />
         <Route path="/feedback" element={<P><FeedbackPage /></P>} />
-        <Route path="/admin" element={<P><AdminPage /></P>} />
+        {/* Removed Admin route */}
 
         <Route path="*" element={<NotFound />} />
       </Routes>
