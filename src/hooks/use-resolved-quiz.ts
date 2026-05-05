@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getQuizContent } from "@/lib/content";
 
-export function useResolvedQuiz(params: any, legacyQuiz?: any) {
-  const [questions, setQuestions] = useState<any>(legacyQuiz || params?.legacyQuiz || null);
+export function useResolvedQuiz(params: any, ...args: any[]) {
+  const [questions, setQuestions] = useState<any>(args[0] || params?.legacyQuiz || null);
 
   useEffect(() => {
     if (!params?.linkedTo) return;

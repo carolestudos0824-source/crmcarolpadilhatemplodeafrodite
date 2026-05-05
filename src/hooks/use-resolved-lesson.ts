@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { getLessonContent } from "@/lib/content";
 
-export function useResolvedLesson(params: { moduleSlug: string; lessonSlug: string } | null, moreParams?: any) {
+export function useResolvedLesson(params: any, ...args: any[]) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!params) return;
+    if (!params || typeof params === 'string') return;
     getLessonContent(params).then(res => {
       setData(res);
       setLoading(false);
