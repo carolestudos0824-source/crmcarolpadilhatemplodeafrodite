@@ -1,10 +1,12 @@
 export const buildDailyChallenge = () => ({});
 export const buildDailyChallenges = () => [];
-export const buildCartaDoDia = () => ({});
+export const buildCartaDoDia = () => ({
+  numeral: "", name: "", subtitle: "", keywords: [], essence: "", reflection: ""
+});
 export const buildPerguntasDoDia = () => ({ questions: [] });
-export const buildSimboloDoDia = () => ({});
-export const buildCombinacaoDoDia = () => ({});
-export const buildMiniInterpretacao = () => ({});
+export const buildSimboloDoDia = () => ({ name: "", explanation: "", readings: "", cards: [] });
+export const buildCombinacaoDoDia = () => ({ card1: {}, card2: {}, prompt: "", insight: "" });
+export const buildMiniInterpretacao = () => ({ context: "", position: "", card: {}, guidedQuestions: [], sampleReading: "" });
 export const DAILY_TOTAL_XP = 100;
 export interface DailyChallengeItem {
   id: string;
@@ -13,6 +15,7 @@ export interface DailyChallengeItem {
   subtitle: string;
   icon: any;
   xp: number;
+  xpReward?: number;
   completed: boolean;
 }
 export interface CartaDoDia {
@@ -26,6 +29,22 @@ export interface CartaDoDia {
 export interface PerguntasDoDia {
   questions: any[];
 }
-export interface SimboloDoDia {}
-export interface CombinacaoDoDia {}
-export interface MiniInterpretacao {}
+export interface SimboloDoDia {
+  name: string;
+  explanation: string;
+  readings: string;
+  cards: any[];
+}
+export interface CombinacaoDoDia {
+  card1: any;
+  card2: any;
+  prompt: string;
+  insight: string;
+}
+export interface MiniInterpretacao {
+  context: string;
+  position: string;
+  card: any;
+  guidedQuestions: string[];
+  sampleReading: string;
+}

@@ -1,1 +1,7 @@
-export function useGiftCode() { return { checkCode: async () => ({}), redeem: async () => ({}), loading: false }; }
+export function useGiftCode() { 
+  return { 
+    checkCode: async () => ({ success: false }), 
+    redeem: async () => ({ success: false }), 
+    loading: false 
+  }; 
+}

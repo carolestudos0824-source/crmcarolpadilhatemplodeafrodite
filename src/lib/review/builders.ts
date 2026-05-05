@@ -1,5 +1,5 @@
 export const buildReview = () => ({ questions: [] });
-export const buildReviewBundle = () => ({});
+export const buildReviewBundle = () => ({ allFlashcards: [], allReviewQuizzes: [], allQuickReviews: [] });
 export const generateDailyChallenge = () => ({});
 export const getArcanoNameFromBundle = () => "";
 export const getArcanoNumeralFromBundle = () => "";
@@ -14,4 +14,10 @@ export interface QuickReviewSummary {
   practicalApplication: string;
   fixationPhrase: string;
 }
-export interface Flashcard {}
+export interface Flashcard {
+  id: string;
+  arcanoId: number;
+  category: string;
+  front: string;
+  back: string;
+}

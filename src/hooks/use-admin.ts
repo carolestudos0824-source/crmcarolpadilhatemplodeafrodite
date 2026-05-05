@@ -1,1 +1,1 @@
-export function useIsAdmin() { return { isAdmin: false }; }
+export function useIsAdmin() { return { isAdmin: false, loading: false }; }
