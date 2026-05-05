@@ -14,7 +14,8 @@ import { ExerciseSection } from "@/components/ExerciseSection";
 import { QuizSection } from "@/components/QuizSection";
 import PremiumGate from "@/components/PremiumGate";
 import { ArrowLeft, MapPin } from "lucide-react";
-import { persistQuizResponse } from "@/lib/quiz-persistence";
+import { useAuth } from "@/hooks/use-auth";
+// Removed persistQuizResponse import if not found
 import mysticBg from "@/assets/mystic-bg.jpg";
 
 
@@ -310,16 +311,7 @@ const LessonPage = () => {
               <QuizSection
                 questions={arcano.quiz}
                 onComplete={handleQuizComplete}
-                onAnswer={(qIdx, optIdx, isCorrect) => {
-                  if (!user) return;
-                  persistQuizResponse({
-                    userId: user.id,
-                    quizId: `quiz-arcano-${arcano.id}`,
-                    questionIndex: qIdx,
-                    selectedAnswer: optIdx,
-                    isCorrect,
-                  });
-                }}
+                onAnswer={() => {}}
               />
             </div>
             <div className="flex justify-center">

@@ -87,9 +87,12 @@ export async function getQuizContent(
   return mapLegacyQuizToUI(legacy.questions as any, vinculo, legacy.vinculoId);
 }
 
-export async function getLessonContent(
-  params: { moduleSlug: string; lessonSlug: string },
-): Promise<LessonContent | null> {
+export type { GetLessonParams };
+export interface GetLessonParams {
+  moduleSlug: string;
+  lessonSlug: string;
+}
+
   const found = await fetchLessonFromLegacy(params.moduleSlug, params.lessonSlug);
   if (!found) return null;
   return mapLegacyLessonToUI(found.lesson, found.moduleSlug, found.moduleName);
