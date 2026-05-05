@@ -148,6 +148,7 @@ const AppShell = () => (
         {/* Dashboard */}
         <Route path="/app" element={<P><ModulesPage /></P>} />
         <Route path="/trilhas" element={<P><TrailsPage /></P>} />
+        <Route path="/ligas" element={<P><LigasPage /></P>} />
 
         {/* Fundamentos */}
         <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
