@@ -983,6 +983,66 @@ export type Database = {
           },
         ]
       }
+      league_participants: {
+        Row: {
+          display_name: string | null
+          id: string
+          league_name: string
+          user_id: string
+          week_date: string
+          xp_week: number | null
+        }
+        Insert: {
+          display_name?: string | null
+          id?: string
+          league_name: string
+          user_id: string
+          week_date: string
+          xp_week?: number | null
+        }
+        Update: {
+          display_name?: string | null
+          id?: string
+          league_name?: string
+          user_id?: string
+          week_date?: string
+          xp_week?: number | null
+        }
+        Relationships: []
+      }
+      lesson_history: {
+        Row: {
+          completed_at: string | null
+          errors_count: number | null
+          id: string
+          is_perfect: boolean | null
+          level: number
+          unit_id: number
+          user_id: string
+          xp_gained: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          errors_count?: number | null
+          id?: string
+          is_perfect?: boolean | null
+          level: number
+          unit_id: number
+          user_id: string
+          xp_gained?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          errors_count?: number | null
+          id?: string
+          is_perfect?: boolean | null
+          level?: number
+          unit_id?: number
+          user_id?: string
+          xp_gained?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1115,6 +1175,78 @@ export type Database = {
         }
         Relationships: []
       }
+      tarot_content: {
+        Row: {
+          arcana_type: string
+          astrology: string | null
+          created_at: string | null
+          direct_meaning: string
+          element: string | null
+          id: string
+          image_url: string | null
+          kabalistic_number: number | null
+          keywords: string[]
+          name: string
+          number: number
+          phrases: Json | null
+          reverse_meaning: string
+          situations: string[] | null
+          suit: string | null
+        }
+        Insert: {
+          arcana_type: string
+          astrology?: string | null
+          created_at?: string | null
+          direct_meaning: string
+          element?: string | null
+          id: string
+          image_url?: string | null
+          kabalistic_number?: number | null
+          keywords: string[]
+          name: string
+          number: number
+          phrases?: Json | null
+          reverse_meaning: string
+          situations?: string[] | null
+          suit?: string | null
+        }
+        Update: {
+          arcana_type?: string
+          astrology?: string | null
+          created_at?: string | null
+          direct_meaning?: string
+          element?: string | null
+          id?: string
+          image_url?: string | null
+          kabalistic_number?: number | null
+          keywords?: string[]
+          name?: string
+          number?: number
+          phrases?: Json | null
+          reverse_meaning?: string
+          situations?: string[] | null
+          suit?: string | null
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          unlocked_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_events: {
         Row: {
           created_at: string
@@ -1210,6 +1342,78 @@ export type Database = {
         Update: {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          current_league: string | null
+          current_week: string | null
+          hearts: number | null
+          last_heart_recharge: string | null
+          last_study_date: string | null
+          meta_diaria: number | null
+          streak_current: number | null
+          streak_max: number | null
+          updated_at: string | null
+          user_id: string
+          xp_hoje: number | null
+          xp_total: number | null
+          xp_week: number | null
+        }
+        Insert: {
+          current_league?: string | null
+          current_week?: string | null
+          hearts?: number | null
+          last_heart_recharge?: string | null
+          last_study_date?: string | null
+          meta_diaria?: number | null
+          streak_current?: number | null
+          streak_max?: number | null
+          updated_at?: string | null
+          user_id: string
+          xp_hoje?: number | null
+          xp_total?: number | null
+          xp_week?: number | null
+        }
+        Update: {
+          current_league?: string | null
+          current_week?: string | null
+          hearts?: number | null
+          last_heart_recharge?: string | null
+          last_study_date?: string | null
+          meta_diaria?: number | null
+          streak_current?: number | null
+          streak_max?: number | null
+          updated_at?: string | null
+          user_id?: string
+          xp_hoje?: number | null
+          xp_total?: number | null
+          xp_week?: number | null
+        }
+        Relationships: []
+      }
+      user_unit_progress: {
+        Row: {
+          crowns: number | null
+          current_level: number | null
+          unit_id: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          crowns?: number | null
+          current_level?: number | null
+          unit_id: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          crowns?: number | null
+          current_level?: number | null
+          unit_id?: number
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
