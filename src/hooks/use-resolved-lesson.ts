@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getLessonContent } from "@/lib/content";
 
-export function useResolvedLesson(params: { moduleSlug: string; lessonSlug: string } | null) {
+export function useResolvedLesson(params: { moduleSlug: string; lessonSlug: string } | null, moreParams?: any) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,5 +13,5 @@ export function useResolvedLesson(params: { moduleSlug: string; lessonSlug: stri
     });
   }, [params?.moduleSlug, params?.lessonSlug]);
 
-  return { data, loading };
+  return { data, loading, isLoading: loading, usedFallback: true, sourceUsed: "legacy" };
 }
