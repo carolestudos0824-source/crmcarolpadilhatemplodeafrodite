@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { BookOpen, User, MessageCircle, Crown } from "lucide-react";
 
 const NAV_ITEMS = [
-  { path: "/app", label: "Módulos", icon: BookOpen },
+  { path: "/app", label: "Trilha", icon: BookOpen },
   { path: "/feedback", label: "Feedback", icon: MessageCircle },
   { path: "/premium", label: "Premium", icon: Crown },
   { path: "/perfil", label: "Perfil", icon: User },
