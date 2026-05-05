@@ -1,30 +1,10 @@
 import { Flame } from "lucide-react";
 
-interface StreakCounterProps {
-  streak: number;
-}
-
-export function StreakCounter({ streak }: StreakCounterProps) {
-  const isActive = streak > 0;
-
+export function StreakCounter({ streak }: { streak: number }) {
   return (
-    <div className="flex items-center gap-1.5 px-3.5 py-2 rounded-full transition-all duration-300" style={isActive ? {
-      border: "1px solid hsl(340 42% 26% / 0.45)",
-      background: "hsl(340 42% 28% / 0.10)",
-      boxShadow: "0 0 14px hsl(340 42% 28% / 0.10)"
-    } : {
-      border: "1px solid hsl(36 22% 78% / 0.65)",
-      background: "hsl(38 28% 93% / 0.55)"
-    }}>
-      <Flame
-        className="w-4 h-4 transition-colors"
-        style={{ color: isActive ? "hsl(340 42% 24%)" : "hsl(230 10% 45% / 0.38)" }}
-      />
-      <span className="text-sm font-heading tabular-nums" style={{
-        color: isActive ? "hsl(230 20% 12% / 0.88)" : "hsl(230 10% 40% / 0.42)"
-      }}>
-        {streak}
-      </span>
+    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-orange-600">
+      <Flame className="w-4 h-4 fill-current" />
+      <span className="text-sm font-heading">{streak}</span>
     </div>
   );
 }

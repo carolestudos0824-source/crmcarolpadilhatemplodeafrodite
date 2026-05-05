@@ -5,7 +5,7 @@ import { useAccess } from "@/hooks/use-access";
 import PremiumGate from "@/components/PremiumGate";
 import { XPBar } from "@/components/XPBar";
 import { StreakCounter } from "@/components/StreakCounter";
-import { JourneyMap } from "@/components/JourneyMap";
+// Removed JourneyMap import
 import { useProgress } from "@/hooks/use-progress";
 import { ARCANOS_MAIORES_CATALOG as ARCANOS_MAIORES, getArcanoFull as getArcanoById } from "@/lib/content";
 import mysticBg from "@/assets/mystic-bg.jpg";
@@ -285,7 +285,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ═══════════════ JOURNEY MAP ═══════════════ */}
+        {/* Replaced JourneyMap with simpler list if needed or removed */}
         <section className="mb-10">
           <div className="flex items-center justify-center mb-3">
             <img src={ornamentDivider} alt="" className="w-28 h-auto opacity-50" loading="lazy" width={800} height={512} />
@@ -295,7 +295,22 @@ const Index = () => {
           }}>
             Mapa da Jornada
           </h2>
-          <JourneyMap progress={progress} />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {ARCANOS_MAIORES.map((arcano) => (
+              <button
+                key={arcano.id}
+                onClick={() => navigate(`/lesson/${arcano.id}`)}
+                className={`p-4 rounded-xl border text-center transition-all ${
+                  isArcanoCompleted(arcano.id) 
+                    ? "bg-[#6B2737]/10 border-[#6B2737]/30" 
+                    : "bg-white/40 border-gray-200 opacity-80"
+                }`}
+              >
+                <span className="text-xs font-heading" style={{ color: "hsl(340 42% 24%)" }}>{arcano.numeral}</span>
+                <p className="text-[10px] uppercase tracking-tighter mt-1">{arcano.name}</p>
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* Bottom ornament */}

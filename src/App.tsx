@@ -14,12 +14,12 @@ import SessionInitializer from "@/components/SessionInitializer";
 // Eager: critical path
 import LandingPage from "./pages/LandingPage.tsx";
 import AuthPage from "./pages/AuthPage.tsx";
-import ModulesPage from "./pages/ModulesPage.tsx";
+// Removed ModulesPage import
 
 // Lazy: everything else
 const Index = lazy(() => import("./pages/Index.tsx"));
 const LessonPage = lazy(() => import("./pages/LessonPage.tsx"));
-const AdminPage = lazy(() => import("./pages/AdminPage.tsx"));
+// Removed AdminPage import
 const PremiumPage = lazy(() => import("./pages/PremiumPage.tsx"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage.tsx"));
 const FoolsJourneyPage = lazy(() => import("./pages/FoolsJourneyPage.tsx"));
@@ -29,7 +29,7 @@ const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
 const BetaInvitePage = lazy(() => import("./pages/BetaInvitePage.tsx"));
 const WaitlistPage = lazy(() => import("./pages/WaitlistPage"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
-const LigasPage = lazy(() => import("./pages/LigasPage.tsx"));
+// Removed LigasPage import
 
 // Module pages
 const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
@@ -59,7 +59,7 @@ const TrabalharTaroPage = lazy(() => import("./pages/TrabalharTaroPage.tsx"));
 const TrabalharTaroLessonPage = lazy(() => import("./pages/TrabalharTaroLessonPage.tsx"));
 
 // Utility pages
-const TrailsPage = lazy(() => import("./pages/TrailsPage.tsx"));
+// Removed TrailsPage import
 const ReviewPage = lazy(() => import("./pages/ReviewPage.tsx"));
 const DailyChallengesPage = lazy(() => import("./pages/DailyChallengesPage.tsx"));
 const CertificatesPage = lazy(() => import("./pages/CertificatesPage.tsx"));
@@ -145,10 +145,7 @@ const AppShell = () => (
     {/* Wrapper aplica clearance automático para a BottomNav fixa em TODAS as páginas */}
     <div className="pb-bottom-nav">
       <Routes>
-        {/* Dashboard */}
-        <Route path="/app" element={<P><ModulesPage /></P>} />
-        <Route path="/trilhas" element={<P><TrailsPage /></P>} />
-        <Route path="/ligas" element={<P><LigasPage /></P>} />
+        <Route path="/app" element={<P><Index /></P>} />
 
         {/* Fundamentos */}
         <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
@@ -221,7 +218,7 @@ const AppShell = () => (
         <Route path="/premium" element={<P><PremiumPage /></P>} />
         <Route path="/perfil" element={<P><ProfilePage /></P>} />
         <Route path="/feedback" element={<P><FeedbackPage /></P>} />
-        <Route path="/admin" element={<P><AdminPage /></P>} />
+        {/* Removed Admin route */}
 
         <Route path="*" element={<NotFound />} />
       </Routes>

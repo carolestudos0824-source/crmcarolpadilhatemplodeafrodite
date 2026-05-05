@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Crown, Sparkles, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePremium } from "@/hooks/use-premium";
-import { useIsAdmin } from "@/hooks/use-admin";
+// Removed useIsAdmin import
 
 interface PremiumGateProps {
   featureName?: string;
@@ -28,7 +28,7 @@ const PremiumGate = ({
 }: PremiumGateProps) => {
   const navigate = useNavigate();
   const { isPremium, loading } = usePremium();
-  const { isAdmin } = useIsAdmin();
+  const isAdmin = false; // removed useIsAdmin check
 
   // Admins always bypass premium gate
   if (loading) return null;
