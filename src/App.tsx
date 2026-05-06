@@ -9,10 +9,10 @@ import { TemploDashboard } from "./pages/templo/TemploDashboard";
 const queryClient = new QueryClient();
 
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-templo-black">
+  <div className="min-h-screen flex items-center justify-center bg-[#F4F0EA]">
     <div className="text-center space-y-4">
-      <div className="w-10 h-10 rounded-full border-2 border-templo-gold border-t-transparent animate-spin mx-auto" />
-      <p className="text-[10px] text-templo-gold/60 uppercase tracking-[0.3em] font-medium">Invocando Sistema...</p>
+      <div className="w-12 h-12 rounded-full border-2 border-[#C9A35A] border-t-transparent animate-spin mx-auto" />
+      <p className="text-[10px] text-[#111111]/40 uppercase tracking-[0.3em] font-bold">Conectando ao Templo...</p>
     </div>
   </div>
 );
@@ -28,6 +28,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const ClientesListPage = lazy(() => import("./pages/templo/ClientesListPage").then(m => ({ default: m.ClientesListPage })));
 const ClienteFormPage = lazy(() => import("./pages/templo/ClienteFormPage").then(m => ({ default: m.ClienteFormPage })));
 const NovoAtendimentoPage = lazy(() => import("./pages/templo/NovoAtendimentoPage").then(m => ({ default: m.NovoAtendimentoPage })));
+const MagiasPage = lazy(() => import("./pages/templo/MagiasPage").then(m => ({ default: m.MagiasPage })));
+const ReportsPage = lazy(() => import("./pages/templo/ReportsPage").then(m => ({ default: m.ReportsPage })));
+const SettingsPage = lazy(() => import("./pages/templo/SettingsPage").then(m => ({ default: m.SettingsPage })));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -43,9 +46,9 @@ const App = () => (
               <Route path="clientes" element={<ClientesListPage />} />
               <Route path="clientes/novo" element={<ClienteFormPage />} />
               <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
-              <Route path="jogos" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
-              <Route path="relatorios" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
-              <Route path="configuracoes" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
+              <Route path="magias" element={<MagiasPage />} />
+              <Route path="relatorios" element={<ReportsPage />} />
+              <Route path="configuracoes" element={<SettingsPage />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,310 +1,304 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useAtendimentoStore } from "@/store/use-atendimento-store";
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  User, 
+  MessageSquare, 
+  Mic, 
+  Play, 
+  Camera, 
+  Check, 
+  Sparkles,
+  Info,
+  ChevronRight,
+  Heart,
+  Save,
+  RotateCcw,
+  MessageCircle,
+  PlusCircle,
+  Plus
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, UserPlus, ArrowRight, ArrowLeft, Mic, Sparkles, X, Plus, Copy, Check } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
-import { CartaPosicaoModal } from "@/components/templo/CartaPosicaoModal";
+import { cn } from "@/lib/utils";
 
-const SITUACOES = [
-  "Está sumindo", "Término recente", "Quero reconquistar", "Ele bloqueia e desbloqueia", 
-  "Ele tem medo de se envolver", "Relação fria", "Possível traição", "Terceira pessoa", 
+const situations = [
+  "Está sumindo", "Término recente", "Quero reconquistar", "Ele bloqueia e desbloqueia",
+  "Ele tem medo de se envolver", "Relação fria", "Possível traição", "Terceira pessoa",
   "Amor não assumido", "Quero atrair alguém novo", "Quero saber se devo insistir", "Outro caso"
 ];
 
-const POSICOES = [
-  { id: 1, label: "Pensamentos dela", bloco: "ELA" },
-  { id: 2, label: "Sentimentos dela", bloco: "ELA" },
-  { id: 3, label: "Desejos dela", bloco: "ELA" },
-  { id: 4, label: "Pensamentos dele", bloco: "ELE" },
-  { id: 5, label: "Sentimentos dele", bloco: "ELE" },
-  { id: 6, label: "Desejos dele", bloco: "ELE" },
-  { id: 7, label: "Conselho", bloco: "CENTRO" },
-  { id: 8, label: "Obstáculo", bloco: "CENTRO" },
-  { id: 9, label: "Tendência 1", bloco: "FUTURO" },
-  { id: 10, label: "Tendência 2", bloco: "FUTURO" },
-  { id: 11, label: "Tendência 3", bloco: "FUTURO" },
+const tarotPositions = [
+  { id: 1, section: "VOCÊ", label: "Pensamentos dela" },
+  { id: 2, section: "VOCÊ", label: "Sentimentos dela" },
+  { id: 3, section: "VOCÊ", label: "Desejos dela" },
+  { id: 4, section: "ELE", label: "Pensamentos dele" },
+  { id: 5, section: "ELE", label: "Sentimentos dele" },
+  { id: 6, section: "ELE", label: "Desejos dele" },
+  { id: 7, section: "CENTRO", label: "Conselho" },
+  { id: 8, section: "CENTRO", label: "Obstáculo" },
+  { id: 9, section: "TENDÊNCIA FUTURA", label: "Carta 1" },
+  { id: 10, section: "TENDÊNCIA FUTURA", label: "Carta 2" },
+  { id: 11, section: "TENDÊNCIA FUTURA", label: "Carta 3" },
 ];
 
 export function NovoAtendimentoPage() {
   const navigate = useNavigate();
-  const store = useAtendimentoStore();
   const [step, setStep] = useState(1);
-  const [search, setSearch] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [selectedPosicao, setSelectedPosicao] = useState<number | null>(null);
-  const [generating, setGenerating] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [relato, setRelato] = useState("");
+  const [cards, setCards] = useState<Record<number, { name: string, obs: string }>>({});
 
-  const { data: clientes } = useQuery({
-    queryKey: ["clientes-atendimento", search],
-    queryFn: async () => {
-      let query = supabase.from("clientes").select("id, nome, whatsapp, nome_envolvido");
-      if (search) query = query.ilike("nome", `%${search}%`);
-      const { data, error } = await query.limit(5);
-      if (error) throw error;
-      return data;
-    },
-    enabled: step === 1
-  });
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
 
-  const selectedCliente = clientes?.find(c => c.id === store.clienteId);
-
-  const nextStep = () => {
-    if (step === 1 && !store.clienteId) return toast({ title: "Selecione uma cliente" });
-    if (step === 2 && !store.situacao) return toast({ title: "Selecione a situação" });
-    if (step === 3 && !store.relato) return toast({ title: "O relato é necessário" });
-    if (step === 4 && Object.keys(store.cartas).length < 11) return toast({ title: "Preencha todas as 11 cartas" });
-    
-    if (step === 4) {
-      handleGenerateReading();
-    } else {
-      setStep(step + 1);
+  const toggleRecording = () => {
+    setIsRecording(!isRecording);
+    if (!isRecording) {
+      // Simular transcrição após 3 segundos
+      setTimeout(() => {
+        setIsRecording(false);
+        setRelato("A consulente relata que o parceiro está afastado há duas semanas. Eles tiveram uma discussão boba por causa de redes sociais e desde então ele visualiza as mensagens mas não responde. Ela sente que ele está perdendo o interesse ou talvez falando com outra pessoa.");
+      }, 3000);
     }
   };
 
-  const prevStep = () => setStep(step - 1);
-
-  const handleGenerateReading = async () => {
-    setGenerating(true);
-    setStep(5);
-    
-    // Simulate API call for now (Fase 1)
-    setTimeout(() => {
-      store.setLeituraGerada(`### Diagnóstico Geral
-A relação atravessa um momento de purificação. A presença d'O Louco nos pensamentos dela indica uma vontade de recomeçar, enquanto o Diabo nos desejos dele mostra um apego ainda muito forte ao passado...
-
-### Conselho Espiritual
-O momento pede silêncio e observação. Não tente forçar o diálogo agora.`);
-      
-      store.setTextoWhatsApp(`Olá! Aqui está o resumo da sua leitura:
-      
-A tendência para os próximos dias é de uma abertura gradual para o diálogo, mas você precisará exercitar a paciência.
-
-Conselho: O momento pede silêncio e observação.`);
-      
-      setGenerating(false);
-    }, 3000);
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(store.textoWhatsApp);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    toast({ title: "Copiado!" });
-  };
-
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-fade-up pb-20">
-      <header className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-templo-gold/40 text-[10px] font-bold uppercase tracking-[0.2em]">
-          <span>Passo {step} de 5</span>
-          <div className="flex-1 h-px bg-templo-gold/10"></div>
+    <div className="max-w-4xl mx-auto pb-24 animate-fade-in">
+      {/* Progress Header */}
+      <header className="mb-10 space-y-4">
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="icon" onClick={() => step > 1 ? prevStep() : navigate(-1)} className="rounded-xl border border-[#C9A35A]/20">
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex gap-2">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <div 
+                key={s} 
+                className={cn(
+                  "w-12 h-1.5 rounded-full transition-all duration-500",
+                  step >= s ? "bg-[#A61E25]" : "bg-[#ECE5DC]"
+                )}
+              />
+            ))}
+          </div>
+          <div className="w-10" /> {/* Spacer */}
         </div>
-        <h1 className="font-display text-3xl font-bold text-templo-gold uppercase tracking-tighter">
-          {step === 1 ? "Quem busca orientação?" : 
-           step === 2 ? "Qual o cenário atual?" : 
-           step === 3 ? "O que as águas dizem?" : 
-           step === 4 ? "Tiragem Templo de Afrodite" : "Leitura Manifestada"}
-        </h1>
+        <div className="text-center">
+          <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#C9A35A]">Passo {step} de 5</p>
+          <h1 className="text-2xl font-bold text-[#111111] font-display">
+            {step === 1 && "Identificação da Cliente"}
+            {step === 2 && "Qual a situação?"}
+            {step === 3 && "Relato do Caso"}
+            {step === 4 && "Jogo do Amor"}
+            {step === 5 && "Leitura Manifestada"}
+          </h1>
+        </div>
       </header>
 
+      {/* Step 1: Cliente */}
       {step === 1 && (
-        <div className="space-y-6">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-templo-gold/40" />
-            <Input 
-              placeholder="Buscar cliente por nome..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="pl-12 h-14 bg-templo-black/40 border-templo-gold/20 rounded-2xl text-lg"
-            />
-          </div>
-
-          <div className="grid gap-3">
-            {clientes?.map(c => (
-              <button
-                key={c.id}
-                onClick={() => store.setClienteId(c.id)}
-                className={`flex items-center justify-between p-5 rounded-2xl border transition-all ${
-                  store.clienteId === c.id 
-                    ? "bg-templo-red/10 border-templo-gold text-templo-gold shadow-[0_0_20px_rgba(215,189,121,0.1)]" 
-                    : "bg-templo-black/20 border-white/5 text-templo-ivory/60 hover:border-white/20"
-                }`}
-              >
-                <div className="text-left">
-                  <p className="font-bold">{c.nome}</p>
-                  <p className="text-xs opacity-50">Envolvido: {c.nome_envolvido || "Não informado"}</p>
-                </div>
-                {store.clienteId === c.id && <Sparkles className="w-5 h-5 animate-pulse" />}
-              </button>
-            ))}
+        <div className="space-y-6 animate-fade-up">
+          <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+            <div className="space-y-4">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Selecione a Cliente</label>
+              <div className="relative">
+                <Input placeholder="Buscar por nome..." className="h-16 pl-12 rounded-2xl bg-[#F4F0EA]/50 border-[#C9A35A]/20" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#C9A35A]" />
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <p className="text-[10px] uppercase tracking-widest font-bold text-[#111111]/40 ml-1">Clientes Recentes</p>
+              {["Mariana Silva", "Beatriz Oliveira", "Julia Santos"].map((name) => (
+                <button 
+                  key={name}
+                  onClick={nextStep}
+                  className="w-full flex items-center justify-between p-5 rounded-2xl border border-[#C9A35A]/10 hover:border-[#A61E25] hover:bg-[#A61E25]/5 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] italic text-sm">{name[0]}</div>
+                    <span className="font-bold text-[#111111]">{name}</span>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25]" />
+                </button>
+              ))}
+            </div>
+            
+            <Button variant="outline" className="w-full h-16 rounded-2xl border-dashed border-[#C9A35A]/40 text-[#C9A35A] font-bold gap-2">
+              <PlusCircle className="w-5 h-5" />
+              CADASTRAR NOVA CLIENTE
+            </Button>
           </div>
         </div>
       )}
 
+      {/* Step 2: Situação */}
       {step === 2 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {SITUACOES.map(s => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-up">
+          {situations.map((sit) => (
             <button
-              key={s}
-              onClick={() => store.setSituacao(s)}
-              className={`p-5 rounded-2xl border text-sm font-medium transition-all text-left ${
-                store.situacao === s
-                  ? "bg-templo-red/20 border-templo-red text-templo-ivory shadow-[0_0_20px_rgba(184,13,45,0.2)]"
-                  : "bg-templo-black/20 border-white/5 text-templo-ivory/50 hover:border-white/20"
-              }`}
+              key={sit}
+              onClick={nextStep}
+              className="bg-white p-6 rounded-2xl border border-[#C9A35A]/10 hover:border-[#A61E25] hover:shadow-lg transition-all text-left group"
             >
-              {s}
+              <span className="font-bold text-[#111111] group-hover:text-[#A61E25]">{sit}</span>
             </button>
           ))}
         </div>
       )}
 
+      {/* Step 3: Relato */}
       {step === 3 && (
-        <div className="space-y-6">
-          <div className="bg-templo-black/40 border border-templo-gold/10 p-6 rounded-2xl min-h-[400px]">
-            <Textarea 
-              value={store.relato}
-              onChange={e => store.setRelato(e.target.value)}
-              className="bg-transparent border-none p-0 focus-visible:ring-0 min-h-[300px] text-lg leading-relaxed"
-              placeholder="Descreva o caso..."
-            />
-          </div>
-        </div>
-      )}
-
-      {step === 4 && (
-        <div className="space-y-12">
-          {/* ELA & ELE */}
-          <div className="grid grid-cols-2 gap-12">
-            <div className="space-y-4">
-              <h3 className="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-templo-gold/60">Lado Dela</h3>
-              <div className="grid gap-4">
-                {POSICOES.filter(p => p.bloco === "ELA").map(p => (
-                  <CardPosicaoButton key={p.id} label={p.label} dados={store.cartas[p.id]} onClick={() => setSelectedPosicao(p.id)} />
-                ))}
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-templo-gold/60">Lado Dele</h3>
-              <div className="grid gap-4">
-                {POSICOES.filter(p => p.bloco === "ELE").map(p => (
-                  <CardPosicaoButton key={p.id} label={p.label} dados={store.cartas[p.id]} onClick={() => setSelectedPosicao(p.id)} />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* CENTRO */}
-          <div className="space-y-4">
-            <h3 className="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-templo-gold/60">O Coração da Questão</h3>
-            <div className="flex justify-center gap-6">
-              {POSICOES.filter(p => p.bloco === "CENTRO").map(p => (
-                <div key={p.id} className="w-40">
-                  <CardPosicaoButton label={p.label} dados={store.cartas[p.id]} onClick={() => setSelectedPosicao(p.id)} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* FUTURO */}
-          <div className="space-y-4">
-            <h3 className="text-center text-[10px] font-bold uppercase tracking-[0.3em] text-templo-gold/60">Tendências Futuras</h3>
-            <div className="grid grid-cols-3 gap-4">
-              {POSICOES.filter(p => p.bloco === "FUTURO").map(p => (
-                <CardPosicaoButton key={p.id} label={p.label} dados={store.cartas[p.id]} onClick={() => setSelectedPosicao(p.id)} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {step === 5 && (
         <div className="space-y-8 animate-fade-up">
-          {generating ? (
-            <div className="py-20 text-center space-y-6">
-              <div className="w-16 h-16 border-2 border-templo-red border-t-transparent rounded-full animate-spin mx-auto"></div>
-              <p className="font-display text-2xl text-templo-gold italic animate-pulse">Sintonizando planos espirituais...</p>
+          <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Transcrição do Relato</label>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={toggleRecording}
+                  className={cn(
+                    "h-12 rounded-xl font-bold gap-2 px-6 transition-all",
+                    isRecording ? "bg-red-500 animate-pulse text-white" : "bg-[#A61E25] text-white"
+                  )}
+                >
+                  <Mic className="w-5 h-5" />
+                  {isRecording ? "GRAVANDO..." : "GRAVAR RELATO"}
+                </Button>
+              </div>
             </div>
-          ) : (
-            <>
-              <div className="bg-templo-black/40 border border-templo-gold/10 p-8 rounded-2xl prose prose-invert max-w-none prose-headings:text-templo-gold prose-headings:font-display">
-                <div dangerouslySetInnerHTML={{ __html: store.leituraGerada.replace(/\n/g, '<br/>') }}></div>
-              </div>
-              
-              <div className="bg-templo-red/10 border border-templo-red/20 p-6 rounded-2xl space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-templo-red">Rascunho WhatsApp</h4>
-                  <Button variant="ghost" onClick={handleCopy} className="text-templo-red hover:bg-templo-red/10 gap-2">
-                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    COPIAR
-                  </Button>
-                </div>
-                <div className="bg-templo-black/40 p-4 rounded-xl text-sm border border-white/5 whitespace-pre-wrap">
-                  {store.textoWhatsApp}
-                </div>
-              </div>
-            </>
-          )}
+            
+            <Textarea 
+              value={relato}
+              onChange={(e) => setRelato(e.target.value)}
+              placeholder="Escreva aqui o que a cliente contou ou use o microfone para transcrever..."
+              className="min-h-[200px] rounded-2xl bg-[#F4F0EA]/30 border-[#C9A35A]/20 focus:ring-[#A61E25] text-lg p-6"
+            />
+            
+            <div className="flex gap-4">
+              <Button variant="outline" onClick={() => setRelato("")} className="h-14 rounded-xl border-[#C9A35A]/30 text-[#C9A35A] font-bold gap-2">
+                <RotateCcw className="w-4 h-4" />
+                LIMPAR
+              </Button>
+              <Button onClick={nextStep} disabled={!relato} className="flex-1 h-14 rounded-xl bg-[#111111] text-white font-bold gap-2">
+                CONTINUAR PARA TIRAGEM
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
-      <footer className="flex items-center justify-between pt-8 border-t border-templo-gold/10">
-        <Button variant="ghost" onClick={prevStep} disabled={generating || step === 1} className="text-templo-ivory/40">VOLTAR</Button>
-        <Button onClick={nextStep} disabled={generating} className="bg-templo-red hover:bg-templo-red/90 h-14 rounded-xl font-bold px-10 gap-3">
-          {step === 4 ? "GERAR LEITURA" : step === 5 ? "SALVAR NO HISTÓRICO" : "CONTINUAR"}
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </footer>
+      {/* Step 4: Jogo do Amor (Tarot Spread) */}
+      {step === 4 && (
+        <div className="space-y-10 animate-fade-up">
+          {/* Foto Upload Area */}
+          <div className="bg-[#111111] p-8 rounded-[2.5rem] text-center space-y-4 shadow-xl border border-[#C9A35A]/30">
+            <Camera className="w-10 h-10 text-[#C9A35A] mx-auto" />
+            <h3 className="text-white font-bold text-lg">Reconhecer via Foto</h3>
+            <p className="text-[#F4F0EA]/60 text-sm max-w-xs mx-auto">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
+            <Button className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8">ENVIAR FOTO</Button>
+          </div>
 
-      {selectedPosicao && (
-        <CartaPosicaoModal 
-          isOpen={!!selectedPosicao}
-          onClose={() => setSelectedPosicao(null)}
-          posicaoNome={POSICOES.find(p => p.id === selectedPosicao)?.label || ""}
-          onConfirm={(dados) => {
-            store.setCarta(selectedPosicao, dados);
-            setSelectedPosicao(null);
-          }}
-          initialData={store.cartas[selectedPosicao]}
-        />
+          <div className="space-y-12">
+            {["VOCÊ", "ELE", "CENTRO", "TENDÊNCIA FUTURA"].map((section) => (
+              <div key={section} className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-[#C9A35A]/20" />
+                  <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-[#C9A35A]">{section}</h2>
+                  <div className="h-px flex-1 bg-[#C9A35A]/20" />
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {tarotPositions.filter(p => p.section === section).map((pos) => (
+                    <div key={pos.id} className="bg-white p-6 rounded-3xl border border-[#C9A35A]/20 shadow-sm space-y-4 group hover:border-[#A61E25] transition-all">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Posição {pos.id}</span>
+                        <Info className="w-4 h-4 text-[#C9A35A]/30" />
+                      </div>
+                      <h4 className="font-bold text-[#111111]">{pos.label}</h4>
+                      
+                      <div className="aspect-[2/3] rounded-2xl bg-[#F4F0EA] border-2 border-dashed border-[#C9A35A]/20 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#C9A35A]/5 transition-all">
+                        <Plus className="w-8 h-8 text-[#C9A35A]/40" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A35A]/60">Inserir Carta</span>
+                      </div>
+                      
+                      <Input placeholder="Obs. manual..." className="h-10 rounded-xl bg-transparent border-[#C9A35A]/10 text-xs" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="sticky bottom-28 lg:bottom-8 left-0 w-full flex justify-center">
+            <Button onClick={nextStep} className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-95 transition-all">
+              <Sparkles className="w-5 h-5 text-[#C9A35A]" />
+              MANIFESTAR LEITURA
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 5: Resultado */}
+      {step === 5 && (
+        <div className="space-y-10 animate-fade-up pb-20">
+          <div className="bg-[#111111] p-10 rounded-[3rem] text-center space-y-4 border border-[#C9A35A]/40 shadow-2xl relative overflow-hidden">
+             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
+             <Sparkles className="w-12 h-12 text-[#C9A35A] mx-auto animate-pulse" />
+             <h2 className="text-3xl font-bold text-white font-display">Leitura Concluída</h2>
+             <p className="text-[#C9A35A] font-bold uppercase tracking-[0.2em] text-xs">A energia foi canalizada com sucesso</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
+                  <h3 className="text-xl font-bold text-[#111111] font-display flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-[#A61E25] fill-[#A61E25]" />
+                    Diagnóstico Geral
+                  </h3>
+                  <p className="text-[#111111]/80 leading-relaxed italic">
+                    "A energia atual da relação mostra um bloqueio comunicativo severo. Enquanto você mantém sentimentos nutridos e o desejo de reconciliação (representado pela Rainha de Copas), ele se encontra em um momento de introspecção defensiva (4 de Espadas). O obstáculo principal é o orgulho ferido por ambas as partes."
+                  </p>
+               </section>
+
+               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+                  <h3 className="text-xl font-bold text-[#111111] font-display">Caminhos & Magias</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-2xl bg-[#A61E25]/5 border border-[#A61E25]/20">
+                       <h4 className="font-bold text-[#A61E25] text-sm mb-1 uppercase tracking-wider">Indicação Principal</h4>
+                       <p className="text-[#111111] font-bold">Adoçamento com Abertura de Diálogo</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-[#C9A35A]/5 border border-[#C9A35A]/20">
+                       <h4 className="font-bold text-[#C9A35A] text-sm mb-1 uppercase tracking-wider">Apoio Espiritual</h4>
+                       <p className="text-[#111111] font-bold">Limpeza Energética de Ambiente</p>
+                    </div>
+                  </div>
+               </section>
+            </div>
+
+            <div className="space-y-6">
+               <div className="bg-[#ECE5DC] p-6 rounded-[2.5rem] border border-[#C9A35A]/30 shadow-sm space-y-4 sticky top-8">
+                  <h3 className="font-bold text-[#111111] text-center uppercase tracking-widest text-sm">Pronto para Enviar</h3>
+                  <div className="bg-white p-4 rounded-2xl text-xs font-medium text-[#111111]/70 leading-relaxed border border-white">
+                    Olá Mariana! Acabei de fazer sua tiragem no Templo de Afrodite. 🌹<br/><br/>
+                    A energia mostra que o Rodrigo está em um momento de silêncio para processar o que sente... [clique para copiar o resto]
+                  </div>
+                  <Button className="w-full bg-[#111111] text-white font-bold h-12 rounded-xl gap-2">
+                    <MessageCircle className="w-4 h-4" />
+                    COPIAR WHATSAPP
+                  </Button>
+                  <Button variant="outline" className="w-full border-[#A61E25] text-[#A61E25] font-bold h-12 rounded-xl gap-2">
+                    <Save className="w-4 h-4" />
+                    SALVAR FICHA
+                  </Button>
+               </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
-  );
-}
-
-function CardPosicaoButton({ label, dados, onClick }: any) {
-  return (
-    <button 
-      onClick={onClick}
-      className={`w-full aspect-[2/3] rounded-xl border-2 flex flex-col items-center justify-center p-4 transition-all group ${
-        dados 
-          ? "bg-[#1a0000] border-templo-red shadow-[0_0_20px_rgba(184,13,45,0.1)]" 
-          : "bg-templo-black/40 border-dashed border-templo-gold/30 hover:bg-templo-gold/5"
-      }`}
-    >
-      {dados ? (
-        <>
-          <span className="text-[8px] uppercase tracking-widest text-templo-red/60 mb-auto">{label}</span>
-          <div className="text-center flex-1 flex flex-col justify-center">
-            <p className="font-display text-xs font-bold text-templo-gold">{dados.carta}</p>
-            {dados.orientacao === "Invertida" && <span className="text-[7px] uppercase font-bold text-templo-purple">Invertida</span>}
-          </div>
-          <Sparkles className="w-3 h-3 text-templo-gold/40 mt-auto" />
-        </>
-      ) : (
-        <>
-          <div className="w-8 h-8 rounded-full border border-templo-gold/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-            <Plus className="w-4 h-4 text-templo-gold/40" />
-          </div>
-          <span className="text-[8px] uppercase tracking-widest text-templo-ivory/30 font-bold text-center leading-tight">{label}</span>
-        </>
-      )}
-    </button>
   );
 }

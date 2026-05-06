@@ -1,196 +1,174 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/use-auth";
+import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
-import { ArrowLeft, Save } from "lucide-react";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function ClienteFormPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    nome: "",
-    whatsapp: "",
-    instagram: "",
-    data_nascimento: "",
-    cidade: "",
-    nome_envolvido: "",
-    data_nascimento_envolvido: "",
-    status_relacao: "Ex",
-    situacao_principal: "",
-    observacoes_privadas: "",
-    status_comercial: "Nova cliente"
-  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
     setLoading(true);
-
-    const { error } = await supabase.from("clientes").insert({
-      ...formData,
-      user_id: user.id,
-      data_nascimento: formData.data_nascimento || null,
-      data_nascimento_envolvido: formData.data_nascimento_envolvido || null,
-    });
-
-    if (error) {
-      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+    setTimeout(() => {
       setLoading(false);
-    } else {
-      toast({ title: "Cliente Registrada", description: "A alma foi vinculada ao seu templo." });
       navigate("/templo/clientes");
-    }
+    }, 1000);
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-fade-up pb-20">
+    <div className="max-w-3xl mx-auto space-y-8 animate-fade-in pb-12">
       <header className="flex items-center gap-4">
-        <button onClick={() => navigate(-1)} className="p-2 text-templo-gold hover:bg-white/5 rounded-full transition-colors">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => navigate(-1)}
+          className="rounded-xl border border-[#C9A35A]/20 text-[#111111]"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
         <div>
-          <h1 className="font-display text-3xl font-bold text-templo-gold uppercase tracking-tighter">
-            Nova Cliente
-          </h1>
-          <p className="text-templo-ivory/40 text-sm">Registre os detalhes da consulente.</p>
+          <h1 className="text-3xl font-bold text-[#111111] font-display">Nova Cliente</h1>
+          <p className="text-[#111111]/60 font-medium">Cadastre os dados essenciais para o atendimento.</p>
         </div>
       </header>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-templo-black/40 border border-templo-gold/10 p-8 rounded-2xl">
-        <div className="space-y-6">
-          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-templo-gold/60 border-b border-templo-gold/10 pb-2">Identidade</h3>
-          
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Nome Completo</label>
-            <Input 
-              required
-              value={formData.nome}
-              onChange={e => setFormData({...formData, nome: e.target.value})}
-              className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
-              placeholder="Ex: Maria das Dores"
-            />
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Sessão: Dados da Cliente */}
+        <div className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#F4F0EA] pb-4 mb-6">
+            <User className="w-5 h-5 text-[#C9A35A]" />
+            <h2 className="text-lg font-bold text-[#111111] font-display uppercase tracking-widest">Informações da Cliente</h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">WhatsApp</label>
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Nome Completo</label>
               <Input 
+                placeholder="Ex: Mariana Silva" 
+                className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
                 required
-                value={formData.whatsapp}
-                onChange={e => setFormData({...formData, whatsapp: e.target.value})}
-                className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
-                placeholder="(00) 00000-0000"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Instagram</label>
-              <Input 
-                value={formData.instagram}
-                onChange={e => setFormData({...formData, instagram: e.target.value})}
-                className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
-                placeholder="@perfil"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Nascimento</label>
-              <Input 
-                type="date"
-                value={formData.data_nascimento}
-                onChange={e => setFormData({...formData, data_nascimento: e.target.value})}
-                className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
-              />
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">WhatsApp</label>
+              <div className="relative">
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
+                <Input 
+                  placeholder="(00) 00000-0000" 
+                  className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+                  required
+                />
+              </div>
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Cidade</label>
-              <Input 
-                value={formData.cidade}
-                onChange={e => setFormData({...formData, cidade: e.target.value})}
-                className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
-                placeholder="São Paulo, SP"
-              />
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Instagram (opcional)</label>
+              <div className="relative">
+                <Instagram className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
+                <Input 
+                  placeholder="@usuario" 
+                  className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Data de Nascimento</label>
+              <div className="relative">
+                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
+                <Input 
+                  type="date"
+                  className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-templo-gold/60 border-b border-templo-gold/10 pb-2">A Pessoa Envolvida</h3>
-          
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Nome do Envolvido</label>
-            <Input 
-              required
-              value={formData.nome_envolvido}
-              onChange={e => setFormData({...formData, nome_envolvido: e.target.value})}
-              className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
-              placeholder="Ex: João da Silva"
-            />
+        {/* Sessão: Relacionamento */}
+        <div className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#F4F0EA] pb-4 mb-6">
+            <Heart className="w-5 h-5 text-[#A61E25]" />
+            <h2 className="text-lg font-bold text-[#111111] font-display uppercase tracking-widest">A Pessoa Envolvida</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Nome dele(a)</label>
+              <Input 
+                placeholder="Ex: Rodrigo" 
+                className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Status da Relação</label>
+              <Select>
+                <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    "Ex", "Ficante", "Namoro", "Casamento", "Relação indefinida", 
+                    "Bloqueados", "Afastados", "Terceira pessoa", "Paixão nova", 
+                    "Término recente", "Relação fria", "Contato instável"
+                  ].map(status => (
+                    <SelectItem key={status} value={status}>{status}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Status da Relação</label>
-            <select 
-              value={formData.status_relacao}
-              onChange={e => setFormData({...formData, status_relacao: e.target.value})}
-              className="w-full bg-templo-black/50 border border-templo-gold/20 text-templo-ivory rounded-xl h-12 px-4 text-sm focus:ring-2 focus:ring-templo-gold/30 outline-none"
-            >
-              {["Ex", "Ficante", "Namoro", "Casamento", "Relação indefinida", "Bloqueados", "Afastados", "Terceira pessoa", "Paixão nova", "Término recente", "Relação fria", "Contato instável"].map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Data Nasc. Envolvido</label>
+            <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Situação Principal</label>
             <Input 
-              type="date"
-              value={formData.data_nascimento_envolvido}
-              onChange={e => setFormData({...formData, data_nascimento_envolvido: e.target.value})}
-              className="bg-templo-black/50 border-templo-gold/20 h-12 rounded-xl"
+              placeholder="Ex: Ele sumiu após a última briga" 
+              className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
             />
           </div>
         </div>
 
-        <div className="md:col-span-2 space-y-6">
-          <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-templo-gold/60 border-b border-templo-gold/10 pb-2">Situação & Notas</h3>
-          
+        {/* Sessão: Observações */}
+        <div className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#F4F0EA] pb-4 mb-6">
+            <Info className="w-5 h-5 text-[#C9A35A]" />
+            <h2 className="text-lg font-bold text-[#111111] font-display uppercase tracking-widest">Notas Internas</h2>
+          </div>
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Situação Principal</label>
+            <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Observações Privadas</label>
             <Textarea 
-              value={formData.situacao_principal}
-              onChange={e => setFormData({...formData, situacao_principal: e.target.value})}
-              className="bg-templo-black/50 border-templo-gold/20 min-h-[100px] rounded-xl"
-              placeholder="Descreva o caso amoroso de forma geral..."
+              placeholder="Dê detalhes sobre o perfil emocional ou histórico..." 
+              className="bg-white border-[#C9A35A]/20 rounded-2xl min-h-[120px] focus:ring-[#A61E25]"
             />
           </div>
+        </div>
 
-          <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-widest text-templo-gold/70 font-bold">Observações Privadas</label>
-            <Textarea 
-              value={formData.observacoes_privadas}
-              onChange={e => setFormData({...formData, observacoes_privadas: e.target.value})}
-              className="bg-templo-black/50 border-templo-gold/20 min-h-[100px] rounded-xl border-dashed"
-              placeholder="Anotações internas que só você verá..."
-            />
-          </div>
-
-          <div className="flex justify-end pt-4">
-            <Button 
-              type="submit" 
-              disabled={loading}
-              className="bg-templo-gold hover:bg-templo-gold/90 text-templo-black font-bold px-10 h-14 rounded-xl gap-2 shadow-lg"
-            >
-              <Save className="w-5 h-5" />
-              {loading ? "Registrando..." : "SALVAR CLIENTE"}
-            </Button>
-          </div>
+        <div className="flex gap-4">
+          <Button 
+            type="button"
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="flex-1 h-16 rounded-2xl border border-[#C9A35A]/20 font-bold"
+          >
+            CANCELAR
+          </Button>
+          <Button 
+            type="submit"
+            disabled={loading}
+            className="flex-[2] bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 rounded-2xl shadow-xl shadow-[#A61E25]/20 gap-2"
+          >
+            <Save className="w-5 h-5" />
+            {loading ? "SALVANDO..." : "SALVAR CLIENTE"}
+          </Button>
         </div>
       </form>
     </div>

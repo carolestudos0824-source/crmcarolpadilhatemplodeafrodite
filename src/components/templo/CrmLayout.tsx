@@ -1,151 +1,107 @@
-import { useState } from "react";
-import { useNavigate, useLocation, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, 
   Users, 
   PlusCircle, 
   History, 
+  Sparkles, 
   BarChart3, 
-  Settings, 
-  LogOut,
-  Menu,
-  X
+  Settings,
+  Heart
 } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/templo/dashboard" },
-  { id: "clientes", label: "Clientes", icon: Users, path: "/templo/clientes" },
-  { id: "atendimento", label: "Novo Atendimento", icon: PlusCircle, path: "/templo/novo-atendimento" },
-  { id: "jogos", label: "Jogos do Amor", icon: History, path: "/templo/jogos" },
-  { id: "relatorios", label: "Relatórios", icon: BarChart3, path: "/templo/relatorios" },
-  { id: "configuracoes", label: "Configurações", icon: Settings, path: "/templo/configuracoes" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
+  { icon: Users, label: "Clientes", path: "/templo/clientes" },
+  { icon: PlusCircle, label: "Novo", path: "/templo/novo-atendimento" },
+  { icon: Sparkles, label: "Magias", path: "/templo/magias" },
+  { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
+  { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
 ];
 
 export function CrmLayout() {
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
 
   return (
-    <div className="min-h-screen bg-templo-black text-templo-ivory font-body flex overflow-hidden">
+    <div className="min-h-screen bg-[#F4F0EA] pb-24 lg:pb-0 lg:pl-64">
       {/* Sidebar Desktop */}
-      <aside className="hidden lg:flex flex-col w-64 border-r border-templo-gold/20 bg-templo-black shrink-0">
-        <div className="p-8 border-b border-templo-gold/10">
-          <h1 className="font-display text-2xl font-bold text-templo-gold tracking-tighter uppercase italic">
-            Templo de Afrodite
-          </h1>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-templo-gold/60 mt-1">
-            CRM Espiritual
-          </p>
+      <aside className="fixed left-0 top-0 h-full w-64 bg-[#111111] hidden lg:flex flex-col border-r border-[#C9A35A]/30 z-50">
+        <div className="p-8 border-b border-[#C9A35A]/20">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#C9A35A] flex items-center justify-center font-bold text-[#111111] text-xl italic shadow-lg">
+              CP
+            </div>
+            <div>
+              <h1 className="text-[#F4F0EA] font-display text-lg leading-tight">TEMPLO DE AFRODITE</h1>
+              <p className="text-[#C9A35A] text-[10px] uppercase tracking-widest font-bold">CRM INTERNO</p>
+            </div>
+          </div>
         </div>
 
-        <nav className="flex-1 py-8 px-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => {
-            const Icon = item.icon;
             const isActive = location.pathname === item.path;
             return (
-              <button
-                key={item.id}
-                onClick={() => navigate(item.path)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all group ${
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium",
                   isActive 
-                    ? "bg-templo-red/10 text-templo-gold border border-templo-gold/30" 
-                    : "text-templo-ivory/60 hover:text-templo-ivory hover:bg-white/5"
-                }`}
+                    ? "bg-[#A61E25] text-white shadow-lg shadow-[#A61E25]/20" 
+                    : "text-[#F4F0EA]/60 hover:text-white hover:bg-white/5"
+                )}
               >
-                <Icon className={`w-5 h-5 ${isActive ? "text-templo-gold" : "text-templo-ivory/40 group-hover:text-templo-ivory/60"}`} />
-                <span className="text-sm font-medium tracking-wide">{item.label}</span>
-              </button>
+                <item.icon className={cn("w-5 h-5", isActive ? "text-[#C9A35A]" : "text-inherit")} />
+                {item.label}
+              </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-templo-gold/10 bg-templo-black/50">
-          <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="w-8 h-8 rounded-full bg-templo-red flex items-center justify-center font-display text-templo-gold font-bold">
-              {user?.email?.[0].toUpperCase()}
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-bold truncate">{user?.email}</p>
-              <p className="text-[10px] text-templo-ivory/40">Carol Padilha</p>
-            </div>
+        <div className="p-6 border-t border-[#C9A35A]/20">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#C9A35A]/10 text-[#C9A35A] text-sm">
+            <Heart className="w-4 h-4 fill-[#C9A35A]" />
+            <span className="font-medium">Carol Padilha</span>
           </div>
-          <Button 
-            variant="ghost" 
-            onClick={handleSignOut}
-            className="w-full justify-start gap-3 text-templo-ivory/60 hover:text-templo-red hover:bg-templo-red/5 h-9 text-xs"
-          >
-            <LogOut className="w-4 h-4" />
-            Sair do sistema
-          </Button>
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0 bg-templo-black">
-        <header className="lg:hidden flex items-center justify-between p-4 border-b border-templo-gold/20 bg-templo-black sticky top-0 z-50">
-          <h1 className="font-display text-lg font-bold text-templo-gold uppercase italic tracking-tighter">
-            Templo de Afrodite
-          </h1>
-          <button 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-templo-gold"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </header>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto p-4 md:p-8">
+        <Outlet />
+      </main>
 
-        <main className="flex-1 overflow-y-auto bg-[radial-gradient(circle_at_50%_0%,_#1a0000_0%,_#000000_70%)] relative">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-10 pointer-events-none"></div>
-          <div className="container max-w-6xl py-8 px-6 relative z-10">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-
-      {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-[60] bg-templo-black flex flex-col">
-          <div className="p-6 border-b border-templo-gold/20 flex items-center justify-between">
-            <h1 className="font-display text-2xl font-bold text-templo-gold uppercase italic">Templo</h1>
-            <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-templo-gold">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-          <nav className="flex-1 p-6 space-y-4">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    navigate(item.path);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-4 p-4 rounded-xl text-lg ${
-                    isActive ? "bg-templo-red/20 text-templo-gold border border-templo-gold/30" : "text-templo-ivory/60"
-                  }`}
-                >
-                  <Icon className="w-6 h-6" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-          <div className="p-6 border-t border-templo-gold/10">
-            <Button onClick={handleSignOut} variant="destructive" className="w-full h-12">
-              Sair do Sistema
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Bottom Nav Mobile */}
+      <nav className="fixed bottom-0 left-0 w-full bg-[#111111] border-t border-[#C9A35A]/30 flex items-center justify-around p-3 z-50 lg:hidden rounded-t-[2rem] shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+        {navItems.slice(0, 4).map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={cn(
+                "flex flex-col items-center gap-1 p-2 rounded-xl transition-all",
+                isActive ? "text-[#A61E25]" : "text-[#F4F0EA]/60"
+              )}
+            >
+              <item.icon className={cn("w-6 h-6", isActive ? "text-[#A61E25]" : "text-inherit")} />
+              <span className="text-[10px] uppercase tracking-wider font-bold">{item.label}</span>
+            </Link>
+          );
+        })}
+        <Link
+          to="/templo/configuracoes"
+          className={cn(
+            "flex flex-col items-center gap-1 p-2 rounded-xl transition-all",
+            location.pathname === "/templo/configuracoes" ? "text-[#A61E25]" : "text-[#F4F0EA]/60"
+          )}
+        >
+          <Settings className="w-6 h-6" />
+          <span className="text-[10px] uppercase tracking-wider font-bold">Ajustes</span>
+        </Link>
+      </nav>
     </div>
   );
 }

@@ -1,139 +1,105 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Search, Filter, Plus, UserPlus, Phone, MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
+import { 
+  Search, 
+  Filter, 
+  Plus, 
+  ChevronRight, 
+  MessageSquare,
+  MoreVertical,
+  UserPlus
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+const mockClientes = [
+  { id: 1, name: "Mariana Silva", whatsapp: "(11) 99999-9999", involved: "Rodrigo", situation: "Término recente", status: "Fez consulta", lastAttendance: "15/05/2026" },
+  { id: 2, name: "Beatriz Oliveira", whatsapp: "(21) 98888-8888", involved: "Cássio", situation: "Ele bloqueia e desbloqueia", status: "Magia contratada", lastAttendance: "14/05/2026" },
+  { id: 3, name: "Julia Santos", whatsapp: "(11) 97777-7777", involved: "Fábio", situation: "Relação fria", status: "Em acompanhamento", lastAttendance: "10/05/2026" },
+  { id: 4, name: "Fernanda Lima", whatsapp: "(31) 96666-6666", involved: "Mateus", situation: "Terceira pessoa", status: "Arquivada", lastAttendance: "01/05/2026" },
+];
+
 export function ClientesListPage() {
-  const navigate = useNavigate();
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-
-  const { data: clientes, isLoading } = useQuery({
-    queryKey: ["clientes"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("clientes")
-        .select("*")
-        .order("nome");
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const filteredClientes = clientes?.filter(c => {
-    const matchesSearch = c.nome.toLowerCase().includes(search.toLowerCase()) || 
-                         c.whatsapp.includes(search);
-    const matchesStatus = statusFilter === "all" || c.status_comercial === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="space-y-8 animate-fade-up">
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="space-y-8 animate-fade-in">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold text-templo-gold uppercase tracking-tighter">
-            Gestão de Clientes
-          </h1>
-          <p className="text-templo-ivory/40 text-sm">Organize as almas que buscam sua orientação.</p>
+          <h1 className="text-3xl font-bold text-[#111111] font-display">Clientes</h1>
+          <p className="text-[#111111]/60 font-medium">Gerencie sua base de consulentes.</p>
         </div>
-        
-        <Button 
-          onClick={() => navigate("/templo/clientes/novo")}
-          className="bg-templo-red hover:bg-templo-red/90 text-templo-ivory gap-2 px-6 h-12 rounded-xl font-bold"
-        >
-          <UserPlus className="w-5 h-5" />
-          Nova Cliente
-        </Button>
+        <Link to="/templo/clientes/novo">
+          <Button className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white rounded-2xl h-14 px-6 shadow-lg shadow-[#A61E25]/20 gap-2 font-bold transition-all active:scale-95 w-full md:w-auto">
+            <UserPlus className="w-5 h-5" />
+            NOVA CLIENTE
+          </Button>
+        </Link>
       </header>
 
-      {/* Search and Filters */}
-      <div className="flex flex-col md:flex-row gap-4 bg-templo-black/40 border border-templo-gold/10 p-4 rounded-2xl">
+      {/* Toolbar */}
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-templo-gold/40" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#111111]/30" />
           <Input 
-            placeholder="Buscar por nome ou WhatsApp..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 bg-templo-black/50 border-templo-gold/20 text-templo-ivory rounded-xl h-11 focus:ring-templo-gold/30"
+            placeholder="Buscar por nome ou WhatsApp..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
           />
         </div>
-        
-        <div className="flex gap-2">
-          <select 
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-templo-black/50 border border-templo-gold/20 text-templo-ivory rounded-xl px-4 h-11 text-xs font-bold uppercase tracking-widest outline-none focus:ring-2 focus:ring-templo-gold/30"
-          >
-            <option value="all">Todos os Status</option>
-            <option value="Nova cliente">Nova cliente</option>
-            <option value="Consulta feita">Consulta feita</option>
-            <option value="Magia indicada">Magia indicada</option>
-            <option value="Magia contratada">Magia contratada</option>
-          </select>
-        </div>
+        <Button variant="outline" className="h-14 rounded-2xl border-[#C9A35A]/20 bg-white gap-2 font-bold px-6">
+          <Filter className="w-5 h-5 text-[#C9A35A]" />
+          FILTROS
+        </Button>
       </div>
 
-      {/* Clientes Grid/List */}
-      <div className="grid gap-4">
-        {isLoading ? (
-          <div className="text-center py-20 text-templo-gold/40 animate-pulse uppercase tracking-[0.3em] text-xs">Carregando Almas...</div>
-        ) : filteredClientes?.length === 0 ? (
-          <div className="bg-templo-black/40 border border-templo-gold/10 rounded-2xl p-20 text-center space-y-4">
-            <p className="font-display text-2xl text-templo-gold/30 italic">Nenhuma cliente encontrada.</p>
-            <Button variant="outline" onClick={() => setSearch("")} className="border-templo-gold/20 text-templo-gold">Limpar busca</Button>
-          </div>
-        ) : (
-          filteredClientes?.map((c) => (
-            <div 
-              key={c.id} 
-              className="bg-templo-black/40 border border-templo-gold/10 p-5 rounded-2xl hover:border-templo-gold/30 transition-all group flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-templo-red/10 border border-templo-red/20 flex items-center justify-center font-display text-templo-red text-xl font-bold">
-                  {c.nome[0]}
-                </div>
-                <div>
-                  <h3 className="font-bold text-templo-ivory group-hover:text-templo-gold transition-colors">{c.nome}</h3>
-                  <div className="flex items-center gap-3 text-xs text-templo-ivory/40 mt-1">
-                    <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {c.whatsapp}</span>
-                    <span className="text-templo-gold/30">•</span>
-                    <span>{c.nome_envolvido ? `Envolvido: ${c.nome_envolvido}` : "Sem envolvido"}</span>
-                  </div>
-                </div>
+      {/* Clientes Grid */}
+      <div className="grid grid-cols-1 gap-4">
+        {mockClientes.map((cliente) => (
+          <div key={cliente.id} className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between hover:border-[#C9A35A]/40 transition-all group">
+            <div className="flex items-center gap-4 mb-4 md:mb-0">
+              <div className="w-14 h-14 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] text-xl italic border border-[#C9A35A]/20 shadow-inner">
+                {cliente.name[0]}
               </div>
-
-              <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                  c.status_comercial === 'Magia contratada' ? 'bg-templo-red/20 text-templo-red border border-templo-red/30' :
-                  c.status_comercial === 'Magia indicada' ? 'bg-templo-purple/20 text-templo-purple border border-templo-purple/30' :
-                  'bg-templo-gold/10 text-templo-gold border border-templo-gold/20'
-                }`}>
-                  {c.status_comercial}
-                </span>
-                
-                <div className="flex gap-2 flex-1 md:flex-none">
-                  <Button 
-                    variant="ghost" 
-                    className="flex-1 md:flex-none h-10 w-10 p-0 rounded-xl bg-white/5 border border-white/5 hover:border-templo-gold/30 hover:bg-templo-gold/10 text-templo-gold"
-                    onClick={() => window.open(`https://wa.me/${c.whatsapp.replace(/\D/g, '')}`, '_blank')}
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    onClick={() => navigate(`/templo/clientes/${c.id}`)}
-                    className="flex-1 md:flex-none border-templo-gold/20 text-templo-gold hover:bg-templo-gold/10 h-10 rounded-xl text-xs font-bold px-6"
-                  >
-                    VER FICHA
-                  </Button>
+              <div>
+                <h3 className="text-lg font-bold text-[#111111]">{cliente.name}</h3>
+                <div className="flex items-center gap-2 text-xs text-[#111111]/40 font-bold uppercase tracking-widest mt-1">
+                  <span className="text-[#C9A35A]">{cliente.whatsapp}</span>
+                  <span>•</span>
+                  <span>{cliente.involved}</span>
                 </div>
               </div>
             </div>
-          ))
-        )}
+
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex flex-col items-start md:items-end">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Status</span>
+                <span className="bg-[#A61E25]/10 text-[#A61E25] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mt-1">
+                  {cliente.status}
+                </span>
+              </div>
+
+              <div className="hidden lg:flex flex-col items-end px-6 border-x border-[#F4F0EA]">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Último Atendimento</span>
+                <span className="text-sm font-medium text-[#111111] mt-1">{cliente.lastAttendance}</span>
+              </div>
+
+              <div className="flex gap-2 ml-auto md:ml-0">
+                <Button size="icon" variant="ghost" className="rounded-xl text-[#C9A35A] hover:bg-[#C9A35A]/10 h-12 w-12">
+                  <MessageSquare className="w-5 h-5" />
+                </Button>
+                <Button size="icon" variant="ghost" className="rounded-xl text-[#111111]/20 hover:text-[#A61E25] h-12 w-12">
+                  <MoreVertical className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" className="rounded-xl font-bold text-[#111111] group-hover:text-[#A61E25] gap-1 px-4">
+                  VER FICHA
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

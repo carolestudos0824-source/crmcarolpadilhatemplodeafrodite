@@ -1,89 +1,148 @@
-import { Users, Calendar, Sparkles, TrendingUp } from "lucide-react";
+import { 
+  Plus, 
+  Users, 
+  Sparkles, 
+  MessageCircle, 
+  Clock, 
+  ChevronRight,
+  TrendingUp,
+  UserPlus,
+  Play
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+
+const recentAttendance = [
+  { name: "Mariana Silva", status: "Fez consulta", situation: "Término recente", date: "Hoje, 14:30" },
+  { name: "Beatriz Oliveira", status: "Magia contratada", situation: "Ele bloqueia e desbloqueia", date: "Hoje, 11:00" },
+  { name: "Julia Santos", status: "Em acompanhamento", situation: "Relação fria", date: "Ontem" },
+];
 
 export function TemploDashboard() {
-  const metrics = [
-    { label: "Atendimentos Hoje", value: "0", icon: Calendar, color: "text-templo-gold" },
-    { label: "Clientes Ativas", value: "0", icon: Users, color: "text-templo-gold" },
-    { label: "Magias Indicadas", value: "0", icon: Sparkles, color: "text-templo-purple" },
-    { label: "Receita (Mês)", value: "R$ 0,00", icon: TrendingUp, color: "text-templo-red" },
-  ];
-
-  const statuses = [
-    { label: "Nova cliente", count: 0, color: "bg-templo-ivory/10 text-templo-ivory" },
-    { label: "Consulta feita", count: 0, color: "bg-templo-gold/10 text-templo-gold" },
-    { label: "Magia indicada", count: 0, color: "bg-templo-purple/10 text-templo-purple" },
-    { label: "Magia contratada", count: 0, color: "bg-templo-red/10 text-templo-red" },
-    { label: "Em acompanhamento", count: 0, color: "bg-templo-gold/20 text-templo-gold" },
-  ];
-
   return (
-    <div className="space-y-8 animate-fade-up">
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="space-y-8 animate-fade-in">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold text-templo-gold uppercase tracking-tighter">
-            Dashboard do Templo
-          </h1>
-          <p className="text-templo-ivory/40 text-sm">Visão geral do seu reino espiritual.</p>
+          <h1 className="text-3xl font-bold text-[#111111] font-display">Olá, Carol</h1>
+          <p className="text-[#111111]/60 font-medium">Bem-vinda de volta ao Templo de Afrodite.</p>
         </div>
-        
         <div className="flex gap-3">
-          <button className="bg-templo-red hover:bg-templo-red/90 text-templo-ivory px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all active:scale-95">
-            Novo Atendimento
-          </button>
-          <button className="border border-templo-gold/30 hover:bg-templo-gold/5 text-templo-gold px-6 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95">
-            Nova Cliente
-          </button>
+          <Link to="/templo/novo-atendimento">
+            <Button className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white rounded-2xl h-14 px-6 shadow-lg shadow-[#A61E25]/20 gap-2 font-bold transition-all active:scale-95">
+              <Plus className="w-5 h-5" />
+              NOVO ATENDIMENTO
+            </Button>
+          </Link>
         </div>
       </header>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {metrics.map((m, i) => {
-          const Icon = m.icon;
-          return (
-            <div key={i} className="bg-templo-black/40 border border-templo-gold/10 p-6 rounded-2xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-templo-gold/5 rounded-full blur-2xl group-hover:bg-templo-gold/10 transition-all"></div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`p-2 rounded-lg bg-white/5 ${m.color}`}>
-                  <Icon className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-templo-ivory/40">{m.label}</span>
-              </div>
-              <p className="text-3xl font-display font-bold text-templo-gold">{m.value}</p>
+      {/* Quick Action Buttons */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <Link to="/templo/clientes/novo" className="group">
+          <div className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-[#C9A35A]/10 flex items-center justify-center text-[#C9A35A]">
+              <UserPlus className="w-6 h-6" />
             </div>
-          );
-        })}
+            <div>
+              <p className="text-[#111111] font-bold text-sm">Nova Cliente</p>
+              <p className="text-[10px] text-[#111111]/40 uppercase tracking-widest font-bold">Cadastrar</p>
+            </div>
+          </div>
+        </Link>
+        <Link to="/templo/novo-atendimento" className="group">
+          <div className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-[#A61E25]/10 flex items-center justify-center text-[#A61E25]">
+              <Play className="w-6 h-6 fill-current" />
+            </div>
+            <div>
+              <p className="text-[#111111] font-bold text-sm">Novo Jogo</p>
+              <p className="text-[10px] text-[#111111]/40 uppercase tracking-widest font-bold">Iniciar leitura</p>
+            </div>
+          </div>
+        </Link>
+        <Link to="/templo/relatorios" className="group hidden lg:block">
+          <div className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-[#111111]/5 flex items-center justify-center text-[#111111]">
+              <TrendingUp className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-[#111111] font-bold text-sm">Desempenho</p>
+              <p className="text-[10px] text-[#111111]/40 uppercase tracking-widest font-bold">Ver métricas</p>
+            </div>
+          </div>
+        </Link>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Status Breakdown */}
-        <div className="bg-templo-black/40 border border-templo-gold/10 rounded-2xl p-6">
-          <h3 className="font-display text-xl font-bold text-templo-gold mb-6 uppercase tracking-tight">Status das Clientes</h3>
-          <div className="space-y-3">
-            {statuses.map((s, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
-                <span className="text-xs font-medium">{s.label}</span>
-                <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${s.color}`}>
-                  {s.count}
-                </span>
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: "Atendimentos Hoje", value: "8", icon: Clock, color: "text-[#A61E25]" },
+          { label: "Clientes Totais", value: "142", icon: Users, color: "text-[#C9A35A]" },
+          { label: "Magias Indicadas", value: "24", icon: Sparkles, color: "text-[#C9A35A]" },
+          { label: "Receita (Mês)", value: "R$ 12.4k", icon: TrendingUp, color: "text-[#111111]" },
+        ].map((stat, i) => (
+          <div key={i} className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
+            <div className="flex justify-between items-start">
+              <stat.icon className={`w-8 h-8 ${stat.color}`} />
+              <div className="text-[10px] bg-[#ECE5DC] px-2 py-1 rounded-full font-bold uppercase tracking-wider text-[#111111]/40">+12%</div>
+            </div>
+            <div>
+              <h3 className="text-3xl font-bold text-[#111111] tracking-tight">{stat.value}</h3>
+              <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#111111]/40">{stat.label}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Atendimentos Recentes */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-[#111111] font-display">Atendimentos Recentes</h2>
+            <Link to="/templo/clientes" className="text-[#A61E25] text-xs font-bold uppercase tracking-widest hover:underline">Ver todos</Link>
+          </div>
+          <div className="space-y-4">
+            {recentAttendance.map((item, i) => (
+              <div key={i} className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#C9A35A]/40 transition-all cursor-pointer group">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] text-lg italic border border-[#C9A35A]/20">
+                    {item.name[0]}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#111111]">{item.name}</h4>
+                    <p className="text-xs text-[#111111]/60 font-medium">{item.situation}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:block text-right">
+                    <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1">{item.status}</div>
+                    <div className="text-[10px] font-medium text-[#111111]/40">{item.date}</div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25] transition-colors" />
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Recent Activity Placeholder */}
-        <div className="lg:col-span-2 bg-templo-black/40 border border-templo-gold/10 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-display text-xl font-bold text-templo-gold uppercase tracking-tight">Atendimentos Recentes</h3>
-            <button className="text-[10px] uppercase tracking-widest text-templo-gold/60 hover:text-templo-gold transition-colors font-bold">Ver todos →</button>
+        {/* Próximos Retornos */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-[#111111] font-display">Próximos Retornos</h2>
           </div>
-          
-          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4 opacity-30">
-            <Sparkles className="w-12 h-12 text-templo-gold" />
-            <div className="space-y-1">
-              <p className="font-display text-lg italic">O templo está calmo...</p>
-              <p className="text-xs">Nenhum atendimento realizado hoje.</p>
-            </div>
+          <div className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+            {[1, 2, 3].map((_, i) => (
+              <div key={i} className="flex items-center gap-4 pb-6 border-b border-[#F4F0EA] last:border-0 last:pb-0">
+                <div className="w-10 h-10 rounded-xl bg-[#ECE5DC] flex items-center justify-center text-[#111111]/40">
+                  <MessageCircle className="w-5 h-5" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-[#111111] text-sm">Enviar mensagem para Fabiana</h4>
+                  <p className="text-xs text-[#111111]/60 font-medium">Follow-up: 3 dias após Magia de Adoçamento</p>
+                </div>
+                <Button variant="outline" className="rounded-xl border-[#C9A35A]/30 text-[#C9A35A] hover:bg-[#C9A35A]/10 text-xs font-bold px-4 h-10">AGENDAR</Button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
