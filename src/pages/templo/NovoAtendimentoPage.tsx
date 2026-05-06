@@ -14,7 +14,10 @@ import {
   ChevronRight,
   Heart,
   Save,
-  RotateCcw
+  RotateCcw,
+  MessageCircle,
+  PlusCircle,
+  Plus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
