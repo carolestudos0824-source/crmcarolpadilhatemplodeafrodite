@@ -5,241 +5,64 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
-import { FontSizeProvider } from "@/contexts/font-size-context";
-import BetaBadge from "@/components/BetaBadge";
-import BetaFeedback from "@/components/BetaFeedback";
-import BottomNav from "@/components/BottomNav";
-import SessionInitializer from "@/components/SessionInitializer";
-
-// Eager: critical path
-import LandingPage from "./pages/LandingPage.tsx";
-import AuthPage from "./pages/AuthPage.tsx";
-// Removed ModulesPage import
-
-// Lazy: everything else
-const Index = lazy(() => import("./pages/Index.tsx"));
-const LessonPage = lazy(() => import("./pages/LessonPage.tsx"));
-// Removed AdminPage import
-const PremiumPage = lazy(() => import("./pages/PremiumPage.tsx"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage.tsx"));
-const FoolsJourneyPage = lazy(() => import("./pages/FoolsJourneyPage.tsx"));
-const FundamentosPage = lazy(() => import("./pages/FundamentosPage.tsx"));
-const FundamentosLessonPage = lazy(() => import("./pages/FundamentosLessonPage.tsx"));
-const FeedbackPage = lazy(() => import("./pages/FeedbackPage.tsx"));
-const BetaInvitePage = lazy(() => import("./pages/BetaInvitePage.tsx"));
-const WaitlistPage = lazy(() => import("./pages/WaitlistPage"));
-const NotFound = lazy(() => import("./pages/NotFound.tsx"));
-// Removed LigasPage import
-
-// Module pages
-const NaipePage = lazy(() => import("./pages/NaipePage.tsx"));
-const NaipeIntroPage = lazy(() => import("./pages/NaipeIntroPage.tsx"));
-const ArcanoMenorLessonPage = lazy(() => import("./pages/ArcanoMenorLessonPage.tsx"));
-const CombinacoesPage = lazy(() => import("./pages/CombinacoesPage.tsx"));
-const CombinacoesLessonPage = lazy(() => import("./pages/CombinacoesLessonPage.tsx"));
-const TiragensPage = lazy(() => import("./pages/TiragensPage.tsx"));
-const TiragensLessonPage = lazy(() => import("./pages/TiragensLessonPage.tsx"));
-const AmorPage = lazy(() => import("./pages/AmorPage.tsx"));
-const AmorLessonPage = lazy(() => import("./pages/AmorLessonPage.tsx"));
-const PraticaPage = lazy(() => import("./pages/PraticaPage.tsx"));
-const PraticaLessonPage = lazy(() => import("./pages/PraticaLessonPage.tsx"));
-
-// New generic modules
-const LeituraSimbolicaPage = lazy(() => import("./pages/LeituraSimbolicaPage.tsx"));
-const LeituraSimbolicaLessonPage = lazy(() => import("./pages/LeituraSimbolicaLessonPage.tsx"));
-const ArquiteturaMenoresPage = lazy(() => import("./pages/ArquiteturaMenoresPage.tsx"));
-const ArquiteturaMenoresLessonPage = lazy(() => import("./pages/ArquiteturaMenoresLessonPage.tsx"));
-const EspiritualidadePage = lazy(() => import("./pages/EspiritualidadePage.tsx"));
-const EspiritualidadeLessonPage = lazy(() => import("./pages/EspiritualidadeLessonPage.tsx"));
-const MesaTaroPage = lazy(() => import("./pages/MesaTaroPage.tsx"));
-const MesaTaroLessonPage = lazy(() => import("./pages/MesaTaroLessonPage.tsx"));
-const LeituraAplicadaPage = lazy(() => import("./pages/LeituraAplicadaPage.tsx"));
-const LeituraAplicadaLessonPage = lazy(() => import("./pages/LeituraAplicadaLessonPage.tsx"));
-const TrabalharTaroPage = lazy(() => import("./pages/TrabalharTaroPage.tsx"));
-const TrabalharTaroLessonPage = lazy(() => import("./pages/TrabalharTaroLessonPage.tsx"));
-
-// Utility pages
-// Removed TrailsPage import
-const ReviewPage = lazy(() => import("./pages/ReviewPage.tsx"));
-const DailyChallengesPage = lazy(() => import("./pages/DailyChallengesPage.tsx"));
-const CertificatesPage = lazy(() => import("./pages/CertificatesPage.tsx"));
-const SymbolLibraryPage = lazy(() => import("./pages/SymbolLibraryPage.tsx"));
-const StudyRoutinePage = lazy(() => import("./pages/StudyRoutinePage.tsx"));
-const CartasCortePage = lazy(() => import("./pages/CartasCortePage.tsx"));
-const NumerologiaPage = lazy(() => import("./pages/NumerologiaPage.tsx"));
-const PresentationPage = lazy(() => import("./pages/PresentationPage.tsx"));
-const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage.tsx"));
-
-// Legal / compliance pages
-const PrivacyPage = lazy(() => import("./pages/legal/PrivacyPage.tsx"));
-const TermsPage = lazy(() => import("./pages/legal/TermsPage.tsx"));
-const SupportPage = lazy(() => import("./pages/legal/SupportPage.tsx"));
-const DeleteAccountPage = lazy(() => import("./pages/legal/DeleteAccountPage.tsx"));
+import { TemploAuthPage } from "./pages/templo/TemploAuthPage";
+import { CrmLayout } from "./components/templo/CrmLayout";
+import { TemploDashboard } from "./pages/templo/TemploDashboard";
 
 const queryClient = new QueryClient();
 
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="text-center space-y-3">
-      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
-      <p className="text-xs text-muted-foreground font-heading tracking-wider">Carregando...</p>
+  <div className="min-h-screen flex items-center justify-center bg-templo-black">
+    <div className="text-center space-y-4">
+      <div className="w-10 h-10 rounded-full border-2 border-templo-gold border-t-transparent animate-spin mx-auto" />
+      <p className="text-[10px] text-templo-gold/60 uppercase tracking-[0.3em] font-medium">Invocando Sistema...</p>
     </div>
   </div>
 );
 
-/** Redirects to /auth if not logged in */
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <LoadingFallback />;
-  if (!user) return <Navigate to="/auth" replace />;
-  return (
-    <>
-      <SessionInitializer />
-      {children}
-    </>
-  );
-};
-
-/** Redirects to /app if already logged in */
-const PublicOnlyRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-  if (loading) return <LoadingFallback />;
-  if (user) return <Navigate to="/app" replace />;
+  if (!user) return <Navigate to="/" replace />;
   return <>{children}</>;
 };
 
-const P = ({ children }: { children: React.ReactNode }) => (
-  <ProtectedRoute>{children}</ProtectedRoute>
-);
-
-const AppRoutes = () => (
-  <Suspense fallback={<LoadingFallback />}>
-    <Routes>
-      {/* ═══ Auth & public standalone (no BottomNav, no BetaBadge/Feedback) ═══ */}
-      <Route path="/auth" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
-
-      {/* ═══ Public marketing pages (no BottomNav) ═══ */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/convite" element={<BetaInvitePage />} />
-      <Route path="/waitlist" element={<WaitlistPage />} />
-      <Route path="/apresentacao" element={<PresentationPage />} />
-
-      {/* ═══ Legal / compliance (public, no auth) ═══ */}
-      <Route path="/privacidade" element={<PrivacyPage />} />
-      <Route path="/termos" element={<TermsPage />} />
-      <Route path="/suporte" element={<SupportPage />} />
-      <Route path="/excluir-conta" element={<DeleteAccountPage />} />
-
-      {/* ═══ App routes (with BottomNav + Beta overlays) ═══ */}
-      <Route path="/*" element={<AppShell />} />
-    </Routes>
-  </Suspense>
-);
-
-/** Layout shell for authenticated app pages — includes BottomNav, BetaBadge, BetaFeedback */
-const AppShell = () => (
-  <>
-    <BetaBadge />
-    <BetaFeedback />
-    {/* Wrapper aplica clearance automático para a BottomNav fixa em TODAS as páginas */}
-    <div className="pb-bottom-nav">
-      <Routes>
-        <Route path="/app" element={<P><Index /></P>} />
-
-        {/* Fundamentos */}
-        <Route path="/module/fundamentos" element={<P><FundamentosPage /></P>} />
-        <Route path="/fundamentos/:order" element={<P><FundamentosLessonPage /></P>} />
-
-        {/* Arcanos Maiores */}
-        <Route path="/module/arcanos-maiores" element={<P><Index /></P>} />
-        <Route path="/lesson/:id" element={<P><LessonPage /></P>} />
-        <Route path="/jornada-do-louco" element={<P><FoolsJourneyPage /></P>} />
-
-        {/* Arcanos Menores — Naipes */}
-        <Route path="/module/copas" element={<P><NaipePage /></P>} />
-        <Route path="/module/paus" element={<P><NaipePage /></P>} />
-        <Route path="/module/espadas" element={<P><NaipePage /></P>} />
-        <Route path="/module/ouros" element={<P><NaipePage /></P>} />
-        <Route path="/naipe/:naipe/intro" element={<P><NaipeIntroPage /></P>} />
-        <Route path="/module/cartas-corte" element={<P><CartasCortePage /></P>} />
-        <Route path="/cartas-corte" element={<Navigate to="/module/cartas-corte" replace />} />
-        <Route path="/numerologia" element={<P><NumerologiaPage /></P>} />
-        <Route path="/arcano-menor/:id" element={<P><ArcanoMenorLessonPage /></P>} />
-
-        {/* Combinações */}
-        <Route path="/module/combinacoes" element={<P><CombinacoesPage /></P>} />
-        <Route path="/combinacoes/:order" element={<P><CombinacoesLessonPage /></P>} />
-
-        {/* Tiragens */}
-        <Route path="/module/tiragens" element={<P><TiragensPage /></P>} />
-        <Route path="/tiragens/:order" element={<P><TiragensLessonPage /></P>} />
-
-        {/* Amor */}
-        <Route path="/module/amor" element={<P><AmorPage /></P>} />
-        <Route path="/amor/:order" element={<P><AmorLessonPage /></P>} />
-
-        {/* Prática */}
-        <Route path="/module/pratica" element={<P><PraticaPage /></P>} />
-        <Route path="/pratica/:order" element={<P><PraticaLessonPage /></P>} />
-
-        {/* Leitura Simbólica */}
-        <Route path="/module/leitura-simbolica" element={<P><LeituraSimbolicaPage /></P>} />
-        <Route path="/leitura-simbolica/:order" element={<P><LeituraSimbolicaLessonPage /></P>} />
-
-        {/* Arquitetura dos Menores */}
-        <Route path="/module/arquitetura-menores" element={<P><ArquiteturaMenoresPage /></P>} />
-        <Route path="/arquitetura-menores/:order" element={<P><ArquiteturaMenoresLessonPage /></P>} />
-
-        {/* Espiritualidade */}
-        <Route path="/module/espiritualidade" element={<P><EspiritualidadePage /></P>} />
-        <Route path="/espiritualidade/:order" element={<P><EspiritualidadeLessonPage /></P>} />
-
-        {/* Mesa de Tarô */}
-        <Route path="/module/mesa-taro" element={<P><MesaTaroPage /></P>} />
-        <Route path="/mesa-taro/:order" element={<P><MesaTaroLessonPage /></P>} />
-
-        {/* Leitura Aplicada */}
-        <Route path="/module/leitura-aplicada" element={<P><LeituraAplicadaPage /></P>} />
-        <Route path="/leitura-aplicada/:order" element={<P><LeituraAplicadaLessonPage /></P>} />
-
-        {/* Trabalhar com Tarô */}
-        <Route path="/module/trabalhar-taro" element={<P><TrabalharTaroPage /></P>} />
-        <Route path="/trabalhar-taro/:order" element={<P><TrabalharTaroLessonPage /></P>} />
-
-        {/* Ferramentas de estudo */}
-        <Route path="/revisao" element={<P><ReviewPage /></P>} />
-        <Route path="/desafios" element={<P><DailyChallengesPage /></P>} />
-        <Route path="/certificados" element={<P><CertificatesPage /></P>} />
-        <Route path="/biblioteca" element={<P><SymbolLibraryPage /></P>} />
-        <Route path="/rotina" element={<P><StudyRoutinePage /></P>} />
-
-        {/* Premium & Profile */}
-        <Route path="/premium" element={<P><PremiumPage /></P>} />
-        <Route path="/perfil" element={<P><ProfilePage /></P>} />
-        <Route path="/feedback" element={<P><FeedbackPage /></P>} />
-        {/* Removed Admin route */}
-
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
-    <BottomNav />
-  </>
-);
+// CRM Pages (Lazy)
+const ClientesListPage = lazy(() => import("./pages/templo/ClientesListPage").then(m => ({ default: m.ClientesListPage })));
+const ClienteFormPage = lazy(() => import("./pages/templo/ClienteFormPage").then(m => ({ default: m.ClienteFormPage })));
+const NovoAtendimentoPage = lazy(() => import("./pages/templo/NovoAtendimentoPage").then(m => ({ default: m.NovoAtendimentoPage })));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <FontSizeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <AppRoutes />
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </FontSizeProvider>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AuthProvider>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {/* Root is now the CRM Login */}
+              <Route path="/" element={<TemploAuthPage />} />
+              
+              {/* CRM Routes */}
+              <Route path="/templo" element={<ProtectedRoute><CrmLayout /></ProtectedRoute>}>
+                <Route index element={<Navigate to="/templo/dashboard" replace />} />
+                <Route path="dashboard" element={<TemploDashboard />} />
+                <Route path="clientes" element={<ClientesListPage />} />
+                <Route path="clientes/novo" element={<ClienteFormPage />} />
+                <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
+                <Route path="jogos" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
+                <Route path="relatorios" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
+                <Route path="configuracoes" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
+              </Route>
+
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </AuthProvider>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
