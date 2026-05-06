@@ -50,6 +50,62 @@ export type Database = {
         }
         Relationships: []
       }
+      atendimentos: {
+        Row: {
+          cartas: Json | null
+          cliente_id: string
+          created_at: string
+          data: string
+          id: string
+          leitura_gerada: string | null
+          magia_indicada: string | null
+          observacoes: string | null
+          relato: string | null
+          situacao: string | null
+          texto_whatsapp: string | null
+          user_id: string
+          valor_cobrado: number | null
+        }
+        Insert: {
+          cartas?: Json | null
+          cliente_id: string
+          created_at?: string
+          data?: string
+          id?: string
+          leitura_gerada?: string | null
+          magia_indicada?: string | null
+          observacoes?: string | null
+          relato?: string | null
+          situacao?: string | null
+          texto_whatsapp?: string | null
+          user_id: string
+          valor_cobrado?: number | null
+        }
+        Update: {
+          cartas?: Json | null
+          cliente_id?: string
+          created_at?: string
+          data?: string
+          id?: string
+          leitura_gerada?: string | null
+          magia_indicada?: string | null
+          observacoes?: string | null
+          relato?: string | null
+          situacao?: string | null
+          texto_whatsapp?: string | null
+          user_id?: string
+          valor_cobrado?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "atendimentos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       beta_feedback: {
         Row: {
           admin_notes: string | null
@@ -89,6 +145,60 @@ export type Database = {
           status?: Database["public"]["Enums"]["feedback_status"]
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      clientes: {
+        Row: {
+          cidade: string | null
+          created_at: string
+          data_nascimento: string | null
+          data_nascimento_envolvido: string | null
+          id: string
+          instagram: string | null
+          nome: string
+          nome_envolvido: string | null
+          observacoes_privadas: string | null
+          situacao_principal: string | null
+          status_comercial: string | null
+          status_relacao: string | null
+          updated_at: string
+          user_id: string
+          whatsapp: string
+        }
+        Insert: {
+          cidade?: string | null
+          created_at?: string
+          data_nascimento?: string | null
+          data_nascimento_envolvido?: string | null
+          id?: string
+          instagram?: string | null
+          nome: string
+          nome_envolvido?: string | null
+          observacoes_privadas?: string | null
+          situacao_principal?: string | null
+          status_comercial?: string | null
+          status_relacao?: string | null
+          updated_at?: string
+          user_id: string
+          whatsapp: string
+        }
+        Update: {
+          cidade?: string | null
+          created_at?: string
+          data_nascimento?: string | null
+          data_nascimento_envolvido?: string | null
+          id?: string
+          instagram?: string | null
+          nome?: string
+          nome_envolvido?: string | null
+          observacoes_privadas?: string | null
+          situacao_principal?: string | null
+          status_comercial?: string | null
+          status_relacao?: string | null
+          updated_at?: string
+          user_id?: string
+          whatsapp?: string
         }
         Relationships: []
       }
@@ -183,6 +293,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      magias: {
+        Row: {
+          created_at: string
+          id: string
+          intensidade: string | null
+          nome: string
+          objetivo: string | null
+          orientacao: string | null
+          quando_indicar: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          intensidade?: string | null
+          nome: string
+          objetivo?: string | null
+          orientacao?: string | null
+          quando_indicar?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          intensidade?: string | null
+          nome?: string
+          objetivo?: string | null
+          orientacao?: string | null
+          quando_indicar?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
