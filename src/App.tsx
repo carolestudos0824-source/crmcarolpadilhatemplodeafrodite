@@ -24,10 +24,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// CRM Pages (Lazy)
-const ClientesListPage = lazy(() => import("./pages/templo/ClientesListPage").then(m => ({ default: m.ClientesListPage })));
-const ClienteFormPage = lazy(() => import("./pages/templo/ClienteFormPage").then(m => ({ default: m.ClienteFormPage })));
-const NovoAtendimentoPage = lazy(() => import("./pages/templo/NovoAtendimentoPage").then(m => ({ default: m.NovoAtendimentoPage })));
+const MagiasPage = lazy(() => import("./pages/templo/MagiasPage").then(m => ({ default: m.MagiasPage })));
+const ReportsPage = lazy(() => import("./pages/templo/ReportsPage").then(m => ({ default: m.ReportsPage })));
+const SettingsPage = lazy(() => import("./pages/templo/SettingsPage").then(m => ({ default: m.SettingsPage })));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -43,9 +42,9 @@ const App = () => (
               <Route path="clientes" element={<ClientesListPage />} />
               <Route path="clientes/novo" element={<ClienteFormPage />} />
               <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
-              <Route path="jogos" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
-              <Route path="relatorios" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
-              <Route path="configuracoes" element={<div className="p-8 text-center text-templo-gold">Em breve</div>} />
+              <Route path="magias" element={<MagiasPage />} />
+              <Route path="relatorios" element={<ReportsPage />} />
+              <Route path="configuracoes" element={<SettingsPage />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />
