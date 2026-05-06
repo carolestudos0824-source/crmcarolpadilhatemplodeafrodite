@@ -24,58 +24,53 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#F4F0EA", // Fundo Claro
+        foreground: "#111111", // Preto Apoio
         templo: {
-          black: "#000000",
-          red: "#B80D2D",
-          gold: "#D7BD79",
-          ivory: "#F7F4EF",
-          purple: "#5C2A7A",
+          bg: "#F4F0EA",
+          ivory: "#ECE5DC",
+          gold: "#C9A35A",
+          "gold-deep": "#9B7440",
+          red: "#A61E25",
+          black: "#111111",
         },
         primary: {
-          DEFAULT: "#B80D2D",
-          foreground: "#F7F4EF",
+          DEFAULT: "#A61E25", // Vermelho Tulipa
+          foreground: "#F4F0EA",
         },
         secondary: {
-          DEFAULT: "#D7BD79",
-          foreground: "#000000",
+          DEFAULT: "#C9A35A", // Dourado Principal
+          foreground: "#111111",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#A61E25",
+          foreground: "#F4F0EA",
         },
         muted: {
-          DEFAULT: "#F7F4EF",
-          foreground: "#000000",
+          DEFAULT: "#ECE5DC",
+          foreground: "#111111",
         },
         accent: {
-          DEFAULT: "#D7BD79",
-          foreground: "#000000",
+          DEFAULT: "#C9A35A",
+          foreground: "#111111",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#ECE5DC",
+          foreground: "#111111",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        gold: {
-          DEFAULT: "#D7BD79",
-          light: "#E5D1A0",
-          dark: "#B59955",
-          muted: "hsl(var(--gold-muted))",
+          DEFAULT: "#ECE5DC", // Marfim Rosado for cards
+          foreground: "#111111",
         },
         sidebar: {
-          DEFAULT: "#000000",
-          foreground: "#F7F4EF",
-          primary: "#B80D2D",
-          "primary-foreground": "#F7F4EF",
-          accent: "#D7BD79",
-          "accent-foreground": "#000000",
-          border: "#D7BD79",
-          ring: "#D7BD79",
+          DEFAULT: "#111111",
+          foreground: "#F4F0EA",
+          primary: "#A61E25",
+          "primary-foreground": "#F4F0EA",
+          accent: "#C9A35A",
+          "accent-foreground": "#111111",
+          border: "#C9A35A",
+          ring: "#C9A35A",
         },
       },
       borderRadius: {
