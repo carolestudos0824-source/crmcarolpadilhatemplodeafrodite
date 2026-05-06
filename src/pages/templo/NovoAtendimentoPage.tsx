@@ -6,8 +6,23 @@ import { useAtendimentoStore } from "@/store/use-atendimento-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, UserPlus, ArrowRight, ArrowLeft, Mic, Sparkles, X } from "lucide-react";
+import { Search, UserPlus, ArrowRight, ArrowLeft, Mic, Sparkles, X, Plus } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { CartaPosicaoModal } from "@/components/templo/CartaPosicaoModal";
+
+const POSICOES = [
+  { id: 1, label: "Pensamentos dela", bloco: "ELA" },
+  { id: 2, label: "Sentimentos dela", bloco: "ELA" },
+  { id: 3, label: "Desejos dela", bloco: "ELA" },
+  { id: 4, label: "Pensamentos dele", bloco: "ELE" },
+  { id: 5, label: "Sentimentos dele", bloco: "ELE" },
+  { id: 6, label: "Desejos dele", bloco: "ELE" },
+  { id: 7, label: "Conselho", bloco: "CENTRO" },
+  { id: 8, label: "Obstáculo", bloco: "CENTRO" },
+  { id: 9, label: "Tendência 1", bloco: "FUTURO" },
+  { id: 10, label: "Tendência 2", bloco: "FUTURO" },
+  { id: 11, label: "Tendência 3", bloco: "FUTURO" },
+];
 
 const SITUACOES = [
   "Está sumindo", "Término recente", "Quero reconquistar", "Ele bloqueia e desbloqueia", 
