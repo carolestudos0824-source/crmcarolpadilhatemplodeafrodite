@@ -17,6 +17,8 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
   { icon: Users, label: "Clientes", path: "/templo/clientes" },
   { icon: PlusCircle, label: "Novo Atendimento", path: "/templo/novo-atendimento" },
+  { icon: History, label: "Pipeline", path: "/templo/pipeline" },
+  { icon: Heart, label: "Follow-ups", path: "/templo/follow-ups" },
   { icon: Sparkles, label: "Magias", path: "/templo/magias" },
   { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
   { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
