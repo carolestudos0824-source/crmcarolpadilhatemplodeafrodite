@@ -31,6 +31,7 @@ const NovoAtendimentoPage = lazy(() => import("./pages/templo/NovoAtendimentoPag
 const MagiasPage = lazy(() => import("./pages/templo/MagiasPage").then(m => ({ default: m.MagiasPage })));
 const ReportsPage = lazy(() => import("./pages/templo/ReportsPage").then(m => ({ default: m.ReportsPage })));
 const SettingsPage = lazy(() => import("./pages/templo/SettingsPage").then(m => ({ default: m.SettingsPage })));
+const ClienteProfilePage = lazy(() => import("./pages/templo/ClienteProfilePage").then(m => ({ default: m.ClienteProfilePage })));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -43,8 +44,9 @@ const App = () => (
             <Route path="/templo" element={<ProtectedRoute><CrmLayout /></ProtectedRoute>}>
               <Route index element={<Navigate to="/templo/dashboard" replace />} />
               <Route path="dashboard" element={<TemploDashboard />} />
-              <Route path="clientes" element={<ClientesListPage />} />
-              <Route path="clientes/novo" element={<ClienteFormPage />} />
+               <Route path="clientes" element={<ClientesListPage />} />
+               <Route path="clientes/novo" element={<ClienteFormPage />} />
+               <Route path="clientes/:id" element={<ClienteProfilePage />} />
               <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
               <Route path="magias" element={<MagiasPage />} />
               <Route path="relatorios" element={<ReportsPage />} />
