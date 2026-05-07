@@ -20,11 +20,12 @@ import { useAuth } from "@/hooks/use-auth";
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
   { icon: Users, label: "Clientes", path: "/templo/clientes" },
-  { icon: PlusCircle, label: "Novo Atendimento", path: "/templo/novo-atendimento" },
+  { icon: PlusCircle, label: "Novo Jogo", path: "/templo/novo-atendimento" },
   { icon: History, label: "Pipeline", path: "/templo/pipeline" },
-  { icon: Heart, label: "Follow-ups", path: "/templo/follow-ups" },
+  { icon: Clock, label: "Follow-ups", path: "/templo/follow-ups" },
   { icon: Sparkles, label: "Magias", path: "/templo/magias" },
-  { icon: BarChart3, label: "Financeiro", path: "/templo/financeiro" },
+  { icon: DollarSign, label: "Financeiro", path: "/templo/financeiro" },
+  { icon: MessageSquare, label: "Mensagens", path: "/templo/mensagens" },
   { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
   { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
 ];
