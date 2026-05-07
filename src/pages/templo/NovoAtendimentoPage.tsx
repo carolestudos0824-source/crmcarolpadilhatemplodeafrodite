@@ -86,6 +86,13 @@ export function NovoAtendimentoPage() {
   const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  
+  const [savedReadingData, setSavedReadingData] = useState<{
+    whatsapp?: string;
+    audio?: string;
+    sections?: any[];
+    magia?: string;
+  } | null>(null);
 
   // Load existing appointment if in view or reopen mode
   useEffect(() => {
@@ -100,13 +107,19 @@ export function NovoAtendimentoPage() {
         setTiragemPhoto(existing.fotoTiragem || null);
         
         if (viewId) {
+          setSavedReadingData({
+            whatsapp: existing.textoWhatsapp,
+            audio: existing.roteiroAudio,
+            sections: existing.leituraCompleta ? JSON.parse(existing.leituraCompleta) : null,
+            magia: existing.magiasIndicadas
+          });
           setStep(5); // Go straight to reading
         } else {
           setStep(4); // Start at cards for reopen
         }
       }
     }
-  }, [viewId, reopenId]);
+  }, [viewId, reopenId, viewId, reopenId]);
   
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
