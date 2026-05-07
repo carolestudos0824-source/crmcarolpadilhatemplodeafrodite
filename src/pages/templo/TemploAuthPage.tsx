@@ -16,21 +16,29 @@ export function TemploAuthPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
+    
     setLoading(true);
     setError(null);
 
-    const { error } = await signIn(email, password);
+    try {
+      const { error } = await signIn(email, password);
 
-    if (error) {
-      setError(error.message);
-      toast({
-        title: "Erro de Acesso",
-        description: error.message,
-        variant: "destructive",
-      });
+      if (error) {
+        setError(error.message);
+        toast({
+          title: "Erro de Acesso",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        navigate("/templo/dashboard");
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      setError("Ocorreu um erro inesperado. Tente novamente.");
+    } finally {
       setLoading(false);
-    } else {
-      navigate("/templo/dashboard");
     }
   };
 
