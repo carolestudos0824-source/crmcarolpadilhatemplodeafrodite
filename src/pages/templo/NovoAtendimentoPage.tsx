@@ -239,10 +239,19 @@ export function NovoAtendimentoPage() {
           {situations.map((sit) => (
             <button
               key={sit}
-              onClick={nextStep}
-              className="bg-white p-6 rounded-2xl border border-[#C9A35A]/10 hover:border-[#A61E25] hover:shadow-lg transition-all text-left group"
+              onClick={() => {
+                setSelectedSituation(sit);
+                nextStep();
+              }}
+              className={cn(
+                "p-6 rounded-2xl border transition-all text-left group",
+                selectedSituation === sit ? "bg-[#A61E25]/5 border-[#A61E25] shadow-md" : "bg-white border-[#C9A35A]/10 hover:border-[#A61E25] hover:shadow-lg"
+              )}
             >
-              <span className="font-bold text-[#111111] group-hover:text-[#A61E25]">{sit}</span>
+              <span className={cn(
+                "font-bold transition-colors",
+                selectedSituation === sit ? "text-[#A61E25]" : "text-[#111111] group-hover:text-[#A61E25]"
+              )}>{sit}</span>
             </button>
           ))}
         </div>
