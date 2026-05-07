@@ -538,52 +538,146 @@ export function NovoAtendimentoPage() {
           <div className="bg-[#111111] p-10 rounded-[3rem] text-center space-y-4 border border-[#C9A35A]/40 shadow-2xl relative overflow-hidden">
              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
              <Sparkles className="w-12 h-12 text-[#C9A35A] mx-auto animate-pulse" />
-             <h2 className="text-3xl font-bold text-white font-display">Leitura Concluída</h2>
-             <p className="text-[#C9A35A] font-bold uppercase tracking-[0.2em] text-xs">A energia foi canalizada com sucesso</p>
+             <h2 className="text-3xl font-bold text-white font-display uppercase tracking-widest italic">Leitura Manifestada</h2>
+             <p className="text-[#C9A35A] font-bold uppercase tracking-[0.2em] text-[10px]">A energia de {selectedCliente?.name} foi canalizada</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
-                  <h3 className="text-xl font-bold text-[#111111] font-display flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-[#A61E25] fill-[#A61E25]" />
-                    Diagnóstico Geral
-                  </h3>
-                  <p className="text-[#111111]/80 leading-relaxed italic">
-                    "A energia atual da relação mostra um bloqueio comunicativo severo. Enquanto você mantém sentimentos nutridos e o desejo de reconciliação (representado pela Rainha de Copas), ele se encontra em um momento de introspecção defensiva (4 de Espadas). O obstáculo principal é o orgulho ferido por ambas as partes."
-                  </p>
+               {/* Cartas Confirmadas */}
+               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+                  <div className="flex items-center gap-2 border-b border-[#F2EFE8] pb-4">
+                    <Eye className="w-5 h-5 text-[#C9A35A]" />
+                    <h3 className="text-sm font-bold text-[#111111] uppercase tracking-widest">Cartas confirmadas nesta leitura</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                    {tarotPositions.map(p => (
+                      <div key={p.id} className="flex justify-between text-xs border-b border-[#F2EFE8]/50 pb-1 italic">
+                        <span className="text-[#111111]/40 font-bold uppercase tracking-tighter">{p.label}:</span>
+                        <span className="text-[#111111] font-bold uppercase">{cards[p.id]?.name}</span>
+                      </div>
+                    ))}
+                  </div>
                </section>
 
                <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
-                  <h3 className="text-xl font-bold text-[#111111] font-display">Caminhos & Magias</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-2xl bg-[#A61E25]/5 border border-[#A61E25]/20">
-                       <h4 className="font-bold text-[#A61E25] text-sm mb-1 uppercase tracking-wider">Indicação Principal</h4>
-                       <p className="text-[#111111] font-bold">Adoçamento com Abertura de Diálogo</p>
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-xl font-bold text-[#111111] font-display flex items-center gap-2 mb-4">
+                        <Heart className="w-5 h-5 text-[#A61E25] fill-[#A61E25]" />
+                        1. Diagnóstico Geral
+                      </h3>
+                      <p className="text-[#111111]/80 leading-relaxed italic border-l-4 border-[#A61E25]/20 pl-4 py-2">
+                        "A energia atual da relação (Situação: {selectedSituation}) mostra um momento de transição profunda. A presença da carta {cards[7]?.name} no conselho indica que é necessário maturidade emocional, enquanto o obstáculo {cards[8]?.name} aponta para desafios imediatos que exigem clareza."
+                      </p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-[#C9A35A]/5 border border-[#C9A35A]/20">
-                       <h4 className="font-bold text-[#C9A35A] text-sm mb-1 uppercase tracking-wider">Apoio Espiritual</h4>
-                       <p className="text-[#111111] font-bold">Limpeza Energética de Ambiente</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px] border-b border-[#F2EFE8] pb-2">2. O que ela pensa, sente e deseja</h4>
+                        <ul className="text-xs space-y-2 text-[#111111]/70 font-sans">
+                          <li><span className="font-bold text-[#111111]">Mente:</span> {cards[1]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Coração:</span> {cards[2]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Desejo:</span> {cards[3]?.name}</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px] border-b border-[#F2EFE8] pb-2">3. O que ele pensa, sente e deseja</h4>
+                        <ul className="text-xs space-y-2 text-[#111111]/70 font-sans">
+                          <li><span className="font-bold text-[#111111]">Mente:</span> {cards[4]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Coração:</span> {cards[5]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Desejo:</span> {cards[6]?.name}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px]">7. Tendência Futura</h4>
+                      <div className="flex gap-4">
+                        {[9, 10, 11].map(id => (
+                          <div key={id} className="flex-1 bg-[#F2EFE8] p-3 rounded-xl text-center">
+                            <span className="text-[10px] block font-bold text-[#111111]/40 mb-1">CARTA {id-8}</span>
+                            <span className="text-[11px] font-bold text-[#A61E25] uppercase">{cards[id]?.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-[#F2EFE8]">
+                       <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px] flex items-center gap-2">
+                         <AudioLines className="w-4 h-4 text-[#A61E25]" />
+                         12. Roteiro de áudio para Carol
+                       </h4>
+                       <p className="text-[11px] text-[#111111]/60 leading-relaxed font-sans">
+                         Comece acolhendo a cliente pelo nome ({selectedCliente?.name}). Mencione que a tiragem do Templo de Afrodite revelou que a situação de "{selectedSituation}" está sendo influenciada fortemente pelo {cards[8]?.name} no caminho... [falar sobre tendências: {cards[9]?.name}, {cards[10]?.name}, {cards[11]?.name}]
+                       </p>
                     </div>
                   </div>
+               </section>
+
+               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-[#A61E25]" />
+                    <h3 className="text-xl font-bold text-[#111111] font-display">13. Caminhos & Magias Indicadas</h3>
+                  </div>
+                  <div className="p-5 rounded-2xl bg-[#A61E25]/5 border border-[#A61E25]/20 flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold text-[#A61E25] text-xs mb-1 uppercase tracking-widest">Indicação do Templo</h4>
+                      <p className="text-[#111111] font-bold text-lg italic">{indicatedMagia}</p>
+                    </div>
+                    <Shield className="w-8 h-8 text-[#A61E25]/20" />
+                  </div>
+               </section>
+
+               <section className="bg-[#111111] p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
+                  <h3 className="text-lg font-bold text-[#C9A35A] font-display flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
+                    14. Observações Privadas (Carol)
+                  </h3>
+                  <Textarea 
+                    placeholder="Anotações para o histórico interno..."
+                    className="bg-white/5 border-white/10 text-white text-xs h-32 focus:ring-[#A61E25]"
+                  />
                </section>
             </div>
 
             <div className="space-y-6">
-               <div className="bg-[#ECE5DC] p-6 rounded-[2.5rem] border border-[#C9A35A]/30 shadow-sm space-y-4 sticky top-8">
-                  <h3 className="font-bold text-[#111111] text-center uppercase tracking-widest text-sm">Pronto para Enviar</h3>
-                  <div className="bg-white p-4 rounded-2xl text-xs font-medium text-[#111111]/70 leading-relaxed border border-white">
-                    Olá Mariana! Acabei de fazer sua tiragem no Templo de Afrodite. 🌹<br/><br/>
-                    A energia mostra que o Rodrigo está em um momento de silêncio para processar o que sente... [clique para copiar o resto]
+               <div className="bg-[#EBE5DB] p-6 rounded-[2.5rem] border border-[#C9A35A]/30 shadow-sm space-y-6 sticky top-8">
+                  <div className="text-center space-y-2">
+                    <h3 className="font-bold text-[#111111] uppercase tracking-widest text-[10px]">11. Texto pronto para WhatsApp</h3>
+                    <p className="text-[9px] text-[#111111]/40 font-bold uppercase tracking-tighter italic">Copia o conteúdo completo automaticamente</p>
                   </div>
-                  <Button className="w-full bg-[#111111] text-white font-bold h-12 rounded-xl gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                    COPIAR WHATSAPP
-                  </Button>
-                  <Button variant="outline" className="w-full border-[#A61E25] text-[#A61E25] font-bold h-12 rounded-xl gap-2">
-                    <Save className="w-4 h-4" />
-                    SALVAR FICHA
-                  </Button>
+                  
+                  <div className="bg-white p-5 rounded-2xl text-[11px] font-medium text-[#111111]/80 leading-relaxed border border-white max-h-[300px] overflow-y-auto font-sans shadow-inner">
+                    {generatedWhatsAppText.split('\n').map((line, i) => (
+                      <span key={i}>{line}<br/></span>
+                    ))}
+                  </div>
+
+                  <div className="space-y-3 pt-2">
+                    <Button 
+                      onClick={copyToClipboard}
+                      className="w-full bg-[#111111] hover:bg-black text-white font-bold h-14 rounded-xl gap-2 transition-all active:scale-95"
+                    >
+                      <Copy className="w-4 h-4 text-[#C9A35A]" />
+                      COPIAR WHATSAPP
+                    </Button>
+                    <Button 
+                      onClick={saveAttendance}
+                      variant="outline" 
+                      className="w-full border-[#A61E25] text-[#A61E25] hover:bg-[#A61E25]/5 font-bold h-14 rounded-xl gap-2 transition-all active:scale-95"
+                    >
+                      <Save className="w-4 h-4" />
+                      SALVAR FICHA
+                    </Button>
+                  </div>
+                  
+                  <button 
+                    onClick={() => setStep(4)}
+                    className="w-full text-[10px] font-bold uppercase tracking-[0.2em] text-[#111111]/40 hover:text-[#A61E25] transition-colors"
+                  >
+                    Voltar e corrigir cartas
+                  </button>
                </div>
             </div>
           </div>
