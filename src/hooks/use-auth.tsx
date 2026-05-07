@@ -11,7 +11,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Credenciais internas temporárias
 const AUTHORIZED_EMAIL = "carolestudos0824@gmail.com";
-const INTERNAL_ACCESS_KEY = "templo2024"; // Chave interna para a versão privada
+const INTERNAL_ACCESS_KEY = "Afrodite@2026"; // Chave interna para a fase de desenvolvimento
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<{ email: string } | null>(null);
