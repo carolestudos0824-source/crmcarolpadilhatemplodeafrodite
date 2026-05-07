@@ -2,22 +2,36 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles } from "lucide-react";
+import { Sparkles, AlertCircle } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 
 export function TemploAuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulação de login para a versão estrutural
-    setTimeout(() => {
-      navigate("/templo/dashboard");
+    setError(null);
+
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      setError(error.message);
+      toast({
+        title: "Erro de Acesso",
+        description: error.message,
+        variant: "destructive",
+      });
       setLoading(false);
-    }, 1000);
+    } else {
+      navigate("/templo/dashboard");
+    }
   };
 
   return (
@@ -38,7 +52,13 @@ export function TemploAuthPage() {
           </p>
         </div>
 
-        <div className="w-full bg-[#ECE5DC]/60 backdrop-blur-xl border border-[#C9A35A]/20 p-6 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-6 sm:space-y-8">
+        <div className="w-full bg-[#ECE5DC]/60 backdrop-blur-xl border border-[#C9A35A]/20 p-6 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-6 sm:space-y-8 relative">
+          {error && (
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#A61E25] text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce">
+              <AlertCircle className="w-3 h-3" />
+              {error}
+            </div>
+          )}
           <form onSubmit={handleLogin} className="space-y-5 sm:space-y-6">
             <div className="space-y-2">
               <label className="text-[10px] uppercase tracking-widest text-[#111111]/70 font-bold ml-1">E-mail</label>
@@ -46,7 +66,7 @@ export function TemploAuthPage() {
                 type="email" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-0 focus-visible:border-[#A61E25] focus:ring-0 focus:border-[#A61E25] rounded-2xl text-base sm:text-lg px-4 transition-all"
+                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
                 placeholder="carol@exemplo.com"
                 required
               />
@@ -58,7 +78,7 @@ export function TemploAuthPage() {
                 type="password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-0 focus-visible:border-[#A61E25] focus:ring-0 focus:border-[#A61E25] rounded-2xl text-base sm:text-lg px-4 transition-all"
+                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
                 placeholder="••••••••"
                 required
               />
