@@ -450,10 +450,7 @@ export function NovoAtendimentoPage() {
                 </Button>
                 <Button 
                   variant="outline" 
-                  onClick={() => {
-                    if (relato.trim() && !confirm("Deseja realmente limpar todo o relato?")) return;
-                    setRelato("");
-                  }} 
+                  onClick={() => setRelato("")} 
                   className="h-16 rounded-2xl border-[#C9A35A]/30 text-[#111111]/40 hover:text-red-600 hover:border-red-600/30 font-bold flex-1 order-2 sm:order-1"
                 >
                   LIMPAR
