@@ -1,7 +1,8 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { 
   ArrowLeft, MessageCircle, Phone, Instagram, Calendar, Heart, Info, 
-  ChevronRight, Clock, Zap, MessageSquare, Plus, FileText, Copy, RotateCcw
+  ChevronRight, Clock, Zap, MessageSquare, Plus, FileText, Copy, RotateCcw,
+  Lock, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
