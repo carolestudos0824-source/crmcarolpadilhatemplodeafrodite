@@ -410,4 +410,4 @@ export { NovoAtendimentoPage as default };
   );
 }
 
-export { NovoAtendimentoPage as default };
+export function NovoAtendimentoPage() {
