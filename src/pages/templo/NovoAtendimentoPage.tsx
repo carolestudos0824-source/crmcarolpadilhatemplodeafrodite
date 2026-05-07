@@ -270,7 +270,7 @@ export function NovoAtendimentoPage() {
         <div className="space-y-6 animate-fade-up">
           <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
             <div className="space-y-4">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Selecione a Cliente</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/70 ml-1">E-mail da Cliente</label>
               <div className="relative">
                 <Input placeholder="Buscar por nome..." className="h-16 pl-12 rounded-2xl bg-[#F4F0EA]/50 border-[#C9A35A]/20" />
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#C9A35A]" />
