@@ -296,7 +296,7 @@ export function NovoAtendimentoPage() {
     if (!selectedCliente) return;
 
     try {
-      const data = {
+      const data: any = {
         clientId: selectedCliente.id,
         nomeCliente: selectedCliente.name,
         situacaoAmorosa: selectedSituation,
@@ -311,7 +311,7 @@ export function NovoAtendimentoPage() {
       };
 
       if (reopenId && !isNew) {
-        storage.updateAppointment(reopenId, data);
+        storage.saveAppointment({ ...data, id: reopenId });
         toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
       } else {
         storage.saveAppointment(data);

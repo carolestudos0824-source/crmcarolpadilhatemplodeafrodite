@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info } from "lucide-react";
+import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info, TrendingUp, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,11 +22,16 @@ export function ClienteFormPage() {
     whatsapp: "",
     instagram: "",
     dataNascimento: "",
+    cidade: "",
+    origem: "",
     nomePessoaEnvolvida: "",
+    dataNascimentoPessoa: "",
     statusRelacao: "",
     situacaoPrincipal: "",
     observacoesPrivadas: "",
-    statusComercial: "Nova cliente"
+    statusComercial: "Nova cliente",
+    temperatura: "Morna" as any,
+    tags: [] as string[]
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -140,6 +145,29 @@ export function ClienteFormPage() {
                 />
               </div>
             </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Cidade</label>
+              <Input 
+                name="cidade"
+                value={formData.cidade}
+                onChange={handleChange}
+                placeholder="Ex: São Paulo - SP" 
+                className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Como chegou?</label>
+              <Select value={formData.origem} onValueChange={(val) => handleSelectChange('origem', val)}>
+                <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Instagram", "TikTok", "YouTube", "Indicação", "Site", "Outro"].map(o => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
@@ -163,6 +191,19 @@ export function ClienteFormPage() {
               />
             </div>
             <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Data Nasc. dele(a)</label>
+              <div className="relative">
+                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
+                <Input 
+                  type="date"
+                  name="dataNascimentoPessoa"
+                  value={formData.dataNascimentoPessoa}
+                  onChange={handleChange}
+                  className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Status da Relação</label>
               <Select value={formData.statusRelacao} onValueChange={(val) => handleSelectChange('statusRelacao', val)}>
                 <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
@@ -172,7 +213,8 @@ export function ClienteFormPage() {
                   {[
                     "Ex", "Ficante", "Namoro", "Casamento", "Relação indefinida", 
                     "Bloqueados", "Afastados", "Terceira pessoa", "Paixão nova", 
-                    "Término recente", "Relação fria", "Contato instável"
+                    "Término recente", "Relação fria", "Contato instável",
+                    "Reconciliação em andamento", "Sem contato"
                   ].map(status => (
                     <SelectItem key={status} value={status}>{status}</SelectItem>
                   ))}
@@ -190,6 +232,48 @@ export function ClienteFormPage() {
               placeholder="Ex: Ele sumiu após a última briga" 
               className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
             />
+          </div>
+        </div>
+
+        {/* Sessão: Status Comercial */}
+        <div className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#F4F0EA] pb-4 mb-6">
+            <TrendingUp className="w-5 h-5 text-[#C9A35A]" />
+            <h2 className="text-lg font-bold text-[#111111] font-display uppercase tracking-widest">Status Comercial</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Fase da Cliente</label>
+              <Select value={formData.statusComercial} onValueChange={(val) => handleSelectChange('statusComercial', val)}>
+                <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    "Nova cliente", "Pediu informação", "Consulta marcada", "Consulta feita", 
+                    "Magia indicada", "Magia oferecida", "Magia contratada", 
+                    "Pagamento pendente", "Em acompanhamento", "Retorno pendente", 
+                    "Finalizada", "Arquivada"
+                  ].map(s => (
+                    <SelectItem key={s} value={s}>{s}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Temperatura</label>
+              <Select value={formData.temperatura} onValueChange={(val) => handleSelectChange('temperatura', val)}>
+                <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Fria", "Morna", "Quente", "Ativa", "Recorrente", "Sensível", "Alta Prioridade"].map(t => (
+                    <SelectItem key={t} value={t}>{t}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 

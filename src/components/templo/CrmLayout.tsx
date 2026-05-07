@@ -8,7 +8,11 @@ import {
   BarChart3, 
   Settings,
   Heart,
-  LogOut
+  LogOut,
+  Clock,
+  DollarSign,
+  MessageSquare,
+  Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
@@ -16,8 +20,12 @@ import { useAuth } from "@/hooks/use-auth";
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
   { icon: Users, label: "Clientes", path: "/templo/clientes" },
-  { icon: PlusCircle, label: "Novo Atendimento", path: "/templo/novo-atendimento" },
+  { icon: PlusCircle, label: "Novo Jogo", path: "/templo/novo-atendimento" },
+  { icon: History, label: "Pipeline", path: "/templo/pipeline" },
+  { icon: Clock, label: "Follow-ups", path: "/templo/follow-ups" },
   { icon: Sparkles, label: "Magias", path: "/templo/magias" },
+  { icon: DollarSign, label: "Financeiro", path: "/templo/financeiro" },
+  { icon: MessageSquare, label: "Mensagens", path: "/templo/mensagens" },
   { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
   { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
 ];
@@ -90,6 +98,25 @@ export function CrmLayout() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto p-4 md:p-8">
+        <header className="mb-8 hidden lg:flex items-center justify-between">
+          <div className="relative w-full max-w-md group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#111111]/30 group-focus-within:text-[#C9A35A] transition-colors" />
+            <input 
+              type="text" 
+              placeholder="Busca global (clientes, atendimentos, magias...)" 
+              className="w-full h-12 bg-white/50 backdrop-blur-sm border border-[#C9A35A]/10 rounded-2xl pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#C9A35A]/30 focus:bg-white transition-all shadow-sm"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+             <div className="text-right">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/30">Bem-vinda de volta</p>
+                <p className="text-sm font-display italic text-[#111111]">Carol Padilha</p>
+             </div>
+             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#C9A35A] to-[#9B7440] p-[2px]">
+                <div className="w-full h-full rounded-full bg-[#111111] flex items-center justify-center text-[#C9A35A] font-bold text-xs italic">CP</div>
+             </div>
+          </div>
+        </header>
         <Outlet />
       </main>
 

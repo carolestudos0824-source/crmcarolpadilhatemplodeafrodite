@@ -1,20 +1,41 @@
-import { TrendingUp, Users, Calendar, Sparkles, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { TrendingUp, Users, Calendar, Sparkles, ArrowUpRight, ArrowDownRight, DollarSign, Star, Zap } from "lucide-react";
+import { useMemo } from "react";
+import { storage } from "@/lib/storage";
 
 export function ReportsPage() {
+  const appointments = useMemo(() => storage.getAppointments(), []);
+  const clients = useMemo(() => storage.getClients(), []);
+  const magias = useMemo(() => storage.getMagias(), []);
+  const financeiro = useMemo(() => storage.getFinanceiro(), []);
+
+  const stats = useMemo(() => {
+    const today = new Date();
+    const thisMonth = appointments.filter(a => {
+      const d = new Date(a.createdAt);
+      return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+    });
+
+    const income = financeiro.filter(f => f.status === 'Pago').reduce((acc, curr) => acc + curr.valor, 0);
+
+    return [
+      { label: "Consultas (Mês)", value: thisMonth.length.toString(), change: "+12%", up: true },
+      { label: "Total Clientes", value: clients.length.toString(), change: "+5%", up: true },
+      { label: "Magias Ativas", value: magias.filter(m => m.statusExecucao !== 'Finalizada').length.toString(), change: "+8%", up: true },
+      { label: "Receita Total", value: `R$ ${income.toLocaleString('pt-BR')}`, change: "+15%", up: true },
+    ];
+  }, [appointments, clients, magias, financeiro]);
+
   return (
     <div className="space-y-8 animate-fade-in pb-20">
-      <header>
-        <h1 className="text-3xl font-bold text-[#111111] font-display">Relatórios</h1>
-        <p className="text-[#111111]/60 font-medium">Acompanhe o crescimento e fluxo do Templo.</p>
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-3xl font-bold font-display italic text-[#111111]">Métricas do Templo</h1>
+          <p className="text-[#C9A35A] uppercase tracking-[0.3em] text-[10px] font-bold mt-1">Visão Analítica e Crescimento</p>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: "Consultas (Mês)", value: "54", change: "+12%", up: true },
-          { label: "Novas Clientes", value: "18", change: "+5%", up: true },
-          { label: "Magias Contratadas", value: "32", change: "+8%", up: true },
-          { label: "Ticket Médio", value: "R$ 380", change: "-2%", up: false },
-        ].map((stat, i) => (
+        {stats.map((stat, i) => (
           <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-2">
             <p className="text-[10px] uppercase tracking-widest font-bold text-[#111111]/40">{stat.label}</p>
             <div className="flex items-end gap-3">
@@ -29,39 +50,34 @@ export function ReportsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm h-80 flex flex-col items-center justify-center space-y-4">
-           <TrendingUp className="w-12 h-12 text-[#C9A35A]/20" />
-           <p className="text-[#111111]/40 font-bold uppercase tracking-widest text-xs">Gráfico de Atendimentos Semanal</p>
-           <div className="w-full flex items-end justify-between px-8 gap-2 flex-1 pt-4">
-              {[40, 70, 45, 90, 65, 80, 50].map((h, i) => (
-                <div key={i} className="flex-1 bg-[#F4F0EA] rounded-t-lg relative group">
-                   <div style={{ height: `${h}%` }} className="bg-[#C9A35A]/40 group-hover:bg-[#A61E25] transition-all rounded-t-lg" />
-                </div>
-              ))}
+        <div className="bg-white p-10 rounded-[3rem] border border-[#C9A35A]/10 shadow-sm space-y-8">
+           <div className="flex items-center justify-between border-b border-[#F4F0EA] pb-6">
+              <h3 className="text-xl font-bold text-[#111111] font-display italic">Cartas Recorrentes</h3>
+              <Star className="w-5 h-5 text-[#C9A35A]" />
            </div>
-           <div className="w-full flex justify-between px-8 text-[10px] font-bold text-[#111111]/20">
-              <span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SAB</span><span>DOM</span>
+           <div className="space-y-6">
+              <div className="flex items-center justify-center py-12">
+                 <p className="text-[#111111]/30 italic text-sm">Dados insuficientes para análise de cartas.</p>
+              </div>
            </div>
         </div>
 
-        <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
-           <h3 className="font-bold text-[#111111] font-display uppercase tracking-widest text-sm">Conversão de Magias</h3>
-           <div className="space-y-6">
-              {[
-                { label: "Adoçamentos", val: 65, color: "bg-[#A61E25]" },
-                { label: "Limpezas", val: 45, color: "bg-[#C9A35A]" },
-                { label: "Cortes", val: 20, color: "bg-[#111111]" },
-              ].map((item, i) => (
-                <div key={i} className="space-y-2">
-                   <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
-                      <span>{item.label}</span>
-                      <span className="text-[#111111]/40">{item.val}%</span>
-                   </div>
-                   <div className="h-2 w-full bg-[#F4F0EA] rounded-full overflow-hidden">
-                      <div style={{ width: `${item.val}%` }} className={`h-full ${item.color}`} />
-                   </div>
-                </div>
-              ))}
+        <div className="bg-[#111111] p-10 rounded-[3rem] border border-[#C9A35A]/30 shadow-xl space-y-8 text-white">
+           <div className="flex items-center justify-between border-b border-white/10 pb-6">
+              <h3 className="text-xl font-bold font-display italic text-[#C9A35A]">Conversão Comercial</h3>
+              <Zap className="w-5 h-5 text-[#C9A35A]" />
+           </div>
+           <div className="space-y-8">
+              <div className="space-y-2">
+                 <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-[#C9A35A]">
+                    <span>Atendimento → Magia</span>
+                    <span>0%</span>
+                 </div>
+                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#A61E25] w-[0%]" />
+                 </div>
+              </div>
+              <p className="text-white/40 text-xs italic text-center">Inicie atendimentos e registre magias para ver sua taxa de conversão.</p>
            </div>
         </div>
       </div>
