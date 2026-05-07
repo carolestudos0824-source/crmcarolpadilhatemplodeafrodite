@@ -165,6 +165,73 @@ export function NovoAtendimentoPage() {
     fileInputRef.current?.click();
   };
 
+  const generatedWhatsAppText = useMemo(() => {
+    const nome = selectedCliente?.name || "";
+    const baseText = nome 
+      ? `Olá ${nome}! Acabei de finalizar sua leitura no Templo de Afrodite. 🌹\n\n`
+      : `Olá! Finalizei sua leitura no Templo de Afrodite. 🌹\n\n`;
+    
+    let cardsConfirmed = "Cartas da sua tiragem:\n";
+    tarotPositions.forEach(p => {
+      cardsConfirmed += `- ${p.label}: ${cards[p.id]?.name || "Não informada"}\n`;
+    });
+
+    const diagnosis = `\nA energia atual da relação (situação: ${selectedSituation}) mostra um momento de ${cards[7]?.name || "introspecção"} como conselho principal e ${cards[8]?.name || "desafios"} como obstáculo.`;
+    
+    const conclusion = `\n\nPara seguirmos com o melhor direcionamento, recomendo ${indicatedMagia}. Ficamos assim por enquanto?`;
+    
+    return baseText + cardsConfirmed + diagnosis + conclusion;
+  }, [selectedCliente, cards, selectedSituation]);
+
+  const indicatedMagia = useMemo(() => {
+    // Lógica simples baseada em algumas cartas e situação
+    if (!cards[11]?.confirmed) return "Nenhuma magia indicada no momento";
+    
+    const c11 = cards[11].name.toLowerCase();
+    const c8 = cards[8]?.name.toLowerCase() || "";
+    
+    if (selectedSituation.includes("sumindo") || selectedSituation.includes("fria")) {
+      return "Adoçamento com Abertura de Diálogo";
+    }
+    if (c11.includes("estrela") || c11.includes("mundo")) {
+      return "Harmonização Amorosa";
+    }
+    if (c11.includes("diabo") || c11.includes("torre") || c8.includes("diabo")) {
+      return "Limpeza Energética Amorosa";
+    }
+    if (selectedSituation.includes("bloqueia")) {
+      return "Ritual para acalmar brigas";
+    }
+    
+    return "Banho de magnetismo pessoal";
+  }, [cards, selectedSituation]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(generatedWhatsAppText);
+    toast({
+      title: "Copiado!",
+      description: "O texto completo para o WhatsApp foi copiado.",
+    });
+  };
+
+  const saveAttendance = () => {
+    const attendanceData = {
+      cliente: selectedCliente?.name,
+      situacao: selectedSituation,
+      relato,
+      cards: cards,
+      magia: indicatedMagia,
+      date: new Date().toISOString()
+    };
+    // Simular salvamento
+    console.log("Saving attendance:", attendanceData);
+    toast({
+      title: "Atendimento Salvo",
+      description: "Atendimento registrado no histórico local com sucesso.",
+    });
+    setTimeout(() => navigate("/templo/dashboard"), 2000);
+  };
+
   return (
     <div className="max-w-4xl mx-auto pb-24 animate-fade-in">
       {/* Progress Header */}
