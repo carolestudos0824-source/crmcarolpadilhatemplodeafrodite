@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
 
 export function TemploAuthPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("carolestudos0824@gmail.com");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,14 +49,14 @@ export function TemploAuthPage() {
       <div className="fixed bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#C9A35A]/30 to-transparent z-50" />
       
       <div className="w-full max-w-[440px] py-8 sm:py-12 flex flex-col items-center gap-8 sm:gap-10 relative z-10">
-        <div className="text-center w-full px-4 space-y-3">
+        <div className="text-center w-full px-4 space-y-4">
           <img 
             src="https://qtbkvshbmqlszncxlcuc.supabase.co/storage/v1/object/public/dsl-uploads/FKxI2UX5GWafusX2CZ1rulDlY5n1/1fcb5fad-cd93-4055-9587-35b167be7490.png" 
             alt="Carol Padilha - Tarô, Magias de Amor e Direcionamento" 
-            className="w-full max-w-[220px] sm:max-w-[260px] mx-auto transition-all"
+            className="w-full max-w-[180px] sm:max-w-[240px] md:max-w-[280px] mx-auto transition-all object-contain"
           />
-          <p className="text-[#C9A35A] uppercase tracking-[0.2em] text-[9px] sm:text-[10px] font-bold">
-            CRM Espiritual · Sistema Interno
+          <p className="text-[#C9A35A] uppercase tracking-[0.3em] text-[10px] sm:text-[11px] font-bold">
+            CRM ESPIRITUAL • SISTEMA INTERNO
           </p>
         </div>
 
@@ -75,7 +75,7 @@ export function TemploAuthPage() {
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
-                placeholder="carol@exemplo.com"
+                placeholder="carolestudos0824@gmail.com"
                 required
               />
             </div>
