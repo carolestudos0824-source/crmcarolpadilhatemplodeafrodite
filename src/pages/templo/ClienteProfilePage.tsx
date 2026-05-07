@@ -2,13 +2,14 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { 
   ArrowLeft, MessageCircle, Phone, Instagram, Calendar, Heart, Info, 
   ChevronRight, Clock, Zap, MessageSquare, Plus, FileText, Copy, RotateCcw,
-  Lock, Eye
+  Lock, Eye, MapPin, Search, TrendingUp, DollarSign, Sparkles, Tag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { storage } from "@/lib/storage";
 import { cn } from "@/lib/utils";
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function ClienteProfilePage() {
   const { id } = useParams();
