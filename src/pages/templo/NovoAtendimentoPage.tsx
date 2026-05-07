@@ -27,7 +27,13 @@ import {
   Trash2,
   Lock,
   Eye,
-  AudioLines
+  AudioLines,
+  BookOpen,
+  Settings2,
+  AlertTriangle,
+  Flame,
+  Star,
+  Compass
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
