@@ -22,11 +22,16 @@ export function ClienteFormPage() {
     whatsapp: "",
     instagram: "",
     dataNascimento: "",
+    cidade: "",
+    origem: "",
     nomePessoaEnvolvida: "",
+    dataNascimentoPessoa: "",
     statusRelacao: "",
     situacaoPrincipal: "",
     observacoesPrivadas: "",
-    statusComercial: "Nova cliente"
+    statusComercial: "Nova cliente",
+    temperatura: "Morna" as any,
+    tags: [] as string[]
   });
 
   const handleSubmit = (e: React.FormEvent) => {
