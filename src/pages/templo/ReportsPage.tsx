@@ -1,32 +1,29 @@
-import { TrendingUp, Users, Calendar, Sparkles, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { TrendingUp, Users, Calendar, Sparkles, ArrowUpRight, ArrowDownRight, DollarSign, Star, Zap } from "lucide-react";
+import { useMemo } from "react";
+import { storage } from "@/lib/storage";
 
 export function ReportsPage() {
-  return (
-    <div className="space-y-8 animate-fade-in pb-20">
-      <header>
-        <h1 className="text-3xl font-bold text-[#111111] font-display">Relatórios</h1>
-        <p className="text-[#111111]/60 font-medium">Acompanhe o crescimento e fluxo do Templo.</p>
-      </header>
+  const appointments = useMemo(() => storage.getAppointments(), []);
+  const clients = useMemo(() => storage.getClients(), []);
+  const magias = useMemo(() => storage.getMagias(), []);
+  const financeiro = useMemo(() => storage.getFinanceiro(), []);
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: "Consultas (Mês)", value: "54", change: "+12%", up: true },
-          { label: "Novas Clientes", value: "18", change: "+5%", up: true },
-          { label: "Magias Contratadas", value: "32", change: "+8%", up: true },
-          { label: "Ticket Médio", value: "R$ 380", change: "-2%", up: false },
-        ].map((stat, i) => (
-          <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-2">
-            <p className="text-[10px] uppercase tracking-widest font-bold text-[#111111]/40">{stat.label}</p>
-            <div className="flex items-end gap-3">
-              <h3 className="text-3xl font-bold text-[#111111] tracking-tight">{stat.value}</h3>
-              <div className={`flex items-center text-[10px] font-bold pb-1 ${stat.up ? "text-green-600" : "text-red-600"}`}>
-                {stat.up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                {stat.change}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+  const stats = useMemo(() => {
+    const today = new Date();
+    const thisMonth = appointments.filter(a => {
+      const d = new Date(a.createdAt);
+      return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+    });
+
+    const income = financeiro.filter(f => f.status === 'Pago').reduce((acc, curr) => acc + curr.valor, 0);
+
+    return [
+      { label: "Consultas (Mês)", value: thisMonth.length.toString(), change: "+12%", up: true },
+      { label: "Total Clientes", value: clients.length.toString(), change: "+5%", up: true },
+      { label: "Magias Ativas", value: magias.filter(m => m.statusExecucao !== 'Finalizada').length.toString(), change: "+8%", up: true },
+      { label: "Receita Total", value: `R$ ${income.toLocaleString('pt-BR')}`, change: "+15%", up: true },
+    ];
+  }, [appointments, clients, magias, financeiro]);
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm h-80 flex flex-col items-center justify-center space-y-4">
