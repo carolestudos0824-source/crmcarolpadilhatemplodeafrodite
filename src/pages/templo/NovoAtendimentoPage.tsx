@@ -82,6 +82,7 @@ export function NovoAtendimentoPage() {
   const [selectedCliente, setSelectedCliente] = useState<any>(null);
   const [selectedSituation, setSelectedSituation] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [recognition, setRecognition] = useState<any>(null);
   const [relato, setRelato] = useState("");
   const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
