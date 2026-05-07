@@ -138,7 +138,7 @@ export function NovoAtendimentoPage() {
         }
         if (event.results[event.results.length - 1].isFinal) {
           setRelato(prev => prev ? `${prev} ${transcript}` : transcript);
-          toast({ title: "Transcrição adicionada ao relato.", duration: 2000 });
+          toast({ title: "Transcrição adicionada ao relato." });
         }
       };
 
