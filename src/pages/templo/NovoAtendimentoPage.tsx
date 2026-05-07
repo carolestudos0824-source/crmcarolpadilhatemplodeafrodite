@@ -122,6 +122,70 @@ export function NovoAtendimentoPage() {
     }
   }, [viewId, reopenId, viewId, reopenId]);
   
+  // Initialize Speech Recognition
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.lang = 'pt-BR';
+      recognitionInstance.continuous = true;
+      recognitionInstance.interimResults = true;
+
+      recognitionInstance.onresult = (event: any) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (event.results[event.results.length - 1].isFinal) {
+          setRelato(prev => prev ? `${prev} ${transcript}` : transcript);
+        }
+      };
+
+      recognitionInstance.onerror = (event: any) => {
+        console.error("Speech recognition error", event.error);
+        setIsRecording(false);
+        if (event.error === 'not-allowed') {
+          toast({ 
+            title: "Microfone Bloqueado", 
+            description: "Não foi possível acessar o microfone. Você pode digitar o relato manualmente.", 
+            variant: "destructive" 
+          });
+        }
+      };
+
+      recognitionInstance.onend = () => {
+        setIsRecording(false);
+      };
+
+      setRecognition(recognitionInstance);
+    }
+  }, []);
+
+  const toggleRecording = () => {
+    if (!recognition) {
+      toast({ 
+        title: "Recurso Indisponível", 
+        description: "Seu navegador não suporta reconhecimento de voz. Você pode digitar o relato manualmente.", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    if (isRecording) {
+      recognition.stop();
+      setIsRecording(false);
+    } else {
+      try {
+        recognition.start();
+        setIsRecording(true);
+        toast({ title: "Gravando...", description: "Fale o relato da cliente agora." });
+      } catch (e) {
+        console.error(e);
+        setIsRecording(false);
+      }
+    }
+  };
+  
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
   const [cardSearch, setCardSearch] = useState("");
