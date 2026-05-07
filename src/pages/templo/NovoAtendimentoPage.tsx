@@ -207,11 +207,17 @@ export function NovoAtendimentoPage() {
               {["Mariana Silva", "Beatriz Oliveira", "Julia Santos"].map((name) => (
                 <button 
                   key={name}
-                  onClick={nextStep}
-                  className="w-full flex items-center justify-between p-5 rounded-2xl border border-[#C9A35A]/10 hover:border-[#A61E25] hover:bg-[#A61E25]/5 transition-all group"
+                  onClick={() => {
+                    setSelectedCliente({ name });
+                    nextStep();
+                  }}
+                  className={cn(
+                    "w-full flex items-center justify-between p-5 rounded-2xl border transition-all group",
+                    selectedCliente?.name === name ? "border-[#A61E25] bg-[#A61E25]/5" : "border-[#C9A35A]/10 hover:border-[#A61E25] hover:bg-[#A61E25]/5"
+                  )}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] italic text-sm">{name[0]}</div>
+                    <div className="w-10 h-10 rounded-full bg-[#EBE5DB] flex items-center justify-center font-bold text-[#111111] italic text-sm border border-[#C9A35A]/20">{name[0]}</div>
                     <span className="font-bold text-[#111111]">{name}</span>
                   </div>
                   <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25]" />
