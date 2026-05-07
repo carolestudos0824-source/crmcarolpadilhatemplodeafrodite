@@ -138,16 +138,17 @@ export function NovoAtendimentoPage() {
         }
         if (event.results[event.results.length - 1].isFinal) {
           setRelato(prev => prev ? `${prev} ${transcript}` : transcript);
+          toast({ title: "Transcrição adicionada ao relato." });
         }
       };
 
       recognitionInstance.onerror = (event: any) => {
         console.error("Speech recognition error", event.error);
         setIsRecording(false);
-        if (event.error === 'not-allowed') {
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
           toast({ 
-            title: "Microfone Bloqueado", 
-            description: "Não foi possível acessar o microfone. Você pode digitar o relato manualmente.", 
+            title: "Não consegui acessar o microfone.", 
+            description: "Digite o relato manualmente.", 
             variant: "destructive" 
           });
         }
@@ -178,7 +179,7 @@ export function NovoAtendimentoPage() {
       try {
         recognition.start();
         setIsRecording(true);
-        toast({ title: "Gravando...", description: "Fale o relato da cliente agora." });
+        toast({ title: "Fale o caso da cliente.", description: "Gravando relato..." });
       } catch (e) {
         console.error(e);
         setIsRecording(false);
@@ -395,18 +396,23 @@ export function NovoAtendimentoPage() {
 
       {step === 3 && (
         <div className="space-y-8 animate-fade-up">
-          <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
-            <div className="relative">
+          <div className="bg-white p-6 sm:p-10 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C9A35A]">Relato do caso</h2>
+              <p className="text-sm text-[#111111]/60">Digite ou grave o relato da cliente antes de abrir a tiragem.</p>
+            </div>
+
+            <div className="relative group">
               <Textarea 
                 value={relato} 
                 onChange={(e) => setRelato(e.target.value)} 
                 placeholder="Relato da cliente..." 
-                className="min-h-[200px] rounded-2xl bg-[#F2EFE8]/30 border-[#C9A35A]/20 p-6 pb-20 text-lg" 
+                className="min-h-[250px] rounded-3xl bg-[#F2EFE8]/40 border-[#C9A35A]/20 p-8 text-xl leading-relaxed focus:ring-[#A61E25]/20 focus:border-[#A61E25]/40 transition-all" 
               />
               {isRecording && (
-                <div className="absolute bottom-4 left-6 flex items-center gap-2 animate-pulse">
-                  <div className="w-2 h-2 rounded-full bg-[#A61E25]" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25]">Gravando relato...</span>
+                <div className="absolute bottom-6 left-8 flex items-center gap-3 animate-pulse bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-[#A61E25]/20 shadow-sm">
+                  <div className="w-3 h-3 rounded-full bg-[#A61E25] shadow-[0_0_10px_rgba(166,30,37,0.5)]" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#A61E25]">Gravando relato...</span>
                 </div>
               )}
             </div>
@@ -415,30 +421,48 @@ export function NovoAtendimentoPage() {
               <Button 
                 onClick={toggleRecording}
                 className={cn(
-                  "h-16 rounded-2xl font-bold text-lg shadow-xl transition-all active:scale-[0.98] group",
+                  "h-16 sm:h-20 rounded-[2rem] font-bold text-xl shadow-xl transition-all active:scale-[0.98] group relative overflow-hidden",
                   isRecording 
-                    ? "bg-[#111111] hover:bg-[#111111]/90 text-white" 
-                    : "bg-[#A61E25] hover:bg-[#A61E25]/90 text-white"
+                    ? "bg-[#111111] text-white" 
+                    : "bg-[#A61E25] text-white hover:bg-[#A61E25]/90"
                 )}
               >
                 {isRecording ? (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-3">
                     <RefreshCw className="w-6 h-6 animate-spin text-[#C9A35A]" />
                     PARAR GRAVAÇÃO
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
-                    <Mic className="w-6 h-6 text-[#C9A35A]" />
-                    GRAVAR RELATO
+                  <span className="flex items-center gap-3">
+                    <Mic className="w-7 h-7 text-[#C9A35A]" />
+                    🎙 GRAVAR RELATO
                   </span>
                 )}
               </Button>
 
-              <div className="flex gap-4">
-                <Button variant="outline" onClick={() => setRelato("")} className="h-14 rounded-xl border-[#C9A35A]/30 flex-1">LIMPAR</Button>
-                <Button onClick={nextStep} disabled={!relato.trim()} className="flex-[2] h-14 rounded-xl bg-[#111111] text-white font-bold">CONTINUAR PARA TIRAGEM</Button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  onClick={nextStep} 
+                  disabled={!relato.trim()} 
+                  className="flex-[2] h-16 rounded-2xl bg-[#111111] hover:bg-black text-white font-bold text-lg shadow-lg order-1 sm:order-2"
+                >
+                  CONTINUAR PARA TIRAGEM
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setRelato("")} 
+                  className="h-16 rounded-2xl border-[#C9A35A]/30 text-[#111111]/40 hover:text-red-600 hover:border-red-600/30 font-bold flex-1 order-2 sm:order-1"
+                >
+                  LIMPAR
+                </Button>
               </div>
             </div>
+          </div>
+          
+          <div className="text-center px-6">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/30">
+              {isRecording ? "Fale o caso da cliente claramente." : "O relato será salvo no histórico da cliente."}
+            </p>
           </div>
         </div>
       )}
