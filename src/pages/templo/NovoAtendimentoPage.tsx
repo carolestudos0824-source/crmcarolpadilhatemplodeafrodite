@@ -381,19 +381,57 @@ export function NovoAtendimentoPage() {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {tarotPositions.filter(p => p.section === section).map((pos) => (
-                    <div key={pos.id} className="bg-white p-6 rounded-3xl border border-[#C9A35A]/20 shadow-sm space-y-4 group hover:border-[#A61E25] transition-all">
+                    <div key={pos.id} className={cn(
+                      "bg-white p-6 rounded-3xl border shadow-sm space-y-4 group transition-all",
+                      isCardConfirmed(pos.id) ? "border-[#A61E25] ring-1 ring-[#A61E25]/10" : "border-[#C9A35A]/20 hover:border-[#A61E25]"
+                    )}>
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Posição {pos.id}</span>
-                        <Info className="w-4 h-4 text-[#C9A35A]/30" />
+                        {isCardConfirmed(pos.id) ? (
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-[#A61E25] uppercase tracking-widest">
+                            <Check className="w-3 h-3" />
+                            Confirmada
+                          </div>
+                        ) : (
+                          <Info className="w-4 h-4 text-[#C9A35A]/30" />
+                        )}
                       </div>
                       <h4 className="font-bold text-[#111111]">{pos.label}</h4>
                       
-                      <div className="aspect-[2/3] rounded-2xl bg-[#F4F0EA] border-2 border-dashed border-[#C9A35A]/20 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#C9A35A]/5 transition-all">
-                        <Plus className="w-8 h-8 text-[#C9A35A]/40" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A35A]/60">Inserir Carta</span>
+                      <div 
+                        onClick={() => {
+                          const name = prompt(`Digite a carta para ${pos.label}:`, cards[pos.id]?.name || "");
+                          if (name !== null) handleCardUpdate(pos.id, name, cards[pos.id]?.obs || "");
+                        }}
+                        className={cn(
+                          "aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-pointer transition-all",
+                          isCardConfirmed(pos.id) 
+                            ? "bg-[#A61E25]/5 border-[#A61E25]/30 text-[#111111]" 
+                            : "bg-[#F2EFE8] border-[#C9A35A]/20 text-[#C9A35A]/60 hover:bg-[#C9A35A]/5"
+                        )}
+                      >
+                        {isCardConfirmed(pos.id) ? (
+                          <div className="text-center p-4">
+                            <span className="text-sm font-bold block mb-1 uppercase tracking-tight">{cards[pos.id].name}</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-[#A61E25]">Editar</span>
+                          </div>
+                        ) : (
+                          <>
+                            <Plus className="w-8 h-8 opacity-40" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest">Inserir Carta</span>
+                          </>
+                        )}
                       </div>
                       
-                      <Input placeholder="Obs. manual..." className="h-10 rounded-xl bg-transparent border-[#C9A35A]/10 text-xs" />
+                      <Input 
+                        placeholder="Obs. manual..." 
+                        value={cards[pos.id]?.obs || ""}
+                        onChange={(e) => setCards(prev => ({
+                          ...prev,
+                          [pos.id]: { ...(prev[pos.id] || { name: "", confirmed: false }), obs: e.target.value }
+                        }))}
+                        className="h-10 rounded-xl bg-transparent border-[#C9A35A]/10 text-xs" 
+                      />
                     </div>
                   ))}
                 </div>
