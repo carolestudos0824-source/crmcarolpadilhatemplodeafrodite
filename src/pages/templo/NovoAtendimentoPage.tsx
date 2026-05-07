@@ -515,7 +515,16 @@ export function NovoAtendimentoPage() {
           </div>
 
           <div className="pt-20 pb-10 flex justify-center">
-            <Button onClick={nextStep} className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-[0.98] transition-all">
+            <Button 
+              onClick={nextStep} 
+              disabled={!tarotPositions.every(p => cards[p.id]?.confirmed)}
+              className={cn(
+                "font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-[0.98] transition-all",
+                tarotPositions.every(p => cards[p.id]?.confirmed)
+                  ? "bg-[#A61E25] hover:bg-[#A61E25]/90 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
+              )}
+            >
               <Sparkles className="w-5 h-5 text-[#C9A35A]" />
               MANIFESTAR LEITURA
             </Button>
