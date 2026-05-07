@@ -98,6 +98,10 @@ export function NovoAtendimentoPage() {
   // Load existing appointment if in view or reopen mode
   useEffect(() => {
     const id = viewId || reopenId;
+    const clientIdParam = searchParams.get("clientId");
+    const situationParam = searchParams.get("situation");
+    const relatoParam = searchParams.get("relato");
+
     if (id) {
       const existing = storage.getAppointmentById(id);
       if (existing) {
@@ -119,9 +123,17 @@ export function NovoAtendimentoPage() {
           setStep(4); // Start at cards for reopen
         }
       }
+    } else if (clientIdParam) {
+      const client = storage.getClientById(clientIdParam);
+      if (client) {
+        setSelectedCliente({ id: client.id, name: client.nome });
+        if (situationParam) setSelectedSituation(situationParam);
+        if (relatoParam) setRelato(relatoParam);
+        setStep(2); // Start flow
+      }
     }
-  }, [viewId, reopenId, viewId, reopenId]);
-  
+  }, [viewId, reopenId, searchParams]);
+
   // Initialize Speech Recognition
   useEffect(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
