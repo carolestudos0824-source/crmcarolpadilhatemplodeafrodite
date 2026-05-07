@@ -24,11 +24,11 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#F4F0EA", // Fundo Claro
+        background: "#F2EFE8", // Cor exata do fundo da logo extraída da imagem
         foreground: "#111111", // Preto Apoio
         templo: {
-          bg: "#F4F0EA",
-          ivory: "#ECE5DC",
+          bg: "#F2EFE8",
+          ivory: "#EBE5DB",
           gold: "#C9A35A",
           "gold-deep": "#9B7440",
           red: "#A61E25",
@@ -36,7 +36,7 @@ export default {
         },
         primary: {
           DEFAULT: "#A61E25", // Vermelho Tulipa
-          foreground: "#F4F0EA",
+          foreground: "#F2EFE8",
         },
         secondary: {
           DEFAULT: "#C9A35A", // Dourado Principal
@@ -44,10 +44,10 @@ export default {
         },
         destructive: {
           DEFAULT: "#A61E25",
-          foreground: "#F4F0EA",
+          foreground: "#F2EFE8",
         },
         muted: {
-          DEFAULT: "#ECE5DC",
+          DEFAULT: "#EBE5DB",
           foreground: "#111111",
         },
         accent: {
@@ -55,18 +55,18 @@ export default {
           foreground: "#111111",
         },
         popover: {
-          DEFAULT: "#ECE5DC",
+          DEFAULT: "#EBE5DB",
           foreground: "#111111",
         },
         card: {
-          DEFAULT: "#ECE5DC", // Marfim Rosado for cards
+          DEFAULT: "#EBE5DB", // Marfim Rosado ajustado para cards
           foreground: "#111111",
         },
         sidebar: {
           DEFAULT: "#111111",
-          foreground: "#F4F0EA",
+          foreground: "#F2EFE8",
           primary: "#A61E25",
-          "primary-foreground": "#F4F0EA",
+          "primary-foreground": "#F2EFE8",
           accent: "#C9A35A",
           "accent-foreground": "#111111",
           border: "#C9A35A",
