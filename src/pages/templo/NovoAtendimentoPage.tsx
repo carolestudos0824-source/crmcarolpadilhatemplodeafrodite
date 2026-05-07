@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, 
@@ -17,12 +17,15 @@ import {
   RotateCcw,
   MessageCircle,
   PlusCircle,
-  Plus
+  Plus,
+  X,
+  RefreshCw
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 const situations = [
   "Está sumindo", "Término recente", "Quero reconquistar", "Ele bloqueia e desbloqueia",
@@ -46,10 +49,15 @@ const tarotPositions = [
 
 export function NovoAtendimentoPage() {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [step, setStep] = useState(1);
   const [isRecording, setIsRecording] = useState(false);
   const [relato, setRelato] = useState("");
   const [cards, setCards] = useState<Record<number, { name: string, obs: string }>>({});
+  const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -63,6 +71,46 @@ export function NovoAtendimentoPage() {
         setRelato("A consulente relata que o parceiro está afastado há duas semanas. Eles tiveram uma discussão boba por causa de redes sociais e desde então ele visualiza as mensagens mas não responde. Ela sente que ele está perdendo o interesse ou talvez falando com outra pessoa.");
       }, 3000);
     }
+  };
+
+  const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Arquivo inválido",
+        description: "Envie uma imagem válida da tiragem.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "Arquivo muito pesado",
+        description: "A imagem precisa ter até 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setTiragemPhoto(event.target?.result as string);
+      setPhotoFile(file);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removePhoto = () => {
+    setTiragemPhoto(null);
+    setPhotoFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const triggerPhotoUpload = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -195,11 +243,71 @@ export function NovoAtendimentoPage() {
       {step === 4 && (
         <div className="space-y-10 animate-fade-up">
           {/* Foto Upload Area */}
-          <div className="bg-[#111111] p-8 rounded-[2.5rem] text-center space-y-4 shadow-xl border border-[#C9A35A]/30">
-            <Camera className="w-10 h-10 text-[#C9A35A] mx-auto" />
-            <h3 className="text-white font-bold text-lg">Reconhecer via Foto</h3>
-            <p className="text-[#F4F0EA]/60 text-sm max-w-xs mx-auto">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
-            <Button className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8">ENVIAR FOTO</Button>
+          <div className="bg-[#111111] p-6 sm:p-8 rounded-[2.5rem] text-center space-y-4 shadow-xl border border-[#C9A35A]/30 transition-all">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handlePhotoUpload} 
+              accept="image/*" 
+              capture="environment"
+              className="hidden" 
+            />
+            
+            {!tiragemPhoto ? (
+              <>
+                <Camera className="w-10 h-10 text-[#C9A35A] mx-auto" />
+                <h3 className="text-white font-bold text-lg">Reconhecer via Foto</h3>
+                <p className="text-[#F4F0EA]/60 text-sm max-w-xs mx-auto">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
+                <Button 
+                  onClick={triggerPhotoUpload}
+                  className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8"
+                >
+                  ENVIAR FOTO
+                </Button>
+              </>
+            ) : (
+              <div className="space-y-6">
+                <div className="relative inline-block group">
+                  <img 
+                    src={tiragemPhoto} 
+                    alt="Foto da Tiragem" 
+                    className="w-full max-w-sm rounded-2xl border-2 border-[#C9A35A] shadow-lg mx-auto"
+                  />
+                  <div className="absolute top-2 right-2 flex gap-2">
+                    <Button 
+                      onClick={removePhoto}
+                      size="icon"
+                      className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <p className="text-[#C9A35A] text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                    <Check className="w-4 h-4" />
+                    {photoFile?.name}
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <Button 
+                      variant="outline" 
+                      onClick={triggerPhotoUpload}
+                      className="border-[#C9A35A]/40 text-[#C9A35A] hover:bg-[#C9A35A]/10 h-12 rounded-xl px-6 gap-2 w-full sm:w-auto"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      TROCAR FOTO
+                    </Button>
+                    <Button 
+                      className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-12 rounded-xl px-6 gap-2 w-full sm:w-auto"
+                    >
+                      CONFIRMAR CARTAS
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-12">
@@ -233,8 +341,8 @@ export function NovoAtendimentoPage() {
             ))}
           </div>
 
-          <div className="sticky bottom-28 lg:bottom-8 left-0 w-full flex justify-center">
-            <Button onClick={nextStep} className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-95 transition-all">
+          <div className="pt-20 pb-10 flex justify-center">
+            <Button onClick={nextStep} className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-[0.98] transition-all">
               <Sparkles className="w-5 h-5 text-[#C9A35A]" />
               MANIFESTAR LEITURA
             </Button>
