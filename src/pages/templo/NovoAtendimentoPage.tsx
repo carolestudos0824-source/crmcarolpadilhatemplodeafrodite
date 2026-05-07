@@ -145,10 +145,10 @@ export function NovoAtendimentoPage() {
       recognitionInstance.onerror = (event: any) => {
         console.error("Speech recognition error", event.error);
         setIsRecording(false);
-        if (event.error === 'not-allowed') {
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
           toast({ 
-            title: "Microfone Bloqueado", 
-            description: "Não foi possível acessar o microfone. Você pode digitar o relato manualmente.", 
+            title: "Não consegui acessar o microfone.", 
+            description: "Digite o relato manualmente.", 
             variant: "destructive" 
           });
         }
