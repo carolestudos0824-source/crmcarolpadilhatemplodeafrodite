@@ -448,20 +448,20 @@ export function NovoAtendimentoPage() {
           <div className="space-y-12">
             {["VOCÊ", "ELE", "CENTRO", "TENDÊNCIA FUTURA"].map((section) => (
               <div key={section} className="space-y-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 px-4">
                   <div className="h-px flex-1 bg-[#C9A35A]/20" />
-                  <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-[#C9A35A]">{section}</h2>
+                  <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C9A35A] whitespace-nowrap">{section}</h2>
                   <div className="h-px flex-1 bg-[#C9A35A]/20" />
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                   {tarotPositions.filter(p => p.section === section).map((pos) => (
                     <div key={pos.id} className={cn(
-                      "bg-white p-6 rounded-3xl border shadow-sm space-y-4 group transition-all",
+                      "bg-[#EBE5DB] p-6 rounded-3xl border shadow-sm space-y-4 group transition-all",
                       isCardConfirmed(pos.id) ? "border-[#A61E25] ring-1 ring-[#A61E25]/10" : "border-[#C9A35A]/20 hover:border-[#A61E25]"
                     )}>
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Posição {pos.id}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40 italic">Posição {pos.id}</span>
                         {isCardConfirmed(pos.id) ? (
                           <div className="flex items-center gap-1 text-[10px] font-bold text-[#A61E25] uppercase tracking-widest">
                             <Check className="w-3 h-3" />
@@ -471,7 +471,7 @@ export function NovoAtendimentoPage() {
                           <Info className="w-4 h-4 text-[#C9A35A]/30" />
                         )}
                       </div>
-                      <h4 className="font-bold text-[#111111]">{pos.label}</h4>
+                      <h4 className="font-bold text-[#111111] text-sm uppercase tracking-tight">{pos.label}</h4>
                       
                       <div 
                         onClick={() => {
@@ -481,31 +481,31 @@ export function NovoAtendimentoPage() {
                         className={cn(
                           "aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-pointer transition-all",
                           isCardConfirmed(pos.id) 
-                            ? "bg-[#A61E25]/5 border-[#A61E25]/30 text-[#111111]" 
+                            ? "bg-white border-[#A61E25]/30 text-[#111111] shadow-inner" 
                             : "bg-[#F2EFE8] border-[#C9A35A]/20 text-[#C9A35A]/60 hover:bg-[#C9A35A]/5"
                         )}
                       >
                         {isCardConfirmed(pos.id) ? (
                           <div className="text-center p-4">
-                            <span className="text-sm font-bold block mb-1 uppercase tracking-tight">{cards[pos.id].name}</span>
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-[#A61E25]">Editar</span>
+                            <span className="text-sm font-bold block mb-1 uppercase tracking-tighter text-[#A61E25] italic">{cards[pos.id].name}</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-[#111111]/40 border-t border-[#A61E25]/10 pt-2 block mt-2">Clique para editar</span>
                           </div>
                         ) : (
                           <>
                             <Plus className="w-8 h-8 opacity-40" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest">Inserir Carta</span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest">Escolher Carta</span>
                           </>
                         )}
                       </div>
                       
                       <Input 
-                        placeholder="Obs. manual..." 
+                        placeholder="Observação da Carol..." 
                         value={cards[pos.id]?.obs || ""}
                         onChange={(e) => setCards(prev => ({
                           ...prev,
                           [pos.id]: { ...(prev[pos.id] || { name: "", confirmed: false }), obs: e.target.value }
                         }))}
-                        className="h-10 rounded-xl bg-transparent border-[#C9A35A]/10 text-xs" 
+                        className="h-10 rounded-xl bg-white/50 border-[#C9A35A]/10 text-xs font-sans placeholder:italic" 
                       />
                     </div>
                   ))}
