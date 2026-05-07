@@ -157,9 +157,18 @@ export function ClienteProfilePage() {
                       <Button 
                         size="sm" 
                         variant="outline"
+                        onClick={() => navigate(`/templo/novo-atendimento?view=${app.id}`)}
                         className="rounded-xl border-[#111111]/10 text-xs font-bold gap-2 font-sans-clean"
                       >
                         <Eye className="w-3 h-3" /> VER LEITURA
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => navigate(`/templo/novo-atendimento?reopen=${app.id}`)}
+                        className="rounded-xl border-[#111111]/10 text-xs font-bold gap-2 font-sans-clean"
+                      >
+                        <RotateCcw className="w-3 h-3" /> REABRIR
                       </Button>
                     </div>
                   </div>
