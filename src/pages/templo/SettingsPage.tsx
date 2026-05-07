@@ -1,9 +1,24 @@
 import { User, Phone, Globe, Shield, CreditCard, Palette, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useState, useEffect } from "react";
+import { storage, Settings } from "@/lib/storage";
+import { toast } from "@/hooks/use-toast";
 
 export function SettingsPage() {
-  return (
+  const [settings, setSettings] = useState<Settings>(storage.getSettings());
+
+  const handleSave = () => {
+    storage.saveSettings(settings);
+    toast({
+      title: "Sucesso!",
+      description: "Ajustes salvos com sucesso.",
+    });
+  };
+
+  const handleChange = (field: keyof Settings, value: string) => {
+    setSettings(prev => ({ ...prev, [field]: value }));
+  };
     <div className="max-w-3xl mx-auto space-y-8 animate-fade-in pb-20">
       <header>
         <h1 className="text-3xl font-bold text-[#111111] font-display">Configurações</h1>
@@ -21,11 +36,19 @@ export function SettingsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Nome de Exibição</label>
-              <Input defaultValue="Carol Padilha" className="h-14 rounded-2xl border-[#C9A35A]/20" />
+              <Input 
+                value={settings.nomeProfissional} 
+                onChange={(e) => handleChange('nomeProfissional', e.target.value)}
+                className="h-14 rounded-2xl border-[#C9A35A]/20 focus:ring-[#A61E25]" 
+              />
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">WhatsApp Oficial</label>
-              <Input defaultValue="(11) 99999-9999" className="h-14 rounded-2xl border-[#C9A35A]/20" />
+              <Input 
+                value={settings.whatsapp} 
+                onChange={(e) => handleChange('whatsapp', e.target.value)}
+                className="h-14 rounded-2xl border-[#C9A35A]/20 focus:ring-[#A61E25]" 
+              />
             </div>
           </div>
         </div>
@@ -40,11 +63,19 @@ export function SettingsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Consulta Base</label>
-              <Input defaultValue="R$ 250,00" className="h-14 rounded-2xl border-[#C9A35A]/20" />
+              <Input 
+                value={settings.valorConsulta} 
+                onChange={(e) => handleChange('valorConsulta', e.target.value)}
+                className="h-14 rounded-2xl border-[#C9A35A]/20 focus:ring-[#A61E25]" 
+              />
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Magia Base (Adoçamento)</label>
-              <Input defaultValue="R$ 450,00" className="h-14 rounded-2xl border-[#C9A35A]/20" />
+              <Input 
+                value={settings.valorMagia} 
+                onChange={(e) => handleChange('valorMagia', e.target.value)}
+                className="h-14 rounded-2xl border-[#C9A35A]/20 focus:ring-[#A61E25]" 
+              />
             </div>
           </div>
         </div>
@@ -72,7 +103,10 @@ export function SettingsPage() {
           </div>
         </div>
 
-        <Button className="w-full bg-[#A61E25] text-white font-bold h-16 rounded-2xl shadow-xl shadow-[#A61E25]/20 gap-2">
+        <Button 
+          onClick={handleSave}
+          className="w-full bg-[#A61E25] text-white font-bold h-16 rounded-2xl shadow-xl shadow-[#A61E25]/20 gap-2 transition-all active:scale-95"
+        >
           <Save className="w-5 h-5" />
           SALVAR ALTERAÇÕES
         </Button>
