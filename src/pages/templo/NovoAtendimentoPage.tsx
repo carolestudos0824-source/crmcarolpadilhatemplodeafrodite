@@ -337,7 +337,7 @@ export function NovoAtendimentoPage() {
         <div className="space-y-8 animate-fade-up">
           <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Transcrição do Relato</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Transcrição do Relato</label>
               <div className="flex gap-2">
                 <Button 
                   onClick={toggleRecording}
