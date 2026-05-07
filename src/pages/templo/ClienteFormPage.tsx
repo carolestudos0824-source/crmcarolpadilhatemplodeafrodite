@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info } from "lucide-react";
+import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info, TrendingUp, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
