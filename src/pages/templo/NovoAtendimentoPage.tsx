@@ -356,7 +356,7 @@ export function NovoAtendimentoPage() {
               value={relato}
               onChange={(e) => setRelato(e.target.value)}
               placeholder="Escreva aqui o que a cliente contou ou use o microfone para transcrever..."
-              className="min-h-[200px] rounded-2xl bg-[#F4F0EA]/30 border-[#C9A35A]/20 focus:ring-[#A61E25] text-lg p-6"
+              className="min-h-[200px] rounded-2xl bg-[#F2EFE8]/30 border-[#C9A35A]/20 focus:ring-[#A61E25] text-lg p-6"
             />
             
             <div className="flex gap-4">
