@@ -164,12 +164,13 @@ export function NovoAtendimentoPage() {
   }, [cards, selectedSituation, viewId, savedReadingData]);
 
   const generatedWhatsAppText = useMemo(() => {
+    if (viewId && savedReadingData?.whatsapp) return savedReadingData.whatsapp;
     const nome = selectedCliente?.name || "";
     const baseText = nome ? `Olá ${nome}! Acabei de finalizar sua leitura no Templo de Afrodite. 🌹\n\n` : `Olá! Finalizei sua leitura. 🌹\n\n`;
     let cardsConfirmed = "Cartas da sua tiragem:\n";
     tarotPositions.forEach(p => { cardsConfirmed += `- ${p.label}: ${cards[p.id]?.name || "N/A"}\n`; });
     return baseText + cardsConfirmed + `\nDiagnóstico: ${selectedSituation}. Recomendo: ${indicatedMagia}.`;
-  }, [selectedCliente, cards, selectedSituation, indicatedMagia]);
+  }, [selectedCliente, cards, selectedSituation, indicatedMagia, viewId, savedReadingData]);
 
   const generatedAudioScript = useMemo(() => {
     const nome = selectedCliente?.name || "consulente";
