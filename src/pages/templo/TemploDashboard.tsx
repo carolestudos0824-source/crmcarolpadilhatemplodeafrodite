@@ -7,35 +7,66 @@ import {
   ChevronRight,
   TrendingUp,
   UserPlus,
-  Play
+  Play,
+  Calendar,
+  DollarSign,
+  AlertCircle,
+  CheckCircle2,
+  ArrowUpRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { storage } from "@/lib/storage";
+import { cn } from "@/lib/utils";
 
 export function TemploDashboard() {
   const clients = useMemo(() => storage.getClients(), []);
   const appointments = useMemo(() => storage.getAppointments(), []);
+  const followUps = useMemo(() => storage.getFollowUps(), []);
+  const magias = useMemo(() => storage.getMagias(), []);
+  const financeiro = useMemo(() => storage.getFinanceiro(), []);
   const settings = useMemo(() => storage.getSettings(), []);
 
   const stats = useMemo(() => {
     const today = new Date().toLocaleDateString('pt-BR');
     const todayApps = appointments.filter(a => new Date(a.createdAt).toLocaleDateString('pt-BR') === today);
-    
+    const pendentes = followUps.filter(f => f.status === 'Pendente');
+    const monthIncome = financeiro
+      .filter(f => {
+        const date = new Date(f.data);
+        const now = new Date();
+        return f.status === 'Pago' && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      })
+      .reduce((acc, curr) => acc + curr.valor, 0);
+
     return [
       { label: "Atendimentos Hoje", value: todayApps.length.toString(), icon: Clock, color: "text-[#A61E25]" },
-      { label: "Clientes Totais", value: clients.length.toString(), icon: Users, color: "text-[#C9A35A]" },
-      { label: "Magias Indicadas", value: appointments.filter(a => a.magiasIndicadas !== "Nenhuma magia indicada no momento").length.toString(), icon: Sparkles, color: "text-[#C9A35A]" },
-      { label: "Receita (Mês)", value: `R$ ${appointments.length * 250}`, icon: TrendingUp, color: "text-[#111111]" },
+      { label: "Follow-ups Pendentes", value: pendentes.length.toString(), icon: Calendar, color: "text-[#C9A35A]" },
+      { label: "Magias Ativas", value: magias.filter(m => m.statusExecucao !== 'Finalizada' && m.statusExecucao !== 'Cancelade').length.toString(), icon: Sparkles, color: "text-[#C9A35A]" },
+      { label: "Receita (Mês)", value: `R$ ${monthIncome.toLocaleString('pt-BR')}`, icon: DollarSign, color: "text-[#111111]" },
     ];
-  }, [clients, appointments]);
+  }, [appointments, followUps, magias, financeiro]);
 
   const recentAttendance = useMemo(() => {
     return appointments
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 3);
+      .slice(0, 5);
   }, [appointments]);
+
+  const pendingTasks = useMemo(() => {
+    const list = [];
+    
+    // Clients without follow-up
+    const noFollowUp = clients.filter(c => !followUps.some(f => f.clientId === c.id && f.status === 'Pendente')).slice(0, 2);
+    noFollowUp.forEach(c => list.push({ type: 'retorno', title: `Retorno para ${c.nome}`, desc: 'Sem follow-up marcado', id: c.id }));
+
+    // Unpaid appointments
+    const unpaid = financeiro.filter(f => f.status === 'Pendente').slice(0, 2);
+    unpaid.forEach(f => list.push({ type: 'pagamento', title: `Pagamento de R$ ${f.valor}`, desc: f.descricao, id: f.id }));
+
+    return list;
+  }, [clients, followUps, financeiro]);
   return (
     <div className="space-y-8 animate-fade-in">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
