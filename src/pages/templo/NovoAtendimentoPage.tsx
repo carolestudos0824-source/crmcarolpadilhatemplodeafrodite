@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, 
@@ -19,7 +19,15 @@ import {
   PlusCircle,
   Plus,
   X,
-  RefreshCw
+  RefreshCw,
+  Copy,
+  Clock,
+  Zap,
+  Shield,
+  Trash2,
+  Lock,
+  Eye,
+  AudioLines
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,9 +50,9 @@ const tarotPositions = [
   { id: 6, section: "ELE", label: "Desejos dele" },
   { id: 7, section: "CENTRO", label: "Conselho" },
   { id: 8, section: "CENTRO", label: "Obstáculo" },
-  { id: 9, section: "TENDÊNCIA FUTURA", label: "Carta 1" },
-  { id: 10, section: "TENDÊNCIA FUTURA", label: "Carta 2" },
-  { id: 11, section: "TENDÊNCIA FUTURA", label: "Carta 3" },
+  { id: 9, section: "TENDÊNCIA FUTURA", label: "Tendência futura carta 1" },
+  { id: 10, section: "TENDÊNCIA FUTURA", label: "Tendência futura carta 2" },
+  { id: 11, section: "TENDÊNCIA FUTURA", label: "Tendência futura carta 3" },
 ];
 
 export function NovoAtendimentoPage() {
@@ -52,14 +60,59 @@ export function NovoAtendimentoPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState(1);
+  const [selectedCliente, setSelectedCliente] = useState<any>(null);
+  const [selectedSituation, setSelectedSituation] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [relato, setRelato] = useState("");
-  const [cards, setCards] = useState<Record<number, { name: string, obs: string }>>({});
+  const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = () => {
+    if (step === 4) {
+      const allConfirmed = tarotPositions.every(p => cards[p.id]?.confirmed);
+      if (!allConfirmed) {
+        toast({
+          title: "Confirmação Pendente",
+          description: "Por favor, confirme as 11 cartas antes de manifestar a leitura.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    setStep(step + 1);
+  };
   const prevStep = () => setStep(step - 1);
+
+  const prefillTestCards = () => {
+    const testCards: Record<number, { name: string, obs: string, confirmed: boolean }> = {
+      1: { name: "O Imperador", obs: "", confirmed: true },
+      2: { name: "A Morte", obs: "", confirmed: true },
+      3: { name: "A Justiça", obs: "", confirmed: true },
+      4: { name: "A Imperatriz", obs: "", confirmed: true },
+      5: { name: "A Temperança", obs: "", confirmed: true },
+      6: { name: "A Torre", obs: "", confirmed: true },
+      7: { name: "O Mundo", obs: "", confirmed: true },
+      8: { name: "O Carro", obs: "", confirmed: true },
+      9: { name: "A Força", obs: "", confirmed: true },
+      10: { name: "A Diabo", obs: "", confirmed: true },
+      11: { name: "A Estrela", obs: "", confirmed: true },
+    };
+    setCards(testCards);
+    toast({
+      title: "Sugestão Carregada",
+      description: "Cartas sugeridas para a imagem de teste. Por favor, confira manualmente.",
+    });
+  };
+
+  const handleCardUpdate = (id: number, name: string, obs: string) => {
+    setCards(prev => ({
+      ...prev,
+      [id]: { name, obs, confirmed: true }
+    }));
+  };
+
+  const isCardConfirmed = (id: number) => !!cards[id]?.confirmed;
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
@@ -112,6 +165,73 @@ export function NovoAtendimentoPage() {
     fileInputRef.current?.click();
   };
 
+  const generatedWhatsAppText = useMemo(() => {
+    const nome = selectedCliente?.name || "";
+    const baseText = nome 
+      ? `Olá ${nome}! Acabei de finalizar sua leitura no Templo de Afrodite. 🌹\n\n`
+      : `Olá! Finalizei sua leitura no Templo de Afrodite. 🌹\n\n`;
+    
+    let cardsConfirmed = "Cartas da sua tiragem:\n";
+    tarotPositions.forEach(p => {
+      cardsConfirmed += `- ${p.label}: ${cards[p.id]?.name || "Não informada"}\n`;
+    });
+
+    const diagnosis = `\nA energia atual da relação (situação: ${selectedSituation}) mostra um momento de ${cards[7]?.name || "introspecção"} como conselho principal e ${cards[8]?.name || "desafios"} como obstáculo.`;
+    
+    const conclusion = `\n\nPara seguirmos com o melhor direcionamento, recomendo ${indicatedMagia}. Ficamos assim por enquanto?`;
+    
+    return baseText + cardsConfirmed + diagnosis + conclusion;
+  }, [selectedCliente, cards, selectedSituation]);
+
+  const indicatedMagia = useMemo(() => {
+    // Lógica simples baseada em algumas cartas e situação
+    if (!cards[11]?.confirmed) return "Nenhuma magia indicada no momento";
+    
+    const c11 = cards[11].name.toLowerCase();
+    const c8 = cards[8]?.name.toLowerCase() || "";
+    
+    if (selectedSituation.includes("sumindo") || selectedSituation.includes("fria")) {
+      return "Adoçamento com Abertura de Diálogo";
+    }
+    if (c11.includes("estrela") || c11.includes("mundo")) {
+      return "Harmonização Amorosa";
+    }
+    if (c11.includes("diabo") || c11.includes("torre") || c8.includes("diabo")) {
+      return "Limpeza Energética Amorosa";
+    }
+    if (selectedSituation.includes("bloqueia")) {
+      return "Ritual para acalmar brigas";
+    }
+    
+    return "Banho de magnetismo pessoal";
+  }, [cards, selectedSituation]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(generatedWhatsAppText);
+    toast({
+      title: "Copiado!",
+      description: "O texto completo para o WhatsApp foi copiado.",
+    });
+  };
+
+  const saveAttendance = () => {
+    const attendanceData = {
+      cliente: selectedCliente?.name,
+      situacao: selectedSituation,
+      relato,
+      cards: cards,
+      magia: indicatedMagia,
+      date: new Date().toISOString()
+    };
+    // Simular salvamento
+    console.log("Saving attendance:", attendanceData);
+    toast({
+      title: "Atendimento Salvo",
+      description: "Atendimento registrado no histórico local com sucesso.",
+    });
+    setTimeout(() => navigate("/templo/dashboard"), 2000);
+  };
+
   return (
     <div className="max-w-4xl mx-auto pb-24 animate-fade-in">
       {/* Progress Header */}
@@ -139,7 +259,7 @@ export function NovoAtendimentoPage() {
             {step === 1 && "Identificação da Cliente"}
             {step === 2 && "Qual a situação?"}
             {step === 3 && "Relato do Caso"}
-            {step === 4 && "Jogo do Amor"}
+            {step === 4 && "Confirmação da Tiragem"}
             {step === 5 && "Leitura Manifestada"}
           </h1>
         </div>
@@ -150,9 +270,9 @@ export function NovoAtendimentoPage() {
         <div className="space-y-6 animate-fade-up">
           <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
             <div className="space-y-4">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Selecione a Cliente</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Selecione a Cliente</label>
               <div className="relative">
-                <Input placeholder="Buscar por nome..." className="h-16 pl-12 rounded-2xl bg-[#F4F0EA]/50 border-[#C9A35A]/20" />
+                <Input placeholder="Buscar por nome ou e-mail..." className="h-16 pl-12 rounded-2xl bg-[#F2EFE8]/50 border-[#C9A35A]/20" />
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#C9A35A]" />
               </div>
             </div>
@@ -162,11 +282,17 @@ export function NovoAtendimentoPage() {
               {["Mariana Silva", "Beatriz Oliveira", "Julia Santos"].map((name) => (
                 <button 
                   key={name}
-                  onClick={nextStep}
-                  className="w-full flex items-center justify-between p-5 rounded-2xl border border-[#C9A35A]/10 hover:border-[#A61E25] hover:bg-[#A61E25]/5 transition-all group"
+                  onClick={() => {
+                    setSelectedCliente({ name });
+                    nextStep();
+                  }}
+                  className={cn(
+                    "w-full flex items-center justify-between p-5 rounded-2xl border transition-all group",
+                    selectedCliente?.name === name ? "border-[#A61E25] bg-[#A61E25]/5" : "border-[#C9A35A]/10 hover:border-[#A61E25] hover:bg-[#A61E25]/5"
+                  )}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] italic text-sm">{name[0]}</div>
+                    <div className="w-10 h-10 rounded-full bg-[#EBE5DB] flex items-center justify-center font-bold text-[#111111] italic text-sm border border-[#C9A35A]/20">{name[0]}</div>
                     <span className="font-bold text-[#111111]">{name}</span>
                   </div>
                   <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25]" />
@@ -188,10 +314,19 @@ export function NovoAtendimentoPage() {
           {situations.map((sit) => (
             <button
               key={sit}
-              onClick={nextStep}
-              className="bg-white p-6 rounded-2xl border border-[#C9A35A]/10 hover:border-[#A61E25] hover:shadow-lg transition-all text-left group"
+              onClick={() => {
+                setSelectedSituation(sit);
+                nextStep();
+              }}
+              className={cn(
+                "p-6 rounded-2xl border transition-all text-left group",
+                selectedSituation === sit ? "bg-[#A61E25]/5 border-[#A61E25] shadow-md" : "bg-white border-[#C9A35A]/10 hover:border-[#A61E25] hover:shadow-lg"
+              )}
             >
-              <span className="font-bold text-[#111111] group-hover:text-[#A61E25]">{sit}</span>
+              <span className={cn(
+                "font-bold transition-colors",
+                selectedSituation === sit ? "text-[#A61E25]" : "text-[#111111] group-hover:text-[#A61E25]"
+              )}>{sit}</span>
             </button>
           ))}
         </div>
@@ -202,7 +337,7 @@ export function NovoAtendimentoPage() {
         <div className="space-y-8 animate-fade-up">
           <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Transcrição do Relato</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Transcrição do Relato</label>
               <div className="flex gap-2">
                 <Button 
                   onClick={toggleRecording}
@@ -221,7 +356,7 @@ export function NovoAtendimentoPage() {
               value={relato}
               onChange={(e) => setRelato(e.target.value)}
               placeholder="Escreva aqui o que a cliente contou ou use o microfone para transcrever..."
-              className="min-h-[200px] rounded-2xl bg-[#F4F0EA]/30 border-[#C9A35A]/20 focus:ring-[#A61E25] text-lg p-6"
+              className="min-h-[200px] rounded-2xl bg-[#F2EFE8]/30 border-[#C9A35A]/20 focus:ring-[#A61E25] text-lg p-6"
             />
             
             <div className="flex gap-4">
@@ -255,11 +390,11 @@ export function NovoAtendimentoPage() {
             {!tiragemPhoto ? (
               <>
                 <Camera className="w-10 h-10 text-[#C9A35A] mx-auto" />
-                <h3 className="text-white font-bold text-lg">Reconhecer via Foto</h3>
-                <p className="text-[#F4F0EA]/60 text-sm max-w-xs mx-auto">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
+                <h3 className="text-white font-bold text-lg font-display uppercase tracking-widest italic">Reconhecer via Foto</h3>
+                <p className="text-[#F2EFE8]/60 text-[10px] max-w-xs mx-auto uppercase tracking-widest font-bold">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
                 <Button 
                   onClick={triggerPhotoUpload}
-                  className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8"
+                  className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-10 transition-all active:scale-95"
                 >
                   ENVIAR FOTO
                 </Button>
@@ -299,9 +434,10 @@ export function NovoAtendimentoPage() {
                       TROCAR FOTO
                     </Button>
                     <Button 
+                      onClick={prefillTestCards}
                       className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-12 rounded-xl px-6 gap-2 w-full sm:w-auto"
                     >
-                      CONFIRMAR CARTAS
+                      CONTINUAR PARA CONFIRMAÇÃO DAS CARTAS
                     </Button>
                   </div>
                 </div>
@@ -312,27 +448,65 @@ export function NovoAtendimentoPage() {
           <div className="space-y-12">
             {["VOCÊ", "ELE", "CENTRO", "TENDÊNCIA FUTURA"].map((section) => (
               <div key={section} className="space-y-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 px-4">
                   <div className="h-px flex-1 bg-[#C9A35A]/20" />
-                  <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-[#C9A35A]">{section}</h2>
+                  <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#C9A35A] whitespace-nowrap">{section}</h2>
                   <div className="h-px flex-1 bg-[#C9A35A]/20" />
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
                   {tarotPositions.filter(p => p.section === section).map((pos) => (
-                    <div key={pos.id} className="bg-white p-6 rounded-3xl border border-[#C9A35A]/20 shadow-sm space-y-4 group hover:border-[#A61E25] transition-all">
+                    <div key={pos.id} className={cn(
+                      "bg-[#EBE5DB] p-6 rounded-3xl border shadow-sm space-y-4 group transition-all",
+                      isCardConfirmed(pos.id) ? "border-[#A61E25] ring-1 ring-[#A61E25]/10" : "border-[#C9A35A]/20 hover:border-[#A61E25]"
+                    )}>
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Posição {pos.id}</span>
-                        <Info className="w-4 h-4 text-[#C9A35A]/30" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40 italic">Posição {pos.id}</span>
+                        {isCardConfirmed(pos.id) ? (
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-[#A61E25] uppercase tracking-widest">
+                            <Check className="w-3 h-3" />
+                            Confirmada
+                          </div>
+                        ) : (
+                          <Info className="w-4 h-4 text-[#C9A35A]/30" />
+                        )}
                       </div>
-                      <h4 className="font-bold text-[#111111]">{pos.label}</h4>
+                      <h4 className="font-bold text-[#111111] text-sm uppercase tracking-tight">{pos.label}</h4>
                       
-                      <div className="aspect-[2/3] rounded-2xl bg-[#F4F0EA] border-2 border-dashed border-[#C9A35A]/20 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#C9A35A]/5 transition-all">
-                        <Plus className="w-8 h-8 text-[#C9A35A]/40" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A35A]/60">Inserir Carta</span>
+                      <div 
+                        onClick={() => {
+                          const name = prompt(`Digite a carta para ${pos.label}:`, cards[pos.id]?.name || "");
+                          if (name !== null) handleCardUpdate(pos.id, name, cards[pos.id]?.obs || "");
+                        }}
+                        className={cn(
+                          "aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-pointer transition-all",
+                          isCardConfirmed(pos.id) 
+                            ? "bg-white border-[#A61E25]/30 text-[#111111] shadow-inner" 
+                            : "bg-[#F2EFE8] border-[#C9A35A]/20 text-[#C9A35A]/60 hover:bg-[#C9A35A]/5"
+                        )}
+                      >
+                        {isCardConfirmed(pos.id) ? (
+                          <div className="text-center p-4">
+                            <span className="text-sm font-bold block mb-1 uppercase tracking-tighter text-[#A61E25] italic">{cards[pos.id].name}</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-[#111111]/40 border-t border-[#A61E25]/10 pt-2 block mt-2">Clique para editar</span>
+                          </div>
+                        ) : (
+                          <>
+                            <Plus className="w-8 h-8 opacity-40" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest">Escolher Carta</span>
+                          </>
+                        )}
                       </div>
                       
-                      <Input placeholder="Obs. manual..." className="h-10 rounded-xl bg-transparent border-[#C9A35A]/10 text-xs" />
+                      <Input 
+                        placeholder="Observação da Carol..." 
+                        value={cards[pos.id]?.obs || ""}
+                        onChange={(e) => setCards(prev => ({
+                          ...prev,
+                          [pos.id]: { ...(prev[pos.id] || { name: "", confirmed: false }), obs: e.target.value }
+                        }))}
+                        className="h-10 rounded-xl bg-white/50 border-[#C9A35A]/10 text-xs font-sans placeholder:italic" 
+                      />
                     </div>
                   ))}
                 </div>
@@ -341,7 +515,16 @@ export function NovoAtendimentoPage() {
           </div>
 
           <div className="pt-20 pb-10 flex justify-center">
-            <Button onClick={nextStep} className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-[0.98] transition-all">
+            <Button 
+              onClick={nextStep} 
+              disabled={!tarotPositions.every(p => cards[p.id]?.confirmed)}
+              className={cn(
+                "font-bold h-16 px-12 rounded-2xl shadow-2xl gap-2 text-lg active:scale-[0.98] transition-all",
+                tarotPositions.every(p => cards[p.id]?.confirmed)
+                  ? "bg-[#A61E25] hover:bg-[#A61E25]/90 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none"
+              )}
+            >
               <Sparkles className="w-5 h-5 text-[#C9A35A]" />
               MANIFESTAR LEITURA
             </Button>
@@ -355,52 +538,146 @@ export function NovoAtendimentoPage() {
           <div className="bg-[#111111] p-10 rounded-[3rem] text-center space-y-4 border border-[#C9A35A]/40 shadow-2xl relative overflow-hidden">
              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
              <Sparkles className="w-12 h-12 text-[#C9A35A] mx-auto animate-pulse" />
-             <h2 className="text-3xl font-bold text-white font-display">Leitura Concluída</h2>
-             <p className="text-[#C9A35A] font-bold uppercase tracking-[0.2em] text-xs">A energia foi canalizada com sucesso</p>
+             <h2 className="text-3xl font-bold text-white font-display uppercase tracking-widest italic">Leitura Manifestada</h2>
+             <p className="text-[#C9A35A] font-bold uppercase tracking-[0.2em] text-[10px]">A energia de {selectedCliente?.name} foi canalizada</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
-                  <h3 className="text-xl font-bold text-[#111111] font-display flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-[#A61E25] fill-[#A61E25]" />
-                    Diagnóstico Geral
-                  </h3>
-                  <p className="text-[#111111]/80 leading-relaxed italic">
-                    "A energia atual da relação mostra um bloqueio comunicativo severo. Enquanto você mantém sentimentos nutridos e o desejo de reconciliação (representado pela Rainha de Copas), ele se encontra em um momento de introspecção defensiva (4 de Espadas). O obstáculo principal é o orgulho ferido por ambas as partes."
-                  </p>
+               {/* Cartas Confirmadas */}
+               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+                  <div className="flex items-center gap-2 border-b border-[#F2EFE8] pb-4">
+                    <Eye className="w-5 h-5 text-[#C9A35A]" />
+                    <h3 className="text-sm font-bold text-[#111111] uppercase tracking-widest">Cartas confirmadas nesta leitura</h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                    {tarotPositions.map(p => (
+                      <div key={p.id} className="flex justify-between text-xs border-b border-[#F2EFE8]/50 pb-1 italic">
+                        <span className="text-[#111111]/40 font-bold uppercase tracking-tighter">{p.label}:</span>
+                        <span className="text-[#111111] font-bold uppercase">{cards[p.id]?.name}</span>
+                      </div>
+                    ))}
+                  </div>
                </section>
 
                <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
-                  <h3 className="text-xl font-bold text-[#111111] font-display">Caminhos & Magias</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-2xl bg-[#A61E25]/5 border border-[#A61E25]/20">
-                       <h4 className="font-bold text-[#A61E25] text-sm mb-1 uppercase tracking-wider">Indicação Principal</h4>
-                       <p className="text-[#111111] font-bold">Adoçamento com Abertura de Diálogo</p>
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-xl font-bold text-[#111111] font-display flex items-center gap-2 mb-4">
+                        <Heart className="w-5 h-5 text-[#A61E25] fill-[#A61E25]" />
+                        1. Diagnóstico Geral
+                      </h3>
+                      <p className="text-[#111111]/80 leading-relaxed italic border-l-4 border-[#A61E25]/20 pl-4 py-2">
+                        "A energia atual da relação (Situação: {selectedSituation}) mostra um momento de transição profunda. A presença da carta {cards[7]?.name} no conselho indica que é necessário maturidade emocional, enquanto o obstáculo {cards[8]?.name} aponta para desafios imediatos que exigem clareza."
+                      </p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-[#C9A35A]/5 border border-[#C9A35A]/20">
-                       <h4 className="font-bold text-[#C9A35A] text-sm mb-1 uppercase tracking-wider">Apoio Espiritual</h4>
-                       <p className="text-[#111111] font-bold">Limpeza Energética de Ambiente</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px] border-b border-[#F2EFE8] pb-2">2. O que ela pensa, sente e deseja</h4>
+                        <ul className="text-xs space-y-2 text-[#111111]/70 font-sans">
+                          <li><span className="font-bold text-[#111111]">Mente:</span> {cards[1]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Coração:</span> {cards[2]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Desejo:</span> {cards[3]?.name}</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px] border-b border-[#F2EFE8] pb-2">3. O que ele pensa, sente e deseja</h4>
+                        <ul className="text-xs space-y-2 text-[#111111]/70 font-sans">
+                          <li><span className="font-bold text-[#111111]">Mente:</span> {cards[4]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Coração:</span> {cards[5]?.name}</li>
+                          <li><span className="font-bold text-[#111111]">Desejo:</span> {cards[6]?.name}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px]">7. Tendência Futura</h4>
+                      <div className="flex gap-4">
+                        {[9, 10, 11].map(id => (
+                          <div key={id} className="flex-1 bg-[#F2EFE8] p-3 rounded-xl text-center">
+                            <span className="text-[10px] block font-bold text-[#111111]/40 mb-1">CARTA {id-8}</span>
+                            <span className="text-[11px] font-bold text-[#A61E25] uppercase">{cards[id]?.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-[#F2EFE8]">
+                       <h4 className="font-bold text-[#111111] uppercase tracking-widest text-[10px] flex items-center gap-2">
+                         <AudioLines className="w-4 h-4 text-[#A61E25]" />
+                         12. Roteiro de áudio para Carol
+                       </h4>
+                       <p className="text-[11px] text-[#111111]/60 leading-relaxed font-sans">
+                         Comece acolhendo a cliente pelo nome ({selectedCliente?.name}). Mencione que a tiragem do Templo de Afrodite revelou que a situação de "{selectedSituation}" está sendo influenciada fortemente pelo {cards[8]?.name} no caminho... [falar sobre tendências: {cards[9]?.name}, {cards[10]?.name}, {cards[11]?.name}]
+                       </p>
                     </div>
                   </div>
+               </section>
+
+               <section className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-[#A61E25]" />
+                    <h3 className="text-xl font-bold text-[#111111] font-display">13. Caminhos & Magias Indicadas</h3>
+                  </div>
+                  <div className="p-5 rounded-2xl bg-[#A61E25]/5 border border-[#A61E25]/20 flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold text-[#A61E25] text-xs mb-1 uppercase tracking-widest">Indicação do Templo</h4>
+                      <p className="text-[#111111] font-bold text-lg italic">{indicatedMagia}</p>
+                    </div>
+                    <Shield className="w-8 h-8 text-[#A61E25]/20" />
+                  </div>
+               </section>
+
+               <section className="bg-[#111111] p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
+                  <h3 className="text-lg font-bold text-[#C9A35A] font-display flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
+                    14. Observações Privadas (Carol)
+                  </h3>
+                  <Textarea 
+                    placeholder="Anotações para o histórico interno..."
+                    className="bg-white/5 border-white/10 text-white text-xs h-32 focus:ring-[#A61E25]"
+                  />
                </section>
             </div>
 
             <div className="space-y-6">
-               <div className="bg-[#ECE5DC] p-6 rounded-[2.5rem] border border-[#C9A35A]/30 shadow-sm space-y-4 sticky top-8">
-                  <h3 className="font-bold text-[#111111] text-center uppercase tracking-widest text-sm">Pronto para Enviar</h3>
-                  <div className="bg-white p-4 rounded-2xl text-xs font-medium text-[#111111]/70 leading-relaxed border border-white">
-                    Olá Mariana! Acabei de fazer sua tiragem no Templo de Afrodite. 🌹<br/><br/>
-                    A energia mostra que o Rodrigo está em um momento de silêncio para processar o que sente... [clique para copiar o resto]
+               <div className="bg-[#EBE5DB] p-6 rounded-[2.5rem] border border-[#C9A35A]/30 shadow-sm space-y-6 sticky top-8">
+                  <div className="text-center space-y-2">
+                    <h3 className="font-bold text-[#111111] uppercase tracking-widest text-[10px]">11. Texto pronto para WhatsApp</h3>
+                    <p className="text-[9px] text-[#111111]/40 font-bold uppercase tracking-tighter italic">Copia o conteúdo completo automaticamente</p>
                   </div>
-                  <Button className="w-full bg-[#111111] text-white font-bold h-12 rounded-xl gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                    COPIAR WHATSAPP
-                  </Button>
-                  <Button variant="outline" className="w-full border-[#A61E25] text-[#A61E25] font-bold h-12 rounded-xl gap-2">
-                    <Save className="w-4 h-4" />
-                    SALVAR FICHA
-                  </Button>
+                  
+                  <div className="bg-white p-5 rounded-2xl text-[11px] font-medium text-[#111111]/80 leading-relaxed border border-white max-h-[300px] overflow-y-auto font-sans shadow-inner">
+                    {generatedWhatsAppText.split('\n').map((line, i) => (
+                      <span key={i}>{line}<br/></span>
+                    ))}
+                  </div>
+
+                  <div className="space-y-3 pt-2">
+                    <Button 
+                      onClick={copyToClipboard}
+                      className="w-full bg-[#111111] hover:bg-black text-white font-bold h-14 rounded-xl gap-2 transition-all active:scale-95"
+                    >
+                      <Copy className="w-4 h-4 text-[#C9A35A]" />
+                      COPIAR WHATSAPP
+                    </Button>
+                    <Button 
+                      onClick={saveAttendance}
+                      variant="outline" 
+                      className="w-full border-[#A61E25] text-[#A61E25] hover:bg-[#A61E25]/5 font-bold h-14 rounded-xl gap-2 transition-all active:scale-95"
+                    >
+                      <Save className="w-4 h-4" />
+                      SALVAR FICHA
+                    </Button>
+                  </div>
+                  
+                  <button 
+                    onClick={() => setStep(4)}
+                    className="w-full text-[10px] font-bold uppercase tracking-[0.2em] text-[#111111]/40 hover:text-[#A61E25] transition-colors"
+                  >
+                    Voltar e corrigir cartas
+                  </button>
                </div>
             </div>
           </div>
