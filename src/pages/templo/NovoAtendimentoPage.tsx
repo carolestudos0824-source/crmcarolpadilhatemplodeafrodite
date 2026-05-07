@@ -1,30 +1,9 @@
 import { useState, useRef, ChangeEvent, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
-  ArrowLeft, 
-  ArrowRight, 
-  User, 
-  Mic, 
-  Play, 
-  Camera, 
-  Check, 
-  Sparkles,
-  Info,
-  ChevronRight,
-  Heart,
-  Save,
-  RotateCcw,
-  PlusCircle,
-  Plus,
-  X,
-  RefreshCw,
-  Copy,
-  Zap,
-  Shield,
-  Eye,
-  AudioLines,
-  Maximize2,
-  Minimize2
+  ArrowLeft, ArrowRight, User, Mic, Play, Camera, Check, Sparkles, Info, ChevronRight,
+  Heart, Save, RotateCcw, MessageCircle, PlusCircle, Plus, X, RefreshCw, Copy, 
+  Clock, Zap, Shield, Trash2, Lock, Eye, AudioLines, BookOpen, Settings2, AlertTriangle, Star, Compass, Maximize2, Minimize2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,17 +39,14 @@ export function NovoAtendimentoPage() {
   const [isReadingMode, setIsReadingMode] = useState(false);
   const [selectedCliente, setSelectedCliente] = useState<any>(null);
   const [selectedSituation, setSelectedSituation] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const [relato, setRelato] = useState("");
   const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
-  const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   const nextStep = () => {
     if (step === 4) {
       const allConfirmed = tarotPositions.every(p => cards[p.id]?.confirmed);
       if (!allConfirmed) {
-        toast({ title: "Confirmação Pendente", description: "Confirme as 11 cartas antes de continuar.", variant: "destructive" });
+        toast({ title: "Confirmação Pendente", description: "Confirme as 11 cartas antes de manifestar a leitura.", variant: "destructive" });
         return;
       }
     }
@@ -90,7 +66,7 @@ export function NovoAtendimentoPage() {
 
   const generatedWhatsAppText = useMemo(() => {
     const nome = selectedCliente?.name || "";
-    const baseText = nome ? `Olá ${nome}! Finalizei sua leitura no Templo de Afrodite. 🌹\n\n` : `Olá! Finalizei sua leitura no Templo de Afrodite. 🌹\n\n`;
+    const baseText = nome ? `Olá ${nome}! Finalizei sua leitura no Templo de Afrodite. 🌹\n\n` : `Olá! Finalizei sua leitura. 🌹\n\n`;
     let cardsConfirmed = "Cartas da sua tiragem:\n";
     tarotPositions.forEach(p => { cardsConfirmed += `- ${p.label}: ${cards[p.id]?.name || "N/A"}\n`; });
     return baseText + cardsConfirmed + `\nDiagnóstico: ${selectedSituation}. Recomendo: ${indicatedMagia}.`;
@@ -98,52 +74,31 @@ export function NovoAtendimentoPage() {
 
   const generatedAudioScript = useMemo(() => {
     const nome = selectedCliente?.name || "consulente";
-    return `Olha ${nome}, analisei as energias e o jogo mostra uma transição importante. Na sua mente, ${cards[1]?.name || "a carta"} indica foco, enquanto no coração ${cards[2]?.name || "a carta"} traz sensibilidade. Sobre o futuro, ${indicatedMagia === 'Nenhuma magia indicada no momento' ? 'o momento é de paciência' : 'o caminho está aberto para ' + indicatedMagia}.`;
+    return `Olha ${nome}, analisei as energias e o jogo mostra um momento importante. No seu lado, ${cards[1]?.name || "a carta"} aparece na mente e ${cards[2]?.name || "a carta"} no coração. Sobre o futuro, ${indicatedMagia === 'Nenhuma magia indicada no momento' ? 'o momento é de paciência' : 'o caminho está aberto para ' + indicatedMagia}.`;
   }, [selectedCliente, cards, indicatedMagia]);
 
   const interpretationSections = useMemo(() => {
     return [
-      { title: "Diagnóstico Geral", content: `Análise profunda da situação: ${selectedSituation}.` },
-      { title: "Pensamentos dela", content: `${cards[1]?.name || "Carta"} reflete seu estado mental atual.` },
-      { title: "Sentimentos dela", content: `${cards[2]?.name || "Carta"} mostra o que seu coração carrega.` },
-      { title: "Desejos dela", content: `${cards[3]?.name || "Carta"} revela seu desejo mais profundo.` },
-      { title: "Pensamentos dele", content: `${cards[4]?.name || "Carta"} mostra a mentalidade dele no momento.` },
-      { title: "Sentimentos dele", content: `${cards[5]?.name || "Carta"} revela o que ele sente secretamente.` },
-      { title: "Desejos dele", content: `${cards[6]?.name || "Carta"} mostra a direção das vontades dele.` },
-      { title: "Conselho espiritual", content: `${cards[7]?.name || "Carta"} é a chave para o seu próximo passo.` },
-      { title: "Obstáculo principal", content: `${cards[8]?.name || "Carta"} é o desafio que precisa ser superado.` },
-      { title: "Tendência futura", content: `${cards[9]?.name || "Carta"}, ${cards[10]?.name || "Carta"} e ${cards[11]?.name || "Carta"} trazem as revelações dos próximos tempos.` }
+      { title: "1. Diagnóstico Geral", content: `A situação de ${selectedSituation} exige foco em ${cards[7]?.name || "Conselho"}.` },
+      { title: "2. O que ela pensa", content: `${cards[1]?.name || "Carta"}` },
+      { title: "3. O que ela sente", content: `${cards[2]?.name || "Carta"}` },
+      { title: "4. O que ela deseja", content: `${cards[3]?.name || "Carta"}` },
+      { title: "5. O que ele pensa", content: `${cards[4]?.name || "Carta"}` },
+      { title: "6. O que ele sente", content: `${cards[5]?.name || "Carta"}` },
+      { title: "7. O que ele deseja", content: `${cards[6]?.name || "Carta"}` },
+      { title: "8. Contradições", content: `O obstáculo ${cards[8]?.name || "Carta"} desafia os desejos.` },
+      { title: "9. Conselho espiritual", content: `${cards[7]?.name || "Carta"}` },
+      { title: "10. Tendência futura", content: `${cards[9]?.name || "Carta"}, ${cards[10]?.name || "Carta"}, ${cards[11]?.name || "Carta"}` }
     ];
   }, [cards, selectedSituation]);
 
-  const handleCardUpdate = (id: number, name: string, obs: string) => {
-    setCards(prev => ({ ...prev, [id]: { name, obs, confirmed: true } }));
-  };
-
-  const isCardConfirmed = (id: number) => !!cards[id]?.confirmed;
-
-  const prefillTestCards = () => {
-    const testCards: any = {};
-    tarotPositions.forEach((p, i) => {
-      testCards[p.id] = { name: ["O Imperador", "A Morte", "A Justiça", "A Imperatriz", "A Temperança", "A Torre", "O Mundo", "O Carro", "A Força", "O Diabo", "A Estrela"][i], obs: "", confirmed: true };
-    });
-    setCards(testCards);
-  };
-
-  const triggerPhotoUpload = () => fileInputRef.current?.click();
-  const removePhoto = () => { setTiragemPhoto(null); setPhotoFile(null); };
-  
-  const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setTiragemPhoto(URL.createObjectURL(file));
-      setPhotoFile(file);
-    }
+  const handleCardUpdate = (id: number, name: string) => {
+    setCards(prev => ({ ...prev, [id]: { name, obs: "", confirmed: true } }));
   };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: "Copiado!", description: "Conteúdo copiado para a área de transferência." });
+    toast({ title: "Copiado!", description: "Conteúdo copiado." });
   };
 
   const saveAttendance = () => {
@@ -152,18 +107,13 @@ export function NovoAtendimentoPage() {
   };
 
   return (
-    <div className={cn("max-w-4xl mx-auto pb-24 animate-fade-in", isReadingMode && "max-w-2xl")}>
+    <div className={cn("max-w-4xl mx-auto pb-24 animate-fade-in px-4", isReadingMode && "max-w-2xl")}>
       {step < 5 && (
         <header className="mb-10 space-y-4">
           <div className="flex items-center justify-between">
-            <Button variant="ghost" size="icon" onClick={() => step > 1 ? prevStep() : navigate(-1)} className="rounded-xl border border-[#C9A35A]/20">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4].map((s) => (
-                <div key={s} className={cn("w-12 h-1.5 rounded-full transition-all", step >= s ? "bg-[#A61E25]" : "bg-[#ECE5DC]")} />
-              ))}
-            </div>
+            <Button variant="ghost" size="icon" onClick={() => step > 1 ? prevStep() : navigate(-1)}><ArrowLeft className="w-5 h-5"/></Button>
+            <p className="text-[10px] uppercase font-bold text-[#C9A35A]">Passo {step} de 5</p>
+            <div className="w-10" />
           </div>
         </header>
       )}
@@ -201,12 +151,18 @@ export function NovoAtendimentoPage() {
 
       {step === 4 && (
         <div className="space-y-6">
-          <Button onClick={prefillTestCards} className="w-full bg-[#C9A35A]">PREENCHER TESTE</Button>
+          <Button onClick={() => {
+            const testCards: any = {};
+            tarotPositions.forEach((p, i) => {
+              testCards[p.id] = { name: ["O Imperador", "A Morte", "A Justiça", "A Imperatriz", "A Temperança", "A Torre", "O Mundo", "O Carro", "A Força", "O Diabo", "A Estrela"][i], obs: "", confirmed: true };
+            });
+            setCards(testCards);
+          }} className="w-full bg-[#C9A35A]">PREENCHER TESTE</Button>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {tarotPositions.map(p => (
               <div key={p.id} className="p-4 border rounded-xl">
                 <p className="text-xs font-bold uppercase">{p.label}</p>
-                <Input placeholder="Nome da carta" value={cards[p.id]?.name || ""} onChange={(e) => handleCardUpdate(p.id, e.target.value, "")} />
+                <Input placeholder="Nome da carta" value={cards[p.id]?.name || ""} onChange={(e) => handleCardUpdate(p.id, e.target.value)} />
               </div>
             ))}
           </div>
@@ -260,3 +216,4 @@ export function NovoAtendimentoPage() {
     </div>
   );
 }
+export default NovoAtendimentoPage;
