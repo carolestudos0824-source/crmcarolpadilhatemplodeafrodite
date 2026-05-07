@@ -3,47 +3,57 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextType {
-  session: Session | null;
-  user: User | null;
+  user: { email: string } | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signIn: (email: string, key: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Credenciais internas temporárias
+const AUTHORIZED_EMAIL = "carolestudos0824@gmail.com";
+const INTERNAL_ACCESS_KEY = "templo2024"; // Chave interna para a versão privada
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ email: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    // Manter sessão enquanto o navegador estiver aberto (sessionStorage)
+    const storedUser = sessionStorage.getItem("templo_user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error ? new Error(error.message) : null };
+  const signIn = async (email: string, key: string) => {
+    // Simular delay de carregamento
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    if (email !== AUTHORIZED_EMAIL) {
+      return { error: new Error("E-mail não autorizado para este sistema.") };
+    }
+
+    if (key !== INTERNAL_ACCESS_KEY) {
+      return { error: new Error("Chave de acesso incorreta.") };
+    }
+
+    const userData = { email };
+    setUser(userData);
+    sessionStorage.setItem("templo_user", JSON.stringify(userData));
+    
+    return { error: null };
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    setUser(null);
+    sessionStorage.removeItem("templo_user");
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
