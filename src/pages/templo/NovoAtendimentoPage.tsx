@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, 
@@ -19,7 +19,15 @@ import {
   PlusCircle,
   Plus,
   X,
-  RefreshCw
+  RefreshCw,
+  Copy,
+  Clock,
+  Zap,
+  Shield,
+  Trash2,
+  Lock,
+  Eye,
+  AudioLines
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,9 +50,9 @@ const tarotPositions = [
   { id: 6, section: "ELE", label: "Desejos dele" },
   { id: 7, section: "CENTRO", label: "Conselho" },
   { id: 8, section: "CENTRO", label: "Obstáculo" },
-  { id: 9, section: "TENDÊNCIA FUTURA", label: "Carta 1" },
-  { id: 10, section: "TENDÊNCIA FUTURA", label: "Carta 2" },
-  { id: 11, section: "TENDÊNCIA FUTURA", label: "Carta 3" },
+  { id: 9, section: "TENDÊNCIA FUTURA", label: "Tendência futura carta 1" },
+  { id: 10, section: "TENDÊNCIA FUTURA", label: "Tendência futura carta 2" },
+  { id: 11, section: "TENDÊNCIA FUTURA", label: "Tendência futura carta 3" },
 ];
 
 export function NovoAtendimentoPage() {
