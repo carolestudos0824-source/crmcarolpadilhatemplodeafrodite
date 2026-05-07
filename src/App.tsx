@@ -52,7 +52,11 @@ const App = () => (
                <Route path="clientes/novo" element={<ClienteFormPage />} />
                <Route path="clientes/:id" element={<ClienteProfilePage />} />
               <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
+              <Route path="pipeline" element={<PipelinePage />} />
+              <Route path="follow-ups" element={<FollowUpsPage />} />
               <Route path="magias" element={<MagiasPage />} />
+              <Route path="financeiro" element={<FinanceiroPage />} />
+              <Route path="mensagens" element={<MensagensPage />} />
               <Route path="relatorios" element={<ReportsPage />} />
               <Route path="configuracoes" element={<SettingsPage />} />
             </Route>
