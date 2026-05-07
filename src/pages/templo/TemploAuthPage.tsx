@@ -38,7 +38,7 @@ export function TemploAuthPage() {
           </p>
         </div>
 
-        <div className="bg-white/50 backdrop-blur-xl border border-[#C9A35A]/20 p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-8">
+        <div className="bg-[#ECE5DC]/50 backdrop-blur-xl border border-[#C9A35A]/20 p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-8">
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
               <label className="text-xs uppercase tracking-widest text-[#111111]/70 font-bold ml-1">E-mail</label>
@@ -58,7 +58,7 @@ export function TemploAuthPage() {
                 type="password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-white border-[#C9A35A]/20 text-[#111111] h-14 focus:ring-[#A61E25] focus:border-[#A61E25]/50 rounded-2xl text-lg px-4"
+                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-14 focus:ring-[#A61E25] focus:border-[#A61E25]/50 rounded-2xl text-lg px-4"
                 placeholder="••••••••"
                 required
               />
