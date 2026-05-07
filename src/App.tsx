@@ -39,6 +39,13 @@ const ClienteProfilePage = lazy(() => import("./pages/templo/ClienteProfilePage"
 const AtendimentoPublicPage = lazy(() => import("./pages/templo/AtendimentoPublicPage"));
 const InboxPage = lazy(() => import("./pages/templo/InboxPage").then(m => ({ default: m.InboxPage })));
 
+// Portal Pages
+const PortalLayout = lazy(() => import("./pages/templo/PortalLayout").then(m => ({ default: m.PortalLayout })));
+const PortalHome = lazy(() => import("./pages/templo/PortalHome"));
+const PortalNovoAtendimento = lazy(() => import("./pages/templo/PortalNovoAtendimento"));
+const PortalAcompanhar = lazy(() => import("./pages/templo/PortalAcompanhar"));
+const PortalMensagens = lazy(() => import("./pages/templo/PortalMensagens"));
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
@@ -48,6 +55,13 @@ const App = () => (
             <Route path="/" element={<TemploAuthPage />} />
             <Route path="/atendimento" element={<AtendimentoPublicPage />} />
             
+            <Route path="/portal" element={<PortalLayout />}>
+              <Route index element={<PortalHome />} />
+              <Route path="novo-atendimento" element={<PortalNovoAtendimento />} />
+              <Route path="acompanhar" element={<PortalAcompanhar />} />
+              <Route path="mensagens" element={<PortalMensagens />} />
+            </Route>
+
             <Route path="/templo" element={<ProtectedRoute><CrmLayout /></ProtectedRoute>}>
               <Route index element={<Navigate to="/templo/dashboard" replace />} />
               <Route path="dashboard" element={<TemploDashboard />} />

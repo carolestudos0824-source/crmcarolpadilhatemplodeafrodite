@@ -2,20 +2,13 @@ import { useState, useMemo } from 'react';
 import { 
   Inbox, 
   Search, 
-  Filter, 
   UserPlus, 
   Play, 
-  Trash2, 
   MessageSquare, 
   Instagram, 
-  Copy, 
-  CheckCircle2, 
   Clock,
-  ExternalLink,
-  ChevronRight,
-  MoreVertical,
-  Archive,
-  Eye
+  Eye, 
+  Archive
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { leadService } from '@/types/templo/leadService';
@@ -54,7 +47,7 @@ export function InboxPage() {
   };
 
   const handleArchive = async (id: string) => {
-    await handleUpdateStatus(id, 'Arquivada');
+    await handleUpdateStatus(id, 'Arquivado');
   };
 
   const handleConvertToClient = async (lead: Lead) => {
@@ -72,16 +65,19 @@ export function InboxPage() {
       nome: lead.nome,
       whatsapp: lead.whatsapp,
       instagram: lead.instagram,
-      origem: 'Pré-atendimento',
+      email: lead.email,
+      origem: 'Portal da Cliente',
       statusComercial: 'Nova cliente',
+      nomePessoaEnvolvida: lead.nomePessoaEnvolvida || '',
+      statusRelacao: 'Não informado',
+      situacaoPrincipal: lead.situacaoAmorosa,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const updatedClients = [newClient, ...clients];
-    localStorage.setItem('templo_afrodite_clients', JSON.stringify(updatedClients));
+    storage.saveClient(newClient);
     
-    await handleUpdateStatus(lead.id, 'Cliente criada');
+    await handleUpdateStatus(lead.id, 'Em análise');
     
     toast({ 
       title: "Cliente criada!", 
@@ -92,9 +88,6 @@ export function InboxPage() {
   };
 
   const handleStartAttendance = (lead: Lead) => {
-    // We need to pass lead info to NovoAtendimentoPage
-    // Since it's localStorage, we can pre-fill or use search params
-    // Let's use search params or just navigate to the client profile first
     const clients = storage.getClients();
     const client = clients.find(c => c.whatsapp === lead.whatsapp);
     
@@ -103,11 +96,8 @@ export function InboxPage() {
       return;
     }
 
-    // Mark lead as attendance started
-    handleUpdateStatus(lead.id, 'Atendimento iniciado');
+    handleUpdateStatus(lead.id, 'Aguardando tiragem');
     
-    // Navigate to new attendance with pre-filled data
-    // We'll need to modify NovoAtendimentoPage to accept these
     navigate(`/templo/novo-atendimento?clientId=${client.id}&situation=${encodeURIComponent(lead.situacaoAmorosa)}&relato=${encodeURIComponent(lead.relato)}`);
   };
 
@@ -144,21 +134,21 @@ export function InboxPage() {
               key={lead.id} 
               className={cn(
                 "bg-white p-6 rounded-[2rem] border transition-all hover:shadow-lg group",
-                lead.status === 'Novo lead' ? "border-[#A61E25]/30 shadow-sm" : "border-[#C9A35A]/10"
+                lead.status === 'Novo' ? "border-[#A61E25]/30 shadow-sm" : "border-[#C9A35A]/10"
               )}
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="flex items-start gap-4">
                   <div className={cn(
                     "w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg italic border",
-                    lead.status === 'Novo lead' ? "bg-[#A61E25]/5 border-[#A61E25]/20 text-[#A61E25]" : "bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111]"
+                    lead.status === 'Novo' ? "bg-[#A61E25]/5 border-[#A61E25]/20 text-[#A61E25]" : "bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111]"
                   )}>
                     {lead.nome[0]}
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-[#111111]">{lead.nome}</h3>
-                      {lead.status === 'Novo lead' && (
+                      {lead.status === 'Novo' && (
                         <span className="bg-[#A61E25] text-white text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full">NOVO</span>
                       )}
                     </div>
@@ -173,8 +163,8 @@ export function InboxPage() {
 
                 <div className="flex items-center gap-2 md:self-center">
                   <div className="hidden lg:block text-right mr-4">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/30">Interesse</p>
-                    <p className="text-xs font-bold text-[#C9A35A]">{lead.servicoInteresse}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/30">Tipo</p>
+                    <p className="text-xs font-bold text-[#C9A35A]">{lead.tipoAtendimento}</p>
                   </div>
                   
                   <div className="flex items-center gap-2">
@@ -207,13 +197,12 @@ export function InboxPage() {
             <Inbox className="w-12 h-12 text-[#C9A35A]/30 mx-auto" />
             <div>
               <p className="text-[#111111] font-bold">Sua caixa de entrada está vazia.</p>
-              <p className="text-[#111111]/40 text-sm">Divulgue seu link de pré-atendimento para receber novos casos.</p>
+              <p className="text-[#111111]/40 text-sm">Os casos enviados pelo Portal aparecerão aqui.</p>
             </div>
           </div>
         )}
       </div>
 
-      {/* View Lead Modal */}
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
         <DialogContent className="max-w-2xl bg-[#F4F0EA] border-none rounded-[2.5rem] p-0 overflow-hidden shadow-2xl">
           {selectedLead && (
@@ -225,7 +214,7 @@ export function InboxPage() {
                   </div>
                   <div>
                     <h2 className="text-2xl font-display italic">{selectedLead.nome}</h2>
-                    <p className="text-[#C9A35A] text-[10px] uppercase tracking-widest font-bold">PRÉ-ATENDIMENTO RECEBIDO</p>
+                    <p className="text-[#C9A35A] text-[10px] uppercase tracking-widest font-bold">PORTAL DA CLIENTE</p>
                   </div>
                 </div>
                 
@@ -252,7 +241,7 @@ export function InboxPage() {
                   </div>
                   <div className="space-y-1">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Serviço de Interesse</p>
-                    <p className="text-[#C9A35A] font-bold">{selectedLead.servicoInteresse}</p>
+                    <p className="text-[#C9A35A] font-bold">{selectedLead.tipoAtendimento}</p>
                   </div>
                   {selectedLead.nomePessoaEnvolvida && (
                     <div className="space-y-1">
@@ -261,8 +250,8 @@ export function InboxPage() {
                     </div>
                   )}
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Data de Envio</p>
-                    <p className="font-bold text-[#111111]">{new Date(selectedLead.createdAt).toLocaleString('pt-BR')}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40">Canal de Retorno</p>
+                    <p className="font-bold text-[#111111]">{selectedLead.canalRetorno}</p>
                   </div>
                 </div>
 
@@ -281,21 +270,19 @@ export function InboxPage() {
                   Fechar
                 </Button>
                 
-                {selectedLead.status !== 'Cliente criada' && selectedLead.status !== 'Atendimento iniciado' ? (
-                  <Button 
-                    className="bg-[#C9A35A] hover:bg-[#B89249] text-white rounded-xl h-14 flex-1 font-bold uppercase tracking-widest text-[10px] gap-2"
-                    onClick={() => handleConvertToClient(selectedLead)}
-                  >
-                    <UserPlus className="w-4 h-4" /> Transformar em Cliente
-                  </Button>
-                ) : (
-                  <Button 
-                    className="bg-[#A61E25] hover:bg-[#8B191F] text-white rounded-xl h-14 flex-1 font-bold uppercase tracking-widest text-[10px] gap-2"
-                    onClick={() => handleStartAttendance(selectedLead)}
-                  >
-                    <Play className="w-4 h-4 fill-current" /> Iniciar Jogo do Amor
-                  </Button>
-                )}
+                <Button 
+                  className="bg-[#C9A35A] hover:bg-[#B89249] text-white rounded-xl h-14 flex-1 font-bold uppercase tracking-widest text-[10px] gap-2"
+                  onClick={() => handleConvertToClient(selectedLead)}
+                >
+                  <UserPlus className="w-4 h-4" /> Transformar em Cliente
+                </Button>
+                
+                <Button 
+                  className="bg-[#A61E25] hover:bg-[#8B191F] text-white rounded-xl h-14 flex-1 font-bold uppercase tracking-widest text-[10px] gap-2"
+                  onClick={() => handleStartAttendance(selectedLead)}
+                >
+                  <Play className="w-4 h-4 fill-current" /> Iniciar Atendimento
+                </Button>
               </DialogFooter>
             </>
           )}
