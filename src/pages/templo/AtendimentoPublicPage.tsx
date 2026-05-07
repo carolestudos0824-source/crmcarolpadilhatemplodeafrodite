@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, Send, CheckCircle2, ArrowRight } from 'lucide-react';
-import { SITUACOES_AMOROSAS, SERVICOS_INTERESSE } from '@/types/templo/lead';
+import { SITUACOES_AMOROSAS, TIPOS_ATENDIMENTO } from '@/types/templo/lead';
 import { leadService } from '@/types/templo/leadService';
 import { cn } from '@/lib/utils';
 
 export default function AtendimentoPublicPage() {
+  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nome: '',
     whatsapp: '',
+    email: '',
     instagram: '',
+    tipoAtendimento: 'Jogo do Amor',
     situacaoAmorosa: '',
     nomePessoaEnvolvida: '',
     relato: '',
-    servicoInteresse: ''
+    jaFezConsulta: false,
+    canalRetorno: 'Portal' as const
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,6 +49,10 @@ export default function AtendimentoPublicPage() {
           <p className="text-[#111111]/70 leading-relaxed">
             A Carol irá analisar e retornar pelo contato informado. Aguarde o nosso retorno com carinho.
           </p>
+          <div className="pt-4 text-[#C9A35A] font-bold text-[10px] uppercase tracking-widest cursor-pointer hover:text-[#A61E25] transition-colors"
+            onClick={() => navigate('/portal')}>
+            ACESSAR MEU PORTAL
+          </div>
           <div className="pt-4">
             <Heart className="w-6 h-6 text-[#A61E25] mx-auto animate-pulse fill-[#A61E25]/20" />
           </div>
@@ -95,29 +104,6 @@ export default function AtendimentoPublicPage() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40 ml-1">Instagram (opcional)</label>
-              <input
-                type="text"
-                value={formData.instagram}
-                onChange={(e) => setFormData({...formData, instagram: e.target.value})}
-                className="w-full h-14 bg-[#F4F0EA]/50 border border-[#C9A35A]/10 rounded-2xl px-6 focus:outline-none focus:ring-2 focus:ring-[#C9A35A]/20 transition-all"
-                placeholder="@seuusuario"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40 ml-1">Pessoa Envolvida (opcional)</label>
-              <input
-                type="text"
-                value={formData.nomePessoaEnvolvida}
-                onChange={(e) => setFormData({...formData, nomePessoaEnvolvida: e.target.value})}
-                className="w-full h-14 bg-[#F4F0EA]/50 border border-[#C9A35A]/10 rounded-2xl px-6 focus:outline-none focus:ring-2 focus:ring-[#C9A35A]/20 transition-all"
-                placeholder="Nome dele(a)"
-              />
-            </div>
-          </div>
-
           <div className="space-y-4">
             <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40 ml-1">Qual sua situação amorosa atual?</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -151,30 +137,9 @@ export default function AtendimentoPublicPage() {
             />
           </div>
 
-          <div className="space-y-4">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/40 ml-1">Serviço de interesse</label>
-            <div className="flex flex-wrap gap-3">
-              {SERVICOS_INTERESSE.map((svc) => (
-                <button
-                  key={svc}
-                  type="button"
-                  onClick={() => setFormData({...formData, servicoInteresse: svc})}
-                  className={cn(
-                    "px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all",
-                    formData.servicoInteresse === svc
-                      ? "bg-[#C9A35A] text-white border-[#C9A35A]"
-                      : "bg-[#F4F0EA]/30 text-[#111111]/60 border-[#C9A35A]/10 hover:border-[#C9A35A]/30"
-                  )}
-                >
-                  {svc}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <button
             type="submit"
-            disabled={loading || !formData.situacaoAmorosa || !formData.servicoInteresse}
+            disabled={loading || !formData.situacaoAmorosa}
             className="w-full h-16 bg-[#111111] hover:bg-[#A61E25] text-white rounded-2xl font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-3 group disabled:opacity-50 disabled:hover:bg-[#111111]"
           >
             {loading ? (
