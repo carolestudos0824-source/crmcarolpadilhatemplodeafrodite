@@ -12,7 +12,8 @@ import {
   Clock,
   DollarSign,
   MessageSquare,
-  Search
+  Search,
+  Inbox
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";

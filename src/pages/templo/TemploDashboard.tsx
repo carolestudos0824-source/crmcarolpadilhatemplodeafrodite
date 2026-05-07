@@ -12,7 +12,9 @@ import {
   DollarSign,
   AlertCircle,
   CheckCircle2,
-  ArrowUpRight
+  ArrowUpRight,
+  MessageSquareHeart,
+  ExternalLink
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
