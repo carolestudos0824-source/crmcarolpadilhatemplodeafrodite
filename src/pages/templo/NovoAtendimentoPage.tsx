@@ -183,12 +183,44 @@ export function NovoAtendimentoPage() {
       cardsConfirmed += `- ${p.label}: ${cards[p.id]?.name || "Não informada"}\n`;
     });
 
-    const diagnosis = `\nA energia atual da relação (situação: ${selectedSituation}) mostra um momento de ${cards[7]?.name || "introspecção"} como conselho principal e ${cards[8]?.name || "desafios"} como obstáculo.`;
+    const diagnosis = `\nA energia atual da relação (Situação: ${selectedSituation}) mostra um momento de ${cards[7]?.name || "reflexão"} como conselho principal e ${cards[8]?.name || "desafios"} como obstáculo.`;
     
-    const conclusion = `\n\nPara seguirmos com o melhor direcionamento, recomendo ${indicatedMagia}. Ficamos assim por enquanto?`;
+    const conclusion = `\n\nPara seguirmos com o melhor direcionamento, recomendo ${indicatedMagia}. Vamos conversar sobre como realizar esse trabalho?`;
     
     return baseText + cardsConfirmed + diagnosis + conclusion;
-  }, [selectedCliente, cards, selectedSituation]);
+  }, [selectedCliente, cards, selectedSituation, indicatedMagia]);
+
+  const generatedAudioScript = useMemo(() => {
+    const nome = selectedCliente?.name || "consulente";
+    return `Olha ${nome}, pelo que aparece aqui no jogo, essa relação ainda tem energia, mas ela vem marcada por um momento de transição. Na sua mente aparece ${cards[1]?.name} e no seu coração ${cards[2]?.name}, enquanto seus desejos profundos estão em ${cards[3]?.name}. 
+
+Já do lado dele, o que vejo é ${cards[4]?.name} nos pensamentos e ${cards[5]?.name} nos sentimentos, com ${cards[6]?.name} guiando os desejos dele agora. O grande obstáculo que vocês enfrentam é ${cards[8]?.name}, e o conselho espiritual para você é ${cards[7]?.name}.
+
+Sobre o futuro, as cartas ${cards[9]?.name}, ${cards[10]?.name} e ${cards[11]?.name} mostram que o caminho está aberto para ${indicatedMagia === 'Nenhuma magia indicada no momento' ? 'um período de observação e maturação' : 'um trabalho de ' + indicatedMagia}.`;
+  }, [selectedCliente, cards, indicatedMagia]);
+
+  const interpretationSections = useMemo(() => {
+    return [
+      { title: "1. Diagnóstico Geral", content: `A energia atual da relação (Situação: ${selectedSituation}) mostra um momento de transição profunda e necessidade de clareza espiritual.` },
+      { title: "2. O que ela pensa", content: `A carta ${cards[1]?.name} indica que sua mente está focada em estabilidade e busca por respostas concretas.` },
+      { title: "3. O que ela sente", content: `Com ${cards[2]?.name}, seus sentimentos estão passando por um processo de renovação ou encerramento de ciclos antigos.` },
+      { title: "4. O que ela deseja", content: `Seus desejos profundos, regidos por ${cards[3]?.name}, buscam justiça e equilíbrio na relação.` },
+      { title: "5. O que ele pensa", content: `Ele mentaliza ${cards[4]?.name}, sugerindo que está em um momento de criação ou fertilidade de ideias sobre vocês.` },
+      { title: "6. O que ele sente", content: `Os sentimentos dele estão sob a influência de ${cards[5]?.name}, indicando moderação e paciência.` },
+      { title: "7. O que ele deseja", content: `O desejo dele aparece como ${cards[6]?.name}, o que pode significar uma ruptura necessária ou mudança brusca de perspectiva.` },
+      { title: "8. Contradições da relação", content: `Existe uma tensão entre o desejo de ${cards[3]?.name} e a realidade de ${cards[8]?.name}, criando um descompasso energético.` },
+      { title: "9. Obstáculo principal", content: `O obstáculo ${cards[8]?.name} mostra que o movimento está sendo impedido por falta de direcionamento claro.` },
+      { title: "10. Conselho espiritual", content: `O conselho ${cards[7]?.name} pede que você olhe para o todo e busque a completude dentro de si mesma primeiro.` },
+      { title: "11. Tendência futura", content: `As cartas ${cards[9]?.name}, ${cards[10]?.name} e ${cards[11]?.name} sugerem um desfecho de colheita e revelações importantes nos próximos meses.` },
+      { title: "12. Risco da situação", content: `O risco reside na estagnação caso o conselho de ${cards[7]?.name} não seja seguido.` },
+      { title: "13. Potencial de reconciliação", content: `Alto, desde que as energias de ${cards[5]?.name} sejam respeitadas.` },
+      { title: "14. Potencial de afastamento", content: `Moderado, dependendo de como o obstáculo ${cards[8]?.name} for lidado.` },
+      { title: "15. Caminhos espirituais indicados", content: `Busca por elevação vibracional e alinhamento de chakras superiores.` },
+      { title: "16. Magia indicada", content: indicatedMagia },
+      { title: "17. O que pode ser dito para a cliente", content: `Pode dizer que o tempo de espera está acabando e que a verdade virá à tona em breve.` },
+      { title: "18. O que não deve ser prometido", content: `Não prometa datas exatas para o retorno dele, pois a energia de ${cards[5]?.name} é fluida.` },
+    ];
+  }, [cards, selectedSituation, indicatedMagia]);
 
   const indicatedMagia = useMemo(() => {
     // Lógica simples baseada em algumas cartas e situação
