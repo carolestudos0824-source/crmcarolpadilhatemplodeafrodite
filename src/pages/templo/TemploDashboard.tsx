@@ -118,8 +118,15 @@ export function TemploDashboard() {
               <p className="text-[9px] text-[#111111]/40 uppercase tracking-widest font-bold font-sans-clean">Ver métricas</p>
             </div>
           </div>
-        </Link>
-      </div>
+          </Link>
+          <Link to="/atendimento" target="_blank">
+            <Button variant="outline" className="border-[#A61E25] text-[#A61E25] hover:bg-[#A61E25]/5 rounded-2xl h-14 px-6 gap-2 font-bold font-sans-clean group transition-all">
+              <MessageSquareHeart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              FALAR COM CAROL
+              <ExternalLink className="w-3 h-3 opacity-40" />
+            </Button>
+          </Link>
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (

@@ -36,6 +36,8 @@ const MensagensPage = lazy(() => import("./pages/templo/MensagensPage").then(m =
 const ReportsPage = lazy(() => import("./pages/templo/ReportsPage").then(m => ({ default: m.ReportsPage })));
 const SettingsPage = lazy(() => import("./pages/templo/SettingsPage").then(m => ({ default: m.SettingsPage })));
 const ClienteProfilePage = lazy(() => import("./pages/templo/ClienteProfilePage").then(m => ({ default: m.ClienteProfilePage })));
+const AtendimentoPublicPage = lazy(() => import("./pages/templo/AtendimentoPublicPage"));
+const InboxPage = lazy(() => import("./pages/templo/InboxPage").then(m => ({ default: m.InboxPage })));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

@@ -151,6 +151,15 @@ export function SettingsPage() {
            <Button variant="ghost" className="w-full text-red-600 hover:bg-red-600/10 h-12 rounded-xl gap-2 uppercase text-[10px] tracking-widest font-bold">
               <Trash2 className="w-4 h-4" /> LIMPAR TODOS OS DADOS
            </Button>
+
+           <div className="pt-4 border-t border-white/10 mt-6">
+              <p className="text-[#C9A35A] text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                 <Shield className="w-3 h-3" /> Aviso Técnico (Lead System)
+              </p>
+              <p className="text-white/30 text-[10px] leading-relaxed italic">
+                 O pré-atendimento público precisa de banco de dados real (Supabase) para funcionar entre dispositivos. A versão local é estrutural e os dados são salvos apenas neste navegador.
+              </p>
+           </div>
         </div>
 
         <Button 
