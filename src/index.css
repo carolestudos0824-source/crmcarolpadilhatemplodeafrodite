@@ -6,17 +6,17 @@
 
 @layer base {
   :root {
-    --background: 36 33% 94%; /* #F4F0EA */
+    --background: 42 27% 93%; /* #F2EFE8 ajustado para o fundo exato da logo */
     --foreground: 0 0% 7%; /* #111111 */
 
-    --card: 38 25% 91%; /* #ECE5DC */
+    --card: 37 24% 90%; /* #EBE5DB ajustado sutilmente */
     --card-foreground: 0 0% 7%;
 
-    --popover: 38 25% 91%;
+    --popover: 37 24% 90%;
     --popover-foreground: 0 0% 7%;
 
     --primary: 358 69% 38%; /* #A61E25 */
-    --primary-foreground: 36 33% 94%;
+    --primary-foreground: 42 27% 93%;
 
     --secondary: 40 50% 57%; /* #C9A35A */
     --secondary-foreground: 0 0% 7%;
@@ -45,7 +45,7 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background-color: #F4F0EA;
+    background-color: #F2EFE8;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -97,6 +97,6 @@
   }
 
   .card-premium {
-    @apply bg-[#ECE5DC]/80 backdrop-blur-md border border-templo-gold/20 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow;
+    @apply bg-[#EBE5DB]/80 backdrop-blur-md border border-templo-gold/20 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow;
   }
 }

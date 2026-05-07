@@ -9,7 +9,7 @@ import { TemploDashboard } from "./pages/templo/TemploDashboard";
 const queryClient = new QueryClient();
 
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-[#F4F0EA]">
+  <div className="min-h-screen flex items-center justify-center bg-[#F2EFE8]">
     <div className="text-center space-y-4">
       <div className="w-12 h-12 rounded-full border-2 border-[#C9A35A] border-t-transparent animate-spin mx-auto" />
       <p className="text-[10px] text-[#111111]/40 uppercase tracking-[0.3em] font-bold">Conectando ao Templo...</p>
