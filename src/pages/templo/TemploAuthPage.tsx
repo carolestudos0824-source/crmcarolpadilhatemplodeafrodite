@@ -46,7 +46,7 @@ export function TemploAuthPage() {
                 type="email" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white border-[#C9A35A]/20 text-[#111111] h-14 focus:ring-[#A61E25] focus:border-[#A61E25]/50 rounded-2xl text-lg px-4"
+                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-14 focus:ring-[#A61E25] focus:border-[#A61E25]/50 rounded-2xl text-lg px-4"
                 placeholder="carol@exemplo.com"
                 required
               />
