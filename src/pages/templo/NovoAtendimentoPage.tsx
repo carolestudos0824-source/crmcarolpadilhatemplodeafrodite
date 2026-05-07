@@ -498,7 +498,14 @@ export function NovoAtendimentoPage() {
             </section>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-10">
-              <Button onClick={saveAttendance} className="flex-1 bg-[#A61E25] text-white font-bold h-16 rounded-[2rem] text-lg shadow-xl">SALVAR FICHA E FINALIZAR</Button>
+              {reopenId ? (
+                <>
+                  <Button onClick={() => saveAttendance(false)} className="flex-1 bg-[#A61E25] text-white font-bold h-16 rounded-[2rem] text-lg shadow-xl">ATUALIZAR ATENDIMENTO</Button>
+                  <Button onClick={() => saveAttendance(true)} variant="outline" className="flex-1 border-[#A61E25] text-[#A61E25] font-bold h-16 rounded-[2rem] text-lg">SALVAR COMO NOVO</Button>
+                </>
+              ) : (
+                <Button onClick={() => saveAttendance(true)} className="flex-1 bg-[#A61E25] text-white font-bold h-16 rounded-[2rem] text-lg shadow-xl">SALVAR FICHA E FINALIZAR</Button>
+              )}
               <Button variant="outline" onClick={() => navigate("/templo/dashboard")} className="h-16 rounded-[2rem] px-10">VOLTAR AO DASHBOARD</Button>
             </div>
           </div>
