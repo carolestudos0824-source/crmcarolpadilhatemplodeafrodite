@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const situations = [
   "Está sumindo", "Término recente", "Quero reconquistar", "Ele bloqueia e desbloqueia",
@@ -49,7 +49,6 @@ const tarotPositions = [
 
 export function NovoAtendimentoPage() {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState(1);
