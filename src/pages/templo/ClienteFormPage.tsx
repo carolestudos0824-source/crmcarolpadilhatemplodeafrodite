@@ -191,6 +191,19 @@ export function ClienteFormPage() {
               />
             </div>
             <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Data Nasc. dele(a)</label>
+              <div className="relative">
+                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
+                <Input 
+                  type="date"
+                  name="dataNascimentoPessoa"
+                  value={formData.dataNascimentoPessoa}
+                  onChange={handleChange}
+                  className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Status da Relação</label>
               <Select value={formData.statusRelacao} onValueChange={(val) => handleSelectChange('statusRelacao', val)}>
                 <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
@@ -200,7 +213,8 @@ export function ClienteFormPage() {
                   {[
                     "Ex", "Ficante", "Namoro", "Casamento", "Relação indefinida", 
                     "Bloqueados", "Afastados", "Terceira pessoa", "Paixão nova", 
-                    "Término recente", "Relação fria", "Contato instável"
+                    "Término recente", "Relação fria", "Contato instável",
+                    "Reconciliação em andamento", "Sem contato"
                   ].map(status => (
                     <SelectItem key={status} value={status}>{status}</SelectItem>
                   ))}
