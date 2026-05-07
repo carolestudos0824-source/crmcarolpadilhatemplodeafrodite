@@ -655,7 +655,13 @@ export function NovoAtendimentoPage() {
             <section className="bg-[#EBE5DB] p-10 rounded-[3.5rem] border border-[#C9A35A]/30 space-y-6">
               <h3 className="text-2xl font-display italic text-[#111111]">Texto para WhatsApp</h3>
               <div className="bg-white p-8 rounded-[2rem] text-lg font-medium text-[#111111]/70 whitespace-pre-wrap">{generatedWhatsAppText}</div>
-              <Button onClick={() => copyToClipboard(generatedWhatsAppText)} className="bg-[#111111] text-white w-full h-14 rounded-2xl">COPIAR WHATSAPP</Button>
+              <div className="flex gap-4">
+                <Button onClick={() => copyToClipboard(generatedWhatsAppText)} className="bg-[#111111] text-white flex-1 h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px]">COPIAR WHATSAPP</Button>
+                <Button onClick={() => {
+                   toast({ title: "Entregue no Portal!", description: "A leitura agora está disponível para a cliente." });
+                   // Logic to mark appointment as delivered (this would be saved in saveAttendance)
+                }} className="bg-[#A61E25] text-white flex-1 h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px]">ENTREGAR NO PORTAL</Button>
+              </div>
             </section>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-10">

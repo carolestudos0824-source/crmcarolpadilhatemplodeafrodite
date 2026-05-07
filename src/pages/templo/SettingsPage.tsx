@@ -154,10 +154,10 @@ export function SettingsPage() {
 
            <div className="pt-4 border-t border-white/10 mt-6">
               <p className="text-[#C9A35A] text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
-                 <Shield className="w-3 h-3" /> Aviso Técnico (Lead System)
+                 <Shield className="w-3 h-3" /> Aviso Técnico (Portal da Cliente)
               </p>
               <p className="text-white/30 text-[10px] leading-relaxed italic">
-                 O pré-atendimento público precisa de banco de dados real (Supabase) para funcionar entre dispositivos. A versão local é estrutural e os dados são salvos apenas neste navegador.
+                 O Portal da Cliente precisa de banco de dados real (Supabase) para funcionar entre dispositivos. A versão local é estrutural e os dados são salvos apenas neste navegador.
               </p>
            </div>
         </div>

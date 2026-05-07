@@ -38,6 +38,11 @@ const SettingsPage = lazy(() => import("./pages/templo/SettingsPage").then(m => 
 const ClienteProfilePage = lazy(() => import("./pages/templo/ClienteProfilePage").then(m => ({ default: m.ClienteProfilePage })));
 const AtendimentoPublicPage = lazy(() => import("./pages/templo/AtendimentoPublicPage"));
 const InboxPage = lazy(() => import("./pages/templo/InboxPage").then(m => ({ default: m.InboxPage })));
+const PortalLayout = lazy(() => import("./pages/templo/PortalLayout").then(m => ({ default: m.PortalLayout })));
+const PortalHome = lazy(() => import("./pages/templo/PortalHome"));
+const PortalNovoAtendimento = lazy(() => import("./pages/templo/PortalNovoAtendimento"));
+const PortalAcompanhar = lazy(() => import("./pages/templo/PortalAcompanhar"));
+const PortalMensagens = lazy(() => import("./pages/templo/PortalMensagens"));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
