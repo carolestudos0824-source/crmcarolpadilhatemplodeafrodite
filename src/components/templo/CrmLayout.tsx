@@ -28,15 +28,14 @@ export function CrmLayout() {
       {/* Sidebar Desktop */}
       <aside className="fixed left-0 top-0 h-full w-64 bg-[#111111] hidden lg:flex flex-col border-r border-[#C9A35A]/30 z-50">
         <div className="p-8 border-b border-[#C9A35A]/20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#C9A35A] flex items-center justify-center font-bold text-[#111111] text-xl italic shadow-lg">
-              CP
-            </div>
-            <div>
-              <h1 className="text-[#F4F0EA] font-display text-lg leading-tight">TEMPLO DE AFRODITE</h1>
-              <p className="text-[#C9A35A] text-[10px] uppercase tracking-widest font-bold">CRM INTERNO</p>
-            </div>
-          </div>
+          <Link to="/templo/dashboard" className="block">
+            <img 
+              src="https://qtbkvshbmqlszncxlcuc.supabase.co/storage/v1/object/public/dsl-uploads/FKxI2UX5GWafusX2CZ1rulDlY5n1/1fcb5fad-cd93-4055-9587-35b167be7490.png" 
+              alt="Carol Padilha" 
+              className="w-full"
+            />
+            <p className="text-[#C9A35A] text-[9px] uppercase tracking-widest font-bold mt-2 text-center opacity-70">CRM INTERNO</p>
+          </Link>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">

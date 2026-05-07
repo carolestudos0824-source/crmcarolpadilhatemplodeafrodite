@@ -27,21 +27,15 @@ export function TemploAuthPage() {
       <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#C9A35A]/30 to-transparent" />
       
       <div className="w-full max-w-md space-y-12 relative z-10">
-        <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full border border-[#C9A35A]/30 bg-white shadow-xl mb-6">
-            <span className="font-display text-4xl text-[#C9A35A] font-bold italic">CP</span>
-          </div>
-          <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#111111] tracking-tight font-display">
-              TEMPLO DE AFRODITE
-            </h1>
-            <p className="text-[#C9A35A] uppercase tracking-[0.2em] text-xs font-bold">
-              CRM Espiritual · Sistema Interno
-            </p>
-            <p className="text-[#111111]/60 text-sm font-medium">
-              Gestão de Atendimentos Amorosos Carol Padilha
-            </p>
-          </div>
+        <div className="text-center space-y-2">
+          <img 
+            src="https://qtbkvshbmqlszncxlcuc.supabase.co/storage/v1/object/public/dsl-uploads/FKxI2UX5GWafusX2CZ1rulDlY5n1/1fcb5fad-cd93-4055-9587-35b167be7490.png" 
+            alt="Carol Padilha - Tarô, Magias de Amor e Direcionamento" 
+            className="w-full max-w-[280px] mx-auto mb-4"
+          />
+          <p className="text-[#C9A35A] uppercase tracking-[0.2em] text-[10px] font-bold">
+            CRM Espiritual · Sistema Interno
+          </p>
         </div>
 
         <div className="bg-white/50 backdrop-blur-xl border border-[#C9A35A]/20 p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-8">

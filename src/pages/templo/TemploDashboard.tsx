@@ -39,7 +39,7 @@ export function TemploDashboard() {
       {/* Quick Action Buttons */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Link to="/templo/clientes/novo" className="group">
-          <div className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
+          <div className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
             <div className="w-12 h-12 rounded-2xl bg-[#C9A35A]/10 flex items-center justify-center text-[#C9A35A]">
               <UserPlus className="w-6 h-6" />
             </div>
@@ -50,7 +50,7 @@ export function TemploDashboard() {
           </div>
         </Link>
         <Link to="/templo/novo-atendimento" className="group">
-          <div className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
+          <div className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
             <div className="w-12 h-12 rounded-2xl bg-[#A61E25]/10 flex items-center justify-center text-[#A61E25]">
               <Play className="w-6 h-6 fill-current" />
             </div>
@@ -61,7 +61,7 @@ export function TemploDashboard() {
           </div>
         </Link>
         <Link to="/templo/relatorios" className="group hidden lg:block">
-          <div className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
+          <div className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
             <div className="w-12 h-12 rounded-2xl bg-[#111111]/5 flex items-center justify-center text-[#111111]">
               <TrendingUp className="w-6 h-6" />
             </div>
@@ -81,7 +81,7 @@ export function TemploDashboard() {
           { label: "Magias Indicadas", value: "24", icon: Sparkles, color: "text-[#C9A35A]" },
           { label: "Receita (Mês)", value: "R$ 12.4k", icon: TrendingUp, color: "text-[#111111]" },
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
+          <div key={i} className="bg-[#ECE5DC] p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
             <div className="flex justify-between items-start">
               <stat.icon className={`w-8 h-8 ${stat.color}`} />
               <div className="text-[10px] bg-[#ECE5DC] px-2 py-1 rounded-full font-bold uppercase tracking-wider text-[#111111]/40">+12%</div>
@@ -103,7 +103,7 @@ export function TemploDashboard() {
           </div>
           <div className="space-y-4">
             {recentAttendance.map((item, i) => (
-              <div key={i} className="bg-white p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#C9A35A]/40 transition-all cursor-pointer group">
+              <div key={i} className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#C9A35A]/40 transition-all cursor-pointer group">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] text-lg italic border border-[#C9A35A]/20">
                     {item.name[0]}
@@ -130,7 +130,7 @@ export function TemploDashboard() {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-[#111111] font-display">Próximos Retornos</h2>
           </div>
-          <div className="bg-white p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+          <div className="bg-[#ECE5DC] p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
             {[1, 2, 3].map((_, i) => (
               <div key={i} className="flex items-center gap-4 pb-6 border-b border-[#F4F0EA] last:border-0 last:pb-0">
                 <div className="w-10 h-10 rounded-xl bg-[#ECE5DC] flex items-center justify-center text-[#111111]/40">
