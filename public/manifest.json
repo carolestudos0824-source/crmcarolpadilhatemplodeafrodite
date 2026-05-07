@@ -1,11 +1,11 @@
 {
-  "name": "Tarô 78 Chaves",
-  "short_name": "Tarô 78",
-  "description": "Aprenda tarô de forma progressiva e viva. 78 cartas, 78 lições.",
+  "name": "Templo de Afrodite CRM",
+  "short_name": "Templo CRM",
+  "description": "Sistema interno privado Carol Padilha para gestão de atendimentos amorosos.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFDF7",
-  "theme_color": "#4A1528",
+  "background_color": "#F2EFE8",
+  "theme_color": "#A61E25",
   "orientation": "portrait",
   "icons": [
     {
