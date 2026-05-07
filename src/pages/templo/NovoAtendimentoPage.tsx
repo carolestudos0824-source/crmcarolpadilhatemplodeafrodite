@@ -259,7 +259,7 @@ export function NovoAtendimentoPage() {
             {step === 1 && "Identificação da Cliente"}
             {step === 2 && "Qual a situação?"}
             {step === 3 && "Relato do Caso"}
-            {step === 4 && "Jogo do Amor"}
+            {step === 4 && "Confirmação da Tiragem"}
             {step === 5 && "Leitura Manifestada"}
           </h1>
         </div>
