@@ -66,6 +66,7 @@ export function NovoAtendimentoPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState(1);
+  const [isReadingMode, setIsReadingMode] = useState(false);
   const [selectedCliente, setSelectedCliente] = useState<any>(null);
   const [selectedSituation, setSelectedSituation] = useState("");
   const [isRecording, setIsRecording] = useState(false);
