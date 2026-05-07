@@ -1,7 +1,7 @@
-import { User, Phone, Globe, Shield, CreditCard, Palette, Save } from "lucide-react";
+import { User, Phone, Globe, Shield, CreditCard, Palette, Save, Download, Upload, Trash2, Instagram, Mail, FileText, Settings as SettingsIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { storage, Settings } from "@/lib/storage";
 import { toast } from "@/hooks/use-toast";
 
@@ -14,6 +14,35 @@ export function SettingsPage() {
       title: "Sucesso!",
       description: "Ajustes salvos com sucesso.",
     });
+  };
+
+  const handleExport = () => {
+    const backup = storage.exportBackup();
+    const blob = new Blob([backup], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `templo-afrodite-crm-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    toast({ title: "Backup exportado!", description: "Arquivo salvo com sucesso." });
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const json = event.target?.result as string;
+          storage.importBackup(json, 'merge');
+          toast({ title: "Backup importado!", description: "Dados mesclados com sucesso." });
+          window.location.reload();
+        } catch (err) {
+          toast({ title: "Erro na importação", description: "Arquivo inválido.", variant: "destructive" });
+        }
+      };
+      reader.readAsText(file);
+    }
   };
 
   const handleChange = (field: keyof Settings, value: string) => {
