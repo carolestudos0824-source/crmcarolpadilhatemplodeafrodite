@@ -32,23 +32,35 @@ export function ClienteProfilePage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 animate-fade-in pb-20 px-4">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="max-w-6xl mx-auto space-y-8 animate-fade-in pb-20 px-4">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-xl border border-[#C9A35A]/20">
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-[#111111] font-display">{client.nome}</h1>
-            <p className="text-[#C9A35A] font-bold uppercase text-[10px] tracking-widest">{client.statusComercial}</p>
+            <div className="flex items-center gap-2 mb-1">
+               <h1 className="text-3xl font-bold text-[#111111] font-display">{client.nome}</h1>
+               <span className={cn(
+                 "px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest",
+                 client.temperatura === 'Quente' ? "bg-[#A61E25] text-white" : "bg-[#C9A35A]/20 text-[#C9A35A]"
+               )}>
+                 {client.temperatura || 'Morna'}
+               </span>
+            </div>
+            <p className="text-[#C9A35A] font-bold uppercase text-[10px] tracking-widest flex items-center gap-2">
+              <TrendingUp className="w-3 h-3" /> {client.statusComercial}
+            </p>
           </div>
         </div>
-        <Link to="/templo/novo-atendimento">
-          <Button className="bg-[#A61E25] text-white rounded-2xl h-14 px-8 font-bold shadow-lg shadow-[#A61E25]/20 gap-2 font-sans-clean">
-            <Plus className="w-5 h-5" />
-            NOVO ATENDIMENTO
-          </Button>
-        </Link>
+        <div className="flex gap-3">
+          <Link to="/templo/novo-atendimento">
+            <Button className="bg-[#A61E25] text-white rounded-2xl h-14 px-8 font-bold shadow-lg shadow-[#A61E25]/20 gap-2">
+              <Plus className="w-5 h-5" />
+              NOVO ATENDIMENTO
+            </Button>
+          </Link>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
