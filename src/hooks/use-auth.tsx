@@ -1,6 +1,4 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import type { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextType {
   user: { email: string } | null;
@@ -20,31 +18,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Manter sessão enquanto o navegador estiver aberto (sessionStorage)
-    const storedUser = sessionStorage.getItem("templo_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    try {
+      // Manter sessão enquanto o navegador estiver aberto (sessionStorage)
+      const storedUser = sessionStorage.getItem("templo_user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (e) {
+      console.error("Erro ao carregar sessão:", e);
+      sessionStorage.removeItem("templo_user");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const signIn = async (email: string, key: string) => {
-    // Simular delay de carregamento
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Simular delay de carregamento
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-    if (email !== AUTHORIZED_EMAIL) {
-      return { error: new Error("E-mail não autorizado para este sistema.") };
+      if (!email || !key) {
+        return { error: new Error("Preencha todos os campos.") };
+      }
+
+      if (email.toLowerCase().trim() !== AUTHORIZED_EMAIL.toLowerCase()) {
+        return { error: new Error("E-mail não autorizado para este sistema.") };
+      }
+
+      if (key.trim() !== INTERNAL_ACCESS_KEY) {
+        return { error: new Error("Chave de acesso incorreta.") };
+      }
+
+      const userData = { email: email.toLowerCase().trim() };
+      setUser(userData);
+      sessionStorage.setItem("templo_user", JSON.stringify(userData));
+      
+      return { error: null };
+    } catch (e) {
+      return { error: e instanceof Error ? e : new Error("Erro inesperado ao entrar.") };
     }
-
-    if (key !== INTERNAL_ACCESS_KEY) {
-      return { error: new Error("Chave de acesso incorreta.") };
-    }
-
-    const userData = { email };
-    setUser(userData);
-    sessionStorage.setItem("templo_user", JSON.stringify(userData));
-    
-    return { error: null };
   };
 
   const signOut = async () => {
@@ -61,6 +73,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  if (ctx === undefined) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
   return ctx;
 };
