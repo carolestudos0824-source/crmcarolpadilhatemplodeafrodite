@@ -20,6 +20,7 @@ const navItems = [
   { icon: History, label: "Pipeline", path: "/templo/pipeline" },
   { icon: Heart, label: "Follow-ups", path: "/templo/follow-ups" },
   { icon: Sparkles, label: "Magias", path: "/templo/magias" },
+  { icon: BarChart3, label: "Financeiro", path: "/templo/financeiro" },
   { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
   { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
 ];
