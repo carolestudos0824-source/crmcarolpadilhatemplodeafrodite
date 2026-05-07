@@ -153,6 +153,7 @@ export function NovoAtendimentoPage() {
   const prevStep = () => setStep(step - 1);
 
   const indicatedMagia = useMemo(() => {
+    if (viewId && savedReadingData?.magia) return savedReadingData.magia;
     if (!cards[11]?.confirmed) return "Nenhuma magia indicada no momento";
     const c11 = cards[11].name.toLowerCase();
     const c8 = cards[8]?.name.toLowerCase() || "";
@@ -160,7 +161,7 @@ export function NovoAtendimentoPage() {
     if (c11.includes("estrela") || c11.includes("mundo")) return "Harmonização Amorosa";
     if (c11.includes("diabo") || c11.includes("torre") || c8.includes("diabo")) return "Limpeza Energética Amorosa";
     return "Banho de magnetismo pessoal";
-  }, [cards, selectedSituation]);
+  }, [cards, selectedSituation, viewId, savedReadingData]);
 
   const generatedWhatsAppText = useMemo(() => {
     const nome = selectedCliente?.name || "";
