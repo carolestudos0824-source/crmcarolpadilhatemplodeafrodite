@@ -11,10 +11,31 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
-const recentAttendance: any[] = [];
+import { useMemo } from "react";
+import { storage } from "@/lib/storage";
 
 export function TemploDashboard() {
+  const clients = useMemo(() => storage.getClients(), []);
+  const appointments = useMemo(() => storage.getAppointments(), []);
+  const settings = useMemo(() => storage.getSettings(), []);
+
+  const stats = useMemo(() => {
+    const today = new Date().toLocaleDateString('pt-BR');
+    const todayApps = appointments.filter(a => new Date(a.createdAt).toLocaleDateString('pt-BR') === today);
+    
+    return [
+      { label: "Atendimentos Hoje", value: todayApps.length.toString(), icon: Clock, color: "text-[#A61E25]" },
+      { label: "Clientes Totais", value: clients.length.toString(), icon: Users, color: "text-[#C9A35A]" },
+      { label: "Magias Indicadas", value: appointments.filter(a => a.magiasIndicadas !== "Nenhuma magia indicada no momento").length.toString(), icon: Sparkles, color: "text-[#C9A35A]" },
+      { label: "Receita (Mês)", value: `R$ ${appointments.length * 250}`, icon: TrendingUp, color: "text-[#111111]" },
+    ];
+  }, [clients, appointments]);
+
+  const recentAttendance = useMemo(() => {
+    return appointments
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 3);
+  }, [appointments]);
   return (
     <div className="space-y-8 animate-fade-in">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -69,14 +90,8 @@ export function TemploDashboard() {
         </Link>
       </div>
 
-      {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: "Atendimentos Hoje", value: "0", icon: Clock, color: "text-[#A61E25]" },
-          { label: "Clientes Totais", value: "0", icon: Users, color: "text-[#C9A35A]" },
-          { label: "Magias Indicadas", value: "0", icon: Sparkles, color: "text-[#C9A35A]" },
-          { label: "Receita (Mês)", value: "R$ 0", icon: TrendingUp, color: "text-[#111111]" },
-        ].map((stat, i) => (
+        {stats.map((stat, i) => (
           <div key={i} className="bg-[#EBE5DC] p-6 sm:p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
             <div className="flex justify-between items-start">
               <stat.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${stat.color}`} />
@@ -99,24 +114,24 @@ export function TemploDashboard() {
           <div className="space-y-4">
             {recentAttendance.length > 0 ? (
               recentAttendance.map((item, i) => (
-                <div key={i} className="bg-[#EBE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#C9A35A]/40 transition-all cursor-pointer group">
+                <Link to={`/templo/clientes/${item.clientId}`} key={item.id} className="bg-[#EBE5DB] p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#A61E25]/40 transition-all cursor-pointer group">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#EBE5DC] flex items-center justify-center font-bold text-[#111111] text-lg italic border border-[#C9A35A]/20">
-                      {item.name[0]}
+                    <div className="w-12 h-12 rounded-full bg-[#EBE5DB] flex items-center justify-center font-bold text-[#111111] text-lg italic border border-[#C9A35A]/20">
+                      {item.nomeCliente[0]}
                     </div>
                     <div>
-                      <h4 className="font-bold text-[#111111] font-sans-clean">{item.name}</h4>
-                      <p className="text-xs text-[#111111]/60 font-medium">{item.situation}</p>
+                      <h4 className="font-bold text-[#111111] font-sans-clean">{item.nomeCliente}</h4>
+                      <p className="text-xs text-[#111111]/60 font-medium">{item.situacaoAmorosa}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="hidden sm:block text-right">
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1 font-sans-clean">{item.status}</div>
-                      <div className="text-[10px] font-medium text-[#111111]/40">{item.date}</div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1 font-sans-clean">{item.statusAtendimento}</div>
+                      <div className="text-[10px] font-medium text-[#111111]/40">{new Date(item.createdAt).toLocaleDateString('pt-BR')}</div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25] transition-colors" />
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <div className="bg-[#EBE5DC]/50 p-12 rounded-[2rem] border border-dashed border-[#C9A35A]/20 text-center space-y-4">
