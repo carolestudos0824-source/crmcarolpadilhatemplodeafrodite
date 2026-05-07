@@ -326,29 +326,112 @@ export function NovoAtendimentoPage() {
               <Button onClick={triggerPhotoUpload} className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8">ENVIAR FOTO</Button>
             ) : (
               <div className="space-y-4">
-                <img src={tiragemPhoto} className="max-w-sm rounded-2xl border-2 border-[#C9A35A] mx-auto" />
-                <Button onClick={prefillTestCards} className="bg-[#A61E25] text-white">CONTINUAR PARA CONFIRMAÇÃO</Button>
+                <div className="relative inline-block">
+                  <img src={tiragemPhoto} className="max-w-xs rounded-2xl border-2 border-[#C9A35A] mx-auto shadow-2xl" />
+                  <Button size="icon" onClick={removePhoto} className="absolute -top-2 -right-2 bg-red-600 rounded-full h-8 w-8 hover:bg-red-700 shadow-lg"><X className="w-4 h-4 text-white"/></Button>
+                </div>
+                <div className="flex justify-center gap-3">
+                  <Button onClick={triggerPhotoUpload} variant="outline" className="text-white border-white/20 h-10 px-4">TROCAR FOTO</Button>
+                  <Button onClick={prefillTestCards} className="bg-[#C9A35A] text-[#111111] h-10 px-4">SUGESTÃO IA</Button>
+                </div>
               </div>
             )}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tarotPositions.map(pos => (
-              <div key={pos.id} className={cn("bg-white p-6 rounded-3xl border shadow-sm space-y-4 transition-all", isCardConfirmed(pos.id) ? "border-[#A61E25]" : "border-[#C9A35A]/20")}>
-                <h4 className="font-bold text-[#111111] text-sm">{pos.label}</h4>
-                <div onClick={() => handleCardClick(pos.id)}
-                  className="aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer bg-[#F2EFE8] hover:bg-[#C9A35A]/5 transition-all">
-                  {isCardConfirmed(pos.id) ? (
-                    <div className="text-center p-2">
-                      <span className="text-[#A61E25] font-bold block uppercase text-xs leading-tight mb-1">{cards[pos.id].name}</span>
-                      <span className="text-[9px] font-bold text-[#111111]/30 uppercase tracking-widest">Trocar</span>
+
+          {/* Progresso das Cartas */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-end">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A35A]">
+                {Object.values(cards).filter(c => c.confirmed).length} de 11 cartas confirmadas
+              </p>
+              <p className="text-[10px] font-bold text-[#111111]/40">
+                {Math.round((Object.values(cards).filter(c => c.confirmed).length / 11) * 100)}%
+              </p>
+            </div>
+            <div className="h-1.5 w-full bg-[#EBE5DB] rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-[#A61E25] transition-all duration-500" 
+                style={{ width: `${(Object.values(cards).filter(c => c.confirmed).length / 11) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Grid de Cartas Organizado */}
+          <div className="space-y-12">
+            {["VOCÊ", "ELE", "CENTRO", "TENDÊNCIA FUTURA"].map((section) => (
+              <div key={section} className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-[#C9A35A]/20" />
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C9A35A] whitespace-nowrap">{section}</h3>
+                  <div className="h-px flex-1 bg-[#C9A35A]/20" />
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {tarotPositions.filter(p => p.section === section).map(pos => (
+                    <div key={pos.id} className={cn(
+                      "bg-white p-6 rounded-[2rem] border shadow-sm space-y-4 transition-all hover:shadow-md",
+                      isCardConfirmed(pos.id) ? "border-[#A61E25]/30 ring-1 ring-[#A61E25]/10" : "border-[#C9A35A]/10"
+                    )}>
+                      <div className="flex items-center justify-between">
+                         <span className="text-[9px] font-bold text-[#111111]/30 uppercase tracking-widest">{pos.label}</span>
+                         {isCardConfirmed(pos.id) ? (
+                           <span className="text-[9px] font-bold text-[#A61E25] uppercase tracking-widest flex items-center gap-1">
+                             <Check className="w-3 h-3" /> Confirmada
+                           </span>
+                         ) : (
+                           <span className="text-[9px] font-bold text-[#111111]/20 uppercase tracking-widest italic">Pendente</span>
+                         )}
+                      </div>
+
+                      <div onClick={() => handleCardClick(pos.id)}
+                        className={cn(
+                          "aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all",
+                          isCardConfirmed(pos.id) 
+                            ? "bg-[#A61E25]/5 border-[#A61E25]/30" 
+                            : "bg-[#F2EFE8] border-[#C9A35A]/20 hover:bg-[#C9A35A]/5"
+                        )}
+                      >
+                        {isCardConfirmed(pos.id) ? (
+                          <div className="text-center p-4">
+                            <span className="text-sm font-bold text-[#111111] uppercase tracking-tighter block mb-2">{cards[pos.id].name}</span>
+                            <div className="flex gap-2 justify-center">
+                               <Button variant="ghost" className="h-7 px-2 text-[9px] font-bold uppercase tracking-widest hover:bg-[#A61E25]/10 hover:text-[#A61E25]">ALTERAR</Button>
+                               <Button 
+                                 variant="ghost" 
+                                 onClick={(e) => { e.stopPropagation(); setCards(prev => { const n = {...prev}; delete n[pos.id]; return n; }); }}
+                                 className="h-7 px-2 text-[9px] font-bold uppercase tracking-widest hover:bg-red-50 text-red-600/40 hover:text-red-600"
+                               >
+                                 LIMPAR
+                               </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center gap-2">
+                             <Plus className="w-8 h-8 text-[#C9A35A]/40"/>
+                             <span className="text-[10px] font-bold text-[#C9A35A]/60 uppercase tracking-widest">Selecionar</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  ) : <Plus className="w-8 h-8 opacity-20"/>}
+                  ))}
                 </div>
               </div>
             ))}
           </div>
+
           <div className="pt-20 pb-10 flex justify-center">
-            <Button onClick={nextStep} disabled={!tarotPositions.every(p => cards[p.id]?.confirmed)} className="bg-[#A61E25] text-white h-16 px-12 rounded-2xl">MANIFESTAR LEITURA</Button>
+            <Button 
+              onClick={() => nextStep()} 
+              disabled={Object.values(cards).filter(c => c.confirmed).length < 11} 
+              className={cn(
+                "h-16 px-12 rounded-2xl font-bold transition-all shadow-xl",
+                Object.values(cards).filter(c => c.confirmed).length === 11
+                  ? "bg-[#A61E25] text-white hover:scale-105 active:scale-95"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              )}
+            >
+              MANIFESTAR LEITURA
+            </Button>
           </div>
         </div>
       )}
