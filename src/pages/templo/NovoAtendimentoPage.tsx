@@ -173,9 +173,10 @@ export function NovoAtendimentoPage() {
   }, [selectedCliente, cards, selectedSituation, indicatedMagia, viewId, savedReadingData]);
 
   const generatedAudioScript = useMemo(() => {
+    if (viewId && savedReadingData?.audio) return savedReadingData.audio;
     const nome = selectedCliente?.name || "consulente";
     return `Olha ${nome}, analisei as energias e o jogo mostra um momento importante. No seu lado, ${cards[1]?.name} aparece na mente e ${cards[2]?.name} no coração. Sobre o futuro, ${indicatedMagia === 'Nenhuma magia indicada no momento' ? 'o momento é de paciência' : 'o caminho está aberto para ' + indicatedMagia}.`;
-  }, [selectedCliente, cards, indicatedMagia]);
+  }, [selectedCliente, cards, indicatedMagia, viewId, savedReadingData]);
 
   const interpretationSections = useMemo(() => {
     return [
