@@ -82,7 +82,7 @@ export function TemploDashboard() {
               <stat.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${stat.color}`} />
             </div>
             <div>
-              <h3 className="text-3xl font-bold text-[#111111] tracking-tight">{stat.value}</h3>
+              <h3 className="text-3xl font-bold text-[#111111] tracking-tight font-serif-elegant">{stat.value}</h3>
               <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#111111]/40 font-sans-clean">{stat.label}</p>
             </div>
           </div>
@@ -105,13 +105,13 @@ export function TemploDashboard() {
                       {item.name[0]}
                     </div>
                     <div>
-                      <h4 className="font-bold text-[#111111]">{item.name}</h4>
+                      <h4 className="font-bold text-[#111111] font-sans-clean">{item.name}</h4>
                       <p className="text-xs text-[#111111]/60 font-medium">{item.situation}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="hidden sm:block text-right">
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1">{item.status}</div>
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1 font-sans-clean">{item.status}</div>
                       <div className="text-[10px] font-medium text-[#111111]/40">{item.date}</div>
                     </div>
                     <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25] transition-colors" />
@@ -152,7 +152,7 @@ export function TemploDashboard() {
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-[#111111] text-sm font-sans-clean">Retorno para {item.name}</h4>
-                  <p className="text-xs text-[#111111]/60 font-medium font-sans">{item.reason}</p>
+                  <p className="text-xs text-[#111111]/60 font-medium font-sans-clean">{item.reason}</p>
                 </div>
                 <Button variant="outline" className="rounded-xl border-[#C9A35A]/30 text-[#C9A35A] hover:bg-[#C9A35A]/10 text-[10px] font-bold px-3 h-9 font-sans-clean">AGENDAR</Button>
               </div>
