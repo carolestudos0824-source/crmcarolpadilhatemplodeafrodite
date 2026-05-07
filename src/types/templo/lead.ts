@@ -2,12 +2,18 @@ export interface Lead {
   id: string;
   nome: string;
   whatsapp: string;
+  email?: string;
   instagram?: string;
+  tipoAtendimento: string;
   situacaoAmorosa: string;
   nomePessoaEnvolvida?: string;
   relato: string;
-  servicoInteresse: string;
-  status: 'Novo lead' | 'Em análise' | 'Cliente criada' | 'Atendimento iniciado' | 'Respondida' | 'Arquivada';
+  jaFezConsulta: boolean;
+  canalRetorno: 'Portal' | 'WhatsApp' | 'Ambos';
+  status: 'Novo' | 'Em análise' | 'Aguardando pagamento' | 'Aguardando tiragem' | 'Em preparo' | 'Leitura entregue' | 'Acompanhamento' | 'Finalizado' | 'Arquivado';
+  comprovanteUrl?: string;
+  comprovanteStatus?: 'Recebido' | 'Confirmado' | 'Recusado';
+  comprovanteValor?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -26,10 +32,11 @@ export const SITUACOES_AMOROSAS = [
   "Outro caso"
 ];
 
-export const SERVICOS_INTERESSE = [
+export const TIPOS_ATENDIMENTO = [
   "Jogo do Amor",
   "Consulta espiritual",
   "Magia de amor",
   "Limpeza espiritual",
+  "Acompanhamento",
   "Ainda não sei"
 ];
