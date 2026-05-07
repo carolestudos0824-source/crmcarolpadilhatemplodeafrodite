@@ -396,10 +396,48 @@ export function NovoAtendimentoPage() {
       {step === 3 && (
         <div className="space-y-8 animate-fade-up">
           <div className="bg-white p-8 rounded-[2.5rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
-            <Textarea value={relato} onChange={(e) => setRelato(e.target.value)} placeholder="Relato da cliente..." className="min-h-[200px] rounded-2xl bg-[#F2EFE8]/30 border-[#C9A35A]/20 p-6" />
-            <div className="flex gap-4">
-              <Button variant="outline" onClick={() => setRelato("")} className="h-14 rounded-xl border-[#C9A35A]/30">LIMPAR</Button>
-              <Button onClick={nextStep} disabled={!relato} className="flex-1 h-14 rounded-xl bg-[#111111] text-white font-bold">CONTINUAR PARA TIRAGEM</Button>
+            <div className="relative">
+              <Textarea 
+                value={relato} 
+                onChange={(e) => setRelato(e.target.value)} 
+                placeholder="Relato da cliente..." 
+                className="min-h-[200px] rounded-2xl bg-[#F2EFE8]/30 border-[#C9A35A]/20 p-6 pb-20 text-lg" 
+              />
+              {isRecording && (
+                <div className="absolute bottom-4 left-6 flex items-center gap-2 animate-pulse">
+                  <div className="w-2 h-2 rounded-full bg-[#A61E25]" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25]">Gravando relato...</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <Button 
+                onClick={toggleRecording}
+                className={cn(
+                  "h-16 rounded-2xl font-bold text-lg shadow-xl transition-all active:scale-[0.98] group",
+                  isRecording 
+                    ? "bg-[#111111] hover:bg-[#111111]/90 text-white" 
+                    : "bg-[#A61E25] hover:bg-[#A61E25]/90 text-white"
+                )}
+              >
+                {isRecording ? (
+                  <span className="flex items-center gap-2">
+                    <RefreshCw className="w-6 h-6 animate-spin text-[#C9A35A]" />
+                    PARAR GRAVAÇÃO
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Mic className="w-6 h-6 text-[#C9A35A]" />
+                    GRAVAR RELATO
+                  </span>
+                )}
+              </Button>
+
+              <div className="flex gap-4">
+                <Button variant="outline" onClick={() => setRelato("")} className="h-14 rounded-xl border-[#C9A35A]/30 flex-1">LIMPAR</Button>
+                <Button onClick={nextStep} disabled={!relato.trim()} className="flex-[2] h-14 rounded-xl bg-[#111111] text-white font-bold">CONTINUAR PARA TIRAGEM</Button>
+              </div>
             </div>
           </div>
         </div>
