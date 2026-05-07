@@ -113,6 +113,19 @@ export const storage = {
     localStorage.setItem(KEYS.APPOINTMENTS, JSON.stringify(appointments));
     return newAppointment;
   },
+  updateAppointment: (id: string, updates: Partial<Appointment>): Appointment | undefined => {
+    const appointments = storage.getAppointments();
+    const index = appointments.findIndex(a => a.id === id);
+    if (index === -1) return undefined;
+    
+    const updated = { ...appointments[index], ...updates, updatedAt: new Date().toISOString() };
+    appointments[index] = updated;
+    localStorage.setItem(KEYS.APPOINTMENTS, JSON.stringify(appointments));
+    return updated;
+  },
+  getAppointmentById: (id: string): Appointment | undefined => {
+    return storage.getAppointments().find(a => a.id === id);
+  },
 
   // Settings
   getSettings: (): Settings => {

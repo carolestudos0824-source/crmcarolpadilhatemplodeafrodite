@@ -1,5 +1,5 @@
 import { useState, useRef, ChangeEvent, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   ArrowLeft, ArrowRight, User, Mic, Play, Camera, Check, Sparkles, Info, ChevronRight,
   Heart, Save, RotateCcw, MessageCircle, PlusCircle, Plus, X, RefreshCw, Copy, 
@@ -71,6 +71,10 @@ const TAROT_DECK = {
 
 export function NovoAtendimentoPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const reopenId = searchParams.get("reopen");
+  const viewId = searchParams.get("view");
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState(1);
@@ -82,6 +86,40 @@ export function NovoAtendimentoPage() {
   const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  
+  const [savedReadingData, setSavedReadingData] = useState<{
+    whatsapp?: string;
+    audio?: string;
+    sections?: any[];
+    magia?: string;
+  } | null>(null);
+
+  // Load existing appointment if in view or reopen mode
+  useEffect(() => {
+    const id = viewId || reopenId;
+    if (id) {
+      const existing = storage.getAppointmentById(id);
+      if (existing) {
+        setSelectedCliente({ id: existing.clientId, name: existing.nomeCliente });
+        setSelectedSituation(existing.situacaoAmorosa);
+        setRelato(existing.relatoCaso);
+        setCards(existing.cartasConfirmadas);
+        setTiragemPhoto(existing.fotoTiragem || null);
+        
+        if (viewId) {
+          setSavedReadingData({
+            whatsapp: existing.textoWhatsapp,
+            audio: existing.roteiroAudio,
+            sections: existing.leituraCompleta ? JSON.parse(existing.leituraCompleta) : null,
+            magia: existing.magiasIndicadas
+          });
+          setStep(5); // Go straight to reading
+        } else {
+          setStep(4); // Start at cards for reopen
+        }
+      }
+    }
+  }, [viewId, reopenId, viewId, reopenId]);
   
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
@@ -115,6 +153,7 @@ export function NovoAtendimentoPage() {
   const prevStep = () => setStep(step - 1);
 
   const indicatedMagia = useMemo(() => {
+    if (viewId && savedReadingData?.magia) return savedReadingData.magia;
     if (!cards[11]?.confirmed) return "Nenhuma magia indicada no momento";
     const c11 = cards[11].name.toLowerCase();
     const c8 = cards[8]?.name.toLowerCase() || "";
@@ -122,22 +161,25 @@ export function NovoAtendimentoPage() {
     if (c11.includes("estrela") || c11.includes("mundo")) return "Harmonização Amorosa";
     if (c11.includes("diabo") || c11.includes("torre") || c8.includes("diabo")) return "Limpeza Energética Amorosa";
     return "Banho de magnetismo pessoal";
-  }, [cards, selectedSituation]);
+  }, [cards, selectedSituation, viewId, savedReadingData]);
 
   const generatedWhatsAppText = useMemo(() => {
+    if (viewId && savedReadingData?.whatsapp) return savedReadingData.whatsapp;
     const nome = selectedCliente?.name || "";
     const baseText = nome ? `Olá ${nome}! Acabei de finalizar sua leitura no Templo de Afrodite. 🌹\n\n` : `Olá! Finalizei sua leitura. 🌹\n\n`;
     let cardsConfirmed = "Cartas da sua tiragem:\n";
     tarotPositions.forEach(p => { cardsConfirmed += `- ${p.label}: ${cards[p.id]?.name || "N/A"}\n`; });
     return baseText + cardsConfirmed + `\nDiagnóstico: ${selectedSituation}. Recomendo: ${indicatedMagia}.`;
-  }, [selectedCliente, cards, selectedSituation, indicatedMagia]);
+  }, [selectedCliente, cards, selectedSituation, indicatedMagia, viewId, savedReadingData]);
 
   const generatedAudioScript = useMemo(() => {
+    if (viewId && savedReadingData?.audio) return savedReadingData.audio;
     const nome = selectedCliente?.name || "consulente";
     return `Olha ${nome}, analisei as energias e o jogo mostra um momento importante. No seu lado, ${cards[1]?.name} aparece na mente e ${cards[2]?.name} no coração. Sobre o futuro, ${indicatedMagia === 'Nenhuma magia indicada no momento' ? 'o momento é de paciência' : 'o caminho está aberto para ' + indicatedMagia}.`;
-  }, [selectedCliente, cards, indicatedMagia]);
+  }, [selectedCliente, cards, indicatedMagia, viewId, savedReadingData]);
 
   const interpretationSections = useMemo(() => {
+    if (viewId && savedReadingData?.sections) return savedReadingData.sections;
     return [
       { title: "1. Diagnóstico Geral", content: `A situação de ${selectedSituation} exige foco em ${cards[7]?.name}.` },
       { title: "2. O que ela pensa", content: `${cards[1]?.name}` },
@@ -158,7 +200,7 @@ export function NovoAtendimentoPage() {
       { title: "17. O que pode ser dito", content: `O caminho está se abrindo.` },
       { title: "18. O que não deve ser prometido", content: `Datas exatas.` },
     ];
-  }, [cards, selectedSituation, indicatedMagia]);
+  }, [cards, selectedSituation, indicatedMagia, viewId, savedReadingData]);
 
   const handleCardUpdate = (id: number, name: string, obs: string) => {
     setCards(prev => ({ ...prev, [id]: { name, obs, confirmed: true } }));
@@ -184,11 +226,11 @@ export function NovoAtendimentoPage() {
     navigator.clipboard.writeText(text);
     toast({ title: "Copiado!", description: "Conteúdo copiado." });
   };
-  const saveAttendance = () => {
+  const saveAttendance = (isNew: boolean = true) => {
     if (!selectedCliente) return;
 
     try {
-      storage.saveAppointment({
+      const data = {
         clientId: selectedCliente.id,
         nomeCliente: selectedCliente.name,
         situacaoAmorosa: selectedSituation,
@@ -200,9 +242,16 @@ export function NovoAtendimentoPage() {
         textoWhatsapp: generatedWhatsAppText,
         magiasIndicadas: indicatedMagia,
         statusAtendimento: 'Finalizada'
-      });
+      };
 
-      toast({ title: "Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      if (reopenId && !isNew) {
+        storage.updateAppointment(reopenId, data);
+        toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
+      } else {
+        storage.saveAppointment(data);
+        toast({ title: "Novo Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      }
+
       setTimeout(() => navigate("/templo/dashboard"), 1500);
     } catch (e) {
       console.error(e);
@@ -294,29 +343,112 @@ export function NovoAtendimentoPage() {
               <Button onClick={triggerPhotoUpload} className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8">ENVIAR FOTO</Button>
             ) : (
               <div className="space-y-4">
-                <img src={tiragemPhoto} className="max-w-sm rounded-2xl border-2 border-[#C9A35A] mx-auto" />
-                <Button onClick={prefillTestCards} className="bg-[#A61E25] text-white">CONTINUAR PARA CONFIRMAÇÃO</Button>
+                <div className="relative inline-block">
+                  <img src={tiragemPhoto} className="max-w-xs rounded-2xl border-2 border-[#C9A35A] mx-auto shadow-2xl" />
+                  <Button size="icon" onClick={removePhoto} className="absolute -top-2 -right-2 bg-red-600 rounded-full h-8 w-8 hover:bg-red-700 shadow-lg"><X className="w-4 h-4 text-white"/></Button>
+                </div>
+                <div className="flex justify-center gap-3">
+                  <Button onClick={triggerPhotoUpload} variant="outline" className="text-white border-white/20 h-10 px-4">TROCAR FOTO</Button>
+                  <Button onClick={prefillTestCards} className="bg-[#C9A35A] text-[#111111] h-10 px-4">SUGESTÃO IA</Button>
+                </div>
               </div>
             )}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tarotPositions.map(pos => (
-              <div key={pos.id} className={cn("bg-white p-6 rounded-3xl border shadow-sm space-y-4 transition-all", isCardConfirmed(pos.id) ? "border-[#A61E25]" : "border-[#C9A35A]/20")}>
-                <h4 className="font-bold text-[#111111] text-sm">{pos.label}</h4>
-                <div onClick={() => handleCardClick(pos.id)}
-                  className="aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer bg-[#F2EFE8] hover:bg-[#C9A35A]/5 transition-all">
-                  {isCardConfirmed(pos.id) ? (
-                    <div className="text-center p-2">
-                      <span className="text-[#A61E25] font-bold block uppercase text-xs leading-tight mb-1">{cards[pos.id].name}</span>
-                      <span className="text-[9px] font-bold text-[#111111]/30 uppercase tracking-widest">Trocar</span>
+
+          {/* Progresso das Cartas */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-end">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A35A]">
+                {Object.values(cards).filter(c => c.confirmed).length} de 11 cartas confirmadas
+              </p>
+              <p className="text-[10px] font-bold text-[#111111]/40">
+                {Math.round((Object.values(cards).filter(c => c.confirmed).length / 11) * 100)}%
+              </p>
+            </div>
+            <div className="h-1.5 w-full bg-[#EBE5DB] rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-[#A61E25] transition-all duration-500" 
+                style={{ width: `${(Object.values(cards).filter(c => c.confirmed).length / 11) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Grid de Cartas Organizado */}
+          <div className="space-y-12">
+            {["VOCÊ", "ELE", "CENTRO", "TENDÊNCIA FUTURA"].map((section) => (
+              <div key={section} className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-px flex-1 bg-[#C9A35A]/20" />
+                  <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C9A35A] whitespace-nowrap">{section}</h3>
+                  <div className="h-px flex-1 bg-[#C9A35A]/20" />
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {tarotPositions.filter(p => p.section === section).map(pos => (
+                    <div key={pos.id} className={cn(
+                      "bg-white p-6 rounded-[2rem] border shadow-sm space-y-4 transition-all hover:shadow-md",
+                      isCardConfirmed(pos.id) ? "border-[#A61E25]/30 ring-1 ring-[#A61E25]/10" : "border-[#C9A35A]/10"
+                    )}>
+                      <div className="flex items-center justify-between">
+                         <span className="text-[9px] font-bold text-[#111111]/30 uppercase tracking-widest">{pos.label}</span>
+                         {isCardConfirmed(pos.id) ? (
+                           <span className="text-[9px] font-bold text-[#A61E25] uppercase tracking-widest flex items-center gap-1">
+                             <Check className="w-3 h-3" /> Confirmada
+                           </span>
+                         ) : (
+                           <span className="text-[9px] font-bold text-[#111111]/20 uppercase tracking-widest italic">Pendente</span>
+                         )}
+                      </div>
+
+                      <div onClick={() => handleCardClick(pos.id)}
+                        className={cn(
+                          "aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all",
+                          isCardConfirmed(pos.id) 
+                            ? "bg-[#A61E25]/5 border-[#A61E25]/30" 
+                            : "bg-[#F2EFE8] border-[#C9A35A]/20 hover:bg-[#C9A35A]/5"
+                        )}
+                      >
+                        {isCardConfirmed(pos.id) ? (
+                          <div className="text-center p-4">
+                            <span className="text-sm font-bold text-[#111111] uppercase tracking-tighter block mb-2">{cards[pos.id].name}</span>
+                            <div className="flex gap-2 justify-center">
+                               <Button variant="ghost" className="h-7 px-2 text-[9px] font-bold uppercase tracking-widest hover:bg-[#A61E25]/10 hover:text-[#A61E25]">ALTERAR</Button>
+                               <Button 
+                                 variant="ghost" 
+                                 onClick={(e) => { e.stopPropagation(); setCards(prev => { const n = {...prev}; delete n[pos.id]; return n; }); }}
+                                 className="h-7 px-2 text-[9px] font-bold uppercase tracking-widest hover:bg-red-50 text-red-600/40 hover:text-red-600"
+                               >
+                                 LIMPAR
+                               </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center gap-2">
+                             <Plus className="w-8 h-8 text-[#C9A35A]/40"/>
+                             <span className="text-[10px] font-bold text-[#C9A35A]/60 uppercase tracking-widest">Selecionar</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  ) : <Plus className="w-8 h-8 opacity-20"/>}
+                  ))}
                 </div>
               </div>
             ))}
           </div>
+
           <div className="pt-20 pb-10 flex justify-center">
-            <Button onClick={nextStep} disabled={!tarotPositions.every(p => cards[p.id]?.confirmed)} className="bg-[#A61E25] text-white h-16 px-12 rounded-2xl">MANIFESTAR LEITURA</Button>
+            <Button 
+              onClick={() => nextStep()} 
+              disabled={Object.values(cards).filter(c => c.confirmed).length < 11} 
+              className={cn(
+                "h-16 px-12 rounded-2xl font-bold transition-all shadow-xl",
+                Object.values(cards).filter(c => c.confirmed).length === 11
+                  ? "bg-[#A61E25] text-white hover:scale-105 active:scale-95"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              )}
+            >
+              MANIFESTAR LEITURA
+            </Button>
           </div>
         </div>
       )}
@@ -383,7 +515,14 @@ export function NovoAtendimentoPage() {
             </section>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-10">
-              <Button onClick={saveAttendance} className="flex-1 bg-[#A61E25] text-white font-bold h-16 rounded-[2rem] text-lg shadow-xl">SALVAR FICHA E FINALIZAR</Button>
+              {reopenId ? (
+                <>
+                  <Button onClick={() => saveAttendance(false)} className="flex-1 bg-[#A61E25] text-white font-bold h-16 rounded-[2rem] text-lg shadow-xl">ATUALIZAR ATENDIMENTO</Button>
+                  <Button onClick={() => saveAttendance(true)} variant="outline" className="flex-1 border-[#A61E25] text-[#A61E25] font-bold h-16 rounded-[2rem] text-lg">SALVAR COMO NOVO</Button>
+                </>
+              ) : (
+                <Button onClick={() => saveAttendance(true)} className="flex-1 bg-[#A61E25] text-white font-bold h-16 rounded-[2rem] text-lg shadow-xl">SALVAR FICHA E FINALIZAR</Button>
+              )}
               <Button variant="outline" onClick={() => navigate("/templo/dashboard")} className="h-16 rounded-[2rem] px-10">VOLTAR AO DASHBOARD</Button>
             </div>
           </div>
