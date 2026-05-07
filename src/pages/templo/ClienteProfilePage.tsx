@@ -237,6 +237,3 @@ export function ClienteProfilePage() {
     </div>
   );
 }
-    </div>
-  );
-}
