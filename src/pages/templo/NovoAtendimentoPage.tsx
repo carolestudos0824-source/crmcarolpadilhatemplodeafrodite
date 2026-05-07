@@ -179,6 +179,7 @@ export function NovoAtendimentoPage() {
   }, [selectedCliente, cards, indicatedMagia, viewId, savedReadingData]);
 
   const interpretationSections = useMemo(() => {
+    if (viewId && savedReadingData?.sections) return savedReadingData.sections;
     return [
       { title: "1. Diagnóstico Geral", content: `A situação de ${selectedSituation} exige foco em ${cards[7]?.name}.` },
       { title: "2. O que ela pensa", content: `${cards[1]?.name}` },
@@ -199,7 +200,7 @@ export function NovoAtendimentoPage() {
       { title: "17. O que pode ser dito", content: `O caminho está se abrindo.` },
       { title: "18. O que não deve ser prometido", content: `Datas exatas.` },
     ];
-  }, [cards, selectedSituation, indicatedMagia]);
+  }, [cards, selectedSituation, indicatedMagia, viewId, savedReadingData]);
 
   const handleCardUpdate = (id: number, name: string, obs: string) => {
     setCards(prev => ({ ...prev, [id]: { name, obs, confirmed: true } }));
