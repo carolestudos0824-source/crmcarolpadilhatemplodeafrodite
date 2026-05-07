@@ -21,6 +21,7 @@ import { useAuth } from "@/hooks/use-auth";
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
   { icon: Users, label: "Clientes", path: "/templo/clientes" },
+  { icon: Inbox, label: "Caixa de Entrada", path: "/templo/caixa-entrada" },
   { icon: PlusCircle, label: "Novo Jogo", path: "/templo/novo-atendimento" },
   { icon: History, label: "Pipeline", path: "/templo/pipeline" },
   { icon: Clock, label: "Follow-ups", path: "/templo/follow-ups" },

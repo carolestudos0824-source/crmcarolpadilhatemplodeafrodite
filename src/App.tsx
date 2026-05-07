@@ -46,13 +46,15 @@ const App = () => (
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/" element={<TemploAuthPage />} />
+            <Route path="/atendimento" element={<AtendimentoPublicPage />} />
             
             <Route path="/templo" element={<ProtectedRoute><CrmLayout /></ProtectedRoute>}>
               <Route index element={<Navigate to="/templo/dashboard" replace />} />
               <Route path="dashboard" element={<TemploDashboard />} />
-               <Route path="clientes" element={<ClientesListPage />} />
-               <Route path="clientes/novo" element={<ClienteFormPage />} />
-               <Route path="clientes/:id" element={<ClienteProfilePage />} />
+              <Route path="clientes" element={<ClientesListPage />} />
+              <Route path="caixa-entrada" element={<InboxPage />} />
+              <Route path="clientes/novo" element={<ClienteFormPage />} />
+              <Route path="clientes/:id" element={<ClienteProfilePage />} />
               <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
               <Route path="pipeline" element={<PipelinePage />} />
               <Route path="follow-ups" element={<FollowUpsPage />} />
