@@ -19,6 +19,8 @@ export function SettingsPage() {
   const handleChange = (field: keyof Settings, value: string) => {
     setSettings(prev => ({ ...prev, [field]: value }));
   };
+
+  return (
     <div className="max-w-3xl mx-auto space-y-8 animate-fade-in pb-20">
       <header>
         <h1 className="text-3xl font-bold text-[#111111] font-display">Configurações</h1>
