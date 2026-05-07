@@ -409,3 +409,5 @@ export { NovoAtendimentoPage as default };
     </div>
   );
 }
+
+export { NovoAtendimentoPage as default };
