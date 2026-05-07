@@ -11,7 +11,8 @@ import {
   ShieldAlert,
   FileText,
   Volume2,
-  Lock
+  Lock,
+  Heart
 } from 'lucide-react';
 import { leadService } from '@/types/templo/leadService';
 import { storage } from '@/lib/storage';
