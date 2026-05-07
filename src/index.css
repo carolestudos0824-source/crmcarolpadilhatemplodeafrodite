@@ -60,7 +60,8 @@
   .font-sans-clean {
     font-family: 'Inter', sans-serif;
   }
-    h1 {
+  h1 {
+    @apply text-4xl md:text-5xl font-bold;
   }
 
   h2 {
