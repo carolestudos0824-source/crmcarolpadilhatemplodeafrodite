@@ -43,6 +43,7 @@ export interface Appointment {
   valorAtendimento?: number;
   formaPagamento?: string;
   statusAtendimento: 'Rascunho' | 'Em andamento' | 'Leitura gerada' | 'Salvo' | 'Enviado' | 'Finalizada';
+  isDeliveredToPortal?: boolean;
   observacoesPrivadas?: string;
   followUpId?: string;
   createdAt: string;
