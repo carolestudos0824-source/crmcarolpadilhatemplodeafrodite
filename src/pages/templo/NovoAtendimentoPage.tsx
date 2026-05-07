@@ -172,6 +172,29 @@ export function NovoAtendimentoPage() {
     fileInputRef.current?.click();
   };
 
+  const indicatedMagia = useMemo(() => {
+    // Lógica simples baseada em algumas cartas e situação
+    if (!cards[11]?.confirmed) return "Nenhuma magia indicada no momento";
+    
+    const c11 = cards[11].name.toLowerCase();
+    const c8 = cards[8]?.name.toLowerCase() || "";
+    
+    if (selectedSituation.includes("sumindo") || selectedSituation.includes("fria")) {
+      return "Adoçamento com Abertura de Diálogo";
+    }
+    if (c11.includes("estrela") || c11.includes("mundo")) {
+      return "Harmonização Amorosa";
+    }
+    if (c11.includes("diabo") || c11.includes("torre") || c8.includes("diabo")) {
+      return "Limpeza Energética Amorosa";
+    }
+    if (selectedSituation.includes("bloqueia")) {
+      return "Ritual para acalmar brigas";
+    }
+    
+    return "Banho de magnetismo pessoal";
+  }, [cards, selectedSituation]);
+
   const generatedWhatsAppText = useMemo(() => {
     const nome = selectedCliente?.name || "";
     const baseText = nome 
@@ -221,29 +244,6 @@ Sobre o futuro, as cartas ${cards[9]?.name}, ${cards[10]?.name} e ${cards[11]?.n
       { title: "18. O que não deve ser prometido", content: `Não prometa datas exatas para o retorno dele, pois a energia de ${cards[5]?.name} é fluida.` },
     ];
   }, [cards, selectedSituation, indicatedMagia]);
-
-  const indicatedMagia = useMemo(() => {
-    // Lógica simples baseada em algumas cartas e situação
-    if (!cards[11]?.confirmed) return "Nenhuma magia indicada no momento";
-    
-    const c11 = cards[11].name.toLowerCase();
-    const c8 = cards[8]?.name.toLowerCase() || "";
-    
-    if (selectedSituation.includes("sumindo") || selectedSituation.includes("fria")) {
-      return "Adoçamento com Abertura de Diálogo";
-    }
-    if (c11.includes("estrela") || c11.includes("mundo")) {
-      return "Harmonização Amorosa";
-    }
-    if (c11.includes("diabo") || c11.includes("torre") || c8.includes("diabo")) {
-      return "Limpeza Energética Amorosa";
-    }
-    if (selectedSituation.includes("bloqueia")) {
-      return "Ritual para acalmar brigas";
-    }
-    
-    return "Banho de magnetismo pessoal";
-  }, [cards, selectedSituation]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(generatedWhatsAppText);
