@@ -43,7 +43,7 @@ export function TemploAuthPage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#F4F0EA] flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-y-auto">
+    <div className="min-h-[100dvh] bg-[#F2EFE8] flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-y-auto">
       {/* Elementos decorativos sutilmente dourados */}
       <div className="fixed top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#C9A35A]/30 to-transparent z-50" />
       <div className="fixed bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#C9A35A]/30 to-transparent z-50" />
@@ -60,7 +60,7 @@ export function TemploAuthPage() {
           </p>
         </div>
 
-        <div className="w-full bg-[#ECE5DC]/60 backdrop-blur-xl border border-[#C9A35A]/20 p-6 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-6 sm:space-y-8 relative">
+        <div className="w-full bg-[#EBE5DB]/60 backdrop-blur-xl border border-[#C9A35A]/20 p-6 sm:p-8 md:p-10 rounded-[2rem] shadow-2xl space-y-6 sm:space-y-8 relative">
           {error && (
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#A61E25] text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce">
               <AlertCircle className="w-3 h-3" />
@@ -74,7 +74,7 @@ export function TemploAuthPage() {
                 type="email" 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
+                className="bg-[#F2EFE8] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
                 placeholder="carolestudos0824@gmail.com"
                 required
               />
@@ -86,7 +86,7 @@ export function TemploAuthPage() {
                 type="password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)}
-                className="bg-[#F4F0EA] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
+                className="bg-[#F2EFE8] border-[#C9A35A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C9A35A] focus-visible:border-[#C9A35A] focus:ring-1 focus:ring-[#C9A35A] focus:border-[#C9A35A] rounded-2xl text-base sm:text-lg px-4 transition-all"
                 placeholder="••••••••"
                 required
               />
