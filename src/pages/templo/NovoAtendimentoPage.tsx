@@ -209,11 +209,11 @@ export function NovoAtendimentoPage() {
     navigator.clipboard.writeText(text);
     toast({ title: "Copiado!", description: "Conteúdo copiado." });
   };
-  const saveAttendance = () => {
+  const saveAttendance = (isNew: boolean = true) => {
     if (!selectedCliente) return;
 
     try {
-      storage.saveAppointment({
+      const data = {
         clientId: selectedCliente.id,
         nomeCliente: selectedCliente.name,
         situacaoAmorosa: selectedSituation,
@@ -225,9 +225,16 @@ export function NovoAtendimentoPage() {
         textoWhatsapp: generatedWhatsAppText,
         magiasIndicadas: indicatedMagia,
         statusAtendimento: 'Finalizada'
-      });
+      };
 
-      toast({ title: "Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      if (reopenId && !isNew) {
+        storage.updateAppointment(reopenId, data);
+        toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
+      } else {
+        storage.saveAppointment(data);
+        toast({ title: "Novo Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      }
+
       setTimeout(() => navigate("/templo/dashboard"), 1500);
     } catch (e) {
       console.error(e);
