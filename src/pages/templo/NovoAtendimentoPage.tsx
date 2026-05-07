@@ -179,7 +179,7 @@ export function NovoAtendimentoPage() {
       try {
         recognition.start();
         setIsRecording(true);
-        toast({ title: "Gravando...", description: "Fale o relato da cliente agora." });
+        toast({ title: "Fale o caso da cliente.", description: "Gravando relato..." });
       } catch (e) {
         console.error(e);
         setIsRecording(false);
