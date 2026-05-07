@@ -145,6 +145,29 @@ export function ClienteFormPage() {
                 />
               </div>
             </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Cidade</label>
+              <Input 
+                name="cidade"
+                value={formData.cidade}
+                onChange={handleChange}
+                placeholder="Ex: São Paulo - SP" 
+                className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Como chegou?</label>
+              <Select value={formData.origem} onValueChange={(val) => handleSelectChange('origem', val)}>
+                <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Instagram", "TikTok", "YouTube", "Indicação", "Site", "Outro"].map(o => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
