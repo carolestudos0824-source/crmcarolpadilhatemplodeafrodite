@@ -11,18 +11,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { storage } from "@/lib/storage";
+import { toast } from "@/hooks/use-toast";
 
 export function ClienteFormPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: "",
+    whatsapp: "",
+    instagram: "",
+    dataNascimento: "",
+    nomePessoaEnvolvida: "",
+    statusRelacao: "",
+    situacaoPrincipal: "",
+    observacoesPrivadas: "",
+    statusComercial: "Nova cliente"
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      storage.saveClient(formData);
+      toast({
+        title: "Sucesso!",
+        description: "Cliente salva com sucesso.",
+      });
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/templo/clientes");
+      }, 500);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível salvar a cliente.",
+        variant: "destructive"
+      });
       setLoading(false);
-      navigate("/templo/clientes");
-    }, 1000);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -54,6 +92,9 @@ export function ClienteFormPage() {
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Nome Completo</label>
               <Input 
+                name="nome"
+                value={formData.nome}
+                onChange={handleChange}
                 placeholder="Ex: Mariana Silva" 
                 className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
                 required
@@ -64,6 +105,9 @@ export function ClienteFormPage() {
               <div className="relative">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
                 <Input 
+                  name="whatsapp"
+                  value={formData.whatsapp}
+                  onChange={handleChange}
                   placeholder="(00) 00000-0000" 
                   className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
                   required
@@ -75,6 +119,9 @@ export function ClienteFormPage() {
               <div className="relative">
                 <Instagram className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
                 <Input 
+                  name="instagram"
+                  value={formData.instagram}
+                  onChange={handleChange}
                   placeholder="@usuario" 
                   className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
                 />
@@ -86,6 +133,9 @@ export function ClienteFormPage() {
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
                 <Input 
                   type="date"
+                  name="dataNascimento"
+                  value={formData.dataNascimento}
+                  onChange={handleChange}
                   className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
                 />
               </div>
@@ -104,6 +154,9 @@ export function ClienteFormPage() {
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Nome dele(a)</label>
               <Input 
+                name="nomePessoaEnvolvida"
+                value={formData.nomePessoaEnvolvida}
+                onChange={handleChange}
                 placeholder="Ex: Rodrigo" 
                 className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
                 required
@@ -111,7 +164,7 @@ export function ClienteFormPage() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Status da Relação</label>
-              <Select>
+              <Select value={formData.statusRelacao} onValueChange={(val) => handleSelectChange('statusRelacao', val)}>
                 <SelectTrigger className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]">
                   <SelectValue placeholder="Selecione..." />
                 </SelectTrigger>
@@ -131,6 +184,9 @@ export function ClienteFormPage() {
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Situação Principal</label>
             <Input 
+              name="situacaoPrincipal"
+              value={formData.situacaoPrincipal}
+              onChange={handleChange}
               placeholder="Ex: Ele sumiu após a última briga" 
               className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
             />
@@ -146,6 +202,9 @@ export function ClienteFormPage() {
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Observações Privadas</label>
             <Textarea 
+              name="observacoesPrivadas"
+              value={formData.observacoesPrivadas}
+              onChange={handleChange}
               placeholder="Dê detalhes sobre o perfil emocional ou histórico..." 
               className="bg-white border-[#C9A35A]/20 rounded-2xl min-h-[120px] focus:ring-[#A61E25]"
             />
