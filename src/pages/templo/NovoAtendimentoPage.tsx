@@ -1,15 +1,24 @@
-import { useState, useRef, ChangeEvent, useMemo } from "react";
+import { useState, useRef, ChangeEvent, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   ArrowLeft, ArrowRight, User, Mic, Play, Camera, Check, Sparkles, Info, ChevronRight,
   Heart, Save, RotateCcw, MessageCircle, PlusCircle, Plus, X, RefreshCw, Copy, 
-  Clock, Zap, Shield, Trash2, Lock, Eye, AudioLines, BookOpen, Settings2, AlertTriangle, Star, Compass
+  Clock, Zap, Shield, Trash2, Lock, Eye, AudioLines, BookOpen, Settings2, AlertTriangle, Star, Compass,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { storage } from "@/lib/storage";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const situations = [
   "Está sumindo", "Término recente", "Quero reconquistar", "Ele bloqueia e desbloqueia",
@@ -73,6 +82,25 @@ export function NovoAtendimentoPage() {
   const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
+  const [cardSearch, setCardSearch] = useState("");
+  
+  const clients = useMemo(() => storage.getClients(), []);
+
+  const handleCardClick = (posId: number) => {
+    setCurrentPositionId(posId);
+    setIsCardModalOpen(true);
+  };
+
+  const selectCard = (cardName: string) => {
+    if (currentPositionId !== null) {
+      handleCardUpdate(currentPositionId, cardName, cards[currentPositionId]?.obs || "");
+      setIsCardModalOpen(false);
+      setCardSearch("");
+    }
+  };
 
   const nextStep = () => {
     if (step === 4) {
@@ -157,8 +185,29 @@ export function NovoAtendimentoPage() {
     toast({ title: "Copiado!", description: "Conteúdo copiado." });
   };
   const saveAttendance = () => {
-    toast({ title: "Salvo!", description: "Atendimento registrado no histórico." });
-    setTimeout(() => navigate("/templo/dashboard"), 1500);
+    if (!selectedCliente) return;
+
+    try {
+      storage.saveAppointment({
+        clientId: selectedCliente.id,
+        nomeCliente: selectedCliente.name,
+        situacaoAmorosa: selectedSituation,
+        relatoCaso: relato,
+        fotoTiragem: tiragemPhoto || undefined,
+        cartasConfirmadas: cards as any,
+        leituraCompleta: JSON.stringify(interpretationSections),
+        roteiroAudio: generatedAudioScript,
+        textoWhatsapp: generatedWhatsAppText,
+        magiasIndicadas: indicatedMagia,
+        statusAtendimento: 'Finalizada'
+      });
+
+      toast({ title: "Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      setTimeout(() => navigate("/templo/dashboard"), 1500);
+    } catch (e) {
+      console.error(e);
+      toast({ title: "Erro ao salvar", description: "Não foi possível persistir o atendimento.", variant: "destructive" });
+    }
   };
 
   return (
@@ -254,9 +303,14 @@ export function NovoAtendimentoPage() {
             {tarotPositions.map(pos => (
               <div key={pos.id} className={cn("bg-white p-6 rounded-3xl border shadow-sm space-y-4 transition-all", isCardConfirmed(pos.id) ? "border-[#A61E25]" : "border-[#C9A35A]/20")}>
                 <h4 className="font-bold text-[#111111] text-sm">{pos.label}</h4>
-                <div onClick={() => { const name = prompt(`Carta para ${pos.label}:`, cards[pos.id]?.name); if (name) handleCardUpdate(pos.id, name, ""); }}
-                  className="aspect-[2/3] rounded-2xl border-2 border-dashed flex items-center justify-center cursor-pointer bg-[#F2EFE8]">
-                  {isCardConfirmed(pos.id) ? <span className="text-[#A61E25] font-bold text-center p-2 uppercase">{cards[pos.id].name}</span> : <Plus className="w-8 h-8 opacity-20"/>}
+                <div onClick={() => handleCardClick(pos.id)}
+                  className="aspect-[2/3] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer bg-[#F2EFE8] hover:bg-[#C9A35A]/5 transition-all">
+                  {isCardConfirmed(pos.id) ? (
+                    <div className="text-center p-2">
+                      <span className="text-[#A61E25] font-bold block uppercase text-xs leading-tight mb-1">{cards[pos.id].name}</span>
+                      <span className="text-[9px] font-bold text-[#111111]/30 uppercase tracking-widest">Trocar</span>
+                    </div>
+                  ) : <Plus className="w-8 h-8 opacity-20"/>}
                 </div>
               </div>
             ))}
@@ -335,6 +389,57 @@ export function NovoAtendimentoPage() {
           </div>
         </div>
       )}
+      {/* Modal Visual de Seleção de Cartas */}
+      <Dialog open={isCardModalOpen} onOpenChange={setIsCardModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#F2EFE8] border-[#C9A35A]/30 rounded-[2rem] p-0">
+          <DialogHeader className="p-8 pb-4 border-b border-[#C9A35A]/10">
+            <DialogTitle className="text-2xl font-display italic text-[#111111]">Selecionar Carta</DialogTitle>
+            <div className="relative mt-4">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A35A]" />
+              <Input 
+                placeholder="Buscar carta pelo nome..." 
+                value={cardSearch}
+                onChange={(e) => setCardSearch(e.target.value)}
+                className="pl-12 bg-white border-[#C9A35A]/20 h-12 rounded-xl focus:ring-[#A61E25]"
+              />
+            </div>
+          </DialogHeader>
+
+          <div className="p-8 pt-4">
+            <Tabs defaultValue="Arcanos Maiores" className="w-full">
+              <TabsList className="w-full justify-start bg-transparent gap-2 mb-6 h-auto p-0 flex-wrap">
+                {Object.keys(TAROT_DECK).map(tab => (
+                  <TabsTrigger 
+                    key={tab} 
+                    value={tab}
+                    className="data-[state=active]:bg-[#A61E25] data-[state=active]:text-white border border-[#C9A35A]/20 rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest"
+                  >
+                    {tab}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+
+              {Object.entries(TAROT_DECK).map(([category, deck]) => (
+                <TabsContent key={category} value={category} className="mt-0">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {deck
+                      .filter(card => card.toLowerCase().includes(cardSearch.toLowerCase()))
+                      .map(card => (
+                        <button
+                          key={card}
+                          onClick={() => selectCard(card)}
+                          className="p-4 rounded-xl bg-white border border-[#C9A35A]/10 hover:border-[#A61E25] hover:bg-[#A61E25]/5 transition-all text-sm font-bold text-[#111111] text-left uppercase tracking-tighter"
+                        >
+                          {card}
+                        </button>
+                      ))}
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
