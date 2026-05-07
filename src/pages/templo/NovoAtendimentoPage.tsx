@@ -390,11 +390,11 @@ export function NovoAtendimentoPage() {
             {!tiragemPhoto ? (
               <>
                 <Camera className="w-10 h-10 text-[#C9A35A] mx-auto" />
-                <h3 className="text-white font-bold text-lg">Reconhecer via Foto</h3>
-                <p className="text-[#F4F0EA]/60 text-sm max-w-xs mx-auto">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
+                <h3 className="text-white font-bold text-lg font-display uppercase tracking-widest italic">Reconhecer via Foto</h3>
+                <p className="text-[#F2EFE8]/60 text-[10px] max-w-xs mx-auto uppercase tracking-widest font-bold">Tire uma foto da tiragem física para preencher automaticamente (experimental).</p>
                 <Button 
                   onClick={triggerPhotoUpload}
-                  className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-8"
+                  className="bg-[#C9A35A] hover:bg-[#C9A35A]/90 text-[#111111] font-bold rounded-xl h-12 px-10 transition-all active:scale-95"
                 >
                   ENVIAR FOTO
                 </Button>
