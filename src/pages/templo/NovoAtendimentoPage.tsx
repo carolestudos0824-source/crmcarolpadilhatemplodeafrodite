@@ -288,7 +288,12 @@ export function NovoAtendimentoPage() {
             <div className="space-y-4">
               <label className="text-[10px] font-bold uppercase tracking-widest text-[#111111]/70 ml-1">Selecione a Cliente</label>
               <div className="relative">
-                <Input placeholder="Buscar por nome ou e-mail..." className="h-16 pl-12 rounded-2xl bg-[#F2EFE8]/50 border-[#C9A35A]/20" />
+                <Input 
+                  placeholder="Buscar por nome..." 
+                  className="h-16 pl-12 rounded-2xl bg-[#F2EFE8]/50 border-[#C9A35A]/20" 
+                  value={cardSearch}
+                  onChange={(e) => setCardSearch(e.target.value)}
+                />
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#C9A35A]" />
               </div>
             </div>
