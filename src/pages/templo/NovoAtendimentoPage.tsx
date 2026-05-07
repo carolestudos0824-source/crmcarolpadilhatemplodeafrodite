@@ -359,9 +359,10 @@ export function NovoAtendimentoPage() {
                       TROCAR FOTO
                     </Button>
                     <Button 
+                      onClick={prefillTestCards}
                       className="bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-12 rounded-xl px-6 gap-2 w-full sm:w-auto"
                     >
-                      CONFIRMAR CARTAS
+                      CONTINUAR PARA CONFIRMAÇÃO DAS CARTAS
                     </Button>
                   </div>
                 </div>
