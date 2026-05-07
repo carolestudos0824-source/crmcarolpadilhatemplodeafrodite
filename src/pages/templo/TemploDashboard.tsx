@@ -43,7 +43,7 @@ export function TemploDashboard() {
     return [
       { label: "Atendimentos Hoje", value: todayApps.length.toString(), icon: Clock, color: "text-[#A61E25]" },
       { label: "Follow-ups Pendentes", value: pendentes.length.toString(), icon: Calendar, color: "text-[#C9A35A]" },
-      { label: "Magias Ativas", value: magias.filter(m => m.statusExecucao !== 'Finalizada' && m.statusExecucao !== 'Cancelade').length.toString(), icon: Sparkles, color: "text-[#C9A35A]" },
+      { label: "Magias Ativas", value: magias.filter(m => m.statusExecucao !== 'Finalizada' && m.statusExecucao !== 'Cancelada').length.toString(), icon: Sparkles, color: "text-[#C9A35A]" },
       { label: "Receita (Mês)", value: `R$ ${monthIncome.toLocaleString('pt-BR')}`, icon: DollarSign, color: "text-[#111111]" },
     ];
   }, [appointments, followUps, magias, financeiro]);
