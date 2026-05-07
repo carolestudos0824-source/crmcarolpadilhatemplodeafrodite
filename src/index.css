@@ -53,6 +53,13 @@
     font-family: 'Cinzel', serif;
   }
 
+  .font-serif-elegant {
+    font-family: 'Cinzel', serif;
+  }
+
+  .font-sans-clean {
+    font-family: 'Inter', sans-serif;
+  }
   h1 {
     @apply text-4xl md:text-5xl font-bold;
   }
