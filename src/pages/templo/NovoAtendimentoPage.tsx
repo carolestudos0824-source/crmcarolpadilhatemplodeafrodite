@@ -52,9 +52,11 @@ export function NovoAtendimentoPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState(1);
+  const [selectedCliente, setSelectedCliente] = useState<any>(null);
+  const [selectedSituation, setSelectedSituation] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [relato, setRelato] = useState("");
-  const [cards, setCards] = useState<Record<number, { name: string, obs: string }>>({});
+  const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
