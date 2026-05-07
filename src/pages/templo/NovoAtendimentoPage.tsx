@@ -60,8 +60,51 @@ export function NovoAtendimentoPage() {
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = () => {
+    if (step === 4) {
+      const allConfirmed = tarotPositions.every(p => cards[p.id]?.confirmed);
+      if (!allConfirmed) {
+        toast({
+          title: "Confirmação Pendente",
+          description: "Por favor, confirme as 11 cartas antes de manifestar a leitura.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    setStep(step + 1);
+  };
   const prevStep = () => setStep(step - 1);
+
+  const prefillTestCards = () => {
+    const testCards: Record<number, { name: string, obs: string, confirmed: boolean }> = {
+      1: { name: "O Imperador", obs: "", confirmed: true },
+      2: { name: "A Morte", obs: "", confirmed: true },
+      3: { name: "A Justiça", obs: "", confirmed: true },
+      4: { name: "A Imperatriz", obs: "", confirmed: true },
+      5: { name: "A Temperança", obs: "", confirmed: true },
+      6: { name: "A Torre", obs: "", confirmed: true },
+      7: { name: "O Mundo", obs: "", confirmed: true },
+      8: { name: "O Carro", obs: "", confirmed: true },
+      9: { name: "A Força", obs: "", confirmed: true },
+      10: { name: "A Diabo", obs: "", confirmed: true },
+      11: { name: "A Estrela", obs: "", confirmed: true },
+    };
+    setCards(testCards);
+    toast({
+      title: "Sugestão Carregada",
+      description: "Cartas sugeridas para a imagem de teste. Por favor, confira manualmente.",
+    });
+  };
+
+  const handleCardUpdate = (id: number, name: string, obs: string) => {
+    setCards(prev => ({
+      ...prev,
+      [id]: { name, obs, confirmed: true }
+    }));
+  };
+
+  const isCardConfirmed = (id: number) => !!cards[id]?.confirmed;
 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
