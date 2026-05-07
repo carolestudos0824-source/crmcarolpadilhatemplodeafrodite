@@ -8,7 +8,11 @@ import {
   BarChart3, 
   Settings,
   Heart,
-  LogOut
+  LogOut,
+  Clock,
+  DollarSign,
+  MessageSquare,
+  Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
