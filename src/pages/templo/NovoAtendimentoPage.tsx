@@ -71,6 +71,10 @@ const TAROT_DECK = {
 
 export function NovoAtendimentoPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const reopenId = searchParams.get("reopen");
+  const viewId = searchParams.get("view");
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [step, setStep] = useState(1);
@@ -82,6 +86,27 @@ export function NovoAtendimentoPage() {
   const [cards, setCards] = useState<Record<number, { name: string, obs: string, confirmed: boolean }>>({});
   const [tiragemPhoto, setTiragemPhoto] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+
+  // Load existing appointment if in view or reopen mode
+  useEffect(() => {
+    const id = viewId || reopenId;
+    if (id) {
+      const existing = storage.getAppointmentById(id);
+      if (existing) {
+        setSelectedCliente({ id: existing.clientId, name: existing.nomeCliente });
+        setSelectedSituation(existing.situacaoAmorosa);
+        setRelato(existing.relatoCaso);
+        setCards(existing.cartasConfirmadas);
+        setTiragemPhoto(existing.fotoTiragem || null);
+        
+        if (viewId) {
+          setStep(5); // Go straight to reading
+        } else {
+          setStep(4); // Start at cards for reopen
+        }
+      }
+    }
+  }, [viewId, reopenId]);
   
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
