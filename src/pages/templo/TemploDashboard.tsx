@@ -12,11 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const recentAttendance = [
-  { name: "Mariana Silva", status: "Fez consulta", situation: "Término recente", date: "Hoje, 14:30" },
-  { name: "Beatriz Oliveira", status: "Magia contratada", situation: "Ele bloqueia e desbloqueia", date: "Hoje, 11:00" },
-  { name: "Julia Santos", status: "Em acompanhamento", situation: "Relação fria", date: "Ontem" },
-];
+const recentAttendance: any[] = [];
 
 export function TemploDashboard() {
   return (
@@ -39,35 +35,35 @@ export function TemploDashboard() {
       {/* Quick Action Buttons */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Link to="/templo/clientes/novo" className="group">
-          <div className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-[#C9A35A]/10 flex items-center justify-center text-[#C9A35A]">
-              <UserPlus className="w-6 h-6" />
+          <div className="bg-[#EBE5DB] p-4 sm:p-5 rounded-[1.5rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-3 group-hover:border-[#C9A35A]/50 transition-all">
+            <div className="w-10 h-10 rounded-xl bg-[#C9A35A]/10 flex items-center justify-center text-[#C9A35A]">
+              <UserPlus className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[#111111] font-bold text-sm">Nova Cliente</p>
-              <p className="text-[10px] text-[#111111]/40 uppercase tracking-widest font-bold">Cadastrar</p>
+              <p className="text-[#111111] font-bold text-xs sm:text-sm">Nova Cliente</p>
+              <p className="text-[9px] text-[#111111]/40 uppercase tracking-widest font-bold">Cadastrar</p>
             </div>
           </div>
         </Link>
         <Link to="/templo/novo-atendimento" className="group">
-          <div className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-[#A61E25]/10 flex items-center justify-center text-[#A61E25]">
-              <Play className="w-6 h-6 fill-current" />
+          <div className="bg-[#EBE5DB] p-4 sm:p-5 rounded-[1.5rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-3 group-hover:border-[#C9A35A]/50 transition-all">
+            <div className="w-10 h-10 rounded-xl bg-[#A61E25]/10 flex items-center justify-center text-[#A61E25]">
+              <Play className="w-5 h-5 fill-current" />
             </div>
             <div>
-              <p className="text-[#111111] font-bold text-sm">Novo Jogo</p>
-              <p className="text-[10px] text-[#111111]/40 uppercase tracking-widest font-bold">Iniciar leitura</p>
+              <p className="text-[#111111] font-bold text-xs sm:text-sm">Novo Jogo</p>
+              <p className="text-[9px] text-[#111111]/40 uppercase tracking-widest font-bold">Iniciar leitura</p>
             </div>
           </div>
         </Link>
         <Link to="/templo/relatorios" className="group hidden lg:block">
-          <div className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-4 group-hover:border-[#C9A35A]/50 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-[#111111]/5 flex items-center justify-center text-[#111111]">
-              <TrendingUp className="w-6 h-6" />
+          <div className="bg-[#EBE5DC] p-4 sm:p-5 rounded-[1.5rem] border border-[#C9A35A]/20 shadow-sm flex items-center gap-3 group-hover:border-[#C9A35A]/50 transition-all">
+            <div className="w-10 h-10 rounded-xl bg-[#111111]/5 flex items-center justify-center text-[#111111]">
+              <TrendingUp className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-[#111111] font-bold text-sm">Desempenho</p>
-              <p className="text-[10px] text-[#111111]/40 uppercase tracking-widest font-bold">Ver métricas</p>
+              <p className="text-[#111111] font-bold text-xs sm:text-sm">Desempenho</p>
+              <p className="text-[9px] text-[#111111]/40 uppercase tracking-widest font-bold">Ver métricas</p>
             </div>
           </div>
         </Link>
@@ -76,15 +72,14 @@ export function TemploDashboard() {
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: "Atendimentos Hoje", value: "8", icon: Clock, color: "text-[#A61E25]" },
-          { label: "Clientes Totais", value: "142", icon: Users, color: "text-[#C9A35A]" },
-          { label: "Magias Indicadas", value: "24", icon: Sparkles, color: "text-[#C9A35A]" },
-          { label: "Receita (Mês)", value: "R$ 12.4k", icon: TrendingUp, color: "text-[#111111]" },
+          { label: "Atendimentos Hoje", value: "0", icon: Clock, color: "text-[#A61E25]" },
+          { label: "Clientes Totais", value: "0", icon: Users, color: "text-[#C9A35A]" },
+          { label: "Magias Indicadas", value: "0", icon: Sparkles, color: "text-[#C9A35A]" },
+          { label: "Receita (Mês)", value: "R$ 0", icon: TrendingUp, color: "text-[#111111]" },
         ].map((stat, i) => (
-          <div key={i} className="bg-[#ECE5DC] p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
+          <div key={i} className="bg-[#EBE5DC] p-6 sm:p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-4">
             <div className="flex justify-between items-start">
-              <stat.icon className={`w-8 h-8 ${stat.color}`} />
-              <div className="text-[10px] bg-[#ECE5DC] px-2 py-1 rounded-full font-bold uppercase tracking-wider text-[#111111]/40">+12%</div>
+              <stat.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${stat.color}`} />
             </div>
             <div>
               <h3 className="text-3xl font-bold text-[#111111] tracking-tight">{stat.value}</h3>
@@ -102,26 +97,41 @@ export function TemploDashboard() {
             <Link to="/templo/clientes" className="text-[#A61E25] text-xs font-bold uppercase tracking-widest hover:underline">Ver todos</Link>
           </div>
           <div className="space-y-4">
-            {recentAttendance.map((item, i) => (
-              <div key={i} className="bg-[#ECE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#C9A35A]/40 transition-all cursor-pointer group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[#ECE5DC] flex items-center justify-center font-bold text-[#111111] text-lg italic border border-[#C9A35A]/20">
-                    {item.name[0]}
+            {recentAttendance.length > 0 ? (
+              recentAttendance.map((item, i) => (
+                <div key={i} className="bg-[#EBE5DC] p-6 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm flex items-center justify-between hover:border-[#C9A35A]/40 transition-all cursor-pointer group">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-[#EBE5DC] flex items-center justify-center font-bold text-[#111111] text-lg italic border border-[#C9A35A]/20">
+                      {item.name[0]}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-[#111111]">{item.name}</h4>
+                      <p className="text-xs text-[#111111]/60 font-medium">{item.situation}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-[#111111]">{item.name}</h4>
-                    <p className="text-xs text-[#111111]/60 font-medium">{item.situation}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="hidden sm:block text-right">
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1">{item.status}</div>
+                      <div className="text-[10px] font-medium text-[#111111]/40">{item.date}</div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25] transition-colors" />
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="hidden sm:block text-right">
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-[#A61E25] mb-1">{item.status}</div>
-                    <div className="text-[10px] font-medium text-[#111111]/40">{item.date}</div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-[#111111]/20 group-hover:text-[#A61E25] transition-colors" />
+              ))
+            ) : (
+              <div className="bg-[#EBE5DC]/50 p-12 rounded-[2rem] border border-dashed border-[#C9A35A]/20 text-center space-y-4">
+                <Users className="w-10 h-10 text-[#C9A35A]/30 mx-auto" />
+                <div className="space-y-1">
+                  <p className="text-[#111111] font-bold">Nenhum atendimento registrado ainda.</p>
+                  <p className="text-xs text-[#111111]/40">Inicie uma nova tiragem para começar seu histórico.</p>
                 </div>
+                <Link to="/templo/novo-atendimento" className="inline-block">
+                  <Button variant="outline" className="rounded-xl border-[#A61E25] text-[#A61E25] hover:bg-[#A61E25]/5 text-xs font-bold px-6">
+                    CRIAR PRIMEIRO ATENDIMENTO
+                  </Button>
+                </Link>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -130,17 +140,21 @@ export function TemploDashboard() {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-[#111111] font-display">Próximos Retornos</h2>
           </div>
-          <div className="bg-[#ECE5DC] p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="flex items-center gap-4 pb-6 border-b border-[#F4F0EA] last:border-0 last:pb-0">
-                <div className="w-10 h-10 rounded-xl bg-[#ECE5DC] flex items-center justify-center text-[#111111]/40">
+          <div className="bg-[#EBE5DC] p-8 rounded-[2rem] border border-[#C9A35A]/10 shadow-sm space-y-6">
+            {[
+              { name: "Mariana Silva", reason: "Follow-up: 3 dias após Magia de Adoçamento" },
+              { name: "Beatriz Oliveira", reason: "Acompanhar evolução do caso" },
+              { name: "Julia Santos", reason: "Revisar tendências futuras" }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4 pb-6 border-b border-[#F2EFE8] last:border-0 last:pb-0">
+                <div className="w-10 h-10 rounded-xl bg-[#F2EFE8] flex items-center justify-center text-[#111111]/40">
                   <MessageCircle className="w-5 h-5" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-bold text-[#111111] text-sm">Enviar mensagem para Fabiana</h4>
-                  <p className="text-xs text-[#111111]/60 font-medium">Follow-up: 3 dias após Magia de Adoçamento</p>
+                  <h4 className="font-bold text-[#111111] text-sm">Retorno para {item.name}</h4>
+                  <p className="text-xs text-[#111111]/60 font-medium font-sans">{item.reason}</p>
                 </div>
-                <Button variant="outline" className="rounded-xl border-[#C9A35A]/30 text-[#C9A35A] hover:bg-[#C9A35A]/10 text-xs font-bold px-4 h-10">AGENDAR</Button>
+                <Button variant="outline" className="rounded-xl border-[#C9A35A]/30 text-[#C9A35A] hover:bg-[#C9A35A]/10 text-[10px] font-bold px-3 h-9">AGENDAR</Button>
               </div>
             ))}
           </div>

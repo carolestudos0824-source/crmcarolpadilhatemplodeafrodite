@@ -47,7 +47,7 @@ const tarotPositions = [
   { id: 11, section: "TENDÊNCIA FUTURA", label: "Carta 3" },
 ];
 
-export function NovoAtendimentoPage() {
+export { NovoAtendimentoPage as default };
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   

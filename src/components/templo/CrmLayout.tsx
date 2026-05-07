@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
   Users, 
@@ -7,14 +7,16 @@ import {
   Sparkles, 
   BarChart3, 
   Settings,
-  Heart
+  Heart,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
   { icon: Users, label: "Clientes", path: "/templo/clientes" },
-  { icon: PlusCircle, label: "Novo", path: "/templo/novo-atendimento" },
+  { icon: PlusCircle, label: "Novo Atendimento", path: "/templo/novo-atendimento" },
   { icon: Sparkles, label: "Magias", path: "/templo/magias" },
   { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
   { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
@@ -22,19 +24,31 @@ const navItems = [
 
 export function CrmLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-[#F4F0EA] pb-24 lg:pb-0 lg:pl-64">
       {/* Sidebar Desktop */}
       <aside className="fixed left-0 top-0 h-full w-64 bg-[#111111] hidden lg:flex flex-col border-r border-[#C9A35A]/30 z-50">
         <div className="p-8 border-b border-[#C9A35A]/20">
-          <Link to="/templo/dashboard" className="block">
-            <img 
-              src="https://qtbkvshbmqlszncxlcuc.supabase.co/storage/v1/object/public/dsl-uploads/FKxI2UX5GWafusX2CZ1rulDlY5n1/1fcb5fad-cd93-4055-9587-35b167be7490.png" 
-              alt="Carol Padilha" 
-              className="w-full"
-            />
-            <p className="text-[#C9A35A] text-[9px] uppercase tracking-widest font-bold mt-2 text-center opacity-70">CRM INTERNO</p>
+          <Link to="/templo/dashboard" className="block group">
+            <div className="bg-[#F2EFE8] p-4 rounded-2xl border border-[#C9A35A]/20 transition-all group-hover:border-[#C9A35A]/50">
+              <img 
+                src="https://qtbkvshbmqlszncxlcuc.supabase.co/storage/v1/object/public/dsl-uploads/FKxI2UX5GWafusX2CZ1rulDlY5n1/1fcb5fad-cd93-4055-9587-35b167be7490.png" 
+                alt="Carol Padilha" 
+                className="w-full h-auto object-contain"
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <h2 className="text-[#F4F0EA] font-display text-sm leading-tight tracking-wide">TEMPLO DE AFRODITE CRM</h2>
+              <p className="text-[#C9A35A] text-[9px] uppercase tracking-widest font-bold mt-1 opacity-70">SISTEMA INTERNO</p>
+            </div>
           </Link>
         </div>
 
@@ -59,11 +73,18 @@ export function CrmLayout() {
           })}
         </nav>
 
-        <div className="p-6 border-t border-[#C9A35A]/20">
+        <div className="p-4 border-t border-[#C9A35A]/20 space-y-2">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#C9A35A]/10 text-[#C9A35A] text-sm">
             <Heart className="w-4 h-4 fill-[#C9A35A]" />
-            <span className="font-medium">Carol Padilha</span>
+            <span className="font-medium font-sans">Carol Padilha</span>
           </div>
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[#F4F0EA]/60 hover:text-[#A61E25] hover:bg-white/5 transition-all font-medium text-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            Sair do sistema
+          </button>
         </div>
       </aside>
 
