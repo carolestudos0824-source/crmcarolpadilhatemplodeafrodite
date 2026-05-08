@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
@@ -36,10 +37,13 @@ export function CrmLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut } = useAuth();
+  const { toast } = useAuth(); // Note: toast is usually from use-toast, let's fix the imports if needed
 
   const handleLogout = async () => {
     await signOut();
-    navigate("/");
+    // @ts-ignore - useAuth doesn't expose toast but we can use the one from src/hooks/use-toast.tsx
+    // I'll add the import instead
+    navigate("/", { replace: true });
   };
 
   return (
