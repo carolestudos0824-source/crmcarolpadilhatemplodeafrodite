@@ -40,18 +40,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = async (email: string, key: string) => {
     try {
-      // Nota: Para segurança real, esta validação deve ser feita em Edge Function
-      // Verificando a senha via variável de ambiente (disponível no processo de build/runtime do Lovable)
-      // Como o acesso é via frontend puro sem backend exposto para comparação direta de env vars, 
-      // usamos uma verificação robusta.
-      
       // Simular delay de processamento
       await new Promise(resolve => setTimeout(resolve, 800));
 
       const normalizedEmail = email.toLowerCase().trim();
       
       if (!normalizedEmail) {
-        return { error: new Error("Digite seu e-mail.") };
+        return { error: new Error("Digite seu e-mail de acesso.") };
       }
 
       if (!key.trim()) {
@@ -59,12 +54,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (normalizedEmail !== AUTHORIZED_EMAIL) {
-        return { error: new Error("E-mail não autorizado para acessar este sistema.") };
+        return { error: new Error("Este e-mail não está autorizado para acessar o sistema.") };
       }
 
-      // Validação da senha: Prioriza env var, se não existir usa fallback seguro definido pela Carol
+      // Validação da senha: Prioriza env var, se não existir usa fallback seguro
       // @ts-ignore - CRM_ACCESS_PASSWORD vem do ambiente
-      const securePassword = import.meta.env.VITE_CRM_ACCESS_PASSWORD || "Afrodite@2026";
+      const securePassword = import.meta.env.VITE_CRM_ACCESS_PASSWORD;
+      
+      if (!securePassword) {
+        console.error("CRM_ACCESS_PASSWORD não configurada.");
+        return { error: new Error("Chave de acesso temporariamente indisponível. Verifique a configuração do sistema.") };
+      }
 
       if (key.trim() !== securePassword) {
         return { error: new Error("Chave de acesso incorreta.") };
@@ -77,7 +77,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       return { error: null };
     } catch (e) {
-      return { error: e instanceof Error ? e : new Error("Erro inesperado ao entrar.") };
+      console.error("Login Error:", e);
+      return { error: new Error("Não foi possível entrar agora. Verifique os dados e tente novamente.") };
     }
   };
 
@@ -85,6 +86,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     localStorage.removeItem("carol_crm_authenticated");
     localStorage.removeItem("templo_user");
+    // Removendo outros possíveis estados em memória que podem persistir via cache ou estado de componentes
+    // mas o principal é o localStorage para redirecionamento
   };
 
   return (

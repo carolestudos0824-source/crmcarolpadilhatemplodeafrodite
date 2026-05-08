@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/templo/dashboard" },
@@ -39,7 +40,11 @@ export function CrmLayout() {
 
   const handleLogout = async () => {
     await signOut();
-    navigate("/");
+    toast({
+      title: "Sessão encerrada com segurança.",
+      variant: "default",
+    });
+    navigate("/", { replace: true });
   };
 
   return (

@@ -20,7 +20,7 @@ const LoadingFallback = () => (
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <LoadingFallback />;
-  if (!user) return <Navigate to="/" replace />;
+  if (!user) return <Navigate to="/" replace state={{ from: window.location.pathname }} />;
   return <>{children}</>;
 };
 

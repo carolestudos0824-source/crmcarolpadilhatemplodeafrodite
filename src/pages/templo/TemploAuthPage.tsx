@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,15 @@ export function TemploAuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { signIn, user, loading: authLoading } = useAuth();
+
+  useEffect(() => {
+    // PARTE 1: RECUPERAÇÃO DE SESSÃO
+    // Se já estiver autenticado, redireciona para o Dashboard
+    if (!authLoading && user) {
+      navigate("/templo/dashboard", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +34,7 @@ export function TemploAuthPage() {
     const passwordTrimmed = password.trim();
 
     if (!emailTrimmed) {
-      setError("Digite seu e-mail.");
+      setError("Digite seu e-mail de acesso.");
       return;
     }
     if (!passwordTrimmed) {
@@ -51,7 +59,7 @@ export function TemploAuthPage() {
       }
     } catch (err) {
       console.error("Login Error:", err);
-      setError("Ocorreu um erro inesperado. Tente novamente.");
+      setError("Não foi possível entrar agora. Verifique os dados e tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -93,11 +101,11 @@ export function TemploAuthPage() {
                 }}
                 className={cn(
                   "bg-[#F3EEE8] border-[#C8A15A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C8A15A] rounded-2xl text-base px-4 transition-all",
-                  (error === "Digite seu e-mail." || error?.includes("E-mail")) && "border-[#A61E25]/50 focus-visible:ring-[#A61E25]"
+                  (error?.includes("e-mail")) && "border-[#A61E25]/50 focus-visible:ring-[#A61E25]"
                 )}
                 placeholder="seu-email@gmail.com"
               />
-              {(error === "Digite seu e-mail." || error?.includes("E-mail")) && (
+              {(error?.includes("e-mail")) && (
                 <p className="text-[10px] text-[#A61E25] font-bold uppercase tracking-tight ml-1 animate-in fade-in slide-in-from-top-1">
                   {error}
                 </p>
@@ -116,11 +124,11 @@ export function TemploAuthPage() {
                 }}
                 className={cn(
                   "bg-[#F3EEE8] border-[#C8A15A]/20 text-[#111111] h-12 sm:h-14 focus-visible:ring-1 focus-visible:ring-[#C8A15A] rounded-2xl text-base px-4 transition-all",
-                  (error === "Digite sua chave de acesso." || error?.includes("Chave") || error?.includes("senha")) && "border-[#A61E25]/50 focus-visible:ring-[#A61E25]"
+                  (error?.includes("chave") || error?.includes("Chave") || error?.includes("senha") || error?.includes("indisponível")) && "border-[#A61E25]/50 focus-visible:ring-[#A61E25]"
                 )}
                 placeholder="••••••••"
               />
-              {(error === "Digite sua chave de acesso." || error?.includes("Chave") || error?.includes("senha")) && (
+              {(error?.includes("chave") || error?.includes("Chave") || error?.includes("senha") || error?.includes("indisponível")) && (
                 <p className="text-[10px] text-[#A61E25] font-bold uppercase tracking-tight ml-1 animate-in fade-in slide-in-from-top-1">
                   {error}
                 </p>
