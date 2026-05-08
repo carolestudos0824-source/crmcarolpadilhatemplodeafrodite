@@ -37,12 +37,13 @@ export function CrmLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut } = useAuth();
-  const { toast } = useAuth(); // Note: toast is usually from use-toast, let's fix the imports if needed
 
   const handleLogout = async () => {
     await signOut();
-    // @ts-ignore - useAuth doesn't expose toast but we can use the one from src/hooks/use-toast.tsx
-    // I'll add the import instead
+    toast({
+      title: "Sessão encerrada com segurança.",
+      variant: "default",
+    });
     navigate("/", { replace: true });
   };
 
