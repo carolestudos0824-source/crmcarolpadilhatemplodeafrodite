@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const catalog = [
-  { name: "Adoçamento Amoroso", icon: Heart, color: "text-[#A61E25]", category: "Amor", intensity: "Moderada", objective: "Suavizar tensões e abrir o coração do parceiro.", when: "Relações frias ou após discussões.", price: "450,00" },
-  { name: "Harmonização Amorosa", icon: Sparkles, color: "text-[#C9A35A]", category: "Harmonização", intensity: "Suave", objective: "Equilibrar as energias do casal.", when: "Manutenção de relações estáveis.", price: "350,00" },
-  { name: "Limpeza Energética", icon: Droplets, color: "text-[#C9A35A]", category: "Limpeza", intensity: "Alta", objective: "Remover miasmas e energias negativas.", when: "Cargas pesadas ou inveja externa.", price: "400,00" },
-  { name: "Abertura de Diálogo", icon: Wind, color: "text-[#C9A35A]", category: "Amor", intensity: "Focalizada", objective: "Destravar a comunicação e o entendimento.", when: "Bloqueios ou silêncios prolongados.", price: "300,00" },
+  { name: "Adoçamento Amoroso", icon: Heart, color: "text-[#A61E25]", category: "Amor", intensity: "Moderada", objective: "Suavizar tensões e abrir o coração do parceiro.", when: "Relações frias ou após discussões.", price: "500,00" },
+  { name: "Harmonização Amorosa", icon: Sparkles, color: "text-[#C9A35A]", category: "Harmonização", intensity: "Suave", objective: "Equilibrar as energias do casal.", when: "Manutenção de relações estáveis.", price: "500,00" },
+  { name: "Limpeza Energética", icon: Droplets, color: "text-[#C9A35A]", category: "Limpeza", intensity: "Alta", objective: "Remover miasmas e energias negativas.", when: "Cargas pesadas ou inveja externa.", price: "500,00" },
+  { name: "Abertura de Diálogo", icon: Wind, color: "text-[#C9A35A]", category: "Amor", intensity: "Focalizada", objective: "Destravar a comunicação e o entendimento.", when: "Bloqueios ou silêncios prolongados.", price: "500,00" },
   { name: "Proteção Espiritual", icon: Shield, color: "text-[#111111]", category: "Proteção", intensity: "Contínua", objective: "Blindar o casal contra influências externas.", when: "Sempre recomendada como base.", price: "500,00" },
   { name: "Corte de Influência", icon: Flame, color: "text-[#A61E25]", category: "Corte", intensity: "Drástica", objective: "Romper laços com terceiras pessoas.", when: "Traições ou interferência familiar.", price: "600,00" },
 ];
