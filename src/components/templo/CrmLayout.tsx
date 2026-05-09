@@ -56,11 +56,24 @@ export function CrmLayout() {
         <div className="p-8 border-b border-[#C9A35A]/20 flex justify-center">
           <Link to="/templo/dashboard" className="block group w-full">
             <div className="flex justify-center items-center">
-              <img
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAABbsklEQVR42u29d5xc13Uffs69r0wvO9s7sIveARIEwd5JURZldckqkeUSyY7jHju25SS2fy6x7ESxI8eRHcmyZFpdIikWs"
-                alt="Carol Padilha"
-                style={{ width: '150px', height: 'auto', objectFit: 'contain' }}
-              />
+              <svg 
+                width="120" 
+                height="80" 
+                viewBox="0 0 120 80" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <text 
+                  x="50%" 
+                  y="50%" 
+                  dominantBaseline="middle" 
+                  textAnchor="middle" 
+                  fill="#C9A35A" 
+                  style={{ fontStyle: 'italic', fontWeight: 'bold', fontSize: '48px', fontFamily: 'serif' }}
+                >
+                  CP
+                </text>
+              </svg>
             </div>
             <div className="mt-4 text-center">
               <h2 className="text-[#F4F0EA] font-display text-sm leading-tight tracking-wide">TEMPLO DE AFRODITE CRM</h2>
