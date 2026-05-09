@@ -156,15 +156,20 @@ export type Database = {
           data_nascimento_envolvido: string | null
           id: string
           instagram: string | null
-          nome: string
+          nome: string | null
           nome_envolvido: string | null
           observacoes_privadas: string | null
+          origem: string | null
+          proximo_retorno: string | null
           situacao_principal: string | null
           status_comercial: string | null
           status_relacao: string | null
+          tags: string[] | null
+          temperatura: string | null
+          ultimo_atendimento: string | null
           updated_at: string
           user_id: string
-          whatsapp: string
+          whatsapp: string | null
         }
         Insert: {
           cidade?: string | null
@@ -173,15 +178,20 @@ export type Database = {
           data_nascimento_envolvido?: string | null
           id?: string
           instagram?: string | null
-          nome: string
+          nome?: string | null
           nome_envolvido?: string | null
           observacoes_privadas?: string | null
+          origem?: string | null
+          proximo_retorno?: string | null
           situacao_principal?: string | null
           status_comercial?: string | null
           status_relacao?: string | null
+          tags?: string[] | null
+          temperatura?: string | null
+          ultimo_atendimento?: string | null
           updated_at?: string
           user_id: string
-          whatsapp: string
+          whatsapp?: string | null
         }
         Update: {
           cidade?: string | null
@@ -190,15 +200,20 @@ export type Database = {
           data_nascimento_envolvido?: string | null
           id?: string
           instagram?: string | null
-          nome?: string
+          nome?: string | null
           nome_envolvido?: string | null
           observacoes_privadas?: string | null
+          origem?: string | null
+          proximo_retorno?: string | null
           situacao_principal?: string | null
           status_comercial?: string | null
           status_relacao?: string | null
+          tags?: string[] | null
+          temperatura?: string | null
+          ultimo_atendimento?: string | null
           updated_at?: string
           user_id?: string
-          whatsapp?: string
+          whatsapp?: string | null
         }
         Relationships: []
       }

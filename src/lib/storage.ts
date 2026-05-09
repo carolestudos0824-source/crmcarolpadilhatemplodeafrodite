@@ -1,17 +1,17 @@
 export interface Client {
   id: string;
-  nome: string;
-  whatsapp: string;
+  nome?: string;
+  whatsapp?: string;
   instagram?: string;
   dataNascimento?: string;
   cidade?: string;
   origem?: string; // Como chegou
-  nomePessoaEnvolvida: string;
+  nomePessoaEnvolvida?: string;
   dataNascimentoPessoa?: string;
-  statusRelacao: string;
-  situacaoPrincipal: string;
+  statusRelacao?: string;
+  situacaoPrincipal?: string;
   observacoesPrivadas?: string;
-  statusComercial: string;
+  statusComercial?: string;
   temperatura?: 'Fria' | 'Morna' | 'Quente' | 'Ativa' | 'Recorrente' | 'Sensível' | 'Alta Prioridade';
   tags?: string[];
   createdAt: string;

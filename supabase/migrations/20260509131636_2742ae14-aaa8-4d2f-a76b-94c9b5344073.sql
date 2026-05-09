@@ -1,0 +1,2 @@
+ALTER TABLE public.clientes ALTER COLUMN nome DROP NOT NULL;
+ALTER TABLE public.clientes ALTER COLUMN whatsapp DROP NOT NULL;
