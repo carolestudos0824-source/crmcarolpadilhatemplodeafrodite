@@ -1,19 +1,16 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   Search, 
-  Filter, 
-  Plus, 
   ChevronRight, 
-  MessageSquare,
-  MoreVertical,
   UserPlus,
   Users as UsersIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { storage, Client } from "@/lib/storage";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 
 const statusOptions = [
   "Todas", "Nova cliente", "Consulta feita", "Magia indicada", 
@@ -24,21 +21,23 @@ const statusOptions = [
 export function ClientesListPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("Todas");
-  const clients = useMemo(() => storage.getClients(), []);
 
-  const filteredClients = useMemo(() => {
-    return clients.filter(client => {
-      const matchesSearch = 
-        client.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.whatsapp.includes(searchTerm) ||
-        client.nomePessoaEnvolvida.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.situacaoPrincipal.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesStatus = selectedStatus === "Todas" || client.statusComercial === selectedStatus;
-      
-      return matchesSearch && matchesStatus;
-    });
-  }, [clients, searchTerm, selectedStatus]);
+  const { data: clients = [], isLoading } = useQuery({
+    queryKey: ["clients"],
+    queryFn: () => supabaseService.getClients(),
+  });
+
+  const filteredClients = clients.filter(client => {
+    const matchesSearch = 
+      client.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.whatsapp.includes(searchTerm) ||
+      client.nomePessoaEnvolvida.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.situacaoPrincipal.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStatus = selectedStatus === "Todas" || client.statusComercial === selectedStatus;
+    
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="space-y-8 animate-fade-in">
