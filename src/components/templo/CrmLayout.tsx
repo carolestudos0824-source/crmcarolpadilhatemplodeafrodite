@@ -58,8 +58,8 @@ export function CrmLayout() {
             <div className="flex justify-center items-center">
               <img 
                 src="/LOGO_OFICIAL_TRANSPARENTE.png" 
-                alt="Carol Padilha" 
-                className="w-[140px] h-auto object-contain"
+                alt="Carol Padilha"
+                style={{ width: '150px', height: 'auto', objectFit: 'contain' }}
               />
             </div>
             <div className="mt-4 text-center">
