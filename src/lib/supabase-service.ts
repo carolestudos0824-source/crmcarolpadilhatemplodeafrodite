@@ -42,7 +42,7 @@ const mapDBToClient = (db: any): Client => ({
   dataNascimento: db.data_nascimento,
   cidade: db.cidade,
   origem: db.origem,
-  nomePessoaEnvolvida: db.nome_pessoa_envolvida,
+  nomePessoaEnvolvida: db.nome_envolvido,
   dataNascimentoPessoa: db.data_nascimento_envolvido,
   statusRelacao: db.status_relacao,
   situacaoPrincipal: db.situacao_principal,
