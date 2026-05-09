@@ -22,7 +22,7 @@ const mapClientToDB = (client: Partial<Client>, userId: string) => ({
   data_nascimento: client.dataNascimento,
   cidade: client.cidade,
   origem: client.origem,
-  nome_pessoa_envolvida: client.nomePessoaEnvolvida,
+  nome_envolvido: client.nomePessoaEnvolvida,
   data_nascimento_envolvido: client.dataNascimentoPessoa,
   status_relacao: client.statusRelacao,
   situacao_principal: client.situacaoPrincipal,
