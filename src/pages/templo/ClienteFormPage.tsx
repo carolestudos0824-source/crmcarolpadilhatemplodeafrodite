@@ -187,7 +187,6 @@ export function ClienteFormPage() {
                 onChange={handleChange}
                 placeholder="Ex: Rodrigo" 
                 className="bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
-                required
               />
             </div>
             <div className="space-y-2">
