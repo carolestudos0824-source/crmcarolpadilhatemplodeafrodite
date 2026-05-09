@@ -2,7 +2,6 @@ import {
   Plus, 
   Users, 
   Sparkles, 
-  MessageCircle, 
   Clock, 
   ChevronRight,
   TrendingUp,
@@ -10,7 +9,6 @@ import {
   Play,
   Calendar,
   DollarSign,
-  AlertCircle,
   CheckCircle2,
   ArrowUpRight,
   MessageSquareHeart,
@@ -19,16 +17,16 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
-import { storage } from "@/lib/storage";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 
 export function TemploDashboard() {
-  const clients = useMemo(() => storage.getClients(), []);
-  const appointments = useMemo(() => storage.getAppointments(), []);
-  const followUps = useMemo(() => storage.getFollowUps(), []);
-  const magias = useMemo(() => storage.getMagias(), []);
-  const financeiro = useMemo(() => storage.getFinanceiro(), []);
-  const settings = useMemo(() => storage.getSettings(), []);
+  const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: () => supabaseService.getClients() });
+  const { data: appointments = [] } = useQuery({ queryKey: ["appointments"], queryFn: () => supabaseService.getAppointments() });
+  const { data: followUps = [] } = useQuery({ queryKey: ["follow-ups"], queryFn: () => supabaseService.getFollowUps() });
+  const { data: magias = [] } = useQuery({ queryKey: ["magias"], queryFn: () => supabaseService.getMagias() });
+  const { data: financeiro = [] } = useQuery({ queryKey: ["financeiro"], queryFn: () => supabaseService.getFinanceiro() });
 
   const stats = useMemo(() => {
     const today = new Date().toLocaleDateString('pt-BR');

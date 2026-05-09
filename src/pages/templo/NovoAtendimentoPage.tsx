@@ -333,11 +333,11 @@ export function NovoAtendimentoPage() {
         statusAtendimento: 'Finalizada'
       };
 
-      if (reopenId && !isNew) {
-        saveMutation.mutate({ ...data, id: reopenId });
-      } else {
-        saveMutation.mutate(data);
-      }
+    if (reopenId && !isNew) {
+      saveMutation.mutate({ ...data, id: reopenId });
+    } else {
+      saveMutation.mutate(data);
+    }
 
       setTimeout(() => navigate("/templo/dashboard"), 1500);
     } catch (e) {
