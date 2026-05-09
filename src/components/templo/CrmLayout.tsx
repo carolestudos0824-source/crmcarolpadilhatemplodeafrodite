@@ -57,7 +57,7 @@ export function CrmLayout() {
           <Link to="/templo/dashboard" className="block group w-full">
             <div className="flex justify-center items-center">
               <img 
-                src="/LOGO_OFICIAL_TRANSPARENTE.png" 
+                src="https://eibmhbnrbdlwjodzjkwr.supabase.co/storage/v1/object/public/logos/logo-sidebar.png" 
                 alt="Carol Padilha"
                 style={{ width: '150px', height: 'auto', objectFit: 'contain' }}
               />
