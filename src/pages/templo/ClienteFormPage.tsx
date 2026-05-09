@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info, TrendingUp, Tag } from "lucide-react";
+import { ArrowLeft, Save, Heart, User, Instagram, Phone, Calendar, Info, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,7 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { storage } from "@/lib/storage";
+import { supabaseService } from "@/lib/supabase-service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 
 export function ClienteFormPage() {
@@ -34,29 +35,30 @@ export function ClienteFormPage() {
     tags: [] as string[]
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      storage.saveClient(formData);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (data: any) => supabaseService.saveClient(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["clients"] });
       toast({
         title: "Sucesso!",
         description: "Cliente salva com sucesso.",
       });
-      setTimeout(() => {
-        setLoading(false);
-        navigate("/templo/clientes");
-      }, 500);
-    } catch (error) {
+      navigate("/templo/clientes");
+    },
+    onError: (error) => {
       console.error(error);
       toast({
         title: "Erro",
         description: "Não foi possível salvar a cliente.",
         variant: "destructive"
       });
-      setLoading(false);
     }
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutation.mutate(formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -306,11 +308,11 @@ export function ClienteFormPage() {
           </Button>
           <Button 
             type="submit"
-            disabled={loading}
+            disabled={mutation.isPending}
             className="flex-[2] bg-[#A61E25] hover:bg-[#A61E25]/90 text-white font-bold h-16 rounded-2xl shadow-xl shadow-[#A61E25]/20 gap-2"
           >
             <Save className="w-5 h-5" />
-            {loading ? "SALVANDO..." : "SALVAR CLIENTE"}
+            {mutation.isPending ? "SALVANDO..." : "SALVAR CLIENTE"}
           </Button>
         </div>
       </form>

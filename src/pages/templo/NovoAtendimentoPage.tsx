@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent, useMemo, useEffect } from "react";
+import { useState, useRef, ChangeEvent, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   ArrowLeft, ArrowRight, User, Mic, Play, Camera, Check, Sparkles, Info, ChevronRight,
@@ -11,7 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { storage } from "@/lib/storage";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 import {
   Dialog,
   DialogContent,
@@ -95,6 +96,16 @@ export function NovoAtendimentoPage() {
     magia?: string;
   } | null>(null);
 
+  const { data: allClients = [] } = useQuery({
+    queryKey: ["clients"],
+    queryFn: () => supabaseService.getClients(),
+  });
+
+  const { data: allAppointments = [] } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: () => supabaseService.getAppointments(),
+  });
+
   // Load existing appointment if in view or reopen mode
   useEffect(() => {
     const id = viewId || reopenId;
@@ -102,8 +113,8 @@ export function NovoAtendimentoPage() {
     const situationParam = searchParams.get("situation");
     const relatoParam = searchParams.get("relato");
 
-    if (id) {
-      const existing = storage.getAppointmentById(id);
+    if (id && allAppointments.length > 0) {
+      const existing = allAppointments.find(a => a.id === id);
       if (existing) {
         setSelectedCliente({ id: existing.clientId, name: existing.nomeCliente });
         setSelectedSituation(existing.situacaoAmorosa);
@@ -123,8 +134,8 @@ export function NovoAtendimentoPage() {
           setStep(4); // Start at cards for reopen
         }
       }
-    } else if (clientIdParam) {
-      const client = storage.getClientById(clientIdParam);
+    } else if (clientIdParam && allClients.length > 0) {
+      const client = allClients.find(c => c.id === clientIdParam);
       if (client) {
         setSelectedCliente({ id: client.id, name: client.nome });
         if (situationParam) setSelectedSituation(situationParam);
@@ -132,7 +143,7 @@ export function NovoAtendimentoPage() {
         setStep(2); // Start flow
       }
     }
-  }, [viewId, reopenId, searchParams]);
+  }, [viewId, reopenId, searchParams, allAppointments, allClients]);
 
   // Initialize Speech Recognition
   useEffect(() => {
@@ -203,7 +214,7 @@ export function NovoAtendimentoPage() {
   const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
   const [cardSearch, setCardSearch] = useState("");
   
-  const clients = useMemo(() => storage.getClients(), []);
+  const clients = allClients;
 
   const handleCardClick = (posId: number) => {
     setCurrentPositionId(posId);
@@ -300,40 +311,50 @@ export function NovoAtendimentoPage() {
     const file = e.target.files?.[0];
     if (file) { setTiragemPhoto(URL.createObjectURL(file)); setPhotoFile(file); }
   };
+  const queryClient = useQueryClient();
+  const saveMutation = useMutation({
+    mutationFn: (data: any) => supabaseService.saveAppointment(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["appointments"] });
+      if (reopenId) {
+        toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
+      } else {
+        toast({ title: "Novo Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      }
+      setTimeout(() => navigate("/templo/dashboard"), 1500);
+    },
+    onError: (e) => {
+      console.error(e);
+      toast({ title: "Erro ao salvar", description: "Não foi possível persistir o atendimento.", variant: "destructive" });
+    }
+  });
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({ title: "Copiado!", description: "Conteúdo copiado." });
   };
+  
   const saveAttendance = (isNew: boolean = true) => {
     if (!selectedCliente) return;
 
-    try {
-      const data: any = {
-        clientId: selectedCliente.id,
-        nomeCliente: selectedCliente.name,
-        situacaoAmorosa: selectedSituation,
-        relatoCaso: relato,
-        fotoTiragem: tiragemPhoto || undefined,
-        cartasConfirmadas: cards as any,
-        leituraCompleta: JSON.stringify(interpretationSections),
-        roteiroAudio: generatedAudioScript,
-        textoWhatsapp: generatedWhatsAppText,
-        magiasIndicadas: indicatedMagia,
-        statusAtendimento: 'Finalizada'
-      };
+    const data: any = {
+      clientId: selectedCliente.id,
+      nomeCliente: selectedCliente.name,
+      situacaoAmorosa: selectedSituation,
+      relatoCaso: relato,
+      fotoTiragem: tiragemPhoto || undefined,
+      cartasConfirmadas: cards as any,
+      leituraCompleta: JSON.stringify(interpretationSections),
+      roteiroAudio: generatedAudioScript,
+      textoWhatsapp: generatedWhatsAppText,
+      magiasIndicadas: indicatedMagia,
+      statusAtendimento: 'Finalizada'
+    };
 
-      if (reopenId && !isNew) {
-        storage.saveAppointment({ ...data, id: reopenId });
-        toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
-      } else {
-        storage.saveAppointment(data);
-        toast({ title: "Novo Atendimento Salvo!", description: "Histórico da cliente atualizado." });
-      }
-
-      setTimeout(() => navigate("/templo/dashboard"), 1500);
-    } catch (e) {
-      console.error(e);
-      toast({ title: "Erro ao salvar", description: "Não foi possível persistir o atendimento.", variant: "destructive" });
+    if (reopenId && !isNew) {
+      saveMutation.mutate({ ...data, id: reopenId });
+    } else {
+      saveMutation.mutate(data);
     }
   };
 
