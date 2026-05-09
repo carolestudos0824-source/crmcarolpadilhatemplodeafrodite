@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent, useMemo, useEffect } from "react";
+import { useState, useRef, ChangeEvent, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   ArrowLeft, ArrowRight, User, Mic, Play, Camera, Check, Sparkles, Info, ChevronRight,
@@ -11,7 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { storage } from "@/lib/storage";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 import {
   Dialog,
   DialogContent,
@@ -95,6 +96,16 @@ export function NovoAtendimentoPage() {
     magia?: string;
   } | null>(null);
 
+  const { data: allClients = [] } = useQuery({
+    queryKey: ["clients"],
+    queryFn: () => supabaseService.getClients(),
+  });
+
+  const { data: allAppointments = [] } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: () => supabaseService.getAppointments(),
+  });
+
   // Load existing appointment if in view or reopen mode
   useEffect(() => {
     const id = viewId || reopenId;
@@ -102,8 +113,8 @@ export function NovoAtendimentoPage() {
     const situationParam = searchParams.get("situation");
     const relatoParam = searchParams.get("relato");
 
-    if (id) {
-      const existing = storage.getAppointmentById(id);
+    if (id && allAppointments.length > 0) {
+      const existing = allAppointments.find(a => a.id === id);
       if (existing) {
         setSelectedCliente({ id: existing.clientId, name: existing.nomeCliente });
         setSelectedSituation(existing.situacaoAmorosa);
@@ -123,8 +134,8 @@ export function NovoAtendimentoPage() {
           setStep(4); // Start at cards for reopen
         }
       }
-    } else if (clientIdParam) {
-      const client = storage.getClientById(clientIdParam);
+    } else if (clientIdParam && allClients.length > 0) {
+      const client = allClients.find(c => c.id === clientIdParam);
       if (client) {
         setSelectedCliente({ id: client.id, name: client.nome });
         if (situationParam) setSelectedSituation(situationParam);
@@ -132,7 +143,7 @@ export function NovoAtendimentoPage() {
         setStep(2); // Start flow
       }
     }
-  }, [viewId, reopenId, searchParams]);
+  }, [viewId, reopenId, searchParams, allAppointments, allClients]);
 
   // Initialize Speech Recognition
   useEffect(() => {

@@ -5,17 +5,37 @@ import {
   Lock, Eye, MapPin, Search, TrendingUp, DollarSign, Sparkles, Tag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { storage } from "@/lib/storage";
 import { cn } from "@/lib/utils";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQuery } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 
 export function ClienteProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const client = useMemo(() => id ? storage.getClientById(id) : null, [id]);
-  const appointments = useMemo(() => id ? storage.getAppointmentsByClient(id) : [], [id]);
+
+  const { data: client, isLoading: isClientLoading } = useQuery({
+    queryKey: ["client", id],
+    queryFn: () => id ? supabaseService.getClientById(id) : Promise.resolve(null),
+    enabled: !!id,
+  });
+
+  const { data: allAppointments = [], isLoading: isAppointmentsLoading } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: () => supabaseService.getAppointments(),
+  });
+
+  const appointments = allAppointments.filter(app => app.clientId === id);
+
+  if (isClientLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#A61E25]"></div>
+      </div>
+    );
+  }
 
   if (!client) {
     return (
