@@ -53,13 +53,13 @@ export function CrmLayout() {
     <div className="min-h-screen bg-[#F4F0EA] pb-24 lg:pb-0 lg:pl-64">
       {/* Sidebar Desktop */}
       <aside className="fixed left-0 top-0 h-full w-64 bg-[#111111] hidden lg:flex flex-col border-r border-[#C9A35A]/30 z-50">
-        <div className=\"p-8 border-b border-[#C9A35A]/20 flex justify-center\">
-          <Link to=\"/templo/dashboard\" className=\"block group\">
-            <div className=\"flex justify-center items-center\">
+        <div className="p-8 border-b border-[#C9A35A]/20 flex justify-center">
+          <Link to="/templo/dashboard" className="block group w-full">
+            <div className="flex justify-center items-center">
               <img 
-                src=\"/LOGO_OFICIAL_TRANSPARENTE.png\" 
-                alt=\"Carol Padilha\" 
-                className=\"w-[140px] h-auto object-contain\"
+                src="/LOGO_OFICIAL_TRANSPARENTE.png" 
+                alt="Carol Padilha" 
+                className="w-[140px] h-auto object-contain"
               />
             </div>
             <div className="mt-4 text-center">
@@ -69,7 +69,7 @@ export function CrmLayout() {
           </Link>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
