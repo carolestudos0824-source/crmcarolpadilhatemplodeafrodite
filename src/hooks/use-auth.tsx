@@ -57,15 +57,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { error: new Error("Este e-mail não está autorizado para acessar o sistema.") };
       }
 
-      // Validação da senha: Prioriza env var, se não existir usa fallback seguro
+      // Validação da senha: Prioriza env var, se não existir usa fallback seguro solicitado
       // @ts-ignore - CRM_ACCESS_PASSWORD vem do ambiente
-      const securePassword = import.meta.env.VITE_CRM_ACCESS_PASSWORD;
+      const envPassword = import.meta.env.VITE_CRM_ACCESS_PASSWORD;
+      const fallbackPassword = "Afrodite@2026";
+      const securePassword = envPassword || fallbackPassword;
       
-      if (!securePassword) {
-        console.error("CRM_ACCESS_PASSWORD não configurada.");
-        return { error: new Error("Chave de acesso temporariamente indisponível. Verifique a configuração do sistema.") };
-      }
-
       if (key.trim() !== securePassword) {
         return { error: new Error("Chave de acesso incorreta.") };
       }
