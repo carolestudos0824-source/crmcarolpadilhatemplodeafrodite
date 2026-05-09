@@ -37,7 +37,28 @@ export function ClienteFormPage() {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data: any) => supabaseService.saveClient(data),
+    mutationFn: async (data: any) => {
+      // Tentar salvar no Supabase se houver conexão/sessão
+      try {
+        return await supabaseService.saveClient(data);
+      } catch (error) {
+        console.warn("Falha ao salvar no Supabase, tentando localStorage:", error);
+        
+        // Fallback para localStorage conforme solicitado
+        const newClient = {
+          ...data,
+          id: crypto.randomUUID(),
+          createdAt: new Date().toISOString(),
+        };
+        
+        const existingClientsStr = localStorage.getItem("carol_crm_clients");
+        const existingClients = existingClientsStr ? JSON.parse(existingClientsStr) : [];
+        const updatedClients = [...existingClients, newClient];
+        
+        localStorage.setItem("carol_crm_clients", JSON.stringify(updatedClients));
+        return newClient;
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clients"] });
       toast({
