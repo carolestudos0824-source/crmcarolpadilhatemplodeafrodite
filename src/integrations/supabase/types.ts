@@ -159,9 +159,14 @@ export type Database = {
           nome: string | null
           nome_envolvido: string | null
           observacoes_privadas: string | null
+          origem: string | null
+          proximo_retorno: string | null
           situacao_principal: string | null
           status_comercial: string | null
           status_relacao: string | null
+          tags: string[] | null
+          temperatura: string | null
+          ultimo_atendimento: string | null
           updated_at: string
           user_id: string
           whatsapp: string | null
@@ -176,9 +181,14 @@ export type Database = {
           nome?: string | null
           nome_envolvido?: string | null
           observacoes_privadas?: string | null
+          origem?: string | null
+          proximo_retorno?: string | null
           situacao_principal?: string | null
           status_comercial?: string | null
           status_relacao?: string | null
+          tags?: string[] | null
+          temperatura?: string | null
+          ultimo_atendimento?: string | null
           updated_at?: string
           user_id: string
           whatsapp?: string | null
@@ -193,9 +203,14 @@ export type Database = {
           nome?: string | null
           nome_envolvido?: string | null
           observacoes_privadas?: string | null
+          origem?: string | null
+          proximo_retorno?: string | null
           situacao_principal?: string | null
           status_comercial?: string | null
           status_relacao?: string | null
+          tags?: string[] | null
+          temperatura?: string | null
+          ultimo_atendimento?: string | null
           updated_at?: string
           user_id?: string
           whatsapp?: string | null
