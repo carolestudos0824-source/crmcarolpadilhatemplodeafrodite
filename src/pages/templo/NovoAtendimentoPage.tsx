@@ -311,38 +311,50 @@ export function NovoAtendimentoPage() {
     const file = e.target.files?.[0];
     if (file) { setTiragemPhoto(URL.createObjectURL(file)); setPhotoFile(file); }
   };
+  const queryClient = useQueryClient();
+  const saveMutation = useMutation({
+    mutationFn: (data: any) => supabaseService.saveAppointment(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["appointments"] });
+      if (reopenId) {
+        toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
+      } else {
+        toast({ title: "Novo Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+      }
+      setTimeout(() => navigate("/templo/dashboard"), 1500);
+    },
+    onError: (e) => {
+      console.error(e);
+      toast({ title: "Erro ao salvar", description: "Não foi possível persistir o atendimento.", variant: "destructive" });
+    }
+  });
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast({ title: "Copiado!", description: "Conteúdo copiado." });
   };
+  
   const saveAttendance = (isNew: boolean = true) => {
     if (!selectedCliente) return;
 
-    try {
-      const data: any = {
-        clientId: selectedCliente.id,
-        nomeCliente: selectedCliente.name,
-        situacaoAmorosa: selectedSituation,
-        relatoCaso: relato,
-        fotoTiragem: tiragemPhoto || undefined,
-        cartasConfirmadas: cards as any,
-        leituraCompleta: JSON.stringify(interpretationSections),
-        roteiroAudio: generatedAudioScript,
-        textoWhatsapp: generatedWhatsAppText,
-        magiasIndicadas: indicatedMagia,
-        statusAtendimento: 'Finalizada'
-      };
+    const data: any = {
+      clientId: selectedCliente.id,
+      nomeCliente: selectedCliente.name,
+      situacaoAmorosa: selectedSituation,
+      relatoCaso: relato,
+      fotoTiragem: tiragemPhoto || undefined,
+      cartasConfirmadas: cards as any,
+      leituraCompleta: JSON.stringify(interpretationSections),
+      roteiroAudio: generatedAudioScript,
+      textoWhatsapp: generatedWhatsAppText,
+      magiasIndicadas: indicatedMagia,
+      statusAtendimento: 'Finalizada'
+    };
 
     if (reopenId && !isNew) {
       saveMutation.mutate({ ...data, id: reopenId });
     } else {
       saveMutation.mutate(data);
-    }
-
-      setTimeout(() => navigate("/templo/dashboard"), 1500);
-    } catch (e) {
-      console.error(e);
-      toast({ title: "Erro ao salvar", description: "Não foi possível persistir o atendimento.", variant: "destructive" });
     }
   };
 
