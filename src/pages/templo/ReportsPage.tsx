@@ -1,12 +1,13 @@
 import { TrendingUp, Users, Calendar, Sparkles, ArrowUpRight, ArrowDownRight, DollarSign, Star, Zap } from "lucide-react";
 import { useMemo } from "react";
-import { storage } from "@/lib/storage";
+import { useQuery } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 
 export function ReportsPage() {
-  const appointments = useMemo(() => storage.getAppointments(), []);
-  const clients = useMemo(() => storage.getClients(), []);
-  const magias = useMemo(() => storage.getMagias(), []);
-  const financeiro = useMemo(() => storage.getFinanceiro(), []);
+  const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: () => supabaseService.getClients() });
+  const { data: appointments = [] } = useQuery({ queryKey: ["appointments"], queryFn: () => supabaseService.getAppointments() });
+  const { data: magias = [] } = useQuery({ queryKey: ["magias"], queryFn: () => supabaseService.getMagias() });
+  const { data: financeiro = [] } = useQuery({ queryKey: ["financeiro"], queryFn: () => supabaseService.getFinanceiro() });
 
   const stats = useMemo(() => {
     const today = new Date();

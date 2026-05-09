@@ -1,5 +1,7 @@
-import { storage, Client } from "@/lib/storage";
+import { Client } from "@/lib/storage";
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabaseService } from "@/lib/supabase-service";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Clock, TrendingUp, AlertCircle, Zap, Search } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -11,7 +13,7 @@ const stages = [
 ];
 
 export function PipelinePage() {
-  const allClients = useMemo(() => storage.getClients(), []);
+  const { data: allClients = [] } = useQuery({ queryKey: ["clients"], queryFn: () => supabaseService.getClients() });
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredClients = useMemo(() => {
