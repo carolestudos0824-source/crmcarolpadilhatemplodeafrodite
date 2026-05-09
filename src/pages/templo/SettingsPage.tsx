@@ -127,37 +127,30 @@ export function SettingsPage() {
           </div>
         </div>
 
-        {/* Backup */}
+        {/* Backup Informativo */}
         <div className="bg-[#111111] p-8 rounded-[2.5rem] border border-[#C9A35A]/30 shadow-xl space-y-6">
            <div className="flex items-center gap-3 border-b border-white/10 pb-4">
              <Shield className="w-5 h-5 text-[#C9A35A]" />
              <h2 className="text-lg font-bold text-white font-display uppercase tracking-widest">Backup & Segurança</h2>
            </div>
            
-           <p className="text-white/40 text-xs italic leading-relaxed">Este sistema salva dados localmente neste navegador. Para evitar perda de informações, exporte backups regularmente.</p>
+           <p className="text-white/40 text-xs italic leading-relaxed">
+             Para garantir a segurança total dos seus dados, acesse o módulo de backup dedicado no menu lateral.
+           </p>
            
-           <div className="flex flex-col sm:flex-row gap-4">
-              <Button onClick={handleExport} className="flex-1 bg-[#C9A35A] text-[#111111] font-bold h-14 rounded-2xl gap-2">
-                 <Download className="w-4 h-4" /> EXPORTAR BACKUP
-              </Button>
-              <div className="flex-1 relative">
-                 <input type="file" onChange={handleImport} accept=".json" className="absolute inset-0 opacity-0 cursor-pointer z-10" title="Importar Backup" />
-                 <Button variant="outline" className="w-full h-14 rounded-2xl border-white/20 text-white gap-2 pointer-events-none">
-                    <Upload className="w-4 h-4" /> IMPORTAR BACKUP
-                 </Button>
-              </div>
-           </div>
-
-           <Button variant="ghost" className="w-full text-red-600 hover:bg-red-600/10 h-12 rounded-xl gap-2 uppercase text-[10px] tracking-widest font-bold">
-              <Trash2 className="w-4 h-4" /> LIMPAR TODOS OS DADOS
+           <Button 
+             onClick={() => window.location.href = '/templo/backup'}
+             className="w-full bg-[#C9A35A] text-[#111111] font-bold h-14 rounded-2xl gap-2"
+           >
+             ACESSAR MÓDULO DE BACKUP
            </Button>
 
            <div className="pt-4 border-t border-white/10 mt-6">
               <p className="text-[#C9A35A] text-[10px] font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
-                 <Shield className="w-3 h-3" /> Aviso Técnico (Portal da Cliente)
+                 <Shield className="w-3 h-3" /> Aviso Técnico (Migração Supabase)
               </p>
               <p className="text-white/30 text-[10px] leading-relaxed italic">
-                 O Portal da Cliente precisa de banco de dados real (Supabase) para funcionar entre dispositivos. A versão local é estrutural e os dados são salvos apenas neste navegador.
+                 O sistema agora utiliza armazenamento em nuvem via Supabase para maior segurança e sincronização entre dispositivos.
               </p>
            </div>
         </div>
