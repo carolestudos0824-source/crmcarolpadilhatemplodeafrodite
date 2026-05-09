@@ -212,7 +212,7 @@ export const storage = {
       assinatura: 'Carol Padilha • Tarô e Magia',
       whatsapp: '(11) 99999-9999',
       valorConsulta: '250,00',
-      valorMagia: '450,00',
+      valorMagia: '500,00',
       textosPadrao: '',
       paleta: 'original',
       precos: {},
