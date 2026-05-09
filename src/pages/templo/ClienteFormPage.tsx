@@ -116,7 +116,6 @@ export function ClienteFormPage() {
                   onChange={handleChange}
                   placeholder="(00) 00000-0000" 
                   className="pl-12 bg-white border-[#C9A35A]/20 h-14 rounded-2xl focus:ring-[#A61E25]"
-                  required
                 />
               </div>
             </div>
