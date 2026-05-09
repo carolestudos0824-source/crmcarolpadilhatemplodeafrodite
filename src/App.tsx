@@ -39,7 +39,7 @@ const ClienteProfilePage = lazy(() => import("./pages/templo/ClienteProfilePage"
 const AtendimentoPublicPage = lazy(() => import("./pages/templo/AtendimentoPublicPage"));
 const InboxPage = lazy(() => import("./pages/templo/InboxPage").then(m => ({ default: m.InboxPage })));
 
-// Portal Pages
+const BackupPage = lazy(() => import("./pages/templo/BackupPage").then(m => ({ default: m.BackupPage })));
 const PortalLayout = lazy(() => import("./pages/templo/PortalLayout").then(m => ({ default: m.PortalLayout })));
 const PortalHome = lazy(() => import("./pages/templo/PortalHome"));
 const PortalNovoAtendimento = lazy(() => import("./pages/templo/PortalNovoAtendimento"));
@@ -77,6 +77,7 @@ const App = () => (
               <Route path="mensagens" element={<MensagensPage />} />
               <Route path="relatorios" element={<ReportsPage />} />
               <Route path="configuracoes" element={<SettingsPage />} />
+              <Route path="backup" element={<BackupPage />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

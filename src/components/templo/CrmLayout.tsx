@@ -13,7 +13,8 @@ import {
   DollarSign,
   MessageSquare,
   Search,
-  Inbox
+  Inbox,
+  Shield
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
@@ -31,6 +32,7 @@ const navItems = [
   { icon: MessageSquare, label: "Mensagens", path: "/templo/mensagens" },
   { icon: BarChart3, label: "Relatórios", path: "/templo/relatorios" },
   { icon: Settings, label: "Ajustes", path: "/templo/configuracoes" },
+  { icon: Shield, label: "Backup", path: "/templo/backup" },
 ];
 
 export function CrmLayout() {
