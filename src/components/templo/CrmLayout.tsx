@@ -53,13 +53,13 @@ export function CrmLayout() {
     <div className="min-h-screen bg-[#F4F0EA] pb-24 lg:pb-0 lg:pl-64">
       {/* Sidebar Desktop */}
       <aside className="fixed left-0 top-0 h-full w-64 bg-[#111111] hidden lg:flex flex-col border-r border-[#C9A35A]/30 z-50">
-        <div className="p-8 border-b border-[#C9A35A]/20">
-          <Link to="/templo/dashboard" className="block group">
-            <div className="bg-[#F2EFE8] p-4 rounded-2xl border border-[#C9A35A]/20 transition-all group-hover:border-[#C9A35A]/50">
+        <div className=\"p-8 border-b border-[#C9A35A]/20 flex justify-center\">
+          <Link to=\"/templo/dashboard\" className=\"block group\">
+            <div className=\"flex justify-center items-center\">
               <img 
-                src="https://qtbkvshbmqlszncxlcuc.supabase.co/storage/v1/object/public/dsl-uploads/FKxI2UX5GWafusX2CZ1rulDlY5n1/1fcb5fad-cd93-4055-9587-35b167be7490.png" 
-                alt="Carol Padilha" 
-                className="w-full h-auto object-contain"
+                src=\"/LOGO_OFICIAL_TRANSPARENTE.png\" 
+                alt=\"Carol Padilha\" 
+                className=\"w-[140px] h-auto object-contain\"
               />
             </div>
             <div className="mt-4 text-center">
