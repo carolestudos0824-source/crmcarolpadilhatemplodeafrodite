@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent, useEffect } from "react";
+import { useState, useRef, ChangeEvent, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   ArrowLeft, ArrowRight, User, Mic, Play, Camera, Check, Sparkles, Info, ChevronRight,
@@ -214,7 +214,7 @@ export function NovoAtendimentoPage() {
   const [currentPositionId, setCurrentPositionId] = useState<number | null>(null);
   const [cardSearch, setCardSearch] = useState("");
   
-  const clients = useMemo(() => storage.getClients(), []);
+  const clients = allClients;
 
   const handleCardClick = (posId: number) => {
     setCurrentPositionId(posId);
@@ -334,11 +334,9 @@ export function NovoAtendimentoPage() {
       };
 
       if (reopenId && !isNew) {
-        storage.saveAppointment({ ...data, id: reopenId });
-        toast({ title: "Atendimento Atualizado!", description: "Histórico da cliente atualizado." });
+        saveMutation.mutate({ ...data, id: reopenId });
       } else {
-        storage.saveAppointment(data);
-        toast({ title: "Novo Atendimento Salvo!", description: "Histórico da cliente atualizado." });
+        saveMutation.mutate(data);
       }
 
       setTimeout(() => navigate("/templo/dashboard"), 1500);
