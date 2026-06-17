@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 
@@ -13,6 +13,11 @@ const links = [
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const onEntrega = pathname.startsWith("/entrega");
+  const ctaLabel = onEntrega ? "Solicitar Blueprint" : "Comprar agora";
+  const ctaTarget = onEntrega ? "/checkout?plano=blueprint" : "/checkout?plano=fabrica";
+
   return (
     <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5">
       <div className="container flex items-center justify-between h-16">
@@ -25,8 +30,8 @@ export const Navbar = () => {
           ))}
         </nav>
         <div className="hidden md:block">
-          <button className="btn-primary text-sm" onClick={() => navigate("/checkout?plano=fabrica")}>
-            Comprar agora
+          <button className="btn-primary text-sm" onClick={() => navigate(ctaTarget)}>
+            {ctaLabel}
           </button>
         </div>
         <button className="md:hidden text-foreground p-2" onClick={() => setOpen(!open)} aria-label="Menu">
@@ -41,8 +46,8 @@ export const Navbar = () => {
                 {l.label}
               </Link>
             ))}
-            <button className="btn-primary text-sm mt-2" onClick={() => { setOpen(false); navigate("/checkout?plano=fabrica"); }}>
-              Comprar agora
+            <button className="btn-primary text-sm mt-2" onClick={() => { setOpen(false); navigate(ctaTarget); }}>
+              {ctaLabel}
             </button>
           </div>
         </div>
@@ -50,3 +55,4 @@ export const Navbar = () => {
     </header>
   );
 };
+
