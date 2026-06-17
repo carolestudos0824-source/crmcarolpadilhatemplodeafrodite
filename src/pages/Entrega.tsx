@@ -191,7 +191,7 @@ export default function Entrega() {
         <DeliveryResourceCard
           icon={<Code size={20} />}
           title="Prompts e checklists"
-          description="Copie os blocos abaixo e use como comandos prontos para estruturar, construir, monetizar e lançar seu app com IA."
+          description="Copie os materiais abaixo para estruturar, construir, monetizar e lançar seu app com IA mesmo sem saber programar."
           action={<a href="#blocos" className="btn-ghost w-full">Ir para os blocos</a>}
         />
         <DeliveryResourceCard
