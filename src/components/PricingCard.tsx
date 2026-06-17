@@ -1,18 +1,10 @@
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Plan } from "@/data/plans";
-import { APP_CONFIG } from "@/config/appConfig";
-import { openSupportEmail } from "@/lib/openLink";
 
 export const PricingCard = ({ plan }: { plan: Plan }) => {
   const navigate = useNavigate();
-  const handleClick = () => {
-    if (plan.id === "premium") {
-      openSupportEmail(APP_CONFIG.SUPORTE_EMAIL, "Proposta — App Estratégico com IA");
-    } else {
-      navigate(`/checkout?plano=${plan.id}`);
-    }
-  };
+  const handleClick = () => navigate(`/checkout?plano=${plan.id}`);
   return (
     <div className={`relative glass-strong p-8 flex flex-col h-full ${plan.highlight ? "neon-shadow border-accent/40" : ""}`}>
       {plan.highlight && (
@@ -24,6 +16,7 @@ export const PricingCard = ({ plan }: { plan: Plan }) => {
       <p className="text-muted-foreground text-sm mt-2 min-h-[40px]">{plan.description}</p>
       <div className="mt-6 mb-6">
         <div className="text-4xl font-heading font-bold text-gradient">{plan.price}</div>
+        {plan.priceNote && <p className="text-xs text-muted-foreground mt-1">{plan.priceNote}</p>}
       </div>
       <ul className="space-y-3 flex-1">
         {plan.features.map((f) => (
@@ -33,7 +26,7 @@ export const PricingCard = ({ plan }: { plan: Plan }) => {
           </li>
         ))}
       </ul>
-      <button onClick={handleClick} className={`${plan.highlight ? "btn-primary" : "btn-gold"} mt-8 w-full`}>
+      <button onClick={handleClick} className="btn-primary mt-8 w-full">
         {plan.cta}
       </button>
     </div>

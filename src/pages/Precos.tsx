@@ -4,9 +4,13 @@ import { PLANS } from "@/data/plans";
 
 export default function Precos() {
   return (
-    <Section eyebrow="Planos" title="Escolha o plano da sua ideia" subtitle="Três caminhos para tirar seu app da ideia ao lançamento.">
-      <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto items-stretch">
-        {PLANS.map((p) => <PricingCard key={p.id} plan={p} />)}
+    <Section
+      eyebrow="Plano"
+      title="Uma única oferta para começar"
+      subtitle="Tudo o que você precisa para transformar sua ideia em um app validável com IA."
+    >
+      <div className="max-w-md mx-auto">
+        <PricingCard plan={PLANS[0]} />
       </div>
     </Section>
   );

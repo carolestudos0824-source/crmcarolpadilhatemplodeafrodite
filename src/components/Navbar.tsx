@@ -15,8 +15,8 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const onEntrega = pathname.startsWith("/entrega");
-  const ctaLabel = onEntrega ? "Solicitar Blueprint" : "Comprar agora";
-  const ctaTarget = onEntrega ? "/checkout?plano=blueprint" : "/checkout?plano=fabrica";
+  const ctaLabel = onEntrega ? "Minha área" : "Acessar por R$47";
+  const ctaTarget = onEntrega ? "/entrega" : "/checkout?plano=fabrica";
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5">

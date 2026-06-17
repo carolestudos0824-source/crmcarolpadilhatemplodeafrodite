@@ -79,7 +79,7 @@ const faqs = [
 
 export default function Home() {
   const navigate = useNavigate();
-  const fabrica = PLANS[0]; const blueprint = PLANS[1];
+  const fabrica = PLANS[0];
   const goFabrica = () => navigate("/checkout?plano=fabrica");
 
   return (
@@ -97,7 +97,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goFabrica}>
-                Acessar agora por R$97 <ChevronRight size={18} />
+                Acessar agora por R$47 <ChevronRight size={18} />
               </button>
               <a href="#solucao" className="btn-ghost">Ver o que está incluso</a>
             </div>
@@ -190,13 +190,12 @@ export default function Home() {
 
       {/* OFERTA */}
       <Section
-        eyebrow="Ofertas"
-        title="Escolha como quer começar"
-        subtitle="Comece sozinho com o agente ou receba um blueprint personalizado do seu app."
+        eyebrow="Oferta"
+        title="Acesse agora a Fábrica de Apps com IA"
+        subtitle="Uma única oferta com tudo o que você precisa para tirar sua ideia do papel."
       >
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="max-w-md mx-auto">
           <PricingCard plan={fabrica} />
-          <PricingCard plan={blueprint} />
         </div>
       </Section>
 
