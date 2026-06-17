@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Sparkles, Code, Mail, LogOut, ExternalLink } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
@@ -8,7 +9,8 @@ import { DeliveryResourceCard } from "@/components/DeliveryResourceCard";
 import { GlassCard } from "@/components/GlassCard";
 import { getSession, clearSession } from "@/lib/auth";
 import { APP_CONFIG } from "@/config/appConfig";
-import { openConfiguredUrl, openSupportEmail } from "@/lib/openLink";
+import { openSupportEmail } from "@/lib/openLink";
+
 
 const blocks = [
   {
@@ -151,6 +153,14 @@ export default function Entrega() {
   if (!session) return null;
 
   const logout = () => { clearSession(); navigate("/login"); };
+  const openAgent = () => {
+    const url = APP_CONFIG.GPT_AGENT_URL;
+    if (!url || !url.trim()) {
+      toast.error("Link do agente ainda não configurado. Edite o arquivo de configuração.");
+      return;
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <Section>
@@ -173,7 +183,7 @@ export default function Entrega() {
           title="Agente Arquiteto Supremo"
           description="Acesse o agente de IA que transforma qualquer ideia em MVP, arquitetura, design, monetização e prompt pronto para construir."
           action={
-            <button className="btn-primary w-full" onClick={() => openConfiguredUrl(APP_CONFIG.GPT_AGENT_URL)}>
+            <button className="btn-primary w-full" onClick={openAgent}>
               Abrir agente <ExternalLink size={14} />
             </button>
           }
