@@ -10,7 +10,7 @@ export default function Obrigado() {
   return (
     <Section>
       <div className="max-w-2xl mx-auto text-center glass-strong p-10 md:p-14 neon-shadow">
-        <div className="flex justify-center mb-6"><Logo size={48} withText={false} /></div>
+        <div className="flex justify-center mb-6"><Logo size="lg" asLink={false} /></div>
         <CheckCircle2 size={48} className="text-accent mx-auto mb-4" />
         <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Compra recebida ou em processamento</h1>
         <p className="text-muted-foreground mb-8">

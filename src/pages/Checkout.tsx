@@ -13,7 +13,7 @@ export default function Checkout() {
   const checkoutUrl = plan.checkoutUrl();
   return (
     <Section>
-      <div className="flex justify-center mb-8"><Logo size={40} /></div>
+      <div className="flex justify-center mb-8"><Logo size="lg" asLink={false} /></div>
       <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
         <CheckoutSummary plan={plan} />
         <div className="glass-strong p-6 md:p-8 flex flex-col gap-4">
