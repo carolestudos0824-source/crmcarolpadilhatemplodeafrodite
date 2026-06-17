@@ -21,7 +21,7 @@ export const CopyBlock = ({ title, content }: { title: string; content: string }
           {copied ? "Copiado" : "Copiar"}
         </button>
       </div>
-      <pre className="text-sm text-muted-foreground whitespace-pre-wrap font-sans leading-relaxed">{content}</pre>
+      <pre className="text-[15px] md:text-base text-foreground/80 whitespace-pre-wrap font-sans leading-7 md:leading-8">{content}</pre>
     </div>
   );
 };
