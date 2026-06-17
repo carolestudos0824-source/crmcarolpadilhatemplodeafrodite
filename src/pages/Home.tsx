@@ -3,7 +3,7 @@ import { Sparkles, Layers, Database, Palette, DollarSign, Rocket, Zap, Brain, Ta
 import { Section } from "@/components/Section";
 import { GlassCard } from "@/components/GlassCard";
 import { HeroVisual } from "@/components/HeroVisual";
-import { LeadForm } from "@/components/LeadForm";
+
 import { PricingCard } from "@/components/PricingCard";
 import { FAQItem } from "@/components/FAQItem";
 import { PLANS } from "@/data/plans";
