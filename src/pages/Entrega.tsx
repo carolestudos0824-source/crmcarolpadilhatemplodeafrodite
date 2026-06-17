@@ -161,6 +161,19 @@ export default function Entrega() {
     }
     window.open(url, "_blank", "noopener,noreferrer");
   };
+  const copyAgentLink = async () => {
+    const url = APP_CONFIG.GPT_AGENT_URL;
+    if (!url || !url.trim()) {
+      toast.error("Link do agente ainda não configurado. Edite o arquivo de configuração.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link do agente copiado.");
+    } catch {
+      toast.error("Não foi possível copiar o link.");
+    }
+  };
 
   return (
     <Section>
@@ -183,9 +196,28 @@ export default function Entrega() {
           title="Agente Arquiteto Supremo"
           description="Acesse o agente de IA que transforma qualquer ideia em MVP, arquitetura, design, monetização e prompt pronto para construir."
           action={
-            <button className="btn-primary w-full" onClick={openAgent}>
-              Abrir agente <ExternalLink size={14} />
-            </button>
+            <div className="flex flex-col gap-2">
+              {APP_CONFIG.GPT_AGENT_URL ? (
+                <a
+                  href={APP_CONFIG.GPT_AGENT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full"
+                >
+                  Abrir agente <ExternalLink size={14} />
+                </a>
+              ) : (
+                <button className="btn-primary w-full" onClick={openAgent}>
+                  Abrir agente <ExternalLink size={14} />
+                </button>
+              )}
+              <button className="btn-ghost w-full text-xs" onClick={copyAgentLink}>
+                Copiar link do agente
+              </button>
+              <p className="text-[11px] text-muted-foreground/70 leading-snug">
+                Se o link não abrir no preview, copie e cole em uma nova aba do navegador.
+              </p>
+            </div>
           }
         />
         <DeliveryResourceCard
