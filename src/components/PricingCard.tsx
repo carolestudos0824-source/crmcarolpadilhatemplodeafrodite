@@ -20,13 +20,16 @@ export const PricingCard = ({ plan }: { plan: Plan }) => {
       </div>
       <ul className="space-y-3 flex-1">
         {plan.features.map((f) => (
-          <li key={f} className="flex gap-3 text-sm text-foreground/90">
+          <li key={f} className="flex gap-3 text-[15px] leading-relaxed text-foreground/90">
             <Check size={18} className="text-accent shrink-0 mt-0.5" />
             <span>{f}</span>
           </li>
         ))}
       </ul>
-      <button onClick={handleClick} className="btn-primary mt-8 w-full">
+      <p className="text-xs text-muted-foreground mt-6 text-center">
+        Acesso imediato à área de entrega após a compra.
+      </p>
+      <button onClick={handleClick} className="btn-primary mt-4 w-full">
         {plan.cta}
       </button>
     </div>

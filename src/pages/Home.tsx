@@ -192,7 +192,7 @@ export default function Home() {
       <Section
         eyebrow="Oferta"
         title="Acesse agora a Fábrica de Apps com IA"
-        subtitle="Uma única oferta com tudo o que você precisa para tirar sua ideia do papel."
+        subtitle="Uma única oferta para você sair da ideia solta e chegar em um plano de app pronto para construir com IA."
       >
         <div className="max-w-md mx-auto">
           <PricingCard plan={fabrica} />
@@ -221,7 +221,7 @@ export default function Home() {
           <h2 className="text-3xl md:text-5xl font-heading font-bold text-gradient mb-4">Sua ideia não precisa ficar parada</h2>
           <p className="text-lg text-muted-foreground mb-8">Comece com um MVP claro, simples e vendável.</p>
           <button className="btn-primary mx-auto" onClick={goFabrica}>
-            Acessar agora por R$97 <ChevronRight size={18} />
+            Acessar agora por R$47 <ChevronRight size={18} />
           </button>
         </div>
       </Section>
