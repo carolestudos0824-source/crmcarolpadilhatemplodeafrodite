@@ -10,7 +10,7 @@ const links = [
   { to: "/suporte", label: "Suporte" },
 ];
 
-export const Navbar = () => {
+export const Navbar = ({ offsetTop = false }: { offsetTop?: boolean }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -19,7 +19,10 @@ export const Navbar = () => {
   const ctaTarget = onEntrega ? "/entrega" : "/checkout?plano=fabrica";
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5">
+    <header
+      className="fixed inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5"
+      style={{ top: offsetTop ? 40 : 0 }}
+    >
       <div className="container flex items-center justify-between h-16">
         <Logo size="md" showText />
         <nav className="hidden md:flex items-center gap-8">
