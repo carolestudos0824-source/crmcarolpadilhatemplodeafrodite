@@ -20,8 +20,8 @@ export const Navbar = ({ offsetTop = false }: { offsetTop?: boolean }) => {
 
   return (
     <header
-      className="fixed inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5 transition-[top] duration-200"
-      style={{ top: offsetTop ? "var(--announcement-h, 40px)" : 0 }}
+      className="fixed inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5"
+      style={{ top: offsetTop ? 40 : 0 }}
     >
       <div className="container flex items-center justify-between h-16">
         <Logo size="md" showText />
