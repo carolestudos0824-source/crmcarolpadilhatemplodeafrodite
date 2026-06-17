@@ -13,6 +13,7 @@ import Suporte from "@/pages/Suporte";
 import Termos from "@/pages/Termos";
 import Privacidade from "@/pages/Privacidade";
 import NotFound from "@/pages/NotFound";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
+      <ScrollToTop />
       <Toaster position="top-center" theme="dark" richColors />
       <Layout>
         <Routes>
@@ -39,10 +41,7 @@ const App = () => (
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
-          {/* Redireciona rotas antigas do projeto anterior */}
-          <Route path="/templo/*" element={<Navigate to="/" replace />} />
-          <Route path="/portal/*" element={<Navigate to="/" replace />} />
-          <Route path="/atendimento" element={<Navigate to="/" replace />} />
+          <Route path="/templo/dashboard" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
