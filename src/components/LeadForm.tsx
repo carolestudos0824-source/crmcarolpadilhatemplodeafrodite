@@ -12,7 +12,7 @@ const schema = z.object({
   app_idea: z.string().max(500).optional(),
 });
 
-const interests = ["Fábrica de Apps com IA", "Blueprint personalizado", "Serviço premium"];
+const interests = ["Fábrica de Apps com IA", "Tenho dúvidas sobre o produto"];
 
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
 

@@ -254,20 +254,6 @@ export default function Entrega() {
         {blocks.map((b) => <CopyBlock key={b.title} title={b.title} content={b.content} />)}
       </div>
 
-      <div className="max-w-3xl mx-auto mt-16">
-        <div className="glass-strong p-8 md:p-10 text-center neon-shadow">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Próximo passo</p>
-          <h3 className="text-2xl md:text-3xl font-heading font-bold text-gradient mb-3">
-            Quer transformar sua ideia em um blueprint personalizado?
-          </h3>
-          <p className="text-base text-muted-foreground mb-6">
-            Se você não quiser montar tudo sozinho, solicite o Blueprint do Seu App com IA e receba a estrutura pronta do seu próprio aplicativo.
-          </p>
-          <button className="btn-primary mx-auto" onClick={() => navigate("/checkout?plano=blueprint")}>
-            Quero meu blueprint personalizado
-          </button>
-        </div>
-      </div>
     </Section>
   );
 }
