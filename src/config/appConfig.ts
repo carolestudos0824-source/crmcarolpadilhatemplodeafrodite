@@ -2,7 +2,6 @@ export const APP_CONFIG = {
   CHECKOUT_FABRICA_URL: "",
   CHECKOUT_BLUEPRINT_URL: "",
   CHECKOUT_PREMIUM_URL: "",
-  WHATSAPP_URL: "",
   SUPORTE_EMAIL: "",
   GPT_AGENT_URL: "",
   DEMO_ACCESS_PASSWORD: "fabrica-apps-ia",
