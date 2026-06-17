@@ -153,6 +153,14 @@ export default function Entrega() {
   if (!session) return null;
 
   const logout = () => { clearSession(); navigate("/login"); };
+  const openAgent = () => {
+    const url = APP_CONFIG.GPT_AGENT_URL;
+    if (!url || !url.trim()) {
+      toast.error("Link do agente ainda não configurado. Edite o arquivo de configuração.");
+      return;
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <Section>
