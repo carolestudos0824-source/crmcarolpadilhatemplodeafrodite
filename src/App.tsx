@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/Navbar";
@@ -39,6 +39,10 @@ const App = () => (
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
+          {/* Redireciona rotas antigas do projeto anterior */}
+          <Route path="/templo/*" element={<Navigate to="/" replace />} />
+          <Route path="/portal/*" element={<Navigate to="/" replace />} />
+          <Route path="/atendimento" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
