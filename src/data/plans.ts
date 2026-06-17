@@ -63,8 +63,8 @@ export const PLANS: Plan[] = [
       "Plano de lançamento",
       "Acompanhamento inicial",
     ],
-    cta: "Solicitar proposta no WhatsApp",
-    checkoutUrl: () => APP_CONFIG.WHATSAPP_URL,
+    cta: "Solicitar proposta por e-mail",
+    checkoutUrl: () => APP_CONFIG.CHECKOUT_PREMIUM_URL,
   },
 ];
 
