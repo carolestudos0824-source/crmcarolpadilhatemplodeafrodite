@@ -39,6 +39,10 @@ const App = () => (
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
+          {/* Redireciona rotas antigas do projeto anterior */}
+          <Route path="/templo/*" element={<Navigate to="/" replace />} />
+          <Route path="/portal/*" element={<Navigate to="/" replace />} />
+          <Route path="/atendimento" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
