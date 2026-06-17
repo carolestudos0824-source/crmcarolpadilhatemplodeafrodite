@@ -1,89 +1,47 @@
-import { lazy, Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "@/hooks/use-auth";
-import { TemploAuthPage } from "./pages/templo/TemploAuthPage";
-import { CrmLayout } from "./components/templo/CrmLayout";
-import { TemploDashboard } from "./pages/templo/TemploDashboard";
+import { Toaster } from "sonner";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import Home from "@/pages/Home";
+import Precos from "@/pages/Precos";
+import Checkout from "@/pages/Checkout";
+import Obrigado from "@/pages/Obrigado";
+import Login from "@/pages/Login";
+import Entrega from "@/pages/Entrega";
+import Suporte from "@/pages/Suporte";
+import Termos from "@/pages/Termos";
+import Privacidade from "@/pages/Privacidade";
+import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-[#F2EFE8]">
-    <div className="text-center space-y-4">
-      <div className="w-12 h-12 rounded-full border-2 border-[#C9A35A] border-t-transparent animate-spin mx-auto" />
-      <p className="text-[10px] text-[#111111]/40 uppercase tracking-[0.3em] font-bold">Conectando ao Templo...</p>
-    </div>
+const Layout = ({ children }: { children: React.ReactNode }) => (
+  <div className="min-h-screen flex flex-col">
+    <Navbar />
+    <main className="flex-1 pt-16">{children}</main>
+    <Footer />
   </div>
 );
-
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-  if (loading) return <LoadingFallback />;
-  if (!user) return <Navigate to="/" replace state={{ from: window.location.pathname }} />;
-  return <>{children}</>;
-};
-
-// CRM Pages (Lazy)
-const ClientesListPage = lazy(() => import("./pages/templo/ClientesListPage").then(m => ({ default: m.ClientesListPage })));
-const ClienteFormPage = lazy(() => import("./pages/templo/ClienteFormPage").then(m => ({ default: m.ClienteFormPage })));
-const NovoAtendimentoPage = lazy(() => import("./pages/templo/NovoAtendimentoPage").then(m => ({ default: m.NovoAtendimentoPage })));
-const MagiasPage = lazy(() => import("./pages/templo/MagiasPage").then(m => ({ default: m.MagiasPage })));
-const PipelinePage = lazy(() => import("./pages/templo/PipelinePage").then(m => ({ default: m.PipelinePage })));
-const FollowUpsPage = lazy(() => import("./pages/templo/FollowUpsPage").then(m => ({ default: m.FollowUpsPage })));
-const FinanceiroPage = lazy(() => import("./pages/templo/FinanceiroPage").then(m => ({ default: m.FinanceiroPage })));
-const MensagensPage = lazy(() => import("./pages/templo/MensagensPage").then(m => ({ default: m.MensagensPage })));
-const ReportsPage = lazy(() => import("./pages/templo/ReportsPage").then(m => ({ default: m.ReportsPage })));
-const SettingsPage = lazy(() => import("./pages/templo/SettingsPage").then(m => ({ default: m.SettingsPage })));
-const ClienteProfilePage = lazy(() => import("./pages/templo/ClienteProfilePage").then(m => ({ default: m.ClienteProfilePage })));
-const AtendimentoPublicPage = lazy(() => import("./pages/templo/AtendimentoPublicPage"));
-const InboxPage = lazy(() => import("./pages/templo/InboxPage").then(m => ({ default: m.InboxPage })));
-
-const BackupPage = lazy(() => import("./pages/templo/BackupPage").then(m => ({ default: m.BackupPage })));
-const PortalLayout = lazy(() => import("./pages/templo/PortalLayout").then(m => ({ default: m.PortalLayout })));
-const PortalHome = lazy(() => import("./pages/templo/PortalHome"));
-const PortalNovoAtendimento = lazy(() => import("./pages/templo/PortalNovoAtendimento"));
-const PortalAcompanhar = lazy(() => import("./pages/templo/PortalAcompanhar"));
-const PortalMensagens = lazy(() => import("./pages/templo/PortalMensagens"));
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <AuthProvider>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            <Route path="/" element={<TemploAuthPage />} />
-            <Route path="/atendimento" element={<AtendimentoPublicPage />} />
-            
-            <Route path="/portal" element={<PortalLayout />}>
-              <Route index element={<PortalHome />} />
-              <Route path="novo-atendimento" element={<PortalNovoAtendimento />} />
-              <Route path="acompanhar" element={<PortalAcompanhar />} />
-              <Route path="mensagens" element={<PortalMensagens />} />
-            </Route>
-
-            <Route path="/templo" element={<ProtectedRoute><CrmLayout /></ProtectedRoute>}>
-              <Route index element={<Navigate to="/templo/dashboard" replace />} />
-              <Route path="dashboard" element={<TemploDashboard />} />
-              <Route path="clientes" element={<ClientesListPage />} />
-              <Route path="caixa-entrada" element={<InboxPage />} />
-              <Route path="clientes/novo" element={<ClienteFormPage />} />
-              <Route path="clientes/:id" element={<ClienteProfilePage />} />
-              <Route path="novo-atendimento" element={<NovoAtendimentoPage />} />
-              <Route path="pipeline" element={<PipelinePage />} />
-              <Route path="follow-ups" element={<FollowUpsPage />} />
-              <Route path="magias" element={<MagiasPage />} />
-              <Route path="financeiro" element={<FinanceiroPage />} />
-              <Route path="mensagens" element={<MensagensPage />} />
-              <Route path="relatorios" element={<ReportsPage />} />
-              <Route path="configuracoes" element={<SettingsPage />} />
-              <Route path="backup" element={<BackupPage />} />
-            </Route>
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </AuthProvider>
+      <Toaster position="top-center" theme="dark" richColors />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/precos" element={<Precos />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/obrigado" element={<Obrigado />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/entrega" element={<Entrega />} />
+          <Route path="/suporte" element={<Suporte />} />
+          <Route path="/termos" element={<Termos />} />
+          <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   </QueryClientProvider>
 );

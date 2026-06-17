@@ -33,7 +33,7 @@ export const LeadForm = () => {
     setErrors({});
     setLoading(true);
     try {
-      await saveLead(parsed.data);
+      await saveLead(parsed.data as { name: string; email: string; whatsapp: string; interest: string; app_idea?: string });
       toast.success("Recebido. Agora você está na lista para criar seu app com IA.");
       setForm({ name: "", email: "", whatsapp: "", interest: "", app_idea: "" });
     } catch {
