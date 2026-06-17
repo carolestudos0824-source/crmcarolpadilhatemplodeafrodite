@@ -5,7 +5,7 @@ export const Footer = () => (
   <footer className="border-t border-white/5 mt-24">
     <div className="container py-12 grid gap-8 md:grid-cols-2">
       <div className="space-y-3">
-        <Logo size={32} />
+        <Logo size="sm" showText />
         <p className="text-sm text-muted-foreground max-w-md">
           Fábrica de Apps com IA — Clareza, estrutura e velocidade para criar aplicativos com inteligência artificial.
         </p>

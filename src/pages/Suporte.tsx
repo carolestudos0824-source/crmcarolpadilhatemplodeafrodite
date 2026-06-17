@@ -17,7 +17,7 @@ export default function Suporte() {
   return (
     <Section>
       <div className="max-w-2xl mx-auto text-center glass-strong p-10">
-        <div className="flex justify-center mb-6"><Logo size={40} withText={false} /></div>
+        <div className="flex justify-center mb-6"><Logo size="lg" asLink={false} /></div>
         <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Suporte</h1>
         <p className="text-muted-foreground mb-8">
           Precisa de ajuda para acessar o material ou aplicar o agente na sua ideia? Fale com o suporte.

@@ -33,7 +33,7 @@ export default function Login() {
   return (
     <Section>
       <div className="max-w-md mx-auto">
-        <div className="flex justify-center mb-8"><Logo size={48} withText={false} /></div>
+        <div className="flex justify-center mb-8"><Logo size="lg" asLink={false} /></div>
         <div className="glass-strong p-8">
           <h1 className="text-2xl font-heading font-bold mb-1">Entrar na sua conta</h1>
           <p className="text-sm text-muted-foreground mb-6">Acesse a área de entrega para consultar seus materiais.</p>

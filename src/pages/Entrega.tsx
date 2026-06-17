@@ -35,7 +35,7 @@ export default function Entrega() {
     <Section>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10 max-w-5xl mx-auto">
         <div className="flex items-center gap-4">
-          <Logo size={44} withText={false} />
+          <Logo size="lg" asLink={false} />
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-accent">Área de entrega</p>
             <h1 className="text-2xl md:text-3xl font-heading font-bold">Bem-vindo, {session.email}</h1>
