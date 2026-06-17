@@ -1,13 +1,14 @@
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { Plan } from "@/data/plans";
-import { openConfiguredUrl } from "@/lib/openLink";
+import { APP_CONFIG } from "@/config/appConfig";
+import { openSupportEmail } from "@/lib/openLink";
 
 export const PricingCard = ({ plan }: { plan: Plan }) => {
   const navigate = useNavigate();
   const handleClick = () => {
     if (plan.id === "premium") {
-      openConfiguredUrl(plan.checkoutUrl());
+      openSupportEmail(APP_CONFIG.SUPORTE_EMAIL, "Proposta — App Estratégico com IA");
     } else {
       navigate(`/checkout?plano=${plan.id}`);
     }

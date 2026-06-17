@@ -1,16 +1,17 @@
 import { useSearchParams } from "react-router-dom";
-import { ShieldCheck, MessageCircle } from "lucide-react";
+import { ShieldCheck, Mail } from "lucide-react";
 import { Section } from "@/components/Section";
 import { CheckoutSummary } from "@/components/CheckoutSummary";
 import { Logo } from "@/components/Logo";
 import { getPlan } from "@/data/plans";
 import { APP_CONFIG } from "@/config/appConfig";
-import { openConfiguredUrl } from "@/lib/openLink";
+import { openConfiguredUrl, openSupportEmail } from "@/lib/openLink";
 
 export default function Checkout() {
   const [params] = useSearchParams();
   const plan = getPlan(params.get("plano"));
   const checkoutUrl = plan.checkoutUrl();
+  const isPremium = plan.id === "premium";
   return (
     <Section>
       <div className="flex justify-center mb-8"><Logo size="lg" asLink={false} /></div>
@@ -21,17 +22,27 @@ export default function Checkout() {
           <p className="text-sm text-muted-foreground">
             Pagamento processado em ambiente externo. Após a compra, siga as instruções da página de obrigado.
           </p>
-          <button className="btn-primary w-full" onClick={() => openConfiguredUrl(checkoutUrl)}>
-            {plan.id === "premium" ? "Falar no WhatsApp" : "Ir para pagamento"}
+          <button
+            className="btn-primary w-full"
+            onClick={() =>
+              isPremium
+                ? openSupportEmail(APP_CONFIG.SUPORTE_EMAIL, "Proposta — App Estratégico com IA")
+                : openConfiguredUrl(checkoutUrl)
+            }
+          >
+            {isPremium ? "Solicitar proposta por e-mail" : "Ir para pagamento"}
           </button>
-          {plan.id !== "premium" && (
-            <button className="btn-ghost w-full" onClick={() => openConfiguredUrl(APP_CONFIG.WHATSAPP_URL)}>
-              <MessageCircle size={16} /> Prefiro falar no WhatsApp
+          {!isPremium && (
+            <button
+              className="btn-ghost w-full"
+              onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+            >
+              <Mail size={16} /> Falar com suporte por e-mail
             </button>
           )}
           <div className="flex items-start gap-2 text-xs text-muted-foreground/80 pt-2 border-t border-white/5">
             <ShieldCheck size={14} className="text-accent shrink-0 mt-0.5" />
-            Ambiente seguro. Nenhum dado de pagamento é armazenado neste site.
+            Pagamento processado em ambiente externo. Nenhum dado de pagamento é armazenado neste site. Em caso de dúvida, fale com o suporte por e-mail.
           </div>
         </div>
       </div>

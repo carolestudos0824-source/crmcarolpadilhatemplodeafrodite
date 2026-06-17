@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Code, MessageCircle, LogOut, ExternalLink } from "lucide-react";
+import { Sparkles, Code, Mail, LogOut, ExternalLink } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
 import { CopyBlock } from "@/components/CopyBlock";
 import { DeliveryResourceCard } from "@/components/DeliveryResourceCard";
 import { getSession, clearSession } from "@/lib/auth";
 import { APP_CONFIG } from "@/config/appConfig";
-import { openConfiguredUrl } from "@/lib/openLink";
+import { openConfiguredUrl, openSupportEmail } from "@/lib/openLink";
 
 const blocks = [
   { title: "Prompt Mestre Universal", content: "Você é o Arquiteto Supremo de Aplicativos. Sua função é transformar qualquer ideia de aplicativo em um plano completo, executável, simples, vendável e validável. Analise a ideia, corte excessos, defina MVP com no máximo 5 funcionalidades, fluxo do usuário, stack, banco de dados, design system, monetização, riscos, plano de lançamento e prompt pronto para construir." },
@@ -62,12 +62,12 @@ export default function Entrega() {
           action={<a href="#blocos" className="btn-ghost w-full">Ir para blocos</a>}
         />
         <DeliveryResourceCard
-          icon={<MessageCircle size={20} />}
+          icon={<Mail size={20} />}
           title="Suporte"
-          description="Dificuldade para aplicar? Fale com o suporte pelo WhatsApp."
+          description="Dificuldade para aplicar? Fale com o suporte por e-mail."
           action={
-            <button className="btn-gold w-full" onClick={() => openConfiguredUrl(APP_CONFIG.WHATSAPP_URL)}>
-              Falar no WhatsApp
+            <button className="btn-gold w-full" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
+              Falar com suporte por e-mail
             </button>
           }
         />

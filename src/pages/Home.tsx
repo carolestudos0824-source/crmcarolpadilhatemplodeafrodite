@@ -73,7 +73,7 @@ const faqs = [
   { q: "Funciona para SaaS, app com IA e produto digital?", a: "Sim. O foco é transformar ideias em produtos digitais validáveis: MVPs, SaaS simples, ferramentas internas, apps com IA e páginas de venda." },
   { q: "O acesso ao agente pode ser compartilhado?", a: "Não. O acesso é individual. Compartilhamento pode causar bloqueio conforme as regras do produto." },
   { q: "O que recebo após a compra?", a: "Acesso ao Agente Arquiteto Supremo de Aplicativos, Prompt Mestre Universal, manual rápido, checklists de MVP, monetização e lançamento, e prompts bônus." },
-  { q: "Tem suporte?", a: "Sim. O suporte é feito pelo WhatsApp ou e-mail informado na página de suporte." },
+  { q: "Tem suporte?", a: "Sim. O suporte é feito exclusivamente por e-mail, no endereço informado na página de suporte." },
   { q: "Posso usar para criar apps para clientes?", a: "Sim. Você pode usar a estrutura para organizar ideias de clientes e montar propostas de aplicativos." },
 ];
 
