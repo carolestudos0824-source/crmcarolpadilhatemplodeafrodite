@@ -215,7 +215,7 @@ export default function Entrega() {
                 Copiar link do agente
               </button>
               <p className="text-[11px] text-muted-foreground/70 leading-snug">
-                Se o link não abrir no preview, copie e cole em uma nova aba do navegador.
+                Você precisa estar logado no ChatGPT para usar o agente. Se o link não abrir no preview, copie e cole em uma nova aba.
               </p>
             </div>
           }
