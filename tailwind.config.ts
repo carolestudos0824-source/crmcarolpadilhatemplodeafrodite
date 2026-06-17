@@ -7,120 +7,44 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      padding: "1.25rem",
+      screens: { "2xl": "1280px" },
     },
     extend: {
       fontFamily: {
-        heading: ["Cinzel", "serif"],
-        display: ["Cormorant Garamond", "Georgia", "serif"],
-        body: ["DM Sans", "Inter", "system-ui", "sans-serif"],
-        sans: ["DM Sans", "Inter", "system-ui", "sans-serif"],
-        accent: ["Cormorant Garamond", "serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        heading: ["Space Grotesk", "Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#F2EFE8", // Cor exata do fundo da logo extraída da imagem
-        foreground: "#111111", // Preto Apoio
-        templo: {
-          bg: "#F2EFE8",
-          ivory: "#EBE5DB",
-          gold: "#C9A35A",
-          "gold-deep": "#9B7440",
-          red: "#A61E25",
-          black: "#111111",
-        },
-        primary: {
-          DEFAULT: "#A61E25", // Vermelho Tulipa
-          foreground: "#F2EFE8",
-        },
-        secondary: {
-          DEFAULT: "#C9A35A", // Dourado Principal
-          foreground: "#111111",
-        },
-        destructive: {
-          DEFAULT: "#A61E25",
-          foreground: "#F2EFE8",
-        },
-        muted: {
-          DEFAULT: "#EBE5DB",
-          foreground: "#111111",
-        },
-        accent: {
-          DEFAULT: "#C9A35A",
-          foreground: "#111111",
-        },
-        popover: {
-          DEFAULT: "#EBE5DB",
-          foreground: "#111111",
-        },
-        card: {
-          DEFAULT: "#EBE5DB", // Marfim Rosado ajustado para cards
-          foreground: "#111111",
-        },
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        surface: "hsl(var(--surface))",
+        gold: { DEFAULT: "hsl(var(--gold))", foreground: "hsl(var(--gold-foreground))" },
+        primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
+        secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
+        destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
+        muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
+        accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
+        popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
+        card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
         sidebar: {
-          DEFAULT: "#111111",
-          foreground: "#F2EFE8",
-          primary: "#A61E25",
-          "primary-foreground": "#F2EFE8",
-          accent: "#C9A35A",
-          "accent-foreground": "#111111",
-          border: "#C9A35A",
-          ring: "#C9A35A",
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% center" },
-          "100%": { backgroundPosition: "200% center" },
-        },
-        "pulse-gold": {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "1" },
-        },
-        "fade-up": {
-          from: { opacity: "0", transform: "translateY(20px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
-        "card-reveal": {
-          from: { opacity: "0", transform: "rotateY(90deg) scale(0.8)" },
-          to: { opacity: "1", transform: "rotateY(0deg) scale(1)" },
-        },
-        stars: {
-          "0%, 100%": { opacity: "0.3", transform: "scale(1)" },
-          "50%": { opacity: "1", transform: "scale(1.2)" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        float: "float 4s ease-in-out infinite",
-        shimmer: "shimmer 3s linear infinite",
-        "pulse-gold": "pulse-gold 2s ease-in-out infinite",
-        "fade-up": "fade-up 0.6s ease-out forwards",
-        "card-reveal": "card-reveal 0.8s ease-out forwards",
-        stars: "stars 3s ease-in-out infinite",
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
       },
     },
   },
