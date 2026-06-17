@@ -179,14 +179,6 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* CAPTURA */}
-      <Section
-        eyebrow="Lista de criadores"
-        title="Quer saber se sua ideia pode virar um app?"
-        subtitle="Cadastre sua ideia e entre na lista para criar um MVP com IA de forma simples, estruturada e validável."
-      >
-        <LeadForm />
-      </Section>
 
       {/* OFERTA */}
       <Section
