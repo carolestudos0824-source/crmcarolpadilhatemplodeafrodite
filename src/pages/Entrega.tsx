@@ -412,7 +412,15 @@ const checklistPublicar = `Antes de publicar o app, confirme:
 10. Plano para os primeiros 10 usuários`;
 
 // ---------- Library structure ----------
-type PromptCard = { title: string; description: string; content: string };
+type PromptCard = {
+  title: string;
+  description: string;
+  content: string;
+  purpose?: string;
+  when?: string;
+  where?: string;
+  output?: string;
+};
 type Category = { id: string; icon: JSX.Element; title: string; description: string; prompts: PromptCard[] };
 
 const library: Category[] = [
@@ -423,7 +431,15 @@ const library: Category[] = [
     description: "Tudo para sair da ideia e chegar no app funcionando.",
     prompts: [
       { title: "Prompt Mestre Universal", description: "Transforma qualquer ideia em plano completo.", content: promptMestre },
-      { title: "Prompt para Lovable", description: "Pronto para colar no Lovable.", content: promptLovable },
+      {
+        title: "Prompt para Lovable",
+        description: "Pronto para colar no Lovable.",
+        content: promptLovable,
+        purpose: "Transforma o plano do seu app em uma primeira versão construída no Lovable.",
+        when: "Depois que o Arquiteto de Apps gerar o plano completo.",
+        where: "Dentro do Lovable, no campo onde você descreve o app.",
+        output: "Uma primeira versão do app com telas, layout, fluxo e banco inicial.",
+      },
       { title: "Prompt para Cursor", description: "Para implementar via Cursor.", content: promptCursor },
       { title: "Prompt para Replit", description: "Para subir um MVP no Replit.", content: promptReplit },
       { title: "Prompt para Supabase", description: "Modela o backend no Supabase.", content: promptSupabase },
@@ -507,18 +523,47 @@ function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
       toast.error("Não foi possível copiar.");
     }
   };
+  const hasMeta = !!(prompt.purpose || prompt.when || prompt.where || prompt.output);
   return (
     <div className="glass p-4 md:p-5 flex flex-col gap-3 h-full">
       <div className="flex-1">
         <h4 className="font-heading font-semibold text-foreground text-sm md:text-base mb-1">{prompt.title}</h4>
         <p className="text-xs text-muted-foreground leading-relaxed">{prompt.description}</p>
+        {hasMeta && (
+          <dl className="mt-3 space-y-2 text-xs">
+            {prompt.purpose && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Para que serve</dt>
+                <dd className="text-foreground/85">{prompt.purpose}</dd>
+              </div>
+            )}
+            {prompt.when && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Quando usar</dt>
+                <dd className="text-foreground/85">{prompt.when}</dd>
+              </div>
+            )}
+            {prompt.where && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Onde colar</dt>
+                <dd className="text-foreground/85">{prompt.where}</dd>
+              </div>
+            )}
+            {prompt.output && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">O que você vai receber</dt>
+                <dd className="text-foreground/85">{prompt.output}</dd>
+              </div>
+            )}
+          </dl>
+        )}
       </div>
       <button
         onClick={copy}
         className="inline-flex items-center justify-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 transition"
       >
         {copied ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
-        {copied ? "Copiado" : "Copiar"}
+        {copied ? "Copiado" : "Copiar prompt"}
       </button>
     </div>
   );
