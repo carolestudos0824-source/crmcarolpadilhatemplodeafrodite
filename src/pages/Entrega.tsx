@@ -10,6 +10,7 @@ import { FAQItem } from "@/components/FAQItem";
 import { getSession, clearSession } from "@/lib/auth";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
+import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 
 const primeiraMensagem = `Tenho uma ideia de aplicativo e quero transformar em um MVP simples, vendável e validável.
 
@@ -276,6 +277,12 @@ export default function Entrega() {
           </p>
         </div>
       </div>
+
+      {/* Resgate de código premium */}
+      <div className="max-w-4xl mx-auto mb-10">
+        <GiftCodeRedemption />
+      </div>
+
 
       {/* 2. Seu próximo passo */}
       <div className="max-w-4xl mx-auto mb-10">
