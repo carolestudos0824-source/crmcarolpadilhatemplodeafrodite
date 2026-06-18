@@ -154,11 +154,11 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
 ];
 
 const comecePorAqui = [
+  "Faça login no ChatGPT.",
   'Clique em "Abrir agente".',
-  "Faça login no ChatGPT, se for solicitado.",
-  "Copie o Prompt Mestre Universal.",
-  "Envie sua ideia para o agente.",
-  "Pegue o plano gerado e cole no Lovable, Cursor, Claude Code, Gemini ou Replit.",
+  "Copie a primeira mensagem pronta.",
+  "Envie sua ideia.",
+  "Use o plano gerado para construir em Lovable, Cursor, Claude Code, Gemini ou Replit.",
 ];
 
 const depoisDoPlano = `1. Confira se a ação principal do app está clara.
