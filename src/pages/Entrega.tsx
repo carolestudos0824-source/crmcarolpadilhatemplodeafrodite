@@ -589,7 +589,7 @@ export default function Entrega() {
               <button onClick={() => navigate("/login")} className="btn-primary w-full">
                 Entrar na área restrita
               </button>
-              <button onClick={() => navigate("/precos")} className="btn-secondary w-full">
+              <button onClick={() => navigate("/precos")} className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm">
                 Comprar acesso
               </button>
             </div>
@@ -618,7 +618,7 @@ export default function Entrega() {
               >
                 <LifeBuoy size={16} /> Falar com suporte
               </button>
-              <button onClick={() => navigate("/")} className="btn-secondary w-full">
+              <button onClick={() => navigate("/")} className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm">
                 Voltar para o início
               </button>
               <button onClick={logout} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mt-2">
