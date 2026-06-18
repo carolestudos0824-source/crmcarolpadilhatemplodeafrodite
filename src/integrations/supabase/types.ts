@@ -244,6 +244,33 @@ export type Database = {
         }
         Relationships: []
       }
+      gift_code_redemption_attempts: {
+        Row: {
+          code_hash: string
+          created_at: string
+          id: string
+          metadata: Json
+          outcome: string
+          user_id: string
+        }
+        Insert: {
+          code_hash: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          outcome: string
+          user_id: string
+        }
+        Update: {
+          code_hash?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          outcome?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       gift_codes: {
         Row: {
           code: string
