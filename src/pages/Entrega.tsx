@@ -12,12 +12,15 @@ import {
   DollarSign,
   ClipboardCheck,
   Rocket,
+  Lock,
+  Loader2,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
-import { getSession, clearSession } from "@/lib/auth";
+import { clearSession } from "@/lib/auth";
+import { useAuthState } from "@/hooks/useAuthState";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
 
