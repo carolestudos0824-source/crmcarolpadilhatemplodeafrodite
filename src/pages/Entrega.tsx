@@ -526,17 +526,13 @@ function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
 
 export default function Entrega() {
   const navigate = useNavigate();
-  const session = getSession();
+  const auth = useAuthState();
 
   const [activeTab, setActiveTab] = useState(library[0].id);
   const [copiedEntry, setCopiedEntry] = useState(false);
   const [progress, setProgress] = useState<boolean[]>(() =>
     progressItems.map(() => false),
   );
-
-  useEffect(() => {
-    if (!session) navigate("/login", { replace: true });
-  }, [session, navigate]);
 
   useEffect(() => {
     try {
@@ -560,12 +556,83 @@ export default function Entrega() {
     }
   }, [progress]);
 
-  if (!session) return null;
-
-  const logout = () => {
-    clearSession();
+  const logout = async () => {
+    await clearSession();
     navigate("/login");
   };
+
+  // ---------- AUTH GATES ----------
+  if (auth.status === "loading") {
+    return (
+      <Section>
+        <div className="max-w-md mx-auto text-center py-16">
+          <Loader2 className="animate-spin mx-auto text-accent" size={28} />
+          <p className="text-sm text-muted-foreground mt-4">Verificando seu acesso…</p>
+        </div>
+      </Section>
+    );
+  }
+
+  if (auth.status === "anonymous") {
+    return (
+      <Section>
+        <div className="max-w-md mx-auto text-center py-12">
+          <div className="glass-strong p-8">
+            <div className="w-12 h-12 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-4">
+              <Lock className="text-accent" size={22} />
+            </div>
+            <h1 className="text-2xl font-heading font-bold mb-2">Área restrita</h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              Entre com o e-mail usado na compra para acessar seus prompts, checklists e materiais.
+            </p>
+            <div className="space-y-3">
+              <button onClick={() => navigate("/login")} className="btn-primary w-full">
+                Entrar na área restrita
+              </button>
+              <button onClick={() => navigate("/precos")} className="btn-secondary w-full">
+                Comprar acesso
+              </button>
+            </div>
+          </div>
+        </div>
+      </Section>
+    );
+  }
+
+  if (!auth.hasAccess) {
+    return (
+      <Section>
+        <div className="max-w-md mx-auto text-center py-12">
+          <div className="glass-strong p-8">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
+              <Lock className="text-amber-400" size={22} />
+            </div>
+            <h1 className="text-2xl font-heading font-bold mb-2">Acesso ainda não liberado</h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              Seu login existe, mas seu acesso à área de entrega ainda não foi liberado.
+            </p>
+            <div className="space-y-3">
+              <button
+                onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+                className="btn-primary w-full inline-flex items-center justify-center gap-2"
+              >
+                <LifeBuoy size={16} /> Falar com suporte
+              </button>
+              <button onClick={() => navigate("/")} className="btn-secondary w-full">
+                Voltar para o início
+              </button>
+              <button onClick={logout} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mt-2">
+                <LogOut size={12} /> Sair desta conta
+              </button>
+            </div>
+          </div>
+        </div>
+      </Section>
+    );
+  }
+
+  const session = { email: auth.email ?? "" };
+
 
   const openAgent = () => {
     const url = APP_CONFIG.GPT_AGENT_URL;
