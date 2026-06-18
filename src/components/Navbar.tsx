@@ -23,7 +23,7 @@ export const Navbar = ({ offsetTop = false }: { offsetTop?: boolean }) => {
   let ctaIcon = <Lock size={14} />;
 
   if (auth.status === "authed") {
-    if (auth.hasAccess) {
+    if (auth.hasAccess || auth.isAdmin) {
       ctaLabel = "Minha área";
       ctaTarget = "/entrega";
       ctaIcon = null as any;
