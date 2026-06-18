@@ -14,6 +14,7 @@ import Entrega from "@/pages/Entrega";
 import Suporte from "@/pages/Suporte";
 import Termos from "@/pages/Termos";
 import Privacidade from "@/pages/Privacidade";
+import Confianca from "@/pages/Confianca";
 import NotFound from "@/pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
 
