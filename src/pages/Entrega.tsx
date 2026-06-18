@@ -1778,8 +1778,9 @@ export default function Entrega() {
       </Section>
 
       {/* PROGRESSO */}
-      <Section className="py-10">
+      <Section className="py-10" id="progresso">
         <div className="max-w-3xl mx-auto">
+
           <h2 className="text-2xl font-heading font-bold mb-2">Meu progresso</h2>
           <p className="text-muted-foreground mb-6">
             Marque cada etapa conforme você avança. Salvamos automaticamente neste
