@@ -1466,7 +1466,8 @@ export default function Entrega() {
   return (
     <>
       {/* HERO */}
-      <Section className="pt-10 pb-10">
+      <Section className="pt-10 pb-10" id="comece">
+
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
             <Logo size="md" />
