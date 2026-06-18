@@ -19,7 +19,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-const ANNOUNCEMENT_ROUTES = ["/", "/precos", "/checkout", "/suporte"];
+const ANNOUNCEMENT_ROUTES = ["/", "/precos", "/suporte"];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useLocation();
