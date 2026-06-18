@@ -14,6 +14,10 @@ import {
   Rocket,
   Lock,
   Loader2,
+  ShieldCheck,
+  Lightbulb,
+  HelpCircle,
+  Gift,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
