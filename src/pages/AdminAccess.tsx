@@ -154,6 +154,10 @@ export default function AdminAccess() {
           </p>
         </header>
 
+        <SelfGrant />
+
+
+
         <div className="glass-strong p-6 mb-6">
           <form onSubmit={onSearch} className="space-y-3">
             <label className="text-xs text-muted-foreground block">
