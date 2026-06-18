@@ -22,6 +22,9 @@ export default function Checkout() {
           <button className="btn-primary w-full" onClick={() => openConfiguredUrl(checkoutUrl)}>
             Ir para pagamento
           </button>
+          <p className="text-xs text-accent/90">
+            Após o pagamento, você receberá as instruções de acesso no e-mail informado na compra.
+          </p>
           <button className="btn-ghost w-full" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
             <Mail size={16} /> Falar com suporte por e-mail
           </button>
