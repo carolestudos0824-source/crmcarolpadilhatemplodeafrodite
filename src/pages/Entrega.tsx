@@ -1817,7 +1817,8 @@ export default function Entrega() {
       </Section>
 
       {/* ERROS COMUNS */}
-      <Section className="py-10">
+      <Section className="py-10" id="erros">
+
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-heading font-bold mb-2">
             Erros comuns e como resolver
