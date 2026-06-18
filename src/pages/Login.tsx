@@ -69,10 +69,10 @@ export default function Login() {
         </div>
         <div className="glass-strong p-8">
           <h1 className="text-2xl font-heading font-bold mb-1">
-            Entrar na área de entrega
+            Entrar na área restrita
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Use o mesmo e-mail informado na compra para acessar seus materiais.
+            Use o e-mail e a senha enviados após a compra para acessar seus materiais.
           </p>
 
           <form onSubmit={onSubmit} className="space-y-4">
