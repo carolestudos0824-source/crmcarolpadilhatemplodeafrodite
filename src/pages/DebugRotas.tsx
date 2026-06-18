@@ -39,13 +39,16 @@ export default function DebugRotas() {
             <b>Status:</b> {auth.status}
           </p>
           <p>
-            <b>E-mail:</b> {auth.session?.user.email ?? "—"}
+            <b>E-mail:</b>{" "}
+            {auth.status === "authed" ? auth.email ?? "—" : "—"}
           </p>
           <p>
-            <b>user_id:</b> {auth.session?.user.id ?? "—"}
+            <b>user_id:</b>{" "}
+            {auth.status === "authed" ? auth.userId : "—"}
           </p>
           <p>
-            <b>has_access:</b> {String(auth.hasAccess)}
+            <b>has_access:</b>{" "}
+            {auth.status === "authed" ? String(auth.hasAccess) : "—"}
           </p>
           <p>
             <b>is_admin:</b> {isAdmin === null ? "…" : String(isAdmin)}
