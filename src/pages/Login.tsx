@@ -69,10 +69,10 @@ export default function Login() {
         </div>
         <div className="glass-strong p-8">
           <h1 className="text-2xl font-heading font-bold mb-1">
-            Entrar na área de entrega
+            Entrar na área restrita
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Use o mesmo e-mail informado na compra para acessar seus materiais.
+            Use o e-mail e a senha enviados após a compra para acessar seus materiais.
           </p>
 
           <form onSubmit={onSubmit} className="space-y-4">
@@ -154,8 +154,7 @@ export default function Login() {
           <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-xs text-muted-foreground flex gap-2">
             <Mail size={14} className="mt-0.5 shrink-0 text-accent" />
             <p>
-              Após a compra, o acesso é enviado para o e-mail informado no
-              pagamento. Verifique também spam e promoções.
+              Após a compra, os dados de acesso são enviados para o e-mail informado no pagamento. Verifique também spam e promoções.
             </p>
           </div>
         </div>
