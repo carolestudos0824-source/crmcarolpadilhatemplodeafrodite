@@ -42,7 +42,12 @@ export const useAuthState = (): AuthState => {
     };
 
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
-      void resolve(session?.user?.id ?? null, session?.user?.email ?? null);
+      // Defer supabase calls out of the auth callback to avoid deadlocks
+      const uid = session?.user?.id ?? null;
+      const email = session?.user?.email ?? null;
+      setTimeout(() => {
+        void resolve(uid, email);
+      }, 0);
     });
 
     supabase.auth.getSession().then(({ data }) => {

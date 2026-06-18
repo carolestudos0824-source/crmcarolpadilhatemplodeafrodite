@@ -154,6 +154,10 @@ export default function AdminAccess() {
           </p>
         </header>
 
+        <SelfGrant />
+
+
+
         <div className="glass-strong p-6 mb-6">
           <form onSubmit={onSearch} className="space-y-3">
             <label className="text-xs text-muted-foreground block">
@@ -298,6 +302,64 @@ function Info({
       <div className={`${toneCls} ${mono ? "font-mono text-xs break-all" : ""}`}>
         {value}
       </div>
+    </div>
+  );
+}
+
+function SelfGrant() {
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null));
+  }, []);
+
+  const grant = async () => {
+    setLoading(true);
+    setMsg(null);
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+    if (!uid) {
+      setLoading(false);
+      setMsg({ kind: "err", text: "Sessão não encontrada." });
+      return;
+    }
+    const { data, error } = await supabase.rpc("admin_set_access", {
+      _user_id: uid,
+      _has_access: true,
+    });
+    setLoading(false);
+    if (error) {
+      setMsg({ kind: "err", text: error.message });
+      return;
+    }
+    const res = data as { success?: boolean; error?: string } | null;
+    if (!res?.success) {
+      setMsg({ kind: "err", text: res?.error ?? "Falha ao liberar acesso." });
+      return;
+    }
+    setMsg({ kind: "ok", text: "Seu acesso foi liberado. Recarregue para atualizar a navbar." });
+  };
+
+  return (
+    <div className="glass-strong p-6 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h2 className="font-heading font-semibold text-sm mb-1">Meu próprio acesso</h2>
+          <p className="text-xs text-muted-foreground">
+            Logado como: <span className="text-foreground/80">{email ?? "—"}</span>
+          </p>
+        </div>
+        <button onClick={grant} disabled={loading} className="btn-primary whitespace-nowrap">
+          {loading ? <Loader2 size={16} className="animate-spin" /> : <><ShieldCheck size={16} /> Liberar meu próprio acesso</>}
+        </button>
+      </div>
+      {msg && (
+        <div className={`mt-3 text-xs rounded-lg px-3 py-2 ${msg.kind === "ok" ? "bg-accent/10 text-accent border border-accent/30" : "bg-red-500/10 text-red-200 border border-red-500/30"}`}>
+          {msg.text}
+        </div>
+      )}
     </div>
   );
 }
