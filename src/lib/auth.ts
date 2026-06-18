@@ -117,6 +117,6 @@ export const signUpWithPassword = async (
 export const requestPasswordRecovery = async (email: string) => {
   const cleanEmail = email.trim().toLowerCase();
   return supabase.auth.resetPasswordForEmail(cleanEmail, {
-    redirectTo: `${window.location.origin}/login`,
+    redirectTo: `${window.location.origin}/reset-password`,
   });
 };
