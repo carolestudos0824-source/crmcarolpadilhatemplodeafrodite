@@ -50,6 +50,24 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_users: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       atendimentos: {
         Row: {
           cartas: Json | null
@@ -707,6 +725,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_lookup_user: {
+        Args: { _email: string }
+        Returns: {
+          access_created_at: string
+          access_exists: boolean
+          email: string
+          has_access: boolean
+          source: string
+          user_id: string
+        }[]
+      }
+      admin_set_access: {
+        Args: { _has_access: boolean; _user_id: string }
+        Returns: Json
+      }
       apply_arcano_backfill: { Args: { _payload: Json }; Returns: Json }
       has_role: {
         Args: {
@@ -715,6 +748,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: never; Returns: boolean }
       redeem_gift_code: {
         Args: { _code: string; _user_id?: string }
         Returns: Json
