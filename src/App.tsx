@@ -46,18 +46,25 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/precos" element={<Precos />} />
+          <Route path="/preco" element={<Navigate to="/precos" replace />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/obrigado" element={<Obrigado />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/conecte-se" element={<Navigate to="/login" replace />} />
+          <Route path="/Conecte-se" element={<Navigate to="/login" replace />} />
           <Route path="/entrega" element={<Entrega />} />
+          <Route path="/painel" element={<Navigate to="/entrega" replace />} />
           <Route path="/dashboard" element={<Navigate to="/entrega" replace />} />
           <Route path="/admin/acessos" element={<AdminAccess />} />
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/confianca" element={<Confianca />} />
+          <Route path="/confira" element={<Navigate to="/confianca" replace />} />
+          <Route path="/Confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/trust" element={<Navigate to="/confianca" replace />} />
           <Route path="/templo/dashboard" element={<Navigate to="/" replace />} />
+          <Route path="/debug-rotas" element={<DebugRotas />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
