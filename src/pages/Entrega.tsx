@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -7,17 +7,15 @@ import {
   Copy,
   Check,
   LifeBuoy,
-  Wand2,
-  Megaphone,
-  DollarSign,
-  ClipboardCheck,
-  Rocket,
   Lock,
   Loader2,
   ShieldCheck,
-  Lightbulb,
-  HelpCircle,
   Gift,
+  ArrowDown,
+  Sparkles,
+  Layers,
+  ListChecks,
+  Smartphone,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
@@ -28,156 +26,227 @@ import { useAuthState } from "@/hooks/useAuthState";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
 
-// ---------- Prompts ----------
-const promptEntrada = `Tenho uma ideia de aplicativo e quero transformá-la em um plano completo.
+// ===================== Conteúdo =====================
+
+const LOVABLE_URL = "https://lovable.dev";
+const STORAGE_PROGRESS = "fabrica_apps_progress_v3";
+const STORAGE_STEPS = "fabrica_apps_steps_v1";
+
+type Command = {
+  n: number;
+  title: string;
+  purpose: string;
+  when: string;
+  where: string;
+  result: string;
+  content: string;
+};
+
+const commands: Command[] = [
+  {
+    n: 1,
+    title: "Transformar minha ideia em um plano de app",
+    purpose: "Serve para o Lovable entender sua ideia e organizar o app antes de construir.",
+    when: "Use primeiro, antes de pedir telas ou banco de dados.",
+    where: "Cole no Lovable, no campo de conversa do projeto.",
+    result:
+      "O Lovable deve responder com um plano claro do app, incluindo MVP, telas, fluxo e estrutura.",
+    content: `Você é um especialista em produto digital, UX e desenvolvimento de aplicativos no Lovable.
+
+Quero transformar minha ideia em um app simples, validável e pronto para construir.
 
 Minha ideia é:
 [descreva aqui sua ideia]
 
 Quem vai usar:
-[descreva o público]
+[descreva quem será o usuário]
 
-O problema que resolve:
-[descreva a dor]
+Problema que o app resolve:
+[descreva a dor do usuário]
 
 Como pretendo ganhar dinheiro:
 [assinatura, venda única, comissão, anúncios ou ainda não sei]
 
-Quero que você analise minha ideia e entregue:
-1. Veredito estratégico
-2. MVP com no máximo 5 funcionalidades
-3. Fluxo do usuário em até 5 etapas
-4. Estrutura de páginas
-5. Stack recomendada
-6. Modelo de dados simplificado
-7. Design recomendado
-8. Monetização
-9. Riscos principais
-10. Prompt mestre para construir no Lovable`;
+Antes de construir qualquer coisa, analise minha ideia e entregue:
 
-const promptMestre = `Você é um arquiteto sênior de aplicativos, especialista em produto, UX, monetização e desenvolvimento full stack.
-Transforme a ideia abaixo em um plano completo de app comercial.
-
-Ideia:
-[cole aqui a ideia]
-
-Entregue:
-1. Veredito estratégico
-2. Problema real resolvido
+1. Veredito estratégico da ideia
+2. Problema real que o app resolve
 3. Usuário principal
-4. Ação principal
+4. Ação principal do usuário
 5. MVP com no máximo 5 funcionalidades
-6. O que cortar agora
+6. O que deve ser cortado agora
 7. Fluxo do usuário em até 5 etapas
-8. Stack recomendada
-9. Modelo de dados simplificado
-10. Estrutura de páginas
-11. Design recomendado
-12. Monetização
-13. Plano de lançamento
-14. Riscos principais
-15. Prompt pronto para construir`;
+8. Telas necessárias
+9. Banco de dados necessário
+10. Design recomendado
+11. Monetização
+12. Riscos principais
+13. Plano de construção no Lovable
 
-const promptLovable = `Crie um aplicativo web responsivo e mobile first baseado no plano abaixo.
-Use design moderno, limpo, premium e fácil de entender.
-O app deve ter autenticação, páginas principais, banco de dados, regras de acesso, estados vazios, estados de erro e estados de sucesso.
+Regras:
+- Não crie um app gigante.
+- Não adicione funcionalidades desnecessárias.
+- Explique tudo de forma simples.
+- Priorize mobile first.
+- O objetivo é criar uma primeira versão simples para validar.`,
+  },
+  {
+    n: 2,
+    title: "Construir a primeira versão do app",
+    purpose: "Serve para pedir ao Lovable que comece a construir o app.",
+    when: "Use depois que o Lovable gerar o plano do app.",
+    where: "Cole no mesmo projeto do Lovable.",
+    result: "O Lovable deve criar as primeiras telas e o fluxo principal.",
+    content: `Agora construa a primeira versão do app com base no plano abaixo.
 
 Plano do app:
-[cole aqui o plano gerado pelo Arquiteto de Apps]
+[cole aqui o plano gerado no Comando 1]
+
+Regras obrigatórias:
+1. Criar apenas o MVP.
+2. O MVP deve ter no máximo 5 funcionalidades principais.
+3. A interface deve ser simples e fácil de entender.
+4. O usuário deve conseguir usar sem tutorial.
+5. O fluxo principal deve ter no máximo 5 etapas.
+6. Priorizar visual mobile first.
+7. Criar telas limpas, modernas e organizadas.
+8. Criar estados de carregamento, erro, sucesso e vazio.
+9. Não criar funcionalidades extras.
+10. Não complicar o banco de dados.
+
+Entregue uma primeira versão funcional para teste.`,
+  },
+  {
+    n: 3,
+    title: "Criar banco de dados, login e regras de acesso",
+    purpose: "Serve para fazer o app salvar informações e controlar quem pode acessar.",
+    when:
+      "Use se o app precisa de login, usuários, pedidos, tarefas, mensagens, produtos ou área restrita.",
+    where: "Cole no Lovable depois que as primeiras telas existirem.",
+    result: "O Lovable deve criar tabelas, autenticação e regras básicas de segurança.",
+    content: `Agora adicione banco de dados, autenticação e regras de acesso ao app.
+
+Contexto do app:
+[cole aqui o resumo do app]
+
+O app precisa salvar:
+[explique o que precisa ser salvo: usuários, pedidos, tarefas, mensagens, produtos, pagamentos ou outros dados]
+
+Crie:
+1. Login e cadastro de usuários
+2. Tabelas necessárias no Supabase
+3. Campos principais de cada tabela
+4. Relacionamentos entre tabelas
+5. Regras de acesso por usuário
+6. Proteção para usuário ver apenas seus próprios dados
+7. Estados de erro e sucesso
+8. Mensagens simples para o usuário
+9. Área restrita, se necessário
+10. Estrutura segura e simples
 
 Regras:
-1. MVP com no máximo 5 funcionalidades principais
-2. Interface autoexplicativa
-3. Fluxo do usuário em até 5 etapas
-4. Não criar funcionalidades fora do escopo
-5. Usar componentes reutilizáveis
-6. Priorizar velocidade, clareza e validação
+- Não expor dados de outros usuários.
+- Não criar tabelas desnecessárias.
+- Não usar service role no frontend.
+- Manter o MVP simples.
+- Explicar o que foi criado.`,
+  },
+  {
+    n: 4,
+    title: "Melhorar o design e deixar bonito no celular",
+    purpose: "Serve para deixar o app mais bonito, claro e profissional.",
+    when: "Use depois que o app já tiver as telas principais.",
+    where: "Cole no Lovable dentro do projeto.",
+    result:
+      "O Lovable deve melhorar layout, cores, espaçamento, botões e experiência mobile.",
+    content: `Melhore o design do app para parecer mais profissional, moderno e fácil de usar.
 
-Entregue o app funcional com estrutura organizada.`;
+Objetivo:
+Deixar o app bonito, claro e mobile first.
 
-const promptCursor = `Você é um engenheiro full stack sênior trabalhando no Cursor.
-Implemente o app descrito no plano abaixo em React + TypeScript + Tailwind, com Supabase quando necessário.
+Ajuste:
+1. Hierarquia visual
+2. Tamanho dos títulos
+3. Espaçamento entre seções
+4. Botões principais
+5. Cards
+6. Cores
+7. Contraste
+8. Navegação
+9. Estados vazios
+10. Mensagens de erro e sucesso
 
-Plano:
-[cole aqui o plano]
+Estilo:
+- Moderno
+- Limpo
+- Mobile first
+- Fácil de entender
+- Sem poluição visual
 
 Regras:
-1. Código limpo, tipado e modular
-2. Componentes pequenos e reutilizáveis
-3. Estados de carregamento, erro e sucesso explícitos
-4. Sem dependências desnecessárias
-5. Pronto para deploy`;
+- Não mude a lógica principal do app.
+- Não adicione funcionalidades novas.
+- Apenas melhore a experiência e o visual.
+- O usuário deve entender o que fazer em menos de 5 segundos.`,
+  },
+  {
+    n: 5,
+    title: "Criar página de venda",
+    purpose: "Serve para criar uma landing page para vender ou apresentar o app.",
+    when: "Use quando o app já tiver uma ideia clara e uma promessa.",
+    where: "Cole no Lovable dentro do projeto.",
+    result:
+      "O Lovable deve criar uma página pública com headline, benefícios, preço, FAQ e CTA.",
+    content: `Crie uma página de venda para este app.
 
-const promptReplit = `Crie um projeto no Replit a partir do plano abaixo.
-Use a stack mais simples possível que atenda o MVP.
+Nome do app:
+[informe o nome]
 
-Plano:
-[cole aqui o plano]
-
-Entregue:
-1. Estrutura inicial do projeto
-2. Páginas essenciais
-3. Banco de dados mínimo
-4. Instruções para rodar
-5. Instruções para publicar`;
-
-const promptSupabase = `Modele o backend no Supabase para o plano abaixo.
-
-Plano:
-[cole aqui o plano]
-
-Entregue:
-1. Lista de tabelas e colunas
-2. Relacionamentos
-3. Policies de RLS por tabela
-4. Funções e triggers quando necessário
-5. Buckets de storage quando necessário
-6. SQL completo de migração`;
-
-const promptLanding = `Crie uma landing page de alta conversão para o app abaixo.
-
-App:
-[cole aqui o nome e descrição]
+Descrição:
+[explique o app]
 
 Público:
-[cole aqui o público]
+[quem vai usar]
 
 Problema:
-[cole aqui a dor]
+[qual dor resolve]
 
 Promessa:
-[cole aqui a promessa]
+[qual resultado entrega]
 
-Estrutura obrigatória:
+Preço:
+[informe o preço ou escreva "ainda não definido"]
+
+A página deve ter:
 1. Hero com headline forte
 2. Subheadline clara
-3. CTA principal
-4. Seção de dor
-5. Seção de solução
+3. Botão principal de ação
+4. Seção explicando a dor
+5. Seção mostrando a solução
 6. Como funciona
-7. Benefícios
-8. Prova ou exemplo
+7. Benefícios principais
+8. O que está incluso
 9. Preço
-10. FAQ
+10. Perguntas frequentes
 11. CTA final
 
-Estilo: mobile first, visual moderno, claro e direto.`;
-
-const promptPreco = `Crie uma página de preços simples e direta para o app abaixo.
-
-App:
-[descreva o app]
-
-Entregue:
-1. Headline da oferta
-2. Comparativo de planos, se houver mais de um
-3. O que está incluso em cada plano
-4. Garantia, se houver
-5. CTA principal
-6. Microcopy de segurança
-7. FAQ curto`;
-
-const promptCheckout = `Crie uma página de checkout simples e objetiva para vender o app/produto abaixo.
+Regras:
+- Página mobile first.
+- Texto claro e direto.
+- Não exagerar promessas.
+- Não prometer dinheiro garantido.
+- Não deixar a página longa demais.
+- Foco em conversão.`,
+  },
+  {
+    n: 6,
+    title: "Criar checkout e página de obrigado",
+    purpose:
+      "Serve para organizar o caminho de compra e o que acontece depois do pagamento.",
+    when: "Use quando o app ou produto for vendido.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar fluxo de compra, página de obrigado e instruções de acesso.",
+    content: `Crie o fluxo de compra e pós-compra para este produto.
 
 Produto:
 [descreva o produto]
@@ -185,686 +254,324 @@ Produto:
 Preço:
 [informe o preço]
 
-Público:
-[informe o público]
+O usuário compra para receber:
+[explique o que recebe]
 
-A página deve conter:
-1. Resumo da oferta
-2. Benefícios principais
-3. O que está incluso
-4. Garantia, se houver
-5. Formas de pagamento
-6. CTA de pagamento
-7. Mensagem de segurança
-8. Perguntas frequentes
-
-Não adicionar distrações.`;
-
-const promptFAQ = `Crie um FAQ curto e objetivo para o app abaixo.
-
-App:
-[descreva o app]
-
-Cubra:
-1. O que é
-2. Para quem é
-3. Para quem não é
-4. Como funciona
-5. Quanto custa
-6. Como receber acesso
-7. Política de reembolso
-8. Suporte`;
-
-const promptConfianca = `Crie uma página de confiança para o app abaixo, focada em remover objeções.
-
-App:
-[descreva o app]
-
-Inclua:
-1. Quem está por trás
-2. Compromisso com o cliente
-3. Política de privacidade resumida
-4. Política de reembolso
-5. Canais de suporte
-6. Limitações e o que não está incluso`;
-
-const promptCobranca = `Analise o app abaixo e recomende o melhor modelo de cobrança.
-
-App:
-[cole aqui a descrição]
-
-Entregue:
-1. Modelo recomendado (assinatura, venda única, freemium, etc.)
-2. Justificativa
-3. Faixa de preço sugerida
-4. Riscos do modelo
-5. Plano B de monetização`;
-
-const promptFreePremium = `Defina o plano gratuito e o plano premium para o app abaixo.
-
-App:
-[cole aqui a descrição]
-
-Entregue:
-1. O que entra no gratuito
-2. O que NÃO entra no gratuito
-3. O que entra no premium
-4. Limites de uso
-5. Como o gratuito leva ao premium sem canibalizar a receita`;
-
-const prompt10K = `Monte um plano realista para o app abaixo atingir R$10.000 por mês.
-
-App:
-[cole aqui a descrição]
-
-Entregue:
-1. Preço sugerido
-2. Quantos clientes pagantes são necessários
-3. Canais de aquisição priorizados
-4. Estratégia semana 1, mês 1 e mês 3
-5. Métricas que precisam ser acompanhadas`;
-
-const promptUpsell = `Crie uma estratégia de upsell para o app abaixo.
-
-App:
-[cole aqui a descrição]
-
-Entregue:
-1. Quando oferecer o upsell
-2. O que oferecer
-3. Como apresentar
-4. Mensagem pronta
-5. Métrica de sucesso`;
-
-const promptRetencao = `Crie um plano de retenção para o app abaixo.
-
-App:
-[cole aqui a descrição]
-
-Entregue:
-1. Principais motivos de cancelamento esperados
-2. Ações para reduzir cada motivo
-3. Comunicação por e-mail nos primeiros 30 dias
-4. Rituais de uso recorrente
-5. Métricas de retenção`;
-
-const checklistMVP = `Analise o MVP abaixo:
-[cole aqui o MVP]
-
-Responda:
-1. A ação principal está clara?
-2. O MVP tem no máximo 5 funcionalidades?
-3. O usuário entende sem tutorial?
-4. Existe uma promessa objetiva?
-5. O app resolve uma dor real?
-6. Existe forma de monetizar?
-7. O fluxo tem até 5 etapas?
-8. O produto pode ser validado com 10 usuários?
-9. O que deve ser cortado agora?
-10. Qual é o maior risco?`;
-
-const checklistValidacao = `Crie um plano de validação para testar este app com 10 usuários reais.
-
-App:
-[cole aqui a descrição]
-
-Entregue:
-1. Perfil dos 10 usuários ideais
-2. Onde encontrar esses usuários
-3. Mensagem pronta para convidar
-4. Tarefas que eles devem executar
-5. Perguntas de feedback
-6. Métrica principal dos primeiros 7 dias
-7. Critério para continuar, ajustar ou abandonar
-8. Melhorias prioritárias após os testes`;
-
-const promptPesquisa = `Crie um roteiro de pesquisa com usuários para o app abaixo.
-
-App:
-[descreva o app]
-
-Entregue:
-1. Objetivo da pesquisa
-2. Perfil dos entrevistados
-3. 10 perguntas abertas
-4. Como conduzir a conversa
-5. Como registrar e analisar respostas`;
-
-const promptFeedback = `Crie um formulário de feedback curto para coletar opinião dos primeiros usuários do app abaixo.
-
-App:
-[descreva o app]
-
-Entregue:
-1. Até 7 perguntas
-2. Mistura de NPS, múltipla escolha e abertas
-3. Mensagem de abertura
-4. Mensagem de agradecimento`;
-
-const promptMelhorias = `Recebi este feedback dos primeiros usuários do meu app:
-[cole aqui os feedbacks]
-
-Quero que você:
-1. Agrupe os feedbacks por tema
-2. Identifique padrões
-3. Sugira até 5 melhorias prioritárias
-4. Diga o que NÃO mexer agora
-5. Sugira a próxima métrica a observar`;
-
-const planoLancamento = `Crie um plano de lançamento em 24 horas para o app abaixo.
-
-App:
-[cole aqui a descrição]
-
-Público:
-[cole aqui o público]
-
-Entregue:
-1. Checklist antes de publicar
-2. Canais gratuitos de aquisição
-3. Texto para Instagram
-4. Mensagem para WhatsApp
-5. Roteiro de stories
-6. Estratégia para conseguir os primeiros 10 usuários
-7. Sistema de coleta de feedback
-8. Métrica principal da primeira semana`;
-
-const legendaInstagram = `Crie 3 opções de legenda para Instagram anunciando o lançamento do app abaixo.
-
-App:
-[descreva o app]
-
-Para cada opção entregue:
-1. Hook na primeira linha
-2. Corpo curto e direto
-3. CTA claro
-4. Até 5 hashtags relevantes`;
-
-const mensagemWhatsapp = `Crie uma mensagem curta de WhatsApp para enviar aos meus contatos anunciando o app abaixo.
-
-App:
-[descreva o app]
+Crie:
+1. Botão de compra
+2. Página ou seção de checkout
+3. Página de obrigado
+4. Instruções pós-compra
+5. Link para acesso restrito
+6. Mensagem para quem já comprou
+7. Mensagem de suporte
+8. Orientação para verificar e-mail, spam e promoções
 
 Regras:
-1. No máximo 5 linhas
-2. Pessoal, não publicitária
-3. Com link no final
-4. Sem emojis em excesso`;
+- Não deixar o comprador perdido.
+- Explicar claramente o que acontece depois da compra.
+- Não mostrar materiais protegidos para quem não comprou.
+- Manter fluxo simples.`,
+  },
+  {
+    n: 7,
+    title: "Criar área de entrega",
+    purpose:
+      "Serve para entregar materiais, prompts, links, arquivos ou acesso ao comprador.",
+    when: "Use quando o produto precisa de uma área exclusiva para clientes.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar uma área protegida e organizada para o comprador.",
+    content: `Crie uma área de entrega protegida para compradores.
 
-const roteiroStories = `Crie um roteiro de stories para lançar o app abaixo.
+A área deve mostrar:
+1. Boas-vindas
+2. O que o usuário comprou
+3. Como usar o produto
+4. Materiais disponíveis
+5. Botões para copiar ou acessar materiais
+6. Checklist de progresso
+7. Suporte
+8. Área para código de acesso, se necessário
+
+Regras:
+- Usuário sem login não pode ver a entrega.
+- Usuário sem acesso não pode ver os materiais.
+- Usuário com acesso deve entender o que fazer em menos de 10 segundos.
+- Não mostrar preço dentro da área de entrega.
+- Não parecer página de venda.
+- Parecer um painel de uso.`,
+  },
+  {
+    n: 8,
+    title: "Criar painel admin",
+    purpose: "Serve para o dono liberar ou revogar acesso de clientes.",
+    when: "Use quando você precisa controlar quem acessa a área de entrega.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar uma tela admin protegida.",
+    content: `Crie um painel administrativo simples para gerenciar acessos.
+
+O admin deve conseguir:
+1. Buscar usuário por e-mail
+2. Ver se o usuário tem acesso ativo
+3. Liberar acesso
+4. Revogar acesso
+5. Ver origem do acesso
+6. Ver data de criação
+
+Regras:
+- Apenas admin pode acessar.
+- Usuário comum não pode acessar.
+- Não expor chave service role no frontend.
+- Usar Supabase Auth e regras seguras.
+- Mostrar mensagens claras de sucesso e erro.
+- Manter a tela simples.`,
+  },
+  {
+    n: 9,
+    title: "Corrigir erro no Lovable",
+    purpose: "Serve para quando algo quebrar ou não funcionar.",
+    when: "Use sempre que aparecer erro, tela travada ou comportamento errado.",
+    where: "Cole no Lovable junto com a descrição do problema.",
+    result: "O Lovable deve diagnosticar e corrigir sem quebrar o resto.",
+    content: `Corrija o erro abaixo sem quebrar o que já funciona.
+
+O que está acontecendo:
+[explique o erro]
+
+Página onde acontece:
+[informe a rota ou tela]
+
+O que eu esperava:
+[explique o comportamento correto]
+
+O que aconteceu de errado:
+[explique o problema]
+
+Regras:
+1. Diagnostique a causa provável.
+2. Corrija apenas o necessário.
+3. Não remova funcionalidades existentes.
+4. Não quebre login, banco, acesso ou admin.
+5. Preserve o design atual.
+6. Explique o que foi corrigido.
+7. Liste o que eu devo testar depois.`,
+  },
+  {
+    n: 10,
+    title: "Revisar antes de publicar",
+    purpose: "Serve para conferir se o app está pronto para ser mostrado a pessoas reais.",
+    when: "Use antes de publicar.",
+    where: "Cole no Lovable antes do deploy final.",
+    result: "O Lovable deve revisar fluxo, mobile, erros, páginas e segurança básica.",
+    content: `Faça uma revisão final antes de publicar este app.
+
+Verifique:
+1. A página inicial abre corretamente.
+2. Login funciona.
+3. Cadastro funciona.
+4. Recuperação de acesso funciona.
+5. Área restrita está protegida.
+6. Usuário sem acesso não vê conteúdo protegido.
+7. Usuário com acesso entra normalmente.
+8. Admin acessa painel admin.
+9. Botões principais funcionam.
+10. Página funciona bem no celular.
+11. Não existem textos confusos.
+12. Não existem links quebrados.
+13. Estados de erro são claros.
+14. Estados de sucesso são claros.
+15. O app está simples o suficiente para testar com 10 usuários.
+
+Depois da revisão, entregue:
+1. Problemas encontrados
+2. Correções aplicadas
+3. O que ainda precisa ser testado manualmente
+4. Checklist final para publicar`,
+  },
+  {
+    n: 11,
+    title: "Validar com 10 pessoas",
+    purpose: "Serve para testar se pessoas reais entendem e querem usar o app.",
+    when: "Use depois que a primeira versão estiver pronta.",
+    where:
+      "Cole no Lovable se quiser criar uma página ou seção de validação, ou use como orientação.",
+    result: "O Lovable pode ajudar a criar formulário, página de feedback ou checklist.",
+    content: `Crie uma estrutura simples para validar este app com 10 usuários reais.
 
 App:
 [descreva o app]
 
-Entregue 5 stories sequenciais:
-1. Problema
-2. Bastidor
-3. Solução
-4. Demonstração curta
-5. CTA com link`;
+Público:
+[quem deve testar]
 
-const checklistPublicar = `Antes de publicar o app, confirme:
-1. Domínio e link funcionando
-2. Login e cadastro testados
-3. Pagamento ou checkout testado
-4. Página de suporte com canal real
-5. Política de privacidade publicada
-6. Termos de uso publicados
-7. Mensagens de erro amigáveis
-8. Teste em celular real
-9. Tempo de carregamento aceitável
-10. Plano para os primeiros 10 usuários`;
+Crie:
+1. Página ou seção de feedback
+2. Perguntas simples para o usuário
+3. Formulário de avaliação
+4. Campo para nota de 0 a 10
+5. Campo para sugestão
+6. Checklist de tarefas que o usuário deve fazer
+7. Mensagem de convite
+8. Mensagem de agradecimento
 
-// ---------- Library structure ----------
-type PromptCard = {
-  title: string;
-  description: string;
-  content: string;
-  purpose?: string;
-  when?: string;
-  where?: string;
-  output?: string;
-};
-type Category = { id: string; icon: JSX.Element; title: string; description: string; prompts: PromptCard[] };
+Perguntas:
+1. Você entendeu para que serve o app?
+2. Conseguiu usar sem ajuda?
+3. O que ficou confuso?
+4. Você usaria de novo?
+5. Você pagaria por isso?
+6. O que melhoraria primeiro?
 
-const promptSuporte = `Estou travado na construção do meu app.
+Regras:
+- Não complicar.
+- Coletar feedback simples.
+- Ajudar a decidir se vale continuar.`,
+  },
+  {
+    n: 12,
+    title: "Melhorar depois do feedback",
+    purpose: "Serve para transformar comentários dos usuários em melhorias reais.",
+    when: "Use depois de testar com pessoas.",
+    where: "Cole no Lovable com os feedbacks recebidos.",
+    result: "O Lovable deve priorizar melhorias e aplicar as mais importantes.",
+    content: `Analise os feedbacks abaixo e melhore o app com prioridade.
 
-Contexto:
-[explique onde travou]
-
-Ferramenta usada:
-[Lovable, Cursor, Replit, Supabase, Firebase ou outra]
-
-Erro ou dúvida:
-[cole aqui]
-
-O que eu estava tentando fazer:
-[explique]
+Feedbacks:
+[cole aqui os feedbacks dos usuários]
 
 Quero que você:
-1. Diagnostique o problema
-2. Explique a causa provável
-3. Sugira a correção mais simples
-4. Me dê um passo a passo
-5. Evite soluções complexas desnecessárias
-6. Me diga o que testar depois da correção`;
+1. Identifique os problemas mais repetidos.
+2. Separe problema grave de opinião isolada.
+3. Diga o que corrigir primeiro.
+4. Melhore a experiência do usuário.
+5. Melhore textos confusos.
+6. Não adicione funcionalidades grandes.
+7. Preserve o MVP simples.
+8. Explique o que foi alterado.
 
-const library: Category[] = [
-  {
-    id: "criar",
-    icon: <Wand2 size={16} />,
-    title: "Criar o app",
-    description: "Tudo para sair da ideia e chegar no app funcionando.",
-    prompts: [
-      {
-        title: "Prompt Mestre Universal",
-        description: "Transforma qualquer ideia em plano completo.",
-        content: promptMestre,
-        purpose: "Organiza uma ideia bagunçada em um plano claro.",
-        when: "Quando você ainda não sabe exatamente o que construir.",
-        where: "No Arquiteto de Apps ou em outro chat de IA.",
-        output: "Diagnóstico, MVP, telas, banco, monetização, riscos e prompt final.",
-      },
-      {
-        title: "Prompt para Lovable",
-        description: "Pronto para colar no Lovable.",
-        content: promptLovable,
-        purpose: "Pede ao Lovable para construir o app com telas, fluxo, banco e design.",
-        when: "Depois que o Arquiteto de Apps gerar o plano completo.",
-        where: "No Lovable, no campo onde você descreve o app.",
-        output: "Uma primeira versão funcional do app.",
-      },
-      {
-        title: "Prompt para Cursor",
-        description: "Para implementar via Cursor.",
-        content: promptCursor,
-        purpose: "Orienta o Cursor a criar arquivos, componentes, páginas e lógica.",
-        when: "Quando você estiver trabalhando com código.",
-        where: "No Cursor, como instrução principal do projeto.",
-        output: "Código organizado para construir ou melhorar seu app.",
-      },
-      {
-        title: "Prompt para Replit",
-        description: "Para subir um MVP no Replit.",
-        content: promptReplit,
-        purpose: "Monta rapidamente um protótipo funcional.",
-        when: "Quando quiser testar uma ideia sem configurar ambiente complexo.",
-        where: "No Replit Agent ou no campo de criação com IA.",
-        output: "Uma primeira versão simples e testável.",
-      },
-      {
-        title: "Prompt para Supabase",
-        description: "Modela o backend no Supabase.",
-        content: promptSupabase,
-        purpose: "Organiza a parte de dados do app.",
-        when: "Quando seu app precisar salvar usuários, pedidos, mensagens, pagamentos etc.",
-        where: "No Lovable, Cursor ou chat de IA antes de criar o banco.",
-        output: "Modelo de dados, tabelas, campos e regras de acesso.",
-      },
-    ],
-  },
-  {
-    id: "vender",
-    icon: <Megaphone size={16} />,
-    title: "Vender o app",
-    description: "Páginas e textos para vender o que você construiu.",
-    prompts: [
-      {
-        title: "Prompt para Landing Page",
-        description: "Landing de alta conversão.",
-        content: promptLanding,
-        purpose: "Explica o problema, apresenta a solução e leva o visitante para a compra.",
-        when: "Depois de saber qual é a promessa do app.",
-        where: "No Lovable, Cursor ou chat de IA.",
-        output: "Estrutura e copy de uma página de venda.",
-      },
-      {
-        title: "Prompt para Página de Preço",
-        description: "Página de preços simples.",
-        content: promptPreco,
-        purpose: "Mostra o valor do produto e o que está sendo comprado.",
-        when: "Quando já souber o preço.",
-        where: "No Lovable ou chat de IA.",
-        output: "Uma seção ou página de preço organizada.",
-      },
-      {
-        title: "Prompt para Checkout",
-        description: "Checkout objetivo.",
-        content: promptCheckout,
-        purpose: "Reduz dúvidas na hora da compra.",
-        when: "Quando já tiver uma oferta pronta.",
-        where: "No Lovable, Cursor ou ferramenta de checkout.",
-        output: "Uma estrutura de checkout clara.",
-      },
-      {
-        title: "Prompt para FAQ",
-        description: "FAQ que remove objeções.",
-        content: promptFAQ,
-        purpose: "Remove objeções do usuário antes da compra.",
-        when: "Na landing page, checkout ou área de suporte.",
-        where: "No Lovable ou chat de IA.",
-        output: "Perguntas e respostas claras.",
-      },
-      {
-        title: "Prompt para Página de Confiança",
-        description: "Quem está por trás e por que confiar.",
-        content: promptConfianca,
-        purpose: "Passa confiança ao comprador.",
-        when: "Em produtos pagos, SaaS ou áreas com login.",
-        where: "No Lovable ou Cursor.",
-        output: "Uma página de confiança com informações essenciais.",
-      },
-    ],
-  },
-  {
-    id: "monetizar",
-    icon: <DollarSign size={16} />,
-    title: "Monetizar",
-    description: "Estratégia para transformar o app em receita.",
-    prompts: [
-      {
-        title: "Prompt de Modelo de Cobrança",
-        description: "Define o melhor modelo.",
-        content: promptCobranca,
-        purpose: "Escolhe preço, plano gratuito, plano pago e estratégia de upgrade.",
-        when: "Antes de lançar ou vender.",
-        where: "No Arquiteto de Apps ou chat de IA.",
-        output: "Um modelo de cobrança realista.",
-      },
-      {
-        title: "Prompt de Plano Gratuito e Premium",
-        description: "Free vs premium sem canibalizar.",
-        content: promptFreePremium,
-        purpose: "Define o que entra no gratuito e o que entra no premium.",
-        when: "Quando seu app tiver plano gratuito.",
-        where: "No chat de IA.",
-        output: "Limites claros entre free e premium.",
-      },
-      {
-        title: "Prompt para R$10K/mês",
-        description: "Plano realista para chegar lá.",
-        content: prompt10K,
-        purpose: "Transforma meta de faturamento em número de vendas.",
-        when: "Depois de definir preço.",
-        where: "No chat de IA.",
-        output: "Cálculo de vendas, ticket e estratégia.",
-      },
-      {
-        title: "Prompt de Upsell",
-        description: "Aumenta ticket por cliente.",
-        content: promptUpsell,
-        purpose: "Aumenta o faturamento sem precisar de mais clientes.",
-        when: "Depois de vender o produto principal.",
-        where: "No chat de IA ou Lovable.",
-        output: "Uma oferta complementar.",
-      },
-      {
-        title: "Prompt de Retenção",
-        description: "Reduz churn nos primeiros 30 dias.",
-        content: promptRetencao,
-        purpose: "Evita que o usuário cancele rápido demais.",
-        when: "Depois das primeiras vendas ou assinaturas.",
-        where: "No chat de IA.",
-        output: "Plano de retenção e comunicação.",
-      },
-    ],
-  },
-  {
-    id: "validar",
-    icon: <ClipboardCheck size={16} />,
-    title: "Validar",
-    description: "Confirme se vale construir antes de escalar.",
-    prompts: [
-      {
-        title: "Checklist de MVP",
-        description: "Testa se o MVP está enxuto.",
-        content: checklistMVP,
-        purpose: "Corta excesso do MVP.",
-        when: "Antes de construir.",
-        where: "No Arquiteto de Apps ou chat de IA.",
-        output: "Análise crítica do MVP.",
-      },
-      {
-        title: "Checklist de Validação com 10 usuários",
-        description: "Plano de teste com usuários reais.",
-        content: checklistValidacao,
-        purpose: "Valida antes de gastar tempo e dinheiro.",
-        when: "Depois de ter um protótipo ou plano claro.",
-        where: "No chat de IA.",
-        output: "Plano de teste com pessoas reais.",
-      },
-      {
-        title: "Prompt de Pesquisa com Usuários",
-        description: "Roteiro de entrevista.",
-        content: promptPesquisa,
-        purpose: "Descobre se a dor existe de verdade.",
-        when: "Antes ou durante a validação.",
-        where: "No chat de IA.",
-        output: "Perguntas para entrevista e pesquisa.",
-      },
-      {
-        title: "Prompt de Feedback",
-        description: "Formulário curto de feedback.",
-        content: promptFeedback,
-        purpose: "Coleta opinião dos primeiros usuários.",
-        when: "Logo após colocar o app na mão de alguém.",
-        where: "No chat de IA.",
-        output: "Formulário curto de feedback.",
-      },
-      {
-        title: "Prompt de Melhorias",
-        description: "Prioriza melhorias a partir do feedback.",
-        content: promptMelhorias,
-        purpose: "Transforma comentários em melhorias priorizadas.",
-        when: "Depois de receber feedback.",
-        where: "No chat de IA.",
-        output: "Lista de melhorias por prioridade.",
-      },
-    ],
-  },
-  {
-    id: "lancar",
-    icon: <Rocket size={16} />,
-    title: "Lançar",
-    description: "Vá ao ar e conquiste os primeiros usuários.",
-    prompts: [
-      {
-        title: "Plano de Lançamento em 24h",
-        description: "Passo a passo para lançar.",
-        content: planoLancamento,
-        purpose: "Consegue os primeiros usuários sem complicar.",
-        when: "Quando tiver uma primeira versão ou página de espera.",
-        where: "No chat de IA.",
-        output: "Plano de divulgação para as primeiras 24 horas.",
-      },
-      {
-        title: "Legenda para Instagram",
-        description: "3 opções de legenda.",
-        content: legendaInstagram,
-        purpose: "Divulga sem parecer confuso.",
-        when: "No lançamento ou pré-lançamento.",
-        where: "No chat de IA.",
-        output: "Legendas prontas para postar.",
-      },
-      {
-        title: "Mensagem para WhatsApp",
-        description: "Mensagem pessoal para contatos.",
-        content: mensagemWhatsapp,
-        purpose: "Convida pessoas a testar seu app.",
-        when: "Na validação com 10 pessoas.",
-        where: "No chat de IA.",
-        output: "Mensagem curta para enviar.",
-      },
-      {
-        title: "Roteiro de Stories",
-        description: "5 stories sequenciais.",
-        content: roteiroStories,
-        purpose: "Apresenta a ideia em vídeo curto.",
-        when: "No Instagram, WhatsApp ou TikTok.",
-        where: "No chat de IA.",
-        output: "Roteiro curto de vídeo.",
-      },
-      {
-        title: "Checklist antes de publicar",
-        description: "Última checagem antes de ir ao ar.",
-        content: checklistPublicar,
-        purpose: "Evita publicar com erros básicos.",
-        when: "Antes de ir ao ar.",
-        where: "Leitura direta.",
-        output: "Checklist final de publicação.",
-      },
-    ],
-  },
-  {
-    id: "suporte",
-    icon: <LifeBuoy size={16} />,
-    title: "Suporte e correção",
-    description: "Use quando travar em alguma etapa.",
-    prompts: [
-      {
-        title: "Prompt de Suporte",
-        description: "Explica o problema e recebe uma solução simples.",
-        content: promptSuporte,
-        purpose: "Explica o problema e recebe um passo a passo de correção.",
-        when: "Quando algo não funcionar.",
-        where: "No Arquiteto de Apps, ChatGPT, Claude, Gemini, Cursor ou Lovable.",
-        output: "Diagnóstico e passo a passo de correção.",
-      },
-    ],
+Critério:
+Só faça mudanças que ajudem o usuário a completar a ação principal do app.`,
   },
 ];
 
-
-// ---------- Helpers ----------
-const STORAGE_PROGRESS = "fabrica_apps_progress_v2";
 const progressItems = [
-  "Copiei o prompt de entrada",
-  "Enviei minha ideia para o Arquiteto",
-  "Recebi meu plano completo",
-  "Copiei o prompt para construir",
-  "Comecei meu MVP",
-  "Mostrei para 10 pessoas",
-  "Anotei os feedbacks",
-  "Escolhi o que melhorar primeiro",
+  "Copiei o Comando 1",
+  "Colei no Lovable",
+  "Recebi o plano do app",
+  "Usei o Comando 2",
+  "Criei a primeira versão",
+  "Testei no celular",
+  "Criei página de venda",
+  "Testei com 10 pessoas",
+  "Corrigi os primeiros erros",
+  "Publiquei a primeira versão",
 ];
 
-const comoUsarPassos: { title: string; desc: string }[] = [
-  { title: "Copie o prompt de entrada", desc: "Este prompt ajuda você a explicar sua ideia do jeito certo." },
-  { title: "Abra o Arquiteto de Apps", desc: "Cole o prompt no agente e responda as perguntas." },
-  { title: "Receba seu plano", desc: "O agente vai organizar MVP, telas, fluxo, banco, design, monetização e riscos." },
-  { title: "Use os prompts extras", desc: "Depois do plano pronto, use os prompts para Lovable, landing, checkout, monetização e validação." },
-  { title: "Construa e teste", desc: "Crie uma primeira versão simples e mostre para 10 pessoas reais." },
-];
+// ===================== Componente do comando =====================
 
-const ordemRecomendada: { title: string; desc: string }[] = [
-  { title: "Gerar o plano", desc: "Use o prompt de entrada." },
-  { title: "Construir o app", desc: "Use o prompt para Lovable ou Cursor." },
-  { title: "Criar a página de venda", desc: "Use o prompt de landing page." },
-  { title: "Definir preço", desc: "Use o prompt de monetização." },
-  { title: "Validar com 10 usuários", desc: "Use o checklist de validação." },
-  { title: "Lançar", desc: "Use o prompt de lançamento." },
-];
-
-const exemploPreenchido = `Minha ideia é:
-Um app para pequenos restaurantes receberem pedidos pelo WhatsApp e organizarem as entregas.
-
-Quem vai usar:
-Donos de pequenos restaurantes, lanchonetes e marmitarias.
-
-O problema que resolve:
-Eles recebem muitos pedidos bagunçados no WhatsApp e se perdem na entrega.
-
-Como pretendo ganhar dinheiro:
-Mensalidade simples de R$29 por restaurante.`;
-
-
-
-function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
+function CommandCard({
+  cmd,
+  done,
+  onToggle,
+}: {
+  cmd: Command;
+  done: boolean;
+  onToggle: () => void;
+}) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(prompt.content);
+      await navigator.clipboard.writeText(cmd.content);
       setCopied(true);
-      toast.success("Prompt copiado com sucesso.");
+      toast.success(`Comando ${cmd.n} copiado. Agora cole no Lovable.`);
       setTimeout(() => setCopied(false), 1800);
     } catch {
       toast.error("Não foi possível copiar.");
     }
   };
-  const hasMeta = !!(prompt.purpose || prompt.when || prompt.where || prompt.output);
+
   return (
-    <div className="glass p-4 md:p-5 flex flex-col gap-3 h-full">
-      <div className="flex-1">
-        <h4 className="font-heading font-semibold text-foreground text-sm md:text-base mb-1">{prompt.title}</h4>
-        <p className="text-xs text-muted-foreground leading-relaxed">{prompt.description}</p>
-        {hasMeta && (
-          <dl className="mt-3 space-y-2 text-xs">
-            {prompt.purpose && (
-              <div>
-                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Para que serve</dt>
-                <dd className="text-foreground/85">{prompt.purpose}</dd>
-              </div>
-            )}
-            {prompt.when && (
-              <div>
-                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Quando usar</dt>
-                <dd className="text-foreground/85">{prompt.when}</dd>
-              </div>
-            )}
-            {prompt.where && (
-              <div>
-                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Onde colar</dt>
-                <dd className="text-foreground/85">{prompt.where}</dd>
-              </div>
-            )}
-            {prompt.output && (
-              <div>
-                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">O que você vai receber</dt>
-                <dd className="text-foreground/85">{prompt.output}</dd>
-              </div>
-            )}
-          </dl>
-        )}
-        <details className="mt-3 group" open>
-          <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground/80 hover:text-accent transition select-none">
-            Ver / esconder conteúdo do prompt
-          </summary>
-          <pre className="mt-2 text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3 max-h-72 overflow-y-auto">
-{prompt.content}
-          </pre>
-        </details>
+    <GlassCard className="p-6 space-y-4">
+      <div className="flex items-start gap-4">
+        <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent font-heading font-bold flex items-center justify-center">
+          {cmd.n}
+        </div>
+        <div className="flex-1">
+          <h3 className="font-heading font-semibold text-lg leading-snug">
+            Comando {cmd.n} — {cmd.title}
+          </h3>
+        </div>
       </div>
-      <button
-        onClick={copy}
-        className="inline-flex items-center justify-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 transition"
-      >
-        {copied ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
-        {copied ? "Copiado" : "Copiar prompt"}
-      </button>
-    </div>
+
+      <dl className="grid sm:grid-cols-2 gap-3 text-sm">
+        {[
+          ["Para que serve", cmd.purpose],
+          ["Quando usar", cmd.when],
+          ["Onde colar", cmd.where],
+          ["Resultado esperado", cmd.result],
+        ].map(([label, text]) => (
+          <div key={label} className="rounded-lg bg-white/5 border border-white/10 p-3">
+            <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+              {label}
+            </dt>
+            <dd className="text-foreground/85 text-[13px] leading-snug">{text}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <details className="group" open>
+        <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground/80 hover:text-accent transition select-none">
+          Ver o comando
+        </summary>
+        <pre className="mt-2 text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3 max-h-80 overflow-y-auto">
+{cmd.content}
+        </pre>
+      </details>
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2 border-t border-white/5">
+        <button
+          onClick={copy}
+          className="btn-primary flex-1 justify-center"
+        >
+          {copied ? <Check size={16} /> : <Copy size={16} />}
+          {copied ? "Copiado" : "Copiar comando"}
+        </button>
+        <label className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer select-none px-3 py-2 rounded-lg border border-white/10">
+          <input
+            type="checkbox"
+            checked={done}
+            onChange={onToggle}
+            className="accent-accent"
+          />
+          Já usei este comando
+        </label>
+      </div>
+    </GlassCard>
   );
 }
+
+// ===================== Página =====================
 
 export default function Entrega() {
   const navigate = useNavigate();
   const auth = useAuthState();
 
-  
-  const [copiedEntry, setCopiedEntry] = useState(false);
-  const [copiedExemplo, setCopiedExemplo] = useState(false);
-  const [copiedSuporte, setCopiedSuporte] = useState(false);
-  const [progress, setProgress] = useState<boolean[]>(() =>
-    progressItems.map(() => false),
-  );
+  const [stepsDone, setStepsDone] = useState<boolean[]>(() => commands.map(() => false));
+  const [progress, setProgress] = useState<boolean[]>(() => progressItems.map(() => false));
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_PROGRESS);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length === progressItems.length) {
+      const a = localStorage.getItem(STORAGE_STEPS);
+      if (a) {
+        const parsed = JSON.parse(a);
+        if (Array.isArray(parsed) && parsed.length === commands.length)
+          setStepsDone(parsed.map(Boolean));
+      }
+      const b = localStorage.getItem(STORAGE_PROGRESS);
+      if (b) {
+        const parsed = JSON.parse(b);
+        if (Array.isArray(parsed) && parsed.length === progressItems.length)
           setProgress(parsed.map(Boolean));
-        }
       }
     } catch {
       /* ignore */
@@ -873,11 +580,21 @@ export default function Entrega() {
 
   useEffect(() => {
     try {
+      localStorage.setItem(STORAGE_STEPS, JSON.stringify(stepsDone));
+    } catch {
+      /* ignore */
+    }
+  }, [stepsDone]);
+
+  useEffect(() => {
+    try {
       localStorage.setItem(STORAGE_PROGRESS, JSON.stringify(progress));
     } catch {
       /* ignore */
     }
   }, [progress]);
+
+  const doneCount = useMemo(() => stepsDone.filter(Boolean).length, [stepsDone]);
 
   const logout = async () => {
     await clearSession();
@@ -906,16 +623,11 @@ export default function Entrega() {
             </div>
             <h1 className="text-2xl font-heading font-bold mb-2">Área restrita</h1>
             <p className="text-sm text-muted-foreground mb-6">
-              Entre com o e-mail usado na compra para acessar seus prompts, checklists e materiais.
+              Entre com o e-mail usado na compra para acessar seus comandos do Lovable.
             </p>
-            <div className="space-y-3">
-              <button onClick={() => navigate("/login")} className="btn-primary w-full">
-                Entrar na área restrita
-              </button>
-              <button onClick={() => navigate("/precos")} className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm">
-                Comprar acesso
-              </button>
-            </div>
+            <button onClick={() => navigate("/login")} className="btn-primary w-full">
+              Entrar na área restrita
+            </button>
           </div>
         </div>
       </Section>
@@ -930,24 +642,23 @@ export default function Entrega() {
             <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
               <Lock className="text-amber-400" size={22} />
             </div>
-            <h1 className="text-2xl font-heading font-bold mb-2">Acesso ainda não liberado</h1>
+            <h1 className="text-2xl font-heading font-bold mb-2">
+              Acesso ainda não liberado
+            </h1>
             <p className="text-sm text-muted-foreground mb-6">
               Sua conta foi criada, mas seu acesso aos materiais ainda não está ativo.
             </p>
             <div className="space-y-3">
-              <button onClick={() => navigate("/login")} className="btn-primary w-full">
-                Tenho um código de acesso
-              </button>
               <button
                 onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm inline-flex items-center justify-center gap-2"
+                className="btn-primary w-full justify-center"
               >
                 <LifeBuoy size={14} /> Falar com suporte
               </button>
-              <button onClick={() => navigate("/precos")} className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm">
-                Comprar acesso
-              </button>
-              <button onClick={logout} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mt-2">
+              <button
+                onClick={logout}
+                className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mt-2"
+              >
                 <LogOut size={12} /> Sair desta conta
               </button>
             </div>
@@ -957,271 +668,238 @@ export default function Entrega() {
     );
   }
 
-  const session = { email: auth.email ?? "" };
+  const email = auth.email ?? "";
 
-
-  const openAgent = () => {
-    const url = APP_CONFIG.GPT_AGENT_URL;
-    if (!url || !url.trim()) {
-      toast.error("Link do agente ainda não configurado.");
-      return;
-    }
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
-  const copyEntryPrompt = async () => {
+  const copyFirst = async () => {
     try {
-      await navigator.clipboard.writeText(promptEntrada);
-      setCopiedEntry(true);
-      toast.success("Prompt copiado com sucesso.");
-      setTimeout(() => setCopiedEntry(false), 1800);
+      await navigator.clipboard.writeText(commands[0].content);
+      toast.success("Comando 1 copiado. Agora abra o Lovable e cole na conversa do projeto.");
+      const next = [...stepsDone];
+      next[0] = true;
+      setStepsDone(next);
     } catch {
       toast.error("Não foi possível copiar.");
     }
   };
 
-  const toggleProgress = (i: number) =>
-    setProgress((prev) => prev.map((v, idx) => (idx === i ? !v : v)));
-
-  const copyText = async (text: string, setFlag: (v: boolean) => void) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setFlag(true);
-      toast.success("Copiado com sucesso.");
-      setTimeout(() => setFlag(false), 1800);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
+  const openLovable = () => window.open(LOVABLE_URL, "_blank", "noopener,noreferrer");
 
   return (
-    <Section>
-      {/* 1. Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 max-w-5xl mx-auto">
-        <div className="flex items-center gap-3">
-          <Logo size="md" asLink={false} />
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-base md:text-lg font-heading font-bold">Arquiteto de Apps</h1>
-              <span className="text-[10px] uppercase tracking-[0.25em] text-accent border border-accent/30 rounded-full px-2 py-0.5">
-                Área de entrega
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground/70">
-              Logado como: <span className="text-foreground/80">{session.email || "—"}</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <button onClick={openAgent} className="btn-primary text-sm">
-            Gerar meu plano de app agora <ExternalLink size={14} />
-          </button>
-          {auth.status === "authed" && auth.isAdmin && (
-            <button
-              onClick={() => navigate("/admin/acessos")}
-              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded-lg border border-accent/30 text-accent hover:bg-accent/10 transition"
-            >
-              <ShieldCheck size={14} /> Admin
-            </button>
-          )}
-          <button onClick={logout} className="btn-ghost text-sm">
-            <LogOut size={14} /> Sair
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Hero operacional */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <div className="glass-strong p-6 md:p-10 neon-shadow">
-          <h2 className="text-2xl md:text-4xl font-heading font-bold text-gradient mb-3">
-            Bem-vindo ao Arquiteto de Apps
-          </h2>
-          <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-2xl">
-            Aqui você vai transformar sua ideia em um plano de app e depois usar os prompts certos para construir, vender, monetizar, validar e lançar.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button onClick={openAgent} className="btn-primary">
-              Gerar meu plano de app agora <ExternalLink size={16} />
-            </button>
-            <button onClick={() => copyText(promptEntrada, setCopiedEntry)} className="btn-ghost">
-              {copiedEntry ? <Check size={16} className="text-accent" /> : <Copy size={16} />}
-              {copiedEntry ? "Copiado" : "Copiar prompt de entrada"}
-            </button>
-          </div>
-          <p className="text-xs text-muted-foreground/80 mt-4">
-            Comece pelo plano principal. Depois use os prompts extras na ordem.
-          </p>
-        </div>
-      </div>
-
-      {/* 3. Como usar esta página */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Como usar esta página</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Pense nesta página como uma receita de bolo. Você não precisa usar tudo ao mesmo tempo. Siga a ordem: primeiro explique sua ideia, depois gere o plano, depois use os prompts extras.
-        </p>
-        <div className="glass-strong p-5 md:p-6">
-          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {comoUsarPassos.map((p, i) => (
-              <li key={p.title} className="flex flex-col gap-2">
-                <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
-                  {i + 1}
+    <>
+      {/* HERO */}
+      <Section className="pt-10 pb-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <Logo size="md" />
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              {email && (
+                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                  {email}
                 </span>
-                <p className="text-sm font-semibold text-foreground">{p.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{p.desc}</p>
+              )}
+              {auth.isAdmin && (
+                <button
+                  onClick={() => navigate("/admin/acessos")}
+                  className="px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent inline-flex items-center gap-1"
+                >
+                  <ShieldCheck size={12} /> Admin
+                </button>
+              )}
+              <button
+                onClick={logout}
+                className="px-3 py-1.5 rounded-full border border-white/10 hover:bg-white/5 inline-flex items-center gap-1"
+              >
+                <LogOut size={12} /> Sair
+              </button>
+            </div>
+          </div>
+
+          <div className="glass-strong p-8 md:p-10 text-center">
+            <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-4">
+              <Sparkles size={12} /> Sua área de entrega
+            </span>
+            <h1 className="text-3xl md:text-5xl font-heading font-bold leading-tight mb-3">
+              Construa seu app no Lovable com estes comandos
+            </h1>
+            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+              Siga a ordem abaixo. Copie um comando por vez, cole no Lovable e avance
+              para o próximo passo.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button onClick={copyFirst} className="btn-primary">
+                <Copy size={16} /> Copiar primeiro comando
+              </button>
+              <button
+                onClick={openLovable}
+                className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center justify-center gap-2 text-sm"
+              >
+                <ExternalLink size={16} /> Abrir Lovable
+              </button>
+            </div>
+            <div className="mt-6 text-xs text-muted-foreground inline-flex items-center gap-2">
+              <ArrowDown size={12} /> Role para entender como usar
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* O QUE VOCÊ COMPROU */}
+      <Section className="py-10">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-heading font-bold mb-2">O que você comprou</h2>
+          <p className="text-muted-foreground mb-6">
+            Você comprou um guia prático para transformar sua ideia em um app usando o
+            Lovable. Aqui você encontra comandos prontos para copiar, colar e construir
+            seu projeto passo a passo.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                icon: Copy,
+                title: "Comandos prontos para Lovable",
+                text: "Você não precisa inventar o que escrever. Basta copiar e colar.",
+              },
+              {
+                icon: ListChecks,
+                title: "Passo a passo guiado",
+                text: "Use os comandos na ordem certa para não se perder.",
+              },
+              {
+                icon: Layers,
+                title: "Do plano ao app",
+                text:
+                  "Você vai criar estrutura, telas, banco, login, página de venda e entrega.",
+              },
+              {
+                icon: Smartphone,
+                title: "Validação simples",
+                text: "No final, você testa com 10 pessoas antes de escalar.",
+              },
+            ].map(({ icon: Icon, title, text }) => (
+              <GlassCard key={title} className="p-5">
+                <Icon className="text-accent mb-3" size={20} />
+                <h3 className="font-heading font-semibold mb-1">{title}</h3>
+                <p className="text-sm text-muted-foreground">{text}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* COMO USAR ESTA PÁGINA */}
+      <Section className="py-10">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-heading font-bold mb-2">Como usar esta página</h2>
+          <p className="text-muted-foreground mb-6">
+            Funciona assim: leia o passo, copie o comando, cole no Lovable e espere ele
+            construir. Depois volte aqui e siga o próximo comando.
+          </p>
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {[
+              ["Copie o comando", "Clique no botão copiar."],
+              ["Cole no Lovable", "Abra o Lovable e cole o comando na conversa do projeto."],
+              ["Espere o Lovable construir", "O Lovable vai criar ou alterar seu app."],
+              ["Teste o que foi criado", "Clique nos botões, abra as telas e veja se funciona."],
+              ["Volte para o próximo comando", "Continue até publicar sua primeira versão."],
+            ].map(([title, text], i) => (
+              <li
+                key={title}
+                className="rounded-xl border border-white/10 bg-white/5 p-4"
+              >
+                <div className="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30 text-accent text-sm font-bold flex items-center justify-center mb-2">
+                  {i + 1}
+                </div>
+                <h3 className="font-semibold text-sm mb-1">{title}</h3>
+                <p className="text-xs text-muted-foreground">{text}</p>
               </li>
             ))}
           </ol>
         </div>
-      </div>
+      </Section>
 
-      {/* 4. Primeiro passo obrigatório */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Primeiro passo obrigatório</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Antes de usar qualquer outro prompt, comece por este. Ele é o ponto de partida do seu app.
-        </p>
-        <div className="glass-strong p-5 md:p-6">
-          <h3 className="font-heading font-semibold text-base mb-3">Prompt de entrada para o agente</h3>
-          <dl className="grid sm:grid-cols-2 gap-3 text-xs mb-4">
+      {/* COMANDOS */}
+      <Section className="py-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
             <div>
-              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Para que serve</dt>
-              <dd className="text-foreground/85">Contar sua ideia ao Arquiteto de um jeito organizado.</dd>
+              <h2 className="text-2xl font-heading font-bold">
+                Passo a passo para construir no Lovable
+              </h2>
+              <p className="text-muted-foreground">
+                Use estes comandos na ordem. Não pule etapas.
+              </p>
             </div>
-            <div>
-              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Quando usar</dt>
-              <dd className="text-foreground/85">Agora, antes de qualquer outro prompt.</dd>
-            </div>
-            <div>
-              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Onde colar</dt>
-              <dd className="text-foreground/85">No Arquiteto de Apps, no campo de conversa.</dd>
-            </div>
-            <div>
-              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">O que você recebe</dt>
-              <dd className="text-foreground/85">Plano com MVP, telas, fluxo, banco, design, monetização, riscos e prompt mestre.</dd>
-            </div>
-          </dl>
-          <pre className="text-[13px] md:text-[14px] text-foreground/85 whitespace-pre-wrap font-sans leading-7 bg-background/40 border border-white/5 rounded-lg p-4 max-h-96 overflow-y-auto">
-{promptEntrada}
-          </pre>
-          <div className="flex flex-col sm:flex-row gap-2 mt-4">
-            <button onClick={() => copyText(promptEntrada, setCopiedEntry)} className="btn-primary flex-1 sm:flex-initial">
-              {copiedEntry ? <Check size={16} className="text-background" /> : <Copy size={16} />}
-              {copiedEntry ? "Copiado" : "Copiar prompt"}
-            </button>
-            <button onClick={openAgent} className="btn-ghost flex-1 sm:flex-initial">
-              Abrir Arquiteto de Apps <ExternalLink size={16} />
-            </button>
+            <span className="text-xs text-muted-foreground px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+              {doneCount}/{commands.length} comandos usados
+            </span>
+          </div>
+
+          <div className="space-y-5">
+            {commands.map((cmd, i) => (
+              <CommandCard
+                key={cmd.n}
+                cmd={cmd}
+                done={stepsDone[i]}
+                onToggle={() =>
+                  setStepsDone((prev) => {
+                    const next = [...prev];
+                    next[i] = !next[i];
+                    return next;
+                  })
+                }
+              />
+            ))}
           </div>
         </div>
+      </Section>
 
-        {/* Exemplo preenchido */}
-        <div className="glass p-5 md:p-6 mt-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Lightbulb size={16} className="text-gold" />
-            <h3 className="font-heading font-semibold text-sm">Exemplo de como preencher</h3>
-          </div>
-          <pre className="text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3">
-{exemploPreenchido}
-          </pre>
-          <p className="text-xs text-muted-foreground mt-3">
-            Você pode copiar este exemplo e trocar pelas informações da sua ideia.
-          </p>
-          <button onClick={() => copyText(exemploPreenchido, setCopiedExemplo)} className="mt-3 inline-flex items-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 transition">
-            {copiedExemplo ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
-            {copiedExemplo ? "Copiado" : "Copiar exemplo"}
-          </button>
+      {/* SE VOCÊ SE PERDER */}
+      <Section className="py-10">
+        <div className="max-w-3xl mx-auto">
+          <GlassCard className="p-6 md:p-8 text-center">
+            <h2 className="text-xl font-heading font-bold mb-2">
+              Se você se perder, faça só isso
+            </h2>
+            <p className="text-muted-foreground mb-4">
+              Não tente usar todos os comandos no mesmo dia. Comece pelo Comando 1.
+              Depois use o Comando 2. Só avance quando entender o resultado.
+            </p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 text-accent text-sm">
+              <Sparkles size={14} /> Regra simples: um comando por vez.
+            </div>
+          </GlassCard>
         </div>
+      </Section>
 
-        {/* Não sei preencher */}
-        <div className="glass p-5 md:p-6 mt-4">
-          <div className="flex items-center gap-2 mb-2">
-            <HelpCircle size={16} className="text-accent" />
-            <h3 className="font-heading font-semibold text-sm">Não sei preencher tudo. E agora?</h3>
-          </div>
-          <p className="text-sm text-foreground/85 mb-2">
-            Não tem problema. Escreva <span className="text-accent">"não sei"</span> nos campos que você não souber. O Arquiteto de Apps vai te ajudar a decidir.
+      {/* MEU PROGRESSO */}
+      <Section className="py-10">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-heading font-bold mb-2">Meu progresso</h2>
+          <p className="text-muted-foreground mb-6">
+            Marque cada etapa conforme você avança. Salvamos automaticamente neste
+            navegador.
           </p>
-          <p className="text-xs text-muted-foreground">
-            Exemplo — Como pretendo ganhar dinheiro: <span className="text-foreground/80">"ainda não sei"</span>
-          </p>
-        </div>
-      </div>
-
-      {/* 5. Ordem recomendada */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Use nesta ordem</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Esta é a sequência que funciona melhor para sair da ideia e chegar ao lançamento.
-        </p>
-        <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {ordemRecomendada.map((p, i) => (
-            <li key={p.title} className="glass p-4 flex gap-3">
-              <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
-                {i + 1}
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-foreground">{p.title}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{p.desc}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      {/* 6. Biblioteca completa de prompts (sem abas) */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Biblioteca completa de prompts</h2>
-        <p className="text-sm text-muted-foreground mb-6">
-          Todos os prompts abaixo estão explicados. Leia a descrição, copie o prompt e cole na ferramenta indicada.
-        </p>
-        <div className="space-y-10">
-          {library.map((cat, idx) => (
-            <section key={cat.id}>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-accent">{cat.icon}</span>
-                <h3 className="text-base md:text-lg font-heading font-bold">
-                  Seção {idx + 1} — {cat.title}
-                </h3>
-              </div>
-              <p className="text-xs text-muted-foreground mb-4">{cat.description}</p>
-              <div className="grid md:grid-cols-2 gap-3">
-                {cat.prompts.map((p) => (
-                  <CopyPromptCard key={p.title} prompt={p} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </div>
-
-      {/* 7. Checklist de progresso */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Seu progresso</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Marque conforme avançar. Isso ajuda você a não se perder.
-        </p>
-        <div className="glass-strong p-5 md:p-6">
           <ul className="space-y-2">
             {progressItems.map((item, i) => (
               <li key={item}>
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <span
-                    className={`shrink-0 w-5 h-5 rounded-md border flex items-center justify-center transition ${
-                      progress[i]
-                        ? "bg-accent border-accent text-background"
-                        : "border-white/20 group-hover:border-accent/50"
-                    }`}
-                  >
-                    {progress[i] && <Check size={14} strokeWidth={3} />}
-                  </span>
+                <label className="flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
                   <input
                     type="checkbox"
-                    className="sr-only"
-                    checked={progress[i] ?? false}
-                    onChange={() => toggleProgress(i)}
+                    checked={progress[i]}
+                    onChange={() =>
+                      setProgress((prev) => {
+                        const next = [...prev];
+                        next[i] = !next[i];
+                        return next;
+                      })
+                    }
+                    className="accent-accent w-4 h-4"
                   />
-                  <span className={`text-sm ${progress[i] ? "text-foreground/60 line-through" : "text-foreground/90"}`}>
+                  <span
+                    className={`text-sm ${
+                      progress[i] ? "line-through text-muted-foreground" : ""
+                    }`}
+                  >
                     {item}
                   </span>
                 </label>
@@ -1229,49 +907,43 @@ export default function Entrega() {
             ))}
           </ul>
         </div>
-      </div>
+      </Section>
 
-      {/* 8. Travou? */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <GlassCard className="flex flex-col gap-4">
-          <div className="flex items-start gap-3">
-            <LifeBuoy size={20} className="text-gold shrink-0 mt-1" />
+      {/* SUPORTE */}
+      <Section className="py-10">
+        <div className="max-w-3xl mx-auto">
+          <GlassCard className="p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
             <div>
-              <p className="font-heading font-bold text-base">Travou em alguma etapa?</p>
+              <h3 className="font-heading font-semibold mb-1">Travou em algum comando?</h3>
               <p className="text-sm text-muted-foreground">
-                Use o prompt de suporte ou fale com o suporte explicando em qual passo você parou.
+                Fale com a gente e te ajudamos a destravar.
               </p>
             </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
             <button
-              onClick={() => copyText(promptSuporte, setCopiedSuporte)}
-              className="btn-primary flex-1 sm:flex-initial"
-            >
-              {copiedSuporte ? <Check size={16} className="text-background" /> : <Copy size={16} />}
-              {copiedSuporte ? "Copiado" : "Copiar prompt de suporte"}
-            </button>
-            <button
-              className="btn-ghost flex-1 sm:flex-initial"
               onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+              className="px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
             >
-              <LifeBuoy size={16} /> Falar com suporte
+              <LifeBuoy size={14} /> Falar com suporte
             </button>
-          </div>
-        </GlassCard>
-      </div>
-
-      {/* 9. Ativar ou estender acesso (no final) */}
-      <div className="max-w-5xl mx-auto">
-        <div className="flex items-center gap-2 mb-1">
-          <Gift size={18} className="text-gold" />
-          <h2 className="text-lg md:text-xl font-heading font-bold">Ativar ou estender acesso</h2>
+          </GlassCard>
         </div>
-        <p className="text-sm text-muted-foreground mb-4">
-          Use este campo apenas se você recebeu um código de acesso ou código premium.
-        </p>
-        <GiftCodeRedemption />
-      </div>
-    </Section>
+      </Section>
+
+      {/* RESGATAR CÓDIGO PREMIUM (FINAL) */}
+      <Section className="py-12">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-6">
+            <Gift className="mx-auto text-accent mb-3" size={22} />
+            <h2 className="text-xl font-heading font-bold mb-1">
+              Ativar ou estender acesso
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Use esta área apenas se você recebeu um código de acesso.
+            </p>
+          </div>
+          <GiftCodeRedemption />
+        </div>
+      </Section>
+    </>
   );
 }
