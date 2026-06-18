@@ -367,7 +367,19 @@ Regras:
     `Crie o fluxo de recuperação de acesso.
 
 Inclua: link mágico por e-mail, recuperação por senha, mensagens claras e redirecionamento após login.`),
+  cmd(6, "Criar painel de liberação de compradores", "Permite ao dono liberar acesso para quem comprou.", "Depois que checkout e área restrita existirem.", "Cole no Lovable.", "Painel admin com liberação de acesso.",
+    `Crie um painel de liberação de compradores.
+
+O admin deve conseguir:
+1. Buscar usuário por e-mail
+2. Liberar acesso após confirmar pagamento
+3. Revogar acesso
+4. Ver status atual
+5. Ver data e origem do acesso
+
+Regras: só admin acessa, nunca expor service role no frontend.`),
 ];
+
 
 export const COMMANDS_SEO: Command[] = [
   cmd(1, "Criar plano de SEO", "Define palavras e páginas para o Google.", "Antes de gerar páginas SEO.", "Cole no Lovable.", "Plano com palavras e páginas.",
