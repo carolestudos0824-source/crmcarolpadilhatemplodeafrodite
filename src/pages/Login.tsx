@@ -407,7 +407,7 @@ export default function Login() {
                     <Loader2 size={16} className="animate-spin" /> Entrando…
                   </>
                 ) : (
-                  "Entrar"
+                  "Entrar com senha"
                 )}
               </button>
 
