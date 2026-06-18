@@ -18,12 +18,18 @@ import { supabase } from "@/integrations/supabase/client";
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
 
-type Tab = "signin" | "signup";
+type Tab = "magic" | "signin" | "signup";
 type View = "auth" | "no_access" | "code" | "check_email";
+
+const isPreviewEnv =
+  typeof window !== "undefined" &&
+  (window.location.hostname.includes("lovable") ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname.startsWith("127."));
 
 export default function Login() {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("signin");
+  const [tab, setTab] = useState<Tab>("magic");
   const [view, setView] = useState<View>("auth");
 
   // shared
