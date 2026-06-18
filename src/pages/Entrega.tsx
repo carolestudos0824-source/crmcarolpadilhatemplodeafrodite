@@ -295,6 +295,21 @@ export default function Entrega() {
 
         {/* MAIN */}
         <main className="flex-1 min-w-0 p-4 md:p-8">
+          {/* O que você vai fazer nesta etapa */}
+          {active !== "comece" && (
+            <div className="mb-6 rounded-xl border border-accent/30 bg-accent/10 p-4 flex items-start gap-3">
+              <Sparkles size={16} className="text-accent shrink-0 mt-0.5" />
+              <div>
+                <div className="text-[11px] uppercase tracking-wider text-accent mb-1">
+                  O que você vai fazer nesta etapa
+                </div>
+                <p className="text-sm text-foreground/85">
+                  {MODULE_HINTS[active].doNow}
+                </p>
+              </div>
+            </div>
+          )}
+
           <ModuleContent
             active={active}
             checklist={checklist}
@@ -302,8 +317,21 @@ export default function Entrega() {
             goTo={goTo}
           />
 
+          {/* Quando posso avançar? */}
+          <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+            <ArrowRight size={16} className="text-accent shrink-0 mt-0.5" />
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+                Quando posso avançar?
+              </div>
+              <p className="text-sm text-foreground/85">
+                {MODULE_HINTS[active].advanceWhen}
+              </p>
+            </div>
+          </div>
+
           {/* Footer do módulo */}
-          <div className="mt-10 pt-6 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
+          <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
             <button
               onClick={() => prevModule && goTo(prevModule)}
               disabled={!prevModule}
@@ -326,6 +354,7 @@ export default function Entrega() {
             </button>
           </div>
         </main>
+
       </div>
     </div>
   );
