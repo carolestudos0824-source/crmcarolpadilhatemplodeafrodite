@@ -228,6 +228,33 @@ export default function Entrega() {
         <button onClick={logout} className="btn-ghost text-sm"><LogOut size={14} /> Sair</button>
       </div>
 
+      {/* Como usar este produto (escopo no topo) */}
+      <div className="max-w-5xl mx-auto mb-12">
+        <div className="glass-strong p-6 md:p-8">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent mb-2">Escopo</p>
+          <h2 className="text-xl md:text-2xl font-heading font-bold mb-5">Como usar este produto</h2>
+          <ol className="space-y-3 mb-5">
+            {[
+              "Abra o Agente Arquiteto Supremo.",
+              "Escreva sua ideia de aplicativo.",
+              "Use a primeira mensagem pronta.",
+              "Receba o MVP, arquitetura, fluxo, design, monetização e prompt final.",
+              "Cole o prompt em uma ferramenta como Lovable, Cursor, Claude Code, Gemini ou Replit.",
+            ].map((t, i) => (
+              <li key={t} className="flex gap-4 items-start">
+                <span className="shrink-0 w-7 h-7 rounded-full bg-gold/15 text-gold font-heading font-bold flex items-center justify-center text-xs">
+                  {i + 1}
+                </span>
+                <p className="text-[15px] md:text-base text-foreground/90 leading-relaxed pt-0.5">{t}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="text-xs md:text-sm text-muted-foreground/90 leading-relaxed pt-4 border-t border-white/5">
+            Este produto foi criado para uso autoguiado. O suporte por e-mail é apenas para dúvidas de acesso.
+          </p>
+        </div>
+      </div>
+
       {/* 2. Cards: Agente, Prompts, Suporte */}
       <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-12">
         <DeliveryResourceCard
