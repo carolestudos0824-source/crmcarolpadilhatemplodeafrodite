@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft } from "lucide-react";
+import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft, Sparkles } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -18,12 +18,18 @@ import { supabase } from "@/integrations/supabase/client";
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
 
-type Tab = "signin" | "signup";
+type Tab = "magic" | "signin" | "signup";
 type View = "auth" | "no_access" | "code" | "check_email";
+
+const isPreviewEnv =
+  typeof window !== "undefined" &&
+  (window.location.hostname.includes("lovable") ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname.startsWith("127."));
 
 export default function Login() {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("signin");
+  const [tab, setTab] = useState<Tab>("magic");
   const [view, setView] = useState<View>("auth");
 
   // shared
@@ -43,6 +49,23 @@ export default function Login() {
     setErrorMsg(null);
   };
 
+  const onMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    resetMessages();
+    if (!email.trim()) return setErrorMsg("Informe seu e-mail.");
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim(),
+      options: { emailRedirectTo: window.location.origin + "/entrega" },
+    });
+    setLoading(false);
+    if (error) {
+      setErrorMsg("Não foi possível enviar o link agora. Tente novamente em alguns minutos.");
+      return;
+    }
+    setInfo("Enviamos um link de acesso para seu e-mail. Verifique também spam e promoções.");
+  };
+
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -56,7 +79,9 @@ export default function Login() {
     } else if (result.status === "no_access") {
       setView("no_access");
     } else {
-      setErrorMsg("E-mail ou senha inválidos.");
+      setErrorMsg(
+        "E-mail ou senha inválidos. Se não lembrar a senha, use Entrar sem senha ou Recuperar senha.",
+      );
     }
   };
 
@@ -235,36 +260,102 @@ export default function Login() {
             materiais.
           </p>
 
-          <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
-            <button
-              onClick={() => {
-                setTab("signin");
-                resetMessages();
-              }}
-              className={`px-4 py-2 rounded-lg text-sm transition ${
-                tab === "signin"
-                  ? "bg-accent/20 text-accent"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Já tenho conta
-            </button>
-            <button
-              onClick={() => {
-                setTab("signup");
-                resetMessages();
-              }}
-              className={`px-4 py-2 rounded-lg text-sm transition ${
-                tab === "signup"
-                  ? "bg-accent/20 text-accent"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Criar minha conta
-            </button>
+          <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
+            {([
+              ["magic", "Sem senha"],
+              ["signin", "Com senha"],
+              ["signup", "Criar conta"],
+            ] as [Tab, string][]).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => {
+                  setTab(key);
+                  resetMessages();
+                }}
+                className={`px-3 py-2 rounded-lg text-sm transition ${
+                  tab === key
+                    ? "bg-accent/20 text-accent"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
-          {tab === "signin" ? (
+          {tab === "magic" ? (
+            <form onSubmit={onMagicLink} className="space-y-4">
+              <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                <Sparkles size={16} className="mt-0.5 shrink-0 text-accent" />
+                <p>
+                  Digite seu e-mail e enviaremos um link seguro para acessar sua
+                  área. Sem precisar lembrar de senha.
+                </p>
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">
+                  E-mail
+                </label>
+                <input
+                  className={inputCls}
+                  type="email"
+                  placeholder="seu@email.com"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {errorMsg && (
+                <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                  {errorMsg}
+                </div>
+              )}
+              {info && (
+                <div className="rounded-xl border border-accent/30 bg-accent/10 text-accent text-sm px-4 py-3">
+                  {info}
+                </div>
+              )}
+
+              <button type="submit" disabled={loading} className="btn-primary w-full">
+                {loading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Enviando…
+                  </>
+                ) : (
+                  "Enviar link de acesso"
+                )}
+              </button>
+
+              <div className="pt-2 space-y-2 text-sm">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTab("signin");
+                    resetMessages();
+                  }}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
+                >
+                  <KeyRound size={14} /> Prefiro entrar com senha
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
+                >
+                  <LifeBuoy size={14} /> Falar com suporte
+                </button>
+              </div>
+
+              {isPreviewEnv && (
+                <p className="text-[11px] text-muted-foreground/70 pt-2 border-t border-white/5">
+                  Está testando no preview? Use o mesmo e-mail cadastrado e
+                  liberado no admin.
+                </p>
+              )}
+            </form>
+          ) : tab === "signin" ? (
             <form onSubmit={onSignIn} className="space-y-4">
               <div>
                 <label className="text-xs text-muted-foreground mb-1 block">
@@ -316,7 +407,7 @@ export default function Login() {
                     <Loader2 size={16} className="animate-spin" /> Entrando…
                   </>
                 ) : (
-                  "Entrar"
+                  "Entrar com senha"
                 )}
               </button>
 
