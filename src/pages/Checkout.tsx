@@ -22,6 +22,9 @@ export default function Checkout() {
           <div className="text-xs text-muted-foreground/90 bg-white/5 border border-white/10 rounded-xl p-3 leading-relaxed">
             Você está adquirindo um produto digital de autoatendimento. Após a compra, receberá instruções para acessar a área de entrega, onde encontrará o agente, prompts, checklists e manual de uso. A construção do aplicativo não está inclusa.
           </div>
+          <div className="text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed">
+            Após a compra, você receberá acesso à área de entrega com o link do agente, prompts, checklists e manual de uso. Para usar o agente, é necessário estar logado no ChatGPT.
+          </div>
           <button className="btn-primary w-full" onClick={() => openConfiguredUrl(checkoutUrl)}>
             Ir para pagamento
           </button>

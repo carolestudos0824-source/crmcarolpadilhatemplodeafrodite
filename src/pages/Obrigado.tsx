@@ -16,8 +16,11 @@ export default function Obrigado() {
         <p className="text-base md:text-lg text-muted-foreground mb-3">
           Obrigado por adquirir a Fábrica de Apps com IA. As instruções de acesso foram enviadas para o e-mail informado na compra.
         </p>
-        <p className="text-base text-muted-foreground mb-8">
+        <p className="text-base text-muted-foreground mb-4">
           Verifique sua caixa de entrada, spam ou promoções. Em caso de dificuldade, fale com o suporte por e-mail.
+        </p>
+        <p className="text-sm text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed mb-8">
+          As instruções de acesso serão enviadas por e-mail. Para usar o agente, entre em uma conta ChatGPT antes de abrir o link.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button className="btn-primary" onClick={() => navigate("/login")}>

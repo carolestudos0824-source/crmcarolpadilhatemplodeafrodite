@@ -154,11 +154,11 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
 ];
 
 const comecePorAqui = [
+  "Faça login no ChatGPT.",
   'Clique em "Abrir agente".',
-  "Faça login no ChatGPT, se for solicitado.",
-  "Copie o Prompt Mestre Universal.",
-  "Envie sua ideia para o agente.",
-  "Pegue o plano gerado e cole no Lovable, Cursor, Claude Code, Gemini ou Replit.",
+  "Copie a primeira mensagem pronta.",
+  "Envie sua ideia.",
+  "Use o plano gerado para construir em Lovable, Cursor, Claude Code, Gemini ou Replit.",
 ];
 
 const depoisDoPlano = `1. Confira se a ação principal do app está clara.
@@ -275,8 +275,11 @@ export default function Entrega() {
               <button className="btn-ghost w-full text-xs" onClick={copyAgentLink}>
                 Copiar link do agente
               </button>
-              <p className="text-[12px] text-muted-foreground/80 leading-relaxed">
-                Você precisa estar logado no ChatGPT para usar o agente. Se o link não abrir no preview, copie o link do agente e cole em uma nova aba do navegador.
+              <div className="text-[12px] md:text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-lg px-3 py-2 leading-relaxed font-medium">
+                Você precisa estar logado no ChatGPT para usar o agente.
+              </div>
+              <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
+                Se o link não abrir no preview, copie o link do agente e cole em uma nova aba do navegador.
               </p>
             </div>
           }

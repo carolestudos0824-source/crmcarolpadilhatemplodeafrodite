@@ -88,7 +88,7 @@ const faqs = [
   { q: "Preciso saber programar?", a: "Não. O produto foi criado para pessoas que querem usar ferramentas com IA, como Lovable, Cursor, Claude Code, Gemini ou Replit." },
   { q: "O que recebo após a compra?", a: "Você recebe acesso à área de entrega com o agente, Prompt Mestre Universal, manual rápido, prompts bônus, checklists e ideias de apps validáveis." },
   { q: "O suporte me ajuda a criar meu app?", a: "Não. O suporte por e-mail é apenas para dúvidas de acesso ao material." },
-  { q: "Preciso ter ChatGPT?", a: "Para usar o agente no ChatGPT, você precisa estar logado em uma conta ChatGPT. Recursos disponíveis podem variar conforme sua conta." },
+  { q: "Preciso ter conta no ChatGPT?", a: "Sim. Para usar o Agente Arquiteto Supremo, você precisa estar logado em uma conta ChatGPT. O produto não inclui conta paga do ChatGPT nem assinatura de ferramentas externas." },
   { q: "Posso usar para qualquer ideia?", a: "Sim. Você pode usar o agente para estruturar ideias de SaaS, apps simples, ferramentas digitais, produtos com IA, páginas de venda e soluções para clientes." },
   { q: "O app fica pronto automaticamente?", a: "Não. O agente gera a arquitetura, o MVP e os prompts. A construção acontece na ferramenta que você escolher." },
 ];
@@ -236,6 +236,9 @@ export default function Home() {
       >
         <div className="max-w-md mx-auto">
           <PricingCard plan={fabrica} />
+          <p className="text-xs md:text-sm text-muted-foreground/90 leading-relaxed mt-4 text-center">
+            Importante: para usar o Agente Arquiteto Supremo, você precisa estar logado em uma conta ChatGPT. O produto não inclui conta paga do ChatGPT.
+          </p>
         </div>
       </Section>
 
