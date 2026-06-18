@@ -851,6 +851,8 @@ export default function Entrega() {
 
   const [activeTab, setActiveTab] = useState(library[0].id);
   const [copiedEntry, setCopiedEntry] = useState(false);
+  const [copiedExemplo, setCopiedExemplo] = useState(false);
+  const [copiedSuporte, setCopiedSuporte] = useState(false);
   const [progress, setProgress] = useState<boolean[]>(() =>
     progressItems.map(() => false),
   );
