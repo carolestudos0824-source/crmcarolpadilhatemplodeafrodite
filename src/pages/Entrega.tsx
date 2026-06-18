@@ -1529,8 +1529,45 @@ export default function Entrega() {
         </div>
       </Section>
 
+      {/* NAV TOC */}
+      <div className="sticky top-0 z-30 backdrop-blur-md bg-background/80 border-y border-white/10">
+        <div className="max-w-6xl mx-auto px-4 py-3 overflow-x-auto">
+          <nav className="flex items-center gap-2 text-xs whitespace-nowrap">
+            {[
+              ["Comece aqui", "comece"],
+              ["Ideias prontas", "modelos"],
+              ["Construir app", "trilha"],
+              ["Área restrita e banco", "cmd-3"],
+              ["Landing page e venda", "cmd-7"],
+              ["SEO e GEO", "cmd-13"],
+              ["Campanhas", "cmd-14"],
+              ["Criativos", "cmd-6"],
+              ["Validação", "cmd-14"],
+              ["Checklist", "progresso"],
+              ["Erros comuns", "erros"],
+              ["Ativar acesso", "ativar"],
+            ].map(([label, id]) => (
+              <a
+                key={label}
+                href={`#${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById(id)
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-accent/10 hover:border-accent/40 hover:text-accent transition"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       {/* O QUE VOCÊ COMPROU */}
       <Section className="py-10">
+
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-heading font-bold mb-2">O que você comprou</h2>
           <p className="text-muted-foreground mb-6 max-w-3xl">
