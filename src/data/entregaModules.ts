@@ -55,7 +55,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "comece", label: "Comece aqui", icon: "Sparkles" },
   { id: "ideias", label: "Ideias prontas", icon: "Lightbulb" },
   { id: "construir", label: "Construir app", icon: "Hammer" },
-  { id: "login", label: "Login, banco e área restrita", icon: "Lock" },
+  { id: "login", label: "Login e banco", icon: "Lock" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
   { id: "seo", label: "SEO e GEO", icon: "Search" },
@@ -367,7 +367,19 @@ Regras:
     `Crie o fluxo de recuperação de acesso.
 
 Inclua: link mágico por e-mail, recuperação por senha, mensagens claras e redirecionamento após login.`),
+  cmd(6, "Criar painel de liberação de compradores", "Permite ao dono liberar acesso para quem comprou.", "Depois que checkout e área restrita existirem.", "Cole no Lovable.", "Painel admin com liberação de acesso.",
+    `Crie um painel de liberação de compradores.
+
+O admin deve conseguir:
+1. Buscar usuário por e-mail
+2. Liberar acesso após confirmar pagamento
+3. Revogar acesso
+4. Ver status atual
+5. Ver data e origem do acesso
+
+Regras: só admin acessa, nunca expor service role no frontend.`),
 ];
+
 
 export const COMMANDS_SEO: Command[] = [
   cmd(1, "Criar plano de SEO", "Define palavras e páginas para o Google.", "Antes de gerar páginas SEO.", "Cole no Lovable.", "Plano com palavras e páginas.",
@@ -902,3 +914,60 @@ export const CHECKLIST_PHASES: { phase: string; items: string[] }[] = [
     items: ["Testei com 10 pessoas", "Coletei feedback", "Melhorei", "Publiquei"],
   },
 ];
+
+// ============ Dicas de cada módulo ============
+
+export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string }> = {
+  comece: {
+    doNow: "Leia a regra de ouro e escolha entre usar uma ideia pronta ou construir a sua.",
+    advanceWhen: "Avance quando você souber qual ideia vai construir no Lovable.",
+  },
+  ideias: {
+    doNow: "Escolha um modelo que se pareça com o que você quer criar. Clique em Ver detalhes e copie o comando.",
+    advanceWhen: "Avance quando você tiver copiado um comando de ideia e colado no Lovable.",
+  },
+  construir: {
+    doNow: "Comece pelo Comando 1. Copie, cole no Lovable e espere o resultado antes do próximo.",
+    advanceWhen: "Avance quando o Lovable tiver criado seu plano e a primeira versão do app.",
+  },
+  login: {
+    doNow: "Adicione login antes do banco. Depois crie as tabelas e as regras de acesso.",
+    advanceWhen: "Avance quando você conseguir entrar no app e ver dados salvos no banco.",
+  },
+  venda: {
+    doNow: "Crie primeiro a landing page. Depois preço, FAQ e confiança.",
+    advanceWhen: "Avance quando a landing page estiver no ar e explicando claramente seu app.",
+  },
+  checkout: {
+    doNow: "Crie o checkout, a página de obrigado e a área de entrega na ordem.",
+    advanceWhen: "Avance quando um comprador conseguir comprar, receber acesso e entrar na área restrita.",
+  },
+  seo: {
+    doNow: "Comece pelo plano de SEO. Depois gere páginas e schemas.",
+    advanceWhen: "Avance quando suas páginas tiverem título, descrição e FAQ otimizados.",
+  },
+  campanhas: {
+    doNow: "Escolha um canal e use o gerador rápido para criar a primeira campanha.",
+    advanceWhen: "Avance quando você tiver pelo menos uma campanha pronta para rodar.",
+  },
+  criativos: {
+    doNow: "Use o gerador rápido para criar 3 criativos diferentes no formato escolhido.",
+    advanceWhen: "Avance quando você tiver 3 criativos prontos para testar.",
+  },
+  validacao: {
+    doNow: "Liste 10 pessoas reais que podem testar e copie a mensagem de convite.",
+    advanceWhen: "Avance quando pelo menos 5 pessoas testarem e responderem o feedback.",
+  },
+  checklist: {
+    doNow: "Marque tudo que você já fez. Use a barra de progresso como guia.",
+    advanceWhen: "Avance quando seu progresso geral estiver acima de 70%.",
+  },
+  erros: {
+    doNow: "Use a busca para encontrar seu problema. Copie o comando de correção e cole no Lovable.",
+    advanceWhen: "Avance quando o erro estiver resolvido e o app estiver funcionando de novo.",
+  },
+  ativar: {
+    doNow: "Digite o código que você recebeu e clique em Resgatar código.",
+    advanceWhen: "Pronto. Você já está no programa.",
+  },
+};

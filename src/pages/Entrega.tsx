@@ -52,7 +52,9 @@ import {
   COMMANDS_VALIDACAO,
   COMMON_ERRORS,
   CHECKLIST_PHASES,
+  MODULE_HINTS,
   type Command,
+
 } from "@/data/entregaModules";
 
 const LOVABLE_URL = "https://lovable.dev";
@@ -264,7 +266,7 @@ export default function Entrega() {
                     }`}
                   >
                     <Icon size={16} className="shrink-0" />
-                    <span className="flex-1 truncate">{m.label}</span>
+                    <span className="flex-1 leading-tight">{m.label}</span>
                     {isDone ? (
                       <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
                     ) : (
@@ -293,6 +295,21 @@ export default function Entrega() {
 
         {/* MAIN */}
         <main className="flex-1 min-w-0 p-4 md:p-8">
+          {/* O que você vai fazer nesta etapa */}
+          {active !== "comece" && (
+            <div className="mb-6 rounded-xl border border-accent/30 bg-accent/10 p-4 flex items-start gap-3">
+              <Sparkles size={16} className="text-accent shrink-0 mt-0.5" />
+              <div>
+                <div className="text-[11px] uppercase tracking-wider text-accent mb-1">
+                  O que você vai fazer nesta etapa
+                </div>
+                <p className="text-sm text-foreground/85">
+                  {MODULE_HINTS[active].doNow}
+                </p>
+              </div>
+            </div>
+          )}
+
           <ModuleContent
             active={active}
             checklist={checklist}
@@ -300,8 +317,21 @@ export default function Entrega() {
             goTo={goTo}
           />
 
+          {/* Quando posso avançar? */}
+          <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+            <ArrowRight size={16} className="text-accent shrink-0 mt-0.5" />
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+                Quando posso avançar?
+              </div>
+              <p className="text-sm text-foreground/85">
+                {MODULE_HINTS[active].advanceWhen}
+              </p>
+            </div>
+          </div>
+
           {/* Footer do módulo */}
-          <div className="mt-10 pt-6 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
+          <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
             <button
               onClick={() => prevModule && goTo(prevModule)}
               disabled={!prevModule}
@@ -324,6 +354,7 @@ export default function Entrega() {
             </button>
           </div>
         </main>
+
       </div>
     </div>
   );
@@ -382,8 +413,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             Construa, publique e divulgue seu app no Lovable
           </h1>
           <p className="text-muted-foreground max-w-3xl">
-            Siga um passo por vez. Primeiro escolha uma ideia. Depois copie o comando e
-            cole no Lovable.
+            Esta é sua central para criar um app no Lovable. Você vai escolher uma
+            ideia, copiar comandos, colar no Lovable, testar o app e depois divulgar
+            para usuários reais.
           </p>
         </header>
 
@@ -395,6 +427,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             criativos.
           </p>
         </GlassCard>
+
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {[
@@ -413,17 +446,34 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           ))}
         </div>
 
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 mb-6 flex items-start gap-3">
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 mb-4 flex items-start gap-3">
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <div>
             <strong>Regra de ouro:</strong> um comando por vez. Não pule etapas.
           </div>
         </div>
 
+        <GlassCard className="p-5 md:p-6 mb-6">
+          <h3 className="font-heading font-semibold text-base mb-1">
+            Não faça tudo de uma vez
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            O segredo é usar um comando por vez. Copie, cole no Lovable, espere o
+            resultado, teste e só depois avance.
+          </p>
+        </GlassCard>
+
         <div className="flex flex-wrap gap-3">
           <button onClick={() => goTo("ideias")} className="btn-primary">
-            <Lightbulb size={16} /> Ir para ideias prontas
+            <Sparkles size={16} /> Começar agora
           </button>
+          <button
+            onClick={() => goTo("ideias")}
+            className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
+          >
+            <Lightbulb size={16} /> Ver ideias prontas
+          </button>
+
           <button
             onClick={() => goTo("construir")}
             className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
