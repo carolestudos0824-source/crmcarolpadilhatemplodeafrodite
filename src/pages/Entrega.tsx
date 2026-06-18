@@ -278,6 +278,12 @@ export default function Entrega() {
         </div>
       </div>
 
+      {/* Resgate de código premium */}
+      <div className="max-w-4xl mx-auto mb-10">
+        <GiftCodeRedemption />
+      </div>
+
+
       {/* 2. Seu próximo passo */}
       <div className="max-w-4xl mx-auto mb-10">
         <h2 className="text-lg md:text-xl font-heading font-bold mb-4">Seu próximo passo</h2>
