@@ -983,7 +983,298 @@ export default function Entrega() {
   const toggleProgress = (i: number) =>
     setProgress((prev) => prev.map((v, idx) => (idx === i ? !v : v)));
 
-  const activeCategory = library.find((c) => c.id === activeTab) ?? library[0];
+  const copyText = async (text: string, setFlag: (v: boolean) => void) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setFlag(true);
+      toast.success("Copiado com sucesso.");
+      setTimeout(() => setFlag(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
+
+  return (
+    <Section>
+      {/* 1. Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 max-w-5xl mx-auto">
+        <div className="flex items-center gap-3">
+          <Logo size="md" asLink={false} />
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-base md:text-lg font-heading font-bold">Arquiteto de Apps</h1>
+              <span className="text-[10px] uppercase tracking-[0.25em] text-accent border border-accent/30 rounded-full px-2 py-0.5">
+                Área de entrega
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground/70">
+              Logado como: <span className="text-foreground/80">{session.email || "—"}</span>
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button onClick={openAgent} className="btn-primary text-sm">
+            Gerar meu plano de app agora <ExternalLink size={14} />
+          </button>
+          {auth.status === "authed" && auth.isAdmin && (
+            <button
+              onClick={() => navigate("/admin/acessos")}
+              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded-lg border border-accent/30 text-accent hover:bg-accent/10 transition"
+            >
+              <ShieldCheck size={14} /> Admin
+            </button>
+          )}
+          <button onClick={logout} className="btn-ghost text-sm">
+            <LogOut size={14} /> Sair
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Hero operacional */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <div className="glass-strong p-6 md:p-10 neon-shadow">
+          <h2 className="text-2xl md:text-4xl font-heading font-bold text-gradient mb-3">
+            Bem-vindo ao Arquiteto de Apps
+          </h2>
+          <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-2xl">
+            Aqui você vai transformar sua ideia em um plano de app e depois usar os prompts certos para construir, vender, monetizar, validar e lançar.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button onClick={openAgent} className="btn-primary">
+              Gerar meu plano de app agora <ExternalLink size={16} />
+            </button>
+            <button onClick={() => copyText(promptEntrada, setCopiedEntry)} className="btn-ghost">
+              {copiedEntry ? <Check size={16} className="text-accent" /> : <Copy size={16} />}
+              {copiedEntry ? "Copiado" : "Copiar prompt de entrada"}
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground/80 mt-4">
+            Comece pelo plano principal. Depois use os prompts extras na ordem.
+          </p>
+        </div>
+      </div>
+
+      {/* 3. Como usar esta página */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Como usar esta página</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Pense nesta página como uma receita de bolo. Você não precisa usar tudo ao mesmo tempo. Siga a ordem: primeiro explique sua ideia, depois gere o plano, depois use os prompts extras.
+        </p>
+        <div className="glass-strong p-5 md:p-6">
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {comoUsarPassos.map((p, i) => (
+              <li key={p.title} className="flex flex-col gap-2">
+                <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
+                  {i + 1}
+                </span>
+                <p className="text-sm font-semibold text-foreground">{p.title}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{p.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      {/* 4. Primeiro passo obrigatório */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Primeiro passo obrigatório</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Antes de usar qualquer outro prompt, comece por este. Ele é o ponto de partida do seu app.
+        </p>
+        <div className="glass-strong p-5 md:p-6">
+          <h3 className="font-heading font-semibold text-base mb-3">Prompt de entrada para o agente</h3>
+          <dl className="grid sm:grid-cols-2 gap-3 text-xs mb-4">
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Para que serve</dt>
+              <dd className="text-foreground/85">Contar sua ideia ao Arquiteto de um jeito organizado.</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Quando usar</dt>
+              <dd className="text-foreground/85">Agora, antes de qualquer outro prompt.</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Onde colar</dt>
+              <dd className="text-foreground/85">No Arquiteto de Apps, no campo de conversa.</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">O que você recebe</dt>
+              <dd className="text-foreground/85">Plano com MVP, telas, fluxo, banco, design, monetização, riscos e prompt mestre.</dd>
+            </div>
+          </dl>
+          <pre className="text-[13px] md:text-[14px] text-foreground/85 whitespace-pre-wrap font-sans leading-7 bg-background/40 border border-white/5 rounded-lg p-4 max-h-96 overflow-y-auto">
+{promptEntrada}
+          </pre>
+          <div className="flex flex-col sm:flex-row gap-2 mt-4">
+            <button onClick={() => copyText(promptEntrada, setCopiedEntry)} className="btn-primary flex-1 sm:flex-initial">
+              {copiedEntry ? <Check size={16} className="text-background" /> : <Copy size={16} />}
+              {copiedEntry ? "Copiado" : "Copiar prompt"}
+            </button>
+            <button onClick={openAgent} className="btn-ghost flex-1 sm:flex-initial">
+              Abrir Arquiteto de Apps <ExternalLink size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Exemplo preenchido */}
+        <div className="glass p-5 md:p-6 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Lightbulb size={16} className="text-gold" />
+            <h3 className="font-heading font-semibold text-sm">Exemplo de como preencher</h3>
+          </div>
+          <pre className="text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3">
+{exemploPreenchido}
+          </pre>
+          <p className="text-xs text-muted-foreground mt-3">
+            Você pode copiar este exemplo e trocar pelas informações da sua ideia.
+          </p>
+          <button onClick={() => copyText(exemploPreenchido, setCopiedExemplo)} className="mt-3 inline-flex items-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 transition">
+            {copiedExemplo ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
+            {copiedExemplo ? "Copiado" : "Copiar exemplo"}
+          </button>
+        </div>
+
+        {/* Não sei preencher */}
+        <div className="glass p-5 md:p-6 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <HelpCircle size={16} className="text-accent" />
+            <h3 className="font-heading font-semibold text-sm">Não sei preencher tudo. E agora?</h3>
+          </div>
+          <p className="text-sm text-foreground/85 mb-2">
+            Não tem problema. Escreva <span className="text-accent">"não sei"</span> nos campos que você não souber. O Arquiteto de Apps vai te ajudar a decidir.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Exemplo — Como pretendo ganhar dinheiro: <span className="text-foreground/80">"ainda não sei"</span>
+          </p>
+        </div>
+      </div>
+
+      {/* 5. Ordem recomendada */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Use nesta ordem</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Esta é a sequência que funciona melhor para sair da ideia e chegar ao lançamento.
+        </p>
+        <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {ordemRecomendada.map((p, i) => (
+            <li key={p.title} className="glass p-4 flex gap-3">
+              <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
+                {i + 1}
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">{p.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{p.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* 6. Biblioteca completa de prompts (sem abas) */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Biblioteca completa de prompts</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Todos os prompts abaixo estão explicados. Leia a descrição, copie o prompt e cole na ferramenta indicada.
+        </p>
+        <div className="space-y-10">
+          {library.map((cat, idx) => (
+            <section key={cat.id}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-accent">{cat.icon}</span>
+                <h3 className="text-base md:text-lg font-heading font-bold">
+                  Seção {idx + 1} — {cat.title}
+                </h3>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">{cat.description}</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                {cat.prompts.map((p) => (
+                  <CopyPromptCard key={p.title} prompt={p} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+
+      {/* 7. Checklist de progresso */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Seu progresso</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Marque conforme avançar. Isso ajuda você a não se perder.
+        </p>
+        <div className="glass-strong p-5 md:p-6">
+          <ul className="space-y-2">
+            {progressItems.map((item, i) => (
+              <li key={item}>
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <span
+                    className={`shrink-0 w-5 h-5 rounded-md border flex items-center justify-center transition ${
+                      progress[i]
+                        ? "bg-accent border-accent text-background"
+                        : "border-white/20 group-hover:border-accent/50"
+                    }`}
+                  >
+                    {progress[i] && <Check size={14} strokeWidth={3} />}
+                  </span>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={progress[i] ?? false}
+                    onChange={() => toggleProgress(i)}
+                  />
+                  <span className={`text-sm ${progress[i] ? "text-foreground/60 line-through" : "text-foreground/90"}`}>
+                    {item}
+                  </span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* 8. Travou? */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <GlassCard className="flex flex-col gap-4">
+          <div className="flex items-start gap-3">
+            <LifeBuoy size={20} className="text-gold shrink-0 mt-1" />
+            <div>
+              <p className="font-heading font-bold text-base">Travou em alguma etapa?</p>
+              <p className="text-sm text-muted-foreground">
+                Use o prompt de suporte ou fale com o suporte explicando em qual passo você parou.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={() => copyText(promptSuporte, setCopiedSuporte)}
+              className="btn-primary flex-1 sm:flex-initial"
+            >
+              {copiedSuporte ? <Check size={16} className="text-background" /> : <Copy size={16} />}
+              {copiedSuporte ? "Copiado" : "Copiar prompt de suporte"}
+            </button>
+            <button
+              className="btn-ghost flex-1 sm:flex-initial"
+              onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+            >
+              <LifeBuoy size={16} /> Falar com suporte
+            </button>
+          </div>
+        </GlassCard>
+      </div>
+
+      {/* 9. Ativar ou estender acesso (no final) */}
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center gap-2 mb-1">
+          <Gift size={18} className="text-gold" />
+          <h2 className="text-lg md:text-xl font-heading font-bold">Ativar ou estender acesso</h2>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          Use este campo apenas se você recebeu um código de acesso ou código premium.
+        </p>
+        <GiftCodeRedemption />
+      </div>
+    </Section>
+  );
+}
 
   return (
     <Section>
