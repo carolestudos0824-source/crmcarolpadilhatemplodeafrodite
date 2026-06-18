@@ -12,7 +12,7 @@ import {
   ShieldCheck,
   Gift,
   Sparkles,
-  Layers,
+  
   ListChecks,
   Smartphone,
   Lightbulb,
