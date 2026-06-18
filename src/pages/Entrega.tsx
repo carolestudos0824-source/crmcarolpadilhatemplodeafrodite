@@ -1861,7 +1861,8 @@ export default function Entrega() {
       </Section>
 
       {/* GIFT CODE (final) */}
-      <Section className="py-12">
+      <Section className="py-12" id="ativar">
+
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-6">
             <Gift className="mx-auto text-accent mb-3" size={22} />
