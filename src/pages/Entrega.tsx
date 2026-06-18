@@ -751,27 +751,6 @@ Eles recebem muitos pedidos bagunçados no WhatsApp e se perdem na entrega.
 Como pretendo ganhar dinheiro:
 Mensalidade simples de R$29 por restaurante.`;
 
-const promptSuporte = `Estou travado na construção do meu app.
-
-Contexto:
-[explique onde travou]
-
-Ferramenta usada:
-[Lovable, Cursor, Replit, Supabase, Firebase ou outra]
-
-Erro ou dúvida:
-[cole aqui]
-
-O que eu estava tentando fazer:
-[explique]
-
-Quero que você:
-1. Diagnostique o problema
-2. Explique a causa provável
-3. Sugira a correção mais simples
-4. Me dê um passo a passo
-5. Evite soluções complexas desnecessárias
-6. Me diga o que testar depois da correção`;
 
 
 function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
