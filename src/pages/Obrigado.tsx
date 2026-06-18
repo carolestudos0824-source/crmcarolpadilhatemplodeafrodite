@@ -12,9 +12,15 @@ export default function Obrigado() {
       <div className="max-w-2xl mx-auto text-center glass-strong p-10 md:p-14 neon-shadow">
         <div className="flex justify-center mb-6"><Logo size="lg" asLink={false} /></div>
         <CheckCircle2 size={48} className="text-accent mx-auto mb-4" />
-        <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Compra recebida ou em processamento</h1>
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Compra recebida</h1>
+        <p className="text-base md:text-lg text-muted-foreground mb-3">
+          Obrigado por adquirir a Fábrica de Apps com IA.
+        </p>
+        <p className="text-base text-muted-foreground mb-2">
+          As instruções de acesso foram enviadas para o e-mail informado na compra.
+        </p>
         <p className="text-base text-muted-foreground mb-8">
-          Obrigado por adquirir a Fábrica de Apps com IA. Verifique seu e-mail e acesse a área de entrega para consultar os materiais disponíveis.
+          Verifique sua caixa de entrada, spam ou promoções. Depois, acesse a área de entrega pelo botão abaixo.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button className="btn-primary" onClick={() => navigate("/entrega")}>
@@ -24,11 +30,6 @@ export default function Obrigado() {
             <Mail size={16} /> Falar com suporte por e-mail
           </button>
         </div>
-        <ul className="text-sm text-muted-foreground text-left mt-10 space-y-2 max-w-md mx-auto">
-          <li>• Guarde seu comprovante.</li>
-          <li>• Confira seu e-mail (inclusive a caixa de spam).</li>
-          <li>• Em caso de dificuldade, entre em contato pelo e-mail de suporte.</li>
-        </ul>
       </div>
     </Section>
   );
