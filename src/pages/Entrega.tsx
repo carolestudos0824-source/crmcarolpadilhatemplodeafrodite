@@ -264,7 +264,7 @@ export default function Entrega() {
                     }`}
                   >
                     <Icon size={16} className="shrink-0" />
-                    <span className="flex-1 truncate">{m.label}</span>
+                    <span className="flex-1 leading-tight">{m.label}</span>
                     {isDone ? (
                       <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
                     ) : (
