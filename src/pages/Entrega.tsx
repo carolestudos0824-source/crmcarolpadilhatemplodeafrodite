@@ -10,6 +10,7 @@ import { FAQItem } from "@/components/FAQItem";
 import { getSession, clearSession } from "@/lib/auth";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
+import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 
 const primeiraMensagem = `Tenho uma ideia de aplicativo e quero transformar em um MVP simples, vendável e validável.
 
