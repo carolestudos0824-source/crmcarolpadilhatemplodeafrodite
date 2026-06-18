@@ -662,7 +662,7 @@ export type Database = {
         Returns: boolean
       }
       redeem_gift_code: {
-        Args: { _code: string; _user_id: string }
+        Args: { _code: string; _user_id?: string }
         Returns: Json
       }
     }
