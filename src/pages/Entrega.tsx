@@ -52,7 +52,9 @@ import {
   COMMANDS_VALIDACAO,
   COMMON_ERRORS,
   CHECKLIST_PHASES,
+  MODULE_HINTS,
   type Command,
+
 } from "@/data/entregaModules";
 
 const LOVABLE_URL = "https://lovable.dev";
