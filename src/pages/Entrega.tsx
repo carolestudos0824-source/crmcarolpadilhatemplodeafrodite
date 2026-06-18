@@ -413,8 +413,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             Construa, publique e divulgue seu app no Lovable
           </h1>
           <p className="text-muted-foreground max-w-3xl">
-            Siga um passo por vez. Primeiro escolha uma ideia. Depois copie o comando e
-            cole no Lovable.
+            Esta é sua central para criar um app no Lovable. Você vai escolher uma
+            ideia, copiar comandos, colar no Lovable, testar o app e depois divulgar
+            para usuários reais.
           </p>
         </header>
 
@@ -426,6 +427,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             criativos.
           </p>
         </GlassCard>
+
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {[
