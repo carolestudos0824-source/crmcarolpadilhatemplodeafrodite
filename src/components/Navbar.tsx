@@ -5,7 +5,7 @@ import { Logo } from "./Logo";
 
 const links = [
   { to: "/", label: "Início" },
-  { to: "/precos", label: "Preços" },
+  { to: "/precos", label: "Preço único" },
   { to: "/entrega", label: "Entrega" },
 ];
 
