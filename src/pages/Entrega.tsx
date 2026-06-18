@@ -14,6 +14,10 @@ import {
   Rocket,
   Lock,
   Loader2,
+  ShieldCheck,
+  Lightbulb,
+  HelpCircle,
+  Gift,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
@@ -423,6 +427,28 @@ type PromptCard = {
 };
 type Category = { id: string; icon: JSX.Element; title: string; description: string; prompts: PromptCard[] };
 
+const promptSuporte = `Estou travado na construção do meu app.
+
+Contexto:
+[explique onde travou]
+
+Ferramenta usada:
+[Lovable, Cursor, Replit, Supabase, Firebase ou outra]
+
+Erro ou dúvida:
+[cole aqui]
+
+O que eu estava tentando fazer:
+[explique]
+
+Quero que você:
+1. Diagnostique o problema
+2. Explique a causa provável
+3. Sugira a correção mais simples
+4. Me dê um passo a passo
+5. Evite soluções complexas desnecessárias
+6. Me diga o que testar depois da correção`;
+
 const library: Category[] = [
   {
     id: "criar",
@@ -430,19 +456,51 @@ const library: Category[] = [
     title: "Criar o app",
     description: "Tudo para sair da ideia e chegar no app funcionando.",
     prompts: [
-      { title: "Prompt Mestre Universal", description: "Transforma qualquer ideia em plano completo.", content: promptMestre },
+      {
+        title: "Prompt Mestre Universal",
+        description: "Transforma qualquer ideia em plano completo.",
+        content: promptMestre,
+        purpose: "Organiza uma ideia bagunçada em um plano claro.",
+        when: "Quando você ainda não sabe exatamente o que construir.",
+        where: "No Arquiteto de Apps ou em outro chat de IA.",
+        output: "Diagnóstico, MVP, telas, banco, monetização, riscos e prompt final.",
+      },
       {
         title: "Prompt para Lovable",
         description: "Pronto para colar no Lovable.",
         content: promptLovable,
-        purpose: "Transforma o plano do seu app em uma primeira versão construída no Lovable.",
+        purpose: "Pede ao Lovable para construir o app com telas, fluxo, banco e design.",
         when: "Depois que o Arquiteto de Apps gerar o plano completo.",
-        where: "Dentro do Lovable, no campo onde você descreve o app.",
-        output: "Uma primeira versão do app com telas, layout, fluxo e banco inicial.",
+        where: "No Lovable, no campo onde você descreve o app.",
+        output: "Uma primeira versão funcional do app.",
       },
-      { title: "Prompt para Cursor", description: "Para implementar via Cursor.", content: promptCursor },
-      { title: "Prompt para Replit", description: "Para subir um MVP no Replit.", content: promptReplit },
-      { title: "Prompt para Supabase", description: "Modela o backend no Supabase.", content: promptSupabase },
+      {
+        title: "Prompt para Cursor",
+        description: "Para implementar via Cursor.",
+        content: promptCursor,
+        purpose: "Orienta o Cursor a criar arquivos, componentes, páginas e lógica.",
+        when: "Quando você estiver trabalhando com código.",
+        where: "No Cursor, como instrução principal do projeto.",
+        output: "Código organizado para construir ou melhorar seu app.",
+      },
+      {
+        title: "Prompt para Replit",
+        description: "Para subir um MVP no Replit.",
+        content: promptReplit,
+        purpose: "Monta rapidamente um protótipo funcional.",
+        when: "Quando quiser testar uma ideia sem configurar ambiente complexo.",
+        where: "No Replit Agent ou no campo de criação com IA.",
+        output: "Uma primeira versão simples e testável.",
+      },
+      {
+        title: "Prompt para Supabase",
+        description: "Modela o backend no Supabase.",
+        content: promptSupabase,
+        purpose: "Organiza a parte de dados do app.",
+        when: "Quando seu app precisar salvar usuários, pedidos, mensagens, pagamentos etc.",
+        where: "No Lovable, Cursor ou chat de IA antes de criar o banco.",
+        output: "Modelo de dados, tabelas, campos e regras de acesso.",
+      },
     ],
   },
   {
@@ -451,11 +509,51 @@ const library: Category[] = [
     title: "Vender o app",
     description: "Páginas e textos para vender o que você construiu.",
     prompts: [
-      { title: "Prompt para Landing Page", description: "Landing de alta conversão.", content: promptLanding },
-      { title: "Prompt para Página de Preço", description: "Página de preços simples.", content: promptPreco },
-      { title: "Prompt para Checkout", description: "Checkout objetivo.", content: promptCheckout },
-      { title: "Prompt para FAQ", description: "FAQ que remove objeções.", content: promptFAQ },
-      { title: "Prompt para Página de Confiança", description: "Quem está por trás e por que confiar.", content: promptConfianca },
+      {
+        title: "Prompt para Landing Page",
+        description: "Landing de alta conversão.",
+        content: promptLanding,
+        purpose: "Explica o problema, apresenta a solução e leva o visitante para a compra.",
+        when: "Depois de saber qual é a promessa do app.",
+        where: "No Lovable, Cursor ou chat de IA.",
+        output: "Estrutura e copy de uma página de venda.",
+      },
+      {
+        title: "Prompt para Página de Preço",
+        description: "Página de preços simples.",
+        content: promptPreco,
+        purpose: "Mostra o valor do produto e o que está sendo comprado.",
+        when: "Quando já souber o preço.",
+        where: "No Lovable ou chat de IA.",
+        output: "Uma seção ou página de preço organizada.",
+      },
+      {
+        title: "Prompt para Checkout",
+        description: "Checkout objetivo.",
+        content: promptCheckout,
+        purpose: "Reduz dúvidas na hora da compra.",
+        when: "Quando já tiver uma oferta pronta.",
+        where: "No Lovable, Cursor ou ferramenta de checkout.",
+        output: "Uma estrutura de checkout clara.",
+      },
+      {
+        title: "Prompt para FAQ",
+        description: "FAQ que remove objeções.",
+        content: promptFAQ,
+        purpose: "Remove objeções do usuário antes da compra.",
+        when: "Na landing page, checkout ou área de suporte.",
+        where: "No Lovable ou chat de IA.",
+        output: "Perguntas e respostas claras.",
+      },
+      {
+        title: "Prompt para Página de Confiança",
+        description: "Quem está por trás e por que confiar.",
+        content: promptConfianca,
+        purpose: "Passa confiança ao comprador.",
+        when: "Em produtos pagos, SaaS ou áreas com login.",
+        where: "No Lovable ou Cursor.",
+        output: "Uma página de confiança com informações essenciais.",
+      },
     ],
   },
   {
@@ -464,11 +562,51 @@ const library: Category[] = [
     title: "Monetizar",
     description: "Estratégia para transformar o app em receita.",
     prompts: [
-      { title: "Prompt de Modelo de Cobrança", description: "Define o melhor modelo.", content: promptCobranca },
-      { title: "Prompt de Plano Gratuito e Premium", description: "Free vs premium sem canibalizar.", content: promptFreePremium },
-      { title: "Prompt para R$10K/mês", description: "Plano realista para chegar lá.", content: prompt10K },
-      { title: "Prompt de Upsell", description: "Aumenta ticket por cliente.", content: promptUpsell },
-      { title: "Prompt de Retenção", description: "Reduz churn nos primeiros 30 dias.", content: promptRetencao },
+      {
+        title: "Prompt de Modelo de Cobrança",
+        description: "Define o melhor modelo.",
+        content: promptCobranca,
+        purpose: "Escolhe preço, plano gratuito, plano pago e estratégia de upgrade.",
+        when: "Antes de lançar ou vender.",
+        where: "No Arquiteto de Apps ou chat de IA.",
+        output: "Um modelo de cobrança realista.",
+      },
+      {
+        title: "Prompt de Plano Gratuito e Premium",
+        description: "Free vs premium sem canibalizar.",
+        content: promptFreePremium,
+        purpose: "Define o que entra no gratuito e o que entra no premium.",
+        when: "Quando seu app tiver plano gratuito.",
+        where: "No chat de IA.",
+        output: "Limites claros entre free e premium.",
+      },
+      {
+        title: "Prompt para R$10K/mês",
+        description: "Plano realista para chegar lá.",
+        content: prompt10K,
+        purpose: "Transforma meta de faturamento em número de vendas.",
+        when: "Depois de definir preço.",
+        where: "No chat de IA.",
+        output: "Cálculo de vendas, ticket e estratégia.",
+      },
+      {
+        title: "Prompt de Upsell",
+        description: "Aumenta ticket por cliente.",
+        content: promptUpsell,
+        purpose: "Aumenta o faturamento sem precisar de mais clientes.",
+        when: "Depois de vender o produto principal.",
+        where: "No chat de IA ou Lovable.",
+        output: "Uma oferta complementar.",
+      },
+      {
+        title: "Prompt de Retenção",
+        description: "Reduz churn nos primeiros 30 dias.",
+        content: promptRetencao,
+        purpose: "Evita que o usuário cancele rápido demais.",
+        when: "Depois das primeiras vendas ou assinaturas.",
+        where: "No chat de IA.",
+        output: "Plano de retenção e comunicação.",
+      },
     ],
   },
   {
@@ -477,11 +615,51 @@ const library: Category[] = [
     title: "Validar",
     description: "Confirme se vale construir antes de escalar.",
     prompts: [
-      { title: "Checklist de MVP", description: "Testa se o MVP está enxuto.", content: checklistMVP },
-      { title: "Checklist de Validação com 10 usuários", description: "Plano de teste com usuários reais.", content: checklistValidacao },
-      { title: "Prompt de Pesquisa com Usuários", description: "Roteiro de entrevista.", content: promptPesquisa },
-      { title: "Prompt de Feedback", description: "Formulário curto de feedback.", content: promptFeedback },
-      { title: "Prompt de Melhorias", description: "Prioriza melhorias a partir do feedback.", content: promptMelhorias },
+      {
+        title: "Checklist de MVP",
+        description: "Testa se o MVP está enxuto.",
+        content: checklistMVP,
+        purpose: "Corta excesso do MVP.",
+        when: "Antes de construir.",
+        where: "No Arquiteto de Apps ou chat de IA.",
+        output: "Análise crítica do MVP.",
+      },
+      {
+        title: "Checklist de Validação com 10 usuários",
+        description: "Plano de teste com usuários reais.",
+        content: checklistValidacao,
+        purpose: "Valida antes de gastar tempo e dinheiro.",
+        when: "Depois de ter um protótipo ou plano claro.",
+        where: "No chat de IA.",
+        output: "Plano de teste com pessoas reais.",
+      },
+      {
+        title: "Prompt de Pesquisa com Usuários",
+        description: "Roteiro de entrevista.",
+        content: promptPesquisa,
+        purpose: "Descobre se a dor existe de verdade.",
+        when: "Antes ou durante a validação.",
+        where: "No chat de IA.",
+        output: "Perguntas para entrevista e pesquisa.",
+      },
+      {
+        title: "Prompt de Feedback",
+        description: "Formulário curto de feedback.",
+        content: promptFeedback,
+        purpose: "Coleta opinião dos primeiros usuários.",
+        when: "Logo após colocar o app na mão de alguém.",
+        where: "No chat de IA.",
+        output: "Formulário curto de feedback.",
+      },
+      {
+        title: "Prompt de Melhorias",
+        description: "Prioriza melhorias a partir do feedback.",
+        content: promptMelhorias,
+        purpose: "Transforma comentários em melhorias priorizadas.",
+        when: "Depois de receber feedback.",
+        where: "No chat de IA.",
+        output: "Lista de melhorias por prioridade.",
+      },
     ],
   },
   {
@@ -490,26 +668,116 @@ const library: Category[] = [
     title: "Lançar",
     description: "Vá ao ar e conquiste os primeiros usuários.",
     prompts: [
-      { title: "Plano de Lançamento em 24h", description: "Passo a passo para lançar.", content: planoLancamento },
-      { title: "Legenda para Instagram", description: "3 opções de legenda.", content: legendaInstagram },
-      { title: "Mensagem para WhatsApp", description: "Mensagem pessoal para contatos.", content: mensagemWhatsapp },
-      { title: "Roteiro de Stories", description: "5 stories sequenciais.", content: roteiroStories },
-      { title: "Checklist antes de publicar", description: "Última checagem antes de ir ao ar.", content: checklistPublicar },
+      {
+        title: "Plano de Lançamento em 24h",
+        description: "Passo a passo para lançar.",
+        content: planoLancamento,
+        purpose: "Consegue os primeiros usuários sem complicar.",
+        when: "Quando tiver uma primeira versão ou página de espera.",
+        where: "No chat de IA.",
+        output: "Plano de divulgação para as primeiras 24 horas.",
+      },
+      {
+        title: "Legenda para Instagram",
+        description: "3 opções de legenda.",
+        content: legendaInstagram,
+        purpose: "Divulga sem parecer confuso.",
+        when: "No lançamento ou pré-lançamento.",
+        where: "No chat de IA.",
+        output: "Legendas prontas para postar.",
+      },
+      {
+        title: "Mensagem para WhatsApp",
+        description: "Mensagem pessoal para contatos.",
+        content: mensagemWhatsapp,
+        purpose: "Convida pessoas a testar seu app.",
+        when: "Na validação com 10 pessoas.",
+        where: "No chat de IA.",
+        output: "Mensagem curta para enviar.",
+      },
+      {
+        title: "Roteiro de Stories",
+        description: "5 stories sequenciais.",
+        content: roteiroStories,
+        purpose: "Apresenta a ideia em vídeo curto.",
+        when: "No Instagram, WhatsApp ou TikTok.",
+        where: "No chat de IA.",
+        output: "Roteiro curto de vídeo.",
+      },
+      {
+        title: "Checklist antes de publicar",
+        description: "Última checagem antes de ir ao ar.",
+        content: checklistPublicar,
+        purpose: "Evita publicar com erros básicos.",
+        when: "Antes de ir ao ar.",
+        where: "Leitura direta.",
+        output: "Checklist final de publicação.",
+      },
+    ],
+  },
+  {
+    id: "suporte",
+    icon: <LifeBuoy size={16} />,
+    title: "Suporte e correção",
+    description: "Use quando travar em alguma etapa.",
+    prompts: [
+      {
+        title: "Prompt de Suporte",
+        description: "Explica o problema e recebe uma solução simples.",
+        content: promptSuporte,
+        purpose: "Explica o problema e recebe um passo a passo de correção.",
+        when: "Quando algo não funcionar.",
+        where: "No Arquiteto de Apps, ChatGPT, Claude, Gemini, Cursor ou Lovable.",
+        output: "Diagnóstico e passo a passo de correção.",
+      },
     ],
   },
 ];
 
+
 // ---------- Helpers ----------
-const STORAGE_PROGRESS = "fabrica_apps_progress_v1";
+const STORAGE_PROGRESS = "fabrica_apps_progress_v2";
 const progressItems = [
-  "Ideia descrita",
-  "Plano gerado",
-  "Prompt mestre copiado",
-  "MVP iniciado",
-  "Validação com 10 usuários",
+  "Copiei o prompt de entrada",
+  "Enviei minha ideia para o Arquiteto",
+  "Recebi meu plano completo",
+  "Copiei o prompt para construir",
+  "Comecei meu MVP",
+  "Mostrei para 10 pessoas",
+  "Anotei os feedbacks",
+  "Escolhi o que melhorar primeiro",
 ];
 
-const passos = ["Abra o agente", "Cole sua ideia", "Copie o prompt mestre gerado"];
+const comoUsarPassos: { title: string; desc: string }[] = [
+  { title: "Copie o prompt de entrada", desc: "Este prompt ajuda você a explicar sua ideia do jeito certo." },
+  { title: "Abra o Arquiteto de Apps", desc: "Cole o prompt no agente e responda as perguntas." },
+  { title: "Receba seu plano", desc: "O agente vai organizar MVP, telas, fluxo, banco, design, monetização e riscos." },
+  { title: "Use os prompts extras", desc: "Depois do plano pronto, use os prompts para Lovable, landing, checkout, monetização e validação." },
+  { title: "Construa e teste", desc: "Crie uma primeira versão simples e mostre para 10 pessoas reais." },
+];
+
+const ordemRecomendada: { title: string; desc: string }[] = [
+  { title: "Gerar o plano", desc: "Use o prompt de entrada." },
+  { title: "Construir o app", desc: "Use o prompt para Lovable ou Cursor." },
+  { title: "Criar a página de venda", desc: "Use o prompt de landing page." },
+  { title: "Definir preço", desc: "Use o prompt de monetização." },
+  { title: "Validar com 10 usuários", desc: "Use o checklist de validação." },
+  { title: "Lançar", desc: "Use o prompt de lançamento." },
+];
+
+const exemploPreenchido = `Minha ideia é:
+Um app para pequenos restaurantes receberem pedidos pelo WhatsApp e organizarem as entregas.
+
+Quem vai usar:
+Donos de pequenos restaurantes, lanchonetes e marmitarias.
+
+O problema que resolve:
+Eles recebem muitos pedidos bagunçados no WhatsApp e se perdem na entrega.
+
+Como pretendo ganhar dinheiro:
+Mensalidade simples de R$29 por restaurante.`;
+
+
 
 function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
   const [copied, setCopied] = useState(false);
@@ -557,6 +825,14 @@ function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
             )}
           </dl>
         )}
+        <details className="mt-3 group" open>
+          <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground/80 hover:text-accent transition select-none">
+            Ver / esconder conteúdo do prompt
+          </summary>
+          <pre className="mt-2 text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3 max-h-72 overflow-y-auto">
+{prompt.content}
+          </pre>
+        </details>
       </div>
       <button
         onClick={copy}
@@ -573,8 +849,10 @@ export default function Entrega() {
   const navigate = useNavigate();
   const auth = useAuthState();
 
-  const [activeTab, setActiveTab] = useState(library[0].id);
+  
   const [copiedEntry, setCopiedEntry] = useState(false);
+  const [copiedExemplo, setCopiedExemplo] = useState(false);
+  const [copiedSuporte, setCopiedSuporte] = useState(false);
   const [progress, setProgress] = useState<boolean[]>(() =>
     progressItems.map(() => false),
   );
@@ -705,7 +983,16 @@ export default function Entrega() {
   const toggleProgress = (i: number) =>
     setProgress((prev) => prev.map((v, idx) => (idx === i ? !v : v)));
 
-  const activeCategory = library.find((c) => c.id === activeTab) ?? library[0];
+  const copyText = async (text: string, setFlag: (v: boolean) => void) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setFlag(true);
+      toast.success("Copiado com sucesso.");
+      setTimeout(() => setFlag(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
 
   return (
     <Section>
@@ -714,19 +1001,29 @@ export default function Entrega() {
         <div className="flex items-center gap-3">
           <Logo size="md" asLink={false} />
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-base md:text-lg font-heading font-bold">Arquiteto de Apps</h1>
               <span className="text-[10px] uppercase tracking-[0.25em] text-accent border border-accent/30 rounded-full px-2 py-0.5">
                 Área de entrega
               </span>
             </div>
-            <p className="text-xs text-muted-foreground/70">{session.email}</p>
+            <p className="text-xs text-muted-foreground/70">
+              Logado como: <span className="text-foreground/80">{session.email || "—"}</span>
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button onClick={openAgent} className="btn-primary text-sm">
             Gerar meu plano de app agora <ExternalLink size={14} />
           </button>
+          {auth.status === "authed" && auth.isAdmin && (
+            <button
+              onClick={() => navigate("/admin/acessos")}
+              className="inline-flex items-center gap-1 text-xs px-3 py-2 rounded-lg border border-accent/30 text-accent hover:bg-accent/10 transition"
+            >
+              <ShieldCheck size={14} /> Admin
+            </button>
+          )}
           <button onClick={logout} className="btn-ghost text-sm">
             <LogOut size={14} /> Sair
           </button>
@@ -740,114 +1037,169 @@ export default function Entrega() {
             Bem-vindo ao Arquiteto de Apps
           </h2>
           <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-2xl">
-            Comece pelo agente principal. Depois use os prompts complementares para construir, vender, monetizar e validar sua ideia.
+            Aqui você vai transformar sua ideia em um plano de app e depois usar os prompts certos para construir, vender, monetizar, validar e lançar.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button onClick={openAgent} className="btn-primary">
               Gerar meu plano de app agora <ExternalLink size={16} />
             </button>
-            <button onClick={copyEntryPrompt} className="btn-ghost">
+            <button onClick={() => copyText(promptEntrada, setCopiedEntry)} className="btn-ghost">
               {copiedEntry ? <Check size={16} className="text-accent" /> : <Copy size={16} />}
               {copiedEntry ? "Copiado" : "Copiar prompt de entrada"}
             </button>
           </div>
           <p className="text-xs text-muted-foreground/80 mt-4">
-            Primeiro gere seu plano. Depois use os prompts extras.
+            Comece pelo plano principal. Depois use os prompts extras na ordem.
           </p>
         </div>
       </div>
 
-      {/* Resgate de código premium */}
+      {/* 3. Como usar esta página */}
       <div className="max-w-5xl mx-auto mb-10">
-        <GiftCodeRedemption />
-      </div>
-
-      {/* 3. Card "Comece aqui" */}
-      <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Seu primeiro passo</h2>
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Como usar esta página</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Não tente usar todos os materiais de uma vez. Primeiro gere o plano principal do seu app.
+          Pense nesta página como uma receita de bolo. Você não precisa usar tudo ao mesmo tempo. Siga a ordem: primeiro explique sua ideia, depois gere o plano, depois use os prompts extras.
         </p>
         <div className="glass-strong p-5 md:p-6">
-          <ol className="grid sm:grid-cols-3 gap-3 mb-5">
-            {passos.map((p, i) => (
-              <li key={p} className="flex items-start gap-3">
-                <span className="shrink-0 w-7 h-7 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-xs">
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {comoUsarPassos.map((p, i) => (
+              <li key={p.title} className="flex flex-col gap-2">
+                <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
                   {i + 1}
                 </span>
-                <p className="text-sm text-foreground/90 leading-relaxed">{p}</p>
+                <p className="text-sm font-semibold text-foreground">{p.title}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{p.desc}</p>
               </li>
             ))}
           </ol>
-          <button onClick={openAgent} className="btn-primary w-full sm:w-auto">
-            Gerar meu plano de app agora <ExternalLink size={16} />
-          </button>
         </div>
       </div>
 
-      {/* 4. Prompt de entrada (fixo) */}
+      {/* 4. Primeiro passo obrigatório */}
       <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Prompt de entrada para o agente</h2>
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Primeiro passo obrigatório</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Copie este prompt, preencha os campos e envie para o Arquiteto de Apps.
+          Antes de usar qualquer outro prompt, comece por este. Ele é o ponto de partida do seu app.
         </p>
         <div className="glass-strong p-5 md:p-6">
-          <div className="flex items-center justify-end mb-3">
-            <button
-              onClick={copyEntryPrompt}
-              className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/5 transition"
-            >
-              {copiedEntry ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
-              {copiedEntry ? "Copiado" : "Copiar prompt"}
-            </button>
-          </div>
-          <pre className="text-[14px] md:text-[15px] text-foreground/85 whitespace-pre-wrap font-sans leading-7">
+          <h3 className="font-heading font-semibold text-base mb-3">Prompt de entrada para o agente</h3>
+          <dl className="grid sm:grid-cols-2 gap-3 text-xs mb-4">
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Para que serve</dt>
+              <dd className="text-foreground/85">Contar sua ideia ao Arquiteto de um jeito organizado.</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Quando usar</dt>
+              <dd className="text-foreground/85">Agora, antes de qualquer outro prompt.</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Onde colar</dt>
+              <dd className="text-foreground/85">No Arquiteto de Apps, no campo de conversa.</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">O que você recebe</dt>
+              <dd className="text-foreground/85">Plano com MVP, telas, fluxo, banco, design, monetização, riscos e prompt mestre.</dd>
+            </div>
+          </dl>
+          <pre className="text-[13px] md:text-[14px] text-foreground/85 whitespace-pre-wrap font-sans leading-7 bg-background/40 border border-white/5 rounded-lg p-4 max-h-96 overflow-y-auto">
 {promptEntrada}
           </pre>
+          <div className="flex flex-col sm:flex-row gap-2 mt-4">
+            <button onClick={() => copyText(promptEntrada, setCopiedEntry)} className="btn-primary flex-1 sm:flex-initial">
+              {copiedEntry ? <Check size={16} className="text-background" /> : <Copy size={16} />}
+              {copiedEntry ? "Copiado" : "Copiar prompt"}
+            </button>
+            <button onClick={openAgent} className="btn-ghost flex-1 sm:flex-initial">
+              Abrir Arquiteto de Apps <ExternalLink size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Exemplo preenchido */}
+        <div className="glass p-5 md:p-6 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Lightbulb size={16} className="text-gold" />
+            <h3 className="font-heading font-semibold text-sm">Exemplo de como preencher</h3>
+          </div>
+          <pre className="text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3">
+{exemploPreenchido}
+          </pre>
+          <p className="text-xs text-muted-foreground mt-3">
+            Você pode copiar este exemplo e trocar pelas informações da sua ideia.
+          </p>
+          <button onClick={() => copyText(exemploPreenchido, setCopiedExemplo)} className="mt-3 inline-flex items-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 transition">
+            {copiedExemplo ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
+            {copiedExemplo ? "Copiado" : "Copiar exemplo"}
+          </button>
+        </div>
+
+        {/* Não sei preencher */}
+        <div className="glass p-5 md:p-6 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <HelpCircle size={16} className="text-accent" />
+            <h3 className="font-heading font-semibold text-sm">Não sei preencher tudo. E agora?</h3>
+          </div>
+          <p className="text-sm text-foreground/85 mb-2">
+            Não tem problema. Escreva <span className="text-accent">"não sei"</span> nos campos que você não souber. O Arquiteto de Apps vai te ajudar a decidir.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Exemplo — Como pretendo ganhar dinheiro: <span className="text-foreground/80">"ainda não sei"</span>
+          </p>
         </div>
       </div>
 
-      {/* 5. Biblioteca de prompts */}
+      {/* 5. Ordem recomendada */}
       <div className="max-w-5xl mx-auto mb-10">
-        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Biblioteca de prompts</h2>
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Use nesta ordem</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Use estes prompts depois que o agente gerar o plano principal do seu app.
+          Esta é a sequência que funciona melhor para sair da ideia e chegar ao lançamento.
         </p>
+        <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {ordemRecomendada.map((p, i) => (
+            <li key={p.title} className="glass p-4 flex gap-3">
+              <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
+                {i + 1}
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">{p.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{p.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
 
-        <div className="flex flex-wrap gap-2 mb-5">
-          {library.map((cat) => {
-            const active = cat.id === activeTab;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab(cat.id)}
-                className={`inline-flex items-center gap-2 text-xs md:text-sm px-3 py-2 rounded-lg border transition ${
-                  active
-                    ? "bg-accent/15 border-accent/40 text-accent"
-                    : "border-white/10 text-foreground/70 hover:bg-white/5"
-                }`}
-              >
-                {cat.icon}
-                {cat.title}
-              </button>
-            );
-          })}
-        </div>
-
-        <p className="text-xs text-muted-foreground mb-4">{activeCategory.description}</p>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {activeCategory.prompts.map((p) => (
-            <CopyPromptCard key={p.title} prompt={p} />
+      {/* 6. Biblioteca completa de prompts (sem abas) */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Biblioteca completa de prompts</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Todos os prompts abaixo estão explicados. Leia a descrição, copie o prompt e cole na ferramenta indicada.
+        </p>
+        <div className="space-y-10">
+          {library.map((cat, idx) => (
+            <section key={cat.id}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-accent">{cat.icon}</span>
+                <h3 className="text-base md:text-lg font-heading font-bold">
+                  Seção {idx + 1} — {cat.title}
+                </h3>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">{cat.description}</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                {cat.prompts.map((p) => (
+                  <CopyPromptCard key={p.title} prompt={p} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       </div>
 
-      {/* 6. Checklist de progresso */}
+      {/* 7. Checklist de progresso */}
       <div className="max-w-5xl mx-auto mb-10">
         <h2 className="text-lg md:text-xl font-heading font-bold mb-1">Seu progresso</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Marque conforme avançar. Seu progresso fica salvo neste navegador.
+          Marque conforme avançar. Isso ajuda você a não se perder.
         </p>
         <div className="glass-strong p-5 md:p-6">
           <ul className="space-y-2">
@@ -866,7 +1218,7 @@ export default function Entrega() {
                   <input
                     type="checkbox"
                     className="sr-only"
-                    checked={progress[i]}
+                    checked={progress[i] ?? false}
                     onChange={() => toggleProgress(i)}
                   />
                   <span className={`text-sm ${progress[i] ? "text-foreground/60 line-through" : "text-foreground/90"}`}>
@@ -879,25 +1231,46 @@ export default function Entrega() {
         </div>
       </div>
 
-      {/* 7. Suporte */}
-      <div className="max-w-5xl mx-auto">
-        <GlassCard className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* 8. Travou? */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <GlassCard className="flex flex-col gap-4">
           <div className="flex items-start gap-3">
             <LifeBuoy size={20} className="text-gold shrink-0 mt-1" />
             <div>
               <p className="font-heading font-bold text-base">Travou em alguma etapa?</p>
               <p className="text-sm text-muted-foreground">
-                Envie sua dúvida e diga em qual etapa você está.
+                Use o prompt de suporte ou fale com o suporte explicando em qual passo você parou.
               </p>
             </div>
           </div>
-          <button
-            className="btn-ghost text-sm shrink-0"
-            onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-          >
-            Falar com suporte
-          </button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={() => copyText(promptSuporte, setCopiedSuporte)}
+              className="btn-primary flex-1 sm:flex-initial"
+            >
+              {copiedSuporte ? <Check size={16} className="text-background" /> : <Copy size={16} />}
+              {copiedSuporte ? "Copiado" : "Copiar prompt de suporte"}
+            </button>
+            <button
+              className="btn-ghost flex-1 sm:flex-initial"
+              onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+            >
+              <LifeBuoy size={16} /> Falar com suporte
+            </button>
+          </div>
         </GlassCard>
+      </div>
+
+      {/* 9. Ativar ou estender acesso (no final) */}
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center gap-2 mb-1">
+          <Gift size={18} className="text-gold" />
+          <h2 className="text-lg md:text-xl font-heading font-bold">Ativar ou estender acesso</h2>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          Use este campo apenas se você recebeu um código de acesso ou código premium.
+        </p>
+        <GiftCodeRedemption />
       </div>
     </Section>
   );
