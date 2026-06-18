@@ -821,6 +821,14 @@ function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
             )}
           </dl>
         )}
+        <details className="mt-3 group" open>
+          <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground/80 hover:text-accent transition select-none">
+            Ver / esconder conteúdo do prompt
+          </summary>
+          <pre className="mt-2 text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3 max-h-72 overflow-y-auto">
+{prompt.content}
+          </pre>
+        </details>
       </div>
       <button
         onClick={copy}
