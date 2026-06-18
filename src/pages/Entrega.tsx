@@ -106,7 +106,7 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
 - O preço é simples de entender?
 - O checkout está fácil?
 - Existe uma oferta principal?
-- Existe uma oferta premium ou serviço complementar?
+- Existe uma oferta principal clara e única?
 - O produto evita prometer ganhos automáticos?`,
   },
   {
