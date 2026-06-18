@@ -60,10 +60,11 @@ const STORAGE_MODULE = "fabrica_apps_active_module_v1";
 const STORAGE_MODULE_DONE = "fabrica_apps_module_done_v1";
 const STORAGE_CHECKLIST = "fabrica_apps_checklist_v1";
 
-const ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
   Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift,
 };
+
 
 // ====== Persistência simples ======
 
