@@ -500,16 +500,69 @@ const library: Category[] = [
 ];
 
 // ---------- Helpers ----------
-const STORAGE_PROGRESS = "fabrica_apps_progress_v1";
+const STORAGE_PROGRESS = "fabrica_apps_progress_v2";
 const progressItems = [
-  "Ideia descrita",
-  "Plano gerado",
-  "Prompt mestre copiado",
-  "MVP iniciado",
-  "Validação com 10 usuários",
+  "Copiei o prompt de entrada",
+  "Enviei minha ideia para o Arquiteto",
+  "Recebi meu plano completo",
+  "Copiei o prompt para construir",
+  "Comecei meu MVP",
+  "Mostrei para 10 pessoas",
+  "Anotei os feedbacks",
+  "Escolhi o que melhorar primeiro",
 ];
 
-const passos = ["Abra o agente", "Cole sua ideia", "Copie o prompt mestre gerado"];
+const comoUsarPassos: { title: string; desc: string }[] = [
+  { title: "Copie o prompt de entrada", desc: "Este prompt ajuda você a explicar sua ideia do jeito certo." },
+  { title: "Abra o Arquiteto de Apps", desc: "Cole o prompt no agente e responda as perguntas." },
+  { title: "Receba seu plano", desc: "O agente vai organizar MVP, telas, fluxo, banco, design, monetização e riscos." },
+  { title: "Use os prompts extras", desc: "Depois do plano pronto, use os prompts para Lovable, landing, checkout, monetização e validação." },
+  { title: "Construa e teste", desc: "Crie uma primeira versão simples e mostre para 10 pessoas reais." },
+];
+
+const ordemRecomendada: { title: string; desc: string }[] = [
+  { title: "Gerar o plano", desc: "Use o prompt de entrada." },
+  { title: "Construir o app", desc: "Use o prompt para Lovable ou Cursor." },
+  { title: "Criar a página de venda", desc: "Use o prompt de landing page." },
+  { title: "Definir preço", desc: "Use o prompt de monetização." },
+  { title: "Validar com 10 usuários", desc: "Use o checklist de validação." },
+  { title: "Lançar", desc: "Use o prompt de lançamento." },
+];
+
+const exemploPreenchido = `Minha ideia é:
+Um app para pequenos restaurantes receberem pedidos pelo WhatsApp e organizarem as entregas.
+
+Quem vai usar:
+Donos de pequenos restaurantes, lanchonetes e marmitarias.
+
+O problema que resolve:
+Eles recebem muitos pedidos bagunçados no WhatsApp e se perdem na entrega.
+
+Como pretendo ganhar dinheiro:
+Mensalidade simples de R$29 por restaurante.`;
+
+const promptSuporte = `Estou travado na construção do meu app.
+
+Contexto:
+[explique onde travou]
+
+Ferramenta usada:
+[Lovable, Cursor, Replit, Supabase, Firebase ou outra]
+
+Erro ou dúvida:
+[cole aqui]
+
+O que eu estava tentando fazer:
+[explique]
+
+Quero que você:
+1. Diagnostique o problema
+2. Explique a causa provável
+3. Sugira a correção mais simples
+4. Me dê um passo a passo
+5. Evite soluções complexas desnecessárias
+6. Me diga o que testar depois da correção`;
+
 
 function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
   const [copied, setCopied] = useState(false);
