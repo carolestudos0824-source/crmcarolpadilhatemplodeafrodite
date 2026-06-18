@@ -1,10 +1,9 @@
-import { ShieldCheck, Mail } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Section } from "@/components/Section";
 import { CheckoutSummary } from "@/components/CheckoutSummary";
 import { Logo } from "@/components/Logo";
 import { PLANS } from "@/data/plans";
-import { APP_CONFIG } from "@/config/appConfig";
-import { openConfiguredUrl, openSupportEmail } from "@/lib/openLink";
+import { openConfiguredUrl } from "@/lib/openLink";
 
 export default function Checkout() {
   const plan = PLANS[0];
@@ -25,19 +24,22 @@ export default function Checkout() {
           <div className="text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed">
             Após a compra, você receberá acesso à área de entrega com o link do agente, prompts, checklists e manual de uso. Para usar o agente, é necessário estar logado no ChatGPT.
           </div>
-          <button className="btn-primary w-full" onClick={() => openConfiguredUrl(checkoutUrl)}>
+          <button
+            className="btn-primary w-full"
+            onClick={() => openConfiguredUrl(checkoutUrl, "Link de checkout ainda não configurado. Edite o arquivo de configuração.")}
+          >
             Ir para pagamento
           </button>
           <p className="text-xs text-accent/90">
             Após o pagamento, você receberá as instruções de acesso no e-mail informado na compra.
           </p>
-          <button className="btn-ghost w-full" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
-            <Mail size={16} /> Falar com suporte por e-mail
-          </button>
           <div className="flex items-start gap-2 text-xs text-muted-foreground/80 pt-2 border-t border-white/5">
             <ShieldCheck size={14} className="text-accent shrink-0 mt-0.5" />
-            Pagamento processado em ambiente externo. Nenhum dado de pagamento é armazenado neste site. Em caso de dúvida, fale com o suporte por e-mail.
+            Pagamento processado em ambiente externo. Nenhum dado de pagamento é armazenado neste site.
           </div>
+          <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
+            Suporte por e-mail apenas para dúvidas de acesso ao material.
+          </p>
         </div>
       </div>
     </Section>
