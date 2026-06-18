@@ -1,18 +1,36 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Sparkles, Code, Mail, LogOut, ExternalLink } from "lucide-react";
+import { Sparkles, Code, Mail, LogOut, ExternalLink, Rocket, AlertCircle } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
 import { CopyBlock } from "@/components/CopyBlock";
 import { DeliveryResourceCard } from "@/components/DeliveryResourceCard";
 import { GlassCard } from "@/components/GlassCard";
+import { FAQItem } from "@/components/FAQItem";
 import { getSession, clearSession } from "@/lib/auth";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
 
-
 const blocks = [
+  {
+    title: "Primeira mensagem para enviar ao agente",
+    content: `Tenho uma ideia de aplicativo e quero transformar em um MVP simples, vendável e validável.
+
+Minha ideia é:
+[descreva sua ideia aqui]
+
+Quem vai usar:
+[descreva o público]
+
+Problema que resolve:
+[explique a dor ou desejo]
+
+Como pretendo ganhar dinheiro:
+[explique se será venda única, assinatura, serviço, produto digital ou outro modelo]
+
+Quero que você analise a ideia, corte excessos, defina um MVP com no máximo 5 funcionalidades, crie o fluxo do usuário, sugira stack, banco de dados, design, monetização, riscos e um prompt pronto para construir no Lovable.`,
+  },
   {
     title: "Prompt Mestre Universal",
     content: `Você é o Arquiteto Supremo de Aplicativos. Sua função é transformar qualquer ideia de aplicativo em um plano completo, executável, simples, vendável e validável.
@@ -52,14 +70,16 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
   },
   {
     title: "Manual rápido de uso",
-    content: `1. Comece descrevendo sua ideia em linguagem simples.
-2. Informe quem vai usar o app.
-3. Explique qual problema ele resolve.
-4. Diga como pretende ganhar dinheiro.
-5. Peça ao agente para cortar excessos e definir um MVP com no máximo 5 funcionalidades.
-6. Copie o prompt final gerado pelo agente.
-7. Cole o prompt na ferramenta escolhida, como Lovable, Cursor, Claude Code, Gemini ou Replit.
-8. Valide com usuários reais antes de criar novas funcionalidades.`,
+    content: `1. Abra o Agente Arquiteto Supremo.
+2. Faça login no ChatGPT, se necessário.
+3. Copie a "Primeira mensagem para enviar ao agente".
+4. Substitua os campos entre colchetes pela sua ideia.
+5. Envie a mensagem para o agente.
+6. Leia o diagnóstico e confira se o MVP tem no máximo 5 funcionalidades.
+7. Copie o prompt final gerado pelo agente.
+8. Cole o prompt na ferramenta escolhida, como Lovable, Cursor, Claude Code, Gemini ou Replit.
+9. Teste o app gerado.
+10. Valide com 10 usuários reais antes de adicionar novas funções.`,
   },
   {
     title: "Prompt para Lovable",
@@ -71,7 +91,7 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
   },
   {
     title: "Prompt para Página de Preços",
-    content: "Crie uma página de preços em português do Brasil para este produto digital. A página deve ter 3 planos, destacar o plano recomendado, explicar benefícios de forma clara, evitar promessas irreais, mostrar o que está incluso, criar CTAs fortes e reduzir objeções antes do checkout.",
+    content: "Crie uma página de preços em português do Brasil para este produto digital. A página deve destacar a oferta principal, explicar benefícios de forma clara, evitar promessas irreais, mostrar o que está incluso, criar CTAs fortes e reduzir objeções antes do checkout.",
   },
   {
     title: "Prompt para Checkout",
@@ -79,7 +99,7 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
   },
   {
     title: "Prompt para Monetização",
-    content: "Analise esta ideia de app e crie um modelo de monetização simples, com plano gratuito limitado, plano pago, gatilho de upgrade, página de preços, estratégia de retenção, cálculo para atingir R$10K por mês e riscos comerciais.",
+    content: "Analise esta ideia de app e crie um modelo de monetização simples, com oferta principal clara, gatilho de upgrade, página de preços, estratégia de retenção, cálculo para atingir uma meta mensal realista e riscos comerciais.",
   },
   {
     title: "Prompt para Lançamento",
@@ -105,7 +125,6 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
 - Existe gatilho de upgrade?
 - O preço é simples de entender?
 - O checkout está fácil?
-- Existe uma oferta principal?
 - Existe uma oferta principal clara e única?
 - O produto evita prometer ganhos automáticos?`,
   },
@@ -134,12 +153,30 @@ Não entregue teoria genérica. Entregue um plano aplicável, vendável e valid�
   },
 ];
 
-const passos = [
-  "Abra o agente",
-  "Escreva sua ideia",
-  "Use o Prompt Mestre para estruturar o app",
-  "Copie o prompt final para Lovable, Cursor, Claude Code ou Gemini",
-  "Valide com usuários reais",
+const comecePorAqui = [
+  'Clique em "Abrir agente".',
+  "Faça login no ChatGPT, se for solicitado.",
+  "Copie o Prompt Mestre Universal.",
+  "Envie sua ideia para o agente.",
+  "Pegue o plano gerado e cole no Lovable, Cursor, Claude Code, Gemini ou Replit.",
+];
+
+const depoisDoPlano = `1. Confira se a ação principal do app está clara.
+2. Verifique se o MVP tem no máximo 5 funcionalidades.
+3. Remova qualquer função que não ajude o usuário a completar a ação principal.
+4. Copie o prompt final de construção.
+5. Cole no Lovable, Cursor, Claude Code, Gemini ou Replit.
+6. Teste o app no celular.
+7. Mostre para 10 pessoas reais.
+8. Ajuste com base no feedback antes de criar novas funções.`;
+
+const problemas = [
+  { q: "O agente não abriu.", a: 'Clique em "Copiar link do agente" e cole o link em uma nova aba do navegador.' },
+  { q: "O ChatGPT pediu login.", a: "Entre na sua conta ChatGPT para usar o agente." },
+  { q: "Não sei o que escrever primeiro.", a: 'Use o bloco "Primeira mensagem para enviar ao agente".' },
+  { q: "O prompt ficou muito grande.", a: "Isso é normal. Copie por partes ou cole diretamente na ferramenta escolhida." },
+  { q: "O Lovable não criou exatamente como eu queria.", a: "Volte ao agente e peça ajustes específicos na tela, fluxo ou funcionalidade que deseja melhorar." },
+  { q: "Tenho uma dúvida de acesso.", a: "Fale com o suporte por e-mail usando o botão de suporte desta página." },
 ];
 
 export default function Entrega() {
@@ -177,6 +214,7 @@ export default function Entrega() {
 
   return (
     <Section>
+      {/* 1. Cabeçalho */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10 max-w-5xl mx-auto">
         <div className="flex items-center gap-4">
           <Logo size="lg" asLink={false} />
@@ -190,6 +228,7 @@ export default function Entrega() {
         <button onClick={logout} className="btn-ghost text-sm"><LogOut size={14} /> Sair</button>
       </div>
 
+      {/* 2. Cards: Agente, Prompts, Suporte */}
       <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-12">
         <DeliveryResourceCard
           icon={<Sparkles size={20} />}
@@ -198,12 +237,7 @@ export default function Entrega() {
           action={
             <div className="flex flex-col gap-2">
               {APP_CONFIG.GPT_AGENT_URL ? (
-                <a
-                  href={APP_CONFIG.GPT_AGENT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary w-full"
-                >
+                <a href={APP_CONFIG.GPT_AGENT_URL} target="_blank" rel="noopener noreferrer" className="btn-primary w-full">
                   Abrir agente <ExternalLink size={14} />
                 </a>
               ) : (
@@ -214,8 +248,8 @@ export default function Entrega() {
               <button className="btn-ghost w-full text-xs" onClick={copyAgentLink}>
                 Copiar link do agente
               </button>
-              <p className="text-[11px] text-muted-foreground/70 leading-snug">
-                Você precisa estar logado no ChatGPT para usar o agente. Se o link não abrir no preview, copie e cole em uma nova aba.
+              <p className="text-[12px] text-muted-foreground/80 leading-relaxed">
+                Você precisa estar logado no ChatGPT para usar o agente. Se o link não abrir no preview, copie o link do agente e cole em uma nova aba do navegador.
               </p>
             </div>
           }
@@ -238,22 +272,83 @@ export default function Entrega() {
         />
       </div>
 
-      <div className="max-w-5xl mx-auto mb-12">
+      {/* 3. Comece por aqui */}
+      <div className="max-w-5xl mx-auto mb-14">
+        <div className="flex items-center gap-2 mb-2">
+          <Rocket size={18} className="text-gold" />
+          <h2 className="text-xl md:text-2xl font-heading font-bold">Comece por aqui</h2>
+        </div>
+        <p className="text-base text-muted-foreground mb-5">Siga estes passos para usar a Fábrica de Apps com IA sem travar.</p>
+        <div className="glass-strong p-6 md:p-8">
+          <ol className="space-y-3">
+            {comecePorAqui.map((p, i) => (
+              <li key={p} className="flex gap-4 items-start">
+                <span className="shrink-0 w-8 h-8 rounded-full bg-accent/15 text-accent font-heading font-bold flex items-center justify-center text-sm">
+                  {i + 1}
+                </span>
+                <p className="text-[15px] md:text-base text-foreground/90 leading-relaxed pt-1">{p}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="text-xs text-muted-foreground/80 mt-5 pt-4 border-t border-white/5">
+            Você precisa estar logado no ChatGPT para usar o agente.
+          </p>
+        </div>
+      </div>
+
+      {/* 4. Como usar seus materiais */}
+      <div className="max-w-5xl mx-auto mb-14">
         <h2 className="text-xl md:text-2xl font-heading font-bold mb-5">Como usar seus materiais</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {passos.map((t, i) => (
+          {[
+            "Abra o agente",
+            "Escreva sua ideia",
+            "Use o Prompt Mestre para estruturar o app",
+            "Copie o prompt final para Lovable, Cursor, Claude Code ou Gemini",
+            "Valide com usuários reais",
+          ].map((t, i) => (
             <GlassCard key={t} className="text-center">
               <div className="text-2xl font-heading font-bold text-gold mb-2">{String(i + 1).padStart(2, "0")}</div>
-              <p className="text-sm text-foreground/90">{t}</p>
+              <p className="text-sm text-foreground/90 leading-relaxed">{t}</p>
             </GlassCard>
           ))}
         </div>
       </div>
 
-      <div id="blocos" className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+      {/* 5-17. Blocos copiáveis */}
+      <div id="blocos" className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto mb-14">
         {blocks.map((b) => <CopyBlock key={b.title} title={b.title} content={b.content} />)}
       </div>
 
+      {/* 18. Depois que o agente gerar seu plano */}
+      <div className="max-w-5xl mx-auto mb-14">
+        <CopyBlock title="Depois que o agente gerar seu plano" content={depoisDoPlano} />
+      </div>
+
+      {/* 19. Problemas comuns */}
+      <div className="max-w-3xl mx-auto mb-14">
+        <div className="flex items-center gap-2 mb-5">
+          <AlertCircle size={18} className="text-accent" />
+          <h2 className="text-xl md:text-2xl font-heading font-bold">Problemas comuns</h2>
+        </div>
+        <div className="space-y-3">
+          {problemas.map((p) => <FAQItem key={p.q} q={p.q} a={p.a} />)}
+        </div>
+      </div>
+
+      {/* 20. Suporte por e-mail */}
+      <div className="max-w-3xl mx-auto">
+        <div className="glass-strong p-6 md:p-8 text-center">
+          <Mail size={22} className="text-gold mx-auto mb-3" />
+          <h3 className="font-heading font-bold text-lg mb-2">Suporte por e-mail</h3>
+          <p className="text-sm text-muted-foreground mb-5">
+            O suporte é feito exclusivamente por e-mail. Respondemos em horário comercial.
+          </p>
+          <button className="btn-gold mx-auto" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
+            Falar com suporte por e-mail
+          </button>
+        </div>
+      </div>
     </Section>
   );
 }
