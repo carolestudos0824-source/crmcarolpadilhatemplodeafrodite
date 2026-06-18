@@ -446,17 +446,34 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           ))}
         </div>
 
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 mb-6 flex items-start gap-3">
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 mb-4 flex items-start gap-3">
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <div>
             <strong>Regra de ouro:</strong> um comando por vez. Não pule etapas.
           </div>
         </div>
 
+        <GlassCard className="p-5 md:p-6 mb-6">
+          <h3 className="font-heading font-semibold text-base mb-1">
+            Não faça tudo de uma vez
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            O segredo é usar um comando por vez. Copie, cole no Lovable, espere o
+            resultado, teste e só depois avance.
+          </p>
+        </GlassCard>
+
         <div className="flex flex-wrap gap-3">
           <button onClick={() => goTo("ideias")} className="btn-primary">
-            <Lightbulb size={16} /> Ir para ideias prontas
+            <Sparkles size={16} /> Começar agora
           </button>
+          <button
+            onClick={() => goTo("ideias")}
+            className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
+          >
+            <Lightbulb size={16} /> Ver ideias prontas
+          </button>
+
           <button
             onClick={() => goTo("construir")}
             className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
