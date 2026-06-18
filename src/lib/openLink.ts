@@ -1,8 +1,8 @@
 import { toast } from "sonner";
 
-export const openConfiguredUrl = (url: string | undefined | null) => {
+export const openConfiguredUrl = (url: string | undefined | null, emptyMessage?: string) => {
   if (!url || !url.trim()) {
-    toast.error("Link ainda não configurado. Edite o arquivo de configuração.");
+    toast.error(emptyMessage || "Link ainda não configurado. Edite o arquivo de configuração.");
     return;
   }
   window.open(url, "_blank", "noopener,noreferrer");
