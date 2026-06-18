@@ -7,16 +7,30 @@ const links = [
   { to: "/", label: "Início" },
   { to: "/precos", label: "Preços" },
   { to: "/entrega", label: "Entrega" },
-  { to: "/suporte", label: "Suporte" },
 ];
 
 export const Navbar = ({ offsetTop = false }: { offsetTop?: boolean }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const onCheckout = pathname.startsWith("/checkout");
   const onEntrega = pathname.startsWith("/entrega");
   const ctaLabel = onEntrega ? "Minha área" : "Acessar por R$47";
   const ctaTarget = onEntrega ? "/entrega" : "/checkout?plano=fabrica";
+
+  if (onCheckout) {
+    return (
+      <header
+        className="fixed inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5"
+        style={{ top: offsetTop ? 40 : 0 }}
+      >
+        <div className="container flex items-center justify-between h-16">
+          <Logo size="md" showText />
+          <span className="text-xs text-muted-foreground/80 tracking-wide">Ambiente seguro</span>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header
