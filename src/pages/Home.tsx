@@ -66,15 +66,31 @@ const transformacoes = [
   "De produto gratuito para modelo de monetização",
 ];
 
+const oQueVoceCompra = [
+  "Agente Arquiteto Supremo",
+  "Prompt Mestre Universal",
+  "Manual rápido de uso",
+  "Prompts bônus",
+  "Checklists de MVP, monetização e validação",
+  "10 ideias de apps validáveis",
+];
+
+const naoIncluso = [
+  "Criação do app por nós",
+  "Consultoria individual",
+  "Suporte para desenvolver o app",
+  "Garantia de vendas ou ganhos financeiros",
+  "Conta paga do ChatGPT, Lovable ou outras ferramentas externas",
+];
+
 const faqs = [
-  { q: "Preciso saber programar?", a: "Não. O agente foi feito justamente para quem não programa. Ele organiza sua ideia e gera prompts prontos para ferramentas de criação com IA." },
-  { q: "O agente cria o app sozinho?", a: "Não. Ele estrutura estratégia, MVP, arquitetura, design, monetização e prompts. A construção acontece em ferramentas como Lovable, Cursor, Claude Code, Gemini ou Replit." },
-  { q: "Posso usar no Lovable?", a: "Sim. Os prompts são pensados para Lovable e funcionam também em Claude Code, Cursor, Gemini e Replit." },
-  { q: "Funciona para SaaS, app com IA e produto digital?", a: "Sim. O foco é transformar ideias em produtos digitais validáveis: MVPs, SaaS simples, ferramentas internas, apps com IA e páginas de venda." },
-  { q: "O acesso ao agente pode ser compartilhado?", a: "Não. O acesso é individual. Compartilhamento pode causar bloqueio conforme as regras do produto." },
-  { q: "O que recebo após a compra?", a: "Acesso ao Agente Arquiteto Supremo de Aplicativos, Prompt Mestre Universal, manual rápido, checklists de MVP, monetização e lançamento, e prompts bônus." },
-  { q: "Tem suporte?", a: "Sim. O suporte é feito exclusivamente por e-mail, no endereço informado na página de suporte." },
-  { q: "Posso usar para criar apps para clientes?", a: "Sim. Você pode usar a estrutura para organizar ideias de clientes e montar propostas de aplicativos." },
+  { q: "O produto cria o app para mim?", a: "Não. A Fábrica de Apps com IA entrega o agente, prompts e checklists para você estruturar sua ideia e gerar um plano pronto para construir com IA." },
+  { q: "Preciso saber programar?", a: "Não. O produto foi criado para pessoas que querem usar ferramentas com IA, como Lovable, Cursor, Claude Code, Gemini ou Replit." },
+  { q: "O que recebo após a compra?", a: "Você recebe acesso à área de entrega com o agente, Prompt Mestre Universal, manual rápido, prompts bônus, checklists e ideias de apps validáveis." },
+  { q: "O suporte me ajuda a criar meu app?", a: "Não. O suporte por e-mail é apenas para dúvidas de acesso ao material." },
+  { q: "Preciso ter ChatGPT?", a: "Para usar o agente no ChatGPT, você precisa estar logado em uma conta ChatGPT. Recursos disponíveis podem variar conforme sua conta." },
+  { q: "Posso usar para qualquer ideia?", a: "Sim. Você pode usar o agente para estruturar ideias de SaaS, apps simples, ferramentas digitais, produtos com IA, páginas de venda e soluções para clientes." },
+  { q: "O app fica pronto automaticamente?", a: "Não. O agente gera a arquitetura, o MVP e os prompts. A construção acontece na ferramenta que você escolher." },
 ];
 
 export default function Home() {
