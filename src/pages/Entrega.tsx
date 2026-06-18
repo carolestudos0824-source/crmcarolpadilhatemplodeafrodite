@@ -1176,7 +1176,8 @@ function CommandCard({
   };
 
   return (
-    <GlassCard className="p-6 space-y-4">
+    <GlassCard id={`cmd-${cmd.n}`} className="p-6 space-y-4 scroll-mt-24">
+
       <div className="flex items-start gap-4">
         <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent font-heading font-bold flex items-center justify-center">
           {cmd.n}
