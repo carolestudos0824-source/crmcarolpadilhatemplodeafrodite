@@ -10,6 +10,7 @@ import Precos from "@/pages/Precos";
 import Checkout from "@/pages/Checkout";
 import Obrigado from "@/pages/Obrigado";
 import Login from "@/pages/Login";
+import ResetPassword from "@/pages/ResetPassword";
 import Entrega from "@/pages/Entrega";
 import AdminAccess from "@/pages/AdminAccess";
 import Suporte from "@/pages/Suporte";
