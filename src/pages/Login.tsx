@@ -49,6 +49,23 @@ export default function Login() {
     setErrorMsg(null);
   };
 
+  const onMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    resetMessages();
+    if (!email.trim()) return setErrorMsg("Informe seu e-mail.");
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim(),
+      options: { emailRedirectTo: window.location.origin + "/entrega" },
+    });
+    setLoading(false);
+    if (error) {
+      setErrorMsg("Não foi possível enviar o link agora. Tente novamente em alguns minutos.");
+      return;
+    }
+    setInfo("Enviamos um link de acesso para seu e-mail. Verifique também spam e promoções.");
+  };
+
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -62,7 +79,9 @@ export default function Login() {
     } else if (result.status === "no_access") {
       setView("no_access");
     } else {
-      setErrorMsg("E-mail ou senha inválidos.");
+      setErrorMsg(
+        "E-mail ou senha inválidos. Se não lembrar a senha, use Entrar sem senha ou Recuperar senha.",
+      );
     }
   };
 
