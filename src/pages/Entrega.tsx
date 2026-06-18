@@ -431,7 +431,15 @@ const library: Category[] = [
     description: "Tudo para sair da ideia e chegar no app funcionando.",
     prompts: [
       { title: "Prompt Mestre Universal", description: "Transforma qualquer ideia em plano completo.", content: promptMestre },
-      { title: "Prompt para Lovable", description: "Pronto para colar no Lovable.", content: promptLovable },
+      {
+        title: "Prompt para Lovable",
+        description: "Pronto para colar no Lovable.",
+        content: promptLovable,
+        purpose: "Transforma o plano do seu app em uma primeira versão construída no Lovable.",
+        when: "Depois que o Arquiteto de Apps gerar o plano completo.",
+        where: "Dentro do Lovable, no campo onde você descreve o app.",
+        output: "Uma primeira versão do app com telas, layout, fluxo e banco inicial.",
+      },
       { title: "Prompt para Cursor", description: "Para implementar via Cursor.", content: promptCursor },
       { title: "Prompt para Replit", description: "Para subir um MVP no Replit.", content: promptReplit },
       { title: "Prompt para Supabase", description: "Modela o backend no Supabase.", content: promptSupabase },
