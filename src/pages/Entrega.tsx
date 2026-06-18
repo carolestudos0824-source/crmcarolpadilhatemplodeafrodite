@@ -523,18 +523,47 @@ function CopyPromptCard({ prompt }: { prompt: PromptCard }) {
       toast.error("Não foi possível copiar.");
     }
   };
+  const hasMeta = !!(prompt.purpose || prompt.when || prompt.where || prompt.output);
   return (
     <div className="glass p-4 md:p-5 flex flex-col gap-3 h-full">
       <div className="flex-1">
         <h4 className="font-heading font-semibold text-foreground text-sm md:text-base mb-1">{prompt.title}</h4>
         <p className="text-xs text-muted-foreground leading-relaxed">{prompt.description}</p>
+        {hasMeta && (
+          <dl className="mt-3 space-y-2 text-xs">
+            {prompt.purpose && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Para que serve</dt>
+                <dd className="text-foreground/85">{prompt.purpose}</dd>
+              </div>
+            )}
+            {prompt.when && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Quando usar</dt>
+                <dd className="text-foreground/85">{prompt.when}</dd>
+              </div>
+            )}
+            {prompt.where && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">Onde colar</dt>
+                <dd className="text-foreground/85">{prompt.where}</dd>
+              </div>
+            )}
+            {prompt.output && (
+              <div>
+                <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70">O que você vai receber</dt>
+                <dd className="text-foreground/85">{prompt.output}</dd>
+              </div>
+            )}
+          </dl>
+        )}
       </div>
       <button
         onClick={copy}
         className="inline-flex items-center justify-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 transition"
       >
         {copied ? <Check size={14} className="text-accent" /> : <Copy size={14} />}
-        {copied ? "Copiado" : "Copiar"}
+        {copied ? "Copiado" : "Copiar prompt"}
       </button>
     </div>
   );
