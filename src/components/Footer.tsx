@@ -11,7 +11,7 @@ export const Footer = () => (
         </p>
       </div>
       <div className="flex flex-wrap gap-6 md:justify-end items-start text-sm">
-        <Link to="/precos" className="text-muted-foreground hover:text-foreground">Preços</Link>
+        <Link to="/precos" className="text-muted-foreground hover:text-foreground">Preço único</Link>
         <Link to="/suporte" className="text-muted-foreground hover:text-foreground">Suporte</Link>
         <Link to="/termos" className="text-muted-foreground hover:text-foreground">Termos</Link>
         <Link to="/privacidade" className="text-muted-foreground hover:text-foreground">Privacidade</Link>
