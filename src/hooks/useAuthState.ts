@@ -4,7 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 export type AuthState =
   | { status: "loading" }
   | { status: "anonymous" }
-  | { status: "authed"; userId: string; email: string | null; hasAccess: boolean };
+  | {
+      status: "authed";
+      userId: string;
+      email: string | null;
+      hasAccess: boolean;
+      isAdmin: boolean;
+    };
 
 export const useAuthState = (): AuthState => {
   const [state, setState] = useState<AuthState>({ status: "loading" });
@@ -17,26 +23,28 @@ export const useAuthState = (): AuthState => {
         if (!cancelled) setState({ status: "anonymous" });
         return;
       }
-      const { data } = await supabase
-        .from("user_access")
-        .select("has_access")
-        .eq("user_id", userId)
-        .maybeSingle();
+      const [{ data: access }, { data: adminFlag }] = await Promise.all([
+        supabase
+          .from("user_access")
+          .select("has_access")
+          .eq("user_id", userId)
+          .maybeSingle(),
+        supabase.rpc("is_admin"),
+      ]);
       if (cancelled) return;
       setState({
         status: "authed",
         userId,
         email,
-        hasAccess: !!data?.has_access,
+        hasAccess: !!access?.has_access,
+        isAdmin: !!adminFlag,
       });
     };
 
-    // Listener first
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
       void resolve(session?.user?.id ?? null, session?.user?.email ?? null);
     });
 
-    // Initial check
     supabase.auth.getSession().then(({ data }) => {
       void resolve(data.session?.user?.id ?? null, data.session?.user?.email ?? null);
     });

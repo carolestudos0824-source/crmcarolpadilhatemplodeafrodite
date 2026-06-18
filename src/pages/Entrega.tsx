@@ -599,7 +599,7 @@ export default function Entrega() {
     );
   }
 
-  if (!auth.hasAccess) {
+  if (!auth.hasAccess && !auth.isAdmin) {
     return (
       <Section>
         <div className="max-w-md mx-auto text-center py-12">
@@ -609,17 +609,20 @@ export default function Entrega() {
             </div>
             <h1 className="text-2xl font-heading font-bold mb-2">Acesso ainda não liberado</h1>
             <p className="text-sm text-muted-foreground mb-6">
-              Seu login existe, mas seu acesso à área de entrega ainda não foi liberado.
+              Sua conta foi criada, mas seu acesso aos materiais ainda não está ativo.
             </p>
             <div className="space-y-3">
+              <button onClick={() => navigate("/login")} className="btn-primary w-full">
+                Tenho um código de acesso
+              </button>
               <button
                 onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                className="btn-primary w-full inline-flex items-center justify-center gap-2"
+                className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm inline-flex items-center justify-center gap-2"
               >
-                <LifeBuoy size={16} /> Falar com suporte
+                <LifeBuoy size={14} /> Falar com suporte
               </button>
-              <button onClick={() => navigate("/")} className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm">
-                Voltar para o início
+              <button onClick={() => navigate("/precos")} className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 transition text-sm">
+                Comprar acesso
               </button>
               <button onClick={logout} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mt-2">
                 <LogOut size={12} /> Sair desta conta
