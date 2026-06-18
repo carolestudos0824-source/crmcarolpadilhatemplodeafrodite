@@ -412,7 +412,15 @@ const checklistPublicar = `Antes de publicar o app, confirme:
 10. Plano para os primeiros 10 usuários`;
 
 // ---------- Library structure ----------
-type PromptCard = { title: string; description: string; content: string };
+type PromptCard = {
+  title: string;
+  description: string;
+  content: string;
+  purpose?: string;
+  when?: string;
+  where?: string;
+  output?: string;
+};
 type Category = { id: string; icon: JSX.Element; title: string; description: string; prompts: PromptCard[] };
 
 const library: Category[] = [
