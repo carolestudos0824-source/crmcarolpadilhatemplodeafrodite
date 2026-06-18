@@ -260,36 +260,102 @@ export default function Login() {
             materiais.
           </p>
 
-          <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
-            <button
-              onClick={() => {
-                setTab("signin");
-                resetMessages();
-              }}
-              className={`px-4 py-2 rounded-lg text-sm transition ${
-                tab === "signin"
-                  ? "bg-accent/20 text-accent"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Já tenho conta
-            </button>
-            <button
-              onClick={() => {
-                setTab("signup");
-                resetMessages();
-              }}
-              className={`px-4 py-2 rounded-lg text-sm transition ${
-                tab === "signup"
-                  ? "bg-accent/20 text-accent"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Criar minha conta
-            </button>
+          <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
+            {([
+              ["magic", "Sem senha"],
+              ["signin", "Com senha"],
+              ["signup", "Criar conta"],
+            ] as [Tab, string][]).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => {
+                  setTab(key);
+                  resetMessages();
+                }}
+                className={`px-3 py-2 rounded-lg text-sm transition ${
+                  tab === key
+                    ? "bg-accent/20 text-accent"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
-          {tab === "signin" ? (
+          {tab === "magic" ? (
+            <form onSubmit={onMagicLink} className="space-y-4">
+              <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                <Sparkles size={16} className="mt-0.5 shrink-0 text-accent" />
+                <p>
+                  Digite seu e-mail e enviaremos um link seguro para acessar sua
+                  área. Sem precisar lembrar de senha.
+                </p>
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">
+                  E-mail
+                </label>
+                <input
+                  className={inputCls}
+                  type="email"
+                  placeholder="seu@email.com"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {errorMsg && (
+                <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                  {errorMsg}
+                </div>
+              )}
+              {info && (
+                <div className="rounded-xl border border-accent/30 bg-accent/10 text-accent text-sm px-4 py-3">
+                  {info}
+                </div>
+              )}
+
+              <button type="submit" disabled={loading} className="btn-primary w-full">
+                {loading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" /> Enviando…
+                  </>
+                ) : (
+                  "Enviar link de acesso"
+                )}
+              </button>
+
+              <div className="pt-2 space-y-2 text-sm">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTab("signin");
+                    resetMessages();
+                  }}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
+                >
+                  <KeyRound size={14} /> Prefiro entrar com senha
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
+                >
+                  <LifeBuoy size={14} /> Falar com suporte
+                </button>
+              </div>
+
+              {isPreviewEnv && (
+                <p className="text-[11px] text-muted-foreground/70 pt-2 border-t border-white/5">
+                  Está testando no preview? Use o mesmo e-mail cadastrado e
+                  liberado no admin.
+                </p>
+              )}
+            </form>
+          ) : tab === "signin" ? (
             <form onSubmit={onSignIn} className="space-y-4">
               <div>
                 <label className="text-xs text-muted-foreground mb-1 block">
