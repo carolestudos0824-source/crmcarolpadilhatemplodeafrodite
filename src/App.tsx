@@ -51,6 +51,8 @@ const App = () => (
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="/confianca" element={<Confianca />} />
+          <Route path="/trust" element={<Navigate to="/confianca" replace />} />
           <Route path="/templo/dashboard" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
