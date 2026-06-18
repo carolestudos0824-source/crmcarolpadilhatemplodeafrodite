@@ -44,6 +44,9 @@ export default function Login() {
               {loading ? <><Loader2 size={16} className="animate-spin" /> Entrando…</> : "Entrar"}
             </button>
           </form>
+          <p className="text-xs text-muted-foreground/80 mt-4 text-center">
+            Após a compra, você receberá a senha de acesso por e-mail.
+          </p>
         </div>
       </div>
     </Section>
