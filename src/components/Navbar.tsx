@@ -78,6 +78,11 @@ export const Navbar = ({ offsetTop = false }: { offsetTop?: boolean }) => {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-3">
+          {auth.status === "authed" && auth.email && (
+            <span className="text-[11px] text-muted-foreground/80 hidden lg:inline" title={`Logado como: ${auth.email}`}>
+              Logado como: <span className="text-foreground/80">{auth.email}</span>
+            </span>
+          )}
           <button className="btn-primary text-sm inline-flex items-center gap-2" onClick={() => navigate(ctaTarget)}>
             {ctaIcon}
             {ctaLabel}
