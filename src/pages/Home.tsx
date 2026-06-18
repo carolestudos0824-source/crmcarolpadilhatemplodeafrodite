@@ -236,6 +236,9 @@ export default function Home() {
       >
         <div className="max-w-md mx-auto">
           <PricingCard plan={fabrica} />
+          <p className="text-xs md:text-sm text-muted-foreground/90 leading-relaxed mt-4 text-center">
+            Importante: para usar o Agente Arquiteto Supremo, você precisa estar logado em uma conta ChatGPT. O produto não inclui conta paga do ChatGPT.
+          </p>
         </div>
       </Section>
 
