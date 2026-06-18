@@ -196,6 +196,38 @@ export default function Home() {
       </Section>
 
 
+      {/* O QUE VOCÊ ESTÁ COMPRANDO */}
+      <Section
+        eyebrow="Escopo do produto"
+        title="O que você está comprando"
+        subtitle="Você recebe acesso a um agente de IA treinado para organizar ideias de aplicativos. Com ele, você pode transformar qualquer ideia em MVP enxuto, fluxo do usuário, estrutura de telas, modelo de dados, design recomendado, monetização e prompt pronto para construir com IA."
+      >
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          {oQueVoceCompra.map((item) => (
+            <GlassCard key={item} className="flex items-start gap-3">
+              <Sparkles size={18} className="text-gold shrink-0 mt-1" />
+              <p className="text-base text-foreground/90 leading-relaxed">{item}</p>
+            </GlassCard>
+          ))}
+        </div>
+        <p className="text-center text-sm md:text-base text-muted-foreground mt-6 max-w-2xl mx-auto">
+          Este é um produto digital de autoatendimento. Você usa os materiais por conta própria, no seu ritmo.
+        </p>
+      </Section>
+
+      {/* O QUE NÃO ESTÁ INCLUSO */}
+      <Section eyebrow="Importante" title="O que não está incluso">
+        <div className="glass-strong p-6 md:p-10 max-w-3xl mx-auto">
+          <ul className="space-y-3">
+            {naoIncluso.map((item) => (
+              <li key={item} className="flex gap-3 text-base text-foreground/90 leading-relaxed">
+                <span className="text-destructive/80 shrink-0 mt-1">✕</span>{item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
       {/* OFERTA */}
       <Section
         eyebrow="Oferta"
@@ -206,6 +238,7 @@ export default function Home() {
           <PricingCard plan={fabrica} />
         </div>
       </Section>
+
 
       {/* TRANSFORMAÇÃO */}
       <Section eyebrow="Resultado" title="O que muda quando sua ideia ganha estrutura">
