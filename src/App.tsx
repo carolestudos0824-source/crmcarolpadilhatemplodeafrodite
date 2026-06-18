@@ -11,6 +11,7 @@ import Checkout from "@/pages/Checkout";
 import Obrigado from "@/pages/Obrigado";
 import Login from "@/pages/Login";
 import Entrega from "@/pages/Entrega";
+import AdminAccess from "@/pages/AdminAccess";
 import Suporte from "@/pages/Suporte";
 import Termos from "@/pages/Termos";
 import Privacidade from "@/pages/Privacidade";
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/entrega" element={<Entrega />} />
           <Route path="/dashboard" element={<Navigate to="/entrega" replace />} />
+          <Route path="/admin/acessos" element={<AdminAccess />} />
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
