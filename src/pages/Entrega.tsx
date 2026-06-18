@@ -11,11 +11,14 @@ import {
   Loader2,
   ShieldCheck,
   Gift,
-  ArrowDown,
   Sparkles,
-  Layers,
+  
   ListChecks,
   Smartphone,
+  Lightbulb,
+  Library,
+  AlertTriangle,
+  ArrowRight,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
@@ -29,8 +32,8 @@ import { openSupportEmail } from "@/lib/openLink";
 // ===================== Conteúdo =====================
 
 const LOVABLE_URL = "https://lovable.dev";
-const STORAGE_PROGRESS = "fabrica_apps_progress_v3";
-const STORAGE_STEPS = "fabrica_apps_steps_v1";
+const STORAGE_PROGRESS = "fabrica_apps_progress_v4";
+const STORAGE_STEPS = "fabrica_apps_steps_v2";
 
 type Command = {
   n: number;
@@ -45,429 +48,1116 @@ type Command = {
 const commands: Command[] = [
   {
     n: 1,
-    title: "Transformar minha ideia em um plano de app",
+    title: "Transformar a ideia em plano",
     purpose: "Serve para o Lovable entender sua ideia e organizar o app antes de construir.",
-    when: "Use primeiro, antes de pedir telas ou banco de dados.",
+    when: "Use primeiro, antes de pedir telas ou banco.",
     where: "Cole no Lovable, no campo de conversa do projeto.",
-    result:
-      "O Lovable deve responder com um plano claro do app, incluindo MVP, telas, fluxo e estrutura.",
-    content: `Você é um especialista em produto digital, UX e desenvolvimento de aplicativos no Lovable.
+    result: "O Lovable deve responder com um plano claro: MVP, telas, fluxo e estrutura.",
+    content: `Você é um especialista em produto digital, UX e Lovable.
 
-Quero transformar minha ideia em um app simples, validável e pronto para construir.
+Quero criar um app no Lovable.
 
 Minha ideia é:
 [descreva aqui sua ideia]
 
 Quem vai usar:
-[descreva quem será o usuário]
+[descreva o público]
 
-Problema que o app resolve:
-[descreva a dor do usuário]
+Problema que resolve:
+[descreva a dor]
 
 Como pretendo ganhar dinheiro:
-[assinatura, venda única, comissão, anúncios ou ainda não sei]
+[assinatura, pagamento único, comissão, anúncios ou ainda não sei]
 
-Antes de construir qualquer coisa, analise minha ideia e entregue:
-
-1. Veredito estratégico da ideia
-2. Problema real que o app resolve
+Antes de construir, crie um plano simples e completo com:
+1. Veredito estratégico
+2. Problema real
 3. Usuário principal
-4. Ação principal do usuário
+4. Ação principal
 5. MVP com no máximo 5 funcionalidades
-6. O que deve ser cortado agora
-7. Fluxo do usuário em até 5 etapas
+6. O que cortar agora
+7. Fluxo em até 5 etapas
 8. Telas necessárias
 9. Banco de dados necessário
 10. Design recomendado
 11. Monetização
 12. Riscos principais
-13. Plano de construção no Lovable
+13. Ordem de construção no Lovable
 
 Regras:
-- Não crie um app gigante.
-- Não adicione funcionalidades desnecessárias.
-- Explique tudo de forma simples.
-- Priorize mobile first.
-- O objetivo é criar uma primeira versão simples para validar.`,
+- Não criar produto inchado.
+- Não passar de 5 funcionalidades no MVP.
+- Explicar de forma simples.
+- Pensar mobile first.`,
   },
   {
     n: 2,
-    title: "Construir a primeira versão do app",
+    title: "Construir primeira versão",
     purpose: "Serve para pedir ao Lovable que comece a construir o app.",
-    when: "Use depois que o Lovable gerar o plano do app.",
+    when: "Use depois que o Lovable gerar o plano.",
     where: "Cole no mesmo projeto do Lovable.",
     result: "O Lovable deve criar as primeiras telas e o fluxo principal.",
-    content: `Agora construa a primeira versão do app com base no plano abaixo.
+    content: `Agora construa a primeira versão do app com base neste plano:
 
-Plano do app:
 [cole aqui o plano gerado no Comando 1]
 
-Regras obrigatórias:
-1. Criar apenas o MVP.
-2. O MVP deve ter no máximo 5 funcionalidades principais.
-3. A interface deve ser simples e fácil de entender.
-4. O usuário deve conseguir usar sem tutorial.
-5. O fluxo principal deve ter no máximo 5 etapas.
-6. Priorizar visual mobile first.
-7. Criar telas limpas, modernas e organizadas.
-8. Criar estados de carregamento, erro, sucesso e vazio.
-9. Não criar funcionalidades extras.
-10. Não complicar o banco de dados.
+Crie:
+1. Páginas principais
+2. Componentes básicos
+3. Fluxo principal
+4. Botões importantes
+5. Estados vazios
+6. Estados de erro
+7. Estados de sucesso
 
-Entregue uma primeira versão funcional para teste.`,
+Regras:
+- Criar só o MVP.
+- Interface simples.
+- Mobile first.
+- Não adicionar funcionalidades extras.
+- Usuário precisa entender sem tutorial.`,
   },
   {
     n: 3,
-    title: "Criar banco de dados, login e regras de acesso",
-    purpose: "Serve para fazer o app salvar informações e controlar quem pode acessar.",
-    when:
-      "Use se o app precisa de login, usuários, pedidos, tarefas, mensagens, produtos ou área restrita.",
-    where: "Cole no Lovable depois que as primeiras telas existirem.",
-    result: "O Lovable deve criar tabelas, autenticação e regras básicas de segurança.",
-    content: `Agora adicione banco de dados, autenticação e regras de acesso ao app.
-
-Contexto do app:
-[cole aqui o resumo do app]
-
-O app precisa salvar:
-[explique o que precisa ser salvo: usuários, pedidos, tarefas, mensagens, produtos, pagamentos ou outros dados]
-
-Crie:
-1. Login e cadastro de usuários
-2. Tabelas necessárias no Supabase
-3. Campos principais de cada tabela
-4. Relacionamentos entre tabelas
-5. Regras de acesso por usuário
-6. Proteção para usuário ver apenas seus próprios dados
-7. Estados de erro e sucesso
-8. Mensagens simples para o usuário
-9. Área restrita, se necessário
-10. Estrutura segura e simples
+    title: "Adicionar login e cadastro",
+    purpose: "Serve para o app ter usuários e proteger páginas privadas.",
+    when: "Use quando o app já tem telas e precisa de área restrita.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar telas de entrar, criar conta e proteger rotas.",
+    content: `Adicione login e cadastro ao app.
 
 Regras:
-- Não expor dados de outros usuários.
-- Não criar tabelas desnecessárias.
-- Não usar service role no frontend.
-- Manter o MVP simples.
-- Explicar o que foi criado.`,
+1. Criar tela de entrar
+2. Criar tela de criar conta
+3. Criar recuperação de acesso
+4. Proteger páginas privadas
+5. Mostrar mensagens claras
+6. Redirecionar usuário logado para a área correta
+7. Não expor chaves sensíveis
+8. Usar Supabase Auth se o projeto já estiver com Supabase
+
+Explique o que foi criado e o que devo testar.`,
   },
   {
     n: 4,
-    title: "Melhorar o design e deixar bonito no celular",
-    purpose: "Serve para deixar o app mais bonito, claro e profissional.",
-    when: "Use depois que o app já tiver as telas principais.",
-    where: "Cole no Lovable dentro do projeto.",
-    result:
-      "O Lovable deve melhorar layout, cores, espaçamento, botões e experiência mobile.",
-    content: `Melhore o design do app para parecer mais profissional, moderno e fácil de usar.
+    title: "Criar banco de dados",
+    purpose: "Serve para o app salvar informações de cada usuário.",
+    when: "Use quando o app precisa guardar dados (clientes, pedidos, tarefas etc).",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar tabelas, relações e regras de acesso.",
+    content: `Crie o banco de dados necessário para este app.
 
-Objetivo:
-Deixar o app bonito, claro e mobile first.
+Contexto:
+[explique o app]
 
-Ajuste:
-1. Hierarquia visual
-2. Tamanho dos títulos
-3. Espaçamento entre seções
-4. Botões principais
-5. Cards
-6. Cores
-7. Contraste
-8. Navegação
-9. Estados vazios
-10. Mensagens de erro e sucesso
+O app precisa salvar:
+[explique os dados]
 
-Estilo:
-- Moderno
-- Limpo
-- Mobile first
-- Fácil de entender
-- Sem poluição visual
+Crie:
+1. Tabelas necessárias
+2. Campos de cada tabela
+3. Relações entre tabelas
+4. Regras de acesso
+5. Políticas RLS, se usar Supabase
+6. Dados de exemplo
+7. Estados de erro e sucesso
 
 Regras:
-- Não mude a lógica principal do app.
-- Não adicione funcionalidades novas.
-- Apenas melhore a experiência e o visual.
-- O usuário deve entender o que fazer em menos de 5 segundos.`,
+- Cada usuário só vê seus próprios dados quando fizer sentido.
+- Não criar tabelas desnecessárias.
+- Manter simples.
+- Não usar service role no frontend.`,
   },
   {
     n: 5,
-    title: "Criar página de venda",
-    purpose: "Serve para criar uma landing page para vender ou apresentar o app.",
-    when: "Use quando o app já tiver uma ideia clara e uma promessa.",
-    where: "Cole no Lovable dentro do projeto.",
-    result:
-      "O Lovable deve criar uma página pública com headline, benefícios, preço, FAQ e CTA.",
-    content: `Crie uma página de venda para este app.
+    title: "Criar dashboard",
+    purpose: "Serve para o usuário ter uma tela inicial clara depois do login.",
+    when: "Use depois que login e banco estiverem prontos.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar uma tela inicial com resumo e próxima ação.",
+    content: `Crie um dashboard simples para o usuário.
 
-Nome do app:
-[informe o nome]
-
-Descrição:
-[explique o app]
-
-Público:
-[quem vai usar]
-
-Problema:
-[qual dor resolve]
-
-Promessa:
-[qual resultado entrega]
-
-Preço:
-[informe o preço ou escreva "ainda não definido"]
-
-A página deve ter:
-1. Hero com headline forte
-2. Subheadline clara
-3. Botão principal de ação
-4. Seção explicando a dor
-5. Seção mostrando a solução
-6. Como funciona
-7. Benefícios principais
-8. O que está incluso
-9. Preço
-10. Perguntas frequentes
-11. CTA final
+O dashboard deve mostrar:
+1. Resumo principal
+2. Próxima ação recomendada
+3. Lista dos itens mais importantes
+4. Botão para criar novo item
+5. Estado vazio explicando o que fazer
+6. Layout mobile first
 
 Regras:
-- Página mobile first.
-- Texto claro e direto.
-- Não exagerar promessas.
-- Não prometer dinheiro garantido.
-- Não deixar a página longa demais.
-- Foco em conversão.`,
+- Não colocar informação demais.
+- O usuário deve entender o próximo passo em 5 segundos.`,
   },
   {
     n: 6,
-    title: "Criar checkout e página de obrigado",
-    purpose:
-      "Serve para organizar o caminho de compra e o que acontece depois do pagamento.",
-    when: "Use quando o app ou produto for vendido.",
+    title: "Melhorar design",
+    purpose: "Serve para deixar o app bonito, claro e fácil de usar.",
+    when: "Use depois que o app já tem telas principais.",
     where: "Cole no Lovable.",
-    result: "O Lovable deve criar fluxo de compra, página de obrigado e instruções de acesso.",
-    content: `Crie o fluxo de compra e pós-compra para este produto.
+    result: "O Lovable deve melhorar cores, espaçamento, botões e mobile.",
+    content: `Melhore o design do app.
 
-Produto:
-[descreva o produto]
+Objetivo:
+Deixar o app bonito, claro, moderno e fácil de usar no celular.
 
-Preço:
-[informe o preço]
-
-O usuário compra para receber:
-[explique o que recebe]
-
-Crie:
-1. Botão de compra
-2. Página ou seção de checkout
-3. Página de obrigado
-4. Instruções pós-compra
-5. Link para acesso restrito
-6. Mensagem para quem já comprou
-7. Mensagem de suporte
-8. Orientação para verificar e-mail, spam e promoções
+Ajuste:
+1. Cores
+2. Espaçamento
+3. Botões
+4. Cards
+5. Títulos
+6. Ícones
+7. Navegação
+8. Contraste
+9. Estados vazios
+10. Mensagens
 
 Regras:
-- Não deixar o comprador perdido.
-- Explicar claramente o que acontece depois da compra.
-- Não mostrar materiais protegidos para quem não comprou.
-- Manter fluxo simples.`,
+- Não mudar a lógica.
+- Não adicionar funcionalidades.
+- Só melhorar visual e experiência.`,
   },
   {
     n: 7,
-    title: "Criar área de entrega",
-    purpose:
-      "Serve para entregar materiais, prompts, links, arquivos ou acesso ao comprador.",
-    when: "Use quando o produto precisa de uma área exclusiva para clientes.",
+    title: "Criar landing page",
+    purpose: "Serve para apresentar e vender o app para visitantes.",
+    when: "Use quando o app já tem MVP e promessa clara.",
     where: "Cole no Lovable.",
-    result: "O Lovable deve criar uma área protegida e organizada para o comprador.",
-    content: `Crie uma área de entrega protegida para compradores.
-
-A área deve mostrar:
-1. Boas-vindas
-2. O que o usuário comprou
-3. Como usar o produto
-4. Materiais disponíveis
-5. Botões para copiar ou acessar materiais
-6. Checklist de progresso
-7. Suporte
-8. Área para código de acesso, se necessário
-
-Regras:
-- Usuário sem login não pode ver a entrega.
-- Usuário sem acesso não pode ver os materiais.
-- Usuário com acesso deve entender o que fazer em menos de 10 segundos.
-- Não mostrar preço dentro da área de entrega.
-- Não parecer página de venda.
-- Parecer um painel de uso.`,
-  },
-  {
-    n: 8,
-    title: "Criar painel admin",
-    purpose: "Serve para o dono liberar ou revogar acesso de clientes.",
-    when: "Use quando você precisa controlar quem acessa a área de entrega.",
-    where: "Cole no Lovable.",
-    result: "O Lovable deve criar uma tela admin protegida.",
-    content: `Crie um painel administrativo simples para gerenciar acessos.
-
-O admin deve conseguir:
-1. Buscar usuário por e-mail
-2. Ver se o usuário tem acesso ativo
-3. Liberar acesso
-4. Revogar acesso
-5. Ver origem do acesso
-6. Ver data de criação
-
-Regras:
-- Apenas admin pode acessar.
-- Usuário comum não pode acessar.
-- Não expor chave service role no frontend.
-- Usar Supabase Auth e regras seguras.
-- Mostrar mensagens claras de sucesso e erro.
-- Manter a tela simples.`,
-  },
-  {
-    n: 9,
-    title: "Corrigir erro no Lovable",
-    purpose: "Serve para quando algo quebrar ou não funcionar.",
-    when: "Use sempre que aparecer erro, tela travada ou comportamento errado.",
-    where: "Cole no Lovable junto com a descrição do problema.",
-    result: "O Lovable deve diagnosticar e corrigir sem quebrar o resto.",
-    content: `Corrija o erro abaixo sem quebrar o que já funciona.
-
-O que está acontecendo:
-[explique o erro]
-
-Página onde acontece:
-[informe a rota ou tela]
-
-O que eu esperava:
-[explique o comportamento correto]
-
-O que aconteceu de errado:
-[explique o problema]
-
-Regras:
-1. Diagnostique a causa provável.
-2. Corrija apenas o necessário.
-3. Não remova funcionalidades existentes.
-4. Não quebre login, banco, acesso ou admin.
-5. Preserve o design atual.
-6. Explique o que foi corrigido.
-7. Liste o que eu devo testar depois.`,
-  },
-  {
-    n: 10,
-    title: "Revisar antes de publicar",
-    purpose: "Serve para conferir se o app está pronto para ser mostrado a pessoas reais.",
-    when: "Use antes de publicar.",
-    where: "Cole no Lovable antes do deploy final.",
-    result: "O Lovable deve revisar fluxo, mobile, erros, páginas e segurança básica.",
-    content: `Faça uma revisão final antes de publicar este app.
-
-Verifique:
-1. A página inicial abre corretamente.
-2. Login funciona.
-3. Cadastro funciona.
-4. Recuperação de acesso funciona.
-5. Área restrita está protegida.
-6. Usuário sem acesso não vê conteúdo protegido.
-7. Usuário com acesso entra normalmente.
-8. Admin acessa painel admin.
-9. Botões principais funcionam.
-10. Página funciona bem no celular.
-11. Não existem textos confusos.
-12. Não existem links quebrados.
-13. Estados de erro são claros.
-14. Estados de sucesso são claros.
-15. O app está simples o suficiente para testar com 10 usuários.
-
-Depois da revisão, entregue:
-1. Problemas encontrados
-2. Correções aplicadas
-3. O que ainda precisa ser testado manualmente
-4. Checklist final para publicar`,
-  },
-  {
-    n: 11,
-    title: "Validar com 10 pessoas",
-    purpose: "Serve para testar se pessoas reais entendem e querem usar o app.",
-    when: "Use depois que a primeira versão estiver pronta.",
-    where:
-      "Cole no Lovable se quiser criar uma página ou seção de validação, ou use como orientação.",
-    result: "O Lovable pode ajudar a criar formulário, página de feedback ou checklist.",
-    content: `Crie uma estrutura simples para validar este app com 10 usuários reais.
+    result: "O Lovable deve criar uma página pública completa.",
+    content: `Crie uma landing page para vender ou apresentar este app.
 
 App:
 [descreva o app]
 
 Público:
-[quem deve testar]
+[descreva o público]
 
-Crie:
-1. Página ou seção de feedback
-2. Perguntas simples para o usuário
-3. Formulário de avaliação
-4. Campo para nota de 0 a 10
-5. Campo para sugestão
-6. Checklist de tarefas que o usuário deve fazer
-7. Mensagem de convite
-8. Mensagem de agradecimento
+Problema:
+[descreva a dor]
 
-Perguntas:
-1. Você entendeu para que serve o app?
-2. Conseguiu usar sem ajuda?
-3. O que ficou confuso?
-4. Você usaria de novo?
-5. Você pagaria por isso?
-6. O que melhoraria primeiro?
+Promessa:
+[descreva o resultado]
+
+Preço:
+[informe ou escreva ainda não definido]
+
+A página deve ter:
+1. Hero
+2. Subheadline
+3. CTA
+4. Dor
+5. Solução
+6. Como funciona
+7. Benefícios
+8. O que está incluso
+9. Preço
+10. FAQ
+11. CTA final
 
 Regras:
-- Não complicar.
-- Coletar feedback simples.
-- Ajudar a decidir se vale continuar.`,
+- Mobile first.
+- Texto claro.
+- Sem promessa exagerada.
+- Sem dizer que dinheiro é garantido.`,
+  },
+  {
+    n: 8,
+    title: "Criar página de preço",
+    purpose: "Serve para mostrar planos e o que está incluso.",
+    when: "Use depois que a landing page existir.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar uma seção ou página de preço com CTA.",
+    content: `Crie uma página ou seção de preço para este produto.
+
+Produto:
+[descreva]
+
+Preço:
+[informe]
+
+Entregue:
+1. Card de preço
+2. Lista do que está incluso
+3. Lista do que não está incluso
+4. Garantia, se houver
+5. Perguntas frequentes
+6. CTA de compra
+7. Texto de segurança
+8. O que acontece após o pagamento`,
+  },
+  {
+    n: 9,
+    title: "Criar checkout e obrigado",
+    purpose: "Serve para organizar a compra e o que acontece depois.",
+    when: "Use quando o produto for vendido.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar fluxo de compra e página de obrigado.",
+    content: `Crie o fluxo de compra e pós-compra.
+
+Crie:
+1. Botão de compra
+2. Página de checkout ou integração com checkout externo
+3. Página de obrigado
+4. Instruções pós-compra
+5. Link para área restrita
+6. Aviso para verificar e-mail, spam e promoções
+7. Link de suporte
+
+Regras:
+- O comprador não pode ficar perdido.
+- Não mostrar materiais protegidos sem acesso.
+- Manter simples.`,
+  },
+  {
+    n: 10,
+    title: "Criar área de entrega",
+    purpose: "Serve para entregar materiais ao comprador.",
+    when: "Use quando o produto precisa de uma área exclusiva.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar uma área protegida e organizada.",
+    content: `Crie uma área de entrega protegida para compradores.
+
+A área deve mostrar:
+1. Boas-vindas
+2. O que o usuário comprou
+3. Como usar
+4. Materiais ou funcionalidades
+5. Botões claros
+6. Checklist de progresso
+7. Suporte
+8. Mensagem para quem ainda não tem acesso
+
+Regras:
+- Usuário sem login não acessa.
+- Usuário sem acesso não vê materiais.
+- Usuário com acesso entende em 10 segundos.
+- Não mostrar preço dentro da entrega.
+- Não parecer landing page.`,
+  },
+  {
+    n: 11,
+    title: "Criar painel admin",
+    purpose: "Serve para o dono liberar ou revogar acesso.",
+    when: "Use quando você precisa controlar quem acessa.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve criar uma tela admin protegida.",
+    content: `Crie um painel admin simples.
+
+O admin deve conseguir:
+1. Buscar usuário por e-mail
+2. Ver status de acesso
+3. Liberar acesso
+4. Revogar acesso
+5. Ver data de criação
+6. Ver origem do acesso
+
+Regras:
+- Só admin acessa.
+- Usuário comum não acessa.
+- Não expor service role no frontend.
+- Mostrar mensagens claras.`,
   },
   {
     n: 12,
-    title: "Melhorar depois do feedback",
-    purpose: "Serve para transformar comentários dos usuários em melhorias reais.",
-    when: "Use depois de testar com pessoas.",
-    where: "Cole no Lovable com os feedbacks recebidos.",
-    result: "O Lovable deve priorizar melhorias e aplicar as mais importantes.",
-    content: `Analise os feedbacks abaixo e melhore o app com prioridade.
+    title: "Testar tudo",
+    purpose: "Serve para revisar o app antes de mostrar a alguém.",
+    when: "Use antes de publicar.",
+    where: "Cole no Lovable.",
+    result: "O Lovable deve revisar fluxo, mobile, erros, páginas e segurança.",
+    content: `Faça uma revisão completa do app.
 
-Feedbacks:
-[cole aqui os feedbacks dos usuários]
+Teste:
+1. Página inicial
+2. Login
+3. Cadastro
+4. Recuperação de acesso
+5. Área protegida
+6. Banco de dados
+7. Botões
+8. Mobile
+9. Admin
+10. Estados de erro
+11. Estados de sucesso
+12. Links
 
-Quero que você:
-1. Identifique os problemas mais repetidos.
-2. Separe problema grave de opinião isolada.
-3. Diga o que corrigir primeiro.
-4. Melhore a experiência do usuário.
-5. Melhore textos confusos.
-6. Não adicione funcionalidades grandes.
-7. Preserve o MVP simples.
-8. Explique o que foi alterado.
+Entregue:
+1. Problemas encontrados
+2. Correções aplicadas
+3. O que eu devo testar manualmente
+4. Checklist final`,
+  },
+  {
+    n: 13,
+    title: "Publicar",
+    purpose: "Serve para preparar o app para o mundo real.",
+    when: "Use depois de testar tudo.",
+    where: "Cole no Lovable antes do deploy.",
+    result: "O Lovable deve revisar publicação, SEO básico e segurança.",
+    content: `Prepare o app para publicação.
 
-Critério:
-Só faça mudanças que ajudem o usuário a completar a ação principal do app.`,
+Verifique:
+1. Nome do app
+2. Logo
+3. Páginas públicas
+4. Páginas protegidas
+5. Links
+6. SEO básico
+7. Mobile
+8. Segurança básica
+9. Dados de teste removidos
+10. Fluxo principal funcionando
+
+Depois entregue:
+1. Checklist antes de publicar
+2. O que testar depois do deploy
+3. O que não esquecer`,
+  },
+  {
+    n: 14,
+    title: "Validar com 10 usuários",
+    purpose: "Serve para testar com pessoas reais antes de escalar.",
+    when: "Use depois que o app estiver publicado ou pronto para testar.",
+    where: "Use como guia ou cole no Lovable para gerar formulário.",
+    result: "Um plano simples para validar com 10 usuários reais.",
+    content: `Crie um plano para validar este app com 10 usuários reais.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Entregue:
+1. Quem chamar
+2. Onde encontrar essas pessoas
+3. Mensagem de convite
+4. Tarefas para elas fazerem
+5. Perguntas de feedback
+6. Métrica principal
+7. Critério para continuar
+8. Critério para ajustar
+9. Critério para abandonar
+10. Próximas melhorias`,
+  },
+];
+
+// ============== Modelos de apps prontos ==============
+
+type Template = {
+  name: string;
+  audience: string;
+  pain: string;
+  mvp: string[];
+  monetization: string;
+  screens: string[];
+  db: string[];
+  command: string;
+  checklist?: string[];
+};
+
+const templates: Template[] = [
+  {
+    name: "AgendaPro Local",
+    audience:
+      "Barbeiros, manicures, esteticistas, personal trainers e pequenos prestadores de serviço.",
+    pain: "Eles perdem horários, esquecem clientes e dependem de mensagens soltas no WhatsApp.",
+    mvp: [
+      "Cadastro de serviços",
+      "Agenda de horários",
+      "Cadastro de clientes",
+      "Confirmação de agendamento",
+      "Painel do profissional",
+    ],
+    monetization: "Mensalidade de R$29 a R$59 por profissional.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Serviços",
+      "Agenda",
+      "Clientes",
+      "Página pública de agendamento",
+    ],
+    db: ["users", "services", "clients", "appointments"],
+    checklist: [
+      "Consegue criar serviço?",
+      "Consegue criar cliente?",
+      "Consegue criar agendamento?",
+      "Agenda aparece corretamente?",
+      "Usuário só vê seus dados?",
+    ],
+    command: `Crie um app chamado AgendaPro Local.
+
+Objetivo:
+Ajudar pequenos prestadores de serviço a organizar agenda, clientes e horários.
+
+Público:
+Barbeiros, manicures, esteticistas, personal trainers e profissionais autônomos.
+
+Problema:
+Eles recebem agendamentos pelo WhatsApp e se perdem com horários, cancelamentos e clientes.
+
+MVP obrigatório:
+1. Cadastro e login do profissional
+2. Cadastro de serviços com nome, duração e preço
+3. Cadastro de clientes
+4. Agenda com horários
+5. Página simples para criar agendamento
+
+Telas:
+1. Landing page pública
+2. Login e cadastro
+3. Dashboard com resumo do dia
+4. Tela de serviços
+5. Tela de clientes
+6. Tela de agenda
+7. Tela pública para agendar
+
+Banco de dados:
+Crie tabelas:
+- profiles
+- services
+- clients
+- appointments
+
+Regras:
+- Cada usuário só vê seus próprios serviços, clientes e agendamentos.
+- O app deve ser mobile first.
+- O fluxo deve ser simples.
+- Não adicionar funcionalidades fora do MVP.
+- Criar estados de vazio, erro e sucesso.
+- Criar botões claros.
+- Criar design moderno com fundo claro ou escuro, mas limpo.
+
+Monetização:
+Preparar estrutura para plano gratuito limitado e plano pago mensal.
+
+Resultado esperado:
+Um MVP funcional para testar com 10 prestadores de serviço.`,
+  },
+  {
+    name: "CardápioZap",
+    audience: "Lanchonetes, marmitarias, pizzarias pequenas e restaurantes locais.",
+    pain: "Pedidos chegam bagunçados no WhatsApp e o dono se perde.",
+    mvp: [
+      "Cadastro de produtos",
+      "Cardápio público",
+      "Carrinho simples",
+      "Envio do pedido para WhatsApp",
+      "Painel de pedidos",
+    ],
+    monetization: "Mensalidade de R$39 a R$99 por estabelecimento.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Produtos",
+      "Cardápio público",
+      "Pedido",
+      "Configurações do WhatsApp",
+    ],
+    db: ["restaurants", "products", "orders", "order_items"],
+    command: `Crie um app chamado CardápioZap.
+
+Objetivo:
+Ajudar pequenos restaurantes a receber pedidos de forma organizada e enviar o pedido final para o WhatsApp.
+
+Público:
+Marmitarias, lanchonetes, pizzarias pequenas e restaurantes locais.
+
+Problema:
+O restaurante recebe pedidos soltos no WhatsApp e se perde com produtos, quantidades e entrega.
+
+MVP obrigatório:
+1. Login do dono do restaurante
+2. Cadastro de produtos com nome, descrição, preço e imagem
+3. Cardápio público com lista de produtos
+4. Carrinho simples
+5. Botão para enviar pedido formatado para WhatsApp
+
+Telas:
+1. Landing page
+2. Login e cadastro
+3. Dashboard
+4. Produtos
+5. Configurações do restaurante
+6. Cardápio público
+7. Carrinho
+
+Banco de dados:
+Crie tabelas:
+- profiles
+- restaurants
+- products
+- orders
+- order_items
+
+Regras:
+- Cada restaurante só vê seus próprios produtos.
+- O cardápio público deve funcionar sem login.
+- O pedido deve ser enviado para o WhatsApp com texto organizado.
+- Não criar pagamento online no MVP.
+- Não criar delivery avançado no MVP.
+- Priorizar simplicidade.
+
+Resultado esperado:
+Um cardápio online simples para testar com restaurantes reais.`,
+  },
+  {
+    name: "ControleMEI",
+    audience: "MEIs, freelancers e autônomos.",
+    pain: "Eles não sabem quanto ganharam, quanto gastaram e se estão tendo lucro.",
+    mvp: [
+      "Registro de entradas",
+      "Registro de despesas",
+      "Resumo mensal",
+      "Categorias",
+      "Relatório simples",
+    ],
+    monetization: "Mensalidade de R$19 a R$39 ou pagamento único.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard financeiro",
+      "Entradas",
+      "Despesas",
+      "Relatório mensal",
+    ],
+    db: ["profiles", "incomes", "expenses", "categories"],
+    command: `Crie um app chamado ControleMEI.
+
+Objetivo:
+Ajudar MEIs, freelancers e autônomos a controlar dinheiro de forma simples.
+
+Público:
+Pessoas que trabalham por conta própria e precisam saber quanto ganham e gastam.
+
+Problema:
+Elas misturam dinheiro pessoal com dinheiro do trabalho e não sabem se estão tendo lucro.
+
+MVP obrigatório:
+1. Login do usuário
+2. Cadastro de entradas de dinheiro
+3. Cadastro de despesas
+4. Dashboard com saldo do mês
+5. Relatório mensal simples
+
+Telas:
+1. Landing page
+2. Login e cadastro
+3. Dashboard
+4. Entradas
+5. Despesas
+6. Categorias
+7. Relatório mensal
+
+Banco:
+Crie tabelas:
+- profiles
+- incomes
+- expenses
+- categories
+
+Regras:
+- Cada usuário só vê seus próprios lançamentos.
+- Interface muito simples.
+- Mostrar total de entradas, total de despesas e saldo.
+- Usar gráficos simples apenas se não complicar.
+- Mobile first.
+- Não criar integração bancária no MVP.
+
+Resultado esperado:
+Um controle financeiro simples para validar com 10 autônomos.`,
+  },
+  {
+    name: "TreinoSimples",
+    audience: "Personal trainers e alunos.",
+    pain: "Treinos são enviados em PDF ou WhatsApp e o aluno se perde.",
+    mvp: [
+      "Cadastro de alunos",
+      "Cadastro de treinos",
+      "Exercícios por treino",
+      "Marcar treino como feito",
+      "Painel do personal",
+    ],
+    monetization: "Mensalidade para personal trainers.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Alunos",
+      "Treinos",
+      "Exercícios",
+      "Área do aluno",
+    ],
+    db: ["profiles", "students", "workouts", "exercises", "workout_logs"],
+    command: `Crie um app chamado TreinoSimples.
+
+Objetivo:
+Ajudar personal trainers a enviar treinos organizados para seus alunos.
+
+Público:
+Personal trainers que atendem alunos presencialmente ou online.
+
+Problema:
+Os treinos ficam espalhados em PDF, planilhas e WhatsApp.
+
+MVP obrigatório:
+1. Login do personal
+2. Cadastro de alunos
+3. Criação de treinos
+4. Adição de exercícios ao treino
+5. Área do aluno para ver treino e marcar como feito
+
+Telas:
+1. Landing page
+2. Login
+3. Dashboard do personal
+4. Alunos
+5. Treinos
+6. Exercícios
+7. Área do aluno
+
+Banco:
+Crie tabelas:
+- profiles
+- students
+- workouts
+- exercises
+- workout_logs
+
+Regras:
+- Personal só vê seus próprios alunos.
+- Aluno só vê seus próprios treinos.
+- Interface mobile first.
+- Não criar vídeo, pagamento ou chat no MVP.
+- Manter simples e rápido.
+
+Resultado esperado:
+Um MVP para testar com 3 personal trainers e 10 alunos.`,
+  },
+  {
+    name: "Imobiliária Fácil",
+    audience: "Corretores autônomos e pequenas imobiliárias.",
+    pain: "Imóveis e contatos ficam espalhados em WhatsApp, planilhas e fotos.",
+    mvp: [
+      "Cadastro de imóveis",
+      "Galeria de fotos",
+      "Lista pública",
+      "Captura de interessados",
+      "Painel de leads",
+    ],
+    monetization: "Mensalidade por corretor.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Imóveis",
+      "Página pública do imóvel",
+      "Leads",
+    ],
+    db: ["profiles", "properties", "property_images", "leads"],
+    command: `Crie um app chamado Imobiliária Fácil.
+
+Objetivo:
+Ajudar corretores a organizar imóveis e captar interessados.
+
+Público:
+Corretores autônomos e pequenas imobiliárias.
+
+Problema:
+Os imóveis ficam espalhados em grupos, fotos e mensagens.
+
+MVP obrigatório:
+1. Login do corretor
+2. Cadastro de imóveis
+3. Upload ou cadastro de fotos
+4. Página pública do imóvel
+5. Formulário de interesse
+
+Telas:
+1. Landing page
+2. Login
+3. Dashboard
+4. Imóveis
+5. Detalhe do imóvel
+6. Leads interessados
+
+Banco:
+Crie tabelas:
+- profiles
+- properties
+- property_images
+- leads
+
+Regras:
+- Corretor só gerencia seus próprios imóveis.
+- Página pública pode ser vista sem login.
+- Lead deve ser salvo para o corretor.
+- Não criar contrato, assinatura digital ou financiamento no MVP.
+- Foco em captação simples.`,
+  },
+  {
+    name: "Escola de Reforço Online",
+    audience: "Professores particulares e pequenas escolas de reforço.",
+    pain: "Eles têm alunos, aulas e pagamentos desorganizados.",
+    mvp: [
+      "Cadastro de alunos",
+      "Cadastro de aulas",
+      "Agenda",
+      "Materiais",
+      "Controle simples de pagamento",
+    ],
+    monetization: "Mensalidade para professores.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Alunos",
+      "Aulas",
+      "Materiais",
+      "Pagamentos",
+    ],
+    db: ["profiles", "students", "classes", "materials", "payments"],
+    command: `Crie um app chamado Escola de Reforço Online.
+
+Objetivo:
+Ajudar professores particulares a organizar alunos, aulas, materiais e pagamentos simples.
+
+Público:
+Professores de reforço, professores de idiomas e pequenas escolas.
+
+Problema:
+Eles controlam tudo por WhatsApp e planilha.
+
+MVP obrigatório:
+1. Login do professor
+2. Cadastro de alunos
+3. Agenda de aulas
+4. Upload ou cadastro de materiais
+5. Controle simples de pagamento pago/pendente
+
+Telas:
+1. Landing page
+2. Login
+3. Dashboard
+4. Alunos
+5. Aulas
+6. Materiais
+7. Pagamentos
+
+Banco:
+Crie tabelas:
+- profiles
+- students
+- classes
+- materials
+- payments
+
+Regras:
+- Professor só vê seus próprios alunos.
+- Aluno pode ter área simples, se não complicar.
+- Não criar videoconferência no MVP.
+- Mobile first.`,
+  },
+  {
+    name: "PetAgenda",
+    audience: "Pet shops, banho e tosa e veterinários pequenos.",
+    pain: "Agendamentos de pets ficam bagunçados.",
+    mvp: [
+      "Cadastro de pets",
+      "Cadastro de tutores",
+      "Agenda",
+      "Serviços",
+      "Histórico do pet",
+    ],
+    monetization: "Mensalidade para pet shops.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Tutores",
+      "Pets",
+      "Serviços",
+      "Agenda",
+    ],
+    db: ["profiles", "owners", "pets", "services", "appointments"],
+    command: `Crie um app chamado PetAgenda.
+
+Objetivo:
+Ajudar pet shops e banho e tosa a organizar pets, tutores, serviços e agendamentos.
+
+Público:
+Pequenos pet shops e profissionais de banho e tosa.
+
+Problema:
+Eles se perdem com horários, nomes dos pets e serviços pedidos.
+
+MVP obrigatório:
+1. Login do estabelecimento
+2. Cadastro de tutores
+3. Cadastro de pets
+4. Cadastro de serviços
+5. Agenda de atendimentos
+
+Telas:
+1. Landing page
+2. Login
+3. Dashboard
+4. Tutores
+5. Pets
+6. Serviços
+7. Agenda
+
+Banco:
+Crie tabelas:
+- profiles
+- owners
+- pets
+- services
+- appointments
+
+Regras:
+- Cada estabelecimento só vê seus próprios dados.
+- Mostrar histórico simples do pet.
+- Não criar prontuário veterinário completo no MVP.
+- Interface simples.`,
+  },
+  {
+    name: "Lista de Espera Inteligente",
+    audience: "Infoprodutores, creators e negócios que querem validar uma ideia antes de criar.",
+    pain: "Eles lançam produtos sem saber se alguém quer.",
+    mvp: [
+      "Página de captura",
+      "Formulário de interesse",
+      "Lista de leads",
+      "Perguntas de validação",
+      "Dashboard de interesse",
+    ],
+    monetization: "Pagamento único ou assinatura para creators.",
+    screens: [
+      "Landing page do app",
+      "Criar campanha",
+      "Página pública da campanha",
+      "Dashboard de leads",
+      "Respostas de validação",
+    ],
+    db: ["profiles", "campaigns", "leads", "validation_answers"],
+    command: `Crie um app chamado Lista de Espera Inteligente.
+
+Objetivo:
+Ajudar creators e empreendedores a validar ideias antes de criar o produto.
+
+Público:
+Infoprodutores, creators, freelancers e pequenos negócios.
+
+Problema:
+Eles criam produtos sem saber se existe interesse real.
+
+MVP obrigatório:
+1. Página pública da ideia
+2. Formulário para entrar na lista de espera
+3. Perguntas de validação
+4. Dashboard com leads
+5. Exportação simples ou visualização dos inscritos
+
+Telas:
+1. Landing page do app
+2. Criar campanha
+3. Página pública da campanha
+4. Dashboard de leads
+5. Respostas de validação
+
+Banco:
+Crie tabelas:
+- profiles
+- campaigns
+- leads
+- validation_answers
+
+Regras:
+- Usuário só vê suas próprias campanhas.
+- Página pública funciona sem login.
+- Não criar automação de e-mail no MVP.
+- Foco em validar demanda.`,
+  },
+  {
+    name: "OrçaFácil",
+    audience: "Prestadores de serviço que enviam orçamento pelo WhatsApp.",
+    pain: "Orçamentos se perdem e parecem pouco profissionais.",
+    mvp: [
+      "Cadastro de cliente",
+      "Criar orçamento",
+      "Itens do orçamento",
+      "Link público do orçamento",
+      "Status aprovado/pendente",
+    ],
+    monetization: "Mensalidade ou pagamento único.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Clientes",
+      "Orçamentos",
+      "Detalhe público do orçamento",
+    ],
+    db: ["profiles", "clients", "quotes", "quote_items"],
+    command: `Crie um app chamado OrçaFácil.
+
+Objetivo:
+Ajudar prestadores de serviço a criar orçamentos profissionais rapidamente.
+
+Público:
+Eletricistas, pedreiros, designers, freelancers, marceneiros e prestadores em geral.
+
+Problema:
+Orçamentos enviados por mensagem ficam confusos e pouco profissionais.
+
+MVP obrigatório:
+1. Login do profissional
+2. Cadastro de clientes
+3. Criação de orçamento
+4. Itens com descrição, quantidade e valor
+5. Link público do orçamento
+
+Telas:
+1. Landing page
+2. Login
+3. Dashboard
+4. Clientes
+5. Orçamentos
+6. Detalhe público do orçamento
+
+Banco:
+Crie tabelas:
+- profiles
+- clients
+- quotes
+- quote_items
+
+Regras:
+- Profissional só vê seus próprios orçamentos.
+- Link público pode ser visto pelo cliente.
+- Não criar assinatura digital no MVP.
+- Design profissional e simples.`,
+  },
+  {
+    name: "Mini CRM WhatsApp",
+    audience: "Pequenos vendedores e autônomos.",
+    pain: "Eles esquecem de responder leads e perdem vendas.",
+    mvp: [
+      "Cadastro de leads",
+      "Status do lead",
+      "Observações",
+      "Próximo contato",
+      "Dashboard de oportunidades",
+    ],
+    monetization: "Mensalidade de R$29 a R$79.",
+    screens: [
+      "Landing page",
+      "Login",
+      "Dashboard",
+      "Leads",
+      "Detalhe do lead",
+      "Tarefas de follow-up",
+    ],
+    db: ["profiles", "leads", "lead_notes", "follow_ups"],
+    command: `Crie um app chamado Mini CRM WhatsApp.
+
+Objetivo:
+Ajudar pequenos vendedores a organizar leads e follow-ups.
+
+Público:
+Autônomos, consultores, vendedores locais e pequenos negócios.
+
+Problema:
+Leads ficam perdidos no WhatsApp e o vendedor esquece de dar retorno.
+
+MVP obrigatório:
+1. Login do usuário
+2. Cadastro de leads
+3. Status do lead
+4. Anotações
+5. Próxima data de contato
+
+Telas:
+1. Landing page
+2. Login
+3. Dashboard
+4. Leads
+5. Detalhe do lead
+6. Tarefas de follow-up
+
+Banco:
+Crie tabelas:
+- profiles
+- leads
+- lead_notes
+- follow_ups
+
+Regras:
+- Usuário só vê seus próprios leads.
+- Não criar integração com WhatsApp no MVP.
+- Criar botão para abrir conversa no WhatsApp com número cadastrado.
+- Interface simples.`,
   },
 ];
 
 const progressItems = [
+  "Escolhi minha ideia",
   "Copiei o Comando 1",
   "Colei no Lovable",
-  "Recebi o plano do app",
+  "Recebi o plano",
   "Usei o Comando 2",
-  "Criei a primeira versão",
+  "Criei primeira versão",
+  "Adicionei login",
+  "Criei banco de dados",
   "Testei no celular",
-  "Criei página de venda",
-  "Testei com 10 pessoas",
-  "Corrigi os primeiros erros",
-  "Publiquei a primeira versão",
+  "Criei landing page",
+  "Criei entrega",
+  "Criei admin",
+  "Testei tudo",
+  "Publiquei",
+  "Mostrei para 10 pessoas",
+  "Corrigi com feedback",
 ];
 
-// ===================== Componente do comando =====================
+const commonErrors = [
+  {
+    title: "Lovable criou coisa demais",
+    fix: "Use o comando de correção e peça para voltar ao MVP com no máximo 5 funcionalidades.",
+  },
+  {
+    title: "Não sei o que escrever na ideia",
+    fix: "Escreva do jeito simples. Exemplo: quero um app para restaurantes organizarem pedidos.",
+  },
+  {
+    title: "Login não funciona",
+    fix: "Use o comando de teste de login e peça para revisar Supabase Auth.",
+  },
+  {
+    title: "Banco não salva",
+    fix: "Peça ao Lovable para revisar tabelas, policies e conexão.",
+  },
+  {
+    title: "Ficou feio no celular",
+    fix: "Use o comando de melhorar design mobile.",
+  },
+  {
+    title: "Não sei se devo lançar",
+    fix: "Use o comando de validação com 10 usuários.",
+  },
+];
+
+// ===================== Helpers =====================
+
+function copyText(text: string, label: string) {
+  return navigator.clipboard
+    .writeText(text)
+    .then(() => toast.success(`${label} copiado. Agora cole no Lovable.`))
+    .catch(() => toast.error("Não foi possível copiar."));
+}
 
 function CommandCard({
   cmd,
@@ -480,14 +1170,9 @@ function CommandCard({
 }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(cmd.content);
-      setCopied(true);
-      toast.success(`Comando ${cmd.n} copiado. Agora cole no Lovable.`);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
+    await copyText(cmd.content, `Comando ${cmd.n}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
   };
 
   return (
@@ -496,11 +1181,9 @@ function CommandCard({
         <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent font-heading font-bold flex items-center justify-center">
           {cmd.n}
         </div>
-        <div className="flex-1">
-          <h3 className="font-heading font-semibold text-lg leading-snug">
-            Comando {cmd.n} — {cmd.title}
-          </h3>
-        </div>
+        <h3 className="font-heading font-semibold text-lg leading-snug">
+          Comando {cmd.n} — {cmd.title}
+        </h3>
       </div>
 
       <dl className="grid sm:grid-cols-2 gap-3 text-sm">
@@ -529,10 +1212,7 @@ function CommandCard({
       </details>
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2 border-t border-white/5">
-        <button
-          onClick={copy}
-          className="btn-primary flex-1 justify-center"
-        >
+        <button onClick={copy} className="btn-primary flex-1 justify-center">
           {copied ? <Check size={16} /> : <Copy size={16} />}
           {copied ? "Copiado" : "Copiar comando"}
         </button>
@@ -546,6 +1226,102 @@ function CommandCard({
           Já usei este comando
         </label>
       </div>
+    </GlassCard>
+  );
+}
+
+function TemplateCard({ t }: { t: Template }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    await copyText(t.command, `Comando do ${t.name}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  };
+
+  return (
+    <GlassCard className="p-6 space-y-4">
+      <div>
+        <h3 className="font-heading font-semibold text-xl">{t.name}</h3>
+      </div>
+
+      <dl className="grid sm:grid-cols-2 gap-3 text-sm">
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+            Para quem é
+          </dt>
+          <dd className="text-foreground/85 text-[13px] leading-snug">{t.audience}</dd>
+        </div>
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+            Dor que resolve
+          </dt>
+          <dd className="text-foreground/85 text-[13px] leading-snug">{t.pain}</dd>
+        </div>
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+            O que o MVP faz
+          </dt>
+          <dd className="text-foreground/85 text-[13px] leading-snug">
+            <ul className="list-disc list-inside space-y-0.5">
+              {t.mvp.map((m) => (
+                <li key={m}>{m}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+            Como ganha dinheiro
+          </dt>
+          <dd className="text-foreground/85 text-[13px] leading-snug">{t.monetization}</dd>
+        </div>
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+            Telas principais
+          </dt>
+          <dd className="text-foreground/85 text-[13px] leading-snug">
+            {t.screens.join(" · ")}
+          </dd>
+        </div>
+        <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+          <dt className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+            Banco de dados
+          </dt>
+          <dd className="text-foreground/85 text-[13px] leading-snug font-mono">
+            {t.db.join(", ")}
+          </dd>
+        </div>
+      </dl>
+
+      <details className="group">
+        <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground/80 hover:text-accent transition select-none">
+          Ver comando completo para Lovable
+        </summary>
+        <pre className="mt-2 text-[13px] text-foreground/85 whitespace-pre-wrap font-sans leading-6 bg-background/40 border border-white/5 rounded-lg p-3 max-h-80 overflow-y-auto">
+{t.command}
+        </pre>
+      </details>
+
+      {t.checklist && (
+        <div className="rounded-lg bg-accent/5 border border-accent/20 p-3">
+          <p className="text-[10px] uppercase tracking-wider text-accent mb-2">
+            Checklist de teste
+          </p>
+          <ul className="text-[13px] text-foreground/85 space-y-1">
+            {t.checklist.map((c) => (
+              <li key={c} className="flex gap-2">
+                <Check size={14} className="text-accent shrink-0 mt-0.5" />
+                {c}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <button onClick={copy} className="btn-primary w-full justify-center">
+        {copied ? <Check size={16} /> : <Copy size={16} />}
+        {copied ? "Copiado" : `Copiar comando deste app`}
+      </button>
     </GlassCard>
   );
 }
@@ -670,16 +1446,18 @@ export default function Entrega() {
 
   const email = auth.email ?? "";
 
-  const copyFirst = async () => {
-    try {
-      await navigator.clipboard.writeText(commands[0].content);
-      toast.success("Comando 1 copiado. Agora abra o Lovable e cole na conversa do projeto.");
-      const next = [...stepsDone];
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const startStep1 = async () => {
+    await copyText(commands[0].content, "Comando 1");
+    setStepsDone((prev) => {
+      const next = [...prev];
       next[0] = true;
-      setStepsDone(next);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
+      return next;
+    });
+    scrollTo("trilha");
   };
 
   const openLovable = () => window.open(LOVABLE_URL, "_blank", "noopener,noreferrer");
@@ -688,10 +1466,10 @@ export default function Entrega() {
     <>
       {/* HERO */}
       <Section className="pt-10 pb-10">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
             <Logo size="md" />
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
               {email && (
                 <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
                   {email}
@@ -714,20 +1492,26 @@ export default function Entrega() {
             </div>
           </div>
 
-          <div className="glass-strong p-8 md:p-10 text-center">
+          <div className="glass-strong p-8 md:p-12 text-center">
             <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-4">
-              <Sparkles size={12} /> Sua área de entrega
+              <Sparkles size={12} /> Programa Arquiteto de Apps
             </span>
             <h1 className="text-3xl md:text-5xl font-heading font-bold leading-tight mb-3">
-              Construa seu app no Lovable com estes comandos
+              Construa seu app no Lovable do zero ao lançamento
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Siga a ordem abaixo. Copie um comando por vez, cole no Lovable e avance
-              para o próximo passo.
+              Siga o passo a passo. Copie um comando por vez, cole no Lovable e avance
+              até ter seu app pronto para testar com usuários reais.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <button onClick={copyFirst} className="btn-primary">
-                <Copy size={16} /> Copiar primeiro comando
+            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
+              <button onClick={startStep1} className="btn-primary">
+                <Copy size={16} /> Começar pelo Passo 1
+              </button>
+              <button
+                onClick={() => scrollTo("modelos")}
+                className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center justify-center gap-2 text-sm"
+              >
+                <Library size={16} /> Ver ideias prontas de apps
               </button>
               <button
                 onClick={openLovable}
@@ -736,21 +1520,21 @@ export default function Entrega() {
                 <ExternalLink size={16} /> Abrir Lovable
               </button>
             </div>
-            <div className="mt-6 text-xs text-muted-foreground inline-flex items-center gap-2">
-              <ArrowDown size={12} /> Role para entender como usar
-            </div>
+            <p className="mt-6 text-xs text-muted-foreground">
+              Regra simples: um comando por vez. Não pule etapas.
+            </p>
           </div>
         </div>
       </Section>
 
       {/* O QUE VOCÊ COMPROU */}
       <Section className="py-10">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-heading font-bold mb-2">O que você comprou</h2>
-          <p className="text-muted-foreground mb-6">
-            Você comprou um guia prático para transformar sua ideia em um app usando o
-            Lovable. Aqui você encontra comandos prontos para copiar, colar e construir
-            seu projeto passo a passo.
+          <p className="text-muted-foreground mb-6 max-w-3xl">
+            Você comprou um programa guiado para criar aplicativos com o Lovable, mesmo
+            sem saber programar. Aqui você encontra comandos prontos, modelos de apps,
+            checklists e instruções para construir, vender e validar sua ideia.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
@@ -761,19 +1545,18 @@ export default function Entrega() {
               },
               {
                 icon: ListChecks,
-                title: "Passo a passo guiado",
-                text: "Use os comandos na ordem certa para não se perder.",
+                title: "Passo a passo completo",
+                text: "Você começa pela ideia e termina com um app pronto para testar.",
               },
               {
-                icon: Layers,
-                title: "Do plano ao app",
-                text:
-                  "Você vai criar estrutura, telas, banco, login, página de venda e entrega.",
+                icon: Library,
+                title: "Modelos de apps prontos",
+                text: "Escolha uma ideia pronta e adapte para o seu público.",
               },
               {
                 icon: Smartphone,
-                title: "Validação simples",
-                text: "No final, você testa com 10 pessoas antes de escalar.",
+                title: "Validação com usuários",
+                text: "Antes de escalar, teste com 10 pessoas reais.",
               },
             ].map(({ icon: Icon, title, text }) => (
               <GlassCard key={title} className="p-5">
@@ -786,21 +1569,22 @@ export default function Entrega() {
         </div>
       </Section>
 
-      {/* COMO USAR ESTA PÁGINA */}
+      {/* COMO USAR */}
       <Section className="py-10">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-heading font-bold mb-2">Como usar esta página</h2>
-          <p className="text-muted-foreground mb-6">
-            Funciona assim: leia o passo, copie o comando, cole no Lovable e espere ele
-            construir. Depois volte aqui e siga o próximo comando.
+          <p className="text-muted-foreground mb-6 max-w-3xl">
+            Pense nesta página como um mapa. Você vai seguir uma trilha. Primeiro escolhe
+            ou escreve uma ideia. Depois copia os comandos na ordem e cola no Lovable.
           </p>
-          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
-              ["Copie o comando", "Clique no botão copiar."],
-              ["Cole no Lovable", "Abra o Lovable e cole o comando na conversa do projeto."],
-              ["Espere o Lovable construir", "O Lovable vai criar ou alterar seu app."],
-              ["Teste o que foi criado", "Clique nos botões, abra as telas e veja se funciona."],
-              ["Volte para o próximo comando", "Continue até publicar sua primeira versão."],
+              ["Escolha uma ideia", "Você pode usar sua própria ideia ou escolher uma ideia pronta."],
+              ["Copie o Comando 1", "Ele transforma a ideia em um plano claro."],
+              ["Cole no Lovable", "O Lovable vai entender o que você quer criar."],
+              ["Use o próximo comando", "Cada comando constrói uma parte do app."],
+              ["Teste no celular", "Veja se as telas e botões funcionam."],
+              ["Mostre para 10 pessoas", "Use feedback real antes de melhorar."],
             ].map(([title, text], i) => (
               <li
                 key={title}
@@ -814,19 +1598,81 @@ export default function Entrega() {
               </li>
             ))}
           </ol>
+          <div className="mt-5 flex items-start gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+            <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+            <p>Não tente usar todos os comandos de uma vez. Use um por vez.</p>
+          </div>
         </div>
       </Section>
 
-      {/* COMANDOS */}
+      {/* ESCOLHA SEU CAMINHO */}
       <Section className="py-10">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-heading font-bold mb-6">Escolha seu caminho</h2>
+          <div className="grid md:grid-cols-2 gap-5">
+            <GlassCard className="p-6 space-y-4">
+              <Lightbulb className="text-accent" size={22} />
+              <h3 className="font-heading text-xl font-semibold">Tenho minha própria ideia</h3>
+              <p className="text-sm text-muted-foreground">
+                Use este caminho se você já sabe o app que quer criar.
+              </p>
+              <button
+                onClick={() => scrollTo("trilha")}
+                className="btn-primary w-full justify-center"
+              >
+                Ir para o Passo 1 <ArrowRight size={16} />
+              </button>
+            </GlassCard>
+            <GlassCard className="p-6 space-y-4">
+              <Library className="text-accent" size={22} />
+              <h3 className="font-heading text-xl font-semibold">Quero uma ideia pronta</h3>
+              <p className="text-sm text-muted-foreground">
+                Use este caminho se você quer escolher um app pronto para construir no
+                Lovable.
+              </p>
+              <button
+                onClick={() => scrollTo("modelos")}
+                className="px-4 py-3 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 w-full inline-flex items-center justify-center gap-2 text-sm font-semibold"
+              >
+                Ver modelos de apps <ArrowRight size={16} />
+              </button>
+            </GlassCard>
+          </div>
+        </div>
+      </Section>
+
+      {/* MODELOS */}
+      <Section className="py-10" id="modelos">
+        <div className="max-w-5xl mx-auto" id="modelos-anchor">
+          <h2 className="text-2xl font-heading font-bold mb-2">
+            Modelos de apps prontos para validar
+          </h2>
+          <p className="text-muted-foreground mb-3 max-w-3xl">
+            Escolha um modelo, copie o comando e cole no Lovable. Depois adapte para seu
+            público.
+          </p>
+          <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-muted-foreground">
+            Essas ideias têm dor clara, público definido e forma de monetização. Mesmo
+            assim, valide com 10 usuários antes de investir pesado.
+          </div>
+          <div className="grid lg:grid-cols-2 gap-5">
+            {templates.map((t) => (
+              <TemplateCard key={t.name} t={t} />
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* TRILHA PRINCIPAL */}
+      <Section className="py-10" id="trilha">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-end justify-between flex-wrap gap-3 mb-6">
             <div>
               <h2 className="text-2xl font-heading font-bold">
-                Passo a passo para construir no Lovable
+                Trilha principal: construa do zero no Lovable
               </h2>
               <p className="text-muted-foreground">
-                Use estes comandos na ordem. Não pule etapas.
+                Use estes comandos na ordem. Cada comando cria uma parte do seu app.
               </p>
             </div>
             <span className="text-xs text-muted-foreground px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
@@ -853,25 +1699,46 @@ export default function Entrega() {
         </div>
       </Section>
 
-      {/* SE VOCÊ SE PERDER */}
+      {/* SE PERDER */}
       <Section className="py-10">
         <div className="max-w-3xl mx-auto">
-          <GlassCard className="p-6 md:p-8 text-center">
-            <h2 className="text-xl font-heading font-bold mb-2">
+          <GlassCard className="p-6 md:p-8">
+            <h2 className="text-xl font-heading font-bold mb-2 text-center">
               Se você se perder, faça só isso
             </h2>
-            <p className="text-muted-foreground mb-4">
-              Não tente usar todos os comandos no mesmo dia. Comece pelo Comando 1.
-              Depois use o Comando 2. Só avance quando entender o resultado.
+            <p className="text-muted-foreground mb-5 text-center">
+              Não tente fazer tudo no mesmo dia. Faça nesta ordem: Comando 1, Comando 2,
+              teste no celular, depois continue.
             </p>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 text-accent text-sm">
-              <Sparkles size={14} /> Regra simples: um comando por vez.
+            <ol className="space-y-2 text-sm max-w-md mx-auto">
+              {[
+                "Copie o Comando 1",
+                "Cole no Lovable",
+                "Leia o plano",
+                "Copie o Comando 2",
+                "Teste a primeira versão",
+              ].map((s, i) => (
+                <li
+                  key={s}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/5 border border-white/10"
+                >
+                  <span className="w-6 h-6 rounded-md bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </li>
+              ))}
+            </ol>
+            <div className="mt-5 text-center">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 text-accent text-sm">
+                <Sparkles size={14} /> Um comando por vez.
+              </span>
             </div>
           </GlassCard>
         </div>
       </Section>
 
-      {/* MEU PROGRESSO */}
+      {/* PROGRESSO */}
       <Section className="py-10">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-heading font-bold mb-2">Meu progresso</h2>
@@ -909,6 +1776,29 @@ export default function Entrega() {
         </div>
       </Section>
 
+      {/* ERROS COMUNS */}
+      <Section className="py-10">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-heading font-bold mb-2">
+            Erros comuns e como resolver
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            Quando algo der errado, procure aqui antes de chamar o suporte.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {commonErrors.map((e) => (
+              <GlassCard key={e.title} className="p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle size={16} className="text-amber-400" />
+                  <h3 className="font-semibold text-sm">{e.title}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">{e.fix}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       {/* SUPORTE */}
       <Section className="py-10">
         <div className="max-w-3xl mx-auto">
@@ -929,7 +1819,7 @@ export default function Entrega() {
         </div>
       </Section>
 
-      {/* RESGATAR CÓDIGO PREMIUM (FINAL) */}
+      {/* GIFT CODE (final) */}
       <Section className="py-12">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-6">
