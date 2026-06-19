@@ -1,10 +1,13 @@
 import { useState, FormEvent } from "react";
-import { Gift, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Gift, Loader2, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const GENERIC_ERROR = "Código inválido ou indisponível.";
-const RATE_LIMIT_ERROR = "Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.";
-const TECHNICAL_ERROR = "Não foi possível resgatar agora. Tente novamente em instantes.";
+const GENERIC_ERROR =
+  "Código inválido, expirado ou já utilizado. Confira se digitou corretamente ou fale com o suporte.";
+const RATE_LIMIT_ERROR =
+  "Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.";
+const TECHNICAL_ERROR =
+  "Não foi possível resgatar agora. Tente novamente em instantes.";
 
 type RedeemResponse = {
   success: boolean;
@@ -41,7 +44,7 @@ export function GiftCodeRedemption() {
       const result = data as unknown as RedeemResponse | null;
 
       if (result?.success) {
-        setSuccessMessage(result.message || "Código resgatado com sucesso.");
+        setSuccessMessage(result.message || "Acesso liberado com sucesso.");
         setCode("");
         return;
       }
@@ -59,6 +62,13 @@ export function GiftCodeRedemption() {
     }
   };
 
+  const empty = !code.trim();
+  const buttonLabel = loading
+    ? "Verificando código..."
+    : empty
+      ? "Digite um código para continuar"
+      : "Resgatar código";
+
   return (
     <div className="glass-strong p-6 md:p-8 rounded-2xl max-w-xl mx-auto w-full">
       <div className="flex items-center gap-3 mb-2">
@@ -69,8 +79,14 @@ export function GiftCodeRedemption() {
           Resgatar código premium
         </h2>
       </div>
-      <p className="text-sm text-muted-foreground mb-5">
+      <p className="text-sm text-muted-foreground mb-2">
         Digite seu código para ativar ou estender seu acesso premium.
+      </p>
+      <p className="text-sm text-muted-foreground mb-2">
+        Você recebe seu código após a compra, por e-mail, WhatsApp ou mensagem de suporte.
+      </p>
+      <p className="text-xs text-amber-300/90 mb-5">
+        Não compartilhe seu código. Ele pode ter limite de uso e validade.
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -88,26 +104,37 @@ export function GiftCodeRedemption() {
         />
         <button
           type="submit"
-          disabled={loading || !code.trim()}
+          disabled={loading || empty}
           className="btn-primary justify-center disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {loading ? (
-            <>
-              <Loader2 size={16} className="animate-spin" /> Validando...
-            </>
-          ) : (
-            <>Resgatar código</>
-          )}
+          {loading && <Loader2 size={16} className="animate-spin" />}
+          <span>{buttonLabel}</span>
         </button>
       </form>
 
       {successMessage && (
         <div
           role="status"
-          className="mt-4 flex items-start gap-3 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
+          className="mt-4 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
         >
-          <CheckCircle2 size={18} className="mt-0.5 shrink-0" />
-          <p className="text-sm">{successMessage}</p>
+          <div className="flex items-start gap-3 mb-3">
+            <CheckCircle2 size={18} className="mt-0.5 shrink-0" />
+            <p className="text-sm">{successMessage}</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <a
+              href="/entrega?modulo=comece"
+              className="text-xs px-3 py-1.5 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-1 font-semibold"
+            >
+              Ir para Comece aqui <ArrowRight size={12} />
+            </a>
+            <a
+              href="/entrega?modulo=construir"
+              className="text-xs px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 inline-flex items-center gap-1"
+            >
+              Ir para Construir app <ArrowRight size={12} />
+            </a>
+          </div>
         </div>
       )}
 

@@ -1993,15 +1993,43 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <ModuleHeader
-          title="Ativar ou estender acesso"
-          subtitle="Use esta área apenas se você recebeu um código de acesso."
+          title="Ative seu acesso ao programa"
+          subtitle="Cole o código recebido após a compra para liberar ou estender seu acesso à Fábrica de Apps com IA."
         />
+
+        <GlassCard className="p-4 mb-5 border-accent/30 max-w-xl">
+          <p className="text-sm text-foreground/90">
+            Digite o código que você recebeu após a compra e clique em Resgatar código.
+          </p>
+        </GlassCard>
+
         <div className="max-w-xl">
           <GiftCodeRedemption />
         </div>
+
+        <GlassCard className="p-5 mt-5 max-w-xl">
+          <h3 className="font-heading font-semibold mb-2">Não recebeu seu código?</h3>
+          <p className="text-sm text-muted-foreground mb-3">
+            Verifique seu e-mail, caixa de spam, WhatsApp ou mensagem de suporte. Se ainda não encontrou, fale com o suporte informando o e-mail usado na compra.
+          </p>
+          <button
+            onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL, "Não recebi meu código de acesso")}
+            className="text-xs px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 inline-flex items-center gap-2"
+          >
+            <LifeBuoy size={14} /> Falar com suporte
+          </button>
+        </GlassCard>
+
+        <GlassCard className="p-5 mt-4 max-w-xl">
+          <h3 className="font-heading font-semibold mb-2">Quando posso avançar?</h3>
+          <p className="text-sm text-muted-foreground">
+            Avance quando o código for aceito e seu acesso estiver liberado.
+          </p>
+        </GlassCard>
       </section>
     );
   }
+
 
   return null;
 }
