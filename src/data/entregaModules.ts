@@ -42,6 +42,7 @@ export type ModuleId =
   | "fundamentos"
   | "comece"
   | "ideias"
+  | "planejar"
   | "construir"
   | "login"
   | "venda"
@@ -65,6 +66,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "fundamentos", label: "Comece pelo Lovable", icon: "BookOpen" },
   { id: "comece", label: "Comece aqui", icon: "Sparkles" },
   { id: "ideias", label: "Ideias prontas", icon: "Lightbulb" },
+  { id: "planejar", label: "Planejar o App", icon: "ClipboardList" },
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
@@ -3499,6 +3501,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
   ideias: {
     doNow: "Escolha um modelo que se pareça com o que você quer criar. Clique em Ver detalhes e copie o comando.",
     advanceWhen: "Avance quando você tiver copiado um comando de ideia e colado no Lovable.",
+  },
+  planejar: {
+    doNow: "Antes de abrir o Lovable, defina problema, público, promessa, ação principal e o que entra na primeira versão.",
+    advanceWhen: "Avance quando você tiver um plano claro do seu app, simples e sem excesso, pronto para construir.",
   },
   construir: {
     doNow: "Comece pelo Comando 1. Copie, cole no Lovable e espere o resultado antes do próximo.",
