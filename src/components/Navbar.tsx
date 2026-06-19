@@ -56,7 +56,7 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
     ...links,
     auth.status === "authed" && (auth.hasAccess || auth.isAdmin)
       ? { to: "/entrega", label: "Minha área" }
-      : { to: "/login", label: "Acesso restrito" },
+      : { to: "/login", label: "Já sou aluno" },
     ...(auth.status === "authed" && auth.isAdmin
       ? [{ to: "/admin/acessos", label: "Admin" }]
       : []),
