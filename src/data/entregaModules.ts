@@ -1046,41 +1046,369 @@ Remova:
 ];
 
 export const COMMANDS_CHECKOUT: Command[] = [
-  cmd(1, "Criar checkout", "Organiza o fluxo de compra.", "Quando o produto for vendido.", "Cole no Lovable.", "Fluxo de compra funcional.",
-    `Crie o fluxo de checkout.
+  {
+    n: 1,
+    title: "Criar forma de pagamento",
+    purpose: "Criar o caminho para o usuário pagar pelo produto.",
+    when: "Quando a oferta e o preço já estão definidos.",
+    where: "Cole no Lovable.",
+    result: "Fluxo de pagamento claro, botão funcionando e entrega ainda protegida.",
+    objective: "Criar o caminho para o usuário pagar pelo produto.",
+    whenLovableDirect: "Quando a oferta e o preço já estão definidos.",
+    whenAgentFirst:
+      "Quando você ainda não sabe se deve usar WhatsApp, checkout externo, gateway ou assinatura.",
+    content: `Crie o fluxo de pagamento para este app.
 
-Inclua: botão de compra, página de checkout ou integração externa, segurança visual, instruções claras e suporte. Não mostrar materiais protegidos.`),
-  cmd(2, "Criar página de obrigado", "Confirma a compra e explica o próximo passo.", "Depois do checkout.", "Cole no Lovable.", "Página de obrigado clara.",
-    `Crie a página de obrigado.
+Produto:
+[descreva]
 
-Inclua: confirmação da compra, instruções pós-compra, link para a área restrita, aviso de e-mail/spam e link de suporte.`),
-  cmd(3, "Criar área de entrega", "Entrega os materiais ao comprador.", "Quando o produto exige área exclusiva.", "Cole no Lovable.", "Área protegida e organizada.",
-    `Crie a área de entrega.
+Valor:
+[informe]
 
-Inclua: boas-vindas, o que comprou, como usar, materiais, checklist de progresso, suporte e bloqueio para visitantes.`),
-  cmd(4, "Criar fluxo de acesso restrito", "Garante que só compradores entrem.", "Depois da área de entrega.", "Cole no Lovable.", "Acesso restrito testado.",
-    `Implemente o fluxo de acesso restrito.
+Forma de pagamento:
+[WhatsApp, checkout externo, Kiwify, Hotmart, Kirvano, Stripe, Mercado Pago ou outro]
+
+Requisitos:
+
+1. Botão de compra claro.
+2. Página ou seção de checkout.
+3. Resumo do que a pessoa está comprando.
+4. Informação sobre liberação de acesso.
+5. Botão alternativo de suporte.
+6. Aviso de que o acesso será liberado após confirmação do pagamento, se o fluxo for manual.
+7. Não mostrar materiais protegidos antes da confirmação.
 
 Regras:
-1. Visitante sem login não acessa
-2. Login sem acesso liberado vê mensagem clara
-3. Admin libera acesso pelo painel
-4. Comprador recebe instrução de como entrar`),
-  cmd(5, "Criar recuperação de acesso", "Permite ao comprador voltar a entrar.", "Quando o usuário esquece a senha.", "Cole no Lovable.", "Fluxo de recuperação por e-mail.",
-    `Crie o fluxo de recuperação de acesso.
 
-Inclua: link mágico por e-mail, recuperação por senha, mensagens claras e redirecionamento após login.`),
-  cmd(6, "Criar painel de liberação de compradores", "Permite ao dono liberar acesso para quem comprou.", "Depois que checkout e área restrita existirem.", "Cole no Lovable.", "Painel admin com liberação de acesso.",
-    `Crie um painel de liberação de compradores.
+- Não inventar gateway.
+- Não criar promessa de acesso automático se ainda não existe webhook.
+- Não deixar botão quebrado.
+- Se a URL de pagamento ainda não existir, deixar campo configurável.`,
+    agentPrompt: `Preciso decidir como receber pagamento no meu app.
 
-O admin deve conseguir:
-1. Buscar usuário por e-mail
-2. Liberar acesso após confirmar pagamento
-3. Revogar acesso
-4. Ver status atual
-5. Ver data e origem do acesso
+App:
+[descreva]
 
-Regras: só admin acessa, nunca expor service role no frontend.`),
+Produto:
+[descreva]
+
+Preço:
+[informe]
+
+Entrega:
+[descreva]
+
+Analise:
+
+1. Devo começar com WhatsApp, checkout externo ou gateway?
+2. O acesso deve ser manual ou automático no MVP?
+3. O que precisa aparecer antes da compra?
+4. O que precisa aparecer depois da compra?
+5. Qual prompt devo colar no Lovable?`,
+    correctionPrompt: `O fluxo de pagamento ficou confuso ou quebrado. Corrija sem refazer o app inteiro.
+
+Verifique:
+
+1. Botão de compra.
+2. Link de pagamento.
+3. Resumo da oferta.
+4. Informação sobre acesso após pagamento.
+5. Suporte.
+6. Nenhum material protegido aparece antes da compra.
+7. Nenhum botão abre URL vazia ou placeholder.`,
+    advanceCriteria:
+      "Avance apenas quando o botão de compra abrir o caminho correto de pagamento e o comprador entender o que acontece depois.",
+  },
+  {
+    n: 2,
+    title: "Criar página de obrigado",
+    purpose: "Confirmar a compra e explicar o próximo passo.",
+    when: "Depois de criar o caminho de pagamento.",
+    where: "Cole no Lovable.",
+    result: "Página de obrigado clara, honesta e útil.",
+    objective: "Confirmar a compra e explicar o próximo passo.",
+    whenLovableDirect: "Depois de criar o caminho de pagamento.",
+    whenAgentFirst:
+      "Quando você não sabe o que o comprador deve ver depois de pagar.",
+    content: `Crie uma página de obrigado para este app.
+
+A página deve conter:
+
+1. Confirmação da compra.
+2. Resumo do que a pessoa comprou.
+3. Próximo passo claro.
+4. Informação sobre liberação de acesso.
+5. Botão para login ou área de entrega, se aplicável.
+6. Botão de suporte.
+7. Mensagem honesta se a liberação for manual.
+
+Texto obrigatório se o acesso ainda for manual:
+"Seu acesso será liberado após confirmação do pagamento."
+
+Não prometa acesso automático se ainda não existe integração com gateway.`,
+    agentPrompt: `Quero criar a página de obrigado do meu app.
+
+Produto:
+[descreva]
+
+Entrega:
+[manual ou automática]
+
+Acesso:
+[login, link, código, área restrita]
+
+Me ajude a definir:
+
+1. O que o comprador precisa ver depois de pagar.
+2. Qual texto evita suporte.
+3. Quais botões devem aparecer.
+4. O que não devo prometer.`,
+    correctionPrompt: `A página de obrigado está confusa ou promete algo que o sistema ainda não faz. Corrija.
+
+Regras:
+
+1. Não prometer acesso automático se o acesso é manual.
+2. Explicar o próximo passo.
+3. Mostrar botão de suporte.
+4. Mostrar botão de login ou entrega, se existir.
+5. Usar texto claro e honesto.`,
+    advanceCriteria:
+      "Avance quando o comprador souber exatamente o que acontece depois da compra.",
+  },
+  {
+    n: 3,
+    title: "Criar área de entrega protegida",
+    purpose: "Criar a área onde o comprador acessa o produto.",
+    when: "Quando o produto exige área exclusiva.",
+    where: "Cole no Lovable.",
+    result: "Área de entrega protegida, clara e organizada.",
+    objective: "Criar a área onde o comprador acessa o produto.",
+    whenLovableDirect: "Quando o produto exige área exclusiva.",
+    whenAgentFirst:
+      "Quando você não sabe se a entrega deve ser por área restrita, link, e-mail ou código.",
+    content: `Crie uma área de entrega protegida para este produto.
+
+Produto:
+[descreva]
+
+Materiais entregues:
+[descreva]
+
+A área deve conter:
+
+1. Boas-vindas.
+2. Lista do que foi comprado.
+3. Instruções de uso.
+4. Materiais ou links protegidos.
+5. Checklist de progresso, se fizer sentido.
+6. Botão de suporte.
+7. Bloqueio para visitantes sem acesso.
+
+Regras:
+
+- Visitante sem acesso não pode ver materiais.
+- Usuário sem compra não pode ver materiais.
+- Não mostrar links protegidos no código público.
+- Não expor dados sensíveis.`,
+    agentPrompt: `Preciso definir a melhor forma de entregar meu produto.
+
+Produto:
+[descreva]
+
+Materiais:
+[links, PDF, prompts, vídeo, área logada, comunidade, outro]
+
+Analise:
+
+1. Preciso de área restrita?
+2. Posso entregar por e-mail?
+3. Preciso de login?
+4. Preciso de acesso manual?
+5. O que a área de entrega deve mostrar?`,
+    correctionPrompt: `A área de entrega está pública ou confusa. Corrija com foco em proteção e clareza.
+
+Verifique:
+
+1. Visitante sem acesso não vê material.
+2. Comprador liberado vê material.
+3. Botões funcionam.
+4. Instruções estão claras.
+5. Materiais protegidos não aparecem para usuários errados.`,
+    advanceCriteria:
+      "Avance quando somente comprador autorizado conseguir ver a entrega.",
+  },
+  {
+    n: 4,
+    title: "Bloquear visitantes e liberar compradores",
+    purpose:
+      "Garantir que só compradores confirmados entrem na área de entrega.",
+    when: "Depois que a área de entrega existe.",
+    where: "Cole no Lovable.",
+    result:
+      "Fluxo testado para visitante, usuário sem acesso e comprador liberado.",
+    objective:
+      "Garantir que só compradores confirmados entrem na área de entrega.",
+    whenLovableDirect: "Depois que a área de entrega existe.",
+    whenAgentFirst: "Quando você não sabe como controlar quem pode entrar.",
+    content: `Implemente o fluxo de acesso restrito para compradores.
+
+Regras:
+
+1. Visitante sem login não acessa a entrega.
+2. Usuário logado sem acesso vê mensagem clara.
+3. Usuário com acesso liberado entra na área de entrega.
+4. Admin pode liberar ou revogar acesso, se existir painel.
+5. Comprador recebe orientação de como entrar.
+6. Não expor materiais protegidos para visitantes.
+
+Se ainda não houver webhook, usar liberação manual.`,
+    agentPrompt: `Preciso definir o fluxo de acesso do comprador.
+
+Produto:
+[descreva]
+
+Pagamento:
+[manual, checkout externo, gateway]
+
+Entrega:
+[descreva]
+
+Me ajude a decidir:
+
+1. O acesso será manual ou automático?
+2. Preciso de admin para liberar compradores?
+3. Preciso de código de acesso?
+4. Como evitar que visitantes vejam material pago?
+5. Qual fluxo simples devo pedir ao Lovable?`,
+    correctionPrompt: `O acesso restrito está falhando. Corrija.
+
+Problemas possíveis:
+
+1. Visitante vê material pago.
+2. Comprador liberado não consegue entrar.
+3. Usuário sem acesso entra indevidamente.
+4. Mensagem de bloqueio confusa.
+5. Admin não consegue liberar acesso.
+6. Logout ou login quebrado.`,
+    advanceCriteria:
+      "Avance quando visitante, usuário comum e comprador liberado tiverem comportamentos corretos.",
+  },
+  {
+    n: 5,
+    title: "Criar recuperação de acesso",
+    purpose:
+      "Permitir que o comprador volte a entrar se perder senha, link ou orientação.",
+    when: "Quando existe login ou área restrita.",
+    where: "Cole no Lovable.",
+    result: "Comprador consegue recuperar ou pedir ajuda sem se perder.",
+    objective:
+      "Permitir que o comprador volte a entrar se perder senha, link ou orientação.",
+    whenLovableDirect: "Quando existe login ou área restrita.",
+    whenAgentFirst:
+      "Quando você não sabe qual recuperação faz sentido para seu produto.",
+    content: `Crie o fluxo de recuperação de acesso.
+
+Requisitos:
+
+1. Recuperação por e-mail, se houver login.
+2. Mensagem clara para quem esqueceu senha.
+3. Botão de suporte.
+4. Página de ajuda com instruções.
+5. Redirecionamento correto após recuperar acesso.
+6. Evitar expor materiais protegidos durante recuperação.
+
+Não crie fluxo complexo se o MVP só precisa de suporte manual.`,
+    agentPrompt: `Meu comprador pode perder o acesso ao produto.
+
+Produto:
+[descreva]
+
+Forma de entrega:
+[descreva]
+
+Login:
+[sim ou não]
+
+Me ajude a decidir:
+
+1. Preciso de recuperação por e-mail?
+2. Preciso de suporte manual?
+3. Preciso de código de acesso?
+4. O que devo colocar na página de ajuda?`,
+    correctionPrompt: `A recuperação de acesso não está clara. Corrija.
+
+Verifique:
+
+1. Botão de recuperar senha.
+2. E-mail de recuperação.
+3. Mensagem para suporte.
+4. Redirecionamento após login.
+5. Bloqueio de materiais para quem não tem acesso.`,
+    advanceCriteria:
+      "Avance quando o comprador tiver um caminho claro para voltar a acessar.",
+  },
+  {
+    n: 6,
+    title: "Criar painel de liberação manual",
+    purpose: "Permitir que você libere ou revogue acesso de compradores.",
+    when: "Quando o fluxo ainda não tem webhook automático.",
+    where: "Cole no Lovable.",
+    result:
+      "Admin consegue liberar e revogar acesso manualmente com segurança básica.",
+    objective: "Permitir que você libere ou revogue acesso de compradores.",
+    whenLovableDirect: "Quando o fluxo ainda não tem webhook automático.",
+    whenAgentFirst:
+      "Quando você não sabe se precisa de painel admin, código de acesso ou webhook.",
+    content: `Crie um painel simples de liberação manual de compradores.
+
+Funções:
+
+1. Buscar usuário por e-mail.
+2. Ver status de acesso.
+3. Liberar acesso.
+4. Revogar acesso.
+5. Ver data de liberação.
+6. Mostrar mensagens claras de sucesso e erro.
+
+Regras:
+
+- Apenas admin pode acessar.
+- Não expor chave service role no frontend.
+- Não permitir que usuário comum libere acesso.
+- Não mostrar dados sensíveis desnecessários.
+- Manter logs simples, se possível.`,
+    agentPrompt: `Preciso controlar acesso de compradores.
+
+Produto:
+[descreva]
+
+Pagamento:
+[manual ou gateway]
+
+Entrega:
+[descreva]
+
+Me ajude a decidir:
+
+1. Preciso de painel manual agora?
+2. Preciso de webhook depois?
+3. Quais campos o painel precisa ter?
+4. Quais riscos de segurança devo evitar?
+5. Qual prompt devo colar no Lovable?`,
+    correctionPrompt: `O painel de liberação está inseguro ou confuso. Corrija.
+
+Regras:
+
+1. Apenas admin pode acessar.
+2. Usuário comum nunca libera acesso.
+3. Não expor service role.
+4. Buscar usuário por e-mail.
+5. Liberar e revogar acesso.
+6. Mostrar mensagens claras.
+7. Manter acesso negado para quem não foi liberado.`,
+    advanceCriteria:
+      "Avance quando você conseguir simular uma compra, liberar o comprador e confirmar que ele entra na entrega.",
+  },
 ];
 
 
@@ -1642,8 +1970,8 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Antes de criar checkout, garanta que a pessoa entende o valor do app em menos de 10 segundos.",
   },
   checkout: {
-    doNow: "Crie o checkout, a página de obrigado e a área de entrega na ordem.",
-    advanceWhen: "Avance quando um comprador conseguir comprar, receber acesso e entrar na área restrita.",
+    doNow: "Crie pagamento, página de obrigado, área de entrega protegida, libere o acesso e teste como comprador.",
+    advanceWhen: "Antes de divulgar, faça o caminho completo como se você fosse o comprador.",
   },
   seo: {
     doNow: "Comece pelo plano de SEO. Depois gere páginas e schemas.",
