@@ -15,6 +15,7 @@ import {
   ListChecks,
   AlertTriangle,
   Gift,
+  DollarSign,
   Menu,
   X,
   LogOut,
@@ -36,6 +37,7 @@ import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
+import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -49,6 +51,7 @@ import {
   COMMANDS_CONSTRUIR,
   COMMANDS_LOGIN,
   COMMANDS_VENDA,
+  COMMANDS_MONETIZACAO,
   COMMANDS_CHECKOUT,
   COMMANDS_SEO,
   COMMANDS_CAMPANHAS,
@@ -67,6 +70,7 @@ const TOTAL_COMMANDS =
   COMMANDS_CONSTRUIR.length +
   COMMANDS_LOGIN.length +
   COMMANDS_VENDA.length +
+  COMMANDS_MONETIZACAO.length +
   COMMANDS_CHECKOUT.length +
   COMMANDS_SEO.length +
   COMMANDS_CAMPANHAS.length +
@@ -75,7 +79,7 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign,
 };
 
 
@@ -94,6 +98,7 @@ function EntregaInner() {
     "construir-app": "construir",
     "login-banco": "login",
     "pagina-de-venda": "venda",
+    "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
     "seo-geo": "seo",
     "campanhas": "campanhas",
@@ -1751,7 +1756,40 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     );
   }
 
+  if (active === "monetizacao") {
+    return (
+      <section>
+        <MonetizacaoIntro />
+        <ModuleHeader
+          title="Siga as etapas de monetização"
+          subtitle="Comece pela Etapa 1. Só avance quando você tiver clareza do valor, do modelo e de uma oferta inicial para testar."
+        />
+        <CommandList commands={COMMANDS_MONETIZACAO} moduleKey="monetizacao" />
+        <FaixasReferencia />
+        <ChecklistBlock
+          title="Checklist do módulo"
+          items={[
+            "Sei qual dor meu app resolve",
+            "Sei para quem meu app foi feito",
+            "Escolhi o modelo de cobrança",
+            "Defini se será venda única, assinatura, freemium ou beta",
+            "Escolhi uma faixa de valor inicial",
+            "Criei uma oferta simples",
+            "Expliquei o que está incluso",
+            "Evitei promessa exagerada",
+            "Testei ou vou testar com pessoas reais",
+            "Sei quando ajustar o valor",
+          ]}
+          checklist={checklist}
+          setChecklist={setChecklist}
+          phase="monetizacao"
+        />
+      </section>
+    );
+  }
+
   if (active === "checkout") {
+
     return (
       <section>
         <CheckoutIntro />
