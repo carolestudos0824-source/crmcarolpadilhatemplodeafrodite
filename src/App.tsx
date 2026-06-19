@@ -1,10 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
-import { APP_CONFIG } from "@/config/appConfig";
 import Home from "@/pages/Home";
 import Precos from "@/pages/Precos";
 import Checkout from "@/pages/Checkout";
@@ -24,16 +23,14 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-const ANNOUNCEMENT_ROUTES = ["/", "/precos", "/suporte"];
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { pathname } = useLocation();
-  const showBar = APP_CONFIG.SHOW_ANNOUNCEMENT_BAR && ANNOUNCEMENT_ROUTES.includes(pathname);
   return (
     <div className="min-h-screen flex flex-col">
-      <AnnouncementBar />
-      <Navbar offsetTop={showBar} />
-      <main className={`flex-1 ${showBar ? "pt-[104px] md:pt-[100px]" : "pt-16"}`}>{children}</main>
+      <header className="sticky top-0 z-50 w-full">
+        <AnnouncementBar />
+        <Navbar />
+      </header>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
