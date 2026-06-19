@@ -4,6 +4,7 @@ import { CheckoutSummary } from "@/components/CheckoutSummary";
 import { Logo } from "@/components/Logo";
 import { PLANS } from "@/data/plans";
 import { openConfiguredUrl } from "@/lib/openLink";
+import { APP_CONFIG } from "@/config/appConfig";
 
 export default function Checkout() {
   const plan = PLANS[0];
