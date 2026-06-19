@@ -95,8 +95,50 @@ function useLocalState<T>(key: string, initial: T): [T, (v: T | ((p: T) => T)) =
 export default function Entrega() {
   const navigate = useNavigate();
   const auth = useAuthState();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [active, setActive] = useLocalState<ModuleId>(STORAGE_MODULE, "comece");
+  // URL slug ↔ internal module id
+  const SLUG_TO_ID: Record<string, ModuleId> = {
+    "comece-aqui": "comece",
+    "ideias-prontas": "ideias",
+    "construir-app": "construir",
+    "login-banco": "login",
+    "pagina-de-venda": "venda",
+    "checkout-entrega": "checkout",
+    "seo-geo": "seo",
+    "campanhas": "campanhas",
+    "criativos": "criativos",
+    "validacao": "validacao",
+    "checklist": "checklist",
+    "erros-comuns": "erros",
+    "ativar-acesso": "ativar",
+  };
+  const ID_TO_SLUG: Record<ModuleId, string> = Object.fromEntries(
+    Object.entries(SLUG_TO_ID).map(([k, v]) => [v, k]),
+  ) as Record<ModuleId, string>;
+
+  const moduloParam = searchParams.get("modulo");
+  const initialActive: ModuleId =
+    (moduloParam && (SLUG_TO_ID[moduloParam] ?? (MODULE_ORDER as string[]).includes(moduloParam) ? (moduloParam as ModuleId) : null)) ||
+    "comece";
+
+  const [active, setActiveState] = useState<ModuleId>(initialActive);
+
+  // Sync active when URL ?modulo changes
+  useEffect(() => {
+    const p = searchParams.get("modulo");
+    const next =
+      (p && (SLUG_TO_ID[p] ?? ((MODULE_ORDER as string[]).includes(p) ? (p as ModuleId) : null))) ||
+      "comece";
+    setActiveState(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const setActive = (id: ModuleId) => {
+    setActiveState(id);
+    setSearchParams({ modulo: ID_TO_SLUG[id] ?? id }, { replace: false });
+  };
+
   const [moduleDone, setModuleDone] = useLocalState<Record<ModuleId, boolean>>(
     STORAGE_MODULE_DONE,
     {} as Record<ModuleId, boolean>,
