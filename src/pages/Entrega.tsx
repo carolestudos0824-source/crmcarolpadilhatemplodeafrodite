@@ -605,16 +605,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
 
   if (active === "campanhas") {
-    return (
-      <section>
-        <ModuleHeader
-          title="Campanhas"
-          subtitle="Use esta etapa para divulgar seu app e conseguir os primeiros usuários."
-        />
-        <CommandList commands={COMMANDS_CAMPANHAS} moduleKey="campanhas" />
-        <CampaignGenerator />
-      </section>
-    );
+    return <CampaignsModule checklist={checklist} setChecklist={setChecklist} />;
   }
 
   if (active === "criativos") {
