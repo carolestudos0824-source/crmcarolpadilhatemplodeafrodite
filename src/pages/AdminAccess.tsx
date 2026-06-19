@@ -25,6 +25,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { AdminShell, ADMIN_SECTIONS, type AdminSectionKey } from "@/components/admin/AdminShell";
 import { GiftCodesPanel } from "@/components/admin/GiftCodesPanel";
 import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
+import { AccessLogs } from "@/components/admin/AccessLogs";
 
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
@@ -111,6 +112,8 @@ export default function AdminAccess() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [acting, setActing] = useState(false);
+  const [logsRefresh, setLogsRefresh] = useState(0);
+  const bumpLogs = () => setLogsRefresh((v) => v + 1);
 
   useEffect(() => {
     let mounted = true;
@@ -166,6 +169,7 @@ export default function AdminAccess() {
         message: res?.error ?? "Não foi possível concluir esta ação.",
       });
     }
+    bumpLogs();
     const { data: lookup } = await supabase.rpc("admin_lookup_user", { _email: email.trim() });
     const rows = (lookup as LookupRow[] | null) ?? [];
     if (rows[0]) {
@@ -227,7 +231,11 @@ export default function AdminAccess() {
           onSearch={onSearch}
           setAccess={setAccess}
           selfHasAccess={selfHasAccess}
-          onSelfChanged={(v) => setSelfHasAccess(v)}
+          onSelfChanged={(v) => {
+            setSelfHasAccess(v);
+            bumpLogs();
+          }}
+          logsRefresh={logsRefresh}
         />
       )}
       {section === "compradores" && (
@@ -252,6 +260,7 @@ export default function AdminAccess() {
             if (error) throw new Error(error.message);
             const res = data as { success?: boolean; error?: string } | null;
             if (!res?.success) throw new Error(res?.error ?? "Falha na operação.");
+            bumpLogs();
           }}
         />
       )}
@@ -350,6 +359,7 @@ function AcessosSection({
   setAccess,
   selfHasAccess,
   onSelfChanged,
+  logsRefresh,
 }: {
   email: string;
   setEmail: (v: string) => void;
@@ -360,6 +370,7 @@ function AcessosSection({
   setAccess: (id: string, has: boolean) => void;
   selfHasAccess: boolean | null;
   onSelfChanged: (v: boolean) => void;
+  logsRefresh: number;
 }) {
   const row = status.kind === "found" || status.kind === "success" ? status.row : null;
   return (
@@ -552,6 +563,8 @@ function AcessosSection({
           </div>
         </div>
       )}
+
+      <AccessLogs refreshKey={logsRefresh} />
     </div>
   );
 }

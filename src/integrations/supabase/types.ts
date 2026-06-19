@@ -725,6 +725,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_access_logs: {
+        Args: { _limit?: number }
+        Returns: {
+          action: string
+          admin_email: string
+          admin_id: string
+          created_at: string
+          id: string
+          new_has_access: boolean
+          note: string
+          previous_has_access: boolean
+          source: string
+          target_email: string
+        }[]
+      }
       admin_list_buyers: {
         Args: { _limit?: number }
         Returns: {
