@@ -30,9 +30,8 @@ export default function Obrigado() {
             Compra ainda não confirmada
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-8">
-            Não identificamos uma compra iniciada nesta sessão. Se você acabou de pagar,
-            aguarde o e-mail com as instruções de acesso. Se ainda não comprou, volte para
-            a página inicial.
+            Não identificamos uma compra iniciada nesta sessão. Se você finalizou o pagamento,
+            aguarde a liberação do seu acesso. Em caso de dúvida, fale com o suporte.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button className="btn-primary" onClick={() => navigate("/")}>

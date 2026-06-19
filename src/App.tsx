@@ -23,7 +23,18 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
+import { useLocation } from "react-router-dom";
+
+const CHROMELESS_ROUTES = ["/entrega"];
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { pathname } = useLocation();
+  const isChromeless = CHROMELESS_ROUTES.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+  if (isChromeless) {
+    return <div className="min-h-screen flex flex-col">{children}</div>;
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 w-full">

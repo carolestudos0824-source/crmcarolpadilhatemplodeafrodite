@@ -6,6 +6,11 @@ export default function Privacidade() {
     <Section eyebrow="Documentos" title="Política de Privacidade">
       <div className="max-w-3xl mx-auto text-muted-foreground space-y-5 text-sm leading-relaxed">
         <p>Esta Política descreve como tratamos os dados coletados no site <strong>Fábrica de Apps com IA</strong>.</p>
+        {!APP_CONFIG.COMPANY_NAME?.trim() && !APP_CONFIG.COMPANY_DOCUMENT?.trim() && !APP_CONFIG.RESPONSIBLE_NAME?.trim() && (
+          <p className="text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed">
+            Os dados legais completos (razão social, CNPJ e responsável) serão preenchidos pela responsável antes da venda pública.
+          </p>
+        )}
         <h3 className="text-foreground font-heading">1. Dados coletados</h3>
         <p>Coletamos nome, e-mail e, opcionalmente, informações sobre sua ideia de aplicativo, quando você preenche um formulário no site.</p>
         <h3 className="text-foreground font-heading">2. Uso dos dados</h3>

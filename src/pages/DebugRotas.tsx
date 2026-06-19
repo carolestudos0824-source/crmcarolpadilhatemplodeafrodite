@@ -30,6 +30,18 @@ export default function DebugRotas() {
     supabase.rpc("is_admin").then(({ data }) => setIsAdmin(!!data));
   }, [auth.status]);
 
+  // Even in dev/preview, only admins can see this page.
+  if (auth.status === "loading" || isAdmin === null) {
+    return (
+      <Section>
+        <div className="max-w-2xl mx-auto text-center text-sm text-muted-foreground">
+          Verificando permissões…
+        </div>
+      </Section>
+    );
+  }
+  if (!isAdmin) return <Navigate to="/" replace />;
+
   return (
     <Section>
       <div className="max-w-2xl mx-auto glass-strong p-8 space-y-4">
