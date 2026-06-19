@@ -1556,7 +1556,7 @@ export function CampaignsModule({
         </label>
       </div>
 
-      <div className="hidden sm:flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1">
+      <div className="hidden sm:flex flex-wrap gap-2 mb-6 -mx-1 px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map((t) => {
           const Icon = t.icon;
           const isActive = tab === t.id;
