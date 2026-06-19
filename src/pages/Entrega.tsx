@@ -33,6 +33,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { CommandCard } from "@/components/entrega/CommandCard";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
+import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -604,16 +605,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
 
   if (active === "campanhas") {
-    return (
-      <section>
-        <ModuleHeader
-          title="Campanhas"
-          subtitle="Use esta etapa para divulgar seu app e conseguir os primeiros usuários."
-        />
-        <CommandList commands={COMMANDS_CAMPANHAS} moduleKey="campanhas" />
-        <CampaignGenerator />
-      </section>
-    );
+    return <CampaignsModule checklist={checklist} setChecklist={setChecklist} />;
   }
 
   if (active === "criativos") {
