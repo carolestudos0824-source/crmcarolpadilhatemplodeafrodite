@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Loader2,
   Search,
@@ -7,6 +7,8 @@ import {
   ShieldOff,
   UserCheck,
   AlertTriangle,
+  Info as InfoIcon,
+  ArrowRight,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { supabase } from "@/integrations/supabase/client";
