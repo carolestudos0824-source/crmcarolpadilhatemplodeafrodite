@@ -37,6 +37,7 @@ import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
+import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
