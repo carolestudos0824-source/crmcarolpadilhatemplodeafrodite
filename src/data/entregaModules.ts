@@ -35,6 +35,7 @@ export type CommonError = {
   explanation: string;
   fix: string;
   command: string;
+  severity?: "Leve" | "Médio" | "Crítico";
 };
 
 export type ModuleId =
