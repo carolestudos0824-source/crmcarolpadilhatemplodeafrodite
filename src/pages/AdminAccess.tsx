@@ -313,6 +313,7 @@ export default function AdminAccess() {
         {section === "codigos" && <GiftCodesPanel />}
         {section === "pendencias" && <PendenciasSection />}
         {section === "mensagens" && <MensagensSection />}
+        {section === "inbox" && <SupportInbox />}
         {section === "config" && <ConfigSection />}
       </AdminErrorBoundary>
     </AdminShell>
