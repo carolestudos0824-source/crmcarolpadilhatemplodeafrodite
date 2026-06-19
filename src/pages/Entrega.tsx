@@ -331,6 +331,7 @@ export default function Entrega() {
                 {email}
               </span>
             )}
+            <FontSizeControl />
             {auth.isAdmin && (
               <button
                 onClick={() => navigate("/admin/acessos")}
