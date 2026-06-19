@@ -52,22 +52,19 @@ export default function Obrigado() {
       <div className="max-w-2xl mx-auto text-center glass-strong p-10 md:p-14 neon-shadow">
         <div className="flex justify-center mb-6"><Logo size="lg" asLink={false} /></div>
         <CheckCircle2 size={48} className="text-accent mx-auto mb-4" />
-        <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Compra recebida</h1>
-        <p className="text-base md:text-lg text-muted-foreground mb-3">
-          Obrigado por adquirir a Fábrica de Apps com IA. As instruções de acesso serão enviadas para o e-mail informado na compra assim que o pagamento for confirmado.
-        </p>
-        <p className="text-base text-muted-foreground mb-4">
-          Verifique sua caixa de entrada, spam ou promoções. Em caso de dificuldade, fale com o suporte por e-mail.
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Compra registrada</h1>
+        <p className="text-base md:text-lg text-muted-foreground mb-4">
+          Se você finalizou o pagamento, aguarde a liberação do seu acesso na área do aluno. Em caso de dúvida, fale com o suporte.
         </p>
         <p className="text-sm text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed mb-8">
-          Esta página apenas confirma que você iniciou a compra. O acesso à área restrita só é liberado após confirmação do pagamento.
+          O acesso à área restrita é liberado manualmente após a confirmação do pagamento. Use o mesmo e-mail informado na compra para entrar.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button className="btn-primary" onClick={() => navigate("/login")}>
-            Acessar área de entrega <ArrowRight size={16} />
+            Ir para o login <ArrowRight size={16} />
           </button>
           <button className="btn-ghost" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
-            <Mail size={16} /> Falar com suporte por e-mail
+            <Mail size={16} /> Falar com suporte
           </button>
         </div>
       </div>

@@ -1,12 +1,17 @@
 import { toast } from "sonner";
 import { APP_CONFIG } from "@/config/appConfig";
 
+const VALID_URL_RE = /^(https?:\/\/|mailto:|tel:)/i;
+
 export const openConfiguredUrl = (url: string | undefined | null, emptyMessage?: string) => {
-  if (!url || !url.trim()) {
-    toast.error(emptyMessage || "Checkout ainda não configurado. Entre em contato com o suporte.");
+  const trimmed = (url ?? "").trim();
+  const fallback = emptyMessage || "Checkout ainda não configurado. Entre em contato com o suporte.";
+  // Empty, placeholder ("COLE_AQUI_..."), or non-URL string → never abre janela em branco.
+  if (!trimmed || !VALID_URL_RE.test(trimmed) || /^COLE_AQUI/i.test(trimmed)) {
+    toast.error(fallback);
     return false;
   }
-  window.open(url, "_blank", "noopener,noreferrer");
+  window.open(trimmed, "_blank", "noopener,noreferrer");
   return true;
 };
 

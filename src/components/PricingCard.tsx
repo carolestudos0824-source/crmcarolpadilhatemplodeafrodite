@@ -27,7 +27,7 @@ export const PricingCard = ({ plan }: { plan: Plan }) => {
         ))}
       </ul>
       <p className="text-xs text-muted-foreground mt-6 text-center">
-        Acesso imediato à área de entrega após a compra.
+        Acesso liberado após confirmação do pagamento.
       </p>
       <button onClick={handleClick} className="btn-primary mt-4 w-full">
         {plan.cta}
