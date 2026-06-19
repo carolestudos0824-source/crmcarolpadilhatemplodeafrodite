@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, LogOut } from "lucide-react";
-import type React from "react";
 import { Logo } from "./Logo";
 import { useAuthState } from "@/hooks/useAuthState";
 import { clearSession } from "@/lib/auth";
 
-const links = [
+type NavLink = { to: string; label: string };
+
+const BASE_PUBLIC_LINKS: NavLink[] = [
   { to: "/", label: "Início" },
   { to: "/precos", label: "Preço único" },
   { to: "/#incluso", label: "O que está incluso" },
@@ -17,24 +18,8 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const onCheckout = pathname.startsWith("/checkout");
+  const onLogin = pathname === "/login";
   const auth = useAuthState();
-
-  // Determine CTA based on auth state
-  let ctaLabel = "Já sou aluno";
-  let ctaTarget = "/login";
-  let ctaIcon: React.ReactNode = null;
-
-  if (auth.status === "authed") {
-    if (auth.hasAccess || auth.isAdmin) {
-      ctaLabel = "Minha área";
-      ctaTarget = "/entrega";
-      ctaIcon = null as any;
-    } else {
-      ctaLabel = "Regularizar acesso";
-      ctaTarget = "/precos";
-      ctaIcon = null as any;
-    }
-  }
 
   const doLogout = async () => {
     await clearSession();
@@ -52,15 +37,45 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
     );
   }
 
-  const navLinks = [
-    ...links,
-    auth.status === "authed" && (auth.hasAccess || auth.isAdmin)
-      ? { to: "/entrega", label: "Minha área" }
-      : { to: "/login", label: "Já sou aluno" },
-    ...(auth.status === "authed" && auth.isAdmin
-      ? [{ to: "/admin/acessos", label: "Admin" }]
-      : []),
-  ];
+  // Determine nav links + primary CTA per auth state + route
+  let navLinks: NavLink[] = [];
+  let ctaLabel = "Já sou aluno";
+  let ctaTarget = "/login";
+
+  if (auth.status === "authed") {
+    const authed: NavLink[] = [
+      { to: "/", label: "Início" },
+      { to: "/entrega", label: "Minha área" },
+    ];
+    if (auth.isAdmin) authed.push({ to: "/admin/acessos", label: "Admin" });
+    navLinks = authed;
+
+    if (auth.hasAccess || auth.isAdmin) {
+      ctaLabel = "Minha área";
+      ctaTarget = "/entrega";
+    } else {
+      ctaLabel = "Ver status do acesso";
+      ctaTarget = "/entrega";
+    }
+  } else {
+    // anonymous (also covers loading; harmless defaults)
+    if (onLogin) {
+      navLinks = [
+        { to: "/", label: "Início" },
+        { to: "/precos", label: "Preço único" },
+        { to: "/#incluso", label: "O que está incluso" },
+      ];
+      ctaLabel = "Garantir acesso";
+      ctaTarget = "/checkout?plano=fabrica";
+    } else {
+      navLinks = [
+        ...BASE_PUBLIC_LINKS,
+        { to: "/login", label: "Já sou aluno" },
+      ];
+      ctaLabel = "Já sou aluno";
+      ctaTarget = "/login";
+    }
+  }
 
   return (
     <div className="w-full backdrop-blur-xl bg-background/60 border-b border-white/5">
@@ -68,19 +83,25 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
         <Logo size="md" showText />
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
-            <Link key={l.to} to={l.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              key={l.to + l.label}
+              to={l.to}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               {l.label}
             </Link>
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-3">
           {auth.status === "authed" && auth.email && (
-            <span className="text-[11px] text-muted-foreground/80 hidden lg:inline" title={`Logado como: ${auth.email}`}>
+            <span
+              className="text-[11px] text-muted-foreground/80 hidden lg:inline"
+              title={`Logado como: ${auth.email}`}
+            >
               Logado como: <span className="text-foreground/80">{auth.email}</span>
             </span>
           )}
           <button className="btn-primary text-sm inline-flex items-center gap-2" onClick={() => navigate(ctaTarget)}>
-            {ctaIcon}
             {ctaLabel}
           </button>
           {auth.status === "authed" && (
@@ -101,17 +122,35 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
         <div className="md:hidden border-t border-white/5 bg-background/95 backdrop-blur-xl">
           <div className="container py-4 flex flex-col gap-3">
             {navLinks.map((l) => (
-              <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="text-sm py-2 text-muted-foreground hover:text-foreground">
+              <Link
+                key={l.to + l.label}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="text-sm py-2 text-muted-foreground hover:text-foreground"
+              >
                 {l.label}
               </Link>
             ))}
-            <button className="btn-primary text-sm mt-2 inline-flex items-center justify-center gap-2" onClick={() => { setOpen(false); navigate(ctaTarget); }}>
-              {ctaIcon}
+            {auth.status === "authed" && auth.email && (
+              <span className="text-[11px] text-muted-foreground/80 pt-1">
+                Logado como: <span className="text-foreground/80">{auth.email}</span>
+              </span>
+            )}
+            <button
+              className="btn-primary text-sm mt-2 inline-flex items-center justify-center gap-2"
+              onClick={() => {
+                setOpen(false);
+                navigate(ctaTarget);
+              }}
+            >
               {ctaLabel}
             </button>
             {auth.status === "authed" && (
               <button
-                onClick={() => { setOpen(false); doLogout(); }}
+                onClick={() => {
+                  setOpen(false);
+                  doLogout();
+                }}
                 className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center justify-center gap-1 py-2"
               >
                 <LogOut size={14} /> Sair

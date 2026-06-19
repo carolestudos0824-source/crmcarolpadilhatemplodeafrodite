@@ -253,11 +253,11 @@ export default function Login() {
         </div>
         <div className="glass-strong p-8">
           <h1 className="text-2xl font-heading font-bold mb-1">
-            Entrar na área restrita
+            Acesse sua área
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Entre ou crie sua conta para acessar seus prompts, checklists e
-            materiais.
+            Entre com o mesmo e-mail usado na compra para acessar seus prompts,
+            checklists e materiais.
           </p>
 
           <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
