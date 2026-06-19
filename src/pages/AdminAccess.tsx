@@ -462,6 +462,8 @@ export default function AdminAccess() {
             </div>
           )}
         </div>
+
+        <GiftCodesPanel />
       </div>
     </Section>
   );
