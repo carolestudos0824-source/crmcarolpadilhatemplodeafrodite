@@ -16,6 +16,7 @@ type Props = {
 };
 
 const STATE_PREFIX = "fabrica_apps_cmd_done_";
+export const COMMAND_TOGGLE_EVENT = "fabrica:cmd-toggle";
 
 export const CommandCard = ({
   number,
@@ -46,6 +47,12 @@ export const CommandCard = ({
     setDone(next);
     try {
       localStorage.setItem(storageKey, next ? "1" : "0");
+    } catch {
+      // ignore
+    }
+    // Notifica a página /entrega para recalcular o progresso geral imediatamente.
+    try {
+      window.dispatchEvent(new Event(COMMAND_TOGGLE_EVENT));
     } catch {
       // ignore
     }

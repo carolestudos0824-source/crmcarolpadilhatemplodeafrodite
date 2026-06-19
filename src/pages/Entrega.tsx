@@ -62,6 +62,35 @@ const LOVABLE_URL = "https://lovable.dev";
 const STORAGE_MODULE = "fabrica_apps_active_module_v1";
 const STORAGE_MODULE_DONE = "fabrica_apps_module_done_v1";
 const STORAGE_CHECKLIST = "fabrica_apps_checklist_v1";
+const CMD_STATE_PREFIX = "fabrica_apps_cmd_done_";
+const COMMAND_TOGGLE_EVENT = "fabrica:cmd-toggle";
+
+// Total de comandos disponíveis em todos os módulos (usado no progresso ponderado).
+const TOTAL_COMMANDS =
+  COMMANDS_CONSTRUIR.length +
+  COMMANDS_LOGIN.length +
+  COMMANDS_VENDA.length +
+  COMMANDS_CHECKOUT.length +
+  COMMANDS_SEO.length +
+  COMMANDS_CAMPANHAS.length +
+  COMMANDS_CRIATIVOS.length +
+  COMMANDS_VALIDACAO.length;
+
+function countDoneCommands(): number {
+  try {
+    let n = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(CMD_STATE_PREFIX) && localStorage.getItem(k) === "1") {
+        n++;
+      }
+    }
+    return n;
+  } catch {
+    return 0;
+  }
+}
+
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
@@ -153,11 +182,49 @@ export default function Entrega() {
     () => CHECKLIST_PHASES.flatMap((p) => p.items.map((i) => `${p.phase}__${i}`)),
     [],
   );
-  const checklistProgress = useMemo(() => {
-    if (allChecklistItems.length === 0) return 0;
-    const done = allChecklistItems.filter((k) => checklist[k]).length;
-    return Math.round((done / allChecklistItems.length) * 100);
-  }, [allChecklistItems, checklist]);
+
+  // ===== Progresso ponderado =====
+  // 40% comandos usados + 30% módulos concluídos + 30% checklist final.
+  const [commandsDone, setCommandsDone] = useState<number>(() => countDoneCommands());
+
+  useEffect(() => {
+    const refresh = () => setCommandsDone(countDoneCommands());
+    refresh();
+    const onStorage = (e: StorageEvent) => {
+      if (!e.key || e.key.startsWith(CMD_STATE_PREFIX)) refresh();
+    };
+    window.addEventListener(COMMAND_TOGGLE_EVENT, refresh);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(COMMAND_TOGGLE_EVENT, refresh);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+
+  const modulesDoneCount = useMemo(
+    () => MODULE_ORDER.filter((id) => !!moduleDone[id]).length,
+    [moduleDone],
+  );
+  const checklistDoneCount = useMemo(
+    () => allChecklistItems.filter((k) => checklist[k]).length,
+    [allChecklistItems, checklist],
+  );
+
+  const totals = {
+    commands: { done: Math.min(commandsDone, TOTAL_COMMANDS), total: TOTAL_COMMANDS },
+    modules: { done: modulesDoneCount, total: MODULE_ORDER.length },
+    checklist: { done: checklistDoneCount, total: allChecklistItems.length },
+  };
+
+  const overallProgress = useMemo(() => {
+    const pct = (d: number, t: number) => (t > 0 ? d / t : 0);
+    const weighted =
+      pct(totals.commands.done, totals.commands.total) * 0.4 +
+      pct(totals.modules.done, totals.modules.total) * 0.3 +
+      pct(totals.checklist.done, totals.checklist.total) * 0.3;
+    return Math.max(0, Math.min(100, Math.round(weighted * 100)));
+  }, [totals.commands.done, totals.commands.total, totals.modules.done, totals.modules.total, totals.checklist.done, totals.checklist.total]);
+
 
   const logout = async () => {
     await clearSession();
@@ -320,17 +387,57 @@ export default function Entrega() {
               })}
             </nav>
 
-            {/* Progresso */}
+            {/* Progresso geral ponderado */}
             <div className="mt-6 px-2">
-              <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1.5">
-                <span>Progresso geral</span>
-                <span>{checklistProgress}%</span>
-              </div>
-              <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+              <div className="rounded-xl border border-accent/25 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent p-3">
+                <div className="flex items-baseline justify-between mb-2">
+                  <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                    Progresso geral
+                  </span>
+                  <span className="text-lg font-heading font-bold text-gradient leading-none">
+                    {overallProgress}%
+                  </span>
+                </div>
                 <div
-                  className="h-full bg-accent transition-all"
-                  style={{ width: `${checklistProgress}%` }}
-                />
+                  className="relative h-2 rounded-full bg-white/10 overflow-hidden"
+                  role="progressbar"
+                  aria-valuenow={overallProgress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                >
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-accent transition-all duration-500 shadow-[0_0_12px_rgba(0,194,255,0.45)]"
+                    style={{ width: `${overallProgress}%` }}
+                  />
+                </div>
+
+                <ul className="mt-3 space-y-1.5 text-[11px] text-muted-foreground">
+                  <li className="flex items-center justify-between gap-2">
+                    <span>Comandos usados</span>
+                    <span className="text-foreground/80 tabular-nums">
+                      {totals.commands.done} de {totals.commands.total}
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-2">
+                    <span>Módulos concluídos</span>
+                    <span className="text-foreground/80 tabular-nums">
+                      {totals.modules.done} de {totals.modules.total}
+                    </span>
+                  </li>
+                  <li className="flex items-center justify-between gap-2">
+                    <span>Checklist final</span>
+                    <span className="text-foreground/80 tabular-nums">
+                      {totals.checklist.done} de {totals.checklist.total}
+                    </span>
+                  </li>
+                </ul>
+
+                {overallProgress >= 100 && (
+                  <div className="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-[11px] text-emerald-200 leading-snug">
+                    <strong className="block text-emerald-100 mb-0.5">Programa concluído.</strong>
+                    Agora valide seu app com usuários reais.
+                  </div>
+                )}
               </div>
             </div>
           </div>
