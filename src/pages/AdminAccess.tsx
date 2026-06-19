@@ -358,6 +358,7 @@ function AcessosSection({
   setAccess,
   selfHasAccess,
   onSelfChanged,
+  logsRefresh,
 }: {
   email: string;
   setEmail: (v: string) => void;
@@ -368,6 +369,7 @@ function AcessosSection({
   setAccess: (id: string, has: boolean) => void;
   selfHasAccess: boolean | null;
   onSelfChanged: (v: boolean) => void;
+  logsRefresh: number;
 }) {
   const row = status.kind === "found" || status.kind === "success" ? status.row : null;
   return (
