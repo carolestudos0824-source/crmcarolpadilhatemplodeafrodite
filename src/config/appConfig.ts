@@ -1,6 +1,6 @@
 export const APP_CONFIG = {
-  CHECKOUT_FABRICA_URL: "",
-  SUPORTE_EMAIL: "",
+  CHECKOUT_FABRICA_URL: "COLE_AQUI_MEULINK_DE_WHATSAPP_OU_CHECKOUT",
+  SUPORTE_EMAIL: "carolestudos0824@gmail.com",
   GPT_AGENT_URL: "https://chatgpt.com/g/g-6a331f876adc8191a174b85fa0aac1bf-arquiteto-de-aplicativos",
   
   COMPANY_NAME: "",
