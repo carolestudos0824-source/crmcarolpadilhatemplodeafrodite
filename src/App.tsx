@@ -18,7 +18,7 @@ import Privacidade from "@/pages/Privacidade";
 import Confianca from "@/pages/Confianca";
 import Seguranca from "@/pages/Seguranca";
 import NotFound from "@/pages/NotFound";
-import DebugRotas from "@/pages/DebugRotas";
+
 import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
