@@ -211,7 +211,33 @@ export default function AdminAccess() {
   if (!authChecked) {
     return (
       <div className="min-h-screen flex items-center justify-center text-muted-foreground gap-2">
-        <Loader2 size={16} className="animate-spin" /> Carregando…
+        <Loader2 size={16} className="animate-spin" /> Carregando painel admin...
+      </div>
+    );
+  }
+
+  if (authError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-md w-full glass-strong p-8 text-center">
+          <AlertTriangle className="mx-auto text-amber-300 mb-3" size={28} />
+          <h1 className="text-xl font-heading font-bold mb-2">
+            Não foi possível carregar o painel admin agora.
+          </h1>
+          <p className="text-sm text-muted-foreground mb-4">
+            Tente novamente em alguns instantes. Se persistir, faça login de novo.
+          </p>
+          <div className="text-[11px] text-muted-foreground/80 mb-4 break-words">
+            Detalhe: {authError}
+          </div>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="btn-primary inline-flex"
+          >
+            Tentar novamente
+          </button>
+        </div>
       </div>
     );
   }
@@ -223,7 +249,7 @@ export default function AdminAccess() {
           <AlertTriangle className="mx-auto text-red-400 mb-3" size={28} />
           <h1 className="text-xl font-heading font-bold mb-2">Acesso negado</h1>
           <p className="text-sm text-muted-foreground mb-4">
-            Esta área é restrita a administradores.
+            Esta área é exclusiva para administradores.
           </p>
           <Link to="/" className="btn-ghost inline-flex">Voltar para o início</Link>
         </div>
@@ -233,60 +259,62 @@ export default function AdminAccess() {
 
   return (
     <AdminShell active={section} onChange={changeSection} adminEmail={adminEmail} onLogout={logout}>
-      {section === "overview" && (
-        <OverviewSection
-          adminEmail={adminEmail}
-          selfHasAccess={selfHasAccess}
-          onGoToAcessos={() => changeSection("acessos")}
-        />
-      )}
-      {section === "acessos" && (
-        <AcessosSection
-          email={email}
-          setEmail={setEmail}
-          status={status}
-          setStatus={setStatus}
-          acting={acting}
-          onSearch={onSearch}
-          setAccess={setAccess}
-          selfHasAccess={selfHasAccess}
-          onSelfChanged={(v) => {
-            setSelfHasAccess(v);
-            bumpLogs();
-          }}
-          logsRefresh={logsRefresh}
-        />
-      )}
-      {section === "compradores" && (
-        <CompradoresSection
-          email={email}
-          setEmail={setEmail}
-          status={status}
-          onSearch={onSearch}
-          onGoToAcessos={() => changeSection("acessos")}
-          onViewBuyer={(b) => {
-            if (b.email) {
-              setEmail(b.email);
-              void onSearch({ preventDefault: () => {} } as React.FormEvent);
-              changeSection("acessos");
-            }
-          }}
-          onSetBuyerAccess={async (b, has) => {
-            const { data, error } = await supabase.rpc("admin_set_access", {
-              _user_id: b.user_id,
-              _has_access: has,
-            });
-            if (error) throw new Error(error.message);
-            const res = data as { success?: boolean; error?: string } | null;
-            if (!res?.success) throw new Error(res?.error ?? "Falha na operação.");
-            bumpLogs();
-          }}
-        />
-      )}
-      {section === "codigos" && <GiftCodesPanel />}
-      {section === "pendencias" && <PendenciasSection />}
-      {section === "mensagens" && <MensagensSection />}
-      {section === "config" && <ConfigSection />}
+      <AdminErrorBoundary resetKey={section}>
+        {section === "overview" && (
+          <OverviewSection
+            adminEmail={adminEmail}
+            selfHasAccess={selfHasAccess}
+            onGoToAcessos={() => changeSection("acessos")}
+          />
+        )}
+        {section === "acessos" && (
+          <AcessosSection
+            email={email}
+            setEmail={setEmail}
+            status={status}
+            setStatus={setStatus}
+            acting={acting}
+            onSearch={onSearch}
+            setAccess={setAccess}
+            selfHasAccess={selfHasAccess}
+            onSelfChanged={(v) => {
+              setSelfHasAccess(v);
+              bumpLogs();
+            }}
+            logsRefresh={logsRefresh}
+          />
+        )}
+        {section === "compradores" && (
+          <CompradoresSection
+            email={email}
+            setEmail={setEmail}
+            status={status}
+            onSearch={onSearch}
+            onGoToAcessos={() => changeSection("acessos")}
+            onViewBuyer={(b) => {
+              if (b.email) {
+                setEmail(b.email);
+                void onSearch({ preventDefault: () => {} } as React.FormEvent);
+                changeSection("acessos");
+              }
+            }}
+            onSetBuyerAccess={async (b, has) => {
+              const { data, error } = await supabase.rpc("admin_set_access", {
+                _user_id: b.user_id,
+                _has_access: has,
+              });
+              if (error) throw new Error(error.message);
+              const res = data as { success?: boolean; error?: string } | null;
+              if (!res?.success) throw new Error(res?.error ?? "Falha na operação.");
+              bumpLogs();
+            }}
+          />
+        )}
+        {section === "codigos" && <GiftCodesPanel />}
+        {section === "pendencias" && <PendenciasSection />}
+        {section === "mensagens" && <MensagensSection />}
+        {section === "config" && <ConfigSection />}
+      </AdminErrorBoundary>
     </AdminShell>
   );
 }
