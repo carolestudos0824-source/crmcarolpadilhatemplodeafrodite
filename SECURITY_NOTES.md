@@ -26,12 +26,13 @@ Todas as funções abaixo possuem `SET search_path = 'public'` explícito.
 - **Validação interna**: retornam apenas booleano. Não expõem lista de admins nem permitem enumeração.
 - **Warning aceito** (`0029_authenticated_security_definer_function_executable`): precisam ser chamáveis pelo planner das policies sob o role `authenticated`. Sem isso, RLS quebra.
 
-### 2.2 RPCs administrativas — `admin_set_access(uuid, boolean)`, `admin_lookup_user(text)`, `apply_arcano_backfill(jsonb)`
+### 2.2 RPCs administrativas — `admin_set_access(uuid, boolean)`, `admin_lookup_user(text)`
 
 - **Motivo**: chamadas pelo painel `/admin/acessos`. Precisam rodar com privilégios elevados para gravar em `user_access` / ler `auth.users`.
-- **EXECUTE**: `authenticated` (e `service_role` no backfill). Revogado de `public`/`anon`.
+- **EXECUTE**: `authenticated`. Revogado de `public`/`anon`.
 - **Validação interna**: primeira linha é `IF NOT public.is_admin() THEN RAISE EXCEPTION 'forbidden'`. Usuário comum recebe erro e nada acontece.
 - **Warning aceito**: precisam ser chamáveis do cliente autenticado (admin logado). A autorização real está dentro da função, não no GRANT.
+
 
 ### 2.3 Resgate de gift code — `redeem_gift_code(text, uuid)`
 
@@ -45,12 +46,13 @@ Todas as funções abaixo possuem `SET search_path = 'public'` explícito.
   - lock `FOR UPDATE` + `current_uses < max_uses` impede race condition.
 - **Warning aceito**: precisa ser chamada do cliente autenticado.
 
-### 2.4 Funções de trigger — `handle_new_user`, `update_updated_at_column`, `handle_updated_at`, `enforce_arcano_publish_threshold`, `enforce_arcano_editorial_status`, `enforce_quiz_publish_threshold`
+### 2.4 Funções de trigger — `handle_new_user`, `update_updated_at_column`, `handle_updated_at`, `enforce_quiz_publish_threshold`
 
 - **Motivo**: executadas automaticamente por triggers (`AFTER INSERT ON auth.users`, `BEFORE UPDATE` etc.).
 - **EXECUTE**: revogado de `public`/`anon`/`authenticated`. Só o owner (postgres) as invoca via trigger.
 - **Validação interna**: não recebem entrada de cliente; operam sobre `NEW`/`OLD`.
 - **Warning**: não se aplica — não são expostas ao Data API.
+
 
 ---
 
@@ -71,6 +73,20 @@ Todas as funções abaixo possuem `SET search_path = 'public'` explícito.
 
 | Lint | Função(ões) | Justificativa |
 |---|---|---|
-| `0029_authenticated_security_definer_function_executable` | `is_admin`, `has_role`, `admin_set_access`, `admin_lookup_user`, `apply_arcano_backfill`, `redeem_gift_code` | Precisam ser chamáveis por `authenticated` — autorização real é feita dentro da função (`is_admin()` ou `auth.uid()`). |
+| `0029_authenticated_security_definer_function_executable` | `is_admin`, `has_role`, `admin_set_access`, `admin_lookup_user`, `redeem_gift_code` | Precisam ser chamáveis por `authenticated` — autorização real é feita dentro da função (`is_admin()` ou `auth.uid()`). |
 
 Qualquer warning **novo** que apareça fora desta lista deve ser tratado, não ignorado.
+
+---
+
+## 5. Pendências de limpeza do banco (projeto antigo)
+
+Estes objetos ainda existem no banco real por serem resíduos de um projeto anterior (Tarot), mas **não pertencem ao escopo da Fábrica de Apps com IA** e não são chamados por nenhum código deste app:
+
+- RPC `apply_arcano_backfill(jsonb)`
+- Triggers `enforce_arcano_publish_threshold`, `enforce_arcano_editorial_status`
+- Tabela `tarot_content`
+- Enums `arcano_naipe`, `arcano_type`
+
+Devem ser removidos no futuro via migração SQL dedicada (`DROP FUNCTION` / `DROP TRIGGER` / `DROP TABLE` / `DROP TYPE`). Até lá, ficam apenas como nota — nenhuma ação imediata é necessária.
+
