@@ -1901,48 +1901,572 @@ Diga: o que funcionou, o que não funcionou, o que ajustar e o que testar a segu
 ];
 
 export const COMMANDS_CRIATIVOS: Command[] = [
-  cmd(1, "Criar criativos estáticos", "Anúncios em imagem.", "Para Meta Ads e Instagram.", "Cole no Lovable.", "5 conceitos de criativo estático.",
-    `Crie 5 conceitos de criativo estático.
+  {
+    n: 1,
+    title: "Criar imagem estática",
+    purpose: "Criar imagens para posts, anúncios ou divulgação orgânica.",
+    when: "Quando você já sabe público, dor, promessa e canal.",
+    where: "Cole no Lovable.",
+    result: "5 ideias de criativos estáticos com gancho, promessa, CTA e ângulo.",
+    objective: "Criar imagens para posts, anúncios ou divulgação orgânica.",
+    whenLovableDirect: "Quando você já sabe público, dor, promessa e canal.",
+    whenAgentFirst: "Quando você ainda não sabe qual ângulo visual usar.",
+    content: `Crie 5 conceitos de criativo estático para divulgar este app.
 
-App: [descreva]
-Público: [descreva]
-Dor: [descreva]
-Promessa: [descreva]
+App:
+[descreva]
 
-Para cada um: gancho visual, headline, subheadline, CTA e descrição da imagem.`),
-  cmd(2, "Criar roteiros de vídeo", "Roteiros curtos para anúncios.", "Para Reels, TikTok, Shorts.", "Cole no Lovable.", "5 roteiros prontos.",
-    `Crie 5 roteiros de vídeo de até 30 segundos.
+Público:
+[descreva]
 
-App: [descreva]
-Público: [descreva]
+Dor:
+[descreva]
 
-Para cada roteiro: gancho nos 3s, dor, virada, prova, CTA. Texto natural, fácil de gravar no celular.`),
-  cmd(3, "Criar anúncios para Meta Ads", "Copies prontas para Facebook/Instagram Ads.", "Para subir campanha paga.", "Cole no Lovable.", "5 anúncios completos.",
-    `Crie 5 anúncios para Meta Ads.
+Promessa:
+[descreva]
 
-Para cada um: título principal, texto principal, descrição, CTA e ideia de criativo.`),
-  cmd(4, "Criar posts para Instagram", "Posts orgânicos.", "Para alimentar perfil.", "Cole no Lovable.", "10 posts prontos.",
-    `Crie 10 posts para Instagram.
+Canal:
+[Instagram, WhatsApp, Meta Ads, LinkedIn ou outro]
 
-Para cada post: tipo (carrossel, imagem única, reels), tema, copy, hashtags e CTA.`),
-  cmd(5, "Criar stories", "Sequência de stories.", "Para engajar lista atual.", "Cole no Lovable.", "Sequência de 8 stories.",
-    `Crie uma sequência de 8 stories.
+Para cada criativo, entregue:
 
-Para cada story: objetivo, texto, elemento interativo (enquete, caixa de pergunta, contagem) e CTA final.`),
-  cmd(6, "Criar vídeos curtos", "Ideias para Reels/TikTok orgânicos.", "Para crescer alcance.", "Cole no Lovable.", "10 ideias com gancho.",
-    `Crie 10 ideias de vídeo curto orgânico.
+1. Gancho.
+2. Headline.
+3. Texto curto.
+4. Sugestão visual.
+5. CTA.
+6. Ângulo usado.
+7. Métrica para testar.
 
-Para cada uma: gancho nos 3s, formato, roteiro resumido e CTA.`),
-  cmd(7, "Criar teste A/B de criativos", "Estrutura para comparar criativos.", "Depois de ter 4+ criativos.", "Cole no Lovable.", "Plano de teste A/B.",
-    `Crie um plano de teste A/B de criativos.
+Regras:
 
-Criativos disponíveis: [liste]
+- Não criar promessa exagerada.
+- Não usar clichês.
+- Não inventar prova.
+- Focar em clareza, dor, promessa e ação.`,
+    agentPrompt: `Quero criar criativos estáticos para divulgar meu app.
 
-Diga: o que testar, como dividir orçamento, por quanto tempo e como decidir o vencedor.`),
-  cmd(8, "Criar biblioteca de criativos", "Organiza tudo em um só lugar.", "Quando começa a acumular criativos.", "Cole no Lovable.", "Estrutura de biblioteca.",
-    `Crie a estrutura de uma biblioteca de criativos.
+App:
+[descreva]
 
-Inclua: categoria, formato, status, métrica, link do arquivo e data. Sugira tabela ou ferramenta gratuita.`),
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Me ajude a definir:
+
+1. Melhores ângulos.
+2. Ganchos mais fortes.
+3. O que devo evitar.
+4. Qual criativo testar primeiro.
+5. Qual prompt devo colar no Lovable.`,
+    correctionPrompt: `Os criativos ficaram genéricos. Refaça com foco em clareza e conversão.
+
+Cada criativo precisa ter:
+
+1. Gancho forte.
+2. Dor específica.
+3. Promessa clara.
+4. CTA.
+5. Sugestão visual objetiva.
+6. Ângulo diferente.
+
+Remova clichês, frases vagas e promessas exageradas.`,
+    advanceCriteria: "Avance quando tiver pelo menos 3 imagens com mensagens diferentes para testar.",
+  },
+  {
+    n: 2,
+    title: "Criar roteiro de vídeo curto",
+    purpose: "Criar roteiros para Reels, TikTok, Shorts ou stories.",
+    when: "Quando você já sabe qual dor ou promessa quer comunicar.",
+    where: "Cole no Lovable.",
+    result: "5 roteiros curtos, claros e prontos para gravar.",
+    objective: "Criar roteiros para Reels, TikTok, Shorts ou stories.",
+    whenLovableDirect: "Quando você já sabe qual dor ou promessa quer comunicar.",
+    whenAgentFirst: "Quando você não sabe qual gancho usar nos primeiros segundos.",
+    content: `Crie 5 roteiros de vídeo curto para divulgar este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Canal:
+[Reels, TikTok, Shorts, Stories ou outro]
+
+Para cada roteiro, entregue:
+
+1. Gancho dos 3 primeiros segundos.
+2. Cena 1.
+3. Cena 2.
+4. Cena 3.
+5. Texto falado.
+6. Texto na tela.
+7. CTA final.
+8. Duração sugerida.
+
+Regras:
+
+- Vídeos curtos e diretos.
+- Linguagem natural.
+- Sem promessa exagerada.
+- Foco em dor, transformação e próximo passo.`,
+    agentPrompt: `Quero criar roteiros de vídeo curto para meu app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Me ajude a criar:
+
+1. 10 ganchos.
+2. 5 ideias de roteiro.
+3. O melhor formato para começar.
+4. O que evitar para não parecer anúncio forçado.`,
+    correctionPrompt: `Os roteiros ficaram longos ou genéricos. Refaça.
+
+Cada roteiro deve ter:
+
+1. Gancho nos primeiros 3 segundos.
+2. Uma dor clara.
+3. Uma promessa simples.
+4. Poucas cenas.
+5. CTA final.
+6. Linguagem natural.
+
+Remova enrolação, frases difíceis e promessas irreais.`,
+    advanceCriteria: "Avance quando tiver pelo menos 3 roteiros simples que possam ser gravados sem produção complexa.",
+  },
+  {
+    n: 3,
+    title: "Criar anúncio para Meta Ads",
+    purpose: "Criar textos de anúncio para Facebook e Instagram.",
+    when: "Quando a oferta já foi testada organicamente.",
+    where: "Cole no Lovable.",
+    result: "5 anúncios prontos para teste, sem promessas exageradas.",
+    objective: "Criar textos de anúncio para Facebook e Instagram.",
+    whenLovableDirect: "Quando a oferta já foi testada organicamente.",
+    whenAgentFirst: "Quando você ainda não validou a oferta ou não sabe se deve investir em anúncio.",
+    content: `Crie 5 anúncios para Meta Ads para este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Oferta:
+[descreva]
+
+Para cada anúncio, entregue:
+
+1. Título principal.
+2. Texto principal.
+3. Descrição curta.
+4. CTA.
+5. Ângulo do anúncio.
+6. Ideia de criativo.
+7. Métrica principal.
+
+Regras:
+
+- Não prometer resultado garantido.
+- Não usar antes e depois falso.
+- Não criar sensacionalismo.
+- Não usar linguagem enganosa.
+- Começar com teste simples.
+- Não recomendar escalar antes de validar.`,
+    agentPrompt: `Estou pensando em anunciar meu app.
+
+App:
+[descreva]
+
+Oferta:
+[descreva]
+
+Público:
+[descreva]
+
+Resultados orgânicos:
+[descreva ou escreva "ainda não testei"]
+
+Analise:
+
+1. Já faz sentido usar Meta Ads?
+2. O que devo testar antes?
+3. Qual ângulo de anúncio usar?
+4. Qual promessa evitar?
+5. Qual campanha simples posso rodar?`,
+    correctionPrompt: `Os anúncios ficaram exagerados ou genéricos. Refaça com mais clareza.
+
+Cada anúncio precisa ter:
+
+1. Dor específica.
+2. Promessa realista.
+3. CTA claro.
+4. Texto direto.
+5. Ângulo diferente.
+
+Remova hype, promessa garantida e frases vagas.`,
+    advanceCriteria: "Avance quando tiver anúncios claros e uma oferta já minimamente validada.",
+  },
+  {
+    n: 4,
+    title: "Criar posts para Instagram",
+    purpose: "Criar posts orgânicos para explicar, educar e gerar interesse.",
+    when: "Quando você quer alimentar o perfil antes de vender ou lançar.",
+    where: "Cole no Lovable.",
+    result: "10 posts prontos com tema, legenda, CTA e objetivo.",
+    objective: "Criar posts orgânicos para explicar, educar e gerar interesse.",
+    whenLovableDirect: "Quando você quer alimentar o perfil antes de vender ou lançar.",
+    whenAgentFirst: "Quando você não sabe quais temas postar.",
+    content: `Crie 10 posts para Instagram sobre este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Para cada post, entregue:
+
+1. Tipo do post: carrossel, imagem única, reel ou texto.
+2. Tema.
+3. Headline.
+4. Legenda.
+5. CTA.
+6. Objetivo do post.
+7. Ideia visual.
+
+Regras:
+
+- Não criar conteúdo genérico.
+- Não usar clichês.
+- Não prometer resultado automático.
+- Misturar educação, dor, bastidores, prova honesta e convite.`,
+    agentPrompt: `Quero criar conteúdo para divulgar meu app no Instagram.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Oferta:
+[descreva]
+
+Me ajude a criar:
+
+1. Pilares de conteúdo.
+2. Ideias de posts.
+3. Ordem de publicação.
+4. CTAs.
+5. O que evitar.`,
+    correctionPrompt: `Os posts ficaram genéricos. Refaça com temas mais específicos.
+
+Inclua:
+
+1. Dor real do público.
+2. Exemplos práticos.
+3. Convite para testar ou conhecer.
+4. CTA.
+5. Linguagem simples.
+6. Variação entre educação, venda e bastidor.`,
+    advanceCriteria: "Avance quando tiver pelo menos 5 posts que expliquem bem o app e convidem para uma ação.",
+  },
+  {
+    n: 5,
+    title: "Criar sequência de stories",
+    purpose: "Criar uma sequência rápida para gerar conversa e ação.",
+    when: "Quando você quer testar interesse com sua audiência.",
+    where: "Cole no Lovable.",
+    result: "Sequência de stories com interação e CTA.",
+    objective: "Criar uma sequência rápida para gerar conversa e ação.",
+    whenLovableDirect: "Quando você quer testar interesse com sua audiência.",
+    whenAgentFirst: "Quando não sabe como abrir conversa sem parecer venda forçada.",
+    content: `Crie uma sequência de stories para divulgar este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Crie 8 stories com:
+
+1. Texto do story.
+2. Elemento interativo: enquete, caixa de pergunta, quiz ou contagem.
+3. Sugestão visual.
+4. Objetivo de cada story.
+5. CTA final.
+
+Regras:
+
+- Começar com dor ou curiosidade.
+- Criar interação.
+- Não vender de forma agressiva.
+- Terminar com chamada clara.`,
+    agentPrompt: `Quero criar stories para divulgar meu app sem parecer forçado.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Me ajude a criar:
+
+1. Gancho inicial.
+2. Enquetes.
+3. Caixas de pergunta.
+4. Sequência lógica.
+5. CTA final.`,
+    correctionPrompt: `Os stories ficaram sem interação ou muito vendedores. Refaça.
+
+Inclua:
+
+1. Gancho inicial.
+2. Pergunta para audiência.
+3. Enquete.
+4. Explicação simples.
+5. CTA final.
+6. Linguagem natural.`,
+    advanceCriteria: "Avance quando a sequência conseguir gerar resposta ou clique.",
+  },
+  {
+    n: 6,
+    title: "Criar Reels, TikTok ou Shorts",
+    purpose: "Criar ideias de vídeos curtos para alcance orgânico.",
+    when: "Quando você quer testar alcance com vídeo curto.",
+    where: "Cole no Lovable.",
+    result: "10 ideias de vídeos curtos com ganchos e CTAs.",
+    objective: "Criar ideias de vídeos curtos para alcance orgânico.",
+    whenLovableDirect: "Quando você quer testar alcance com vídeo curto.",
+    whenAgentFirst: "Quando não sabe qual formato combina com o público.",
+    content: `Crie 10 ideias de vídeos curtos para divulgar este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Para cada vídeo, entregue:
+
+1. Gancho.
+2. Formato: tutorial, lista, erro comum, antes e depois conceitual, bastidor, pergunta, história ou demonstração.
+3. Roteiro resumido.
+4. Texto na tela.
+5. CTA.
+6. Duração sugerida.
+
+Regras:
+
+- Não criar promessas falsas.
+- Não depender de produção complexa.
+- Usar linguagem simples.
+- Focar em retenção nos primeiros segundos.`,
+    agentPrompt: `Quero divulgar meu app com vídeos curtos.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Canal:
+[Reels, TikTok, Shorts]
+
+Me ajude a decidir:
+
+1. Quais formatos testar.
+2. Quais ganchos usar.
+3. Quais ideias têm mais chance de retenção.
+4. Como transformar minha oferta em vídeo.`,
+    correctionPrompt: `As ideias de vídeos ficaram genéricas. Refaça com formatos mais fortes.
+
+Use:
+
+1. Erro comum.
+2. Lista rápida.
+3. Antes e depois conceitual.
+4. Demonstração.
+5. Bastidor.
+6. Pergunta polêmica sem exagero.
+7. Dor específica.`,
+    advanceCriteria: "Avance quando tiver pelo menos 3 vídeos simples para gravar ainda hoje.",
+  },
+  {
+    n: 7,
+    title: "Criar teste A/B de criativos",
+    purpose: "Comparar versões e descobrir o que funciona melhor.",
+    when: "Depois de criar pelo menos 2 criativos.",
+    where: "Cole no Lovable.",
+    result: "Plano simples para comparar criativos sem confusão.",
+    objective: "Comparar versões e descobrir o que funciona melhor.",
+    whenLovableDirect: "Depois de criar pelo menos 2 criativos.",
+    whenAgentFirst: "Quando você não sabe o que testar.",
+    content: `Crie um plano de teste A/B de criativos.
+
+Criativos disponíveis:
+[liste]
+
+Objetivo:
+[clique, cadastro, compra, resposta, visualização ou outro]
+
+Crie:
+
+1. Hipótese do teste.
+2. Versão A.
+3. Versão B.
+4. O que muda entre elas.
+5. Métrica principal.
+6. Período mínimo de teste.
+7. Como decidir vencedor.
+8. Próximo teste recomendado.
+
+Regras:
+
+- Testar uma diferença por vez.
+- Não mudar tudo ao mesmo tempo.
+- Não decidir apenas por curtida.
+- Olhar clique, resposta, cadastro, compra ou uso real.`,
+    agentPrompt: `Quero testar criativos, mas não sei o que comparar.
+
+Criativos:
+[cole ou descreva]
+
+Objetivo:
+[descreva]
+
+Me ajude a criar:
+
+1. Uma hipótese de teste.
+2. Duas versões.
+3. Métrica principal.
+4. Critério para escolher vencedor.`,
+    correctionPrompt: `O teste A/B ficou confuso. Refaça de forma simples.
+
+Compare apenas uma diferença:
+
+1. Gancho.
+2. CTA.
+3. Imagem.
+4. Dor.
+5. Promessa.
+6. Formato.
+
+Explique qual métrica define o vencedor.`,
+    advanceCriteria: "Avance quando souber exatamente o que está testando e qual número define o vencedor.",
+  },
+  {
+    n: 8,
+    title: "Organizar biblioteca de criativos",
+    purpose: "Guardar criativos, resultados e aprendizados para reaproveitar.",
+    when: "Quando você já tem vários criativos ou campanhas.",
+    where: "Cole no Lovable.",
+    result: "Estrutura simples para organizar criativos e aprendizados.",
+    objective: "Guardar criativos, resultados e aprendizados para reaproveitar.",
+    whenLovableDirect: "Quando você já tem vários criativos ou campanhas.",
+    whenAgentFirst: "Quando você não sabe como organizar testes e resultados.",
+    content: `Crie a estrutura de uma biblioteca de criativos.
+
+A biblioteca deve organizar:
+
+1. Categoria.
+2. Canal.
+3. Formato.
+4. Gancho.
+5. Dor.
+6. Promessa.
+7. CTA.
+8. Status: ideia, em teste, aprovado, pausado.
+9. Métrica principal.
+10. Resultado.
+11. Aprendizado.
+12. Link ou arquivo do criativo.
+
+Sugira também uma tabela simples para Notion, Airtable, Google Sheets ou banco do app.`,
+    agentPrompt: `Quero organizar meus criativos e testes.
+
+Canais:
+[descreva]
+
+Quantidade de criativos:
+[descreva]
+
+Me ajude a criar:
+
+1. Estrutura simples de biblioteca.
+2. Campos essenciais.
+3. Como marcar vencedores.
+4. Como reaproveitar criativos que funcionaram.`,
+    correctionPrompt: `A biblioteca ficou complexa demais. Simplifique.
+
+Use apenas:
+
+1. Nome do criativo.
+2. Canal.
+3. Formato.
+4. Gancho.
+5. Status.
+6. Métrica.
+7. Resultado.
+8. Aprendizado.
+
+Não crie painel complexo se uma tabela simples resolver.`,
+    advanceCriteria: "Avance quando conseguir saber quais criativos foram testados, quais funcionaram e por quê.",
+  },
 ];
 
 export const COMMANDS_VALIDACAO: Command[] = [

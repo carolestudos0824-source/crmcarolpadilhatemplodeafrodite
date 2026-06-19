@@ -1307,6 +1307,146 @@ const SeoIntro = () => {
 };
 
 
+const CriativosIntro = () => {
+  const [showZero, setShowZero] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
+
+  const tutorialSteps = [
+    "Escolha a dor",
+    "Crie o gancho",
+    "Mostre a promessa",
+    "Adicione CTA",
+    "Teste variações",
+  ];
+
+  const glossary: [string, string][] = [
+    ["Criativo", "peça usada para divulgar uma oferta: imagem, vídeo, post, story, anúncio ou mensagem."],
+    ["Gancho", "primeira frase ou elemento que faz a pessoa parar."],
+    ["Headline", "frase principal do criativo."],
+    ["CTA", "chamada para ação, como 'teste agora', 'saiba mais' ou 'comprar'."],
+    ["Ângulo", "forma de apresentar a mesma oferta: dor, desejo, curiosidade, prova ou urgência."],
+    ["Story", "conteúdo rápido publicado nos stories do Instagram."],
+    ["Reels", "vídeo curto do Instagram."],
+    ["TikTok", "vídeo curto para descoberta e alcance."],
+    ["Meta Ads", "anúncios pagos no Facebook e Instagram."],
+    ["Teste A/B", "comparação entre duas versões para ver qual funciona melhor."],
+    ["Conversão", "quando a pessoa faz a ação desejada."],
+    ["Biblioteca de criativos", "organização dos criativos criados, testados e aprovados."],
+  ];
+
+  return (
+    <section className="mb-8 space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
+        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
+          <Sparkles size={12} /> Criativos — Modo Guiado
+        </span>
+        <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
+          Crie criativos que fazem a pessoa parar e clicar
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
+          Nesta etapa, você transforma sua oferta em imagens, vídeos, posts,
+          stories e anúncios para testar o interesse real do público.
+        </p>
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-5">
+          Criativo não é só arte bonita. É uma mensagem visual com dor,
+          promessa e chamada para ação.
+        </p>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            {tutorialSteps.map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[12px] md:text-[13px] text-foreground/90">
+                  <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </div>
+                {i < tutorialSteps.length - 1 && (
+                  <span className="text-muted-foreground/50 hidden md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Você não está criando arte. Você está testando mensagens para
+            descobrir o que faz as pessoas prestarem atenção no seu app.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="btn-primary text-sm min-h-[44px]"
+            type="button"
+          >
+            <Sparkles size={14} /> Não sei criar criativos
+          </button>
+          <a
+            href={APP_CONFIG.GPT_AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+          >
+            <Sparkles size={14} /> Abrir Agente Arquiteto
+          </a>
+          <a
+            href={LOVABLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+          >
+            <ExternalLink size={14} /> Abrir Lovable
+          </a>
+        </div>
+
+        {showZero && (
+          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
+            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Escreva qual dor seu app resolve.</li>
+              <li>Escolha um público específico.</li>
+              <li>Crie 3 ângulos diferentes.</li>
+              <li>Transforme cada ângulo em post, story ou vídeo.</li>
+              <li>Teste qual gera mais resposta.</li>
+            </ol>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 flex items-start gap-3">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <div>
+          Não comece por anúncio pago. Primeiro teste criativos orgânicos e
+          veja se as pessoas respondem.
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowGlossary((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+        </button>
+        {showGlossary && (
+          <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+            {glossary.map(([term, def]) => (
+              <div key={term} className="flex gap-2">
+                <dt className="text-accent font-semibold shrink-0">{term}:</dt>
+                <dd className="text-foreground/80">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </section>
+  );
+};
+
+
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
   if (active === "comece") {
     return (
@@ -1513,15 +1653,37 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "criativos") {
     return (
       <section>
+        <CriativosIntro />
+        <CreativeGenerator />
         <ModuleHeader
-          title="Criativos"
-          subtitle="Use esta etapa para criar anúncios, posts, roteiros e ideias visuais."
+          title="Siga as etapas de Criativos"
+          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
         />
         <CommandList commands={COMMANDS_CRIATIVOS} moduleKey="criativos" />
-        <CreativeGenerator />
+        <ChecklistBlock
+          title="Checklist do módulo"
+          items={[
+            "Defini a dor principal",
+            "Defini o público",
+            "Criei pelo menos 3 ângulos",
+            "Criei criativo estático",
+            "Criei roteiro de vídeo curto",
+            "Criei sequência de stories",
+            "Criei CTA claro",
+            "Criei teste A/B",
+            "Anotei métrica principal",
+            "Organizei biblioteca de criativos",
+            "Não usei promessa exagerada",
+            "Testei antes de escalar",
+          ]}
+          checklist={checklist}
+          setChecklist={setChecklist}
+          phase="criativos"
+        />
       </section>
     );
   }
+
 
   if (active === "validacao") {
     return (
@@ -1830,26 +1992,33 @@ Entregue:
 function CreativeGenerator() {
   const [f, setF] = useState({
     name: "", audience: "", pain: "", promise: "",
-    format: "imagem", tone: "direto",
+    format: "imagem", tone: "direto", channel: "Instagram",
   });
   const [generated, setGenerated] = useState("");
 
   const generate = () => {
-    const text = `Crie um criativo no formato "${f.format}" com tom "${f.tone}".
+    const text = `Crie um criativo para divulgar este app.
 
 App: ${f.name || "[nome]"}
 Público: ${f.audience || "[público]"}
 Dor: ${f.pain || "[dor]"}
 Promessa: ${f.promise || "[promessa]"}
+Formato: ${f.format}
+Canal: ${f.channel}
+Tom: ${f.tone}
 
 Entregue:
-1. Gancho nos 3 primeiros segundos
-2. Headline
-3. Subheadline
-4. Corpo
-5. CTA
-6. Descrição visual ou roteiro
-7. 2 variações alternativas`;
+1. Gancho.
+2. Texto principal.
+3. Ideia visual.
+4. CTA.
+5. Variações (pelo menos 2 ângulos diferentes).
+6. Métrica para testar.
+
+Regras:
+- Não usar promessa exagerada.
+- Não usar clichês.
+- Focar em clareza, dor, promessa e ação.`;
     setGenerated(text);
   };
 
@@ -1863,10 +2032,15 @@ Entregue:
   };
 
   return (
-    <GlassCard className="mt-6 p-5 md:p-6">
-      <h3 className="font-heading font-semibold mb-1">Gerador rápido de criativo</h3>
+    <GlassCard id="gerador-criativo" className="mt-2 mb-6 p-5 md:p-6 border-accent/30">
+      <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
+        <h3 className="font-heading font-semibold">Gerador rápido de criativo</h3>
+        <span className="text-[11px] uppercase tracking-wider text-accent px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">
+          Comece por aqui
+        </span>
+      </div>
       <p className="text-sm text-muted-foreground mb-4">
-        Preencha e gere um comando pronto para o Lovable.
+        Preencha e gere um comando pronto para o Lovable. Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
         <Input label="Nome do app" value={f.name} onChange={(v) => setF({ ...f, name: v })} />
@@ -1880,6 +2054,12 @@ Entregue:
           options={["imagem", "vídeo", "reels", "story", "anúncio"]}
         />
         <Select
+          label="Canal (opcional)"
+          value={f.channel}
+          onChange={(v) => setF({ ...f, channel: v })}
+          options={["Instagram", "Stories", "Reels", "TikTok", "WhatsApp", "Meta Ads", "LinkedIn", "Outro"]}
+        />
+        <Select
           label="Tom"
           value={f.tone}
           onChange={(v) => setF({ ...f, tone: v })}
@@ -1889,6 +2069,7 @@ Entregue:
       <button onClick={generate} className="btn-primary mt-4 text-sm">
         <Sparkles size={14} /> Gerar comando de criativo
       </button>
+
       {generated && (
         <div className="mt-5">
           <div className="rounded-xl border border-white/10 bg-black/40 max-h-64 overflow-auto">
