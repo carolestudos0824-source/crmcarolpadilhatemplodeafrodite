@@ -14,6 +14,7 @@ import {
   Users,
   ListChecks,
   ClipboardList,
+  Workflow,
   AlertTriangle,
   Gift,
   DollarSign,
@@ -42,6 +43,7 @@ import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
 import { FundamentosModule } from "@/components/entrega/FundamentosModule";
 import { PlanejarModule } from "@/components/entrega/PlanejarModule";
+import { MvpArquiteturaModule } from "@/components/entrega/MvpArquiteturaModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -83,13 +85,14 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow,
 };
 
-// Módulos contabilizados no progresso global. "planejar" foi adicionado nesta
-// rodada sem entrar no cálculo global (será incorporado em rodada futura).
+// Módulos contabilizados no progresso global. "planejar" e "mvp" foram adicionados
+// em rodadas recentes sem entrar no cálculo global (serão incorporados em rodada
+// futura, quando a estrutura estiver validada).
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
-  (id) => id !== "planejar",
+  (id) => id !== "planejar" && id !== "mvp",
 );
 
 
@@ -107,6 +110,7 @@ function EntregaInner() {
     "comece-aqui": "comece",
     "ideias-prontas": "ideias",
     "planejar-app": "planejar",
+    "mvp-arquitetura": "mvp",
     "construir-app": "construir",
     "login-banco": "login",
     "pagina-de-venda": "venda",
@@ -1574,6 +1578,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
   if (active === "planejar") {
     return <PlanejarModule />;
+  }
+  if (active === "mvp") {
+    return <MvpArquiteturaModule />;
   }
   if (active === "comece") {
     const valueCards = [
