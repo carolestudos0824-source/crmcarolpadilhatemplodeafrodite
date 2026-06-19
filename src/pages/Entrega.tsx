@@ -645,9 +645,12 @@ const ConstruirIntro = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
+          <button onClick={copyFirst} className="btn-primary text-sm min-h-[44px]" type="button">
+            <Copy size={14} /> Copiar Etapa 1
+          </button>
           <button
             onClick={() => setShowZero((v) => !v)}
-            className="btn-primary text-sm min-h-[44px]"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
             type="button"
           >
             <Sparkles size={14} /> Estou começando do zero
@@ -668,9 +671,6 @@ const ConstruirIntro = () => {
           >
             <ExternalLink size={14} /> Abrir Lovable
           </a>
-          <button onClick={copyFirst} className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5" type="button">
-            <Copy size={14} /> Copiar Etapa 1
-          </button>
         </div>
 
         {showZero && (
