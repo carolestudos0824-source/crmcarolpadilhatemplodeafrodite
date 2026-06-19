@@ -128,20 +128,8 @@ export const CommandCard = ({
         />
       </button>
 
-      {open && (
+      {open && !isGuided && (
         <div className="space-y-4 pt-2 border-t border-white/10">
-          {objective && (
-            <div className="rounded-lg border border-accent/25 bg-accent/5 p-3 flex items-start gap-2">
-              <Target size={14} className="text-accent shrink-0 mt-0.5" />
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-accent mb-0.5">
-                  Objetivo da etapa
-                </div>
-                <p className="text-[13px] text-foreground/90 leading-snug">{objective}</p>
-              </div>
-            </div>
-          )}
-
           <dl className="grid sm:grid-cols-2 gap-3 text-sm">
             {[
               ["Quando usar", whenToUse],
@@ -162,31 +150,9 @@ export const CommandCard = ({
             ))}
           </dl>
 
-          {(whenLovableDirect || whenAgentFirst) && (
-            <div className="grid sm:grid-cols-2 gap-3">
-              {whenLovableDirect && (
-                <div className="rounded-lg border border-primary/25 bg-primary/5 p-3">
-                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-primary mb-1">
-                    <Code2 size={12} /> Usar direto no Lovable quando
-                  </div>
-                  <p className="text-[13px] text-foreground/85 leading-snug">{whenLovableDirect}</p>
-                </div>
-              )}
-              {whenAgentFirst && (
-                <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3">
-                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1">
-                    <Bot size={12} /> Usar o Agente antes quando
-                  </div>
-                  <p className="text-[13px] text-foreground/85 leading-snug">{whenAgentFirst}</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Comando principal para o Lovable */}
           <div>
             <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-accent mb-1.5">
-              <Sparkles size={12} /> Comando para o Lovable
+              <Sparkles size={12} /> Texto pronto para colar no Lovable
             </div>
             <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
               <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/90">
@@ -202,72 +168,10 @@ export const CommandCard = ({
                 type="button"
               >
                 {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                {copiedKey === "main" ? "Copiado" : "Copiar comando"}
+                {copiedKey === "main" ? "Copiado" : "Copiar e colar no Lovable"}
               </button>
             </div>
           </div>
-
-          {agentPrompt && (
-            <div>
-              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
-                <Bot size={12} /> Prompt para o Agente Arquiteto
-              </div>
-              <div className="rounded-xl border border-amber-400/20 bg-amber-950/20 max-h-72 overflow-auto">
-                <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
-                  {agentPrompt}
-                </pre>
-              </div>
-              <div className="mt-2 flex justify-end">
-                <button
-                  onClick={() =>
-                    copyText(agentPrompt, "agent", "Prompt do Agente copiado.")
-                  }
-                  type="button"
-                  className="text-sm inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
-                >
-                  {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                  {copiedKey === "agent" ? "Copiado" : "Copiar prompt do Agente"}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {correctionPrompt && (
-            <div>
-              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-rose-300 mb-1.5">
-                <Wrench size={12} /> Prompt de correção
-              </div>
-              <div className="rounded-xl border border-rose-400/20 bg-rose-950/20 max-h-72 overflow-auto">
-                <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
-                  {correctionPrompt}
-                </pre>
-              </div>
-              <div className="mt-2 flex justify-end">
-                <button
-                  onClick={() =>
-                    copyText(correctionPrompt, "fix", "Prompt de correção copiado.")
-                  }
-                  type="button"
-                  className="text-sm inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
-                >
-                  {copiedKey === "fix" ? <Check size={16} /> : <Copy size={16} />}
-                  {copiedKey === "fix" ? "Copiado" : "Copiar prompt de correção"}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {advanceCriteria && (
-            <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 p-3 flex items-start gap-2">
-              <Compass size={14} className="text-emerald-300 shrink-0 mt-0.5" />
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-emerald-300 mb-0.5">
-                  Critério para avançar
-                </div>
-                <p className="text-[13px] text-foreground/90 leading-snug">{advanceCriteria}</p>
-              </div>
-            </div>
-          )}
 
           <div className="flex items-center justify-between flex-wrap gap-3 pt-2 border-t border-white/5">
             <label className="inline-flex items-center gap-2 text-xs text-muted-foreground cursor-pointer">
@@ -279,12 +183,208 @@ export const CommandCard = ({
               />
               Já usei este comando
             </label>
-            {isGuided && (
+          </div>
+        </div>
+      )}
+
+      {open && isGuided && (
+        <div className="space-y-4 pt-2 border-t border-white/10">
+          {objective && (
+            <div className="rounded-lg border border-accent/25 bg-accent/5 p-3 flex items-start gap-2">
+              <Target size={14} className="text-accent shrink-0 mt-0.5" />
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-accent mb-0.5">
+                  Objetivo da etapa
+                </div>
+                <p className="text-[13px] text-foreground/90 leading-snug">{objective}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Tabs */}
+          <div className="flex flex-wrap gap-1.5 border-b border-white/10 pb-2 -mb-1">
+            {[
+              { id: "lovable", label: "Fazer no Lovable", icon: Code2, color: "text-accent border-accent/50 bg-accent/10" },
+              { id: "agent", label: "Pensar com o Agente", icon: Bot, color: "text-amber-200 border-amber-400/50 bg-amber-400/10", disabled: !agentPrompt && !whenAgentFirst },
+              { id: "fix", label: "Corrigir erro", icon: Wrench, color: "text-rose-200 border-rose-400/50 bg-rose-400/10", disabled: !correctionPrompt },
+              { id: "advance", label: "Quando avançar", icon: Compass, color: "text-emerald-200 border-emerald-400/50 bg-emerald-400/10" },
+            ].map((t) => {
+              const Icon = t.icon;
+              const active = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  disabled={t.disabled}
+                  onClick={() => setTab(t.id as typeof tab)}
+                  className={`inline-flex items-center gap-1.5 text-[11px] md:text-xs px-3 py-2 rounded-lg border min-h-[40px] transition ${
+                    active
+                      ? t.color
+                      : "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-white/5"
+                  }`}
+                >
+                  <Icon size={12} /> {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {tab === "lovable" && (
+            <div className="space-y-3">
+              {whenLovableDirect && (
+                <div className="rounded-lg border border-primary/25 bg-primary/5 p-3">
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-primary mb-1">
+                    <Code2 size={12} /> Usar direto no Lovable quando
+                  </div>
+                  <p className="text-[13px] text-foreground/85 leading-snug">{whenLovableDirect}</p>
+                </div>
+              )}
+              <div>
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-accent mb-1.5">
+                  <Sparkles size={12} /> Texto pronto para colar no Lovable
+                </div>
+                <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
+                  <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/90">
+                    {commandText}
+                  </pre>
+                </div>
+                <div className="mt-2 flex justify-end">
+                  <button
+                    onClick={() =>
+                      copyText(commandText, "main", "Comando copiado. Agora cole no Lovable.")
+                    }
+                    className="btn-primary text-sm min-h-[44px]"
+                    type="button"
+                  >
+                    {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
+                    {copiedKey === "main" ? "Copiado" : "Copiar e colar no Lovable"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {tab === "agent" && (
+            <div className="space-y-3">
+              {whenAgentFirst && (
+                <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3">
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1">
+                    <Bot size={12} /> Usar o Agente antes quando
+                  </div>
+                  <p className="text-[13px] text-foreground/85 leading-snug">{whenAgentFirst}</p>
+                </div>
+              )}
+              {agentPrompt ? (
+                <div>
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
+                    <Bot size={12} /> Texto pronto para conversar com o Agente
+                  </div>
+                  <div className="rounded-xl border border-amber-400/20 bg-amber-950/20 max-h-72 overflow-auto">
+                    <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
+                      {agentPrompt}
+                    </pre>
+                  </div>
+                  <div className="mt-2 flex flex-wrap justify-end gap-2">
+                    <a
+                      href={APP_CONFIG.GPT_AGENT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+                    >
+                      <ExternalLink size={14} /> Abrir Agente Arquiteto
+                    </a>
+                    <button
+                      onClick={() => copyText(agentPrompt, "agent", "Prompt do Agente copiado.")}
+                      type="button"
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                    >
+                      {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
+                      {copiedKey === "agent" ? "Copiado" : "Copiar para conversar com o Agente"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">Sem prompt do Agente para esta etapa.</p>
+              )}
+            </div>
+          )}
+
+          {tab === "fix" && (
+            <div className="space-y-3">
+              {correctionPrompt ? (
+                <div>
+                  <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-rose-300 mb-1.5">
+                    <Wrench size={12} /> Se o Lovable errar, cole este texto
+                  </div>
+                  <div className="rounded-xl border border-rose-400/20 bg-rose-950/20 max-h-72 overflow-auto">
+                    <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
+                      {correctionPrompt}
+                    </pre>
+                  </div>
+                  <div className="mt-2 flex justify-end">
+                    <button
+                      onClick={() => copyText(correctionPrompt, "fix", "Prompt de correção copiado.")}
+                      type="button"
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
+                    >
+                      {copiedKey === "fix" ? <Check size={16} /> : <Copy size={16} />}
+                      {copiedKey === "fix" ? "Copiado" : "Copiar correção para o Lovable"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">Sem prompt de correção para esta etapa.</p>
+              )}
+            </div>
+          )}
+
+          {tab === "advance" && (
+            <div className="space-y-3">
+              <div className="rounded-lg bg-white/5 border border-white/10 p-3">
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-1">
+                  Resultado esperado
+                </div>
+                <p className="text-foreground/85 text-[13px] leading-snug">{expectedResult}</p>
+              </div>
+              {advanceCriteria && (
+                <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 p-3 flex items-start gap-2">
+                  <Compass size={14} className="text-emerald-300 shrink-0 mt-0.5" />
+                  <div>
+                    <div className="text-[10px] uppercase tracking-wider text-emerald-300 mb-0.5">
+                      Critério para avançar
+                    </div>
+                    <p className="text-[13px] text-foreground/90 leading-snug">{advanceCriteria}</p>
+                  </div>
+                </div>
+              )}
+              <label className="inline-flex items-center gap-2 text-sm text-foreground/85 cursor-pointer min-h-[40px]">
+                <input
+                  type="checkbox"
+                  checked={done}
+                  onChange={toggleDone}
+                  className="accent-accent w-4 h-4"
+                />
+                Já usei este comando
+              </label>
+            </div>
+          )}
+
+          {tab !== "advance" && (
+            <div className="flex items-center justify-between flex-wrap gap-3 pt-2 border-t border-white/5">
+              <label className="inline-flex items-center gap-2 text-xs text-muted-foreground cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={done}
+                  onChange={toggleDone}
+                  className="accent-accent w-4 h-4"
+                />
+                Já usei este comando
+              </label>
               <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70">
                 Etapa guiada
               </span>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       )}
     </GlassCard>
