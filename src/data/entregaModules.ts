@@ -2373,8 +2373,8 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Antes de divulgar, faça o caminho completo como se você fosse o comprador.",
   },
   seo: {
-    doNow: "Comece pelo plano de SEO. Depois gere páginas e schemas.",
-    advanceWhen: "Avance quando suas páginas tiverem título, descrição e FAQ otimizados.",
+    doNow: "Escolha palavras, crie páginas, responda dúvidas, adicione marcações e revise antes de publicar.",
+    advanceWhen: "Não crie páginas vazias. Cada página precisa ajudar uma pessoa real a entender seu app.",
   },
   campanhas: {
     doNow: "Escolha um canal e use o gerador rápido para criar a primeira campanha.",
