@@ -27,6 +27,7 @@ import {
   Circle,
   LifeBuoy,
   Loader2,
+  ChevronDown,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
@@ -558,6 +559,9 @@ const CommandList = ({
 );
 
 const ConstruirIntro = () => {
+  const [showZero, setShowZero] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
+
   const copyFirst = async () => {
     const first = COMMANDS_CONSTRUIR[0]?.content ?? "";
     try {
@@ -568,44 +572,91 @@ const ConstruirIntro = () => {
     }
   };
 
+  const tutorialSteps = [
+    "Copie",
+    "Cole no Lovable",
+    "Espere o resultado",
+    "Volte aqui",
+    "Marque como feito",
+  ];
+
+  const modes = [
+    {
+      title: "Começar do zero",
+      tone: "accent",
+      text: "Use este caminho se você tem apenas uma ideia e quer seguir o passo a passo simples.",
+    },
+    {
+      title: "Conversar com o Agente",
+      tone: "amber",
+      text: "Use este caminho se quer pensar melhor sobre o app antes de pedir para o Lovable construir.",
+    },
+    {
+      title: "Corrigir um erro",
+      tone: "rose",
+      text: "Use este caminho se o Lovable criou algo confuso, quebrado ou genérico.",
+    },
+  ];
+
+  const glossary: [string, string][] = [
+    ["MVP", "primeira versão simples do app."],
+    ["Prompt", "texto que você cola na IA."],
+    ["Lovable", "ferramenta onde o app será construído."],
+    ["Dashboard", "tela principal do usuário."],
+    ["Banco de dados", "lugar onde o app guarda informações."],
+    ["Checkout", "link ou página de pagamento."],
+  ];
+
   return (
     <section className="mb-8 space-y-6">
-      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-6 md:p-8 neon-shadow">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
         <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
-          <Sparkles size={12} /> Central de construção
+          <Sparkles size={12} /> Modo Iniciante Guiado
         </span>
         <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
-          Construção Guiada no Lovable
+          Construa seu app passo a passo
         </h2>
-        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-4 leading-relaxed">
-          Escolha entre copiar o comando direto para o Lovable ou usar o Agente Arquiteto
-          para refinar sua ideia antes de construir.
+        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
+          Você não precisa saber programar. Copie um comando por vez, cole no Lovable e
+          avance apenas quando a etapa estiver pronta.
         </p>
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-[13px] md:text-sm text-foreground/85 leading-relaxed space-y-2 max-w-3xl">
-          <p>
-            Esta é a central de construção do seu app. Você tem dois caminhos:
-          </p>
-          <ol className="list-decimal list-inside space-y-1 text-foreground/80">
-            <li>Copiar o comando da etapa e colar direto no Lovable.</li>
-            <li>
-              Abrir o Agente Arquiteto, conversar sobre sua ideia, refinar o projeto
-              e depois voltar para o Lovable.
-            </li>
-          </ol>
-          <ul className="mt-2 text-[13px] text-rose-200/90 space-y-0.5">
-            <li>• Não pule etapas.</li>
-            <li>• Não peça telas antes de ter plano.</li>
-            <li>• Não peça banco antes de ter fluxo.</li>
-            <li>• Não peça checkout antes de validar a entrega.</li>
-          </ul>
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-5">
+          Mesmo que sua ideia ainda esteja bagunçada, comece pela Etapa 1.
+        </p>
+
+        {/* Mini tutorial visual */}
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            {tutorialSteps.map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[12px] md:text-[13px] text-foreground/90">
+                  <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </div>
+                {i < tutorialSteps.length - 1 && (
+                  <span className="text-muted-foreground/50 hidden md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">Repita esse ciclo em cada etapa.</p>
         </div>
 
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="btn-primary text-sm min-h-[44px]"
+            type="button"
+          >
+            <Sparkles size={14} /> Estou começando do zero
+          </button>
           <a
             href={APP_CONFIG.GPT_AGENT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
           >
             <Sparkles size={14} /> Abrir Agente Arquiteto
           </a>
@@ -613,41 +664,36 @@ const ConstruirIntro = () => {
             href={LOVABLE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
           >
             <ExternalLink size={14} /> Abrir Lovable
           </a>
-          <button onClick={copyFirst} className="btn-primary text-sm">
-            <Copy size={14} /> Copiar primeiro comando
+          <button onClick={copyFirst} className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5" type="button">
+            <Copy size={14} /> Copiar Etapa 1
           </button>
         </div>
+
+        {showZero && (
+          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
+            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Copie o texto da Etapa 1.</li>
+              <li>Abra o Lovable.</li>
+              <li>Cole no chat do projeto.</li>
+              <li>Espere o Lovable responder.</li>
+              <li>Volte aqui e marque como feito.</li>
+            </ol>
+          </div>
+        )}
       </div>
 
+      {/* Modos renomeados */}
       <div>
         <div className="text-[11px] uppercase tracking-wider text-accent mb-3 px-1">
-          Escolha seu modo
+          Escolha seu caminho
         </div>
         <div className="grid md:grid-cols-3 gap-3">
-          {[
-            {
-              title: "Modo rápido",
-              tone: "accent",
-              text:
-                "Use quando você já sabe qual app quer criar. Copie o comando e cole direto no Lovable.",
-            },
-            {
-              title: "Modo estratégico",
-              tone: "amber",
-              text:
-                "Use quando sua ideia ainda está confusa, ampla demais ou precisa de análise antes de construir. Abra o Agente Arquiteto e converse sobre o projeto.",
-            },
-            {
-              title: "Modo correção",
-              tone: "rose",
-              text:
-                "Use quando o Lovable gerar algo genérico, errado ou quebrado. A correção certa evita retrabalho e gasto de crédito.",
-            },
-          ].map((m) => {
+          {modes.map((m) => {
             const tone =
               m.tone === "amber"
                 ? "border-amber-400/30 bg-amber-400/5"
@@ -662,6 +708,28 @@ const ConstruirIntro = () => {
             );
           })}
         </div>
+      </div>
+
+      {/* Microglossário */}
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowGlossary((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+        </button>
+        {showGlossary && (
+          <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+            {glossary.map(([term, def]) => (
+              <div key={term} className="flex gap-2">
+                <dt className="text-accent font-semibold shrink-0">{term}:</dt>
+                <dd className="text-foreground/80">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
     </section>
   );
