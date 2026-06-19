@@ -1,31 +1,18 @@
 import { supabase } from "@/integrations/supabase/client";
 
-const SESSION_KEY = "fabrica_apps_session";
+const LEGACY_SESSION_KEY = "fabrica_apps_session";
 
-export interface Session {
-  email: string;
-  userId: string;
-  createdAt: string;
-}
-
-export const getSession = (): Session | null => {
-  try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    return raw ? (JSON.parse(raw) as Session) : null;
-  } catch {
-    return null;
-  }
-};
-
-export const setSession = (email: string, userId = "") => {
-  localStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify({ email, userId, createdAt: new Date().toISOString() }),
-  );
-};
-
+/**
+ * Logout helper. The legacy "fabrica_apps_session" key is no longer used to
+ * authenticate anything (Supabase Auth is the single source of truth), but we
+ * still remove it here for hygiene in case any old browser still has it.
+ */
 export const clearSession = async () => {
-  localStorage.removeItem(SESSION_KEY);
+  try {
+    localStorage.removeItem(LEGACY_SESSION_KEY);
+  } catch {
+    /* noop */
+  }
   try {
     await supabase.auth.signOut();
   } catch {
@@ -64,11 +51,9 @@ export const loginWithPassword = async (
   const hasAccess = await checkUserAccess(userId);
 
   if (!hasAccess) {
-    setSession(cleanEmail, userId);
     return { status: "no_access", email: cleanEmail, userId };
   }
 
-  setSession(cleanEmail, userId);
   return { status: "ok", email: cleanEmail, userId };
 };
 
@@ -103,9 +88,6 @@ export const signUpWithPassword = async (
   }
 
   const needsConfirmation = !data.session;
-  if (data.session && data.user) {
-    setSession(cleanEmail, data.user.id);
-  }
   return {
     status: "ok",
     needsConfirmation,
