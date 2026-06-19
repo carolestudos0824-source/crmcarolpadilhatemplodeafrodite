@@ -18,9 +18,9 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
   const auth = useAuthState();
 
   // Determine CTA based on auth state
-  let ctaLabel = "Acesso restrito";
+  let ctaLabel = "Já sou aluno";
   let ctaTarget = "/login";
-  let ctaIcon = <Lock size={14} />;
+  let ctaIcon: React.ReactNode = null;
 
   if (auth.status === "authed") {
     if (auth.hasAccess || auth.isAdmin) {
