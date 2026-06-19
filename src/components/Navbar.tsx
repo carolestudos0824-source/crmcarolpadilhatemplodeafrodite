@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, Lock } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
+import type React from "react";
 import { Logo } from "./Logo";
 import { useAuthState } from "@/hooks/useAuthState";
 import { clearSession } from "@/lib/auth";
@@ -8,6 +9,7 @@ import { clearSession } from "@/lib/auth";
 const links = [
   { to: "/", label: "Início" },
   { to: "/precos", label: "Preço único" },
+  { to: "/#incluso", label: "O que está incluso" },
 ];
 
 export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean } = {}) => {
@@ -18,9 +20,9 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
   const auth = useAuthState();
 
   // Determine CTA based on auth state
-  let ctaLabel = "Acesso restrito";
+  let ctaLabel = "Já sou aluno";
   let ctaTarget = "/login";
-  let ctaIcon = <Lock size={14} />;
+  let ctaIcon: React.ReactNode = null;
 
   if (auth.status === "authed") {
     if (auth.hasAccess || auth.isAdmin) {
@@ -54,7 +56,7 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
     ...links,
     auth.status === "authed" && (auth.hasAccess || auth.isAdmin)
       ? { to: "/entrega", label: "Minha área" }
-      : { to: "/login", label: "Acesso restrito" },
+      : { to: "/login", label: "Já sou aluno" },
     ...(auth.status === "authed" && auth.isAdmin
       ? [{ to: "/admin/acessos", label: "Admin" }]
       : []),

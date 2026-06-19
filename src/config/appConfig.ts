@@ -8,6 +8,6 @@ export const APP_CONFIG = {
   RESPONSIBLE_NAME: "RESPONSÁVEL A DEFINIR",
   SHOW_ANNOUNCEMENT_BAR: true,
   ANNOUNCEMENT_TEXT: "⚡ Oferta de lançamento ativa — De R$97 por apenas R$47 · Acesso imediato",
-  ANNOUNCEMENT_CTA_TEXT: "Quero acessar →",
+  ANNOUNCEMENT_CTA_TEXT: "Garantir acesso por R$47 →",
   ANNOUNCEMENT_CTA_LINK: "/checkout?plano=fabrica",
 };
