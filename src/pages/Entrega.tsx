@@ -462,22 +462,26 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           </p>
         </header>
 
-        <GlassCard className="p-5 md:p-6 mb-6">
-          <h2 className="font-heading font-semibold text-lg mb-1">O que você comprou</h2>
-          <p className="text-sm text-muted-foreground">
-            Um programa guiado para criar aplicativos no Lovable, mesmo sem saber
-            programar. Aqui você tem ideias prontas, comandos, checklists, campanhas e
-            criativos.
+        <header className="mb-6">
+          <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
+            <Sparkles size={12} /> Sua jornada
+          </span>
+          <h1 className="text-2xl md:text-4xl font-heading font-bold leading-tight mb-2">
+            Comece aqui
+          </h1>
+          <p className="text-muted-foreground max-w-3xl">
+            Siga esta jornada para transformar sua ideia em um app planejado,
+            construível e lançável.
           </p>
-        </GlassCard>
+        </header>
 
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
           {[
-            ["Escolha uma ideia", "Use sua ideia ou escolha um modelo pronto."],
-            ["Cole comandos no Lovable", "Copie um comando por vez e cole no Lovable."],
-            ["Construa o app", "O Lovable cria telas, banco, login e área de entrega."],
-            ["Divulgue e valide", "Use campanhas, criativos e teste com 10 pessoas reais."],
+            ["Escolha ou descreva sua ideia", "Comece de um modelo pronto ou descreva o app que você quer criar."],
+            ["Gere o plano do app", "Receba diagnóstico, MVP, arquitetura, telas e modelo de dados."],
+            ["Copie o prompt mestre", "Cole no Lovable, Cursor, Claude, Gemini ou Replit e construa o app."],
+            ["Monte sua página de venda", "Use a Central de Vendas para criar sua landing em minutos."],
+            ["Prepare sua campanha de lançamento", "Campanhas prontas, criativos e métricas para validar com gente real."],
           ].map(([t, d], i) => (
             <GlassCard key={t} className="p-4">
               <div className="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30 text-accent text-sm font-bold flex items-center justify-center mb-2">
@@ -496,32 +500,15 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           </div>
         </div>
 
-        <GlassCard className="p-5 md:p-6 mb-6">
-          <h3 className="font-heading font-semibold text-base mb-1">
-            Não faça tudo de uma vez
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            O segredo é usar um comando por vez. Copie, cole no Lovable, espere o
-            resultado, teste e só depois avance.
-          </p>
-        </GlassCard>
-
         <div className="flex flex-wrap gap-3">
-          <button onClick={() => goTo("ideias")} className="btn-primary">
-            <Sparkles size={16} /> Começar agora
+          <button onClick={() => goTo("construir")} className="btn-primary">
+            <Sparkles size={16} /> Começar meu plano
           </button>
           <button
             onClick={() => goTo("ideias")}
             className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
           >
             <Lightbulb size={16} /> Ver ideias prontas
-          </button>
-
-          <button
-            onClick={() => goTo("construir")}
-            className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
-          >
-            <Hammer size={16} /> Construir minha própria ideia
           </button>
           <a
             href={LOVABLE_URL}
