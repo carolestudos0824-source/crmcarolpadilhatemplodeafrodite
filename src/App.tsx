@@ -24,7 +24,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 const queryClient = new QueryClient();
 
 
-const CHROMELESS_ROUTES = ["/entrega"];
+const CHROMELESS_ROUTES = ["/entrega", "/admin"];
 const HIDE_FOOTER_ROUTES = ["/admin/acessos"];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
