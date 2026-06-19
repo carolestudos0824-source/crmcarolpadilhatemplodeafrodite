@@ -3544,3 +3544,160 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Pronto. Você já está no programa.",
   },
 };
+
+// ============ Comandos do módulo Monetização ============
+
+export const COMMANDS_MONETIZACAO: Command[] = [
+  {
+    n: 1,
+    title: "Entender o valor do app",
+    purpose: "A pessoa precisa saber qual dor o app resolve antes de definir preço.",
+    when: "Use antes de pensar em qualquer modelo de cobrança ou faixa de valor.",
+    where: "Cole no Lovable, no campo de conversa do projeto.",
+    result: "Uma seção do app com público, dor, transformação e motivo para pagar.",
+    objective:
+      "A pessoa precisa saber qual dor o app resolve antes de definir preço.",
+    whenLovableDirect:
+      "Quando o app já existe e só falta deixar o valor explícito na interface.",
+    whenAgentFirst:
+      "Quando você ainda não consegue explicar em uma frase por que alguém pagaria pelo app.",
+    content: `Crie uma seção no meu app que explique claramente qual dor ele resolve, para quem ele foi feito, qual transformação ele entrega e por que isso tem valor para o usuário. Use linguagem simples e direta.
+
+Inclua:
+- Para quem é o app
+- Qual dor resolve
+- Qual transformação entrega
+- Por que isso tem valor
+
+Não use promessa exagerada. Não prometa resultado garantido.`,
+    agentPrompt: `Analise meu app e me ajude a identificar o valor real dele. Quero saber qual dor ele resolve, para quem ele é mais útil e por que alguém pagaria por isso.
+
+Considere:
+- Público específico
+- Dor concreta
+- Entrega principal
+- Diferença em relação ao que já existe`,
+    correctionPrompt: `O Lovable deixou a explicação genérica. Reescreva a seção deixando claro: público, dor, solução, entrega e motivo para pagar. Sem frases vagas, sem promessa de resultado.`,
+    advanceCriteria:
+      "Avance quando você conseguir explicar em uma frase por que alguém pagaria pelo seu app.",
+  },
+  {
+    n: 2,
+    title: "Escolher o modelo de cobrança",
+    purpose: "Definir se o app será venda única, assinatura, freemium, beta pago ou licença.",
+    when: "Use depois de entender o valor, antes de definir preço.",
+    where: "Cole no Lovable depois de conversar com o Agente sobre o modelo.",
+    result: "Uma seção interna ou documentação com o modelo principal escolhido.",
+    objective:
+      "Definir se o app será venda única, assinatura, freemium, beta pago ou licença.",
+    whenLovableDirect:
+      "Quando você já decidiu o modelo e só falta deixá-lo explícito no app.",
+    whenAgentFirst:
+      "Quando ainda está em dúvida entre dois ou mais modelos de cobrança.",
+    content: `Crie uma seção interna no meu app ou documentação explicando o modelo de cobrança escolhido. Mostre se será venda única, assinatura, freemium, beta pago ou licença, e explique de forma clara o que o usuário recebe.
+
+Inclua:
+- Modelo principal
+- O que está incluso
+- Para quem é
+- O que NÃO está incluso
+
+Não misture vários modelos. Escolha um principal.`,
+    agentPrompt: `Me ajude a escolher o melhor modelo de cobrança para meu app. Considere: tipo de entrega, frequência de uso, público, suporte, atualização, valor percebido e facilidade de venda.
+
+Sugira um modelo principal e, se fizer sentido, no máximo um modelo futuro. Justifique a escolha.`,
+    correctionPrompt: `O Lovable misturou vários modelos de cobrança. Organize em apenas um modelo principal e, no máximo, uma alternativa futura. Deixe claro o que está incluso em cada um.`,
+    advanceCriteria:
+      "Avance quando você tiver escolhido um modelo principal de cobrança.",
+  },
+  {
+    n: 3,
+    title: "Definir valor inicial para teste",
+    purpose: "Escolher uma faixa de preço inicial para validar, sem travar por perfeccionismo.",
+    when: "Use depois de escolher o modelo de cobrança.",
+    where: "Cole no Lovable depois de definir a faixa com o Agente.",
+    result: "Uma seção de oferta com valor inicial, o que está incluso e CTA claro.",
+    objective:
+      "Escolher uma faixa de preço inicial para validar, sem travar por perfeccionismo.",
+    whenLovableDirect:
+      "Quando você já tem a faixa decidida e só falta criar a seção de oferta.",
+    whenAgentFirst:
+      "Quando você não tem ideia de quanto cobrar ou tem medo de errar o valor.",
+    content: `Crie uma seção de oferta com um valor inicial de teste para meu app. A seção deve mostrar o que está incluso, para quem é, o que a pessoa recebe e um botão de ação claro. Não prometa resultado garantido.
+
+Inclua:
+- Valor inicial de teste
+- O que está incluso
+- Para quem é
+- Botão de ação
+
+Use linguagem honesta. Sem promessa de lucro, sem garantia de resultado.`,
+    agentPrompt: `Com base no meu app, me ajude a definir uma faixa de preço inicial para testar. Quero uma recomendação para venda única, assinatura ou beta pago, com justificativa e riscos.
+
+Considere: público, dor resolvida, frequência de uso, suporte, valor percebido e concorrentes. Sugira uma faixa, não um número único.`,
+    correctionPrompt: `O Lovable criou uma promessa exagerada ou preço sem justificativa. Ajuste para uma oferta honesta, com valor inicial de teste e sem garantia de resultado.`,
+    advanceCriteria:
+      "Avance quando você tiver uma faixa de valor clara para testar com pessoas reais.",
+  },
+  {
+    n: 4,
+    title: "Criar planos ou oferta única",
+    purpose: "Decidir se o app terá um único valor ou planos diferentes.",
+    when: "Use depois de definir a faixa de valor inicial.",
+    where: "Cole no Lovable na página de venda ou de planos.",
+    result: "Uma oferta única clara ou no máximo 3 planos diferentes.",
+    objective:
+      "Decidir se o app terá um único valor ou planos diferentes.",
+    whenLovableDirect:
+      "Quando você já sabe se vai usar oferta única ou planos.",
+    whenAgentFirst:
+      "Quando você não sabe se faz mais sentido vender em um único plano ou criar opções.",
+    content: `Crie uma seção de planos para meu app. Se fizer sentido, crie até 3 opções: Básico, Completo e Premium. Se não fizer sentido ter planos, crie uma oferta única clara. Explique o que cada opção inclui.
+
+Inclua em cada opção:
+- Nome do plano
+- O que está incluso
+- Para quem é
+- Valor
+
+Mantenha simples. Máximo 3 planos.`,
+    agentPrompt: `Meu app deve ter oferta única ou planos? Analise com base no público, complexidade, suporte, entrega e facilidade de venda.
+
+Se recomendar planos, sugira no máximo 3 opções com nome, público e o que cada uma inclui.`,
+    correctionPrompt: `O Lovable criou planos demais. Simplifique para uma oferta única ou no máximo 3 planos claros. Cada um precisa ter público e entrega diferentes.`,
+    advanceCriteria:
+      "Avance quando a pessoa conseguir entender rapidamente o que compra e o que recebe.",
+  },
+  {
+    n: 5,
+    title: "Validar se o preço faz sentido",
+    purpose: "Testar o valor com pessoas reais antes de escalar.",
+    when: "Use antes de divulgar o app em campanhas pagas.",
+    where: "Cole no Lovable na página de oferta ou de validação.",
+    result: "Uma página ou bloco de validação com CTA, perguntas e lista de espera.",
+    objective:
+      "Testar o valor com pessoas reais antes de escalar.",
+    whenLovableDirect:
+      "Quando a oferta já está pronta e só falta o bloco de teste e feedback.",
+    whenAgentFirst:
+      "Quando você não sabe como abordar pessoas reais para testar o preço.",
+    content: `Crie uma página ou bloco de validação para testar o preço do meu app. Inclua CTA, perguntas de interesse, campo para feedback e uma mensagem clara para quem quiser comprar ou entrar na lista de espera.
+
+Inclua:
+- Apresentação curta da oferta
+- CTA principal
+- 3 a 5 perguntas curtas
+- Campo de feedback
+- Lista de espera`,
+    agentPrompt: `Crie um plano simples para validar o preço do meu app com 10 pessoas reais. Quero perguntas, mensagens de abordagem e critérios para saber se o preço está alto, baixo ou confuso.
+
+Inclua:
+- Como abordar
+- Que perguntas fazer
+- O que observar
+- Quando ajustar o valor`,
+    correctionPrompt: `O Lovable criou uma validação genérica. Ajuste para testar especificamente se as pessoas entenderam o valor e se pagariam pela oferta. Inclua perguntas sobre preço, clareza e interesse real.`,
+    advanceCriteria:
+      "Avance quando pelo menos 10 pessoas tiverem visto a oferta ou quando você tiver feedback suficiente para ajustar o valor.",
+  },
+];
