@@ -46,12 +46,13 @@ Todas as funções abaixo possuem `SET search_path = 'public'` explícito.
   - lock `FOR UPDATE` + `current_uses < max_uses` impede race condition.
 - **Warning aceito**: precisa ser chamada do cliente autenticado.
 
-### 2.4 Funções de trigger — `handle_new_user`, `update_updated_at_column`, `handle_updated_at`, `enforce_arcano_publish_threshold`, `enforce_arcano_editorial_status`, `enforce_quiz_publish_threshold`
+### 2.4 Funções de trigger — `handle_new_user`, `update_updated_at_column`, `handle_updated_at`, `enforce_quiz_publish_threshold`
 
 - **Motivo**: executadas automaticamente por triggers (`AFTER INSERT ON auth.users`, `BEFORE UPDATE` etc.).
 - **EXECUTE**: revogado de `public`/`anon`/`authenticated`. Só o owner (postgres) as invoca via trigger.
 - **Validação interna**: não recebem entrada de cliente; operam sobre `NEW`/`OLD`.
 - **Warning**: não se aplica — não são expostas ao Data API.
+
 
 ---
 
