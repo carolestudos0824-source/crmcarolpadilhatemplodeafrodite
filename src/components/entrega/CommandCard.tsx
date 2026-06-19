@@ -24,8 +24,6 @@ type Props = {
   advanceCriteria?: string;
 };
 
-const STATE_PREFIX = "fabrica_apps_cmd_done_";
-export const COMMAND_TOGGLE_EVENT = "fabrica:cmd-toggle";
 
 export const CommandCard = ({
   number,
