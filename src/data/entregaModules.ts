@@ -3135,6 +3135,7 @@ Banco: vendedores, leads, interacoes, tarefas.`,
 export const COMMON_ERRORS: CommonError[] = [
   {
     category: "Lovable",
+    severity: "Médio",
     title: "Lovable criou coisa demais",
     explanation: "Você pediu MVP mas ele entregou recursos extras.",
     fix: "Peça para remover o que não está no MVP e voltar ao plano original.",
@@ -3146,6 +3147,7 @@ Mantenha somente as 5 funcionalidades acordadas. Não adicione novidades.`,
   },
   {
     category: "Login",
+    severity: "Crítico",
     title: "Login não funciona",
     explanation: "Usuário não consegue entrar ou recebe erro.",
     fix: "Peça ao Lovable para revisar fluxo de autenticação e mensagens.",
@@ -3155,6 +3157,7 @@ Verifique: cadastro, login, recuperação de senha, redirecionamento após login
   },
   {
     category: "Banco",
+    severity: "Crítico",
     title: "Banco não salva",
     explanation: "Dados somem ou erro ao gravar.",
     fix: "Peça revisão das políticas RLS e do client de inserção.",
@@ -3164,6 +3167,7 @@ Verifique: políticas RLS, GRANTS, schema da tabela, payload enviado e mensagens
   },
   {
     category: "Mobile",
+    severity: "Médio",
     title: "Página ficou feia no celular",
     explanation: "Layout quebrado, texto cortado, botões pequenos.",
     fix: "Peça ajuste mobile first.",
@@ -3172,7 +3176,8 @@ Verifique: políticas RLS, GRANTS, schema da tabela, payload enviado e mensagens
 Garanta: nada com scroll horizontal, botões com toque confortável, texto legível, espaçamento adequado e cards em uma coluna no celular.`,
   },
   {
-    category: "UI",
+    category: "Lovable",
+    severity: "Crítico",
     title: "Botão não funciona",
     explanation: "Clica e nada acontece.",
     fix: "Peça verificação do handler e estado.",
@@ -3182,6 +3187,7 @@ Cheque: handler conectado, estado correto, validações, console do navegador. C
   },
   {
     category: "Acesso",
+    severity: "Crítico",
     title: "Usuário não consegue entrar",
     explanation: "Login ok mas a área restrita não abre.",
     fix: "Peça revisão da regra de acesso liberado.",
@@ -3190,7 +3196,8 @@ Cheque: handler conectado, estado correto, validações, console do navegador. C
 Verifique: tabela user_access, flag has_access, redirecionamento e mensagens. Corrija.`,
   },
   {
-    category: "Programa",
+    category: "Lovable",
+    severity: "Leve",
     title: "Não sei qual comando usar",
     explanation: "Está na dúvida sobre a ordem.",
     fix: "Volte para Comece aqui e siga a trilha em ordem.",
@@ -3202,6 +3209,7 @@ Qual deve ser o próximo comando que devo usar no Lovable e por quê.`,
   },
   {
     category: "Divulgação",
+    severity: "Leve",
     title: "Não sei divulgar",
     explanation: "App pronto mas sem público.",
     fix: "Use os módulos Campanhas e Criativos.",
@@ -3214,7 +3222,8 @@ Orçamento: [informe]
 Entregue calendário, canais, ideias de post e meta de leads.`,
   },
   {
-    category: "Anúncios",
+    category: "Divulgação",
+    severity: "Médio",
     title: "Anúncio não converte",
     explanation: "Tráfego não vira lead nem venda.",
     fix: "Peça análise de criativo, copy e página.",
@@ -3229,6 +3238,7 @@ Diga onde está o vazamento e o que mudar.`,
   },
   {
     category: "Validação",
+    severity: "Médio",
     title: "Ninguém respondeu",
     explanation: "Mandou convite mas ninguém testou.",
     fix: "Reveja convite, canal e oferta de retorno.",
@@ -3237,6 +3247,159 @@ Diga onde está o vazamento e o que mudar.`,
 [cole a mensagem]
 
 Reescreva mais humana, com benefício claro para quem aceitar e tempo realista.`,
+  },
+  {
+    category: "Deploy",
+    severity: "Crítico",
+    title: "App não abre depois de publicar",
+    explanation: "O app funcionava no preview, mas quebrou depois do deploy.",
+    fix: "Peça para o Lovable verificar build, rotas, variáveis de ambiente e erros de console.",
+    command: `Meu app funcionava no preview, mas não abre depois do deploy.
+
+Verifique:
+1. Erros de build.
+2. Rotas quebradas.
+3. Variáveis de ambiente ausentes.
+4. Erros no console.
+5. Dependências quebradas.
+6. Diferença entre preview e produção.
+
+Não refaça o app.
+Corrija apenas a causa do erro e explique como testar.`,
+  },
+  {
+    category: "Venda",
+    severity: "Crítico",
+    title: "Botão de checkout não abre",
+    explanation: "O botão de pagamento não leva para o checkout ou abre erro.",
+    fix: "Verifique URL configurada, placeholder, protocolo e ação do botão.",
+    command: `O botão de checkout não está funcionando.
+
+Verifique:
+1. Se a URL de checkout está preenchida.
+2. Se ainda existe placeholder como COLE_AQUI.
+3. Se a URL começa com https://, mailto: ou tel: quando aplicável.
+4. Se o botão chama a função correta.
+5. Se não abre janela em branco.
+6. Se o usuário recebe mensagem amigável quando o checkout não está configurado.
+
+Não altere o layout.
+Corrija apenas o fluxo do botão.`,
+  },
+  {
+    category: "Acesso",
+    severity: "Crítico",
+    title: "Comprador pagou, mas não recebeu acesso",
+    explanation: "O pagamento aconteceu, mas o acesso não foi liberado.",
+    fix: "Verifique se o fluxo é manual ou automático e se existe painel de liberação.",
+    command: `O comprador pagou, mas não recebeu acesso.
+
+Verifique:
+1. Se o produto usa liberação manual ou automática.
+2. Se existe painel admin para liberar acesso.
+3. Se o usuário foi criado corretamente.
+4. Se a flag de acesso está correta.
+5. Se a área restrita lê o acesso do banco.
+6. Se a mensagem pós-compra está clara.
+
+Não prometa webhook automático se ele não existe.
+Corrija o fluxo atual com segurança.`,
+  },
+  {
+    category: "Banco",
+    severity: "Crítico",
+    title: "Erro de permissão no Supabase",
+    explanation: "O app não consegue ler, criar ou atualizar dados.",
+    fix: "Verifique RLS, policies, grants e usuário autenticado.",
+    command: `O app está com erro de permissão no Supabase.
+
+Verifique:
+1. Se RLS está ativado.
+2. Se existem policies corretas.
+3. Se o usuário está autenticado.
+4. Se a query usa o user_id correto.
+5. Se faltam grants para authenticated.
+6. Se não há uso indevido de service role no frontend.
+
+Não desative segurança sem explicar o risco.
+Corrija com policies adequadas.`,
+  },
+  {
+    category: "Lovable",
+    severity: "Médio",
+    title: "Lovable mexeu no que já estava pronto",
+    explanation: "O Lovable alterou partes que estavam funcionando.",
+    fix: "Peça correção cirúrgica e restauração do que foi quebrado.",
+    command: `Você alterou partes que já estavam funcionando.
+
+Faça uma correção cirúrgica:
+1. Liste o que foi alterado.
+2. Identifique o que quebrou.
+3. Restaure o comportamento anterior.
+4. Preserve layout, autenticação, banco, rotas e progresso.
+5. Corrija apenas o problema solicitado.
+
+Não refaça o app.
+Não remova funcionalidades.
+Não altere módulos não relacionados.`,
+  },
+  {
+    category: "Mobile",
+    severity: "Médio",
+    title: "Layout quebrou no celular",
+    explanation: "No desktop está bom, mas no celular ficou difícil de usar.",
+    fix: "Peça ajuste mobile first sem refazer o app.",
+    command: `O layout quebrou no celular.
+
+Corrija apenas a experiência mobile:
+1. Espaçamentos.
+2. Tamanho dos botões.
+3. Quebra de texto.
+4. Cards muito largos.
+5. Menus difíceis.
+6. Inputs pequenos.
+7. Scroll horizontal indesejado.
+
+Não refaça o design.
+Preserve identidade visual e funcionalidades.`,
+  },
+  {
+    category: "Lovable",
+    severity: "Leve",
+    title: "O prompt não foi entendido",
+    explanation: "O Lovable respondeu algo genérico ou fez outra coisa.",
+    fix: "Reenvie com contexto, restrições e critérios de aceite.",
+    command: `O comando anterior não foi entendido corretamente.
+
+Refaça seguindo exatamente esta estrutura:
+1. Objetivo da alteração.
+2. O que pode mexer.
+3. O que não pode mexer.
+4. Arquivos ou áreas relacionadas.
+5. Critérios de aceite.
+6. QA obrigatório.
+
+Não invente funcionalidades.
+Não refaça o app.
+Entregue apenas o solicitado.`,
+  },
+  {
+    category: "Créditos",
+    severity: "Médio",
+    title: "Acabaram os créditos do Lovable",
+    explanation: "O Lovable pausou recursos de IA ou pediu top up.",
+    fix: "Pare de construir, faça auditoria e só volte com prompts cirúrgicos.",
+    command: `Meus créditos do Lovable acabaram ou estão baixos.
+
+Antes de qualquer nova alteração:
+1. Faça uma auditoria do estado atual.
+2. Liste o que já está pronto.
+3. Liste pendências críticas.
+4. Priorize apenas o que desbloqueia venda, acesso ou uso.
+5. Crie prompts cirúrgicos para economizar créditos.
+
+Não sugira refazer o app.
+Não sugira melhorias cosméticas agora.`,
   },
 ];
 
