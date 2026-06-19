@@ -4,6 +4,7 @@ import { CheckoutSummary } from "@/components/CheckoutSummary";
 import { Logo } from "@/components/Logo";
 import { PLANS } from "@/data/plans";
 import { openConfiguredUrl } from "@/lib/openLink";
+import { APP_CONFIG } from "@/config/appConfig";
 
 export default function Checkout() {
   const plan = PLANS[0];
@@ -26,7 +27,12 @@ export default function Checkout() {
           </div>
           <button
             className="btn-primary w-full"
-            onClick={() => openConfiguredUrl(checkoutUrl, "Link de checkout ainda não configurado. Edite o arquivo de configuração.")}
+            onClick={() => {
+              const ok = openConfiguredUrl(checkoutUrl, "Checkout ainda não configurado. Entre em contato com o suporte.");
+              if (ok) {
+                try { sessionStorage.setItem(APP_CONFIG.CHECKOUT_INITIATED_FLAG, "1"); } catch {}
+              }
+            }}
           >
             Ir para pagamento
           </button>
