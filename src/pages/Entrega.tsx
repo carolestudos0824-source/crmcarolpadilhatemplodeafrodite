@@ -1513,15 +1513,37 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "criativos") {
     return (
       <section>
+        <CriativosIntro />
+        <CreativeGenerator />
         <ModuleHeader
-          title="Criativos"
-          subtitle="Use esta etapa para criar anúncios, posts, roteiros e ideias visuais."
+          title="Siga as etapas de Criativos"
+          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
         />
         <CommandList commands={COMMANDS_CRIATIVOS} moduleKey="criativos" />
-        <CreativeGenerator />
+        <ChecklistBlock
+          title="Checklist do módulo"
+          items={[
+            "Defini a dor principal",
+            "Defini o público",
+            "Criei pelo menos 3 ângulos",
+            "Criei criativo estático",
+            "Criei roteiro de vídeo curto",
+            "Criei sequência de stories",
+            "Criei CTA claro",
+            "Criei teste A/B",
+            "Anotei métrica principal",
+            "Organizei biblioteca de criativos",
+            "Não usei promessa exagerada",
+            "Testei antes de escalar",
+          ]}
+          checklist={checklist}
+          setChecklist={setChecklist}
+          phase="criativos"
+        />
       </section>
     );
   }
+
 
   if (active === "validacao") {
     return (
