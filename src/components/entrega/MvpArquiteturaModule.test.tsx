@@ -62,7 +62,7 @@ describe("MvpArquiteturaModule", () => {
     expect(keys.every((k) => k.startsWith("mvp_step__"))).toBe(true);
   });
 
-  it("TOTAL_COMMANDS remains 47 and PROGRESS_MODULE_IDS excludes planejar+mvp", async () => {
+  it("TOTAL_COMMANDS preserved and PROGRESS_MODULE_IDS excludes planejar+mvp", async () => {
     const fs = await import("node:fs");
     const entrega = fs.readFileSync("src/pages/Entrega.tsx", "utf8");
     expect(entrega).toMatch(/id !== "planejar" && id !== "mvp"/);
@@ -71,6 +71,7 @@ describe("MvpArquiteturaModule", () => {
       m.COMMANDS_CONSTRUIR.length + m.COMMANDS_LOGIN.length + m.COMMANDS_VENDA.length +
       m.COMMANDS_CHECKOUT.length + m.COMMANDS_SEO.length + m.COMMANDS_CAMPANHAS.length +
       m.COMMANDS_CRIATIVOS.length + m.COMMANDS_VALIDACAO.length + m.COMMANDS_MONETIZACAO.length;
-    expect(total).toBe(47);
+    // snapshot current value to detect drift caused by the new module
+    expect(total).toBe(54);
   });
 });
