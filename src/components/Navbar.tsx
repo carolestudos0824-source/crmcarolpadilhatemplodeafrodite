@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, Lock } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
+import type React from "react";
 import { Logo } from "./Logo";
 import { useAuthState } from "@/hooks/useAuthState";
 import { clearSession } from "@/lib/auth";
