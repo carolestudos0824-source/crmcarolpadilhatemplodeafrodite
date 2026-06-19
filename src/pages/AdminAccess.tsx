@@ -101,9 +101,16 @@ export default function AdminAccess() {
       return;
     }
     // refetch
-    const { data: lookup } = await supabase.rpc("admin_lookup_user", {
+    const { data: lookup, error: lookupError } = await supabase.rpc("admin_lookup_user", {
       _email: email.trim(),
     });
+    if (lookupError) {
+      setStatus({
+        kind: "error",
+        message: "Ação executada, mas não foi possível atualizar o status na tela. Recarregue para conferir.",
+      });
+      return;
+    }
     const rows = (lookup as LookupRow[] | null) ?? [];
     if (rows[0]) {
       setStatus({
