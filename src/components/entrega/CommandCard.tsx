@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink } from "lucide-react";
+import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
@@ -23,8 +24,6 @@ type Props = {
   advanceCriteria?: string;
 };
 
-const STATE_PREFIX = "fabrica_apps_cmd_done_";
-export const COMMAND_TOGGLE_EVENT = "fabrica:cmd-toggle";
 
 export const CommandCard = ({
   number,
@@ -46,30 +45,11 @@ export const CommandCard = ({
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
-  const [done, setDone] = useState(false);
-  const storageKey = `${STATE_PREFIX}${completedKey}`;
-
-  useEffect(() => {
-    try {
-      setDone(localStorage.getItem(storageKey) === "1");
-    } catch {
-      // ignore
-    }
-  }, [storageKey]);
+  const { isCommandDone, toggleCommand } = useUserProgress();
+  const done = isCommandDone(completedKey);
 
   const toggleDone = () => {
-    const next = !done;
-    setDone(next);
-    try {
-      localStorage.setItem(storageKey, next ? "1" : "0");
-    } catch {
-      // ignore
-    }
-    try {
-      window.dispatchEvent(new Event(COMMAND_TOGGLE_EVENT));
-    } catch {
-      // ignore
-    }
+    toggleCommand(completedKey);
   };
 
   const copyText = async (
