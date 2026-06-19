@@ -1407,11 +1407,21 @@ export function CampaignsModule({
       </header>
 
       <GlassCard className="p-4 mb-5 border-accent/20 bg-accent/5">
-        <p className="text-sm">
-          Construir o app não basta. Agora você precisa mostrar o app para as
-          pessoas certas. Comece pequeno, teste mensagens, acompanhe resultados
-          e melhore.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <p className="text-sm flex-1">
+            <strong className="text-accent">Comece pelo Diagnóstico.</strong>{" "}
+            Depois gere sua campanha e execute o plano de 7 dias.
+          </p>
+          <button
+            onClick={() => {
+              setTab("diagnostico");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="btn-primary text-sm whitespace-nowrap"
+          >
+            <Rocket size={14} /> Criar minha campanha agora
+          </button>
+        </div>
       </GlassCard>
 
       <div className="flex items-start gap-2 mb-6 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4">
@@ -1422,17 +1432,36 @@ export function CampaignsModule({
         </p>
       </div>
 
-      {/* Abas */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1 scrollbar-thin">
+      {/* Abas: dropdown no mobile, pílulas roláveis no desktop */}
+      <div className="sm:hidden mb-5">
+        <label className="block">
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+            Etapa atual
+          </span>
+          <select
+            value={tab}
+            onChange={(e) => setTab(e.target.value as TabId)}
+            className="mt-1 w-full px-3 py-3 rounded-lg bg-white/5 border border-accent/30 focus:border-accent/60 outline-none text-sm font-semibold"
+          >
+            {TABS.map((t) => (
+              <option key={t.id} value={t.id} className="bg-background">
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="hidden sm:flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1">
         {TABS.map((t) => {
           const Icon = t.icon;
-          const active = tab === t.id;
+          const isActive = tab === t.id;
           return (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-medium border transition ${
-                active
+                isActive
                   ? "border-accent/60 bg-accent/15 text-accent"
                   : "border-white/10 bg-white/5 text-muted-foreground hover:text-foreground hover:bg-white/10"
               }`}
@@ -1452,7 +1481,9 @@ export function CampaignsModule({
         {tab === "plano" && <BlocoPlano7Dias />}
         {tab === "metricas" && <BlocoMetricas />}
         {tab === "melhorar" && <BlocoMelhorar />}
+        {tab === "resumo" && <BlocoResumo />}
       </div>
+
 
       <ChecklistCampanhas checklist={checklist} setChecklist={setChecklist} />
     </section>
