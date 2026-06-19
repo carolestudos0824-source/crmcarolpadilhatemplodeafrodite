@@ -63,6 +63,7 @@ const App = () => (
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/confianca" element={<Confianca />} />
+          <Route path="/seguranca" element={<Seguranca />} />
           <Route path="/confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/Confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/trust" element={<Navigate to="/confianca" replace />} />
