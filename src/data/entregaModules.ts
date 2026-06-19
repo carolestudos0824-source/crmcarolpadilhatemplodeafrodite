@@ -3506,7 +3506,12 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     doNow: "Defina a promessa, crie a landing, explique o preço, responda dúvidas e reforce confiança.",
     advanceWhen: "Antes de criar checkout, garanta que a pessoa entende o valor do app em menos de 10 segundos.",
   },
+  monetizacao: {
+    doNow: "Escolha o modelo de cobrança, defina uma faixa de valor inicial e prepare uma oferta clara para testar com pessoas reais.",
+    advanceWhen: "Avance quando você tiver um modelo de cobrança escolhido, uma faixa de valor inicial e uma oferta pronta para validar.",
+  },
   checkout: {
+
     doNow: "Crie pagamento, página de obrigado, área de entrega protegida, libere o acesso e teste como comprador.",
     advanceWhen: "Antes de divulgar, faça o caminho completo como se você fosse o comprador.",
   },
