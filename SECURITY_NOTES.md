@@ -73,6 +73,20 @@ Todas as funções abaixo possuem `SET search_path = 'public'` explícito.
 
 | Lint | Função(ões) | Justificativa |
 |---|---|---|
-| `0029_authenticated_security_definer_function_executable` | `is_admin`, `has_role`, `admin_set_access`, `admin_lookup_user`, `apply_arcano_backfill`, `redeem_gift_code` | Precisam ser chamáveis por `authenticated` — autorização real é feita dentro da função (`is_admin()` ou `auth.uid()`). |
+| `0029_authenticated_security_definer_function_executable` | `is_admin`, `has_role`, `admin_set_access`, `admin_lookup_user`, `redeem_gift_code` | Precisam ser chamáveis por `authenticated` — autorização real é feita dentro da função (`is_admin()` ou `auth.uid()`). |
 
 Qualquer warning **novo** que apareça fora desta lista deve ser tratado, não ignorado.
+
+---
+
+## 5. Pendências de limpeza do banco (projeto antigo)
+
+Estes objetos ainda existem no banco real por serem resíduos de um projeto anterior (Tarot), mas **não pertencem ao escopo da Fábrica de Apps com IA** e não são chamados por nenhum código deste app:
+
+- RPC `apply_arcano_backfill(jsonb)`
+- Triggers `enforce_arcano_publish_threshold`, `enforce_arcano_editorial_status`
+- Tabela `tarot_content`
+- Enums `arcano_naipe`, `arcano_type`
+
+Devem ser removidos no futuro via migração SQL dedicada (`DROP FUNCTION` / `DROP TRIGGER` / `DROP TABLE` / `DROP TYPE`). Até lá, ficam apenas como nota — nenhuma ação imediata é necessária.
+
