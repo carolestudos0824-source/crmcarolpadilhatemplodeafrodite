@@ -18,7 +18,7 @@ import Privacidade from "@/pages/Privacidade";
 import Confianca from "@/pages/Confianca";
 import Seguranca from "@/pages/Seguranca";
 import NotFound from "@/pages/NotFound";
-import DebugRotas from "@/pages/DebugRotas";
+
 import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -76,8 +76,6 @@ const App = () => (
           <Route path="/confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/Confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/trust" element={<Navigate to="/confianca" replace />} />
-          <Route path="/templo/dashboard" element={<Navigate to="/" replace />} />
-          <Route path="/debug-rotas" element={<DebugRotas />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
