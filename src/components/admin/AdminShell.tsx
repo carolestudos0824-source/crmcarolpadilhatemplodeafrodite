@@ -7,6 +7,7 @@ import {
   KeyRound,
   ListChecks,
   MessageSquare,
+  Inbox,
   Settings,
   LogOut,
   ExternalLink,
