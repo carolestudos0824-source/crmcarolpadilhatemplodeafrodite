@@ -360,104 +360,309 @@ Aponte cortes, riscos e próxima etapa.`,
 ];
 
 export const COMMANDS_LOGIN: Command[] = [
-  cmd(
-    1,
-    "Criar login e cadastro",
-    "Permite que o app tenha usuários e proteja páginas privadas.",
-    "Depois que o MVP está pronto.",
-    "Cole no Lovable.",
-    "Telas de entrar, cadastrar e recuperar acesso.",
-    `Adicione login e cadastro ao app.
+  {
+    n: 1,
+    title: "Criar login simples",
+    purpose: "Permitir que o usuário crie conta, entre e saia do app.",
+    when: "Quando o MVP já está pronto e você precisa que pessoas entrem com e-mail e senha.",
+    where: "Cole no Lovable.",
+    result: "Telas de cadastro, login e logout funcionando.",
+    objective: "Permitir que o usuário crie conta, entre e saia do app.",
+    whenLovableDirect:
+      "Quando o MVP já está pronto e você precisa que pessoas entrem com e-mail e senha.",
+    whenAgentFirst: "Quando você não sabe se seu app precisa de login no MVP.",
+    content: `Crie um sistema de login simples para este app.
 
-Regras:
-1. Tela de entrar
-2. Tela de criar conta
-3. Recuperação de acesso
-4. Proteger páginas privadas
-5. Mensagens claras
-6. Usar Supabase Auth se já estiver com Supabase
-7. Não expor chaves sensíveis`,
-  ),
-  cmd(
-    2,
-    "Criar banco de dados",
-    "Faz o app salvar informações de cada usuário.",
-    "Quando o app precisa guardar dados.",
-    "Cole no Lovable.",
-    "Tabelas, relações e políticas de acesso.",
-    `Crie o banco de dados necessário.
+Requisitos:
 
-Contexto:
+1. Cadastro com e-mail e senha.
+2. Login com e-mail e senha.
+3. Botão de sair.
+4. Mensagens claras de erro.
+5. Redirecionar usuário logado para a área principal.
+6. Redirecionar usuário deslogado para a página de login.
+7. Layout simples, responsivo e coerente com o design atual.
+
+Não crie funções extras.
+Não crie painel admin ainda.
+Não altere o fluxo principal do app.
+Ao final, explique como testar cadastro, login e logout.`,
+    agentPrompt: `Estou criando um app no Lovable e preciso decidir se ele precisa de login.
+
+App:
 [descreva o app]
 
-Dados a salvar:
-[liste]
+Público:
+[descreva o público]
 
-Crie:
-1. Tabelas e campos
-2. Relações
-3. Políticas RLS (se Supabase)
-4. Dados de exemplo
+Ação principal:
+[descreva]
+
+Analise:
+
+1. Esse app precisa de login no MVP?
+2. O que deve ficar protegido?
+3. Que dados preciso salvar?
+4. O que pode ficar sem login agora?
+5. Qual prompt devo colar no Lovable?`,
+    correctionPrompt: `O login ficou confuso ou não funciona corretamente. Corrija sem refazer o app inteiro.
+
+Verifique:
+
+1. Cadastro.
+2. Login.
+3. Logout.
+4. Redirecionamento.
+5. Mensagens de erro.
+6. Usuário logado não deve voltar para login.
+7. Usuário deslogado não deve acessar área restrita.
+
+Preserve o design atual.`,
+    advanceCriteria:
+      "Avance apenas quando você conseguir criar conta, entrar, sair e entrar novamente sem erro.",
+  },
+  {
+    n: 2,
+    title: "Criar perfil do usuário",
+    purpose: "Guardar as informações básicas de cada usuário.",
+    when: "Quando o app precisa lembrar quem é o usuário logado.",
+    where: "Cole no Lovable.",
+    result: "Cada usuário logado vê apenas seus próprios dados.",
+    objective: "Guardar as informações básicas de cada usuário.",
+    whenLovableDirect: "Quando o app precisa lembrar quem é o usuário logado.",
+    whenAgentFirst: "Quando você não sabe quais dados precisa guardar.",
+    content: `Crie uma estrutura simples de perfil do usuário.
+
+O perfil deve guardar:
+
+1. Nome.
+2. E-mail.
+3. Data de criação.
+4. Tipo de acesso, se fizer sentido.
+5. Status do usuário, se fizer sentido.
+
+Após cadastro, cada usuário deve ter um perfil associado.
+
+Crie uma tela simples de Minha conta com:
+
+1. Nome.
+2. E-mail.
+3. Status ou plano, se existir.
+4. Botão de sair.
+
+Não crie configurações avançadas agora.
+Não crie campos desnecessários.`,
+    agentPrompt: `Meu app precisa guardar dados de usuário.
+
+App:
+[descreva o app]
+
+O que o usuário faz dentro dele:
+[descreva]
+
+Me ajude a decidir:
+
+1. Quais dados preciso salvar no perfil?
+2. Quais dados são desnecessários agora?
+3. Preciso de status, plano ou tipo de acesso?
+4. Qual prompt devo colar no Lovable?`,
+    correctionPrompt: `O perfil do usuário não está sendo criado ou exibido corretamente. Corrija a ligação entre usuário autenticado e perfil.
+
+Verifique:
+
+1. Se cada usuário tem apenas um perfil.
+2. Se o perfil aparece na tela Minha conta.
+3. Se os dados pertencem ao usuário correto.
+4. Se não há vazamento de dados entre usuários.
+5. Se o logout continua funcionando.`,
+    advanceCriteria:
+      "Avance quando cada usuário logado conseguir ver seus próprios dados.",
+  },
+  {
+    n: 3,
+    title: "Proteger área restrita",
+    purpose: "Garantir que só usuário logado acesse determinadas páginas.",
+    when: "Quando seu app já tem uma área que não pode ficar pública.",
+    where: "Cole no Lovable.",
+    result:
+      "Usuário deslogado não acessa área protegida. Usuário logado acessa normalmente.",
+    objective: "Garantir que só usuário logado acesse determinadas páginas.",
+    whenLovableDirect:
+      "Quando seu app já tem uma área que não pode ficar pública.",
+    whenAgentFirst: "Quando você não sabe quais páginas devem ser protegidas.",
+    content: `Proteja as páginas principais do app.
 
 Regras:
-- Cada usuário só vê os próprios dados.
-- Não usar service role no frontend.`,
-  ),
-  cmd(
-    3,
-    "Criar regras de acesso",
-    "Define quem pode ver, criar, editar e apagar dados.",
-    "Depois que o banco existir.",
-    "Cole no Lovable.",
-    "Políticas RLS revisadas e testadas.",
-    `Revise as regras de acesso do banco.
 
-Para cada tabela, defina:
-1. Quem pode ler
-2. Quem pode inserir
-3. Quem pode atualizar
-4. Quem pode apagar
-5. Política para admin
+1. Usuário deslogado deve ser enviado para /login.
+2. Usuário logado deve acessar a área principal.
+3. Mostrar estado de carregamento enquanto verifica o login.
+4. Evitar tela piscando entre logado e deslogado.
+5. Manter mensagens claras.
 
-Regra: usuário comum não acessa dados de outro usuário.`,
-  ),
-  cmd(
-    4,
-    "Criar área restrita",
-    "Cria a área onde o comprador acessa o conteúdo.",
-    "Quando o produto precisa de área exclusiva.",
-    "Cole no Lovable.",
-    "Página protegida por login + acesso liberado.",
-    `Crie uma área restrita para compradores.
+Não crie regras complexas ainda.
+Apenas proteja o acesso básico.`,
+    agentPrompt: `Preciso decidir quais partes do meu app devem ser protegidas.
 
-A área deve:
-1. Exigir login
-2. Exigir acesso liberado
-3. Mostrar boas-vindas
-4. Mostrar o que o usuário comprou
-5. Mostrar próximos passos
-6. Esconder conteúdo para quem não tem acesso`,
-  ),
-  cmd(
-    5,
-    "Criar painel admin",
-    "Permite ao dono liberar e revogar acesso.",
-    "Quando você precisa controlar quem entra.",
-    "Cole no Lovable.",
-    "Tela admin protegida.",
-    `Crie um painel admin simples.
+App:
+[descreva]
 
-Funções:
-1. Buscar usuário por e-mail
-2. Ver status de acesso
-3. Liberar acesso
-4. Revogar acesso
-5. Ver data de criação
+Páginas atuais:
+[descreva]
+
+Me diga:
+
+1. O que pode ser público?
+2. O que precisa de login?
+3. O que precisa ser premium?
+4. Qual fluxo simples devo pedir ao Lovable?`,
+    correctionPrompt: `A área restrita está falhando. Corrija o controle de acesso.
+
+Problemas possíveis:
+
+1. Usuário deslogado consegue entrar.
+2. Usuário logado é mandado para login.
+3. Página pisca antes de carregar.
+4. Logout não limpa sessão.
+5. Redirecionamento está errado.
+
+Corrija sem refazer o app inteiro.`,
+    advanceCriteria:
+      "Avance quando usuário deslogado não conseguir acessar área protegida e usuário logado conseguir acessar normalmente.",
+  },
+  {
+    n: 4,
+    title: "Criar acesso especial ou admin",
+    purpose:
+      "Separar usuário comum, comprador, assinante ou admin, quando necessário.",
+    when: "Quando o app realmente precisa separar níveis de acesso.",
+    where: "Cole no Lovable.",
+    result: "Cada tipo de usuário acessa apenas o que deve acessar.",
+    objective:
+      "Separar usuário comum, comprador, assinante ou admin, quando necessário.",
+    whenLovableDirect:
+      "Quando o app realmente precisa separar níveis de acesso.",
+    whenAgentFirst: "Quando você não sabe se precisa de admin no MVP.",
+    content: `Crie uma lógica simples de permissão para usuários.
+
+Antes de implementar, verifique se o app realmente precisa disso no MVP.
+
+Se precisar, criar:
+
+1. Usuário comum.
+2. Usuário com acesso liberado.
+3. Admin, apenas se necessário.
 
 Regras:
-- Só admin acessa.
-- Nunca expor service role no frontend.`,
-  ),
+
+1. Usuário comum vê apenas área básica.
+2. Usuário com acesso liberado vê área premium.
+3. Admin vê área de gestão, se existir.
+4. Nunca usar permissões apenas no front-end se houver dados sensíveis.
+5. Nunca expor chave service role no frontend.
+6. Manter mensagens claras quando o acesso for negado.`,
+    agentPrompt: `Meu app precisa de permissões?
+
+App:
+[descreva]
+
+Tipos de usuário que imagino:
+[descreva]
+
+Analise:
+
+1. Preciso de admin no MVP?
+2. Preciso de área premium?
+3. Preciso de comprador, assinante ou usuário comum?
+4. O que pode ficar simples agora?
+5. O que deve ficar para versão 2?
+6. Qual prompt seguro devo colar no Lovable?`,
+    correctionPrompt: `As permissões ficaram confusas. Simplifique.
+
+Use no máximo:
+
+1. Usuário sem acesso.
+2. Usuário com acesso.
+3. Admin.
+
+Explique quais páginas cada tipo pode acessar e corrija o fluxo.
+Não exponha dados sensíveis.
+Não exponha chave service role no frontend.`,
+    advanceCriteria:
+      "Avance quando cada tipo de usuário acessar apenas o que deve acessar.",
+  },
+  {
+    n: 5,
+    title: "Auditar login e banco antes da venda",
+    purpose:
+      "Verificar se o app está seguro e funcional antes de criar pagamento ou vender.",
+    when: "Antes de criar página de venda, checkout ou área premium.",
+    where: "Cole no Lovable.",
+    result:
+      "Lista clara do que está aprovado, do que precisa corrigir e do próximo passo.",
+    objective:
+      "Verificar se o app está seguro e funcional antes de criar pagamento ou vender.",
+    whenLovableDirect:
+      "Antes de criar página de venda, checkout ou área premium.",
+    whenAgentFirst:
+      "Quando você não tem certeza se o login, banco e permissões estão simples e seguros.",
+    content: `Faça uma auditoria do login e banco de dados antes de avançar para venda.
+
+Não altere código nesta rodada.
+
+Verifique:
+
+1. Cadastro funciona?
+2. Login funciona?
+3. Logout funciona?
+4. Usuário deslogado fica bloqueado?
+5. Usuário logado acessa a área correta?
+6. Cada usuário vê apenas seus próprios dados?
+7. Existe dado sensível exposto no front-end?
+8. Existe chave service role exposta no frontend?
+9. Existe botão quebrado?
+10. Existe mensagem de erro clara?
+11. O mobile está usável?
+
+Entregue:
+
+1. O que está aprovado.
+2. O que precisa corrigir.
+3. O que não deve ser criado ainda.
+4. Próximo prompt recomendado.`,
+    agentPrompt: `Quero auditar login e banco antes de vender.
+
+App:
+[descreva]
+
+Fluxo atual:
+[descreva]
+
+Tipos de usuário:
+[descreva]
+
+Analise:
+
+1. O acesso está simples?
+2. O app está seguro o suficiente para MVP?
+3. Existem dados expostos?
+4. O que devo testar antes de vender?
+5. Qual prompt devo mandar ao Lovable?`,
+    correctionPrompt: `A auditoria ficou superficial. Refaça com foco em segurança, acesso e dados do usuário.
+
+Avalie:
+
+1. Sessão.
+2. Redirecionamento.
+3. Perfil.
+4. Permissão.
+5. Proteção de página.
+6. Dados sensíveis.
+7. Chave service role.
+8. Teste mobile.`,
+    advanceCriteria:
+      "Avance para página de venda e checkout apenas quando login, perfil e área restrita estiverem funcionando.",
+  },
 ];
 
 export const COMMANDS_VENDA: Command[] = [
