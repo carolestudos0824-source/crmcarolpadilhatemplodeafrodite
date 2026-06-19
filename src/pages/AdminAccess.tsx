@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { AdminOverview } from "@/components/admin/AdminOverview";
+import { GiftCodesPanel } from "@/components/admin/GiftCodesPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -461,6 +462,8 @@ export default function AdminAccess() {
             </div>
           )}
         </div>
+
+        <GiftCodesPanel />
       </div>
     </Section>
   );
