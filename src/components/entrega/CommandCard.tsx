@@ -47,30 +47,11 @@ export const CommandCard = ({
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
-  const [done, setDone] = useState(false);
-  const storageKey = `${STATE_PREFIX}${completedKey}`;
-
-  useEffect(() => {
-    try {
-      setDone(localStorage.getItem(storageKey) === "1");
-    } catch {
-      // ignore
-    }
-  }, [storageKey]);
+  const { isCommandDone, toggleCommand } = useUserProgress();
+  const done = isCommandDone(completedKey);
 
   const toggleDone = () => {
-    const next = !done;
-    setDone(next);
-    try {
-      localStorage.setItem(storageKey, next ? "1" : "0");
-    } catch {
-      // ignore
-    }
-    try {
-      window.dispatchEvent(new Event(COMMAND_TOGGLE_EVENT));
-    } catch {
-      // ignore
-    }
+    toggleCommand(completedKey);
   };
 
   const copyText = async (
