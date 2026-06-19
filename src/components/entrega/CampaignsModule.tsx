@@ -17,8 +17,13 @@ import {
   ChevronDown,
   ClipboardList,
   Rocket,
+  HelpCircle,
+  BookOpen,
+  ExternalLink,
+  Bot,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { APP_CONFIG } from "@/config/appConfig";
 
 type Checklist = Record<string, boolean>;
 type SetChecklist = (v: Checklist | ((p: Checklist) => Checklist)) => void;
