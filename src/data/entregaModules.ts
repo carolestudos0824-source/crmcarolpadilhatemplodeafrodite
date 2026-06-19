@@ -666,47 +666,383 @@ Avalie:
 ];
 
 export const COMMANDS_VENDA: Command[] = [
-  cmd(1, "Criar landing page", "Apresenta e vende o app.", "Quando o MVP funciona e a promessa está clara.", "Cole no Lovable.", "Landing pública completa.",
-    `Crie uma landing page para vender este app.
+  {
+    n: 1,
+    title: "Definir oferta e criar landing page",
+    purpose: "Criar a primeira página que explica e vende o app.",
+    when: "Quando você já sabe público, dor, promessa e entrega.",
+    where: "Cole no Lovable.",
+    result:
+      "Landing page clara, mobile first, com promessa, benefícios, CTA e FAQ.",
+    objective: "Criar a primeira página que explica e vende o app.",
+    whenLovableDirect:
+      "Quando você já sabe público, dor, promessa e entrega.",
+    whenAgentFirst:
+      "Quando você ainda não sabe explicar por que alguém compraria seu app.",
+    content: `Crie uma landing page para vender este app.
 
-App: [descreva]
-Público: [descreva]
-Dor: [descreva]
-Promessa: [descreva]
-Preço: [informe]
+App:
+[descreva]
 
-Inclua: hero, subheadline, CTA, dor, solução, como funciona, benefícios, o que está incluso, preço, FAQ, CTA final.
+Público:
+[descreva]
 
-Regras: mobile first, texto claro, sem promessa exagerada.`),
-  cmd(2, "Criar página de preço", "Mostra planos e o que está incluso.", "Depois da landing.", "Cole no Lovable.", "Página/seção de preço com CTA.",
-    `Crie uma página de preço.
+Dor:
+[descreva]
 
-Produto: [descreva]
-Preço: [informe]
+Promessa:
+[descreva]
 
-Entregue: card de preço, lista do que está incluso, do que não está, garantia, FAQ, CTA e texto de segurança.`),
-  cmd(3, "Criar FAQ", "Responde dúvidas comuns antes da compra.", "Depois da landing.", "Cole no Lovable.", "Seção FAQ com 8 a 12 perguntas.",
-    `Crie uma seção de FAQ para a landing.
+Entrega:
+[descreva o que a pessoa recebe]
 
-Tema: [descreva o produto]
+Crie uma página com:
 
-Inclua 10 perguntas reais sobre: o que é, para quem é, como funciona, prazo, garantia, suporte, pagamento, acesso, atualização e dúvidas técnicas básicas.
+1. Hero forte.
+2. Subtítulo claro.
+3. Botão principal.
+4. Problema que o app resolve.
+5. Como funciona.
+6. Benefícios.
+7. O que está incluso.
+8. O que não está incluso, se fizer sentido.
+9. Prova ou elementos de confiança sem inventar depoimentos.
+10. FAQ.
+11. CTA final.
 
-Regra: respostas curtas, honestas, sem hype.`),
-  cmd(4, "Criar página de confiança", "Reúne provas, segurança e contato.", "Quando faltar confiança no fluxo.", "Cole no Lovable.", "Página com provas e dados de contato.",
-    `Crie uma página de confiança.
+Regras:
 
-Inclua: quem está por trás, como funciona o suporte, política de reembolso, segurança dos dados, contato direto e canais oficiais.
+- Mobile first.
+- Texto claro.
+- Sem promessas exageradas.
+- Sem lorem ipsum.
+- Não inventar resultados garantidos.`,
+    agentPrompt: `Quero transformar meu app em uma oferta vendável.
 
-Regra: nada inventado. Apenas o que for verdade.`),
-  cmd(5, "Melhorar copy da oferta", "Deixa o texto da oferta mais claro e direto.", "Quando a landing existe mas não converte.", "Cole no Lovable.", "Copy revisada da oferta.",
-    `Revise a copy da oferta da landing.
+App:
+[descreva]
 
-Atual: [cole o texto atual]
-Público: [descreva]
-Dor: [descreva]
+Público:
+[descreva]
 
-Reescreva: headline, subheadline, bullets, CTA e parágrafo de garantia. Texto direto, sem clichês, sem promessa exagerada.`),
+Problema que resolve:
+[descreva]
+
+Monetização:
+[preço único, assinatura, serviço, freemium ou não sei]
+
+Analise:
+
+1. Qual é a promessa mais clara?
+2. O que devo vender de verdade?
+3. Quais benefícios devo destacar?
+4. Quais promessas devo evitar?
+5. Qual estrutura de landing devo pedir ao Lovable?`,
+    correctionPrompt: `A landing ficou genérica. Refaça com mais clareza comercial.
+
+Corrija:
+
+1. Hero fraco.
+2. Promessa vaga.
+3. Benefícios genéricos.
+4. Falta de CTA.
+5. Texto longo demais.
+6. Falta de confiança.
+7. Promessas exageradas.
+
+Não invente depoimentos.
+Não prometa resultado garantido.
+Mantenha o foco em clareza, valor e conversão.`,
+    advanceCriteria:
+      "Avance quando uma pessoa leiga conseguir entender em menos de 10 segundos o que o app faz e por que deveria se interessar.",
+  },
+  {
+    n: 2,
+    title: "Criar página de preço",
+    purpose: "Explicar o investimento e o que está incluso.",
+    when: "Quando você já definiu o preço e a entrega.",
+    where: "Cole no Lovable.",
+    result: "Página de preço simples, clara e com CTA.",
+    objective: "Explicar o investimento e o que está incluso.",
+    whenLovableDirect: "Quando você já definiu o preço e a entrega.",
+    whenAgentFirst:
+      "Quando você não sabe quanto cobrar ou se deve vender por preço único ou assinatura.",
+    content: `Crie uma página de preço para este app.
+
+Produto:
+[descreva]
+
+Investimento:
+[informe]
+
+O que está incluso:
+[descreva]
+
+O que não está incluso:
+[descreva]
+
+Crie uma página com:
+
+1. Nome da oferta.
+2. Investimento claro.
+3. Lista do que está incluso.
+4. Lista do que não está incluso.
+5. Garantia ou política, se existir.
+6. FAQ curto.
+7. CTA forte para compra.
+8. Texto de segurança e confiança.
+
+Regras:
+
+- Não esconder valor.
+- Não inventar garantia.
+- Não criar desconto falso.
+- Não prometer resultado garantido.`,
+    agentPrompt: `Preciso definir preço e estrutura de cobrança para meu app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Valor que entrega:
+[descreva]
+
+Me ajude a decidir:
+
+1. Preço único ou assinatura?
+2. Faixa de preço inicial.
+3. O que incluir.
+4. O que deixar fora.
+5. Como comunicar o investimento na página.`,
+    correctionPrompt: `A página de preço ficou confusa. Refaça de forma mais simples.
+
+Precisa conter:
+
+1. Nome da oferta.
+2. Investimento visível.
+3. O que está incluso.
+4. O que não está incluso.
+5. CTA de compra.
+6. FAQ curto.
+7. Aviso sem promessa exagerada.
+
+Remova excesso visual e planos desnecessários.`,
+    advanceCriteria:
+      "Avance quando a pessoa entender exatamente o que compra, quanto paga e o que recebe.",
+  },
+  {
+    n: 3,
+    title: "Criar FAQ de venda",
+    purpose: "Responder dúvidas antes da compra.",
+    when: "Depois de criar landing e preço.",
+    where: "Cole no Lovable.",
+    result: "FAQ com pelo menos 8 perguntas úteis e respostas claras.",
+    objective: "Responder dúvidas antes da compra.",
+    whenLovableDirect: "Depois de criar landing e preço.",
+    whenAgentFirst: "Quando você não sabe quais dúvidas o comprador pode ter.",
+    content: `Crie uma seção de FAQ para a landing.
+
+Tema:
+[descreva o produto]
+
+Inclua perguntas reais sobre:
+
+1. O que é.
+2. Para quem é.
+3. Para quem não é.
+4. Como funciona.
+5. O que está incluso.
+6. Pagamento.
+7. Acesso.
+8. Suporte.
+9. Garantia ou política.
+10. Próximo passo após a compra.
+
+Regras:
+
+- Respostas curtas.
+- Tom honesto.
+- Sem hype.
+- Não inventar garantias.
+- Não prometer resultados automáticos.`,
+    agentPrompt: `Quero criar um FAQ para vender meu app.
+
+App:
+[descreva]
+
+Oferta:
+[descreva]
+
+Preço:
+[descreva]
+
+Liste:
+
+1. As principais objeções do comprador.
+2. Perguntas que devem entrar no FAQ.
+3. Respostas curtas e honestas.
+4. O que não devo prometer.`,
+    correctionPrompt: `O FAQ ficou genérico. Refaça com perguntas que realmente bloqueiam a compra.
+
+Inclua dúvidas sobre:
+
+1. Acesso.
+2. Pagamento.
+3. Uso.
+4. Para quem é.
+5. Para quem não é.
+6. Suporte.
+7. Limitações.
+8. Segurança.`,
+    advanceCriteria:
+      "Avance quando o FAQ responder as principais dúvidas que impedem a compra.",
+  },
+  {
+    n: 4,
+    title: "Criar página de confiança",
+    purpose: "Aumentar segurança antes da compra.",
+    when:
+      "Quando o comprador precisa saber quem está por trás, como funciona suporte e quais são os dados de contato.",
+    where: "Cole no Lovable.",
+    result:
+      "Página de confiança honesta, com informações reais e contato claro.",
+    objective: "Aumentar segurança antes da compra.",
+    whenLovableDirect:
+      "Quando o comprador precisa saber quem está por trás, como funciona suporte e quais são os dados de contato.",
+    whenAgentFirst:
+      "Quando você não sabe quais elementos de confiança seu produto precisa.",
+    content: `Crie uma página de confiança para este app.
+
+A página deve conter:
+
+1. Quem está por trás do produto.
+2. Como funciona o suporte.
+3. Política de reembolso, se existir.
+4. Segurança dos dados.
+5. Formas de contato.
+6. Canais oficiais.
+7. O que o produto faz.
+8. O que o produto não promete.
+
+Regras:
+
+- Não inventar depoimentos.
+- Não inventar CNPJ.
+- Não inventar garantia.
+- Não inventar certificações.
+- Usar apenas informações verdadeiras.`,
+    agentPrompt: `Quero criar uma página de confiança para meu app.
+
+Produto:
+[descreva]
+
+Responsável:
+[descreva]
+
+Suporte:
+[descreva]
+
+Política:
+[descreva]
+
+Me ajude a definir:
+
+1. O que precisa aparecer para gerar confiança.
+2. O que não devo prometer.
+3. Quais dados legais faltam.
+4. Qual prompt devo mandar ao Lovable.`,
+    correctionPrompt: `A página de confiança inventou ou exagerou informações. Corrija.
+
+Regras:
+
+1. Remova depoimentos inventados.
+2. Remova certificações falsas.
+3. Remova garantias inexistentes.
+4. Use apenas dados reais.
+5. Explique suporte, contato, segurança e limites do produto.`,
+    advanceCriteria:
+      "Avance quando a página transmitir segurança sem inventar prova.",
+  },
+  {
+    n: 5,
+    title: "Revisar copy da oferta",
+    purpose: "Deixar o texto mais claro, direto e convincente.",
+    when: "Quando a landing existe, mas ainda não está forte.",
+    where: "Cole no Lovable.",
+    result: "Copy mais clara, direta e forte, sem exagero.",
+    objective: "Deixar o texto mais claro, direto e convincente.",
+    whenLovableDirect: "Quando a landing existe, mas ainda não está forte.",
+    whenAgentFirst:
+      "Quando você não sabe se a oferta está clara ou se a promessa está boa.",
+    content: `Revise a copy da oferta da landing.
+
+Contexto:
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Dor:
+[descreva]
+
+Promessa:
+[descreva]
+
+Reescreva:
+
+1. Headline.
+2. Subheadline.
+3. Benefícios.
+4. Bullets.
+5. CTA.
+6. Parágrafo de garantia ou segurança, se existir.
+7. FAQ, se necessário.
+
+Regras:
+
+- Texto direto.
+- Sem clichês.
+- Sem promessa exagerada.
+- Sem inventar prova.
+- Não aumentar escopo do produto.
+- Manter clareza acima de criatividade.`,
+    agentPrompt: `Quero revisar a oferta do meu app antes de vender.
+
+Cole aqui minha headline, promessa, preço e principais seções:
+[cole]
+
+Analise:
+
+1. Está claro?
+2. Está vendável?
+3. Está exagerado?
+4. Está genérico?
+5. O que devo reescrever?
+6. Qual prompt devo mandar ao Lovable?`,
+    correctionPrompt: `A revisão da copy ficou genérica. Refaça com foco em clareza e conversão.
+
+Melhore:
+
+1. Headline.
+2. Subheadline.
+3. Benefícios específicos.
+4. CTA.
+5. FAQ.
+6. O que está incluso.
+7. O que não está incluso.
+
+Remova:
+
+1. Hype.
+2. Promessas irreais.
+3. Frases vagas.
+4. Textos longos demais.`,
+    advanceCriteria:
+      "Avance quando a oferta explicar com clareza o valor do app, o que a pessoa recebe e qual ação deve tomar.",
+  },
 ];
 
 export const COMMANDS_CHECKOUT: Command[] = [
@@ -1302,8 +1638,8 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Não avance para venda ou checkout antes de testar se o usuário consegue entrar, sair e acessar a área correta.",
   },
   venda: {
-    doNow: "Crie primeiro a landing page. Depois preço, FAQ e confiança.",
-    advanceWhen: "Avance quando a landing page estiver no ar e explicando claramente seu app.",
+    doNow: "Defina a promessa, crie a landing, explique o preço, responda dúvidas e reforce confiança.",
+    advanceWhen: "Antes de criar checkout, garanta que a pessoa entende o valor do app em menos de 10 segundos.",
   },
   checkout: {
     doNow: "Crie o checkout, a página de obrigado e a área de entrega na ordem.",
