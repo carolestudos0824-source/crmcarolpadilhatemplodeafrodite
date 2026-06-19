@@ -154,24 +154,46 @@ export default function AdminAccess() {
   return (
     <Section>
       <div className="max-w-2xl mx-auto">
-        <header className="mb-8">
+        <header className="mb-6">
           <h1 className="text-2xl md:text-3xl font-heading font-bold mb-2">
-            Gerenciar acessos
+            Painel Admin de Acessos
           </h1>
           <p className="text-sm text-muted-foreground">
-            Libere ou revogue o acesso de compradores à área de entrega.
+            Libere, consulte ou revogue o acesso de compradores à área interna do programa.
           </p>
         </header>
 
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 mb-4 flex items-start gap-2">
+          <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+          <span>
+            Libere acesso apenas após confirmar o pagamento. Esta tela é exclusiva para administradores.
+          </span>
+        </div>
+
+        <div className="glass-strong p-5 mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <InfoIcon size={16} className="text-accent" />
+            <h2 className="font-heading font-semibold text-sm">Fluxo de liberação manual</h2>
+          </div>
+          <ol className="list-decimal list-inside space-y-1 text-xs text-muted-foreground">
+            <li>Confirme o pagamento no gateway ou WhatsApp.</li>
+            <li>Busque o comprador pelo e-mail usado na compra.</li>
+            <li>Verifique o status atual do acesso.</li>
+            <li>Libere ou revogue o acesso quando necessário.</li>
+            <li>Oriente o comprador a entrar em Minha área.</li>
+          </ol>
+        </div>
+
         <SelfGrant />
-
-
 
         <div className="glass-strong p-6 mb-6">
           <form onSubmit={onSearch} className="space-y-3">
             <label className="text-xs text-muted-foreground block">
               E-mail do comprador
             </label>
+            <p className="text-[11px] text-muted-foreground -mt-1">
+              Digite o e-mail usado pelo comprador no cadastro ou na compra.
+            </p>
             <div className="flex flex-col sm:flex-row gap-2">
               <input
                 className={inputCls}
@@ -187,7 +209,7 @@ export default function AdminAccess() {
                 className="btn-primary"
               >
                 {status.kind === "loading" ? (
-                  <Loader2 size={16} className="animate-spin" />
+                  <><Loader2 size={16} className="animate-spin" /> Buscando comprador...</>
                 ) : (
                   <>
                     <Search size={16} /> Buscar
@@ -199,28 +221,55 @@ export default function AdminAccess() {
         </div>
 
         {status.kind === "not_found" && (
-          <div className="glass-strong p-6 text-center text-muted-foreground">
-            Nenhum usuário encontrado com este e-mail no Auth.
+          <div className="glass-strong p-6 text-center text-muted-foreground text-sm">
+            Nenhum usuário encontrado com este e-mail. Verifique se o comprador já criou conta.
           </div>
         )}
 
         {status.kind === "error" && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-            {status.message}
+            Não foi possível buscar este comprador agora. Tente novamente ou verifique permissões de admin.
+            <div className="text-[11px] text-red-200/70 mt-1">Detalhe: {status.message}</div>
           </div>
         )}
 
         {status.kind === "success" && (
-          <div className="rounded-xl border border-accent/30 bg-accent/10 text-accent text-sm px-4 py-3 mb-4">
-            {status.message}
+          <div className="space-y-3 mb-4">
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+              {status.message}{status.row?.email ? ` para ${status.row.email}.` : ""}
+            </div>
+            {status.row?.has_access && (
+              <div className="glass-strong p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p className="text-sm text-muted-foreground">
+                  Agora oriente o comprador a acessar: Minha área.
+                </p>
+                <Link
+                  to="/entrega"
+                  className="text-xs px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 font-semibold whitespace-nowrap"
+                >
+                  Ir para Minha área <ArrowRight size={12} />
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
         {row && (
           <div className="glass-strong p-6 space-y-4">
-            <div className="flex items-center gap-2">
-              <UserCheck size={18} className="text-accent" />
-              <h2 className="font-heading font-semibold">Comprador encontrado</h2>
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                <UserCheck size={18} className="text-accent" />
+                <h2 className="font-heading font-semibold">Comprador encontrado</h2>
+              </div>
+              <span
+                className={`text-[11px] px-2.5 py-1 rounded-full border ${
+                  row.access_exists && row.has_access
+                    ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+                    : "bg-white/10 text-muted-foreground border-white/15"
+                }`}
+              >
+                {row.access_exists && row.has_access ? "Acesso ativo" : "Sem acesso"}
+              </span>
             </div>
 
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
