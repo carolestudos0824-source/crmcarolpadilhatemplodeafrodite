@@ -735,6 +735,149 @@ const ConstruirIntro = () => {
   );
 };
 
+const LoginIntro = () => {
+  const [showZero, setShowZero] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
+
+  const tutorialSteps = [
+    "Crie o login",
+    "Crie o perfil",
+    "Proteja a área",
+    "Teste usuário comum",
+    "Teste acesso especial",
+  ];
+
+  const glossary: [string, string][] = [
+    ["Login", "tela onde o usuário entra no app."],
+    ["Cadastro", "criação da conta do usuário."],
+    ["Banco de dados", "lugar onde o app guarda informações."],
+    ["Tabela", "grupo de dados organizados, como usuários, pedidos ou conteúdos."],
+    ["Perfil", "dados principais de cada usuário."],
+    ["Permissão", "regra que define quem pode acessar cada parte."],
+    ["Área restrita", "página que só usuário logado pode ver."],
+    ["Admin", "usuário com permissão especial."],
+    ["Supabase", "ferramenta usada para login e banco de dados."],
+    ["Service role", "chave mestra do banco, nunca deve aparecer no frontend."],
+  ];
+
+  return (
+    <section className="mb-8 space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
+        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
+          <Sparkles size={12} /> Login e banco — Modo Guiado
+        </span>
+        <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
+          Configure login e banco sem se perder
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
+          Login é a porta de entrada do usuário. Banco de dados é onde o app
+          guarda informações. Nesta etapa, você vai criar acesso, perfis e áreas
+          protegidas.
+        </p>
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-5">
+          Não avance para venda ou checkout antes de testar se o usuário consegue
+          entrar, sair e acessar a área correta.
+        </p>
+
+        {/* Mini tutorial visual */}
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            {tutorialSteps.map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[12px] md:text-[13px] text-foreground/90">
+                  <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </div>
+                {i < tutorialSteps.length - 1 && (
+                  <span className="text-muted-foreground/50 hidden md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Repita os testes antes de avançar para venda.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="btn-primary text-sm min-h-[44px]"
+            type="button"
+          >
+            <Sparkles size={14} /> Não entendo login e banco
+          </button>
+          <a
+            href={APP_CONFIG.GPT_AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+          >
+            <Sparkles size={14} /> Abrir Agente Arquiteto
+          </a>
+          <a
+            href={LOVABLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+          >
+            <ExternalLink size={14} /> Abrir Lovable
+          </a>
+        </div>
+
+        {showZero && (
+          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
+            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Peça ao Lovable para criar login com e-mail e senha.</li>
+              <li>Peça para criar uma tabela de perfil do usuário.</li>
+              <li>Peça para proteger a área principal.</li>
+              <li>Crie um usuário de teste.</li>
+              <li>Entre, saia e entre de novo para confirmar que funciona.</li>
+            </ol>
+          </div>
+        )}
+      </div>
+
+      {/* Alerta de segurança service role */}
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 flex items-start gap-3">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <div>
+          <strong>Nunca exponha chave service role no frontend.</strong> Essa
+          chave é como uma chave mestra do banco e nunca deve aparecer no app
+          público.
+        </div>
+      </div>
+
+      {/* Microglossário */}
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowGlossary((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+        </button>
+        {showGlossary && (
+          <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+            {glossary.map(([term, def]) => (
+              <div key={term} className="flex gap-2">
+                <dt className="text-accent font-semibold shrink-0">{term}:</dt>
+                <dd className="text-foreground/80">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </section>
+  );
+};
+
+
+
 
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
   if (active === "comece") {
