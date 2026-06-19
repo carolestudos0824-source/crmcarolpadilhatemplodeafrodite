@@ -129,25 +129,33 @@ export default function AdminAccess() {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) {
-        navigate("/login", { replace: true });
-        return;
+      try {
+        const { data: userData, error: userErr } = await supabase.auth.getUser();
+        if (userErr) throw userErr;
+        if (!userData.user) {
+          navigate("/login", { replace: true });
+          return;
+        }
+        const uid = userData.user.id;
+        const [adminRes, accessRes] = await Promise.all([
+          supabase.rpc("is_admin"),
+          supabase
+            .from("user_access")
+            .select("has_access")
+            .eq("user_id", uid)
+            .maybeSingle(),
+        ]);
+        if (!mounted) return;
+        setIsAdmin(Boolean(adminRes.data));
+        setAdminEmail(userData.user.email ?? null);
+        setSelfHasAccess(accessRes.data?.has_access ?? false);
+        setAuthChecked(true);
+      } catch (e) {
+        if (!mounted) return;
+        const msg = e instanceof Error ? e.message : "Erro desconhecido.";
+        setAuthError(msg);
+        setAuthChecked(true);
       }
-      const uid = userData.user.id;
-      const [{ data: adminFlag }, { data: access }] = await Promise.all([
-        supabase.rpc("is_admin"),
-        supabase
-          .from("user_access")
-          .select("has_access")
-          .eq("user_id", uid)
-          .maybeSingle(),
-      ]);
-      if (!mounted) return;
-      setIsAdmin(Boolean(adminFlag));
-      setAdminEmail(userData.user.email ?? null);
-      setSelfHasAccess(access?.has_access ?? false);
-      setAuthChecked(true);
     })();
     return () => {
       mounted = false;
