@@ -1,67 +1,89 @@
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Layers, Database, DollarSign, Rocket, Brain, Target, ChevronRight, FileText, Workflow, Wand2 } from "lucide-react";
+import {
+  Sparkles, Layers, Database, DollarSign, Rocket, Brain, Target, ChevronRight,
+  FileText, Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
+  Calendar, Lightbulb, Palette, Code2, Check,
+} from "lucide-react";
 import { Section } from "@/components/Section";
 import { GlassCard } from "@/components/GlassCard";
 import { HeroVisual } from "@/components/HeroVisual";
-import { PricingCard } from "@/components/PricingCard";
 import { FAQItem } from "@/components/FAQItem";
-import { PLANS } from "@/data/plans";
 
-const dorItems = [
-  { icon: <Target size={20} />, t: "Qual funcionalidade criar primeiro" },
-  { icon: <Layers size={20} />, t: "Como organizar as telas" },
-  { icon: <Database size={20} />, t: "Qual tecnologia e banco usar" },
-  { icon: <DollarSign size={20} />, t: "Como monetizar a ideia" },
-  { icon: <Brain size={20} />, t: "Como transformar ideia em execução" },
-  { icon: <Rocket size={20} />, t: "Por onde começar sem travar" },
+const planoExecutavel = [
+  { icon: <Brain size={20} />, t: "Diagnóstico da ideia" },
+  { icon: <Layers size={20} />, t: "MVP enxuto" },
+  { icon: <Workflow size={20} />, t: "Arquitetura do app" },
+  { icon: <Database size={20} />, t: "Banco de dados e telas" },
+  { icon: <Wand2 size={20} />, t: "Prompts para IA" },
+  { icon: <Megaphone size={20} />, t: "Campanha de lançamento" },
+  { icon: <LineChart size={20} />, t: "Métricas para validar" },
 ];
 
-const promessa = [
-  { icon: <Brain size={20} />, t: "Diagnóstico estratégico da sua ideia" },
-  { icon: <Layers size={20} />, t: "MVP com no máximo 5 funcionalidades" },
-  { icon: <Workflow size={20} />, t: "Arquitetura e fluxo do usuário" },
-  { icon: <FileText size={20} />, t: "Estrutura de telas e banco de dados" },
-  { icon: <Wand2 size={20} />, t: "Prompt mestre pronto para construir" },
+const entregasFinais = [
+  "Diagnóstico estratégico da ideia",
+  "MVP com no máximo 5 funcionalidades",
+  "Arquitetura do aplicativo",
+  "Fluxo do usuário",
+  "Stack recomendada",
+  "Modelo de banco de dados",
+  "Estrutura de páginas",
+  "Design recomendado",
+  "Plano de monetização",
+  "Plano de lançamento",
+  "Prompt mestre para Lovable, Cursor, Claude Code, Gemini, Replit, Supabase, Firebase, Vercel ou Netlify",
+  "Campanha pronta para divulgar",
+  "Métricas para acompanhar",
 ];
 
-const entregas = [
-  { t: "Diagnóstico da ideia", d: "Análise do potencial, público e formato ideal." },
-  { t: "MVP enxuto", d: "Até 5 funcionalidades essenciais para validar rápido." },
-  { t: "Estrutura do app", d: "Telas, fluxos, modelo de dados e stack recomendada." },
-  { t: "Monetização", d: "Modelo de receita aplicável ao seu app." },
-  { t: "Prompt mestre", d: "Comando pronto para colar em Lovable, Cursor, Claude ou Gemini." },
+const centralVendas = [
+  { icon: <Target size={20} />, t: "Diagnóstico da campanha" },
+  { icon: <Wand2 size={20} />, t: "Gerador de campanha" },
+  { icon: <Lightbulb size={20} />, t: "Campanhas prontas" },
+  { icon: <ImageIcon size={20} />, t: "Criativos e textos" },
+  { icon: <Calendar size={20} />, t: "Plano de 7 dias" },
+  { icon: <LineChart size={20} />, t: "Calculadora de métricas" },
+  { icon: <Sparkles size={20} />, t: "Melhorias sugeridas" },
+  { icon: <Megaphone size={20} />, t: "Campanha pronta para copiar" },
 ];
 
-const passos = [
-  { n: "01", t: "Você descreve sua ideia" },
-  { n: "02", t: "A IA analisa o potencial" },
-  { n: "03", t: "O sistema define o MVP" },
-  { n: "04", t: "Você recebe o plano completo" },
-  { n: "05", t: "Você usa o prompt para construir" },
+const mockups = [
+  { icon: <Brain size={22} />, t: "Diagnóstico do app", d: "Análise do potencial, público e formato ideal da sua ideia." },
+  { icon: <Wand2 size={22} />, t: "Prompt mestre", d: "Comando completo para colar em Lovable, Cursor, Claude ou Gemini." },
+  { icon: <Megaphone size={22} />, t: "Central de Vendas", d: "Sete módulos para criar uma campanha sem travar." },
+  { icon: <Rocket size={22} />, t: "Campanha pronta", d: "Texto, criativo, oferta e canal — tudo consolidado pra publicar." },
+  { icon: <LineChart size={22} />, t: "Calculadora de métricas", d: "CPC, CPA, ROAS e diagnóstico automático do resultado." },
+  { icon: <ListChecks size={22} />, t: "Checklist de progresso", d: "Acompanhe a execução etapa por etapa, salvo no seu acesso." },
+];
+
+const beneficios = [
+  "Análise da ideia", "MVP enxuto", "Arquitetura do app", "Banco de dados",
+  "Telas e fluxo do usuário", "Monetização", "Plano de lançamento",
+  "Prompt mestre para construir", "Central de Vendas e Aquisição",
+  "Campanhas e criativos", "Métricas de validação", "Checklist de execução",
 ];
 
 const naoIncluso = [
-  "Desenvolvimento feito por humanos",
-  "Publicação nas lojas de aplicativos",
-  "Design personalizado sob demanda",
-  "Garantia de faturamento automático",
-  "Substituição da validação com usuários reais",
+  "Não desenvolvemos o app por você",
+  "Não garantimos vendas ou aprovação da ideia",
+  "Não substitui validação com usuários reais",
+  "Não inclui tráfego pago ou gestão de anúncios",
+  "Não inclui suporte individual ilimitado",
 ];
 
 const faqs = [
-  { q: "Preciso saber programar?", a: "Não. A Fábrica de Apps com IA foi feita para quem não programa e quer usar ferramentas como Lovable, Cursor, Claude Code, Gemini ou Replit." },
-  { q: "Recebo um app pronto?", a: "Não. Você recebe o plano completo do app: diagnóstico, MVP, arquitetura, fluxo, telas, banco, monetização e o prompt mestre para construir com IA." },
-  { q: "Posso usar com Lovable ou Cursor?", a: "Sim. O prompt mestre foi pensado para funcionar em Lovable, Cursor, Claude Code, Gemini, Replit e ferramentas similares." },
-  { q: "Funciona para qualquer tipo de app?", a: "Sim. Serve para SaaS, apps simples, ferramentas com IA, produtos digitais, marketplaces básicos e soluções para clientes." },
-  { q: "O pagamento é único?", a: "Sim. R$47 de pagamento único. Sem mensalidade, sem cobrança recorrente." },
-  { q: "Posso usar para mais de uma ideia?", a: "Sim. Você pode rodar o agente quantas vezes quiser, para quantas ideias quiser." },
-  { q: "Preciso ter conta no ChatGPT?", a: "Sim. Para usar o Agente Arquiteto Supremo, você precisa estar logado em uma conta ChatGPT. O produto não inclui conta paga do ChatGPT nem assinatura de ferramentas externas." },
+  { q: "Eu recebo só um plano ou também prompts?", a: "Você recebe o plano completo do app E os prompts prontos: prompt mestre para construir, prompts de landing, checkout, monetização e lançamento — além da Central de Vendas e Aquisição." },
+  { q: "Isso serve para quem vai usar Lovable ou Cursor?", a: "Sim. O prompt mestre foi escrito para funcionar em Lovable, Cursor, Claude Code, Gemini, Replit e ferramentas similares com Supabase, Firebase, Vercel ou Netlify." },
+  { q: "O programa me ajuda a lançar a ideia?", a: "Sim. Além do plano técnico, você tem o plano de lançamento e a Central de Vendas, com campanhas prontas, criativos, plano de 7 dias e calculadora de métricas." },
+  { q: "A Central de Vendas está inclusa?", a: "Sim. Está inclusa no mesmo acesso, sem custo adicional." },
+  { q: "O pagamento é único?", a: "Sim. R$47 de pagamento único, acesso imediato, sem mensalidade nem cobrança recorrente." },
+  { q: "Preciso saber programar?", a: "Não. A Fábrica foi feita para quem não programa e quer usar IA para tirar a ideia do papel." },
+  { q: "Recebo um app pronto?", a: "Não. Você recebe o plano executável e os prompts. Quem constrói o app é você, com a IA da sua preferência." },
+  { q: "Preciso ter conta no ChatGPT?", a: "Sim, para usar o Agente Arquiteto Supremo. O produto não inclui assinatura de ChatGPT nem de outras ferramentas externas." },
 ];
 
 export default function Home() {
   const navigate = useNavigate();
-  const fabrica = PLANS[0];
-  const goFabrica = () => navigate("/checkout?plano=fabrica");
+  const goCheckout = () => navigate("/checkout?plano=fabrica");
 
   return (
     <>
@@ -71,19 +93,19 @@ export default function Home() {
           <div className="space-y-6 animate-fade-up">
             <span className="inline-block text-xs uppercase tracking-[0.3em] text-accent">Fábrica de Apps com IA</span>
             <h1 className="text-4xl md:text-6xl font-heading font-bold leading-[1.05] text-gradient">
-              Transforme sua ideia em um plano de app pronto para construir com IA
+              Tire sua ideia do papel com um plano de app, prompts prontos e campanha de lançamento
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              Diagnóstico, MVP, arquitetura, fluxo, telas, banco de dados, monetização e prompt mestre. Tudo em um único acesso por R$47.
+              A Fábrica de Apps com IA transforma sua ideia em diagnóstico, MVP, arquitetura, banco de dados, telas, monetização, prompts para IA e campanha pronta para divulgar.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button className="btn-primary" onClick={goFabrica}>
-                Quero meu plano de app por R$47 <ChevronRight size={18} />
+              <button className="btn-primary" onClick={goCheckout}>
+                Quero criar meu plano por R$47 <ChevronRight size={18} />
               </button>
-              <a href="#entrega" className="btn-ghost">Ver exemplo de entrega</a>
+              <a href="#incluso" className="btn-ghost">Ver o que está incluso</a>
             </div>
             <p className="text-sm text-muted-foreground/80">
-              Você não precisa saber programar. Use o plano em Lovable, Cursor, Claude, Gemini ou Replit.
+              Sem precisar programar. Use o plano em Lovable, Cursor, Claude, Gemini ou Replit.
             </p>
           </div>
           <div className="order-first lg:order-last">
@@ -92,30 +114,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* DOR */}
+      {/* PLANO EXECUTÁVEL */}
       <Section
-        eyebrow="Por que você trava"
-        title="Você tem a ideia. O que falta é o plano."
-        subtitle="A maioria das ideias morre porque não vira execução. Você não sabe:"
+        eyebrow="Mais do que um PDF"
+        title="Você não recebe só um PDF. Você recebe um plano executável."
       >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {dorItems.map((d) => (
-            <GlassCard key={d.t} className="flex items-start gap-3">
-              <div className="text-accent shrink-0 mt-1">{d.icon}</div>
-              <p className="text-base text-foreground/90">{d.t}</p>
-            </GlassCard>
-          ))}
-        </div>
-      </Section>
-
-      {/* PROMESSA */}
-      <Section
-        eyebrow="A solução"
-        title="A Fábrica de Apps com IA transforma sua ideia em um plano executável"
-        subtitle="Você descreve a ideia. O agente entrega tudo o que você precisa para construir com IA."
-      >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-          {promessa.map((p) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {planoExecutavel.map((p) => (
             <GlassCard key={p.t} className="flex items-start gap-3">
               <div className="text-accent shrink-0 mt-1">{p.icon}</div>
               <p className="text-base text-foreground/90">{p.t}</p>
@@ -124,30 +129,70 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* O QUE VOCÊ RECEBE */}
+      {/* ENTREGAS FINAIS */}
       <Section
-        id="entrega"
-        eyebrow="O que você recebe"
-        title="5 entregas para sair da ideia e chegar no plano"
+        id="incluso"
+        eyebrow="Entrega completa"
+        title="No final, você sai com isso pronto"
+        subtitle="Tudo organizado, em um único acesso, pronto pra colar nas ferramentas que você já usa."
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {entregas.map((e, i) => (
-            <GlassCard key={e.t}>
-              <div className="text-3xl font-heading font-bold text-gold mb-2">0{i + 1}</div>
-              <p className="font-semibold text-base mb-1">{e.t}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">{e.d}</p>
+        <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
+          <ul className="grid md:grid-cols-2 gap-3">
+            {entregasFinais.map((e) => (
+              <li key={e} className="flex items-start gap-3 text-base text-foreground/90">
+                <Check size={18} className="text-accent shrink-0 mt-1" />
+                <span>{e}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      {/* CENTRAL DE VENDAS */}
+      <Section
+        eyebrow="Central de Vendas e Aquisição"
+        title="Depois do plano, você também prepara a venda"
+        subtitle="Use a Central de Vendas e Aquisição para transformar sua ideia em uma campanha simples, copiável e mensurável."
+      >
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {centralVendas.map((c) => (
+            <GlassCard key={c.t} className="flex items-start gap-3">
+              <div className="text-accent shrink-0 mt-1">{c.icon}</div>
+              <p className="text-base text-foreground/90">{c.t}</p>
             </GlassCard>
           ))}
         </div>
       </Section>
 
-      {/* COMO FUNCIONA */}
-      <Section eyebrow="Como funciona" title="Em 5 passos simples">
-        <div className="grid md:grid-cols-5 gap-4">
-          {passos.map((p) => (
-            <GlassCard key={p.n} className="text-center">
-              <div className="text-3xl font-heading font-bold text-gold mb-2">{p.n}</div>
-              <p className="text-base text-foreground/90">{p.t}</p>
+      {/* MOCKUPS / DENTRO DO PRODUTO */}
+      <Section
+        eyebrow="Por dentro do produto"
+        title="Veja o que você encontra por dentro"
+        subtitle="Uma jornada guiada da ideia ao lançamento, com checklists e blocos prontos pra copiar."
+      >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {mockups.map((m) => (
+            <GlassCard key={m.t} className="space-y-4">
+              {/* Mockup visual */}
+              <div className="rounded-lg border border-border/60 bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4 h-36 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="text-accent">{m.icon}</div>
+                  <div className="h-2 w-24 rounded bg-foreground/20" />
+                </div>
+                <div className="space-y-1.5 mt-1">
+                  <div className="h-1.5 w-full rounded bg-foreground/15" />
+                  <div className="h-1.5 w-5/6 rounded bg-foreground/15" />
+                  <div className="h-1.5 w-4/6 rounded bg-foreground/10" />
+                </div>
+                <div className="mt-auto flex gap-1.5">
+                  <div className="h-5 w-16 rounded bg-primary/40" />
+                  <div className="h-5 w-12 rounded bg-accent/30" />
+                </div>
+              </div>
+              <div>
+                <p className="font-semibold text-base mb-1">{m.t}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{m.d}</p>
+              </div>
             </GlassCard>
           ))}
         </div>
@@ -155,22 +200,33 @@ export default function Home() {
 
       {/* PREÇO */}
       <Section
-        eyebrow="Preço único"
+        eyebrow="Oferta de lançamento"
         title="Acesso completo por R$47"
-        subtitle="Pagamento único. Sem mensalidade. Ideal para validar sua ideia antes de gastar com desenvolvimento."
+        subtitle="Pagamento único. Acesso imediato. Sem mensalidade."
       >
-        <div className="max-w-md mx-auto">
-          <PricingCard plan={fabrica} />
-          <button className="btn-primary mx-auto mt-6" onClick={goFabrica}>
-            Quero meu plano de app por R$47 <ChevronRight size={18} />
+        <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
+          <div className="text-center mb-6">
+            <div className="text-5xl md:text-6xl font-heading font-bold text-gradient">R$47</div>
+            <p className="text-sm text-muted-foreground mt-2">Pagamento único · Acesso imediato</p>
+          </div>
+          <ul className="grid sm:grid-cols-2 gap-2.5 mb-8">
+            {beneficios.map((b) => (
+              <li key={b} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
+                <Check size={16} className="text-accent shrink-0 mt-1" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+          <button className="btn-primary mx-auto" onClick={goCheckout}>
+            Acessar agora por R$47 <ChevronRight size={18} />
           </button>
-          <p className="text-xs md:text-sm text-muted-foreground/90 leading-relaxed mt-4 text-center">
-            Para usar o Agente Arquiteto Supremo, você precisa estar logado em uma conta ChatGPT. O produto não inclui conta paga do ChatGPT.
+          <p className="text-xs md:text-sm text-muted-foreground/80 mt-4 text-center">
+            Preço de lançamento enquanto o produto está em fase inicial.
           </p>
         </div>
       </Section>
 
-      {/* O QUE NÃO ESTÁ INCLUSO */}
+      {/* NÃO INCLUSO */}
       <Section eyebrow="Importante" title="O que não está incluso">
         <div className="glass-strong p-6 md:p-10 max-w-3xl mx-auto">
           <ul className="space-y-3">
@@ -193,11 +249,13 @@ export default function Home() {
       {/* CTA FINAL */}
       <Section>
         <div className="glass-strong p-10 md:p-16 text-center max-w-4xl mx-auto neon-shadow">
-          <h2 className="text-3xl md:text-5xl font-heading font-bold text-gradient mb-4">Sua ideia não precisa ficar parada</h2>
+          <h2 className="text-3xl md:text-5xl font-heading font-bold text-gradient mb-4">
+            Da ideia ao lançamento, no mesmo acesso
+          </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Transforme sua ideia em um plano claro, simples e pronto para construir com IA.
+            Plano, prompts e campanha — tudo pronto pra você executar com IA.
           </p>
-          <button className="btn-primary mx-auto" onClick={goFabrica}>
+          <button className="btn-primary mx-auto" onClick={goCheckout}>
             Quero acessar por R$47 <ChevronRight size={18} />
           </button>
           <p className="text-sm text-muted-foreground/80 mt-4">
