@@ -1328,25 +1328,29 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "seo") {
     return (
       <section>
+        <SeoIntro />
         <ModuleHeader
-          title="SEO e GEO"
-          subtitle="Use esta etapa para seu app aparecer melhor em buscas e ser entendido por ferramentas de IA."
+          title="Siga as etapas de SEO e GEO"
+          subtitle="Comece pela Etapa 1. Só avance quando cada página tiver motivo claro para existir."
         />
-        <div className="grid sm:grid-cols-2 gap-3 mb-6">
-          <GlassCard className="p-4">
-            <h3 className="font-semibold mb-1 text-sm">SEO</h3>
-            <p className="text-xs text-muted-foreground">
-              Ajuda seu app a aparecer no Google.
-            </p>
-          </GlassCard>
-          <GlassCard className="p-4">
-            <h3 className="font-semibold mb-1 text-sm">GEO</h3>
-            <p className="text-xs text-muted-foreground">
-              Ajuda ferramentas de IA e buscadores inteligentes a entenderem seu app.
-            </p>
-          </GlassCard>
-        </div>
         <CommandList commands={COMMANDS_SEO} moduleKey="seo" />
+        <ChecklistBlock
+          title="Checklist do módulo"
+          items={[
+            "Palavras-chave principais definidas",
+            "Páginas SEO criadas",
+            "FAQ útil publicado",
+            "Páginas GEO explicam o app com clareza",
+            "Páginas de nicho não estão duplicadas",
+            "Schema FAQPage usa conteúdo real",
+            "Schema SoftwareApplication não inventa dados",
+            "Não há keyword stuffing",
+            "Nenhuma promessa de resultado garantido",
+          ]}
+          checklist={checklist}
+          setChecklist={setChecklist}
+          phase="seo"
+        />
       </section>
     );
   }
