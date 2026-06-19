@@ -2053,18 +2053,75 @@ function ChecklistBlock({
   );
 }
 
+const DIAGNOSTIC_COMMAND = `Analise meu app e identifique o problema principal.
+
+O que está acontecendo:
+[descreva o erro]
+
+O que eu tentei fazer:
+[descreva]
+
+Quando o erro aparece:
+[descreva]
+
+Último comando que enviei:
+[cole aqui, se tiver]
+
+Verifique:
+1. Se é erro de layout.
+2. Se é erro de login.
+3. Se é erro de banco.
+4. Se é erro de acesso.
+5. Se é erro de botão.
+6. Se é erro de deploy.
+7. Se é erro de regra ou permissão.
+8. Se o Lovable alterou algo que já estava funcionando.
+
+Não refaça o app inteiro.
+Primeiro me diga:
+1. Causa provável.
+2. Risco.
+3. O que não devo mexer.
+4. Comando exato de correção.
+5. Como testar depois.`;
+
+const ERROR_CATEGORIES = [
+  "Todos",
+  "Lovable",
+  "Login",
+  "Banco",
+  "Mobile",
+  "Acesso",
+  "Venda",
+  "Divulgação",
+  "Validação",
+  "Deploy",
+  "Créditos",
+];
+
+const SEVERITY_STYLES: Record<string, string> = {
+  Leve: "bg-white/10 text-muted-foreground border-white/15",
+  Médio: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+  Crítico: "bg-rose-500/15 text-rose-300 border-rose-500/30",
+};
+
 function ErrorsModule() {
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("Todos");
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return COMMON_ERRORS;
-    return COMMON_ERRORS.filter(
-      (e) =>
+    return COMMON_ERRORS.filter((e) => {
+      const matchCat = category === "Todos" || e.category === category;
+      if (!matchCat) return false;
+      if (!q) return true;
+      return (
         e.title.toLowerCase().includes(q) ||
         e.explanation.toLowerCase().includes(q) ||
-        e.category.toLowerCase().includes(q),
-    );
-  }, [query]);
+        e.category.toLowerCase().includes(q)
+      );
+    });
+  }, [query, category]);
 
   const copy = async (text: string) => {
     try {
@@ -2078,10 +2135,50 @@ function ErrorsModule() {
   return (
     <section>
       <ModuleHeader
-        title="Erros comuns"
-        subtitle="Procure aqui antes de chamar o suporte."
+        title="Central de Correção e Resgate"
+        subtitle="Travou em alguma etapa? Encontre o problema, copie o comando de correção e volte para o Lovable."
       />
-      <div className="relative mb-6 max-w-md">
+
+      <GlassCard className="p-4 mb-5 border-accent/30">
+        <p className="text-sm text-foreground/90">
+          Não refaça o app inteiro por causa de um erro. Primeiro diagnostique, corrija e teste.
+        </p>
+      </GlassCard>
+
+      <GlassCard className="p-5 mb-5">
+        <h3 className="font-heading font-semibold mb-1">Não sei qual é meu erro</h3>
+        <p className="text-sm text-muted-foreground mb-3">
+          Use este diagnóstico quando você não sabe se o problema é no Lovable, login, banco, mobile, acesso, botão ou venda.
+        </p>
+        <div className="rounded-lg border border-white/10 bg-black/40 max-h-44 overflow-auto mb-3">
+          <pre className="text-xs p-3 whitespace-pre-wrap font-mono text-foreground/85">
+            {DIAGNOSTIC_COMMAND}
+          </pre>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => copy(DIAGNOSTIC_COMMAND)}
+            className="px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 text-sm font-semibold"
+          >
+            <Copy size={14} /> Copiar diagnóstico geral
+          </button>
+          {APP_CONFIG.GPT_AGENT_URL && (
+            <a
+              href={APP_CONFIG.GPT_AGENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 inline-flex items-center gap-2 text-sm"
+            >
+              <ExternalLink size={14} /> Abrir Agente Arquiteto
+            </a>
+          )}
+        </div>
+        <p className="text-xs text-muted-foreground mt-3">
+          Se você não sabe explicar o erro, converse com o Agente antes de corrigir no Lovable.
+        </p>
+      </GlassCard>
+
+      <div className="relative mb-4 max-w-md">
         <Search
           size={16}
           className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
@@ -2094,14 +2191,43 @@ function ErrorsModule() {
           className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-accent/50 outline-none text-sm"
         />
       </div>
+
+      <div className="flex flex-wrap gap-2 mb-6">
+        {ERROR_CATEGORIES.map((c) => {
+          const active = c === category;
+          return (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition ${
+                active
+                  ? "bg-accent/20 border-accent/50 text-accent"
+                  : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10"
+              }`}
+            >
+              {c}
+            </button>
+          );
+        })}
+      </div>
+
       <div className="grid md:grid-cols-2 gap-4">
         {filtered.map((e) => (
           <GlassCard key={e.title} className="p-5 space-y-3">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <AlertTriangle size={16} className="text-amber-400" />
               <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
                 {e.category}
               </span>
+              {e.severity && (
+                <span
+                  className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                    SEVERITY_STYLES[e.severity] || ""
+                  }`}
+                >
+                  {e.severity}
+                </span>
+              )}
             </div>
             <h3 className="font-heading font-semibold">{e.title}</h3>
             <p className="text-sm text-muted-foreground">{e.explanation}</p>
@@ -2119,14 +2245,32 @@ function ErrorsModule() {
             >
               <Copy size={14} /> Copiar
             </button>
+            <p className="text-xs text-muted-foreground">
+              Depois de corrigir, teste antes de avançar.
+            </p>
           </GlassCard>
         ))}
         {filtered.length === 0 && (
           <p className="text-sm text-muted-foreground">
-            Nada encontrado. Tente outra palavra.
+            Nada encontrado. Tente outra palavra ou outra categoria.
           </p>
         )}
       </div>
+
+      <GlassCard className="p-5 mt-6">
+        <h3 className="font-heading font-semibold mb-3">Antes de chamar suporte</h3>
+        <ul className="space-y-1.5 text-sm text-muted-foreground list-disc list-inside mb-3">
+          <li>Copiei o diagnóstico geral</li>
+          <li>Colei no Lovable</li>
+          <li>Testei a correção</li>
+          <li>O erro continuou</li>
+          <li>Tenho print ou descrição do problema</li>
+          <li>Sei em qual módulo o erro aconteceu</li>
+        </ul>
+        <p className="text-xs text-muted-foreground">
+          Quanto mais claro estiver o erro, mais rápido ele será resolvido.
+        </p>
+      </GlassCard>
     </section>
   );
 }
