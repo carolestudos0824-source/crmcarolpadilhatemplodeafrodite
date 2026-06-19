@@ -29,6 +29,7 @@ import {
   LifeBuoy,
   Loader2,
   ChevronDown,
+  BookOpen,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
@@ -38,6 +39,7 @@ import { CommandCard } from "@/components/entrega/CommandCard";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
+import { FundamentosModule } from "@/components/entrega/FundamentosModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -79,7 +81,7 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen,
 };
 
 
@@ -93,6 +95,7 @@ function EntregaInner() {
 
   // URL slug ↔ internal module id
   const SLUG_TO_ID: Record<string, ModuleId> = {
+    "comece-pelo-lovable": "fundamentos",
     "comece-aqui": "comece",
     "ideias-prontas": "ideias",
     "construir-app": "construir",
@@ -1557,6 +1560,9 @@ const ValidacaoIntro = () => {
 
 
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
+  if (active === "fundamentos") {
+    return <FundamentosModule />;
+  }
   if (active === "comece") {
     const valueCards = [
       { title: "Programa", desc: "Mostra a ordem certa do que fazer." },
