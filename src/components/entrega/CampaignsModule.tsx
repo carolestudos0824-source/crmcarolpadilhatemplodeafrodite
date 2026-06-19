@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   Target,
@@ -9,11 +9,14 @@ import {
   BarChart3,
   Stethoscope,
   Copy,
+  Check,
   Sparkles,
   AlertTriangle,
   CheckCircle2,
   Circle,
   ChevronDown,
+  ClipboardList,
+  Rocket,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -27,7 +30,8 @@ type TabId =
   | "criativos"
   | "plano"
   | "metricas"
-  | "melhorar";
+  | "melhorar"
+  | "resumo";
 
 const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
   { id: "diagnostico", label: "Diagnóstico da oferta", icon: Stethoscope },
@@ -37,29 +41,51 @@ const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
   { id: "plano", label: "Plano de 7 dias", icon: CalendarDays },
   { id: "metricas", label: "Métricas", icon: BarChart3 },
   { id: "melhorar", label: "Melhorar campanha", icon: Target },
+  { id: "resumo", label: "Resumo da campanha", icon: ClipboardList },
 ];
 
 // ===== utils =====
 
-async function copyText(text: string) {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast.success("Comando copiado. Agora cole no Lovable.");
-  } catch {
-    toast.error("Não foi possível copiar.");
-  }
-}
-
-function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: string }) {
+function CopyBtn({
+  text,
+  label = "Copiar comando",
+  full = false,
+}: {
+  text: string;
+  label?: string;
+  full?: boolean;
+}) {
+  const [copied, setCopied] = useState(false);
+  const handle = async () => {
+    const clean = (text ?? "").trim();
+    if (!clean) {
+      toast.error("Nada para copiar ainda. Preencha os campos primeiro.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(clean);
+      setCopied(true);
+      toast.success("Copiado! Agora cole no Lovable.");
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
   return (
     <button
-      onClick={() => copyText(text)}
-      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-sm font-semibold"
+      onClick={handle}
+      className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition ${
+        copied
+          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+      } ${full ? "w-full sm:w-auto" : ""}`}
     >
-      <Copy size={14} /> {label}
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+      {copied ? "Copiado!" : label}
     </button>
   );
 }
+
 
 function CommandBox({ text }: { text: string }) {
   return (
