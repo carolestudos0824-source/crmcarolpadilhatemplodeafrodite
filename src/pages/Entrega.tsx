@@ -81,9 +81,10 @@ const ICONS: Record<string, typeof Sparkles> = {
 
 // ====== Página ======
 
-export default function Entrega() {
+function EntregaInner() {
   const navigate = useNavigate();
   const auth = useAuthState();
+  const progress = useUserProgress();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL slug ↔ internal module id
@@ -123,19 +124,25 @@ export default function Entrega() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  // Propagate active to persisted progress
+  useEffect(() => {
+    progress.setActive(active);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
   const setActive = (id: ModuleId) => {
     setActiveState(id);
     setSearchParams({ modulo: ID_TO_SLUG[id] ?? id }, { replace: false });
   };
 
-  const [moduleDone, setModuleDone] = useLocalState<Record<ModuleId, boolean>>(
-    STORAGE_MODULE_DONE,
-    {} as Record<ModuleId, boolean>,
-  );
-  const [checklist, setChecklist] = useLocalState<Record<string, boolean>>(
-    STORAGE_CHECKLIST,
-    {},
-  );
+  const moduleDone = progress.moduleDone as Record<ModuleId, boolean>;
+  const setModuleDone = progress.setModuleDone as (
+    updater:
+      | Record<ModuleId, boolean>
+      | ((p: Record<ModuleId, boolean>) => Record<ModuleId, boolean>),
+  ) => void;
+  const checklist = progress.checklist;
+  const setChecklist = progress.setChecklist;
   const [menuOpen, setMenuOpen] = useState(false);
 
   const allChecklistItems = useMemo(
@@ -145,21 +152,7 @@ export default function Entrega() {
 
   // ===== Progresso ponderado =====
   // 40% comandos usados + 30% módulos concluídos + 30% checklist final.
-  const [commandsDone, setCommandsDone] = useState<number>(() => countDoneCommands());
-
-  useEffect(() => {
-    const refresh = () => setCommandsDone(countDoneCommands());
-    refresh();
-    const onStorage = (e: StorageEvent) => {
-      if (!e.key || e.key.startsWith(CMD_STATE_PREFIX)) refresh();
-    };
-    window.addEventListener(COMMAND_TOGGLE_EVENT, refresh);
-    window.addEventListener("storage", onStorage);
-    return () => {
-      window.removeEventListener(COMMAND_TOGGLE_EVENT, refresh);
-      window.removeEventListener("storage", onStorage);
-    };
-  }, []);
+  const commandsDone = progress.commandsDoneCount;
 
   const modulesDoneCount = useMemo(
     () => MODULE_ORDER.filter((id) => !!moduleDone[id]).length,
@@ -193,7 +186,8 @@ export default function Entrega() {
   };
 
   // ===== Estados de auth =====
-  if (auth.status === "loading") {
+  if (auth.status === "loading" || progress.loading) {
+
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
