@@ -770,6 +770,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "construir") {
     return (
       <section>
+        <ConstruirIntro />
         <ModuleHeader
           title="Construir app no Lovable"
           subtitle="Use esta etapa para transformar sua ideia em um app funcional."
