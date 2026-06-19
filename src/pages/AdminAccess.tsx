@@ -562,6 +562,8 @@ function AcessosSection({
           </div>
         </div>
       )}
+
+      <AccessLogs refreshKey={logsRefresh} />
     </div>
   );
 }
