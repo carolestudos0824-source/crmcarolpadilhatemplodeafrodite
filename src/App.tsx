@@ -17,6 +17,7 @@ import Suporte from "@/pages/Suporte";
 import Termos from "@/pages/Termos";
 import Privacidade from "@/pages/Privacidade";
 import Confianca from "@/pages/Confianca";
+import Seguranca from "@/pages/Seguranca";
 import NotFound from "@/pages/NotFound";
 import DebugRotas from "@/pages/DebugRotas";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -62,6 +63,7 @@ const App = () => (
           <Route path="/termos" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/confianca" element={<Confianca />} />
+          <Route path="/seguranca" element={<Seguranca />} />
           <Route path="/confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/Confira" element={<Navigate to="/confianca" replace />} />
           <Route path="/trust" element={<Navigate to="/confianca" replace />} />
