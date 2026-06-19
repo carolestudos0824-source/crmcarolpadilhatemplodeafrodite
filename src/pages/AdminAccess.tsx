@@ -18,6 +18,7 @@ import {
   Lock,
 } from "lucide-react";
 import { Section } from "@/components/Section";
+import { AdminOverview } from "@/components/admin/AdminOverview";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
