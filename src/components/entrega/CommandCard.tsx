@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, Check, ChevronDown } from "lucide-react";
+import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2 } from "lucide-react";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -13,6 +13,13 @@ type Props = {
   commandText: string;
   defaultOpen?: boolean;
   completedKey: string;
+  // Campos opcionais — usados pelo módulo "Construir app" (central guiada).
+  objective?: string;
+  whenLovableDirect?: string;
+  whenAgentFirst?: string;
+  agentPrompt?: string;
+  correctionPrompt?: string;
+  advanceCriteria?: string;
 };
 
 const STATE_PREFIX = "fabrica_apps_cmd_done_";
