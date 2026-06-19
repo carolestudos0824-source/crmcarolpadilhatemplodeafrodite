@@ -1159,9 +1159,10 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "checkout") {
     return (
       <section>
+        <CheckoutIntro />
         <ModuleHeader
-          title="Checkout e entrega"
-          subtitle="Use esta etapa para organizar a compra e a entrega do produto."
+          title="Siga as etapas de checkout e entrega"
+          subtitle="Comece pela Etapa 1. Só avance quando o comprador conseguir pagar, receber orientação e entrar na entrega."
         />
         <CommandList commands={COMMANDS_CHECKOUT} moduleKey="checkout" />
         <ChecklistBlock
@@ -1171,6 +1172,12 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             "Comprador sabe onde entrar",
             "Comprador não fica perdido depois da compra",
             "Área protegida não aparece para visitantes",
+            "Botão de compra abre o caminho correto",
+            "Página de obrigado explica o próximo passo",
+            "Visitante sem acesso não vê material pago",
+            "Comprador liberado entra na entrega",
+            "Admin consegue liberar e revogar acesso",
+            "Existe caminho de suporte ou recuperação",
           ]}
           checklist={checklist}
           setChecklist={setChecklist}
