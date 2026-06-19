@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { APP_CONFIG } from "@/config/appConfig";
 import { AdminShell, ADMIN_SECTIONS, type AdminSectionKey } from "@/components/admin/AdminShell";
 import { GiftCodesPanel } from "@/components/admin/GiftCodesPanel";
+import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
 
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
@@ -236,6 +237,22 @@ export default function AdminAccess() {
           status={status}
           onSearch={onSearch}
           onGoToAcessos={() => changeSection("acessos")}
+          onViewBuyer={(b) => {
+            if (b.email) {
+              setEmail(b.email);
+              void onSearch({ preventDefault: () => {} } as React.FormEvent);
+              changeSection("acessos");
+            }
+          }}
+          onSetBuyerAccess={async (b, has) => {
+            const { data, error } = await supabase.rpc("admin_set_access", {
+              _user_id: b.user_id,
+              _has_access: has,
+            });
+            if (error) throw new Error(error.message);
+            const res = data as { success?: boolean; error?: string } | null;
+            if (!res?.success) throw new Error(res?.error ?? "Falha na operação.");
+          }}
         />
       )}
       {section === "codigos" && <GiftCodesPanel />}
@@ -545,15 +562,21 @@ function CompradoresSection({
   status,
   onSearch,
   onGoToAcessos,
+  onViewBuyer,
+  onSetBuyerAccess,
 }: {
   email: string;
   setEmail: (v: string) => void;
   status: Status;
   onSearch: (e: React.FormEvent) => void;
   onGoToAcessos: () => void;
+  onViewBuyer: (b: Buyer) => void;
+  onSetBuyerAccess: (b: Buyer, has: boolean) => Promise<void>;
 }) {
   return (
     <div className="space-y-4">
+      <BuyersList onView={onViewBuyer} onSetAccess={onSetBuyerAccess} />
+
       <div className="glass-strong p-5">
         <h3 className="font-heading font-semibold text-sm mb-1">Busca operacional</h3>
         <p className="text-xs text-muted-foreground mb-4">

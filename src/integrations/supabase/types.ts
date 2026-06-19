@@ -725,6 +725,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_buyers: {
+        Args: { _limit?: number }
+        Returns: {
+          access_created_at: string
+          display_name: string
+          email: string
+          has_access: boolean
+          is_admin: boolean
+          source: string
+          user_created_at: string
+          user_id: string
+        }[]
+      }
       admin_lookup_user: {
         Args: { _email: string }
         Returns: {
