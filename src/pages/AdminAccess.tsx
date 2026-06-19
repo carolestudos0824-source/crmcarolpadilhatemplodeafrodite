@@ -9,9 +9,17 @@ import {
   AlertTriangle,
   Info as InfoIcon,
   ArrowRight,
+  Copy,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  LayoutGrid,
+  UserPlus,
+  Lock,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
@@ -31,16 +39,36 @@ type Status =
   | { kind: "found"; row: LookupRow }
   | { kind: "not_found" }
   | { kind: "error"; message: string }
-  | { kind: "success"; message: string; row: LookupRow };
+  | { kind: "success"; message: string; row: LookupRow; action: "grant" | "revoke" };
+
+const SUPPORT_MESSAGES = [
+  {
+    title: "Comprador ainda não criou conta",
+    text: "Para liberar seu acesso, primeiro crie sua conta usando o mesmo e-mail da compra. Depois me avise para eu confirmar sua liberação.",
+  },
+  {
+    title: "Acesso liberado",
+    text: "Seu acesso foi liberado. Entre em Minha área usando seu e-mail de cadastro e comece pelo módulo Comece aqui.",
+  },
+  {
+    title: "Pagamento ainda não confirmado",
+    text: "Ainda não localizei a confirmação do pagamento. Assim que confirmar, libero seu acesso à área interna.",
+  },
+];
+
+const BUYER_HANDOFF_MESSAGE =
+  "Seu acesso à Fábrica de Apps com IA foi liberado. Entre em Minha área usando o e-mail do seu cadastro e siga a jornada do programa.";
 
 export default function AdminAccess() {
   const navigate = useNavigate();
   const [authChecked, setAuthChecked] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [selfHasAccess, setSelfHasAccess] = useState<boolean | null>(null);
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [acting, setActing] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -50,13 +78,18 @@ export default function AdminAccess() {
         navigate("/login", { replace: true });
         return;
       }
-      const { data, error } = await supabase.rpc("is_admin");
+      const uid = userData.user.id;
+      const [{ data: adminFlag }, { data: access }] = await Promise.all([
+        supabase.rpc("is_admin"),
+        supabase
+          .from("user_access")
+          .select("has_access")
+          .eq("user_id", uid)
+          .maybeSingle(),
+      ]);
       if (!mounted) return;
-      if (error) {
-        setIsAdmin(false);
-      } else {
-        setIsAdmin(Boolean(data));
-      }
+      setIsAdmin(Boolean(adminFlag));
+      setSelfHasAccess(access?.has_access ?? false);
       setAuthChecked(true);
     })();
     return () => {
@@ -98,11 +131,10 @@ export default function AdminAccess() {
     if (!res?.success) {
       setStatus({
         kind: "error",
-        message: res?.error ?? "Erro ao executar ação",
+        message: res?.error ?? "Não foi possível concluir esta ação. Tente novamente ou verifique as permissões de admin.",
       });
       return;
     }
-    // refetch
     const { data: lookup, error: lookupError } = await supabase.rpc("admin_lookup_user", {
       _email: email.trim(),
     });
@@ -117,9 +149,10 @@ export default function AdminAccess() {
     if (rows[0]) {
       setStatus({
         kind: "success",
+        action: hasAccess ? "grant" : "revoke",
         message: hasAccess
-          ? "Acesso liberado com sucesso."
-          : "Acesso revogado com sucesso.",
+          ? `Acesso liberado com sucesso para ${rows[0].email}.`
+          : `Acesso revogado com sucesso para ${rows[0].email}.`,
         row: rows[0],
       });
     }
@@ -153,7 +186,7 @@ export default function AdminAccess() {
 
   return (
     <Section>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <header className="mb-6">
           <h1 className="text-2xl md:text-3xl font-heading font-bold mb-2">
             Painel Admin de Acessos
@@ -161,34 +194,82 @@ export default function AdminAccess() {
           <p className="text-sm text-muted-foreground">
             Libere, consulte ou revogue o acesso de compradores à área interna do programa.
           </p>
+          <p className="text-xs text-muted-foreground/80 mt-2">
+            Use este painel para controlar quem pode entrar na área interna da Fábrica de Apps com IA.
+          </p>
         </header>
+
+        {/* Overview cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+          <OverviewCard
+            icon={<UserCheck size={16} />}
+            title="Meu acesso"
+            text={
+              selfHasAccess === null
+                ? "Status do acesso do admin logado."
+                : selfHasAccess
+                  ? "Ativo. Você pode entrar na área interna."
+                  : "Sem acesso. Use o bloco Teste admin abaixo."
+            }
+            tone={selfHasAccess ? "ok" : "default"}
+          />
+          <OverviewCard
+            icon={<UserPlus size={16} />}
+            title="Liberação manual"
+            text="Use quando o pagamento foi confirmado fora do app."
+          />
+          <OverviewCard
+            icon={<Search size={16} />}
+            title="Busca por comprador"
+            text="Encontre usuários pelo e-mail usado na compra."
+          />
+          <OverviewCard
+            icon={<Lock size={16} />}
+            title="Segurança"
+            text="Somente admins podem liberar ou revogar acesso."
+          />
+        </div>
 
         <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 mb-4 flex items-start gap-2">
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <span>
-            Libere acesso apenas após confirmar o pagamento. Esta tela é exclusiva para administradores.
+            Libere acesso apenas após confirmar o pagamento. Esta tela é exclusiva para administradores e controla entrada na área interna.
           </span>
         </div>
 
+        {/* Flow */}
         <div className="glass-strong p-5 mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <InfoIcon size={16} className="text-accent" />
+          <div className="flex items-center gap-2 mb-3">
+            <LayoutGrid size={16} className="text-accent" />
             <h2 className="font-heading font-semibold text-sm">Fluxo de liberação manual</h2>
           </div>
-          <ol className="list-decimal list-inside space-y-1 text-xs text-muted-foreground">
-            <li>Confirme o pagamento no gateway ou WhatsApp.</li>
-            <li>Busque o comprador pelo e-mail usado na compra.</li>
-            <li>Verifique o status atual do acesso.</li>
-            <li>Libere ou revogue o acesso quando necessário.</li>
-            <li>Oriente o comprador a entrar em Minha área.</li>
+          <ol className="space-y-2 text-sm text-foreground/80">
+            {[
+              "Confirme o pagamento no gateway ou WhatsApp.",
+              "Busque o comprador pelo e-mail usado na compra.",
+              "Confira se o usuário foi encontrado.",
+              "Libere ou revogue acesso.",
+              "Oriente o comprador a entrar em Minha área.",
+            ].map((step, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold inline-flex items-center justify-center border border-accent/30">
+                  {i + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
           </ol>
+          <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-white/5">
+            Se o comprador ainda não criou conta, peça para ele criar login antes de liberar o acesso.
+          </p>
         </div>
 
-        <SelfGrant />
+        <SelfGrant onChanged={(v) => setSelfHasAccess(v)} />
 
+        {/* Search */}
         <div className="glass-strong p-6 mb-6">
           <form onSubmit={onSearch} className="space-y-3">
-            <label className="text-xs text-muted-foreground block">
+            <label className="text-xs text-muted-foreground block font-semibold">
               E-mail do comprador
             </label>
             <p className="text-[11px] text-muted-foreground -mt-1">
@@ -211,24 +292,28 @@ export default function AdminAccess() {
                 {status.kind === "loading" ? (
                   <><Loader2 size={16} className="animate-spin" /> Buscando comprador...</>
                 ) : (
-                  <>
-                    <Search size={16} /> Buscar
-                  </>
+                  <><Search size={16} /> Buscar comprador</>
                 )}
               </button>
             </div>
           </form>
         </div>
 
+        {status.kind === "loading" && (
+          <div className="glass-strong p-6 text-center text-sm text-muted-foreground flex items-center justify-center gap-2 mb-4">
+            <Loader2 size={16} className="animate-spin" /> Buscando comprador...
+          </div>
+        )}
+
         {status.kind === "not_found" && (
-          <div className="glass-strong p-6 text-center text-muted-foreground text-sm">
+          <div className="glass-strong p-6 text-center text-muted-foreground text-sm mb-4">
             Nenhum usuário encontrado com este e-mail. Verifique se o comprador já criou conta.
           </div>
         )}
 
         {status.kind === "error" && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-            Não foi possível buscar este comprador agora. Tente novamente ou verifique permissões de admin.
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3 mb-4">
+            Não foi possível buscar este comprador agora. Verifique sua permissão de admin ou tente novamente.
             <div className="text-[11px] text-red-200/70 mt-1">Detalhe: {status.message}</div>
           </div>
         )}
@@ -236,26 +321,30 @@ export default function AdminAccess() {
         {status.kind === "success" && (
           <div className="space-y-3 mb-4">
             <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-              {status.message}{status.row?.email ? ` para ${status.row.email}.` : ""}
+              {status.message}
             </div>
-            {status.row?.has_access && (
-              <div className="glass-strong p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <p className="text-sm text-muted-foreground">
-                  Agora oriente o comprador a acessar: Minha área.
+            {status.action === "grant" && (
+              <div className="glass-strong p-5">
+                <h3 className="font-heading font-semibold text-sm mb-1">Próximo passo</h3>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Oriente o comprador a acessar Minha área com o mesmo e-mail usado no cadastro.
                 </p>
-                <Link
-                  to="/entrega"
-                  className="text-xs px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 font-semibold whitespace-nowrap"
-                >
-                  Ir para Minha área <ArrowRight size={12} />
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Link
+                    to="/entrega"
+                    className="text-xs px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center justify-center gap-2 font-semibold"
+                  >
+                    Ir para Minha área <ArrowRight size={12} />
+                  </Link>
+                  <CopyButton text={BUYER_HANDOFF_MESSAGE} label="Copiar mensagem para comprador" />
+                </div>
               </div>
             )}
           </div>
         )}
 
         {row && (
-          <div className="glass-strong p-6 space-y-4">
+          <div className="glass-strong p-6 space-y-4 mb-6">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2">
                 <UserCheck size={18} className="text-accent" />
@@ -307,7 +396,11 @@ export default function AdminAccess() {
               <button
                 onClick={() => setAccess(row.user_id, true)}
                 disabled={acting || (row.access_exists && row.has_access === true)}
-                className="btn-primary flex-1"
+                className={
+                  row.access_exists && row.has_access === true
+                    ? "btn-ghost flex-1 border border-white/10 opacity-70"
+                    : "btn-primary flex-1"
+                }
               >
                 {acting ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -328,8 +421,83 @@ export default function AdminAccess() {
             </div>
           </div>
         )}
+
+        {/* Quick support messages */}
+        <div className="glass-strong p-5 mb-6">
+          <button
+            type="button"
+            onClick={() => setSupportOpen((v) => !v)}
+            className="w-full flex items-center justify-between gap-2 text-left"
+          >
+            <div className="flex items-center gap-2">
+              <InfoIcon size={16} className="text-accent" />
+              <h2 className="font-heading font-semibold text-sm">Mensagens rápidas de suporte</h2>
+            </div>
+            {supportOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+          {supportOpen && (
+            <div className="space-y-3 mt-4">
+              {SUPPORT_MESSAGES.map((m) => (
+                <div key={m.title} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <h3 className="text-sm font-semibold text-foreground">{m.title}</h3>
+                    <CopyButton text={m.text} label="Copiar" compact />
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{m.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </Section>
+  );
+}
+
+function OverviewCard({
+  icon,
+  title,
+  text,
+  tone = "default",
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  tone?: "default" | "ok";
+}) {
+  return (
+    <div className="glass-strong p-4">
+      <div className={`flex items-center gap-2 mb-1.5 ${tone === "ok" ? "text-emerald-300" : "text-accent"}`}>
+        {icon}
+        <h3 className="text-xs font-heading font-semibold uppercase tracking-wider">{title}</h3>
+      </div>
+      <p className="text-xs text-muted-foreground leading-snug">{text}</p>
+    </div>
+  );
+}
+
+function CopyButton({ text, label, compact }: { text: string; label: string; compact?: boolean }) {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      toast.success("Copiado");
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar");
+    }
+  };
+  return (
+    <button
+      onClick={copy}
+      className={`shrink-0 inline-flex items-center justify-center gap-1.5 rounded-lg border border-white/15 hover:bg-white/5 transition ${
+        compact ? "text-[11px] px-2.5 py-1" : "text-xs px-3 py-2"
+      }`}
+    >
+      {copied ? <Check size={12} className="text-accent" /> : <Copy size={12} />}
+      {copied ? "Copiado" : label}
+    </button>
   );
 }
 
@@ -364,7 +532,7 @@ function Info({
   );
 }
 
-function SelfGrant() {
+function SelfGrant({ onChanged }: { onChanged?: (hasAccess: boolean) => void }) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [email, setEmail] = useState<string | null>(null);
@@ -397,7 +565,8 @@ function SelfGrant() {
       setMsg({ kind: "err", text: res?.error ?? "Falha ao liberar acesso." });
       return;
     }
-    setMsg({ kind: "ok", text: "Seu acesso de teste foi liberado. Recarregue para atualizar a navbar." });
+    setMsg({ kind: "ok", text: "Seu acesso de teste foi liberado com sucesso." });
+    onChanged?.(true);
   };
 
   return (
@@ -406,7 +575,7 @@ function SelfGrant() {
         <div>
           <h2 className="font-heading font-semibold text-sm mb-1">Teste admin</h2>
           <p className="text-xs text-muted-foreground mb-1">
-            Use este botão apenas para liberar seu próprio acesso durante testes.
+            Use este botão apenas para liberar seu próprio acesso durante testes internos.
           </p>
           <p className="text-xs text-muted-foreground">
             Logado como: <span className="text-foreground/80">{email ?? "—"}</span>
