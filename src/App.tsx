@@ -24,16 +24,14 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-const ANNOUNCEMENT_ROUTES = ["/", "/precos", "/suporte"];
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { pathname } = useLocation();
-  const showBar = APP_CONFIG.SHOW_ANNOUNCEMENT_BAR && ANNOUNCEMENT_ROUTES.includes(pathname);
   return (
     <div className="min-h-screen flex flex-col">
-      <AnnouncementBar />
-      <Navbar offsetTop={showBar} />
-      <main className={`flex-1 ${showBar ? "pt-[104px] md:pt-[100px]" : "pt-16"}`}>{children}</main>
+      <header className="sticky top-0 z-50 w-full">
+        <AnnouncementBar />
+        <Navbar />
+      </header>
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
