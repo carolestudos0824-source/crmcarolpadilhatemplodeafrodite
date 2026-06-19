@@ -346,6 +346,8 @@ function OverviewSection({
           </Link>
         </div>
       </div>
+
+      <AdminAuditLog />
     </div>
   );
 }
