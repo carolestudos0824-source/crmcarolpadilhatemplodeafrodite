@@ -17,8 +17,13 @@ import {
   ChevronDown,
   ClipboardList,
   Rocket,
+  HelpCircle,
+  BookOpen,
+  ExternalLink,
+  Bot,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { APP_CONFIG } from "@/config/appConfig";
 
 type Checklist = Record<string, boolean>;
 type SetChecklist = (v: Checklist | ((p: Checklist) => Checklist)) => void;
@@ -34,14 +39,30 @@ type TabId =
   | "resumo";
 
 const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
-  { id: "diagnostico", label: "Diagnóstico da oferta", icon: Stethoscope },
-  { id: "gerador", label: "Gerador de campanha", icon: Wand2 },
+  { id: "diagnostico", label: "Diagnóstico", icon: Stethoscope },
+  { id: "gerador", label: "Criar campanha", icon: Wand2 },
   { id: "prontas", label: "Campanhas prontas", icon: Layers },
-  { id: "criativos", label: "Criativos e mensagens", icon: ImageIcon },
+  { id: "criativos", label: "Criativos", icon: ImageIcon },
   { id: "plano", label: "Plano de 7 dias", icon: CalendarDays },
   { id: "metricas", label: "Métricas", icon: BarChart3 },
-  { id: "melhorar", label: "Melhorar campanha", icon: Target },
+  { id: "melhorar", label: "Melhorar", icon: Target },
   { id: "resumo", label: "Campanha pronta", icon: ClipboardList },
+];
+
+const GLOSSARIO: { termo: string; def: string }[] = [
+  { termo: "Aquisição", def: "Trazer pessoas para conhecer seu app." },
+  { termo: "Campanha", def: "Conjunto de mensagens para divulgar uma oferta." },
+  { termo: "Canal", def: "Lugar onde você divulga: Instagram, WhatsApp, TikTok, e-mail, comunidade." },
+  { termo: "Criativo", def: "Imagem, vídeo ou texto usado na divulgação." },
+  { termo: "Lead", def: "Pessoa interessada." },
+  { termo: "CTA", def: "Chamada para ação, como 'testar agora' ou 'comprar'." },
+  { termo: "Conversão", def: "Quando a pessoa faz a ação desejada." },
+  { termo: "Métrica", def: "Número usado para medir resultado." },
+  { termo: "Tráfego", def: "Pessoas chegando até sua página ou app." },
+  { termo: "Validação", def: "Teste para saber se existe interesse real." },
+  { termo: "Escalar", def: "Aumentar a divulgação depois que a campanha já mostrou sinais de funcionar." },
+  { termo: "Orgânico", def: "Divulgação sem anúncio pago." },
+  { termo: "Pago", def: "Divulgação com investimento em anúncios." },
 ];
 
 // ===== utils =====
@@ -1313,13 +1334,13 @@ const CAMPANHAS_CHECK_ITEMS = [
   "Minha promessa está clara",
   "Escolhi um canal principal",
   "Criei uma campanha orgânica",
-  "Criei mensagens de WhatsApp",
+  "Criei mensagens de WhatsApp ou direct",
   "Criei pelo menos 3 criativos",
   "Criei plano de 7 dias",
   "Chamei 10 pessoas reais",
-  "Medi visitantes, leads e cadastros",
-  "Analisei o que funcionou",
-  "Melhorei a campanha",
+  "Medi respostas, cliques, leads ou cadastros",
+  "Anotei dúvidas e objeções",
+  "Melhorei a campanha antes de escalar",
 ];
 
 function ChecklistCampanhas({
@@ -1393,6 +1414,13 @@ export function CampaignsModule({
   setChecklist: SetChecklist;
 }) {
   const [tab, setTab] = useState<TabId>("diagnostico");
+  const [showHelp, setShowHelp] = useState(false);
+  const [showGlossario, setShowGlossario] = useState(false);
+
+  const goToDiagnostico = () => {
+    setTab("diagnostico");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <section>
@@ -1404,8 +1432,14 @@ export function CampaignsModule({
           Central de Vendas e Aquisição
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Use esta etapa para conseguir os primeiros usuários, testar campanhas,
-          criar mensagens e descobrir o que realmente vende seu app.
+          Use esta etapa para levar seu app até pessoas reais, testar sua oferta,
+          criar campanhas simples e medir se existe interesse antes de escalar.
+        </p>
+        <p className="text-sm text-foreground/80 mt-2 max-w-3xl">
+          Primeiro valide com poucas pessoas. Depois melhore. Só então pense em escalar.
+        </p>
+        <p className="text-xs text-muted-foreground mt-2 max-w-3xl">
+          Aquisição é o processo de trazer pessoas para conhecer, testar ou comprar seu app.
         </p>
       </header>
 
@@ -1413,25 +1447,86 @@ export function CampaignsModule({
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-1">
             <p className="text-sm sm:text-base font-semibold">
-              Crie uma campanha simples, publique rápido e acompanhe os números certos.
+              Antes de criar campanha, confirme se sua oferta está clara.
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Comece pelo Diagnóstico, gere sua campanha e finalize com a aba{" "}
+              Comece pelo <strong className="text-accent">Diagnóstico</strong>, depois
+              gere sua campanha e finalize com a aba{" "}
               <strong className="text-accent">Campanha pronta</strong>.
             </p>
           </div>
           <button
-            onClick={() => {
-              setTab("diagnostico");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onClick={goToDiagnostico}
             className="btn-primary text-sm whitespace-nowrap w-full sm:w-auto justify-center"
           >
-            <Rocket size={14} /> Criar minha campanha agora
+            <Stethoscope size={14} /> Começar pelo diagnóstico
           </button>
         </div>
       </GlassCard>
 
+      {/* Ajudas rápidas: "Não sei divulgar" + Microglossário + Agente */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <button
+          onClick={() => setShowHelp((v) => !v)}
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-medium"
+        >
+          <HelpCircle size={14} /> Não sei divulgar meu app
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${showHelp ? "rotate-180" : ""}`}
+          />
+        </button>
+        <button
+          onClick={() => setShowGlossario((v) => !v)}
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-medium"
+        >
+          <BookOpen size={14} /> Não entendi uma palavra
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${showGlossario ? "rotate-180" : ""}`}
+          />
+        </button>
+        <a
+          href={APP_CONFIG.GPT_AGENT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 hover:bg-accent/20 text-xs font-medium text-accent"
+        >
+          <Bot size={14} /> Abrir Agente Arquiteto
+          <ExternalLink size={12} />
+        </a>
+      </div>
+
+      {showHelp && (
+        <GlassCard className="p-5 mb-4">
+          <p className="text-sm font-semibold mb-2">Faça só isso agora:</p>
+          <ol className="text-sm text-muted-foreground space-y-1.5 list-decimal pl-5">
+            <li>Veja se sua promessa está clara.</li>
+            <li>Escolha um canal principal.</li>
+            <li>Crie uma mensagem simples.</li>
+            <li>Chame 10 pessoas reais.</li>
+            <li>Anote respostas, cliques, dúvidas e objeções.</li>
+          </ol>
+          <p className="text-xs text-muted-foreground/80 mt-3">
+            Se não souber qual canal escolher ou se a oferta está clara, converse
+            com o Agente antes de criar campanha.
+          </p>
+        </GlassCard>
+      )}
+
+      {showGlossario && (
+        <GlassCard className="p-5 mb-4">
+          <p className="text-sm font-semibold mb-3">Microglossário</p>
+          <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+            {GLOSSARIO.map((g) => (
+              <div key={g.termo}>
+                <dt className="font-semibold text-foreground/90 inline">{g.termo}: </dt>
+                <dd className="text-muted-foreground inline">{g.def}</dd>
+              </div>
+            ))}
+          </dl>
+        </GlassCard>
+      )}
 
       <div className="flex items-start gap-2 mb-6 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4">
         <AlertTriangle size={16} className="text-amber-300 mt-0.5 shrink-0" />
