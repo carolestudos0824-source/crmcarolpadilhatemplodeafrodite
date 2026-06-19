@@ -1160,7 +1160,7 @@ function BlocoResumo() {
   const filled = Object.values(d).filter((v) => v.trim().length > 0).length;
   const total = Object.keys(d).length;
 
-  const exportText = `Resumo da minha campanha
+  const exportText = `Campanha pronta
 
 Público-alvo: ${d.publico || "[preencher]"}
 Oferta: ${d.oferta || "[preencher]"}
@@ -1174,7 +1174,7 @@ Próximo passo: ${d.proximoPasso || "[preencher]"}`;
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-heading font-semibold text-lg">Resumo da campanha pronta</h3>
+        <h3 className="font-heading font-semibold text-lg">Campanha pronta</h3>
         <p className="text-sm text-muted-foreground mt-1">
           Reúna aqui as decisões da sua campanha. Tudo fica salvo automaticamente.
         </p>
@@ -1183,7 +1183,7 @@ Próximo passo: ${d.proximoPasso || "[preencher]"}`;
       <GlassCard className="p-5">
         <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
           <span>Preenchimento</span>
-          <span>{filled}/{total}</span>
+          <span>{filled}/{total} ({Math.round((filled / total) * 100)}%)</span>
         </div>
         <div className="h-1.5 rounded-full bg-white/10 overflow-hidden mb-4">
           <div
@@ -1206,13 +1206,16 @@ Próximo passo: ${d.proximoPasso || "[preencher]"}`;
 
       <CommandBox text={exportText} />
       <div className="flex flex-wrap gap-2">
-        <CopyBtn text={exportText} label="Copiar resumo" full />
+        <CopyBtn text={exportText} label="Copiar campanha pronta" full />
         <button
           onClick={() => {
-            if (confirm("Limpar todo o resumo?")) setD(RESUMO_INITIAL);
+            if (confirm("Limpar apenas os campos da Campanha pronta? Isso não apaga seu checklist.")) {
+              setD(RESUMO_INITIAL);
+            }
           }}
           className="px-4 py-2.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
         >
+
           Limpar
         </button>
       </div>
