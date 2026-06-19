@@ -1007,9 +1007,10 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "venda") {
     return (
       <section>
+        <VendaIntro />
         <ModuleHeader
-          title="Página de venda"
-          subtitle="Use esta etapa para criar uma página que explica e vende seu app."
+          title="Siga as etapas de venda"
+          subtitle="Comece pela Etapa 1. Só avance quando uma pessoa leiga entender sua oferta em segundos."
         />
         <CommandList commands={COMMANDS_VENDA} moduleKey="venda" />
       </section>
