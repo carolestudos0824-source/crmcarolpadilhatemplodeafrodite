@@ -2543,3 +2543,11 @@ const Select = ({
     </select>
   </label>
 );
+
+export default function Entrega() {
+  return (
+    <UserProgressProvider>
+      <EntregaInner />
+    </UserProgressProvider>
+  );
+}
