@@ -1832,20 +1832,25 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "validacao") {
     return (
       <section>
+        <ValidacaoIntro />
         <ModuleHeader
-          title="Validação com usuários"
-          subtitle="Use esta etapa para testar se pessoas reais entendem e querem usar seu app."
+          title="Siga as etapas de Validação"
+          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
         />
         <CommandList commands={COMMANDS_VALIDACAO} moduleKey="validacao" />
         <ChecklistBlock
           title="Checklist do módulo"
           items={[
-            "Convidei 10 pessoas",
-            "5 testaram",
-            "3 entenderam sem ajuda",
-            "1 demonstrou interesse real",
+            "Convidei 10 pessoas reais",
+            "Pelo menos 5 testaram",
+            "Pelo menos 3 entenderam sem ajuda",
+            "Pelo menos 1 demonstrou interesse real",
             "Anotei dúvidas repetidas",
-            "Melhorei o app",
+            "Separei elogio de sinal real",
+            "Identifiquei o maior bloqueio",
+            "Melhorei o app sem inflar o escopo",
+            "Preparei novo teste",
+            "Não mudei tudo por causa de uma opinião isolada",
           ]}
           checklist={checklist}
           setChecklist={setChecklist}
@@ -1854,6 +1859,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       </section>
     );
   }
+
 
   if (active === "checklist") {
     return (
