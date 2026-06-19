@@ -1756,7 +1756,40 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     );
   }
 
+  if (active === "monetizacao") {
+    return (
+      <section>
+        <MonetizacaoIntro />
+        <ModuleHeader
+          title="Siga as etapas de monetização"
+          subtitle="Comece pela Etapa 1. Só avance quando você tiver clareza do valor, do modelo e de uma oferta inicial para testar."
+        />
+        <CommandList commands={COMMANDS_MONETIZACAO} moduleKey="monetizacao" />
+        <FaixasReferencia />
+        <ChecklistBlock
+          title="Checklist do módulo"
+          items={[
+            "Sei qual dor meu app resolve",
+            "Sei para quem meu app foi feito",
+            "Escolhi o modelo de cobrança",
+            "Defini se será venda única, assinatura, freemium ou beta",
+            "Escolhi uma faixa de valor inicial",
+            "Criei uma oferta simples",
+            "Expliquei o que está incluso",
+            "Evitei promessa exagerada",
+            "Testei ou vou testar com pessoas reais",
+            "Sei quando ajustar o valor",
+          ]}
+          checklist={checklist}
+          setChecklist={setChecklist}
+          phase="monetizacao"
+        />
+      </section>
+    );
+  }
+
   if (active === "checkout") {
+
     return (
       <section>
         <CheckoutIntro />
