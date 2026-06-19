@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/Navbar";
@@ -23,7 +23,6 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-import { useLocation } from "react-router-dom";
 
 const CHROMELESS_ROUTES = ["/entrega"];
 
