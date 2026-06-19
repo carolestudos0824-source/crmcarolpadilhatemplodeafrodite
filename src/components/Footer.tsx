@@ -7,7 +7,7 @@ export const Footer = () => {
   const restrictedLink =
     auth.status === "authed" && auth.hasAccess
       ? { to: "/entrega", label: "Minha área" }
-      : { to: "/login", label: "Acesso restrito" };
+      : { to: "/login", label: "Já sou aluno" };
 
   return (
     <footer className="border-t border-white/5 mt-24">
