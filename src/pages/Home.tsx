@@ -206,7 +206,7 @@ export default function Home() {
       >
         <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
           <div className="text-center mb-6">
-            <div className="text-5xl md:text-6xl font-heading font-bold text-gradient">R$47</div>
+            <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$47</div>
             <p className="text-sm text-muted-foreground mt-2">Pagamento único · Acesso imediato</p>
           </div>
           <ul className="grid sm:grid-cols-2 gap-2.5 mb-8">

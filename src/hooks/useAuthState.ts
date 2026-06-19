@@ -23,22 +23,34 @@ export const useAuthState = (): AuthState => {
         if (!cancelled) setState({ status: "anonymous" });
         return;
       }
-      const [{ data: access }, { data: adminFlag }] = await Promise.all([
-        supabase
-          .from("user_access")
-          .select("has_access")
-          .eq("user_id", userId)
-          .maybeSingle(),
-        supabase.rpc("is_admin"),
-      ]);
-      if (cancelled) return;
-      setState({
-        status: "authed",
-        userId,
-        email,
-        hasAccess: !!access?.has_access,
-        isAdmin: !!adminFlag,
-      });
+      try {
+        const [{ data: access }, { data: adminFlag }] = await Promise.all([
+          supabase
+            .from("user_access")
+            .select("has_access")
+            .eq("user_id", userId)
+            .maybeSingle(),
+          supabase.rpc("is_admin"),
+        ]);
+        if (cancelled) return;
+        setState({
+          status: "authed",
+          userId,
+          email,
+          hasAccess: !!access?.has_access,
+          isAdmin: !!adminFlag,
+        });
+      } catch {
+        if (cancelled) return;
+        // Fallback: authenticated but without enriched flags — avoids "loading" forever.
+        setState({
+          status: "authed",
+          userId,
+          email,
+          hasAccess: false,
+          isAdmin: false,
+        });
+      }
     };
 
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {

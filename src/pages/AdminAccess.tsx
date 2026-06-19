@@ -101,9 +101,16 @@ export default function AdminAccess() {
       return;
     }
     // refetch
-    const { data: lookup } = await supabase.rpc("admin_lookup_user", {
+    const { data: lookup, error: lookupError } = await supabase.rpc("admin_lookup_user", {
       _email: email.trim(),
     });
+    if (lookupError) {
+      setStatus({
+        kind: "error",
+        message: "Ação executada, mas não foi possível atualizar o status na tela. Recarregue para conferir.",
+      });
+      return;
+    }
     const rows = (lookup as LookupRow[] | null) ?? [];
     if (rows[0]) {
       setStatus({
@@ -163,7 +170,7 @@ export default function AdminAccess() {
             <label className="text-xs text-muted-foreground block">
               E-mail do comprador
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 className={inputCls}
                 type="email"
@@ -175,7 +182,7 @@ export default function AdminAccess() {
               <button
                 type="submit"
                 disabled={status.kind === "loading"}
-                className="btn-primary whitespace-nowrap"
+                className="btn-primary"
               >
                 {status.kind === "loading" ? (
                   <Loader2 size={16} className="animate-spin" />
