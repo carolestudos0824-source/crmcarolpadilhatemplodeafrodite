@@ -10,7 +10,7 @@ const links = [
   { to: "/precos", label: "Preço único" },
 ];
 
-export const Navbar = ({ offsetTop = false }: { offsetTop?: boolean }) => {
+export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean } = {}) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
