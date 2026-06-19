@@ -62,6 +62,35 @@ const LOVABLE_URL = "https://lovable.dev";
 const STORAGE_MODULE = "fabrica_apps_active_module_v1";
 const STORAGE_MODULE_DONE = "fabrica_apps_module_done_v1";
 const STORAGE_CHECKLIST = "fabrica_apps_checklist_v1";
+const CMD_STATE_PREFIX = "fabrica_apps_cmd_done_";
+const COMMAND_TOGGLE_EVENT = "fabrica:cmd-toggle";
+
+// Total de comandos disponíveis em todos os módulos (usado no progresso ponderado).
+const TOTAL_COMMANDS =
+  COMMANDS_CONSTRUIR.length +
+  COMMANDS_LOGIN.length +
+  COMMANDS_VENDA.length +
+  COMMANDS_CHECKOUT.length +
+  COMMANDS_SEO.length +
+  COMMANDS_CAMPANHAS.length +
+  COMMANDS_CRIATIVOS.length +
+  COMMANDS_VALIDACAO.length;
+
+function countDoneCommands(): number {
+  try {
+    let n = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(CMD_STATE_PREFIX) && localStorage.getItem(k) === "1") {
+        n++;
+      }
+    }
+    return n;
+  } catch {
+    return 0;
+  }
+}
+
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
