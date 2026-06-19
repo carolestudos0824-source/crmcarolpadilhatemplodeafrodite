@@ -9,6 +9,13 @@ export type Command = {
   where: string;
   result: string;
   content: string;
+  // Campos opcionais para o módulo "Construir app" (central guiada):
+  objective?: string;
+  whenLovableDirect?: string;
+  whenAgentFirst?: string;
+  agentPrompt?: string;
+  correctionPrompt?: string;
+  advanceCriteria?: string;
 };
 
 export type AppModel = {
@@ -83,14 +90,19 @@ const cmd = (
 ): Command => ({ n, title, purpose, when, where, result, content });
 
 export const COMMANDS_CONSTRUIR: Command[] = [
-  cmd(
-    1,
-    "Transformar ideia em plano",
-    "Serve para o Lovable entender sua ideia antes de construir.",
-    "Use primeiro, antes de pedir telas ou banco.",
-    "Cole no Lovable, no campo de conversa do projeto.",
-    "Um plano com MVP, telas, fluxo e estrutura.",
-    `Você é um especialista em produto digital, UX e Lovable.
+  {
+    n: 1,
+    title: "Transformar ideia em plano",
+    purpose: "Serve para o Lovable entender sua ideia antes de construir.",
+    when: "Use primeiro, antes de pedir telas ou banco.",
+    where: "Cole no Lovable, no campo de conversa do projeto.",
+    result: "Um plano com MVP, telas, fluxo e estrutura.",
+    objective:
+      "Transformar uma ideia solta em plano com público, dor, MVP, fluxo e estrutura.",
+    whenLovableDirect: "Quando o usuário já sabe a ideia, público e problema.",
+    whenAgentFirst:
+      "Quando a ideia ainda está confusa, ampla demais ou sem monetização clara.",
+    content: `Você é um especialista em produto digital, UX e Lovable.
 
 Minha ideia é:
 [descreva sua ideia]
@@ -107,94 +119,244 @@ Antes de construir, gere um plano com:
 3. Ação principal
 4. MVP com no máximo 5 funcionalidades
 5. O que cortar agora
-6. Fluxo em até 5 etapas
-7. Telas necessárias
+6. Fluxo do usuário
+7. Estrutura das telas
 8. Banco de dados necessário
-9. Monetização
-10. Ordem de construção
+9. Riscos técnicos
+10. Primeiro prompt de construção
+
+Não escreva código ainda.
+Não crie telas ainda.
+Primeiro entregue o plano.`,
+    agentPrompt: `Quero criar um aplicativo, mas antes preciso validar a ideia.
+
+Ideia:
+[descreva sua ideia]
+
+Público:
+[quem vai usar]
+
+Como pretendo monetizar:
+[assinatura, venda única, freemium, serviço, não sei]
+
+Analise como Arquiteto de Aplicativos.
+
+Quero:
+1. Veredito sincero
+2. Se essa ideia vende ou não
+3. Qual deve ser o MVP
+4. Quais funções cortar
+5. Como construir no Lovable
+6. Qual prompt final devo colar no Lovable.`,
+    correctionPrompt: `O plano ficou genérico. Refaça com mais precisão.
+
+Não aumente o escopo.
+Corte tudo que não for essencial.
+Mantenha o MVP com no máximo 5 funcionalidades.
+Explique:
+1. Ação principal do usuário
+2. Fluxo real em até 5 passos
+3. Funcionalidades essenciais
+4. O que fica fora
+5. Primeiro comando de construção.`,
+    advanceCriteria:
+      "Avance apenas quando tiver nome do app, público, promessa, MVP com até 5 funções e fluxo principal.",
+  },
+  {
+    n: 2,
+    title: "Construir primeira versão",
+    purpose: "Pede ao Lovable que comece a construir o app.",
+    when: "Depois que o plano do Comando 1 estiver pronto.",
+    where: "Cole no mesmo projeto do Lovable.",
+    result: "As primeiras telas e o fluxo principal criados.",
+    objective:
+      "Pedir ao Lovable para criar a primeira versão funcional, sem inflar o escopo.",
+    whenLovableDirect: "Quando o plano da Etapa 1 já foi aprovado e está claro.",
+    whenAgentFirst:
+      "Quando o plano ainda parece amplo e você quer um prompt de construção mais enxuto.",
+    content: `Com base no plano aprovado, construa a primeira versão funcional do app.
 
 Regras:
-- Mobile first.
-- Não inchar o produto.
-- Explicar de forma simples.`,
-  ),
-  cmd(
-    2,
-    "Construir primeira versão",
-    "Pede ao Lovable que comece a construir o app.",
-    "Depois que o plano do Comando 1 estiver pronto.",
-    "Cole no mesmo projeto do Lovable.",
-    "As primeiras telas e o fluxo principal criados.",
-    `Construa a primeira versão do app com base neste plano:
+1. Não adicione funcionalidades fora do MVP.
+2. Priorize mobile first.
+3. Crie interface clara, moderna e profissional.
+4. Use dados reais de exemplo, sem lorem ipsum.
+5. Crie navegação simples.
+6. Garanta que a ação principal do usuário funcione.
+7. Não implemente login, pagamento ou banco avançado ainda, a menos que seja essencial para testar o MVP.
 
-[cole o plano do Comando 1]
+Ao final, entregue:
+1. O que foi criado
+2. Como testar
+3. O que ainda está pendente.`,
+    agentPrompt: `Analise este plano de app e transforme em um prompt de construção para o Lovable.
 
-Crie:
-1. Páginas principais
-2. Componentes básicos
-3. Fluxo principal
-4. Estados vazios, erro e sucesso
+Plano:
+[cole o plano]
 
-Regras:
-- Apenas MVP.
-- Mobile first.
-- Interface simples.`,
-  ),
-  cmd(
-    3,
-    "Criar dashboard",
-    "Cria a tela inicial do usuário depois do login.",
-    "Depois que telas principais e login existirem.",
-    "Cole no Lovable.",
-    "Uma tela inicial com resumo e próxima ação.",
-    `Crie um dashboard simples para o usuário.
+Quero uma primeira versão funcional, simples, clara e sem excesso.
+Não quero login, pagamento ou automações se não forem essenciais para o primeiro teste.`,
+    correctionPrompt: `A primeira versão ficou ampla demais ou confusa. Simplifique.
 
-Mostre:
-1. Resumo principal
+Mantenha apenas:
+1. Tela inicial
+2. Ação principal
+3. Resultado da ação
+4. Navegação mínima
+5. Estado vazio e mensagem de erro
+
+Remova qualquer função que não ajude o usuário a completar a ação principal.`,
+    advanceCriteria:
+      "Avance quando a primeira versão abrir, tiver visual coerente, fluxo principal funcionando e não estiver inchada.",
+  },
+  {
+    n: 3,
+    title: "Criar dashboard",
+    purpose: "Cria a tela inicial do usuário depois do login.",
+    when: "Depois que telas principais e login existirem.",
+    where: "Cole no Lovable.",
+    result: "Uma tela inicial com resumo e próxima ação.",
+    objective: "Criar a tela inicial do usuário depois do login ou acesso.",
+    whenLovableDirect:
+      "Quando o app já tem fluxo principal e você quer um painel que oriente o uso diário.",
+    whenAgentFirst:
+      "Quando há muitas informações possíveis e você precisa decidir o que entra na primeira dobra.",
+    content: `Crie o dashboard principal do usuário.
+
+O dashboard deve mostrar:
+1. Boas-vindas
 2. Próxima ação recomendada
-3. Itens mais importantes
-4. Botão para criar novo item
-5. Estado vazio explicando o próximo passo
+3. Resumo do progresso ou atividade
+4. Cards principais do app
+5. Botão claro para a ação principal
+6. Estado vazio para usuário novo
+7. Layout responsivo mobile first
 
-Regra: o usuário entende o próximo passo em 5 segundos.`,
-  ),
-  cmd(
-    4,
-    "Melhorar design mobile",
-    "Deixa o app bonito, claro e fácil de usar no celular.",
-    "Depois que o app já tem telas principais.",
-    "Cole no Lovable.",
-    "Cores, espaçamento, botões e mobile melhorados.",
-    `Melhore o design mobile do app.
+Não crie dados irreais demais.
+Não polua a tela.
+O dashboard deve guiar o usuário para agir.`,
+    agentPrompt: `Meu app já tem uma primeira versão. Quero criar um dashboard que guie o usuário.
 
-Ajuste cores, espaçamento, botões, cards, títulos, ícones, navegação, contraste e estados vazios.
+Contexto do app:
+[descreva]
 
-Regras:
-- Não mudar lógica.
-- Não adicionar funcionalidades.
-- Só melhorar visual e experiência no celular.`,
-  ),
-  cmd(
-    5,
-    "Revisar MVP",
-    "Revisa o app antes de continuar para login/banco.",
-    "Antes de avançar para área restrita.",
-    "Cole no Lovable.",
-    "Lista de problemas e correções aplicadas.",
-    `Faça uma revisão do MVP atual.
+Ação principal:
+[descreva]
 
-Verifique:
-1. Fluxo principal
-2. Mobile
-3. Estados vazios e de erro
-4. Links
-5. Textos confusos
+Crie a estrutura ideal do dashboard com cards, prioridades e textos.`,
+    correctionPrompt: `O dashboard ficou confuso. Refaça com foco em uma única próxima ação.
+
+Priorize:
+1. O que o usuário deve fazer agora
+2. O que ele já fez
+3. O que falta completar
+4. Um botão principal
+5. Menos informação na primeira dobra.`,
+    advanceCriteria:
+      "Avance quando o dashboard deixar claro o que o usuário deve fazer em seguida.",
+  },
+  {
+    n: 4,
+    title: "Melhorar design mobile",
+    purpose: "Deixa o app bonito, claro e fácil de usar no celular.",
+    when: "Depois que o app já tem telas principais.",
+    where: "Cole no Lovable.",
+    result: "Cores, espaçamento, botões e mobile melhorados.",
+    objective:
+      "Transformar a versão inicial em uma experiência limpa e usável no celular.",
+    whenLovableDirect:
+      "Quando você já testou no celular e listou pontos visuais a corrigir.",
+    whenAgentFirst:
+      "Quando você quer uma análise de UX mobile antes de pedir ajustes ao Lovable.",
+    content: `Faça uma revisão completa de design mobile.
+
+Corrija:
+1. Espaçamentos
+2. Tamanho de fonte
+3. Botões pequenos
+4. Cards muito largos
+5. Menu difícil de usar
+6. Contraste
+7. Hierarquia visual
+8. Inputs difíceis no celular
+9. Scroll excessivo
+10. Elementos quebrando a tela
+
+Preserve funcionalidades.
+Não refaça o app do zero.
+Apenas melhore a experiência mobile.`,
+    agentPrompt: `Analise a experiência mobile do meu app com base nesta descrição ou print.
+
+[descreva ou cole observações]
+
+Quero uma lista objetiva de melhorias para mandar ao Lovable, sem refazer o app do zero.`,
+    correctionPrompt: `O mobile ainda ficou ruim. Corrija apenas UX mobile.
+
+Prioridade:
+1. Legibilidade
+2. Botões grandes
+3. Menos poluição
+4. Melhor espaçamento
+5. Ação principal visível
+6. Menu simples.`,
+    advanceCriteria:
+      "Avance quando o app estiver legível, navegável e usável no celular.",
+  },
+  {
+    n: 5,
+    title: "Revisar MVP",
+    purpose: "Revisa o app antes de continuar para login/banco.",
+    when: "Antes de avançar para área restrita.",
+    where: "Cole no Lovable.",
+    result: "Lista de problemas e correções aplicadas.",
+    objective:
+      "Revisar se o app está pronto para avançar para login, banco ou venda.",
+    whenLovableDirect:
+      "Quando você quer um relatório técnico direto do Lovable sobre o estado atual.",
+    whenAgentFirst:
+      "Quando você quer uma auditoria estratégica antes de decidir se avança ou corta.",
+    content: `Faça uma auditoria do MVP atual antes de avançar.
+
+Não altere código nesta rodada.
+
+Audite:
+1. O app resolve a dor principal?
+2. O usuário entende o que fazer?
+3. A ação principal funciona?
+4. O MVP tem excesso?
+5. O mobile está usável?
+6. Existem botões quebrados?
+7. Existem textos genéricos?
+8. O que deve ser corrigido antes de criar login, banco ou pagamento?
 
 Entregue:
-1. Problemas encontrados
-2. Correções aplicadas
-3. O que devo testar manualmente`,
-  ),
+1. O que está aprovado
+2. O que precisa corrigir
+3. O que deve ser cortado
+4. O próximo prompt recomendado.`,
+    agentPrompt: `Quero auditar meu MVP antes de avançar.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Ação principal:
+[descreva]
+
+Analise se está pronto para login, banco, pagamento e venda.
+Aponte cortes, riscos e próxima etapa.`,
+    correctionPrompt: `A auditoria ficou superficial. Refaça avaliando:
+1. Clareza
+2. Usabilidade
+3. Escopo
+4. Monetização
+5. Risco técnico
+6. Próximo passo exato.`,
+    advanceCriteria:
+      "Avance para login e banco apenas quando o MVP estiver simples, funcional, compreensível e usável no mobile.",
+  },
 ];
 
 export const COMMANDS_LOGIN: Command[] = [
