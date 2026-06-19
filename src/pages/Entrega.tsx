@@ -840,8 +840,8 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       <section>
         <ConstruirIntro />
         <ModuleHeader
-          title="Construir app no Lovable"
-          subtitle="Use esta etapa para transformar sua ideia em um app funcional."
+          title="Siga as etapas de construção"
+          subtitle="Comece pela Etapa 1. Só avance quando o Lovable entregar o resultado esperado."
         />
         <CommandList commands={COMMANDS_CONSTRUIR} moduleKey="construir" />
       </section>
