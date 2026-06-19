@@ -33,6 +33,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { CommandCard } from "@/components/entrega/CommandCard";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
+import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { APP_CONFIG } from "@/config/appConfig";
