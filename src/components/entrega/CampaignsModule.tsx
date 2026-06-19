@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   Target,
@@ -9,11 +9,14 @@ import {
   BarChart3,
   Stethoscope,
   Copy,
+  Check,
   Sparkles,
   AlertTriangle,
   CheckCircle2,
   Circle,
   ChevronDown,
+  ClipboardList,
+  Rocket,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -27,7 +30,8 @@ type TabId =
   | "criativos"
   | "plano"
   | "metricas"
-  | "melhorar";
+  | "melhorar"
+  | "resumo";
 
 const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
   { id: "diagnostico", label: "Diagnóstico da oferta", icon: Stethoscope },
@@ -37,29 +41,51 @@ const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
   { id: "plano", label: "Plano de 7 dias", icon: CalendarDays },
   { id: "metricas", label: "Métricas", icon: BarChart3 },
   { id: "melhorar", label: "Melhorar campanha", icon: Target },
+  { id: "resumo", label: "Resumo da campanha", icon: ClipboardList },
 ];
 
 // ===== utils =====
 
-async function copyText(text: string) {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast.success("Comando copiado. Agora cole no Lovable.");
-  } catch {
-    toast.error("Não foi possível copiar.");
-  }
-}
-
-function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: string }) {
+function CopyBtn({
+  text,
+  label = "Copiar comando",
+  full = false,
+}: {
+  text: string;
+  label?: string;
+  full?: boolean;
+}) {
+  const [copied, setCopied] = useState(false);
+  const handle = async () => {
+    const clean = (text ?? "").trim();
+    if (!clean) {
+      toast.error("Nada para copiar ainda. Preencha os campos primeiro.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(clean);
+      setCopied(true);
+      toast.success("Copiado! Agora cole no Lovable.");
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
   return (
     <button
-      onClick={() => copyText(text)}
-      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-sm font-semibold"
+      onClick={handle}
+      className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition ${
+        copied
+          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+      } ${full ? "w-full sm:w-auto" : ""}`}
     >
-      <Copy size={14} /> {label}
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+      {copied ? "Copiado!" : label}
     </button>
   );
 }
+
 
 function CommandBox({ text }: { text: string }) {
   return (
@@ -894,11 +920,11 @@ Regras:
 
 function BlocoMetricas() {
   const [m, setM] = useState({
-    visit: "",
+    invest: "",
     clicks: "",
     leads: "",
-    signups: "",
     sales: "",
+    revenue: "",
   });
 
   const num = (s: string) => {
@@ -906,41 +932,54 @@ function BlocoMetricas() {
     return Number.isFinite(n) ? n : 0;
   };
 
-  const rates = useMemo(() => {
-    const v = num(m.visit);
+  const calc = useMemo(() => {
+    const inv = num(m.invest);
     const c = num(m.clicks);
     const l = num(m.leads);
     const s = num(m.sales);
+    const r = num(m.revenue);
     return {
-      click: v > 0 ? (c / v) * 100 : 0,
-      lead: c > 0 ? (l / c) * 100 : 0,
-      sale: v > 0 ? (s / v) * 100 : 0,
+      cpc: c > 0 ? inv / c : null,
+      clickToLead: c > 0 ? (l / c) * 100 : null,
+      leadToSale: l > 0 ? (s / l) * 100 : null,
+      cpa: s > 0 ? inv / s : null,
+      roas: inv > 0 ? r / inv : null,
+      profit: r - inv,
+      hasAny: inv + c + l + s + r > 0,
     };
   }, [m]);
 
   const cards = [
     { t: "Visitantes", d: "Quantas pessoas chegaram na página." },
     { t: "Cliques", d: "Quantas pessoas clicaram no botão principal." },
-    { t: "Leads", d: "Quantas pessoas deixaram e-mail ou WhatsApp." },
+    { t: "Leads", d: "Quantas pessoas deixaram contato." },
     { t: "Cadastros", d: "Quantas pessoas criaram conta." },
-    { t: "Usuários ativos", d: "Quantas pessoas realmente usaram." },
     { t: "Vendas", d: "Quantas pessoas pagaram." },
-    { t: "Conversão", d: "De cada 100 pessoas, quantas fizeram a ação principal." },
+    { t: "Receita", d: "Total que entrou em dinheiro." },
   ];
 
   const interp: string[] = [];
-  if (num(m.visit) > 0 && num(m.visit) < 50) interp.push("Visitantes baixos: você precisa divulgar mais.");
-  if (rates.click > 0 && rates.click < 2) interp.push("Cliques baixos: sua promessa ou botão não está chamando atenção.");
-  if (num(m.leads) === 0 && num(m.clicks) > 20) interp.push("Sem leads: sua página não está convincente.");
-  if (num(m.sales) === 0 && num(m.signups) > 5) interp.push("Sem vendas: oferta, preço ou confiança precisam melhorar.");
+  if (calc.cpc !== null && calc.cpc > 5) interp.push("Seu CPC está alto. Teste outro criativo ou outro público.");
+  if (calc.clickToLead !== null && calc.clickToLead < 5) interp.push("Poucos cliques viram lead. Melhore promessa e formulário.");
+  if (calc.leadToSale !== null && calc.leadToSale < 5) interp.push("Poucos leads viram venda. Revise oferta, preço e prova.");
+  if (calc.roas !== null && calc.roas < 1) interp.push("ROAS abaixo de 1: você gastou mais do que recebeu.");
+  if (calc.roas !== null && calc.roas >= 2) interp.push("ROAS saudável. Considere testar pequeno aumento de orçamento.");
+  if (calc.profit < 0 && num(m.invest) > 0) interp.push("Resultado negativo no momento. Ajuste oferta antes de escalar.");
+
+  const fmtMoney = (v: number | null) =>
+    v === null ? "—" : `R$ ${v.toFixed(2).replace(".", ",")}`;
+  const fmtPct = (v: number | null) =>
+    v === null ? "—" : `${v.toFixed(1)}%`;
+  const fmtNum = (v: number | null) =>
+    v === null ? "—" : v.toFixed(2);
 
   const command = `Analise os números da minha campanha e me diga o que melhorar.
 
 App:
 [descreva]
 
-Visitantes:
-${m.visit || "[informe]"}
+Investimento:
+${m.invest || "[informe]"}
 
 Cliques:
 ${m.clicks || "[informe]"}
@@ -948,11 +987,11 @@ ${m.clicks || "[informe]"}
 Leads:
 ${m.leads || "[informe]"}
 
-Cadastros:
-${m.signups || "[informe]"}
-
 Vendas:
 ${m.sales || "[informe]"}
+
+Receita:
+${m.revenue || "[informe]"}
 
 Canal usado:
 [informe]
@@ -1000,32 +1039,40 @@ Regras:
       <GlassCard className="p-5">
         <h4 className="font-semibold text-sm mb-3">Calculadora simples</h4>
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          <Field label="Visitantes" value={m.visit} onChange={(v) => setM({ ...m, visit: v })} />
-          <Field label="Cliques" value={m.clicks} onChange={(v) => setM({ ...m, clicks: v })} />
-          <Field label="Leads" value={m.leads} onChange={(v) => setM({ ...m, leads: v })} />
-          <Field label="Cadastros" value={m.signups} onChange={(v) => setM({ ...m, signups: v })} />
-          <Field label="Vendas" value={m.sales} onChange={(v) => setM({ ...m, sales: v })} />
+          <Field label="Investimento (R$)" value={m.invest} onChange={(v) => setM({ ...m, invest: v })} placeholder="Ex: 100" />
+          <Field label="Cliques" value={m.clicks} onChange={(v) => setM({ ...m, clicks: v })} placeholder="Ex: 250" />
+          <Field label="Leads" value={m.leads} onChange={(v) => setM({ ...m, leads: v })} placeholder="Ex: 30" />
+          <Field label="Vendas" value={m.sales} onChange={(v) => setM({ ...m, sales: v })} placeholder="Ex: 3" />
+          <Field label="Receita (R$)" value={m.revenue} onChange={(v) => setM({ ...m, revenue: v })} placeholder="Ex: 450" />
         </div>
-        <div className="grid sm:grid-cols-3 gap-3 mt-4 text-sm">
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <p className="text-xs text-muted-foreground">Taxa de clique</p>
-            <p className="font-semibold">{rates.click.toFixed(1)}%</p>
-          </div>
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <p className="text-xs text-muted-foreground">Taxa de lead</p>
-            <p className="font-semibold">{rates.lead.toFixed(1)}%</p>
-          </div>
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <p className="text-xs text-muted-foreground">Taxa de venda</p>
-            <p className="font-semibold">{rates.sale.toFixed(1)}%</p>
-          </div>
-        </div>
-        {interp.length > 0 && (
-          <ul className="mt-4 space-y-1 text-xs">
-            {interp.map((i) => (
-              <li key={i} className="text-amber-300/90">• {i}</li>
-            ))}
-          </ul>
+
+        {!calc.hasAny ? (
+          <p className="mt-4 text-xs text-muted-foreground italic">
+            Preencha os campos acima para ver seus indicadores.
+          </p>
+        ) : (
+          <>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4 text-sm">
+              <Metric label="CPC (custo por clique)" value={fmtMoney(calc.cpc)} />
+              <Metric label="Clique → Lead" value={fmtPct(calc.clickToLead)} />
+              <Metric label="Lead → Venda" value={fmtPct(calc.leadToSale)} />
+              <Metric label="CPA (custo por venda)" value={fmtMoney(calc.cpa)} />
+              <Metric label="ROAS" value={fmtNum(calc.roas)} />
+              <Metric
+                label={calc.profit >= 0 ? "Lucro" : "Prejuízo"}
+                value={fmtMoney(Math.abs(calc.profit))}
+                positive={calc.profit >= 0}
+                negative={calc.profit < 0 && num(m.invest) > 0}
+              />
+            </div>
+            {interp.length > 0 && (
+              <ul className="mt-4 space-y-1 text-xs">
+                {interp.map((i) => (
+                  <li key={i} className="text-amber-300/90">• {i}</li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
       </GlassCard>
 
@@ -1033,10 +1080,146 @@ Regras:
         Copie este comando e cole no Lovable.
       </p>
       <CommandBox text={command} />
-      <CopyBtn text={command} label="Copiar comando para analisar meus números" />
+      <CopyBtn text={command} label="Copiar comando para analisar meus números" full />
     </div>
   );
 }
+
+function Metric({
+  label,
+  value,
+  positive,
+  negative,
+}: {
+  label: string;
+  value: string;
+  positive?: boolean;
+  negative?: boolean;
+}) {
+  const color = positive
+    ? "text-emerald-300"
+    : negative
+      ? "text-red-300"
+      : "text-foreground";
+  return (
+    <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className={`font-semibold ${color}`}>{value}</p>
+    </div>
+  );
+}
+
+// ===== Bloco Resumo =====
+
+const RESUMO_KEY = "fabrica_apps_campanha_resumo_v1";
+
+type ResumoData = {
+  publico: string;
+  oferta: string;
+  texto: string;
+  criativo: string;
+  canal: string;
+  orcamento: string;
+  metrica: string;
+  proximoPasso: string;
+};
+
+const RESUMO_INITIAL: ResumoData = {
+  publico: "",
+  oferta: "",
+  texto: "",
+  criativo: "",
+  canal: "",
+  orcamento: "",
+  metrica: "",
+  proximoPasso: "",
+};
+
+function useResumo(): [ResumoData, (v: ResumoData | ((p: ResumoData) => ResumoData)) => void] {
+  const [data, setData] = useState<ResumoData>(() => {
+    try {
+      const raw = localStorage.getItem(RESUMO_KEY);
+      return raw ? { ...RESUMO_INITIAL, ...JSON.parse(raw) } : RESUMO_INITIAL;
+    } catch {
+      return RESUMO_INITIAL;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(RESUMO_KEY, JSON.stringify(data));
+    } catch {
+      /* ignore */
+    }
+  }, [data]);
+  return [data, setData];
+}
+
+function BlocoResumo() {
+  const [d, setD] = useResumo();
+
+  const filled = Object.values(d).filter((v) => v.trim().length > 0).length;
+  const total = Object.keys(d).length;
+
+  const exportText = `Resumo da minha campanha
+
+Público-alvo: ${d.publico || "[preencher]"}
+Oferta: ${d.oferta || "[preencher]"}
+Texto principal do anúncio: ${d.texto || "[preencher]"}
+Criativo sugerido: ${d.criativo || "[preencher]"}
+Canal recomendado: ${d.canal || "[preencher]"}
+Orçamento diário: ${d.orcamento || "[preencher]"}
+Métrica principal: ${d.metrica || "[preencher]"}
+Próximo passo: ${d.proximoPasso || "[preencher]"}`;
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h3 className="font-heading font-semibold text-lg">Resumo da campanha pronta</h3>
+        <p className="text-sm text-muted-foreground mt-1">
+          Reúna aqui as decisões da sua campanha. Tudo fica salvo automaticamente.
+        </p>
+      </div>
+
+      <GlassCard className="p-5">
+        <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
+          <span>Preenchimento</span>
+          <span>{filled}/{total}</span>
+        </div>
+        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden mb-4">
+          <div
+            className="h-full bg-accent transition-all"
+            style={{ width: `${(filled / total) * 100}%` }}
+          />
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Field label="Público-alvo" value={d.publico} onChange={(v) => setD({ ...d, publico: v })} placeholder="Ex: barbeiros autônomos" />
+          <Field label="Oferta" value={d.oferta} onChange={(v) => setD({ ...d, oferta: v })} placeholder="Ex: acesso por R$19/mês" />
+          <Field label="Texto principal do anúncio" value={d.texto} onChange={(v) => setD({ ...d, texto: v })} placeholder="Headline + CTA" />
+          <Field label="Criativo sugerido" value={d.criativo} onChange={(v) => setD({ ...d, criativo: v })} placeholder="Ex: reels de 15s" />
+          <Field label="Canal recomendado" value={d.canal} onChange={(v) => setD({ ...d, canal: v })} placeholder="Ex: Instagram" />
+          <Field label="Orçamento diário" value={d.orcamento} onChange={(v) => setD({ ...d, orcamento: v })} placeholder="Ex: R$20/dia" />
+          <Field label="Métrica principal" value={d.metrica} onChange={(v) => setD({ ...d, metrica: v })} placeholder="Ex: cadastros" />
+          <Field label="Próximo passo" value={d.proximoPasso} onChange={(v) => setD({ ...d, proximoPasso: v })} placeholder="Ex: rodar 5 dias e revisar" />
+        </div>
+      </GlassCard>
+
+      <CommandBox text={exportText} />
+      <div className="flex flex-wrap gap-2">
+        <CopyBtn text={exportText} label="Copiar resumo" full />
+        <button
+          onClick={() => {
+            if (confirm("Limpar todo o resumo?")) setD(RESUMO_INITIAL);
+          }}
+          className="px-4 py-2.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
+        >
+          Limpar
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 function BlocoMelhorar() {
   const problemas = [
@@ -1224,11 +1407,21 @@ export function CampaignsModule({
       </header>
 
       <GlassCard className="p-4 mb-5 border-accent/20 bg-accent/5">
-        <p className="text-sm">
-          Construir o app não basta. Agora você precisa mostrar o app para as
-          pessoas certas. Comece pequeno, teste mensagens, acompanhe resultados
-          e melhore.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <p className="text-sm flex-1">
+            <strong className="text-accent">Comece pelo Diagnóstico.</strong>{" "}
+            Depois gere sua campanha e execute o plano de 7 dias.
+          </p>
+          <button
+            onClick={() => {
+              setTab("diagnostico");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="btn-primary text-sm whitespace-nowrap"
+          >
+            <Rocket size={14} /> Criar minha campanha agora
+          </button>
+        </div>
       </GlassCard>
 
       <div className="flex items-start gap-2 mb-6 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4">
@@ -1239,17 +1432,36 @@ export function CampaignsModule({
         </p>
       </div>
 
-      {/* Abas */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1 scrollbar-thin">
+      {/* Abas: dropdown no mobile, pílulas roláveis no desktop */}
+      <div className="sm:hidden mb-5">
+        <label className="block">
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+            Etapa atual
+          </span>
+          <select
+            value={tab}
+            onChange={(e) => setTab(e.target.value as TabId)}
+            className="mt-1 w-full px-3 py-3 rounded-lg bg-white/5 border border-accent/30 focus:border-accent/60 outline-none text-sm font-semibold"
+          >
+            {TABS.map((t) => (
+              <option key={t.id} value={t.id} className="bg-background">
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="hidden sm:flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1">
         {TABS.map((t) => {
           const Icon = t.icon;
-          const active = tab === t.id;
+          const isActive = tab === t.id;
           return (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`inline-flex items-center gap-2 whitespace-nowrap px-3 py-2 rounded-lg text-xs font-medium border transition ${
-                active
+                isActive
                   ? "border-accent/60 bg-accent/15 text-accent"
                   : "border-white/10 bg-white/5 text-muted-foreground hover:text-foreground hover:bg-white/10"
               }`}
@@ -1269,7 +1481,9 @@ export function CampaignsModule({
         {tab === "plano" && <BlocoPlano7Dias />}
         {tab === "metricas" && <BlocoMetricas />}
         {tab === "melhorar" && <BlocoMelhorar />}
+        {tab === "resumo" && <BlocoResumo />}
       </div>
+
 
       <ChecklistCampanhas checklist={checklist} setChecklist={setChecklist} />
     </section>
