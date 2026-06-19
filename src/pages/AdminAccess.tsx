@@ -397,14 +397,17 @@ function SelfGrant() {
       setMsg({ kind: "err", text: res?.error ?? "Falha ao liberar acesso." });
       return;
     }
-    setMsg({ kind: "ok", text: "Seu acesso foi liberado. Recarregue para atualizar a navbar." });
+    setMsg({ kind: "ok", text: "Seu acesso de teste foi liberado. Recarregue para atualizar a navbar." });
   };
 
   return (
     <div className="glass-strong p-6 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h2 className="font-heading font-semibold text-sm mb-1">Meu próprio acesso</h2>
+          <h2 className="font-heading font-semibold text-sm mb-1">Teste admin</h2>
+          <p className="text-xs text-muted-foreground mb-1">
+            Use este botão apenas para liberar seu próprio acesso durante testes.
+          </p>
           <p className="text-xs text-muted-foreground">
             Logado como: <span className="text-foreground/80">{email ?? "—"}</span>
           </p>
