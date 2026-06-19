@@ -1298,8 +1298,8 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Não avance se o Lovable ainda não entregou o resultado esperado. Volte, corrija ou use a aba Corrigir erro.",
   },
   login: {
-    doNow: "Adicione login antes do banco. Depois crie as tabelas e as regras de acesso.",
-    advanceWhen: "Avance quando você conseguir entrar no app e ver dados salvos no banco.",
+    doNow: "Crie login simples, depois perfil do usuário, depois proteja a área restrita. Teste cada passo antes de avançar.",
+    advanceWhen: "Não avance para venda ou checkout antes de testar se o usuário consegue entrar, sair e acessar a área correta.",
   },
   venda: {
     doNow: "Crie primeiro a landing page. Depois preço, FAQ e confiança.",
