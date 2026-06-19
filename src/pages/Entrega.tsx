@@ -32,6 +32,7 @@ import {
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
+import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
@@ -331,6 +332,7 @@ export default function Entrega() {
                 {email}
               </span>
             )}
+            <FontSizeControl />
             {auth.isAdmin && (
               <button
                 onClick={() => navigate("/admin/acessos")}
