@@ -93,14 +93,23 @@ export default function AdminAccess() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [authChecked, setAuthChecked] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminEmail, setAdminEmail] = useState<string | null>(null);
   const [selfHasAccess, setSelfHasAccess] = useState<boolean | null>(null);
 
-  const sectionParam = searchParams.get("section") as AdminSectionKey | null;
-  const initialSection: AdminSectionKey =
-    sectionParam && ADMIN_SECTIONS.some((s) => s.key === sectionParam) ? sectionParam : "overview";
-  const [section, setSection] = useState<AdminSectionKey>(initialSection);
+  const sectionParam = searchParams.get("section");
+  const resolvedSection: AdminSectionKey =
+    sectionParam && ADMIN_SECTIONS.some((s) => s.key === sectionParam)
+      ? (sectionParam as AdminSectionKey)
+      : "overview";
+  const [section, setSection] = useState<AdminSectionKey>(resolvedSection);
+
+  // Keep state in sync if the URL changes (back/forward, deep link).
+  useEffect(() => {
+    if (resolvedSection !== section) setSection(resolvedSection);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resolvedSection]);
 
   const changeSection = (k: AdminSectionKey) => {
     setSection(k);
