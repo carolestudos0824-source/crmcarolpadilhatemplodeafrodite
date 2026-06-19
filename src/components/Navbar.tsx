@@ -9,6 +9,7 @@ import { clearSession } from "@/lib/auth";
 const links = [
   { to: "/", label: "Início" },
   { to: "/precos", label: "Preço único" },
+  { to: "/#incluso", label: "O que está incluso" },
 ];
 
 export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean } = {}) => {
