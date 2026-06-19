@@ -1013,6 +1013,144 @@ const VendaIntro = () => {
   );
 };
 
+const CheckoutIntro = () => {
+  const [showZero, setShowZero] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
+
+  const tutorialSteps = [
+    "Crie o pagamento",
+    "Mostre o obrigado",
+    "Proteja a entrega",
+    "Libere o acesso",
+    "Teste como comprador",
+  ];
+
+  const glossary: [string, string][] = [
+    ["Checkout", "lugar onde a pessoa paga."],
+    ["Gateway", "ferramenta que processa o pagamento, como Kiwify, Hotmart, Kirvano, Stripe ou Mercado Pago."],
+    ["URL de retorno", "página para onde o comprador volta depois de pagar."],
+    ["Página de obrigado", "página que confirma a compra e explica o próximo passo."],
+    ["Área de entrega", "lugar onde o comprador acessa o produto."],
+    ["Acesso restrito", "área que só pessoas autorizadas conseguem ver."],
+    ["Liberação manual", "quando você confirma o pagamento e libera o acesso."],
+    ["Liberação automática", "quando o sistema libera acesso após confirmação do gateway."],
+    ["Webhook", "aviso automático enviado pelo gateway para o app quando uma compra acontece."],
+    ["Recuperação de acesso", "fluxo para comprador voltar a entrar se perder login ou senha."],
+  ];
+
+  return (
+    <section className="mb-8 space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
+        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
+          <Sparkles size={12} /> Checkout e entrega — Modo Guiado
+        </span>
+        <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
+          Venda e entregue sem perder o comprador
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
+          Nesta etapa, você organiza o pagamento, a página de obrigado, a área
+          de entrega e o acesso do comprador.
+        </p>
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-5">
+          Não basta vender. O comprador precisa saber exatamente onde entrar, o
+          que recebeu e como acessar novamente.
+        </p>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            {tutorialSteps.map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[12px] md:text-[13px] text-foreground/90">
+                  <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </div>
+                {i < tutorialSteps.length - 1 && (
+                  <span className="text-muted-foreground/50 hidden md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Antes de divulgar, faça o caminho completo como se você fosse o comprador.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="btn-primary text-sm min-h-[44px]"
+            type="button"
+          >
+            <Sparkles size={14} /> Não entendo checkout e entrega
+          </button>
+          <a
+            href={APP_CONFIG.GPT_AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+          >
+            <Sparkles size={14} /> Abrir Agente Arquiteto
+          </a>
+          <a
+            href={LOVABLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+          >
+            <ExternalLink size={14} /> Abrir Lovable
+          </a>
+        </div>
+
+        {showZero && (
+          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
+            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Escolha se o pagamento será por WhatsApp, checkout externo ou gateway.</li>
+              <li>Crie uma página de obrigado explicando o próximo passo.</li>
+              <li>Crie uma área de entrega protegida.</li>
+              <li>Teste um comprador sem acesso e um comprador liberado.</li>
+              <li>Só avance quando a pessoa conseguir pagar, receber orientação e entrar.</li>
+            </ol>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-rose-500/40 bg-rose-500/10 p-4 text-sm text-rose-100 flex items-start gap-3">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <div>
+          <strong>Nunca deixe material pago visível para visitantes.</strong> A
+          entrega precisa ficar protegida por login, acesso liberado ou código.
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowGlossary((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+        </button>
+        {showGlossary && (
+          <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+            {glossary.map(([term, def]) => (
+              <div key={term} className="flex gap-2">
+                <dt className="text-accent font-semibold shrink-0">{term}:</dt>
+                <dd className="text-foreground/80">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </section>
+  );
+};
+
+
+
 
 
 
