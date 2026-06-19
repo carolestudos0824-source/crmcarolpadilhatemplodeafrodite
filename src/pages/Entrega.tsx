@@ -98,6 +98,7 @@ function EntregaInner() {
     "construir-app": "construir",
     "login-banco": "login",
     "pagina-de-venda": "venda",
+    "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
     "seo-geo": "seo",
     "campanhas": "campanhas",
