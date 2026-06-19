@@ -3241,30 +3241,78 @@ Reescreva mais humana, com benefício claro para quem aceitar e tempo realista.`
 
 // ============ Checklist geral por fases ============
 
-export const CHECKLIST_PHASES: { phase: string; items: string[] }[] = [
+export const CHECKLIST_PHASES: {
+  phase: string;
+  moduleId?: string;
+  moduleLabel?: string;
+  items: string[];
+}[] = [
   {
-    phase: "Fase 1 — Ideia",
-    items: ["Escolhi ideia", "Defini público", "Defini dor", "Defini promessa"],
+    phase: "Fase 1 — Ideia clara",
+    moduleId: "comece",
+    moduleLabel: "Ir para Comece aqui",
+    items: [
+      "Escolhi a ideia principal do app",
+      "Defini quem vai usar",
+      "Defini qual dor o app resolve",
+      "Defini a promessa principal",
+    ],
   },
   {
-    phase: "Fase 2 — Construção",
-    items: ["Gerei plano", "Criei primeira versão", "Testei no celular", "Corrigi erros"],
+    phase: "Fase 2 — MVP construído",
+    moduleId: "construir",
+    moduleLabel: "Ir para Construir app",
+    items: [
+      "Gerei o plano do app",
+      "Criei a primeira versão no Lovable",
+      "Testei o app no celular",
+      "Corrigi os erros principais",
+    ],
   },
   {
-    phase: "Fase 3 — Venda",
-    items: ["Criei landing page", "Criei preço", "Criei checkout", "Criei obrigado"],
+    phase: "Fase 3 — Venda preparada",
+    moduleId: "venda",
+    moduleLabel: "Ir para Página de venda",
+    items: [
+      "Criei a landing page",
+      "Defini o preço ou próximo passo de compra",
+      "Criei o checkout ou caminho de pagamento",
+      "Criei a página de obrigado",
+    ],
   },
   {
-    phase: "Fase 4 — Entrega",
-    items: ["Criei área restrita", "Criei login", "Criei entrega", "Testei acesso"],
+    phase: "Fase 4 — Entrega protegida",
+    moduleId: "checkout",
+    moduleLabel: "Ir para Checkout e entrega",
+    items: [
+      "Criei a área de entrega protegida",
+      "Criei login ou acesso restrito",
+      "Organizei o que o comprador recebe",
+      "Testei o acesso como comprador",
+    ],
   },
   {
-    phase: "Fase 5 — Crescimento",
-    items: ["Criei SEO", "Criei GEO", "Criei campanhas", "Criei criativos"],
+    phase: "Fase 5 — Crescimento iniciado",
+    moduleId: "campanhas",
+    moduleLabel: "Ir para Campanhas",
+    items: [
+      "Criei base de SEO",
+      "Criei base de GEO",
+      "Criei primeira campanha",
+      "Criei primeiros criativos",
+    ],
   },
   {
-    phase: "Fase 6 — Validação",
-    items: ["Testei com 10 pessoas", "Coletei feedback", "Melhorei", "Publiquei"],
+    phase: "Fase 6 — Validação com pessoas reais",
+    moduleId: "validacao",
+    moduleLabel: "Ir para Validação",
+    items: [
+      "Convidei 10 pessoas reais",
+      "Coletei feedback",
+      "Separei elogio de sinal real",
+      "Melhorei o app com base no feedback",
+      "Preparei novo teste ou publicação",
+    ],
   },
 ];
 

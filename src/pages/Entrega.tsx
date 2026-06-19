@@ -1862,49 +1862,126 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
 
 
   if (active === "checklist") {
+    const overviewCards = [
+      { title: "Ideia clara", desc: "Público, dor e promessa definidos." },
+      { title: "MVP funcional", desc: "Primeira versão criada e testada no celular." },
+      { title: "Venda preparada", desc: "Página, preço, checkout e entrega organizados." },
+      { title: "Validação real", desc: "Pessoas reais testaram e deram sinais concretos." },
+    ];
     return (
       <section>
         <ModuleHeader
-          title="Checklist geral"
-          subtitle="Acompanhe seu avanço em todas as fases do programa."
+          title="Painel de Prontidão do App"
+          subtitle="Acompanhe se sua ideia já virou um app claro, funcional, vendável e pronto para ser testado com pessoas reais."
         />
-        <div className="space-y-5">
-          {CHECKLIST_PHASES.map((p) => (
-            <GlassCard key={p.phase} className="p-5">
-              <h3 className="font-heading font-semibold mb-3">{p.phase}</h3>
-              <ul className="space-y-2">
-                {p.items.map((item) => {
-                  const key = `${p.phase}__${item}`;
-                  const done = !!checklist[key];
-                  return (
-                    <li key={item}>
-                      <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
-                        <input
-                          type="checkbox"
-                          checked={done}
-                          onChange={() =>
-                            setChecklist((prev) => ({ ...prev, [key]: !prev[key] }))
-                          }
-                          className="accent-accent w-4 h-4"
-                        />
-                        <span
-                          className={`text-sm ${
-                            done ? "line-through text-muted-foreground" : ""
-                          }`}
-                        >
-                          {item}
-                        </span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
+
+        <GlassCard className="p-4 mb-5 border-accent/30">
+          <p className="text-sm text-foreground/90">
+            Você não precisa estar com tudo perfeito para validar. Mas precisa ter o básico funcionando antes de divulgar.
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-5 mb-5">
+          <h3 className="font-heading font-semibold mb-3">Como usar este painel</h3>
+          <ol className="list-decimal list-inside space-y-1.5 text-sm text-muted-foreground">
+            <li>Marque apenas o que realmente foi feito.</li>
+            <li>Volte ao módulo correspondente quando uma fase estiver incompleta.</li>
+            <li>Não pule para venda se o MVP ainda não funciona.</li>
+            <li>Não pule para campanha se a oferta ainda não está clara.</li>
+            <li>Não escale antes de validar com pessoas reais.</li>
+          </ol>
+        </GlassCard>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+          {overviewCards.map((c) => (
+            <GlassCard key={c.title} className="p-4">
+              <h4 className="font-heading font-semibold text-sm mb-1 text-accent">{c.title}</h4>
+              <p className="text-xs text-muted-foreground">{c.desc}</p>
             </GlassCard>
           ))}
         </div>
+
+        <div className="space-y-5">
+          {CHECKLIST_PHASES.map((p) => {
+            const doneCount = p.items.filter((item) => !!checklist[`${p.phase}__${item}`]).length;
+            const total = p.items.length;
+            let status: { label: string; cls: string };
+            if (doneCount === 0) status = { label: "Pendente", cls: "bg-white/10 text-muted-foreground border-white/15" };
+            else if (doneCount < total) status = { label: "Em andamento", cls: "bg-accent/15 text-accent border-accent/30" };
+            else status = { label: "Concluída", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" };
+
+            return (
+              <GlassCard key={p.phase} className="p-5">
+                <div className="flex items-start justify-between gap-3 mb-3 flex-wrap">
+                  <h3 className="font-heading font-semibold">{p.phase}</h3>
+                  <span className={`text-xs px-2.5 py-1 rounded-full border ${status.cls}`}>
+                    {status.label} · {doneCount}/{total}
+                  </span>
+                </div>
+                <ul className="space-y-2">
+                  {p.items.map((item) => {
+                    const key = `${p.phase}__${item}`;
+                    const done = !!checklist[key];
+                    return (
+                      <li key={item}>
+                        <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
+                          <input
+                            type="checkbox"
+                            checked={done}
+                            onChange={() =>
+                              setChecklist((prev) => ({ ...prev, [key]: !prev[key] }))
+                            }
+                            className="accent-accent w-4 h-4"
+                          />
+                          <span
+                            className={`text-sm ${
+                              done ? "line-through text-muted-foreground" : ""
+                            }`}
+                          >
+                            {item}
+                          </span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+                {p.moduleId && p.moduleLabel && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => goTo(p.moduleId as ModuleId)}
+                      className="text-xs px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-foreground/90 transition"
+                    >
+                      {p.moduleLabel} →
+                    </button>
+                  </div>
+                )}
+              </GlassCard>
+            );
+          })}
+        </div>
+
+        <GlassCard className="p-5 mt-6">
+          <h3 className="font-heading font-semibold mb-2">Quando posso avançar?</h3>
+          <p className="text-sm text-muted-foreground">
+            Use 70% como sinal de prontidão para testar, não como perfeição. Avance quando o app estiver claro, funcional e pronto para receber pessoas reais. Se uma fase crítica estiver incompleta, volte ao módulo correspondente antes de divulgar.
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-5 mt-4 border-amber-500/30">
+          <h3 className="font-heading font-semibold mb-2 text-amber-300">Antes de vender ou divulgar, confira</h3>
+          <ul className="space-y-1.5 text-sm text-muted-foreground list-disc list-inside">
+            <li>O usuário entende o que o app faz?</li>
+            <li>O botão principal funciona?</li>
+            <li>A página de venda explica a oferta?</li>
+            <li>A entrega está protegida?</li>
+            <li>Você testou no celular?</li>
+            <li>Pelo menos uma pessoa real conseguiu usar?</li>
+          </ul>
+        </GlassCard>
       </section>
     );
   }
+
 
   if (active === "erros") {
     return <ErrorsModule />;
