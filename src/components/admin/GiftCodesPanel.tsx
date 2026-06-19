@@ -81,7 +81,15 @@ export function GiftCodesPanel() {
         .limit(20),
     ]);
     if (codesRes.error) {
-      setError(codesRes.error.message);
+      const msg = codesRes.error.message || "";
+      const isPermission =
+        codesRes.error.code === "42501" ||
+        /permission denied|row-level security|rls/i.test(msg);
+      setError(
+        isPermission
+          ? "Você tem acesso ao painel admin, mas não tem permissão para gerenciar códigos premium. Verifique a configuração de admin no banco (admin_users / user_roles)."
+          : msg
+      );
       setLoading(false);
       return;
     }
