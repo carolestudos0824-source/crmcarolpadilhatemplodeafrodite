@@ -705,6 +705,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_progress_state: {
+        Row: {
+          active_module: string | null
+          checklist: Json
+          commands_done: Json
+          modules_done: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_module?: string | null
+          checklist?: Json
+          commands_done?: Json
+          modules_done?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_module?: string | null
+          checklist?: Json
+          commands_done?: Json
+          modules_done?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
