@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2 } from "lucide-react";
+import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink } from "lucide-react";
+import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
 
