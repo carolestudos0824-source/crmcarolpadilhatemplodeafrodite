@@ -1595,6 +1595,18 @@ const ValidacaoIntro = () => {
 
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
   if (active === "comece") {
+    const valueCards = [
+      { title: "Programa", desc: "Mostra a ordem certa do que fazer." },
+      { title: "Lovable", desc: "Constrói o app a partir dos comandos." },
+      { title: "Agente Arquiteto", desc: "Ajuda você a pensar, corrigir e decidir antes de construir." },
+    ];
+    const journey: [string, string][] = [
+      ["Escolha ou descreva sua ideia", "Comece com uma ideia simples. O programa vai ajudar você a transformar essa ideia em plano."],
+      ["Gere o plano do app", "Defina público, dor, promessa, MVP, telas, fluxo e estrutura."],
+      ["Construa no Lovable", "Copie os comandos, cole no Lovable e crie o app uma etapa por vez."],
+      ["Prepare a venda e a entrega", "Crie página de venda, preço, checkout, obrigado e área de entrega."],
+      ["Divulgue e valide com pessoas reais", "Crie campanha, criativos, convide usuários e melhore com feedback real."],
+    ];
     return (
       <section>
         <header className="mb-6">
@@ -1602,36 +1614,44 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             <Sparkles size={12} /> Painel Arquiteto de Apps
           </span>
           <h1 className="text-2xl md:text-4xl font-heading font-bold leading-tight mb-2">
-            Construa, publique e divulgue seu app no Lovable
+            Crie seu app do zero, publique e leve para pessoas reais
           </h1>
           <p className="text-muted-foreground max-w-3xl">
-            Esta é sua central para criar um app no Lovable. Você vai escolher uma
-            ideia, copiar comandos, colar no Lovable, testar o app e depois divulgar
-            para usuários reais.
+            Você não precisa saber programar. Siga a jornada, copie um comando por vez, cole no Lovable e avance apenas quando cada etapa estiver funcionando.
           </p>
         </header>
 
-        <header className="mb-6">
+        <GlassCard className="p-5 mb-6">
+          <p className="text-sm text-foreground/90 mb-4">
+            Aqui você não recebeu apenas uma lista de comandos. Você recebeu uma jornada guiada para transformar uma ideia em app, o app em oferta e a oferta em validação real.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-3">
+            {valueCards.map((c) => (
+              <div key={c.title} className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <h4 className="font-heading font-semibold text-sm text-accent mb-1">{c.title}</h4>
+                <p className="text-xs text-muted-foreground">{c.desc}</p>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+
+        <header className="mb-4">
           <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
             <Sparkles size={12} /> Sua jornada
           </span>
-          <h1 className="text-2xl md:text-4xl font-heading font-bold leading-tight mb-2">
+          <h2 className="text-xl md:text-2xl font-heading font-bold leading-tight mb-2">
             Comece aqui
-          </h1>
+          </h2>
           <p className="text-muted-foreground max-w-3xl">
-            Siga esta jornada para transformar sua ideia em um app planejado,
-            construível e lançável.
+            Siga esta jornada em ordem para transformar sua ideia em um app planejado, construível, vendável e validável.
+          </p>
+          <p className="text-sm text-accent mt-2">
+            Não tente fazer tudo de uma vez. Comece pela Etapa 1.
           </p>
         </header>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-          {[
-            ["Escolha ou descreva sua ideia", "Comece de um modelo pronto ou descreva o app que você quer criar."],
-            ["Gere o plano do app", "Receba diagnóstico, MVP, arquitetura, telas e modelo de dados."],
-            ["Copie o prompt mestre", "Cole no Lovable, Cursor, Claude, Gemini ou Replit e construa o app."],
-            ["Monte sua página de venda", "Use a Central de Vendas para criar sua landing em minutos."],
-            ["Prepare sua campanha de lançamento", "Campanhas prontas, criativos e métricas para validar com gente real."],
-          ].map(([t, d], i) => (
+          {journey.map(([t, d], i) => (
             <GlassCard key={t} className="p-4">
               <div className="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30 text-accent text-sm font-bold flex items-center justify-center mb-2">
                 {i + 1}
@@ -1642,16 +1662,33 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           ))}
         </div>
 
+        <GlassCard className="p-5 mb-4">
+          <h3 className="font-heading font-semibold mb-3">Como usar este programa</h3>
+          <ol className="list-decimal list-inside space-y-1.5 text-sm text-muted-foreground mb-3">
+            <li>Leia a etapa.</li>
+            <li>Copie o comando.</li>
+            <li>Cole no Lovable.</li>
+            <li>Espere o resultado.</li>
+            <li>Volte aqui e marque como feito.</li>
+          </ol>
+          <p className="text-xs text-muted-foreground">
+            Repita esse ciclo em cada módulo. Um comando por vez.
+          </p>
+        </GlassCard>
+
         <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 mb-4 flex items-start gap-3">
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <div>
             <strong>Regra de ouro:</strong> um comando por vez. Não pule etapas.
+            <div className="mt-1 text-amber-100/90">
+              Se o Lovable entregar algo errado, vá para Erros comuns antes de continuar.
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          <button onClick={() => goTo("construir")} className="btn-primary">
-            <Sparkles size={16} /> Começar meu plano
+        <div className="flex flex-wrap gap-3 mb-6">
+          <button onClick={() => goTo("ideias")} className="btn-primary">
+            <Sparkles size={16} /> Começar pela Etapa 1
           </button>
           <button
             onClick={() => goTo("ideias")}
@@ -1659,6 +1696,16 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           >
             <Lightbulb size={16} /> Ver ideias prontas
           </button>
+          {APP_CONFIG.GPT_AGENT_URL && (
+            <a
+              href={APP_CONFIG.GPT_AGENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-3 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 text-sm font-semibold"
+            >
+              <ExternalLink size={16} /> Abrir Agente Arquiteto
+            </a>
+          )}
           <a
             href={LOVABLE_URL}
             target="_blank"
@@ -1668,9 +1715,24 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             <ExternalLink size={16} /> Abrir Lovable
           </a>
         </div>
+
+        <GlassCard className="p-5 mb-4">
+          <h3 className="font-heading font-semibold mb-2">Se você está começando do zero</h3>
+          <p className="text-sm text-muted-foreground">
+            Não se preocupe em entender todos os módulos agora. Sua única tarefa inicial é escolher uma ideia e avançar para o primeiro comando. O programa vai conduzir o restante.
+          </p>
+        </GlassCard>
+
+        <GlassCard className="p-5">
+          <h3 className="font-heading font-semibold mb-2">Quando posso avançar?</h3>
+          <p className="text-sm text-muted-foreground">
+            Avance quando você tiver escolhido uma ideia e entendido que deve seguir a jornada em ordem, sem pular etapas.
+          </p>
+        </GlassCard>
       </section>
     );
   }
+
 
   if (active === "ideias") {
     return (
