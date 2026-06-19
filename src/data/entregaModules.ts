@@ -44,6 +44,7 @@ export type ModuleId =
   | "construir"
   | "login"
   | "venda"
+  | "monetizacao"
   | "checkout"
   | "seo"
   | "campanhas"
@@ -65,6 +66,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
+  { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
   { id: "seo", label: "SEO e GEO", icon: "Search" },
   { id: "campanhas", label: "Campanhas", icon: "Rocket" },
@@ -74,6 +76,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "erros", label: "Erros comuns", icon: "AlertTriangle" },
   { id: "ativar", label: "Ativar acesso", icon: "Gift" },
 ];
+
 
 // Ordem para navegação Voltar/Próximo
 export const MODULE_ORDER: ModuleId[] = MODULES.map((m) => m.id);
