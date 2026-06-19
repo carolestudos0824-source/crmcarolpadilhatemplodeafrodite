@@ -12,7 +12,7 @@ export const AnnouncementBar = () => {
 
   return (
     <div
-      className="fixed top-0 inset-x-0 z-[60] shadow-md"
+      className="w-full shadow-md"
       style={{
         background: "linear-gradient(90deg, #1E88FF 0%, #00C2FF 100%)",
         color: "#F5F7FA",
