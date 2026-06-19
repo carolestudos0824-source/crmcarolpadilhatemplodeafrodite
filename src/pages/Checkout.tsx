@@ -37,7 +37,7 @@ export default function Checkout() {
             Ir para pagamento
           </button>
           <p className="text-xs text-accent/90">
-            Após o pagamento, você receberá as instruções de acesso no e-mail informado na compra.
+            Após a confirmação do pagamento, seu acesso será liberado na área do aluno.
           </p>
           <div className="flex items-start gap-2 text-xs text-muted-foreground/80 pt-2 border-t border-white/5">
             <ShieldCheck size={14} className="text-accent shrink-0 mt-0.5" />

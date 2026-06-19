@@ -75,7 +75,7 @@ const faqs = [
   { q: "Isso serve para quem vai usar Lovable ou Cursor?", a: "Sim. O prompt mestre foi escrito para funcionar em Lovable, Cursor, Claude Code, Gemini, Replit e ferramentas similares com Supabase, Firebase, Vercel ou Netlify." },
   { q: "O programa me ajuda a lançar a ideia?", a: "Sim. Além do plano técnico, você tem o plano de lançamento e a Central de Vendas, com campanhas prontas, criativos, plano de 7 dias e calculadora de métricas." },
   { q: "A Central de Vendas está inclusa?", a: "Sim. Está inclusa no mesmo acesso, sem custo adicional." },
-  { q: "O pagamento é único?", a: "Sim. R$47 de pagamento único, acesso imediato, sem mensalidade nem cobrança recorrente." },
+  { q: "O pagamento é único?", a: "Sim. R$47 de pagamento único, sem mensalidade nem cobrança recorrente. O acesso à área do aluno é liberado após a confirmação do pagamento." },
   { q: "Preciso saber programar?", a: "Não. A Fábrica foi feita para quem não programa e quer usar IA para tirar a ideia do papel." },
   { q: "Recebo um app pronto?", a: "Não. Você recebe o plano executável e os prompts. Quem constrói o app é você, com a IA da sua preferência." },
   { q: "Preciso ter conta no ChatGPT?", a: "Sim, para usar o Agente Arquiteto Supremo. O produto não inclui assinatura de ChatGPT nem de outras ferramentas externas." },
@@ -202,12 +202,12 @@ export default function Home() {
       <Section
         eyebrow="Oferta de lançamento"
         title="Acesso completo por R$47"
-        subtitle="Pagamento único. Acesso imediato. Sem mensalidade."
+        subtitle="Pagamento único. Acesso liberado após confirmação. Sem mensalidade."
       >
         <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
           <div className="text-center mb-6">
             <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$47</div>
-            <p className="text-sm text-muted-foreground mt-2">Pagamento único · Acesso imediato</p>
+            <p className="text-sm text-muted-foreground mt-2">Pagamento único · Acesso liberado após confirmação</p>
           </div>
           <ul className="grid sm:grid-cols-2 gap-2.5 mb-8">
             {beneficios.map((b) => (

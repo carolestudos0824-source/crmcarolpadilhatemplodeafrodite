@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/Navbar";
@@ -23,7 +23,17 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
+
+const CHROMELESS_ROUTES = ["/entrega"];
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { pathname } = useLocation();
+  const isChromeless = CHROMELESS_ROUTES.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+  if (isChromeless) {
+    return <div className="min-h-screen flex flex-col">{children}</div>;
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 w-full">

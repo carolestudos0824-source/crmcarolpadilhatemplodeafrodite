@@ -18,10 +18,14 @@ export default function Termos() {
             {responsible ? <>, tendo como responsável <strong>{responsible}</strong></> : null}.
           </p>
         ) : (
-          <p>
-            Estes Termos regulam o acesso e uso do produto digital <strong>Fábrica de Apps com IA</strong>.
-            Informações legais em atualização.
-          </p>
+          <>
+            <p>
+              Estes Termos regulam o acesso e uso do produto digital <strong>Fábrica de Apps com IA</strong>.
+            </p>
+            <p className="text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed">
+              Os dados legais completos (razão social, CNPJ e responsável) serão preenchidos pela responsável antes da venda pública.
+            </p>
+          </>
         )}
         <h3 className="text-foreground font-heading">1. Natureza do produto</h3>
         <p>O produto é digital, composto por acesso a um agente de IA, prompts, manuais e checklists. Não há entrega física. O acesso é individual e intransferível.</p>
