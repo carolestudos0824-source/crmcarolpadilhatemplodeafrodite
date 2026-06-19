@@ -39,6 +39,7 @@ export type CommonError = {
 };
 
 export type ModuleId =
+  | "fundamentos"
   | "comece"
   | "ideias"
   | "construir"
@@ -61,6 +62,7 @@ export type ModuleMeta = {
 };
 
 export const MODULES: ModuleMeta[] = [
+  { id: "fundamentos", label: "Comece pelo Lovable", icon: "BookOpen" },
   { id: "comece", label: "Comece aqui", icon: "Sparkles" },
   { id: "ideias", label: "Ideias prontas", icon: "Lightbulb" },
   { id: "construir", label: "Construir app", icon: "Hammer" },
@@ -3486,6 +3488,10 @@ export const CHECKLIST_PHASES: {
 // ============ Dicas de cada módulo ============
 
 export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string }> = {
+  fundamentos: {
+    doNow: "Leia as cinco aulas curtas para entender o que é o Lovable, como ele pensa e como você vai usar a Fábrica junto com ele.",
+    advanceWhen: "Avance quando você tiver lido as cinco aulas e entendido a regra de ouro: um pedido de cada vez.",
+  },
   comece: {
     doNow: "Leia a regra de ouro e escolha entre usar uma ideia pronta ou construir a sua.",
     advanceWhen: "Avance quando você souber qual ideia vai construir no Lovable.",
