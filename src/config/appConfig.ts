@@ -8,9 +8,9 @@ export const APP_CONFIG = {
 
   // ====== Dados legais — preencher antes da venda pública ======
   // Se vazios, /termos e /privacidade exibem aviso de "dados em atualização".
-  COMPANY_NAME: "",
-  COMPANY_DOCUMENT: "",
-  RESPONSIBLE_NAME: "",
+  COMPANY_NAME: "44.472.530 CAROLINA TEIXEIRA DE SOUZA",
+  COMPANY_DOCUMENT: "44.472.530/0001-08",
+  RESPONSIBLE_NAME: "Carol Padilha",
 
   // ====== Faixa de anúncio ======
   SHOW_ANNOUNCEMENT_BAR: true,
