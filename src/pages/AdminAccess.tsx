@@ -112,6 +112,8 @@ export default function AdminAccess() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [acting, setActing] = useState(false);
+  const [logsRefresh, setLogsRefresh] = useState(0);
+  const bumpLogs = () => setLogsRefresh((v) => v + 1);
 
   useEffect(() => {
     let mounted = true;
