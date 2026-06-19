@@ -26,6 +26,7 @@ import { AdminShell, ADMIN_SECTIONS, type AdminSectionKey } from "@/components/a
 import { GiftCodesPanel } from "@/components/admin/GiftCodesPanel";
 import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
 import { AccessLogs } from "@/components/admin/AccessLogs";
+import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
 
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
