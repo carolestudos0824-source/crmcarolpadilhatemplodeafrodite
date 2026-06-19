@@ -851,14 +851,11 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "login") {
     return (
       <section>
+        <LoginIntro />
         <ModuleHeader
-          title="Login, banco e área restrita"
-          subtitle="Use esta etapa quando seu app precisa salvar dados, ter usuários ou proteger conteúdo."
+          title="Siga as etapas de login e banco"
+          subtitle="Comece pela Etapa 1. Só avance quando o usuário conseguir entrar, sair e acessar a área correta."
         />
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 mb-5 flex items-start gap-3">
-          <AlertTriangle size={16} className="shrink-0 mt-0.5" />
-          <span>Nunca exponha chave service role no frontend.</span>
-        </div>
         <CommandList commands={COMMANDS_LOGIN} moduleKey="login" />
       </section>
     );
