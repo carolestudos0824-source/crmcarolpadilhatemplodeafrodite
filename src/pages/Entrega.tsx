@@ -182,11 +182,49 @@ export default function Entrega() {
     () => CHECKLIST_PHASES.flatMap((p) => p.items.map((i) => `${p.phase}__${i}`)),
     [],
   );
-  const checklistProgress = useMemo(() => {
-    if (allChecklistItems.length === 0) return 0;
-    const done = allChecklistItems.filter((k) => checklist[k]).length;
-    return Math.round((done / allChecklistItems.length) * 100);
-  }, [allChecklistItems, checklist]);
+
+  // ===== Progresso ponderado =====
+  // 40% comandos usados + 30% módulos concluídos + 30% checklist final.
+  const [commandsDone, setCommandsDone] = useState<number>(() => countDoneCommands());
+
+  useEffect(() => {
+    const refresh = () => setCommandsDone(countDoneCommands());
+    refresh();
+    const onStorage = (e: StorageEvent) => {
+      if (!e.key || e.key.startsWith(CMD_STATE_PREFIX)) refresh();
+    };
+    window.addEventListener(COMMAND_TOGGLE_EVENT, refresh);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(COMMAND_TOGGLE_EVENT, refresh);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+
+  const modulesDoneCount = useMemo(
+    () => MODULE_ORDER.filter((id) => !!moduleDone[id]).length,
+    [moduleDone],
+  );
+  const checklistDoneCount = useMemo(
+    () => allChecklistItems.filter((k) => checklist[k]).length,
+    [allChecklistItems, checklist],
+  );
+
+  const totals = {
+    commands: { done: Math.min(commandsDone, TOTAL_COMMANDS), total: TOTAL_COMMANDS },
+    modules: { done: modulesDoneCount, total: MODULE_ORDER.length },
+    checklist: { done: checklistDoneCount, total: allChecklistItems.length },
+  };
+
+  const overallProgress = useMemo(() => {
+    const pct = (d: number, t: number) => (t > 0 ? d / t : 0);
+    const weighted =
+      pct(totals.commands.done, totals.commands.total) * 0.4 +
+      pct(totals.modules.done, totals.modules.total) * 0.3 +
+      pct(totals.checklist.done, totals.checklist.total) * 0.3;
+    return Math.max(0, Math.min(100, Math.round(weighted * 100)));
+  }, [totals.commands.done, totals.commands.total, totals.modules.done, totals.modules.total, totals.checklist.done, totals.checklist.total]);
+
 
   const logout = async () => {
     await clearSession();
