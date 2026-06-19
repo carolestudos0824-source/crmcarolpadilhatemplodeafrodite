@@ -2470,38 +2470,437 @@ Não crie painel complexo se uma tabela simples resolver.`,
 ];
 
 export const COMMANDS_VALIDACAO: Command[] = [
-  cmd(1, "Criar plano para validar com 10 usuários", "Define como testar com gente real.", "Depois do MVP publicado.", "Cole no Lovable.", "Plano de validação.",
-    `Crie um plano para validar este app com 10 usuários reais.
+  {
+    n: 1,
+    title: "Planejar teste com 10 usuários reais",
+    purpose: "Criar um plano simples para testar o app com pessoas parecidas com o público real.",
+    when: "Quando o MVP já está publicado ou pronto para teste.",
+    where: "Cole no Lovable.",
+    result: "Plano simples para testar o app com 10 pessoas reais.",
+    objective: "Criar um plano simples para testar o app com pessoas parecidas com o público real.",
+    whenLovableDirect: "Quando o MVP já está publicado ou pronto para teste.",
+    whenAgentFirst: "Quando você não sabe quem chamar ou o que deve observar no teste.",
+    content: `Crie um plano para validar este app com 10 usuários reais.
 
-App: [descreva]
-Público: [descreva]
+App:
+[descreva]
 
-Entregue: quem chamar, onde encontrar, mensagem de convite, tarefas para fazer, perguntas de feedback, métrica principal e critérios de continuar/ajustar/abandonar.`),
-  cmd(2, "Criar formulário de feedback", "Formulário para coletar resposta.", "Para enviar depois do teste.", "Cole no Lovable.", "Formulário pronto.",
-    `Crie um formulário de feedback com 8 perguntas.
+Público:
+[descreva]
 
-Misture pergunta fechada e aberta. Foco em entender se o usuário entendeu, se usaria de novo e se pagaria.`),
-  cmd(3, "Criar mensagem de convite", "Texto para convidar pessoas.", "Antes de iniciar o teste.", "Cole no Lovable.", "3 versões de convite.",
-    `Crie 3 mensagens curtas para convidar 10 pessoas a testar este app.
+Problema que resolve:
+[descreva]
 
-Tom: direto, pessoal, sem hype. Inclua o que a pessoa ganha ao testar.`),
-  cmd(4, "Criar pesquisa com usuários", "Pesquisa estruturada.", "Para entender o público.", "Cole no Lovable.", "Pesquisa pronta.",
-    `Crie uma pesquisa com 10 perguntas para entender o público deste app.
+Ação principal do app:
+[descreva]
 
-Foco em: dor real, como resolve hoje, quanto pagaria, frequência de uso.`),
-  cmd(5, "Analisar feedback", "Lê respostas e diz o que mudar.", "Depois de coletar respostas.", "Cole no Lovable.", "Resumo do feedback.",
-    `Analise as respostas coletadas.
+Entregue:
+
+1. Quem chamar para testar.
+2. Onde encontrar essas pessoas.
+3. Mensagem de convite.
+4. Tarefas que elas devem fazer dentro do app.
+5. Perguntas de feedback.
+6. Métrica principal do teste.
+7. Sinais de interesse real.
+8. Critérios para continuar, ajustar ou pausar.
+
+Regras:
+
+- Não valide apenas com pessoas que querem agradar.
+- Não pergunte só se a pessoa gostou.
+- Observe comportamento.
+- Priorize sinais reais: uso, clique, cadastro, retorno, indicação, pergunta de preço ou compra.`,
+    agentPrompt: `Quero validar meu app com pessoas reais.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Ação principal:
+[descreva]
+
+Me ajude a definir:
+
+1. Quem devo chamar para testar.
+2. Onde encontrar essas pessoas.
+3. O que devo pedir para elas fazerem.
+4. Quais perguntas devo fazer.
+5. Quais sinais mostram interesse real.
+6. O que não devo considerar validação.`,
+    correctionPrompt: `O plano de validação ficou genérico. Refaça com foco em comportamento real.
+
+Corrija:
+
+1. Quem deve testar.
+2. O que a pessoa deve fazer no app.
+3. Quais perguntas revelarão dúvidas reais.
+4. Quais métricas serão acompanhadas.
+5. Como separar elogio de sinal real.
+6. O que fazer se ninguém usar.`,
+    advanceCriteria: "Avance quando souber quem chamar, o que pedir para testar e quais sinais observar.",
+  },
+  {
+    n: 2,
+    title: "Criar formulário de feedback simples",
+    purpose: "Formulário curto para entender se o usuário compreendeu, usou e teve interesse.",
+    when: "Antes de enviar o app para os primeiros testes.",
+    where: "Cole no Lovable.",
+    result: "Formulário curto, claro e útil para coletar feedback real.",
+    objective: "Criar um formulário curto para entender se o usuário compreendeu, usou e teve interesse.",
+    whenLovableDirect: "Antes de enviar o app para os primeiros testes.",
+    whenAgentFirst: "Quando você não sabe quais perguntas fazer.",
+    content: `Crie um formulário de feedback simples para testar este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Objetivo do teste:
+[descreva]
+
+O formulário deve ter no máximo 8 perguntas.
+
+Misture:
+
+1. Perguntas fechadas.
+2. Perguntas abertas.
+3. Perguntas sobre clareza.
+4. Perguntas sobre dificuldade.
+5. Perguntas sobre interesse real.
+6. Perguntas sobre o que faltou.
+7. Perguntas sobre pagamento ou continuidade, se fizer sentido.
+
+Inclua perguntas como:
+
+- Você entendeu o que o app faz?
+- Conseguiu completar a ação principal?
+- Onde você travou?
+- O que ficou confuso?
+- Você usaria de novo?
+- Você pagaria por isso ou indicaria para alguém?
+- O que impediria você de usar?
+
+Regras:
+
+- Não fazer formulário longo.
+- Não perguntar apenas se a pessoa gostou.
+- Focar em clareza, uso e interesse real.`,
+    agentPrompt: `Preciso criar um formulário de feedback para validar meu app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+O que quero descobrir:
+[descreva]
+
+Crie perguntas para entender:
+
+1. Se a pessoa entendeu.
+2. Se conseguiu usar.
+3. Onde travou.
+4. Se teve interesse real.
+5. O que devo melhorar primeiro.`,
+    correctionPrompt: `O formulário ficou longo ou superficial. Refaça.
+
+Regras:
+
+1. Máximo de 8 perguntas.
+2. Perguntas simples.
+3. Foco em uso real.
+4. Perguntar onde a pessoa travou.
+5. Perguntar se usaria de novo.
+6. Perguntar sobre interesse real.
+7. Evitar perguntas que só geram elogio.`,
+    advanceCriteria: "Avance quando o formulário ajudar a descobrir clareza, dificuldade e interesse real.",
+  },
+  {
+    n: 3,
+    title: "Criar mensagem de convite",
+    purpose: "Mensagens simples para convidar pessoas a testarem o app.",
+    when: "Antes de chamar os primeiros usuários.",
+    where: "Cole no Lovable.",
+    result: "Mensagens prontas para chamar pessoas reais para teste.",
+    objective: "Criar mensagens simples para convidar pessoas a testarem o app.",
+    whenLovableDirect: "Antes de chamar os primeiros usuários.",
+    whenAgentFirst: "Quando você não sabe como convidar sem parecer venda forçada.",
+    content: `Crie mensagens de convite para pessoas testarem este app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+O que quero testar:
+[descreva]
+
+Crie:
+
+1. Mensagem curta para WhatsApp.
+2. Mensagem para direct do Instagram.
+3. Mensagem para grupo ou comunidade.
+4. Mensagem mais pessoal para alguém conhecido.
+5. Mensagem de lembrete.
+
+Cada mensagem deve:
+
+- Explicar o que é o app.
+- Pedir um teste rápido.
+- Dizer quanto tempo leva.
+- Pedir feedback sincero.
+- Não parecer venda agressiva.
+- Não prometer recompensa inexistente.`,
+    agentPrompt: `Quero convidar pessoas para testarem meu app sem parecer insistente.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Canal:
+[WhatsApp, direct, grupo, e-mail, outro]
+
+Me ajude a criar:
+
+1. Uma mensagem curta.
+2. Uma mensagem mais pessoal.
+3. Uma mensagem de lembrete.
+4. Um convite que peça feedback sincero.`,
+    correctionPrompt: `As mensagens ficaram longas, frias ou vendedoras demais. Refaça.
+
+Cada mensagem deve:
+
+1. Ser curta.
+2. Explicar o app em uma frase.
+3. Pedir teste rápido.
+4. Pedir feedback sincero.
+5. Ter CTA simples.
+6. Não parecer anúncio.`,
+    advanceCriteria: "Avance quando tiver uma mensagem simples para convidar pelo canal escolhido.",
+  },
+  {
+    n: 4,
+    title: "Fazer perguntas certas aos usuários",
+    purpose: "Perguntas para entender comportamento, dúvidas, objeções e interesse real.",
+    when: "Depois que algumas pessoas testaram o app.",
+    where: "Cole no Lovable.",
+    result: "Perguntas úteis para entender o que aconteceu no teste.",
+    objective: "Criar perguntas para entender comportamento, dúvidas, objeções e interesse real.",
+    whenLovableDirect: "Depois que algumas pessoas testaram o app.",
+    whenAgentFirst: "Quando você não sabe como conversar com usuários.",
+    content: `Crie uma pesquisa com 10 perguntas para entender o público deste app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+O que o usuário testou:
+[descreva]
+
+Foco:
+
+- Dor real.
+- Clareza da promessa.
+- Facilidade de uso.
+- Onde travou.
+- Frequência de uso.
+- Interesse em continuar.
+- Interesse em pagar ou indicar.
+- Objeções.
+- O que melhoraria.
+
+Regras:
+
+- Não fazer perguntas que induzem elogio.
+- Não perguntar só "você gostou?".
+- Perguntar sobre comportamento.
+- Perguntar o que a pessoa fez, não só o que ela acha.`,
+    agentPrompt: `Quero entrevistar usuários que testaram meu app.
+
+App:
+[descreva]
+
+O que eles testaram:
+[descreva]
+
+Me ajude a criar perguntas para descobrir:
+
+1. Se entenderam.
+2. Se conseguiram usar.
+3. Onde travaram.
+4. Se voltariam.
+5. Se pagariam.
+6. O que devo melhorar primeiro.`,
+    correctionPrompt: `As perguntas ficaram fracas ou induzem respostas educadas. Refaça.
+
+Crie perguntas que descubram:
+
+1. Comportamento.
+2. Dificuldade.
+3. Interesse real.
+4. Objeções.
+5. Clareza.
+6. Próximo passo.
+
+Evite perguntas que só geram "sim", "não" ou elogio.`,
+    advanceCriteria: "Avance quando as perguntas ajudarem a descobrir comportamento, não só opinião.",
+  },
+  {
+    n: 5,
+    title: "Separar elogio de sinal real",
+    purpose: "Analisar feedback e identificar o que realmente importa.",
+    when: "Depois de coletar respostas dos usuários.",
+    where: "Cole no Lovable.",
+    result: "Resumo claro do que é elogio, sinal real, dúvida repetida e prioridade de melhoria.",
+    objective: "Analisar feedback e identificar o que realmente importa.",
+    whenLovableDirect: "Depois de coletar respostas dos usuários.",
+    whenAgentFirst: "Quando você não sabe interpretar feedback.",
+    content: `Analise as respostas coletadas e separe elogios de sinais reais.
 
 Respostas:
+[cole aqui]
+
+Classifique:
+
+1. Elogios genéricos.
+2. Dúvidas repetidas.
+3. Travamentos.
+4. Objeções.
+5. Sinais fracos.
+6. Sinais fortes.
+7. Sugestões úteis.
+8. Sugestões que devem ser ignoradas agora.
+
+Considere sinal forte:
+
+- Usuário criou conta.
+- Usuário usou sem ajuda.
+- Usuário pediu o link.
+- Usuário perguntou preço.
+- Usuário voltou.
+- Usuário indicou.
+- Usuário pagou.
+- Usuário pediu acesso.
+
+Entregue:
+
+1. Resumo do feedback.
+2. Padrões identificados.
+3. O que corrigir primeiro.
+4. O que não mudar agora.
+5. Próximo teste recomendado.`,
+    agentPrompt: `Recebi feedback do meu app e preciso interpretar.
+
+Feedback:
 [cole]
 
-Entregue: padrões identificados, dores repetidas, melhorias prioritárias e o que NÃO mudar.`),
-  cmd(6, "Melhorar app depois do feedback", "Aplica melhorias no Lovable.", "Depois de analisar feedback.", "Cole no Lovable.", "App ajustado.",
-    `Aplique melhorias no app com base neste feedback:
+Me ajude a separar:
 
+1. Elogio educado.
+2. Sinal real de interesse.
+3. Dúvida repetida.
+4. Problema de usabilidade.
+5. Objeção comercial.
+6. O que devo mudar primeiro.
+7. O que devo ignorar por enquanto.`,
+    correctionPrompt: `A análise ficou superficial. Refaça separando opinião de comportamento.
+
+Analise:
+
+1. Quem realmente usou.
+2. Quem só elogiou.
+3. Onde as pessoas travaram.
+4. O que apareceu mais de uma vez.
+5. Se houve interesse real.
+6. Se alguém perguntou preço, pediu acesso, voltou ou indicou.
+7. O que mudar primeiro.`,
+    advanceCriteria: "Avance quando souber quais feedbacks representam comportamento real e quais são apenas opinião.",
+  },
+  {
+    n: 6,
+    title: "Melhorar o app com base no feedback",
+    purpose: "Aplicar melhorias priorizadas sem bagunçar o MVP.",
+    when: "Depois de identificar padrões repetidos no feedback.",
+    where: "Cole no Lovable.",
+    result: "App melhorado com base em padrões reais de feedback, sem inflar o escopo.",
+    objective: "Aplicar melhorias priorizadas sem bagunçar o MVP.",
+    whenLovableDirect: "Depois de identificar padrões repetidos no feedback.",
+    whenAgentFirst: "Quando você não sabe o que corrigir primeiro.",
+    content: `Aplique melhorias no app com base neste feedback.
+
+Feedback resumido:
 [cole resumo]
 
-Regras: corrigir o que é dor real, não inchar o app, manter MVP enxuto.`),
+Dúvidas repetidas:
+[cole]
+
+Problemas encontrados:
+[cole]
+
+Sinais reais:
+[cole]
+
+Regras:
+
+1. Corrigir primeiro o que bloqueia o uso.
+2. Melhorar clareza antes de adicionar funções.
+3. Não criar funcionalidades novas sem necessidade.
+4. Não mudar tudo por causa de uma opinião isolada.
+5. Preservar o MVP.
+6. Explicar o que foi alterado.
+7. Explicar como testar depois.
+
+Prioridade:
+
+1. Erros que impedem uso.
+2. Confusão na primeira tela.
+3. Ação principal difícil.
+4. Falta de clareza na oferta.
+5. Melhorias simples de UX.`,
+    agentPrompt: `Preciso decidir o que mudar no app depois do feedback.
+
+Feedback:
+[cole]
+
+Problemas:
+[cole]
+
+Sinais de interesse:
+[cole]
+
+Me ajude a priorizar:
+
+1. O que corrigir agora.
+2. O que deixar para depois.
+3. O que ignorar.
+4. O que testar novamente.
+5. Qual prompt mandar ao Lovable.`,
+    correctionPrompt: `As melhorias ficaram grandes demais. Simplifique.
+
+Não aumente o escopo.
+Não crie funcionalidades novas sem necessidade.
+Corrija apenas:
+
+1. Erros que impedem uso.
+2. Pontos de confusão.
+3. Fluxo principal.
+4. Texto pouco claro.
+5. Problemas repetidos no feedback.
+
+Preserve o MVP.`,
+    advanceCriteria: "Avance quando as melhorias resolverem problemas repetidos e o app estiver pronto para novo teste.",
+  },
 ];
 
 // ============ Modelos de apps prontos ============
