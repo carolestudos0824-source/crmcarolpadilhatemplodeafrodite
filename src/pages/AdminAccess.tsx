@@ -170,7 +170,7 @@ export default function AdminAccess() {
             <label className="text-xs text-muted-foreground block">
               E-mail do comprador
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 className={inputCls}
                 type="email"
@@ -182,7 +182,7 @@ export default function AdminAccess() {
               <button
                 type="submit"
                 disabled={status.kind === "loading"}
-                className="btn-primary whitespace-nowrap"
+                className="btn-primary"
               >
                 {status.kind === "loading" ? (
                   <Loader2 size={16} className="animate-spin" />
