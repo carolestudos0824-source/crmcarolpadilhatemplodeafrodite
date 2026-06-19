@@ -267,8 +267,19 @@ export default function AdminAccess() {
 
         <SelfGrant onChanged={(v) => setSelfHasAccess(v)} />
 
+        <AdminOverview
+          onScrollToSearch={() => {
+            const el = document.getElementById("admin-search");
+            el?.scrollIntoView({ behavior: "smooth", block: "start" });
+            setTimeout(() => {
+              const input = el?.querySelector<HTMLInputElement>('input[type="email"]');
+              input?.focus();
+            }, 300);
+          }}
+        />
+
         {/* Search */}
-        <div className="glass-strong p-6 mb-6">
+        <div id="admin-search" className="glass-strong p-6 mb-6 scroll-mt-24">
           <form onSubmit={onSearch} className="space-y-3">
             <label className="text-xs text-muted-foreground block font-semibold">
               E-mail do comprador
