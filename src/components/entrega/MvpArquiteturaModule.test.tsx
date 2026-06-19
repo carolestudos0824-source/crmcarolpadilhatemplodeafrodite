@@ -68,8 +68,8 @@ describe("MvpArquiteturaModule", () => {
     const entrega = fs.readFileSync("src/pages/Entrega.tsx", "utf8");
     expect(entrega).toMatch(/id !== "planejar" && id !== "mvp"/);
     const modulesFile = fs.readFileSync("src/data/entregaModules.ts", "utf8");
-    const commandsArrays = modulesFile.match(/COMMANDS_[A-Z_]+\s*:\s*Command\[\]\s*=\s*\[([\s\S]*?)\n\];/g) ?? [];
-    const total = commandsArrays.reduce((sum, block) => sum + (block.match(/^\s*\{\s*id:/gm)?.length ?? 0), 0);
+    const commandsArrays: string[] = modulesFile.match(/COMMANDS_[A-Z_]+\s*:\s*Command\[\]\s*=\s*\[([\s\S]*?)\n\];/g) ?? [];
+    const total = commandsArrays.reduce((sum: number, block: string) => sum + (block.match(/^\s*\{\s*id:/gm)?.length ?? 0), 0);
     expect(total).toBe(47);
   });
 });
