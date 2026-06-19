@@ -25,10 +25,12 @@ const queryClient = new QueryClient();
 
 
 const CHROMELESS_ROUTES = ["/entrega"];
+const HIDE_FOOTER_ROUTES = ["/admin/acessos"];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useLocation();
   const isChromeless = CHROMELESS_ROUTES.some((p) => pathname === p || pathname.startsWith(p + "/"));
+  const hideFooter = HIDE_FOOTER_ROUTES.some((p) => pathname === p || pathname.startsWith(p + "/"));
 
   if (isChromeless) {
     return <div className="min-h-screen flex flex-col">{children}</div>;
@@ -41,7 +43,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Navbar />
       </header>
       <main className="flex-1">{children}</main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 };
