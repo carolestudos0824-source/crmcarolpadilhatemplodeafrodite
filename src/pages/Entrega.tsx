@@ -1447,6 +1447,150 @@ const CriativosIntro = () => {
 };
 
 
+const ValidacaoIntro = () => {
+  const [showZero, setShowZero] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
+
+  const tutorialSteps = [
+    "Escolha 10 pessoas",
+    "Envie o convite",
+    "Observe o uso",
+    "Anote dúvidas",
+    "Melhore o app",
+  ];
+
+  const glossary: [string, string][] = [
+    ["Validação", "teste para descobrir se pessoas reais entendem, usam ou querem o app."],
+    ["Usuário real", "pessoa parecida com o público que você quer atender."],
+    ["Feedback", "resposta, dúvida ou comentário de quem testou."],
+    ["Métrica", "número usado para medir resultado."],
+    ["Objeção", "dúvida ou resistência que impede a pessoa de usar ou comprar."],
+    ["Interesse real", "ação concreta, como clicar, testar, voltar, perguntar preço, indicar ou comprar."],
+    ["Retenção", "quando a pessoa volta a usar depois do primeiro teste."],
+    ["Teste beta", "primeira fase de teste com poucos usuários."],
+    ["Iteração", "melhoria feita após observar feedback."],
+    ["Priorização", "escolha do que corrigir primeiro."],
+    ["Escalar", "divulgar para mais pessoas depois de validar."],
+    ["Sinal fraco", "elogio genérico, como 'achei legal'."],
+    ["Sinal forte", "uso real, cadastro, compra, retorno, indicação ou pedido de acesso."],
+  ];
+
+  return (
+    <section className="mb-8 space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
+        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
+          <Sparkles size={12} /> Validação — Modo Guiado
+        </span>
+        <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
+          Valide seu app com pessoas reais
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
+          Nesta etapa, você testa se pessoas reais entendem, usam e demonstram
+          interesse pelo seu app antes de gastar tempo ou dinheiro escalando.
+        </p>
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-2">
+          Não valide com opinião. Valide com comportamento.
+        </p>
+        <p className="text-xs md:text-sm text-muted-foreground max-w-3xl mb-5">
+          Validação é descobrir se alguém realmente entende, usa e quer continuar usando o que você criou.
+        </p>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            {tutorialSteps.map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[12px] md:text-[13px] text-foreground/90">
+                  <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </div>
+                {i < tutorialSteps.length - 1 && (
+                  <span className="text-muted-foreground/50 hidden md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Você não precisa de 1.000 pessoas para validar. Precisa de 10 pessoas reais usando com atenção.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="btn-primary text-sm min-h-[44px]"
+            type="button"
+          >
+            <Sparkles size={14} /> Não sei validar meu app
+          </button>
+          <a
+            href={APP_CONFIG.GPT_AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+          >
+            <Sparkles size={14} /> Abrir Agente Arquiteto
+          </a>
+          <a
+            href={LOVABLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+          >
+            <ExternalLink size={14} /> Abrir Lovable
+          </a>
+        </div>
+
+        {showZero && (
+          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
+            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Escolha 10 pessoas parecidas com seu público real.</li>
+              <li>Envie uma mensagem simples de convite.</li>
+              <li>Peça para elas testarem sem explicar demais.</li>
+              <li>Anote onde travaram, o que perguntaram e se demonstraram interesse.</li>
+              <li>Melhore apenas o que apareceu repetidamente.</li>
+            </ol>
+            <p className="text-xs text-muted-foreground mt-3">
+              Se você não sabe quem chamar, quais perguntas fazer ou como interpretar respostas, converse com o Agente antes de mudar o app.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 flex items-start gap-3">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <div>
+          Elogio não é validação. Uso real, dúvida repetida, clique, cadastro, retorno, indicação ou compra são sinais mais fortes.
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowGlossary((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+        </button>
+        {showGlossary && (
+          <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+            {glossary.map(([term, def]) => (
+              <div key={term} className="flex gap-2">
+                <dt className="text-accent font-semibold shrink-0">{term}:</dt>
+                <dd className="text-foreground/80">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </section>
+  );
+};
+
+
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
   if (active === "comece") {
     return (
