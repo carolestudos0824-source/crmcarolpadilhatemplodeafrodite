@@ -256,7 +256,7 @@ export default function Home() {
             Plano, prompts e campanha — tudo pronto pra você executar com IA.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Quero acessar por R$47 <ChevronRight size={18} />
+            Garantir acesso por R$47 <ChevronRight size={18} />
           </button>
           <p className="text-sm text-muted-foreground/80 mt-4">
             Pagamento único. Sem mensalidade.
