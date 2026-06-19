@@ -23,6 +23,7 @@ export type AdminSectionKey =
   | "codigos"
   | "pendencias"
   | "mensagens"
+  | "inbox"
   | "config";
 
 export const ADMIN_SECTIONS: {
