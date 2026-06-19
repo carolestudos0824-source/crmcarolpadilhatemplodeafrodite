@@ -1638,8 +1638,8 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Não avance para venda ou checkout antes de testar se o usuário consegue entrar, sair e acessar a área correta.",
   },
   venda: {
-    doNow: "Crie primeiro a landing page. Depois preço, FAQ e confiança.",
-    advanceWhen: "Avance quando a landing page estiver no ar e explicando claramente seu app.",
+    doNow: "Defina a promessa, crie a landing, explique o preço, responda dúvidas e reforce confiança.",
+    advanceWhen: "Antes de criar checkout, garanta que a pessoa entende o valor do app em menos de 10 segundos.",
   },
   checkout: {
     doNow: "Crie o checkout, a página de obrigado e a área de entrega na ordem.",
