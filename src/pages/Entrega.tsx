@@ -27,6 +27,7 @@ import {
   Circle,
   LifeBuoy,
   Loader2,
+  ChevronDown,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
