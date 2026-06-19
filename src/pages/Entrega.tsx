@@ -1150,10 +1150,161 @@ const CheckoutIntro = () => {
 };
 
 
+const SeoIntro = () => {
+  const [showZero, setShowZero] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
 
+  const tutorialSteps = [
+    "Escolha palavras",
+    "Crie páginas",
+    "Responda dúvidas",
+    "Adicione marcações",
+    "Revise antes de publicar",
+  ];
 
+  const glossary: [string, string][] = [
+    ["SEO", "otimização para buscadores, como Google."],
+    ["GEO", "organização de conteúdo para ferramentas de IA entenderem melhor seu app."],
+    ["Palavra-chave", "termo que uma pessoa digita para procurar algo."],
+    ["Intenção de busca", "o motivo por trás da pesquisa da pessoa."],
+    ["FAQ", "perguntas frequentes."],
+    ["Schema", "marcação invisível que ajuda buscadores a entenderem a página."],
+    ["FAQPage", "schema para perguntas e respostas."],
+    ["SoftwareApplication", "schema que explica que seu produto é um app ou software."],
+    ["JSON-LD", "formato usado para inserir schema no site."],
+    ["Keyword stuffing", "repetição exagerada de palavras-chave, prejudica a qualidade."],
+    ["LLM", "modelo de linguagem usado por ferramentas de IA."],
+  ];
 
+  return (
+    <section className="mb-8 space-y-6">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
+        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
+          <Sparkles size={12} /> SEO e GEO — Modo Guiado
+        </span>
+        <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
+          Faça seu app ser encontrado e entendido
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
+          Nesta etapa, você cria páginas e textos para ajudar o Google,
+          buscadores e ferramentas de IA a entenderem o que seu app faz, para
+          quem ele serve e quais problemas resolve.
+        </p>
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-5">
+          Seu app não precisa apenas existir. Ele precisa ser compreendido.
+        </p>
 
+        <div className="grid sm:grid-cols-2 gap-3 mb-5">
+          <GlassCard className="p-4 border border-accent/20">
+            <h3 className="font-heading font-semibold text-sm mb-1.5 text-accent">SEO</h3>
+            <p className="text-[13px] text-foreground/80 leading-snug">
+              Ajuda o Google e outros buscadores a entenderem suas páginas,
+              palavras-chave, perguntas e assuntos principais.
+            </p>
+          </GlassCard>
+          <GlassCard className="p-4 border border-amber-400/30">
+            <h3 className="font-heading font-semibold text-sm mb-1.5 text-amber-200">GEO</h3>
+            <p className="text-[13px] text-foreground/80 leading-snug">
+              Ajuda ferramentas de IA e buscadores inteligentes a entenderem
+              seu app, sua proposta, seus diferenciais e o público que ele
+              atende.
+            </p>
+          </GlassCard>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            {tutorialSteps.map((s, i) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-accent/30 bg-accent/10 text-[12px] md:text-[13px] text-foreground/90">
+                  <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  {s}
+                </div>
+                {i < tutorialSteps.length - 1 && (
+                  <span className="text-muted-foreground/50 hidden md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Não crie páginas vazias. Cada página precisa ajudar uma pessoa real
+            a entender seu app.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="btn-primary text-sm min-h-[44px]"
+            type="button"
+          >
+            <Sparkles size={14} /> Não entendo SEO e GEO
+          </button>
+          <a
+            href={APP_CONFIG.GPT_AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+          >
+            <Sparkles size={14} /> Abrir Agente Arquiteto
+          </a>
+          <a
+            href={LOVABLE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+          >
+            <ExternalLink size={14} /> Abrir Lovable
+          </a>
+        </div>
+
+        {showZero && (
+          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
+            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Liste 5 palavras que seu público pesquisaria.</li>
+              <li>Crie uma página para cada assunto importante.</li>
+              <li>Crie um FAQ com dúvidas reais.</li>
+              <li>Peça ao Lovable para adicionar marcações básicas.</li>
+              <li>Revise se o texto está claro, útil e sem exagero.</li>
+            </ol>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 flex items-start gap-3">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <div>
+          SEO e GEO não garantem resultado imediato. Eles organizam seu
+          conteúdo para aumentar a chance de ser encontrado e entendido.
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowGlossary((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+        </button>
+        {showGlossary && (
+          <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+            {glossary.map(([term, def]) => (
+              <div key={term} className="flex gap-2">
+                <dt className="text-accent font-semibold shrink-0">{term}:</dt>
+                <dd className="text-foreground/80">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+    </section>
+  );
+};
 
 
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
