@@ -169,6 +169,7 @@ export default function AdminAccess() {
         message: res?.error ?? "Não foi possível concluir esta ação.",
       });
     }
+    bumpLogs();
     const { data: lookup } = await supabase.rpc("admin_lookup_user", { _email: email.trim() });
     const rows = (lookup as LookupRow[] | null) ?? [];
     if (rows[0]) {
