@@ -1,10 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
-import { APP_CONFIG } from "@/config/appConfig";
 import Home from "@/pages/Home";
 import Precos from "@/pages/Precos";
 import Checkout from "@/pages/Checkout";
