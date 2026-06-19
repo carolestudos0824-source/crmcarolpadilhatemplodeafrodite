@@ -45,14 +45,14 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
   if (auth.status === "authed") {
     const authed: NavLink[] = [
       { to: "/", label: "Início" },
-      { to: "/entrega", label: "Minha área" },
+      { to: "/entrega?modulo=comece-aqui", label: "Minha área" },
     ];
     if (auth.isAdmin) authed.push({ to: "/admin/acessos", label: "Admin" });
     navLinks = authed;
 
     if (auth.hasAccess || auth.isAdmin) {
       ctaLabel = "Minha área";
-      ctaTarget = "/entrega";
+      ctaTarget = "/entrega?modulo=comece-aqui";
     } else {
       ctaLabel = "Ver status do acesso";
       ctaTarget = "/entrega";
