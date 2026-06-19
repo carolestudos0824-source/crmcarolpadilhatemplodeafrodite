@@ -1413,44 +1413,443 @@ Regras:
 
 
 export const COMMANDS_SEO: Command[] = [
-  cmd(1, "Criar plano de SEO", "Define palavras e páginas para o Google.", "Antes de gerar páginas SEO.", "Cole no Lovable.", "Plano com palavras e páginas.",
-    `Crie um plano de SEO para este app.
+  {
+    n: 1,
+    title: "Criar mapa de palavras e buscas",
+    purpose:
+      "Definir quais termos, perguntas e assuntos o público pode pesquisar.",
+    when: "Quando o app já tem público, dor e promessa definidos.",
+    where: "Cole no Lovable.",
+    result: "Mapa claro de palavras, perguntas, páginas e prioridades.",
+    objective:
+      "Definir quais termos, perguntas e assuntos o público pode pesquisar.",
+    whenLovableDirect:
+      "Quando o app já tem público, dor e promessa definidos.",
+    whenAgentFirst:
+      "Quando você não sabe quais palavras seu público usaria para encontrar seu app.",
+    content: `Crie um plano de SEO para este app.
 
-App: [descreva]
-Público: [descreva]
-Concorrentes: [liste 3]
+App:
+[descreva]
 
-Entregue: 15 palavras-chave reais, intenção de busca de cada uma, páginas a criar e prioridade.`),
-  cmd(2, "Criar páginas para palavras-chave", "Gera páginas para ranquear no Google.", "Depois do plano de SEO.", "Cole no Lovable.", "Páginas SEO publicadas.",
-    `Crie páginas otimizadas para as palavras-chave:
+Público:
+[descreva]
 
-[liste palavras do plano]
+Problema que resolve:
+[descreva]
 
-Cada página deve ter: título, meta description, H1, intro, seções H2, FAQ e CTA. Texto útil, sem keyword stuffing.`),
-  cmd(3, "Criar FAQ SEO", "Cria FAQ que responde buscas comuns.", "Depois das páginas principais.", "Cole no Lovable.", "FAQ otimizada para busca.",
-    `Crie uma seção de FAQ otimizada para busca.
+Oferta ou ação principal:
+[descreva]
 
-Tema: [descreva]
+Entregue:
 
-Liste 12 perguntas reais que pessoas digitam no Google sobre esse tema e responda cada uma de forma direta.`),
-  cmd(4, "Criar páginas GEO", "Cria páginas para mecanismos de IA entenderem o app.", "Depois das páginas SEO.", "Cole no Lovable.", "Páginas explicativas para LLMs.",
-    `Crie páginas GEO para que mecanismos de IA entendam este app.
+1. 20 palavras-chave principais.
+2. 10 perguntas que o público pesquisaria.
+3. Intenção de busca de cada grupo.
+4. Páginas que precisam ser criadas.
+5. Prioridade de criação das páginas.
+6. Títulos sugeridos.
+7. Meta descriptions sugeridas.
 
-Inclua: o que é o app, para quem serve, como funciona, problemas resolvidos, diferenciais, exemplos de uso e comparação com alternativas. Texto claro, factual, sem hype.`),
-  cmd(5, "Criar páginas por nicho", "Páginas específicas para cada público.", "Quando o app atende vários nichos.", "Cole no Lovable.", "Uma página por nicho.",
-    `Crie páginas específicas por nicho.
+Regras:
 
-Nichos: [liste]
+- Não usar keyword stuffing.
+- Não criar páginas vazias.
+- Priorizar clareza e utilidade.
+- Não prometer resultado garantido no Google.`,
+    agentPrompt: `Preciso criar SEO para meu app.
 
-Cada página: dor do nicho, como o app resolve, prova, FAQ e CTA.`),
-  cmd(6, "Criar schema FAQPage", "Marcação para o Google entender o FAQ.", "Depois do FAQ pronto.", "Cole no Lovable.", "JSON-LD FAQPage publicado.",
-    `Adicione schema JSON-LD FAQPage nas páginas com FAQ.
+App:
+[descreva]
 
-Use as perguntas e respostas reais já publicadas. Inclua no <head> da página.`),
-  cmd(7, "Criar schema SoftwareApplication", "Marcação para o Google entender o app.", "Na home e na landing principal.", "Cole no Lovable.", "JSON-LD SoftwareApplication.",
-    `Adicione schema JSON-LD SoftwareApplication.
+Público:
+[descreva]
 
-Inclua: name, description, applicationCategory, operatingSystem, offers (preço), aggregateRating apenas se houver avaliações reais.`),
+Problema:
+[descreva]
+
+Me ajude a definir:
+
+1. Quais palavras meu público pesquisaria.
+2. Quais perguntas ele faria.
+3. Quais páginas preciso criar.
+4. Qual prioridade seguir.
+5. O que evitar para não parecer conteúdo genérico.`,
+    correctionPrompt: `O plano de SEO ficou genérico. Refaça com foco em intenção de busca real.
+
+Corrija:
+
+1. Palavras vagas.
+2. Páginas sem objetivo.
+3. Títulos genéricos.
+4. Repetição excessiva de palavras.
+5. Falta de perguntas reais.
+6. Falta de prioridade.`,
+    advanceCriteria:
+      "Avance quando você souber quais páginas criar e por que cada uma existe.",
+  },
+  {
+    n: 2,
+    title: "Criar páginas para o Google",
+    purpose: "Criar páginas úteis para temas e palavras-chave importantes.",
+    when: "Depois de ter o plano de SEO.",
+    where: "Cole no Lovable.",
+    result: "Páginas SEO publicadas, úteis e não repetitivas.",
+    objective: "Criar páginas úteis para temas e palavras-chave importantes.",
+    whenLovableDirect: "Depois de ter o plano de SEO.",
+    whenAgentFirst: "Quando você não sabe quais páginas devem ser criadas primeiro.",
+    content: `Crie páginas otimizadas para as palavras-chave abaixo.
+
+Palavras-chave:
+[cole a lista]
+
+Para cada página, crie:
+
+1. URL amigável.
+2. Title.
+3. Meta description.
+4. H1.
+5. Introdução clara.
+6. Seções H2.
+7. FAQ curto.
+8. CTA.
+9. Texto útil, sem repetição artificial.
+
+Regras:
+
+- Cada página deve responder uma intenção real.
+- Não criar conteúdo vazio.
+- Não repetir a mesma página com palavras diferentes.
+- Não usar keyword stuffing.`,
+    agentPrompt: `Tenho estas palavras-chave:
+[cole]
+
+Me ajude a decidir:
+
+1. Quais merecem página própria.
+2. Quais podem ficar juntas.
+3. Qual ordem criar.
+4. Que título usar.
+5. Que CTA colocar.`,
+    correctionPrompt: `As páginas SEO ficaram repetitivas ou artificiais. Corrija.
+
+Regras:
+
+1. Cada página deve ter objetivo próprio.
+2. Evite repetir o mesmo texto.
+3. Melhore títulos e subtítulos.
+4. Inclua FAQ útil.
+5. Mantenha CTA claro.
+6. Remova keyword stuffing.`,
+    advanceCriteria:
+      "Avance quando cada página tiver título, descrição, conteúdo útil, FAQ e CTA.",
+  },
+  {
+    n: 3,
+    title: "Criar perguntas frequentes de busca",
+    purpose: "Responder dúvidas reais que podem aparecer no Google e na landing.",
+    when: "Depois das páginas principais.",
+    where: "Cole no Lovable.",
+    result: "FAQ com perguntas úteis para busca e decisão de compra.",
+    objective: "Responder dúvidas reais que podem aparecer no Google e na landing.",
+    whenLovableDirect: "Depois das páginas principais.",
+    whenAgentFirst: "Quando você não sabe quais perguntas o público faria.",
+    content: `Crie uma seção de FAQ otimizada para busca.
+
+Tema:
+[descreva o produto ou app]
+
+Liste 12 perguntas reais que pessoas pesquisariam no Google sobre esse tema.
+
+Para cada pergunta:
+
+1. Escreva uma resposta curta.
+2. Seja direto.
+3. Não use hype.
+4. Não prometa resultado garantido.
+5. Inclua CTA suave quando fizer sentido.
+
+As perguntas devem cobrir:
+
+- O que é.
+- Para quem é.
+- Como funciona.
+- Investimento.
+- Segurança.
+- Acesso.
+- Limitações.
+- Suporte.`,
+    agentPrompt: `Preciso criar FAQs para busca.
+
+Produto:
+[descreva]
+
+Público:
+[descreva]
+
+Me ajude a listar:
+
+1. Perguntas que as pessoas pesquisam.
+2. Objeções antes da compra.
+3. Dúvidas de uso.
+4. Perguntas que aumentam confiança.
+5. Respostas curtas e honestas.`,
+    correctionPrompt: `O FAQ ficou genérico. Refaça com perguntas reais e respostas úteis.
+
+Inclua dúvidas sobre:
+
+1. Como funciona.
+2. Para quem é.
+3. Preço ou investimento.
+4. Acesso.
+5. Segurança.
+6. Limitações.
+7. Suporte.
+8. Próximo passo.`,
+    advanceCriteria:
+      "Avance quando o FAQ responder dúvidas reais do usuário antes de comprar ou usar.",
+  },
+  {
+    n: 4,
+    title: "Criar páginas para ferramentas de IA",
+    purpose: "Criar páginas explicativas para mecanismos de IA entenderem o app.",
+    when: "Depois das páginas SEO principais.",
+    where: "Cole no Lovable.",
+    result:
+      "Página explicativa clara para usuários, buscadores e ferramentas de IA.",
+    objective: "Criar páginas explicativas para mecanismos de IA entenderem o app.",
+    whenLovableDirect: "Depois das páginas SEO principais.",
+    whenAgentFirst:
+      "Quando você não sabe como explicar seu app para buscadores inteligentes.",
+    content: `Crie páginas GEO para que ferramentas de IA entendam melhor este app.
+
+App:
+[descreva]
+
+A página deve explicar:
+
+1. O que é o app.
+2. Para quem serve.
+3. Qual problema resolve.
+4. Como funciona.
+5. Principais recursos.
+6. Diferenciais reais.
+7. Limitações.
+8. Comparação honesta com alternativas.
+9. Perguntas frequentes.
+10. CTA.
+
+Regras:
+
+- Texto claro e factual.
+- Não inventar autoridade.
+- Não exagerar promessa.
+- Não repetir palavras artificialmente.
+- Explicar contexto de forma objetiva.`,
+    agentPrompt: `Quero que ferramentas de IA entendam melhor meu app.
+
+App:
+[descreva]
+
+Público:
+[descreva]
+
+Me ajude a criar:
+
+1. Uma explicação objetiva do app.
+2. Principais recursos.
+3. Diferenciais reais.
+4. Limitações.
+5. Comparação honesta.
+6. FAQs úteis para IA e buscadores.`,
+    correctionPrompt: `A página GEO ficou vaga ou exagerada. Refaça com linguagem factual.
+
+Corrija:
+
+1. Explique o que é.
+2. Explique para quem é.
+3. Explique o que resolve.
+4. Remova promessas exageradas.
+5. Inclua limitações.
+6. Use comparação honesta.`,
+    advanceCriteria:
+      "Avance quando uma pessoa e uma IA conseguirem entender o app sem contexto externo.",
+  },
+  {
+    n: 5,
+    title: "Criar páginas para nichos específicos",
+    purpose: "Criar páginas direcionadas para públicos ou segmentos diferentes.",
+    when: "Quando o app atende vários nichos.",
+    where: "Cole no Lovable.",
+    result: "Páginas diferentes para nichos reais, sem duplicação artificial.",
+    objective: "Criar páginas direcionadas para públicos ou segmentos diferentes.",
+    whenLovableDirect: "Quando o app atende vários nichos.",
+    whenAgentFirst:
+      "Quando você não sabe se deve segmentar ou manter uma página única.",
+    content: `Crie páginas específicas por nicho.
+
+App:
+[descreva]
+
+Nichos:
+[liste]
+
+Para cada nicho, criar:
+
+1. Headline específica.
+2. Dor principal do nicho.
+3. Como o app ajuda.
+4. Benefícios.
+5. Caso de uso.
+6. FAQ.
+7. CTA.
+
+Regras:
+
+- Não duplicar texto.
+- Não inventar dores.
+- Não criar páginas para nichos irrelevantes.
+- Cada página precisa parecer feita para aquele público.`,
+    agentPrompt: `Meu app pode atender vários nichos.
+
+App:
+[descreva]
+
+Nichos possíveis:
+[liste]
+
+Analise:
+
+1. Quais nichos realmente fazem sentido.
+2. Quais não valem página própria.
+3. Qual mensagem usar para cada nicho.
+4. Qual página criar primeiro.`,
+    correctionPrompt: `As páginas por nicho ficaram repetitivas. Refaça com diferenciação real.
+
+Cada página deve ter:
+
+1. Dor específica.
+2. Linguagem do nicho.
+3. Exemplo de uso.
+4. Benefícios próprios.
+5. CTA adequado.`,
+    advanceCriteria:
+      "Avance quando cada página de nicho tiver motivo claro para existir.",
+  },
+  {
+    n: 6,
+    title: "Adicionar marcação de FAQ",
+    purpose:
+      "Adicionar schema FAQPage para ajudar buscadores a entenderem perguntas e respostas.",
+    when: "Depois de criar FAQs reais na página.",
+    where: "Cole no Lovable.",
+    result: "Schema FAQPage válido nas páginas com FAQ.",
+    objective:
+      "Adicionar schema FAQPage para ajudar buscadores a entenderem perguntas e respostas.",
+    whenLovableDirect: "Depois de criar FAQs reais na página.",
+    whenAgentFirst:
+      "Quando você não sabe se suas FAQs estão boas o suficiente para schema.",
+    content: `Adicione schema FAQPage nas páginas que possuem FAQ.
+
+Regras:
+
+1. Usar apenas perguntas e respostas já publicadas na página.
+2. Não inventar perguntas ocultas.
+3. Não colocar conteúdo diferente no schema.
+4. Usar JSON-LD no head da página.
+5. Validar se o JSON está correto.
+6. Manter o texto visível para o usuário.
+
+Explique ao final quais páginas receberam schema.`,
+    agentPrompt: `Tenho este FAQ:
+[cole]
+
+Analise:
+
+1. Ele está bom para schema FAQPage?
+2. Alguma pergunta está vaga?
+3. Alguma resposta promete demais?
+4. O que devo corrigir antes de mandar ao Lovable?`,
+    correctionPrompt: `O schema FAQPage está incorreto. Corrija.
+
+Verifique:
+
+1. JSON-LD válido.
+2. Perguntas iguais às exibidas na página.
+3. Respostas iguais às exibidas na página.
+4. Nenhum conteúdo oculto.
+5. Sem promessas exageradas.
+6. Sem erro de sintaxe.`,
+    advanceCriteria:
+      "Avance quando o FAQ estiver visível na página e o schema corresponder ao conteúdo real.",
+  },
+  {
+    n: 7,
+    title: "Adicionar marcação de aplicativo",
+    purpose:
+      "Adicionar schema SoftwareApplication para ajudar buscadores a entenderem que o produto é um app.",
+    when: "Na home ou landing principal do app.",
+    where: "Cole no Lovable.",
+    result: "Schema SoftwareApplication válido com dados reais do app.",
+    objective:
+      "Adicionar schema SoftwareApplication para ajudar buscadores a entenderem que o produto é um app.",
+    whenLovableDirect: "Na home ou landing principal do app.",
+    whenAgentFirst:
+      "Quando você não sabe quais dados reais do app pode informar.",
+    content: `Adicione schema SoftwareApplication na home e na landing principal.
+
+Inclua apenas dados reais:
+
+1. Nome do app.
+2. Descrição.
+3. Categoria.
+4. Sistema operacional, se aplicável.
+5. URL.
+6. Preço, se estiver definido.
+7. Autor ou organização, se existir.
+8. Política ou termos, se existirem.
+
+Regras:
+
+- Não inventar avaliações.
+- Não inventar reviews.
+- Não inventar preço se não estiver definido.
+- Não inventar empresa.
+- Usar JSON-LD válido.
+- Inserir no head da página.`,
+    agentPrompt: `Quero adicionar schema SoftwareApplication no meu app.
+
+Dados atuais:
+Nome:
+[preencha]
+
+Descrição:
+[preencha]
+
+Preço:
+[preencha ou não definido]
+
+Empresa ou responsável:
+[preencha ou não definido]
+
+Me ajude a decidir:
+
+1. Quais campos posso usar.
+2. Quais campos não devo inventar.
+3. O que falta antes de publicar.`,
+    correctionPrompt: `O schema SoftwareApplication está usando dados inventados ou incorretos. Corrija.
+
+Regras:
+
+1. Remova avaliações falsas.
+2. Remova reviews inventados.
+3. Remova empresa inexistente.
+4. Use apenas dados reais.
+5. Valide JSON-LD.
+6. Insira apenas nas páginas corretas.`,
+    advanceCriteria:
+      "Avance quando a marcação usar apenas dados reais e estiver tecnicamente válida.",
+  },
 ];
 
 export const COMMANDS_CAMPANHAS: Command[] = [
