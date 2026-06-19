@@ -130,9 +130,8 @@ export default function AdminAccess() {
     let mounted = true;
     (async () => {
       try {
-        const { data: userData, error: userErr } = await supabase.auth.getUser();
-        if (userErr) throw userErr;
-        if (!userData.user) {
+        const { data: userData } = await supabase.auth.getUser();
+        if (!userData?.user) {
           navigate("/login", { replace: true });
           return;
         }
