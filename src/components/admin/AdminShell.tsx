@@ -7,6 +7,7 @@ import {
   KeyRound,
   ListChecks,
   MessageSquare,
+  Inbox,
   Settings,
   LogOut,
   ExternalLink,
@@ -22,6 +23,7 @@ export type AdminSectionKey =
   | "codigos"
   | "pendencias"
   | "mensagens"
+  | "inbox"
   | "config";
 
 export const ADMIN_SECTIONS: {
@@ -36,7 +38,8 @@ export const ADMIN_SECTIONS: {
   { key: "compradores", label: "Compradores", icon: Users, title: "Compradores", subtitle: "Busca operacional por e-mail do comprador." },
   { key: "codigos", label: "Códigos premium", icon: KeyRound, title: "Códigos premium", subtitle: "Crie, consulte e acompanhe códigos de acesso." },
   { key: "pendencias", label: "Pendências", icon: ListChecks, title: "Pendências", subtitle: "Checklist antes da venda pública." },
-  { key: "mensagens", label: "Mensagens rápidas", icon: MessageSquare, title: "Mensagens rápidas", subtitle: "Modelos copiáveis para suporte." },
+  { key: "mensagens", label: "Mensagens rápidas", icon: MessageSquare, title: "Mensagens rápidas", subtitle: "Respostas prontas que você copia para responder clientes." },
+  { key: "inbox", label: "Mensagens recebidas", icon: Inbox, title: "Mensagens recebidas", subtitle: "Mensagens enviadas pelos clientes pelo formulário de /suporte." },
   { key: "config", label: "Configurações admin", icon: Settings, title: "Configurações admin", subtitle: "Status de configuração do sistema." },
 ];
 
