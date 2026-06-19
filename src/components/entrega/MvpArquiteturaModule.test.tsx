@@ -36,15 +36,14 @@ describe("MvpArquiteturaModule", () => {
 
   it("switches internal tabs and copies the right prompt", async () => {
     render(<MvpArquiteturaModule />);
-    const etapa1 = screen.getAllByText(/Etapa 1/i)[0].closest("div")!.parentElement!.parentElement!;
-    const scope = within(etapa1);
-    fireEvent.click(scope.getByRole("button", { name: /Pensar com o Agente/i }));
-    expect(scope.getByText(/transformar minha ideia em um MVP simples/i)).toBeInTheDocument();
-    fireEvent.click(scope.getByRole("button", { name: /Corrigir erro/i }));
-    fireEvent.click(scope.getByRole("button", { name: /Copiar comando/i }));
+    // Card 1 = "Definir o MVP"
+    fireEvent.click(screen.getAllByRole("button", { name: /Pensar com o Agente/i })[0]);
+    expect(screen.getByText(/transformar minha ideia em um MVP simples/i)).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole("button", { name: /Corrigir erro/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Copiar comando/i })[0]);
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("MVP grande demais"));
-    fireEvent.click(scope.getByRole("button", { name: /Quando avançar/i }));
-    expect(scope.queryByRole("button", { name: /Copiar comando/i })).toBeNull();
+    fireEvent.click(screen.getAllByRole("button", { name: /Quando avançar/i })[0]);
+    expect(screen.getByText(/Avance quando a primeira versão do app estiver simples/i)).toBeInTheDocument();
   });
 
   it("copy agent help button copies architect prompt", () => {
