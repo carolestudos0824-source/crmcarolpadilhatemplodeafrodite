@@ -260,6 +260,7 @@ export default function AdminAccess() {
             if (error) throw new Error(error.message);
             const res = data as { success?: boolean; error?: string } | null;
             if (!res?.success) throw new Error(res?.error ?? "Falha na operação.");
+            bumpLogs();
           }}
         />
       )}
