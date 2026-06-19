@@ -41,7 +41,7 @@ const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
   { id: "plano", label: "Plano de 7 dias", icon: CalendarDays },
   { id: "metricas", label: "Métricas", icon: BarChart3 },
   { id: "melhorar", label: "Melhorar campanha", icon: Target },
-  { id: "resumo", label: "Resumo da campanha", icon: ClipboardList },
+  { id: "resumo", label: "Campanha pronta", icon: ClipboardList },
 ];
 
 // ===== utils =====
