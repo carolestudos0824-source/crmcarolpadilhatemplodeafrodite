@@ -1970,8 +1970,8 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     advanceWhen: "Antes de criar checkout, garanta que a pessoa entende o valor do app em menos de 10 segundos.",
   },
   checkout: {
-    doNow: "Crie o checkout, a página de obrigado e a área de entrega na ordem.",
-    advanceWhen: "Avance quando um comprador conseguir comprar, receber acesso e entrar na área restrita.",
+    doNow: "Crie pagamento, página de obrigado, área de entrega protegida, libere o acesso e teste como comprador.",
+    advanceWhen: "Antes de divulgar, faça o caminho completo como se você fosse o comprador.",
   },
   seo: {
     doNow: "Comece pelo plano de SEO. Depois gere páginas e schemas.",
