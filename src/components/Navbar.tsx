@@ -41,15 +41,12 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
 
   if (onCheckout) {
     return (
-      <header
-        className="fixed inset-x-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/5"
-        style={{ top: offsetTop ? 40 : 0 }}
-      >
+      <div className="w-full backdrop-blur-xl bg-background/60 border-b border-white/5">
         <div className="container flex items-center justify-between h-16">
           <Logo size="md" showText />
           <span className="text-xs text-muted-foreground/80 tracking-wide">Ambiente seguro</span>
         </div>
-      </header>
+      </div>
     );
   }
 
