@@ -1090,7 +1090,7 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
   },
   construir: {
     doNow: "Comece pelo Comando 1. Copie, cole no Lovable e espere o resultado antes do próximo.",
-    advanceWhen: "Avance quando o Lovable tiver criado seu plano e a primeira versão do app.",
+    advanceWhen: "Não avance se o Lovable ainda não entregou o resultado esperado. Volte, corrija ou use a aba Corrigir erro.",
   },
   login: {
     doNow: "Adicione login antes do banco. Depois crie as tabelas e as regras de acesso.",
