@@ -725,6 +725,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_create_gift_code: {
+        Args: {
+          _code: string
+          _duration_days: number
+          _expires_at?: string
+          _is_active?: boolean
+          _max_uses: number
+        }
+        Returns: Json
+      }
       admin_list_access_logs: {
         Args: { _limit?: number }
         Returns: {
@@ -738,6 +748,20 @@ export type Database = {
           previous_has_access: boolean
           source: string
           target_email: string
+        }[]
+      }
+      admin_list_admin_audit_logs: {
+        Args: { _limit?: number }
+        Returns: {
+          action: string
+          admin_email: string
+          admin_id: string
+          created_at: string
+          details: Json
+          id: string
+          target_id: string
+          target_label: string
+          target_type: string
         }[]
       }
       admin_list_buyers: {
@@ -766,6 +790,10 @@ export type Database = {
       }
       admin_set_access: {
         Args: { _has_access: boolean; _user_id: string }
+        Returns: Json
+      }
+      admin_set_gift_code_active: {
+        Args: { _code_id: string; _is_active: boolean }
         Returns: Json
       }
       apply_arcano_backfill: { Args: { _payload: Json }; Returns: Json }
