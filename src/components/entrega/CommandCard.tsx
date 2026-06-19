@@ -45,6 +45,7 @@ export const CommandCard = ({
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
   const [done, setDone] = useState(false);
   const storageKey = `${STATE_PREFIX}${completedKey}`;
 
