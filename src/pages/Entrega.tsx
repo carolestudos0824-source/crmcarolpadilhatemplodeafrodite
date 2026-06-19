@@ -117,20 +117,20 @@ export default function Entrega() {
     Object.entries(SLUG_TO_ID).map(([k, v]) => [v, k]),
   ) as Record<ModuleId, string>;
 
-  const moduloParam = searchParams.get("modulo");
-  const initialActive: ModuleId =
-    (moduloParam && (SLUG_TO_ID[moduloParam] ?? (MODULE_ORDER as string[]).includes(moduloParam) ? (moduloParam as ModuleId) : null)) ||
-    "comece";
+  const resolveModulo = (p: string | null): ModuleId => {
+    if (!p) return "comece";
+    if (SLUG_TO_ID[p]) return SLUG_TO_ID[p];
+    if ((MODULE_ORDER as string[]).includes(p)) return p as ModuleId;
+    return "comece";
+  };
 
-  const [active, setActiveState] = useState<ModuleId>(initialActive);
+  const [active, setActiveState] = useState<ModuleId>(() =>
+    resolveModulo(searchParams.get("modulo")),
+  );
 
   // Sync active when URL ?modulo changes
   useEffect(() => {
-    const p = searchParams.get("modulo");
-    const next =
-      (p && (SLUG_TO_ID[p] ?? ((MODULE_ORDER as string[]).includes(p) ? (p as ModuleId) : null))) ||
-      "comece";
-    setActiveState(next);
+    setActiveState(resolveModulo(searchParams.get("modulo")));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
