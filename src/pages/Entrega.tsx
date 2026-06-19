@@ -15,6 +15,7 @@ import {
   ListChecks,
   AlertTriangle,
   Gift,
+  DollarSign,
   Menu,
   X,
   LogOut,
