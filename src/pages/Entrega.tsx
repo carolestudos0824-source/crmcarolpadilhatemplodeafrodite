@@ -1992,26 +1992,33 @@ Entregue:
 function CreativeGenerator() {
   const [f, setF] = useState({
     name: "", audience: "", pain: "", promise: "",
-    format: "imagem", tone: "direto",
+    format: "imagem", tone: "direto", channel: "Instagram",
   });
   const [generated, setGenerated] = useState("");
 
   const generate = () => {
-    const text = `Crie um criativo no formato "${f.format}" com tom "${f.tone}".
+    const text = `Crie um criativo para divulgar este app.
 
 App: ${f.name || "[nome]"}
 Público: ${f.audience || "[público]"}
 Dor: ${f.pain || "[dor]"}
 Promessa: ${f.promise || "[promessa]"}
+Formato: ${f.format}
+Canal: ${f.channel}
+Tom: ${f.tone}
 
 Entregue:
-1. Gancho nos 3 primeiros segundos
-2. Headline
-3. Subheadline
-4. Corpo
-5. CTA
-6. Descrição visual ou roteiro
-7. 2 variações alternativas`;
+1. Gancho.
+2. Texto principal.
+3. Ideia visual.
+4. CTA.
+5. Variações (pelo menos 2 ângulos diferentes).
+6. Métrica para testar.
+
+Regras:
+- Não usar promessa exagerada.
+- Não usar clichês.
+- Focar em clareza, dor, promessa e ação.`;
     setGenerated(text);
   };
 
@@ -2025,10 +2032,15 @@ Entregue:
   };
 
   return (
-    <GlassCard className="mt-6 p-5 md:p-6">
-      <h3 className="font-heading font-semibold mb-1">Gerador rápido de criativo</h3>
+    <GlassCard id="gerador-criativo" className="mt-2 mb-6 p-5 md:p-6 border-accent/30">
+      <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
+        <h3 className="font-heading font-semibold">Gerador rápido de criativo</h3>
+        <span className="text-[11px] uppercase tracking-wider text-accent px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">
+          Comece por aqui
+        </span>
+      </div>
       <p className="text-sm text-muted-foreground mb-4">
-        Preencha e gere um comando pronto para o Lovable.
+        Preencha e gere um comando pronto para o Lovable. Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
         <Input label="Nome do app" value={f.name} onChange={(v) => setF({ ...f, name: v })} />
@@ -2042,6 +2054,12 @@ Entregue:
           options={["imagem", "vídeo", "reels", "story", "anúncio"]}
         />
         <Select
+          label="Canal (opcional)"
+          value={f.channel}
+          onChange={(v) => setF({ ...f, channel: v })}
+          options={["Instagram", "Stories", "Reels", "TikTok", "WhatsApp", "Meta Ads", "LinkedIn", "Outro"]}
+        />
+        <Select
           label="Tom"
           value={f.tone}
           onChange={(v) => setF({ ...f, tone: v })}
@@ -2051,6 +2069,7 @@ Entregue:
       <button onClick={generate} className="btn-primary mt-4 text-sm">
         <Sparkles size={14} /> Gerar comando de criativo
       </button>
+
       {generated && (
         <div className="mt-5">
           <div className="rounded-xl border border-white/10 bg-black/40 max-h-64 overflow-auto">
