@@ -231,7 +231,11 @@ export default function AdminAccess() {
           onSearch={onSearch}
           setAccess={setAccess}
           selfHasAccess={selfHasAccess}
-          onSelfChanged={(v) => setSelfHasAccess(v)}
+          onSelfChanged={(v) => {
+            setSelfHasAccess(v);
+            bumpLogs();
+          }}
+          logsRefresh={logsRefresh}
         />
       )}
       {section === "compradores" && (
