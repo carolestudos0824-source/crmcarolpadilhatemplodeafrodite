@@ -134,13 +134,21 @@ export default function Login() {
   };
 
   const recheckAccess = async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) return;
-    if (await checkUserAccess(data.user.id)) {
-      toast.success("Acesso liberado");
-      navigate("/entrega");
-    } else {
-      toast.info("Acesso ainda não liberado.");
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) throw error;
+      if (!data.user) {
+        toast.info("Faça login novamente para verificar seu acesso.");
+        return;
+      }
+      if (await checkUserAccess(data.user.id)) {
+        toast.success("Acesso liberado");
+        navigate("/entrega");
+      } else {
+        toast.info("Acesso ainda não liberado.");
+      }
+    } catch {
+      toast.error("Não foi possível verificar seu acesso agora. Tente novamente em instantes.");
     }
   };
 
