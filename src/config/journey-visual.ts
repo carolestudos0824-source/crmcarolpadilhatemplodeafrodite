@@ -1,15 +1,13 @@
 /**
- * Camada visual e cinemática da Jornada do Louco.
+ * Camada visual e cinemática.
  *
  * Aqui mora APENAS o que é técnico/visual:
  *  - paleta por fase (CORES_FASE)
  *  - presets de motion / animação
  *  - configuração de transições
- *
- * Conteúdo editorial (títulos, descrições, papel de cada arcano,
- * introdução, encerramento) NÃO mora aqui — vem do CMS via
- * `useJourneyContent()`.
  */
+
+
 
 export type JourneyTheme = "gold" | "wine" | "plum" | "moonlight";
 
