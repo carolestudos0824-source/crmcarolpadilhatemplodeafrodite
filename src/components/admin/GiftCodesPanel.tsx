@@ -305,9 +305,9 @@ export function GiftCodesPanel() {
               const revealed = !!reveal[c.id];
               return (
                 <li key={c.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
-                  <div className="flex items-start justify-between gap-3 flex-wrap">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <code className="font-mono text-sm text-foreground break-all">
                           {revealed ? c.code : maskCode(c.code)}
                         </code>
@@ -330,25 +330,25 @@ export function GiftCodesPanel() {
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full sm:w-auto">
                       <button
                         type="button"
                         onClick={() => copyCode(c)}
-                        className="text-xs px-2.5 py-1.5 rounded-lg border border-white/15 hover:bg-white/5 inline-flex items-center gap-1.5"
+                        className="text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 inline-flex items-center justify-center gap-1.5"
                       >
-                        {copiedId === c.id ? <Check size={12} /> : <Copy size={12} />}
+                        {copiedId === c.id ? <Check size={14} /> : <Copy size={14} />}
                         {copiedId === c.id ? "Copiado" : "Copiar"}
                       </button>
                       <button
                         type="button"
                         onClick={() => toggleActive(c)}
-                        className={`text-xs px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1.5 border ${
+                        className={`text-xs px-3 py-2 rounded-lg inline-flex items-center justify-center gap-1.5 border ${
                           c.is_active
                             ? "border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
                             : "border-emerald-500/30 text-emerald-200 hover:bg-emerald-500/10"
                         }`}
                       >
-                        {c.is_active ? <><PowerOff size={12} /> Desativar</> : <><Power size={12} /> Ativar</>}
+                        {c.is_active ? <><PowerOff size={14} /> Desativar</> : <><Power size={14} /> Ativar</>}
                       </button>
                     </div>
                   </div>

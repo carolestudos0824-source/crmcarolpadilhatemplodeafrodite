@@ -70,7 +70,7 @@ export function AdminShell({
   };
 
   return (
-    <div className="min-h-screen bg-[#05070D] text-foreground flex">
+    <div className="min-h-screen bg-[#05070D] text-foreground flex overflow-x-hidden">
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 border-r border-white/10 bg-[#0B1020] flex-col sticky top-0 h-screen">
         <SidebarInner active={active} onNav={handleNav} />
@@ -93,20 +93,21 @@ export function AdminShell({
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="sticky top-0 z-30 bg-[#05070D]/90 backdrop-blur border-b border-white/10">
-          <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-14">
+          <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 lg:px-8 h-14">
             <button
               type="button"
-              className="lg:hidden p-2 -ml-2 rounded-lg hover:bg-white/5"
+              className="lg:hidden p-2 -ml-1 rounded-lg hover:bg-white/5 active:bg-white/10"
               onClick={() => setMobileOpen(true)}
               aria-label="Abrir menu admin"
             >
-              <Menu size={18} />
+              <Menu size={20} />
             </button>
             <div className="min-w-0 flex-1">
-              <div className="text-[11px] uppercase tracking-wider text-muted-foreground leading-none">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground leading-none hidden sm:block">
                 Painel Admin
               </div>
               <div className="text-sm font-heading font-semibold truncate">{current.label}</div>
+              <div className="text-[10px] text-muted-foreground truncate sm:hidden">{adminEmail ?? "—"}</div>
             </div>
             <div className="hidden sm:flex flex-col items-end leading-tight min-w-0">
               <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Logado</span>
@@ -121,9 +122,10 @@ export function AdminShell({
             <button
               type="button"
               onClick={onLogout}
-              className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-red-500/30 text-red-200 hover:bg-red-500/10"
+              aria-label="Sair"
+              className="inline-flex items-center gap-1.5 text-xs px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-lg border border-red-500/30 text-red-200 hover:bg-red-500/10"
             >
-              <LogOut size={12} /> Sair
+              <LogOut size={14} /> <span className="hidden sm:inline">Sair</span>
             </button>
           </div>
         </header>

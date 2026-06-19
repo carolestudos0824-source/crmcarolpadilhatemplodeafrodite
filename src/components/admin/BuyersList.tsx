@@ -159,10 +159,10 @@ export function BuyersList({
         ) : (
           <ul className="divide-y divide-white/5">
             {filtered.map((b) => (
-              <li key={b.user_id} className="py-3 flex items-center gap-3 flex-wrap">
-                <div className="flex-1 min-w-[200px]">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-foreground font-medium truncate">{b.email ?? "—"}</span>
+              <li key={b.user_id} className="py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:flex-wrap">
+                <div className="flex-1 min-w-0 sm:min-w-[200px]">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm text-foreground font-medium truncate max-w-full">{b.email ?? "—"}</span>
                     {b.is_admin && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/30 inline-flex items-center gap-1">
                         <ShieldCheck size={10} /> admin
@@ -183,11 +183,11 @@ export function BuyersList({
                     {b.source ? ` · ${b.source}` : ""}
                   </div>
                 </div>
-                <div className="flex gap-1">
+                <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={() => onView(b)}
-                    className="btn-ghost border border-white/15 text-xs"
+                    className="px-3 py-2 rounded-xl border border-white/15 hover:bg-white/5 text-xs inline-flex items-center justify-center gap-1.5"
                     title="Ver"
                   >
                     <Eye size={14} /> Ver
@@ -197,7 +197,7 @@ export function BuyersList({
                       type="button"
                       disabled={actingId === b.user_id}
                       onClick={() => handleAccess(b, false)}
-                      className="btn-ghost border border-white/15 text-xs"
+                      className="px-3 py-2 rounded-xl border border-rose-500/30 text-rose-200 hover:bg-rose-500/10 text-xs inline-flex items-center justify-center gap-1.5"
                     >
                       <UserX size={14} /> Revogar
                     </button>
@@ -206,7 +206,7 @@ export function BuyersList({
                       type="button"
                       disabled={actingId === b.user_id}
                       onClick={() => handleAccess(b, true)}
-                      className="btn-primary text-xs"
+                      className="btn-primary text-xs !px-3 !py-2"
                     >
                       <UserCheck size={14} /> Liberar
                     </button>
