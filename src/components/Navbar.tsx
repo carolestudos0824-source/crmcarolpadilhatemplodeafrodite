@@ -118,6 +118,6 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
           </div>
         </div>
       )}
-    </header>
+    </div>
   );
 };
