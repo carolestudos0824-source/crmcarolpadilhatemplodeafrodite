@@ -1409,23 +1409,29 @@ export function CampaignsModule({
         </p>
       </header>
 
-      <GlassCard className="p-4 mb-5 border-accent/20 bg-accent/5">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <p className="text-sm flex-1">
-            <strong className="text-accent">Comece pelo Diagnóstico.</strong>{" "}
-            Depois gere sua campanha e execute o plano de 7 dias.
-          </p>
+      <GlassCard className="p-5 mb-5 border-accent/20 bg-accent/5">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex-1">
+            <p className="text-sm sm:text-base font-semibold">
+              Crie uma campanha simples, publique rápido e acompanhe os números certos.
+            </p>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              Comece pelo Diagnóstico, gere sua campanha e finalize com a aba{" "}
+              <strong className="text-accent">Campanha pronta</strong>.
+            </p>
+          </div>
           <button
             onClick={() => {
               setTab("diagnostico");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="btn-primary text-sm whitespace-nowrap"
+            className="btn-primary text-sm whitespace-nowrap w-full sm:w-auto justify-center"
           >
             <Rocket size={14} /> Criar minha campanha agora
           </button>
         </div>
       </GlassCard>
+
 
       <div className="flex items-start gap-2 mb-6 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4">
         <AlertTriangle size={16} className="text-amber-300 mt-0.5 shrink-0" />
