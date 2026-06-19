@@ -1334,13 +1334,13 @@ const CAMPANHAS_CHECK_ITEMS = [
   "Minha promessa está clara",
   "Escolhi um canal principal",
   "Criei uma campanha orgânica",
-  "Criei mensagens de WhatsApp",
+  "Criei mensagens de WhatsApp ou direct",
   "Criei pelo menos 3 criativos",
   "Criei plano de 7 dias",
   "Chamei 10 pessoas reais",
-  "Medi visitantes, leads e cadastros",
-  "Analisei o que funcionou",
-  "Melhorei a campanha",
+  "Medi respostas, cliques, leads ou cadastros",
+  "Anotei dúvidas e objeções",
+  "Melhorei a campanha antes de escalar",
 ];
 
 function ChecklistCampanhas({
