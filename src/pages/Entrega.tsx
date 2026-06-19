@@ -70,6 +70,7 @@ const TOTAL_COMMANDS =
   COMMANDS_CONSTRUIR.length +
   COMMANDS_LOGIN.length +
   COMMANDS_VENDA.length +
+  COMMANDS_MONETIZACAO.length +
   COMMANDS_CHECKOUT.length +
   COMMANDS_SEO.length +
   COMMANDS_CAMPANHAS.length +
@@ -78,7 +79,7 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign,
 };
 
 
