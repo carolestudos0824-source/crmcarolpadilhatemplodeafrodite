@@ -39,14 +39,30 @@ type TabId =
   | "resumo";
 
 const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
-  { id: "diagnostico", label: "Diagnóstico da oferta", icon: Stethoscope },
-  { id: "gerador", label: "Gerador de campanha", icon: Wand2 },
+  { id: "diagnostico", label: "Diagnóstico", icon: Stethoscope },
+  { id: "gerador", label: "Criar campanha", icon: Wand2 },
   { id: "prontas", label: "Campanhas prontas", icon: Layers },
-  { id: "criativos", label: "Criativos e mensagens", icon: ImageIcon },
+  { id: "criativos", label: "Criativos", icon: ImageIcon },
   { id: "plano", label: "Plano de 7 dias", icon: CalendarDays },
   { id: "metricas", label: "Métricas", icon: BarChart3 },
-  { id: "melhorar", label: "Melhorar campanha", icon: Target },
+  { id: "melhorar", label: "Melhorar", icon: Target },
   { id: "resumo", label: "Campanha pronta", icon: ClipboardList },
+];
+
+const GLOSSARIO: { termo: string; def: string }[] = [
+  { termo: "Aquisição", def: "Trazer pessoas para conhecer seu app." },
+  { termo: "Campanha", def: "Conjunto de mensagens para divulgar uma oferta." },
+  { termo: "Canal", def: "Lugar onde você divulga: Instagram, WhatsApp, TikTok, e-mail, comunidade." },
+  { termo: "Criativo", def: "Imagem, vídeo ou texto usado na divulgação." },
+  { termo: "Lead", def: "Pessoa interessada." },
+  { termo: "CTA", def: "Chamada para ação, como 'testar agora' ou 'comprar'." },
+  { termo: "Conversão", def: "Quando a pessoa faz a ação desejada." },
+  { termo: "Métrica", def: "Número usado para medir resultado." },
+  { termo: "Tráfego", def: "Pessoas chegando até sua página ou app." },
+  { termo: "Validação", def: "Teste para saber se existe interesse real." },
+  { termo: "Escalar", def: "Aumentar a divulgação depois que a campanha já mostrou sinais de funcionar." },
+  { termo: "Orgânico", def: "Divulgação sem anúncio pago." },
+  { termo: "Pago", def: "Divulgação com investimento em anúncios." },
 ];
 
 // ===== utils =====
