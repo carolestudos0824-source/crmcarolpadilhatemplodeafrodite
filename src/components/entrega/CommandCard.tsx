@@ -243,6 +243,9 @@ export const CommandCard = ({
                 <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-accent mb-1.5">
                   <Sparkles size={12} /> Texto pronto para colar no Lovable
                 </div>
+                <div className="text-[11px] text-amber-200/90 bg-amber-400/5 border border-amber-400/20 rounded-md px-3 py-2 mb-2">
+                  Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
+                </div>
                 <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
                   <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/90">
                     {commandText}
