@@ -2,7 +2,7 @@ export const APP_CONFIG = {
   // ====== Configuração comercial obrigatória ======
   // Preencher com URL real do checkout (gateway de pagamento) ou link de WhatsApp (https://wa.me/...).
   // Enquanto estiver com o valor placeholder abaixo, os botões de pagamento mostram aviso amigável.
-  CHECKOUT_FABRICA_URL: "COLE_AQUI_O_LINK_REAL_DE_CHECKOUT_OU_WHATSAPP",
+  CHECKOUT_FABRICA_URL: "COLE_AQUI_A_URL_REAL",
   SUPORTE_EMAIL: "carolestudos0824@gmail.com",
   GPT_AGENT_URL: "https://chatgpt.com/g/g-6a331f876adc8191a174b85fa0aac1bf-arquiteto-de-aplicativos",
 
