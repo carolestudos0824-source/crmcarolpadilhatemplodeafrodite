@@ -471,27 +471,33 @@ export default function Entrega() {
           />
 
           {/* Quando posso avançar? */}
-          <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
-            <ArrowRight size={16} className="text-accent shrink-0 mt-0.5" />
-            <div>
-              <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
-                Quando posso avançar?
+          {active !== "comece" && (
+            <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+              <ArrowRight size={16} className="text-accent shrink-0 mt-0.5" />
+              <div>
+                <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+                  Quando posso avançar?
+                </div>
+                <p className="text-sm text-foreground/85">
+                  {MODULE_HINTS[active].advanceWhen}
+                </p>
               </div>
-              <p className="text-sm text-foreground/85">
-                {MODULE_HINTS[active].advanceWhen}
-              </p>
             </div>
-          </div>
+          )}
 
           {/* Footer do módulo */}
           <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
-            <button
-              onClick={() => prevModule && goTo(prevModule)}
-              disabled={!prevModule}
-              className="px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm disabled:opacity-30"
-            >
-              <ArrowLeft size={14} /> Voltar
-            </button>
+            {active !== "comece" ? (
+              <button
+                onClick={() => prevModule && goTo(prevModule)}
+                disabled={!prevModule}
+                className="px-4 py-2.5 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm disabled:opacity-30"
+              >
+                <ArrowLeft size={14} /> Voltar
+              </button>
+            ) : (
+              <span />
+            )}
             <button
               onClick={markModuleDone}
               className="px-4 py-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/15 inline-flex items-center gap-2 text-sm"
