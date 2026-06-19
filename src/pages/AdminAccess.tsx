@@ -562,15 +562,21 @@ function CompradoresSection({
   status,
   onSearch,
   onGoToAcessos,
+  onViewBuyer,
+  onSetBuyerAccess,
 }: {
   email: string;
   setEmail: (v: string) => void;
   status: Status;
   onSearch: (e: React.FormEvent) => void;
   onGoToAcessos: () => void;
+  onViewBuyer: (b: Buyer) => void;
+  onSetBuyerAccess: (b: Buyer, has: boolean) => Promise<void>;
 }) {
   return (
     <div className="space-y-4">
+      <BuyersList onView={onViewBuyer} onSetAccess={onSetBuyerAccess} />
+
       <div className="glass-strong p-5">
         <h3 className="font-heading font-semibold text-sm mb-1">Busca operacional</h3>
         <p className="text-xs text-muted-foreground mb-4">
