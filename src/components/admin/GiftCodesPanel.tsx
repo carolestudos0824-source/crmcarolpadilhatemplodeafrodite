@@ -127,18 +127,21 @@ export function GiftCodesPanel() {
       expIso = d.toISOString();
     }
     setCreating(true);
-    const { data: userData } = await supabase.auth.getUser();
-    const { error: insertError } = await supabase.from("gift_codes").insert({
-      code: normalized,
-      duration_days: days,
-      max_uses: maxUses,
-      is_active: isActive,
-      expires_at: expIso,
-      created_by: userData.user?.id ?? null,
+    const { data, error: rpcError } = await (supabase as any).rpc("admin_create_gift_code", {
+      _code: normalized,
+      _duration_days: days,
+      _max_uses: maxUses,
+      _is_active: isActive,
+      _expires_at: expIso,
     });
     setCreating(false);
-    if (insertError) {
-      toast.error(insertError.message);
+    if (rpcError) {
+      toast.error(rpcError.message);
+      return;
+    }
+    const res = data as { success?: boolean; error?: string } | null;
+    if (!res?.success) {
+      toast.error(res?.error ?? "Não foi possível criar o código.");
       return;
     }
     toast.success("Código criado");
@@ -151,12 +154,17 @@ export function GiftCodesPanel() {
   };
 
   const toggleActive = async (c: GiftCode) => {
-    const { error: updErr } = await supabase
-      .from("gift_codes")
-      .update({ is_active: !c.is_active })
-      .eq("id", c.id);
-    if (updErr) {
-      toast.error(updErr.message);
+    const { data, error: rpcError } = await (supabase as any).rpc("admin_set_gift_code_active", {
+      _code_id: c.id,
+      _is_active: !c.is_active,
+    });
+    if (rpcError) {
+      toast.error(rpcError.message);
+      return;
+    }
+    const res = data as { success?: boolean; error?: string } | null;
+    if (!res?.success) {
+      toast.error(res?.error ?? "Não foi possível atualizar o código.");
       return;
     }
     toast.success(c.is_active ? "Código desativado" : "Código ativado");
