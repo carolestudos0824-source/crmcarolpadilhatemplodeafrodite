@@ -534,7 +534,7 @@ function SaleDetailDrawer({
         <Row label="Produto" value={sale.product_name} />
         <Row label="Valor pago" value={fmtMoney(sale.amount, sale.currency)} />
         <Row label="Status do pagamento" value={PAYMENT_STATUS_LABEL[sale.payment_status] ?? sale.payment_status} />
-        <Row label="Status do acesso" value={ACCESS_STATUS_LABEL[sale.access_status] ?? sale.access_status} />
+        <Row label="Status do acesso" value={isAwaitingFirstLogin(sale) ? "Aguardando primeiro login" : (ACCESS_STATUS_LABEL[sale.access_status] ?? sale.access_status)} />
         <Row label="Origem" value={sale.access_source} />
         <Row label="Método de pagamento" value={sale.payment_method ?? "Não registrado"} />
         <Row label="Referência" value={sale.payment_reference ?? "Não registrado"} />
