@@ -153,6 +153,26 @@ export default function Login() {
     }
   };
 
+  const onGoogle = async () => {
+    resetMessages();
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + "/entrega",
+      });
+      if (result.error) {
+        setErrorMsg("Não foi possível entrar com Google agora. Tente novamente.");
+        setLoading(false);
+        return;
+      }
+      if (result.redirected) return;
+      navigate("/entrega");
+    } catch {
+      setErrorMsg("Não foi possível entrar com Google agora. Tente novamente.");
+      setLoading(false);
+    }
+  };
+
   // ============== Render ==============
 
   if (view === "check_email") {
