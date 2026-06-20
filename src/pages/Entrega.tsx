@@ -63,6 +63,7 @@ import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { ModuleReviewCard } from "@/components/entrega/ModuleReviewCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
+import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
