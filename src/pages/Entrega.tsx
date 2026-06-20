@@ -54,6 +54,7 @@ import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
 import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
 import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
+import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
 import { clearSession } from "@/lib/auth";
