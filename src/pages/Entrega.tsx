@@ -545,6 +545,7 @@ const CommandList = ({
         advanceCriteria={c.advanceCriteria}
       />
     ))}
+    <BeforeAdvanceTip />
   </div>
 );
 
