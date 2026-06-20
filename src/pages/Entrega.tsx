@@ -1960,6 +1960,12 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     );
   }
 
+  if (active === "seguranca") {
+    return <SegurancaAppModule />;
+  }
+
+
+
   if (active === "venda") {
     return (
       <section>
