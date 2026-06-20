@@ -27,8 +27,9 @@ import { GiftCodesPanel } from "@/components/admin/GiftCodesPanel";
 import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
 import { AccessLogs } from "@/components/admin/AccessLogs";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
-import { AdminErrorBoundary } from "@/components/admin/AdminErrorBoundary";
+import { AdminErrorBoundary, AdminRouteErrorFallback } from "@/components/admin/AdminErrorBoundary";
 import { SupportInbox } from "@/components/admin/SupportInbox";
+import { withTimeout } from "@/lib/promiseTimeout";
 
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
@@ -99,6 +100,14 @@ function isValidUrl(u: string) {
 }
 
 export default function AdminAccess() {
+  return (
+    <AdminErrorBoundary resetKey="admin-route" variant="route">
+      <AdminAccessInner />
+    </AdminErrorBoundary>
+  );
+}
+
+function AdminAccessInner() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [authChecked, setAuthChecked] = useState(false);
@@ -139,20 +148,28 @@ export default function AdminAccess() {
     let mounted = true;
     (async () => {
       try {
-        const { data: userData } = await supabase.auth.getUser();
+        const { data: userData } = await withTimeout(
+          supabase.auth.getUser(),
+          10000,
+          "sessão admin",
+        );
         if (!userData?.user) {
           navigate("/login", { replace: true });
           return;
         }
         const uid = userData.user.id;
-        const [adminRes, accessRes] = await Promise.all([
-          supabase.rpc("is_admin"),
+        const [adminRes, accessRes] = await withTimeout(Promise.all([
+          supabase.rpc("is_admin").then(
+            (r) => r,
+            (e) => ({ data: false, error: e }),
+          ),
           supabase
             .from("user_access")
             .select("has_access")
             .eq("user_id", uid)
-            .maybeSingle(),
-        ]);
+            .maybeSingle()
+            .then((r) => r, (e) => ({ data: null, error: e })),
+        ]), 10000, "permissão admin");
         if (!mounted) return;
         setIsAdmin(Boolean(adminRes.data));
         setAdminEmail(userData.user.email ?? null);
@@ -225,29 +242,7 @@ export default function AdminAccess() {
   }
 
   if (authError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md w-full glass-strong p-8 text-center">
-          <AlertTriangle className="mx-auto text-amber-300 mb-3" size={28} />
-          <h1 className="text-xl font-heading font-bold mb-2">
-            Não foi possível carregar o painel admin agora.
-          </h1>
-          <p className="text-sm text-muted-foreground mb-4">
-            Tente novamente em alguns instantes. Se persistir, faça login de novo.
-          </p>
-          <div className="text-[11px] text-muted-foreground/80 mb-4 break-words">
-            Detalhe: {authError}
-          </div>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="btn-primary inline-flex"
-          >
-            Tentar novamente
-          </button>
-        </div>
-      </div>
-    );
+    return <AdminRouteErrorFallback error={new Error(authError)} />;
   }
 
   if (!isAdmin) {
