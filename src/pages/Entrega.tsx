@@ -1728,6 +1728,65 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           ))}
         </div>
 
+        <GlassCard className="p-5 mb-6">
+          <h3 className="font-heading font-semibold text-base md:text-lg mb-1">
+            Mapa da jornada
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {phaseMap.map((phase) => {
+              const mods = phase.mods.filter((m) =>
+                (MODULE_ORDER as string[]).includes(m),
+              );
+              if (mods.length === 0) return null;
+              return (
+                <div
+                  key={phase.title}
+                  className="rounded-xl border border-white/10 bg-white/5 p-3"
+                >
+                  <h4 className="font-heading font-semibold text-sm text-accent mb-2">
+                    {phase.title}
+                  </h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {mods.map((m) => (
+                      <li key={m}>
+                        <button
+                          type="button"
+                          onClick={() => goTo(m)}
+                          className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85"
+                        >
+                          {moduleLabel(m)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </GlassCard>
+
+        <GlassCard className="p-5 mb-6 border-rose-400/30 bg-rose-400/5">
+          <h3 className="font-heading font-semibold text-base md:text-lg mb-2 text-rose-200">
+            Não pule estas etapas
+          </h3>
+          <ul className="space-y-1.5 text-sm text-foreground/90">
+            {naoPule.map((item) => (
+              <li key={item} className="flex gap-2">
+                <span className="text-rose-300 shrink-0">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-[11px] text-muted-foreground mt-3">
+            Orientação visual. Você ainda pode navegar livremente pelos módulos.
+          </p>
+        </GlassCard>
+
+
+
         <GlassCard className="p-5 mb-4">
           <h3 className="font-heading font-semibold mb-3">Como usar este programa</h3>
           <ol className="list-decimal list-inside space-y-1.5 text-sm text-muted-foreground mb-3">
