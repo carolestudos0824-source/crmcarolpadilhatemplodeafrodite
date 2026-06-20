@@ -331,6 +331,30 @@ export function TelasFluxoModule() {
           <p className="text-[11px] text-muted-foreground mt-2">
             Copia um prompt pronto para você colar no Agente Arquiteto.
           </p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Use este botão para pensar com o Agente. Use os comandos das etapas para colar no Lovable do seu app.
+          </p>
+        </div>
+      </GlassCard>
+
+      <GlassCard className="p-5 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-white/[0.02] to-transparent">
+        <div className="flex items-start gap-3">
+          <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+          <div>
+            <h3 className="font-heading font-semibold text-base text-amber-100 mb-1">
+              Importante: onde colar estes comandos
+            </h3>
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              Estes comandos são para você copiar e colar no Lovable do app que está
+              construindo. Não cole dentro da Fábrica de Apps com IA, porque este
+              programa é apenas o guia. Abra o projeto do seu aplicativo no Lovable e
+              cole o comando lá.
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Se você colar este comando aqui dentro da Fábrica de Apps, o Lovable
+              pode entender que você quer alterar este programa, e não o seu app.
+            </p>
+          </div>
         </div>
       </GlassCard>
 
