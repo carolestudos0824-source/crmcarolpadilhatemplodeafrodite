@@ -231,6 +231,8 @@ function EntregaInner() {
   // Propagate active to persisted progress
   useEffect(() => {
     progress.setActive(active);
+    // Save current module in the active app project (no-op if no active project)
+    appProjects.setCurrentModule(active);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
