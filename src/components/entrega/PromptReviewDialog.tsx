@@ -14,13 +14,11 @@ import {
   AlertTriangle,
   Settings2,
   Sparkles,
-  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
-import { supabase } from "@/integrations/supabase/client";
 import { useAppProjects } from "@/hooks/useAppProjects";
 
 type Props = {
@@ -38,11 +36,42 @@ type Props = {
 
 type Mode = "lovable" | "agent";
 
-type Improvement = {
-  improvedPrompt: string;
-  improvements: string[];
-  warnings: string[];
-};
+function buildAgentImprovePrompt(currentText: string) {
+  return `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
+
+Quero melhorar este prompt antes de enviar ao Lovable.
+
+Meu objetivo é evitar prompt fraco, retrabalho e gasto errado de créditos no Lovable.
+
+Prompt atual que quero melhorar:
+
+${currentText}
+
+Analise e melhore este prompt com foco em:
+
+1. Clareza
+2. Completude
+3. Ordem lógica
+4. Segurança
+5. Preservação do que já funciona
+6. Escopo correto da etapa
+7. Evitar comandos vagos
+8. Evitar pedir coisas demais de uma vez
+9. Evitar quebrar login, banco, acesso, admin, checkout, entrega, layout ou progresso
+10. Incluir o que testar depois
+
+Regras:
+
+- Preserve a intenção original.
+- Não transforme a Fábrica de Apps com IA no app final.
+- O app final é o projeto que estou criando no Lovable.
+- Se faltar contexto, me pergunte antes ou faça suposições claras.
+- Não prometa resultado financeiro garantido.
+- Não prometa segurança 100%.
+- Entregue uma versão final pronta para colar no Lovable.
+- Depois explique rapidamente o que você melhorou.`;
+}
+
 
 const QUALITY_CHECKS: { label: string; match: (text: string) => boolean }[] = [
   { label: "Contexto do app incluído", match: (t) => /Contexto do meu app:/i.test(t) },
@@ -86,23 +115,12 @@ export const PromptReviewDialog = ({
 
 
   const [drafts, setDrafts] = useState<{ lovable: string; agent: string }>(originals);
-  const [improving, setImproving] = useState(false);
-  const [improveError, setImproveError] = useState<string | null>(null);
-  const [improvement, setImprovement] = useState<Improvement | null>(null);
 
   useEffect(() => {
     if (open) {
       setDrafts(originals);
-      setImprovement(null);
-      setImproveError(null);
     }
   }, [open, originals]);
-
-  // Clear improvement panel when switching tabs (it belongs to the previous text)
-  useEffect(() => {
-    setImprovement(null);
-    setImproveError(null);
-  }, [mode]);
 
   if (!open) return null;
 
@@ -116,7 +134,7 @@ export const PromptReviewDialog = ({
       toast.success("Prompt copiado. Revise no Lovable antes de executar.");
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
 
@@ -125,13 +143,12 @@ export const PromptReviewDialog = ({
       await navigator.clipboard.writeText(text);
       toast.success("Prompt copiado para o Agente Arquiteto.");
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
 
   const restore = () => {
     setDrafts((d) => ({ ...d, [mode]: originals[mode] }));
-    setImprovement(null);
     toast("Versão original restaurada.");
   };
 
@@ -142,87 +159,17 @@ export const PromptReviewDialog = ({
     el.select();
   };
 
-  const handleImprove = async () => {
-    if (improving) return;
-    setImproveError(null);
-    setImprovement(null);
-
-    if (!text || text.trim().length < 50) {
-      setImproveError("Escreva pelo menos 50 caracteres para a IA conseguir melhorar.");
-      return;
-    }
-    if (text.length > 12000) {
-      setImproveError(
-        `Prompt muito longo (${text.length} caracteres). Reduza para no máximo 12000 antes de melhorar.`,
-      );
-      return;
-    }
-
-    setImproving(true);
+  const handleImproveWithAgent = async () => {
+    const improvePrompt = buildAgentImprovePrompt(text);
     try {
-      const { data, error } = await supabase.functions.invoke("improve-prompt", {
-        body: {
-          prompt: text,
-          mode,
-          projectContext: context,
-          moduleTitle: stepName,
-          moduleObjective: stepObjective ?? "",
-          commandText: command ?? "",
-        },
-      });
-      if (error) {
-        // supabase wraps non-2xx; try to surface server message
-        const ctx = (error as { context?: Response }).context;
-        let msg: string | null = null;
-        if (ctx && typeof ctx === "object" && "json" in ctx) {
-          try {
-            const body = await (ctx as Response).clone().json();
-            if (body?.error) msg = body.error as string;
-          } catch {
-            /* ignore */
-          }
-        }
-        setImproveError(msg ?? "Não foi possível melhorar automaticamente agora.");
-        return;
-      }
-      if (!data?.improvedPrompt) {
-        setImproveError("Não foi possível melhorar automaticamente agora.");
-        return;
-      }
-      setImprovement({
-        improvedPrompt: String(data.improvedPrompt),
-        improvements: Array.isArray(data.improvements) ? data.improvements : [],
-        warnings: Array.isArray(data.warnings) ? data.warnings : [],
-      });
-      toast.success("Prompt melhorado. Revise a versão antes de aplicar.");
-    } catch (e) {
-      setImproveError(e instanceof Error ? e.message : "Não foi possível melhorar automaticamente agora.");
-    } finally {
-      setImproving(false);
-    }
-  };
-
-  const applyImprovement = () => {
-    if (!improvement) return;
-    setText(improvement.improvedPrompt);
-    setImprovement(null);
-    toast.success("Versão melhorada aplicada na aba ativa.");
-  };
-
-  const discardImprovement = () => {
-    setImprovement(null);
-    toast("Sua versão foi mantida.");
-  };
-
-  const copyImprovement = async () => {
-    if (!improvement) return;
-    try {
-      await navigator.clipboard.writeText(improvement.improvedPrompt);
-      toast.success("Versão melhorada copiada.");
+      await navigator.clipboard.writeText(improvePrompt);
+      toast.success("Prompt copiado para melhorar com o Agente.");
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
+
+
 
   return (
     <div
@@ -399,27 +346,22 @@ export const PromptReviewDialog = ({
               </button>
               <button
                 type="button"
-                onClick={handleImprove}
-                disabled={improving}
-                className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25 disabled:opacity-60"
-                title="Melhorar com IA"
+                onClick={handleImproveWithAgent}
+                className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25"
+                title="Sem custo de API nesta fase: você melhora com o Agente Arquiteto."
               >
-                {improving ? (
-                  <>
-                    <Loader2 size={12} className="animate-spin" /> Melhorando prompt…
-                  </>
-                ) : (
-                  <>
-                    <Sparkles size={12} /> Melhorar com IA
-                  </>
-                )}
+                <Sparkles size={12} /> Melhorar com o Agente
               </button>
             </div>
           </div>
 
           <p className="text-[11px] text-muted-foreground/90">
-            Use <strong className="text-violet-200">Melhorar com IA</strong> para lapidar o prompt antes de gastar créditos no Lovable.
+            Use <strong className="text-violet-200">Melhorar com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
           </p>
+          <p className="text-[11px] text-muted-foreground/70">
+            Sem custo de API nesta fase: você melhora com o Agente Arquiteto.
+          </p>
+
 
           <textarea
             id="prompt-final-textarea"
@@ -431,107 +373,8 @@ export const PromptReviewDialog = ({
             className="w-full min-h-[300px] rounded-xl border border-accent/40 focus:border-accent bg-black/40 p-4 text-xs md:text-[13px] font-mono text-foreground/95 leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent/40 resize-y caret-accent"
           />
 
-          {/* Painel: erro / fallback */}
-          {improveError && (
-            <div className="rounded-lg border border-red-400/40 bg-red-500/10 p-3 space-y-2">
-              <p className="text-[13px] text-red-100 font-medium">
-                {improveError}
-              </p>
-              <p className="text-[11px] text-red-100/80">
-                Use o Agente Arquiteto para revisar este prompt.
-              </p>
-              <div className="flex flex-wrap gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={copyAgent}
-                  className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
-                >
-                  <Bot size={12} /> Copiar para o Agente
-                </button>
-                <a
-                  href={APP_CONFIG.GPT_AGENT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5"
-                >
-                  <ExternalLink size={12} /> Abrir Agente
-                </a>
-              </div>
-            </div>
-          )}
 
-          {/* Painel: versão melhorada */}
-          {improvement && (
-            <div className="rounded-xl border border-violet-400/40 bg-violet-500/10 p-4 space-y-3">
-              <div className="flex items-center gap-2">
-                <Sparkles size={14} className="text-violet-200" />
-                <p className="text-sm font-heading font-semibold text-violet-100">
-                  Versão melhorada
-                </p>
-              </div>
-              <p className="text-[11px] text-violet-100/80">
-                Revise antes de copiar. Um prompt melhor reduz retrabalho no Lovable.
-              </p>
-              <textarea
-                value={improvement.improvedPrompt}
-                readOnly
-                className="w-full min-h-[200px] rounded-lg border border-violet-400/30 bg-black/40 p-3 text-xs md:text-[13px] font-mono text-foreground/95 leading-relaxed resize-y"
-              />
-              {improvement.improvements.length > 0 && (
-                <div>
-                  <p className="text-[11px] uppercase tracking-wider text-violet-100/90 mb-1">
-                    O que foi melhorado
-                  </p>
-                  <ul className="space-y-1">
-                    {improvement.improvements.map((it, i) => (
-                      <li key={i} className="text-[12px] text-foreground/90 flex items-start gap-2">
-                        <CheckCircle2 size={12} className="text-emerald-300 shrink-0 mt-0.5" />
-                        <span>{it}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {improvement.warnings.length > 0 && (
-                <div>
-                  <p className="text-[11px] uppercase tracking-wider text-amber-200 mb-1">
-                    Atenções
-                  </p>
-                  <ul className="space-y-1">
-                    {improvement.warnings.map((it, i) => (
-                      <li key={i} className="text-[12px] text-foreground/90 flex items-start gap-2">
-                        <AlertTriangle size={12} className="text-amber-300 shrink-0 mt-0.5" />
-                        <span>{it}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <div className="flex flex-wrap gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={applyImprovement}
-                  className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-md border border-violet-300/50 bg-violet-500/30 text-white hover:bg-violet-500/40 font-medium"
-                >
-                  <Check size={13} /> Aplicar melhoria
-                </button>
-                <button
-                  type="button"
-                  onClick={discardImprovement}
-                  className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-md border border-white/15 hover:bg-white/5 text-foreground/90"
-                >
-                  Manter minha versão
-                </button>
-                <button
-                  type="button"
-                  onClick={copyImprovement}
-                  className="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-md border border-white/15 hover:bg-white/5 text-foreground/90"
-                >
-                  <Copy size={13} /> Copiar versão melhorada
-                </button>
-              </div>
-            </div>
-          )}
+
 
           {/* Checklist de qualidade */}
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
@@ -566,7 +409,7 @@ export const PromptReviewDialog = ({
             <ol className="list-decimal pl-5 space-y-0.5">
               <li>Revise o texto.</li>
               <li>Edite o que precisar.</li>
-              <li>Opcional: clique em Melhorar com IA para lapidar antes de copiar.</li>
+              <li>Opcional: clique em Melhorar com o Agente para lapidar antes de copiar.</li>
               <li>Escolha Lovable para executar ou Agente para melhorar.</li>
               <li>
                 Depois de aplicar, volte ao módulo e use “Revisar esta etapa
