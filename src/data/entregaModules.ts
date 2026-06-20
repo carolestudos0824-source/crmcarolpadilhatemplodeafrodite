@@ -3571,6 +3571,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     doNow: "Use o gerador rápido para criar 3 criativos diferentes no formato escolhido.",
     advanceWhen: "Avance quando você tiver 3 criativos prontos para testar.",
   },
+  metricas: {
+    doNow: "Defina a ação principal, escolha poucas métricas, mapeie o funil e identifique pontos de abandono.",
+    advanceWhen: "Avance quando você souber quais números vai acompanhar e como eles vão orientar as próximas melhorias.",
+  },
   validacao: {
     doNow: "Liste 10 pessoas reais que podem testar e copie a mensagem de convite.",
     advanceWhen: "Avance quando pelo menos 5 pessoas testarem e responderem o feedback.",
