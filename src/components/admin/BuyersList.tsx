@@ -46,7 +46,7 @@ export function BuyersList({
   const load = async () => {
     setLoading(true);
     setError(null);
-    const { data, error } = await withTimeout(
+    const { data, error } = await withTimeout<any>(
       (supabase as any).rpc("admin_list_buyers", { _limit: 50 }),
       10000,
       "compradores",
