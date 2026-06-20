@@ -24,7 +24,9 @@ const STATUS_LABEL: Record<AppProjectStatus, string> = {
   revisando: "Revisando",
   publicado: "Publicado",
   vendendo: "Vendendo",
+  escalando: "Escalando",
   pausado: "Pausado",
+  arquivado: "Arquivado",
 };
 
 function fmtDate(iso: string) {
