@@ -308,17 +308,36 @@ export const CommandCard = ({
                     {commandText}
                   </pre>
                 </div>
-                <div className="mt-2 flex flex-col items-end gap-1">
-                  <button
-                    onClick={() =>
-                      copyText(wrapLovable(commandText), "main", "Comando copiado.")
-                    }
-                    className="btn-primary text-sm min-h-[44px]"
-                    type="button"
-                  >
-                    {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                    {copiedKey === "main" ? "Copiado" : "Copiar comando"}
-                  </button>
+                <div className="mt-2 flex flex-col items-end gap-2">
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setReviewOpen(true)}
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+                    >
+                      <FileText size={14} /> Revisar prompt antes de copiar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.")
+                      }
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                    >
+                      {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
+                      Revisar com o Agente
+                    </button>
+                    <button
+                      onClick={() =>
+                        copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
+                      }
+                      className="btn-primary text-sm min-h-[44px]"
+                      type="button"
+                    >
+                      {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
+                      Copiar para o Lovable
+                    </button>
+                  </div>
                   <span className="text-[10px] text-muted-foreground/80">
                     Cole no projeto do seu app no Lovable.
                   </span>
