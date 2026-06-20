@@ -50,6 +50,7 @@ export type ModuleId =
   | "venda"
   | "monetizacao"
   | "checkout"
+  | "legal"
   | "publicar"
   | "teste"
   | "seo"
