@@ -3,37 +3,47 @@ import { toast } from "sonner";
 import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
-const SECURITY_AGENT_PROMPT = `Estou na etapa Segurança do App da Fábrica de Apps com IA.
+const SECURITY_AGENT_PROMPT = `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
 
-Quero que você me ajude a revisar se meu app está mais seguro antes de avançar.
+Estou na etapa: Segurança do App.
 
-Analise comigo:
+Revise a segurança do app que estou criando no Lovable, não a plataforma Fábrica.
 
-1. Quais rotas são públicas e quais são restritas.
-2. O fluxo de login e como ele protege a área paga.
+Me ajude a conferir:
+
+1. Quais rotas do meu app são públicas e quais são restritas.
+2. Como o login protege a área paga do meu projeto.
 3. Se usuário sem login consegue chegar em conteúdo restrito.
 4. Se usuário logado sem acesso consegue ver conteúdo premium.
-5. Se o admin está protegido contra usuário comum.
+5. Se o admin do meu app está protegido contra usuário comum.
 6. Como os dados de usuário estão sendo protegidos.
 7. Se existe risco de chave secreta exposta no frontend.
-8. Se as regras de banco/RLS reduzem risco de acesso indevido.
+8. Se as regras de banco/RLS/policies reduzem risco de acesso indevido.
 9. Se existe risco de alguém burlar o acesso pago.
-10. O que eu preciso testar antes de publicar.
+10. O que eu preciso testar antes de publicar para deixar o app mais seguro e reduzir risco.
 
-Não avance para outro módulo ainda. Primeiro me ajude a validar esta etapa.`;
+Use linguagem realista: "mais seguro", "reduzir risco", "proteger acesso", "testar antes de publicar". Não prometa app 100% seguro.
 
-const SECURITY_LOVABLE_PROMPT = `Revise a etapa Segurança do App da Fábrica de Apps com IA no projeto atual.
+Não avance para outra etapa ainda. Primeiro me ajude a validar a segurança deste app.`;
 
-Verifique no app:
+const SECURITY_LOVABLE_PROMPT = `Estou usando a Fábrica de Apps com IA como guia, mas o projeto que deve ser revisado é este app atual que estou criando no Lovable.
+
+Etapa atual: Segurança do App.
+
+Revise a segurança deste projeto atual.
+
+Verifique:
 
 1. Se todas as rotas restritas estão realmente protegidas.
-2. Se usuário sem acesso não consegue ver conteúdo premium.
-3. Se o admin continua acessível apenas por admin.
-4. Se não existe chave secreta exposta no frontend.
-5. Se não foi criada nenhuma policy/grant permissivo sem necessidade.
-6. Se o fluxo de login, acesso e admin continua íntegro.
+2. Se usuário sem login não consegue chegar em conteúdo restrito.
+3. Se usuário logado sem acesso não consegue ver conteúdo premium.
+4. Se o admin continua acessível apenas por admin.
+5. Se não existe chave secreta exposta no frontend.
+6. Se não foi criada nenhuma policy/grant permissivo sem necessidade.
+7. Se o fluxo de login, acesso e admin continua íntegro.
+8. O que precisa testar antes de publicar.
 
-Não faça alterações automaticamente sem explicar antes.
+Não altere nada automaticamente sem explicar antes.
 
 Entregue um relatório objetivo com:
 
@@ -41,46 +51,53 @@ Entregue um relatório objetivo com:
 * o que está faltando
 * o que precisa testar
 * riscos encontrados
-* próximo comando recomendado, se necessário.
+* próximo comando recomendado, se necessário
 
-Use linguagem realista: "mais seguro", "reduz risco", "protege acesso", "testar antes de publicar". Não prometa app 100% seguro.`;
+Use linguagem realista: "mais seguro", "reduzir risco", "proteger acesso", "testar antes de publicar". Não prometa app 100% seguro.`;
 
-const agentPrompt = (moduleName: string) => `Estou na etapa ${moduleName} da Fábrica de Apps com IA.
+const agentPrompt = (moduleName: string) => `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
 
-Quero que você me ajude a revisar se tudo que este módulo pediu foi realmente aplicado no meu app.
+Estou na etapa: ${moduleName}.
+
+Quero revisar o app que estou criando, não a plataforma Fábrica de Apps.
+
+Me ajude a conferir se tudo que esta etapa pediu foi realmente aplicado no meu projeto.
 
 Analise comigo:
 
-1. O que este módulo deveria ter construído ou ajustado.
-2. O que preciso conferir visualmente no app.
-3. O que preciso testar como visitante, usuário comum, usuário com acesso ou admin, se fizer sentido.
-4. O que pode estar incompleto ou mal aplicado.
+1. O que esta etapa deveria ter construído, organizado ou ajustado no meu app.
+2. O que preciso conferir visualmente no projeto.
+3. O que preciso testar como visitante, usuário comum, usuário com acesso, cliente ou admin, se fizer sentido.
+4. O que pode estar incompleto, confuso, quebrado ou mal aplicado.
 5. Quais sinais mostram que esta etapa está pronta.
 6. Qual próximo comando devo enviar ao Lovable se algo estiver faltando.
 
-Não avance para outro módulo ainda. Primeiro me ajude a validar esta etapa.`;
+Não avance para outra etapa ainda. Primeiro me ajude a validar esta etapa do meu app.`;
 
-const lovablePrompt = (moduleName: string) => `Revise a etapa ${moduleName} da Fábrica de Apps com IA no app atual.
+const lovablePrompt = (moduleName: string) => `Estou usando a Fábrica de Apps com IA como guia, mas o projeto que deve ser revisado é este app atual que estou criando no Lovable.
 
-Verifique se tudo que foi solicitado/construído neste módulo foi realmente aplicado no projeto.
+Etapa atual: ${moduleName}.
+
+Revise se tudo que esta etapa pediu foi realmente aplicado neste projeto.
 
 Analise:
 
-1. O que esta etapa deveria ter implementado.
-2. Onde isso aparece no app.
-3. Se existe algo incompleto, quebrado, duplicado ou confuso.
+1. O que esta etapa deveria ter implementado, organizado ou ajustado.
+2. Onde isso aparece no app atual.
+3. Se existe algo incompleto, quebrado, duplicado, confuso ou desalinhado.
 4. Se a experiência funciona no desktop e no mobile.
-5. Se há risco de quebrar login, banco, acesso, admin, checkout ou progresso.
+5. Se há risco de quebrar login, banco, acesso, admin, checkout, entrega ou progresso, quando fizer sentido.
 6. O que ainda precisa ser corrigido antes de avançar.
 
-Não faça alterações automaticamente sem explicar antes.
+Não altere nada automaticamente sem explicar antes.
+
 Entregue um relatório objetivo com:
 
 * o que está correto
 * o que está faltando
 * o que precisa testar
 * riscos encontrados
-* próximo comando recomendado, se necessário.`;
+* próximo comando recomendado, se necessário`;
 
 export function ModuleReviewCard({
   moduleName,
@@ -139,8 +156,8 @@ export function ModuleReviewCard({
             Revisar esta etapa no app
           </h3>
           <p className="text-xs md:text-sm text-muted-foreground mt-1">
-            Antes de avançar, peça para a IA conferir se tudo que foi construído neste
-            módulo realmente aparece e funciona no aplicativo.
+            Antes de avançar, peça para a IA conferir se tudo que esta etapa pediu foi
+            realmente aplicado no app que você está criando no Lovable.
           </p>
         </div>
       </div>
