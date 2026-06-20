@@ -87,14 +87,14 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon,
 };
 
-// Módulos contabilizados no progresso global. "planejar" e "mvp" foram adicionados
-// em rodadas recentes sem entrar no cálculo global (serão incorporados em rodada
-// futura, quando a estrutura estiver validada).
+// Módulos contabilizados no progresso global. "planejar", "mvp" e "telas" foram
+// adicionados em rodadas recentes sem entrar no cálculo global (serão
+// incorporados em rodada futura, quando a estrutura estiver validada).
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
-  (id) => id !== "planejar" && id !== "mvp",
+  (id) => id !== "planejar" && id !== "mvp" && id !== "telas",
 );
 
 
