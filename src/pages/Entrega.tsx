@@ -34,6 +34,7 @@ import {
   BookOpen,
   Map as MapIcon,
   Globe,
+  Scale,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
@@ -50,6 +51,7 @@ import { MvpArquiteturaModule } from "@/components/entrega/MvpArquiteturaModule"
 import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
 import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
 import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
+import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -91,17 +93,17 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale,
 };
 
 // Módulos contabilizados no progresso global. "planejar", "mvp", "telas",
-// "publicar" e "teste" foram adicionados em rodadas recentes sem entrar no
-// cálculo global (serão incorporados em rodada futura, quando a estrutura
-// estiver validada).
+// "legal", "publicar" e "teste" foram adicionados em rodadas recentes sem
+// entrar no cálculo global (serão incorporados em rodada futura, quando a
+// estrutura estiver validada).
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
   (id) =>
     id !== "planejar" && id !== "mvp" && id !== "telas" &&
-    id !== "publicar" && id !== "teste",
+    id !== "legal" && id !== "publicar" && id !== "teste",
 );
 
 
@@ -126,6 +128,7 @@ function EntregaInner() {
     "pagina-de-venda": "venda",
     "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
+    "legal-confianca": "legal",
     "publicar-dominio": "publicar",
     "teste-final": "teste",
     "seo-geo": "seo",
@@ -1604,6 +1607,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
   if (active === "teste") {
     return <TesteFinalModule />;
+  }
+  if (active === "legal") {
+    return <LegalConfiancaModule />;
   }
   if (active === "comece") {
     const valueCards = [
