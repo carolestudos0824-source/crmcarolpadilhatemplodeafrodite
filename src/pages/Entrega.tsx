@@ -35,6 +35,7 @@ import {
   Map as MapIcon,
   Globe,
   Scale,
+  BarChart3,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
