@@ -241,7 +241,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
   );
 }
 
-export function PlanejarModule() {
+export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
 
   const copyAgentHelp = async () => {
