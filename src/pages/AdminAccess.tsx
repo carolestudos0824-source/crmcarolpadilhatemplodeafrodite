@@ -46,26 +46,34 @@ const PENDENCIAS_ITEMS = [
   { id: "mobile", label: "Teste mobile realizado" },
 ];
 
+const LOGIN_URL = "/login";
+const ENTREGA_URL = "/entrega";
+
 const SUPPORT_MESSAGES = [
   {
     title: "Acesso liberado",
     text:
-      "Seu acesso à Fábrica de Apps com IA foi liberado. Entre em Minha área usando o e-mail do seu cadastro e comece pelo módulo Comece aqui.",
+      "Seu acesso à Fábrica de Apps com IA foi liberado. Entre com o mesmo e-mail usado na compra e acesse sua área.",
   },
   {
-    title: "Criar conta antes de liberar",
+    title: "Use o mesmo e-mail",
     text:
-      "Para liberar seu acesso, primeiro crie sua conta usando o mesmo e-mail da compra. Depois me avise para eu confirmar a liberação.",
+      "Verifique se você entrou com o mesmo e-mail usado na compra. Se entrou com outro e-mail, o acesso pode não aparecer.",
   },
   {
-    title: "Pagamento ainda não confirmado",
+    title: "Acesso ainda não localizado",
     text:
-      "Ainda não localizei a confirmação do pagamento. Assim que confirmar, libero seu acesso à área interna.",
+      "Não localizei sua liberação neste e-mail. Me envie o comprovante ou o e-mail usado na compra para eu verificar.",
+  },
+  {
+    title: "Boas-vindas",
+    text:
+      "Bem-vindo à Fábrica de Apps com IA. Comece pelo primeiro módulo e siga a jornada em ordem.",
   },
 ];
 
 const BUYER_HANDOFF_MESSAGE =
-  "Seu acesso à Fábrica de Apps com IA foi liberado. Entre em Minha área usando o e-mail do cadastro e comece pelo módulo Comece aqui.";
+  "Seu acesso à Fábrica de Apps com IA foi liberado. Entre com o mesmo e-mail usado na compra e acesse sua área.";
 
 type LookupRow = {
   user_id: string;
