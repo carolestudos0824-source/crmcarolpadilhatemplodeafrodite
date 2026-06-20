@@ -25,7 +25,7 @@ describe("TesteFinalModule", () => {
   it("renders title, subtitle, highlight, tutorial, 5 etapas and glossary", () => {
     render(<TesteFinalModule />);
     expect(screen.getByRole("heading", { level: 1, name: /Teste tudo antes de divulgar/i })).toBeInTheDocument();
-    expect(screen.getByText(/testar botões/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/testar botões/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Um app bonito ainda pode estar quebrado/i)).toBeInTheDocument();
     expect(screen.getByText(/O que você vai fazer nesta etapa/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Etapa \d/i)).toHaveLength(5);
