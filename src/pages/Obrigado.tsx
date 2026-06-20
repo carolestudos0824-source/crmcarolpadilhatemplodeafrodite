@@ -56,7 +56,7 @@ export default function Obrigado() {
           Se você finalizou o pagamento, aguarde a liberação do seu acesso na área do aluno. Em caso de dúvida, fale com o suporte.
         </p>
         <p className="text-sm text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed mb-8">
-          O acesso à área restrita é liberado manualmente após a confirmação do pagamento. Use o mesmo e-mail informado na compra para entrar.
+          Para acessar o programa, entre com o mesmo e-mail usado na compra. Você pode usar o Google ou e-mail e senha. O acesso é liberado manualmente após a confirmação do pagamento.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button className="btn-primary" onClick={() => navigate("/login")}>
