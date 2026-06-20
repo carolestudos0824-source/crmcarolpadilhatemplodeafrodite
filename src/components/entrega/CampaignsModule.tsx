@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { APP_CONFIG } from "@/config/appConfig";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 
 type Checklist = Record<string, boolean>;
 type SetChecklist = (v: Checklist | ((p: Checklist) => Checklist)) => void;
