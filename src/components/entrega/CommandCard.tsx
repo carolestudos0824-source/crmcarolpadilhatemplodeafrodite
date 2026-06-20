@@ -479,5 +479,13 @@ export const CommandCard = ({
         </div>
       )}
     </GlassCard>
+    <PromptReviewDialog
+      open={reviewOpen}
+      onClose={() => setReviewOpen(false)}
+      stepName={title}
+      stepObjective={objective ?? description}
+      command={commandText}
+    />
+    </>
   );
 };
