@@ -315,7 +315,7 @@ export const CommandCard = ({
                   </div>
                   <div className="mt-2 flex justify-end">
                     <button
-                      onClick={() => copyText(correctionPrompt, "fix", "Prompt de correção copiado.")}
+                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Prompt de correção copiado. Cole no Lovable do seu app.")}
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >
