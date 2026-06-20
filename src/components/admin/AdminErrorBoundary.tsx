@@ -4,6 +4,7 @@ import { AlertTriangle, RefreshCw } from "lucide-react";
 type Props = {
   /** Identifier used to reset the boundary when the active section changes. */
   resetKey?: string | number;
+  variant?: "section" | "route";
   children: ReactNode;
 };
 
@@ -42,6 +43,15 @@ export class AdminErrorBoundary extends Component<Props, State> {
   render() {
     if (!this.state.hasError) return this.props.children;
 
+    if (this.props.variant === "route") {
+      return (
+        <AdminRouteErrorFallback
+          error={this.state.error}
+          onRetry={this.retry}
+        />
+      );
+    }
+
     return (
       <div className="glass-strong p-6">
         <div className="flex items-start gap-3">
@@ -71,4 +81,52 @@ export class AdminErrorBoundary extends Component<Props, State> {
       </div>
     );
   }
+}
+
+export function AdminRouteErrorFallback({
+  error,
+  onRetry,
+}: {
+  error?: Error | null;
+  onRetry?: () => void;
+}) {
+  const showDebug = import.meta.env.DEV || window.location.hostname.includes("lovable.app");
+
+  return (
+    <div className="min-h-screen bg-[#05070D] text-foreground flex items-center justify-center px-4">
+      <div className="max-w-lg w-full glass-strong p-8">
+        <AlertTriangle className="text-amber-300 mb-4" size={30} />
+        <h1 className="text-xl font-heading font-bold mb-2">
+          Não foi possível carregar o painel admin
+        </h1>
+        <p className="text-sm text-muted-foreground mb-5">
+          O painel encontrou um erro ao carregar esta seção. Tente atualizar ou voltar para a Visão geral.
+        </p>
+        {showDebug && error?.message && (
+          <pre className="text-[11px] text-red-200/80 bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-5 whitespace-pre-wrap break-words">
+            {error.message}
+          </pre>
+        )}
+        <div className="flex flex-col sm:flex-row gap-2">
+          <button type="button" onClick={onRetry ?? (() => window.location.reload())} className="btn-primary">
+            <RefreshCw size={14} /> Tentar novamente
+          </button>
+          <button
+            type="button"
+            onClick={() => window.location.assign("/admin/acessos?section=overview")}
+            className="btn-ghost border border-white/15"
+          >
+            Ir para Visão geral
+          </button>
+          <button
+            type="button"
+            onClick={() => window.location.assign("/entrega")}
+            className="btn-ghost border border-white/15"
+          >
+            Minha área
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
