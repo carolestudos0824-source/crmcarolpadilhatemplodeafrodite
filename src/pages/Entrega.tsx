@@ -157,6 +157,7 @@ function EntregaInner() {
     "validacao": "validacao",
     "melhorias-versoes": "melhorias",
     "checklist": "checklist",
+    "painel-prontidao": "checklist",
     "erros-comuns": "erros",
     "ativar-acesso": "ativar",
   };
