@@ -14,10 +14,12 @@ import {
   Menu,
   X,
   ShieldAlert,
+  ShoppingCart,
 } from "lucide-react";
 
 export type AdminSectionKey =
   | "overview"
+  | "vendas"
   | "acessos"
   | "compradores"
   | "codigos"
@@ -34,6 +36,7 @@ export const ADMIN_SECTIONS: {
   subtitle: string;
 }[] = [
   { key: "overview", label: "Visão geral", icon: LayoutGrid, title: "Visão geral", subtitle: "Status operacional do painel admin." },
+  { key: "vendas", label: "Vendas", icon: ShoppingCart, title: "Vendas manuais", subtitle: "Registre vendas confirmadas e libere acesso enquanto o checkout automático não está conectado." },
   { key: "acessos", label: "Acessos", icon: ShieldCheck, title: "Painel Admin de Acessos", subtitle: "Libere, consulte ou revogue o acesso de compradores." },
   { key: "compradores", label: "Compradores", icon: Users, title: "Compradores", subtitle: "Busca operacional por e-mail do comprador." },
   { key: "codigos", label: "Códigos premium", icon: KeyRound, title: "Códigos premium", subtitle: "Crie, consulte e acompanhe códigos de acesso." },

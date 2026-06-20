@@ -29,6 +29,7 @@ import { AccessLogs } from "@/components/admin/AccessLogs";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
 import { AdminErrorBoundary, AdminRouteErrorFallback } from "@/components/admin/AdminErrorBoundary";
 import { SupportInbox } from "@/components/admin/SupportInbox";
+import { SalesPanel } from "@/components/admin/SalesPanel";
 import { withTimeout } from "@/lib/promiseTimeout";
 
 const inputCls =
@@ -313,6 +314,7 @@ function AdminAccessInner() {
             }}
           />
         )}
+        {section === "vendas" && <SalesPanel />}
         {section === "codigos" && <GiftCodesPanel />}
         {section === "pendencias" && <PendenciasSection />}
         {section === "mensagens" && <MensagensSection />}
