@@ -677,6 +677,12 @@ function EntregaInner() {
             </div>
           )}
 
+          <JourneyStartGuide
+            active={active}
+            goTo={goTo}
+            effectiveModuleDone={effectiveModuleDone}
+          />
+
           <TwoPathsExplainer />
 
 
