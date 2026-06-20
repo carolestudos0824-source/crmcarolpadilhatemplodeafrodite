@@ -46,26 +46,34 @@ const PENDENCIAS_ITEMS = [
   { id: "mobile", label: "Teste mobile realizado" },
 ];
 
+const LOGIN_URL = "/login";
+const ENTREGA_URL = "/entrega";
+
 const SUPPORT_MESSAGES = [
   {
     title: "Acesso liberado",
     text:
-      "Seu acesso à Fábrica de Apps com IA foi liberado. Entre em Minha área usando o e-mail do seu cadastro e comece pelo módulo Comece aqui.",
+      "Seu acesso à Fábrica de Apps com IA foi liberado. Entre com o mesmo e-mail usado na compra e acesse sua área.",
   },
   {
-    title: "Criar conta antes de liberar",
+    title: "Use o mesmo e-mail",
     text:
-      "Para liberar seu acesso, primeiro crie sua conta usando o mesmo e-mail da compra. Depois me avise para eu confirmar a liberação.",
+      "Verifique se você entrou com o mesmo e-mail usado na compra. Se entrou com outro e-mail, o acesso pode não aparecer.",
   },
   {
-    title: "Pagamento ainda não confirmado",
+    title: "Acesso ainda não localizado",
     text:
-      "Ainda não localizei a confirmação do pagamento. Assim que confirmar, libero seu acesso à área interna.",
+      "Não localizei sua liberação neste e-mail. Me envie o comprovante ou o e-mail usado na compra para eu verificar.",
+  },
+  {
+    title: "Boas-vindas",
+    text:
+      "Bem-vindo à Fábrica de Apps com IA. Comece pelo primeiro módulo e siga a jornada em ordem.",
   },
 ];
 
 const BUYER_HANDOFF_MESSAGE =
-  "Seu acesso à Fábrica de Apps com IA foi liberado. Entre em Minha área usando o e-mail do cadastro e comece pelo módulo Comece aqui.";
+  "Seu acesso à Fábrica de Apps com IA foi liberado. Entre com o mesmo e-mail usado na compra e acesse sua área.";
 
 type LookupRow = {
   user_id: string;
@@ -331,61 +339,139 @@ function OverviewSection({
   selfHasAccess: boolean | null;
   onGoToAcessos: () => void;
 }) {
+  const [metrics, setMetrics] = useState<{
+    loading: boolean;
+    buyersWithAccess: number | null;
+    totalUsers: number | null;
+    giftRedemptions: number | null;
+    supportMessages: number | null;
+    bySource: { manual: number; gift: number; other: number };
+  }>({
+    loading: true,
+    buyersWithAccess: null,
+    totalUsers: null,
+    giftRedemptions: null,
+    supportMessages: null,
+    bySource: { manual: 0, gift: 0, other: 0 },
+  });
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const [buyersRes, giftsRes, supportRes] = await Promise.all([
+        (supabase as any).rpc("admin_list_buyers", { _limit: 200 }),
+        supabase.from("gift_redemptions").select("*", { count: "exact", head: true }),
+        supabase.from("support_messages").select("*", { count: "exact", head: true }),
+      ]);
+      if (!mounted) return;
+      const rows = (buyersRes.data as Buyer[] | null) ?? [];
+      const active = rows.filter((r) => r.has_access);
+      const bySource = { manual: 0, gift: 0, other: 0 };
+      for (const r of active) {
+        const s = (r.source ?? "").toLowerCase();
+        if (s === "manual") bySource.manual++;
+        else if (s === "gift") bySource.gift++;
+        else bySource.other++;
+      }
+      setMetrics({
+        loading: false,
+        buyersWithAccess: active.length,
+        totalUsers: rows.length,
+        giftRedemptions: giftsRes.count ?? null,
+        supportMessages: supportRes.count ?? null,
+        bySource,
+      });
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const checkoutPending = !isValidUrl(APP_CONFIG.CHECKOUT_FABRICA_URL);
+  const fmt = (n: number | null) => (n === null ? "—" : String(n));
+
   return (
     <div className="space-y-4">
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <span>
+          Vendas automáticas ainda não conectadas. Por enquanto, compradores confirmados devem ser registrados/liberados manualmente.
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatusCard
+          icon={<UserCheck size={16} />}
+          title="Vendas confirmadas"
+          badge={metrics.loading ? "…" : fmt(metrics.buyersWithAccess)}
+          tone="ok"
+          text="Baseado nos acessos liberados manualmente."
+        />
+        <StatusCard
+          icon={<CreditCard size={16} />}
+          title="Receita estimada"
+          badge="—"
+          tone="muted"
+          text="Indisponível até conectar checkout real."
+        />
+        <StatusCard
           icon={<ShieldCheck size={16} />}
-          title="Acesso manual"
-          badge="Ativo"
+          title="Acessos ativos"
+          badge={metrics.loading ? "…" : fmt(metrics.buyersWithAccess)}
           tone="ok"
-          text="Admin confirma pagamento e libera acesso manualmente."
+          text={`Manual: ${metrics.bySource.manual} · Código: ${metrics.bySource.gift} · Outros: ${metrics.bySource.other}`}
         />
         <StatusCard
-          icon={<UserCheck size={16} />}
-          title="Admin logado"
-          badge={adminEmail ? "OK" : "—"}
-          tone={adminEmail ? "ok" : "muted"}
-          text={adminEmail ?? "Sessão admin não detectada."}
+          icon={<AlertTriangle size={16} />}
+          title="Pendentes de liberação"
+          badge="—"
+          tone="muted"
+          text="Sem fila automática até conectar checkout/webhook."
         />
         <StatusCard
-          icon={<Search size={16} />}
-          title="Busca por comprador"
-          badge="Disponível"
+          icon={<Bot size={16} />}
+          title="Códigos premium usados"
+          badge={metrics.loading ? "…" : fmt(metrics.giftRedemptions)}
           tone="ok"
-          text="Localize compradores pelo e-mail usado na compra."
+          text="Total de resgates registrados."
         />
         <StatusCard
-          icon={<LayoutGrid size={16} />}
-          title="Fluxo de liberação"
-          badge="Pronto"
+          icon={<Mail size={16} />}
+          title="Mensagens recebidas"
+          badge={metrics.loading ? "…" : fmt(metrics.supportMessages)}
           tone="ok"
-          text="Liberação e revogação prontas para uso operacional."
+          text="Suporte recebido pela área interna."
         />
         <StatusCard
-          icon={<UserCheck size={16} />}
-          title="Meu acesso interno"
-          badge={selfHasAccess ? "Ativo" : "Sem acesso"}
-          tone={selfHasAccess ? "ok" : "warn"}
-          text={
-            selfHasAccess
-              ? "Você consegue entrar em Minha área para testes."
-              : "Libere o teste admin na seção Acessos."
-          }
+          icon={<CreditCard size={16} />}
+          title="Status do checkout"
+          badge={checkoutPending ? "Pendente" : "Configurado"}
+          tone={checkoutPending ? "warn" : "ok"}
+          text={checkoutPending ? "Checkout real pendente (URL ainda placeholder)." : "Checkout configurado com URL real."}
+        />
+        <StatusCard
+          icon={<ShieldCheck size={16} />}
+          title="Status do produto"
+          badge={checkoutPending ? "Manual" : "Operacional"}
+          tone={checkoutPending ? "warn" : "ok"}
+          text={checkoutPending ? "Pronto para venda após checkout real." : "Operacional."}
         />
       </div>
 
       <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-2">Próximos passos</h3>
+        <h3 className="font-heading font-semibold text-sm mb-2">Automação de pagamento</h3>
+        <p className="text-xs text-muted-foreground">
+          Webhook: não configurado. Controle manual até conectar checkout real. Automação de pagamento é uma etapa futura — nesta versão, todos os acessos são confirmados manualmente.
+        </p>
+      </div>
+
+      <div className="glass-strong p-5">
+        <h3 className="font-heading font-semibold text-sm mb-1">Admin logado</h3>
         <p className="text-xs text-muted-foreground mb-3">
-          Use a barra lateral para navegar entre as áreas admin. Para liberar um comprador agora, vá direto para Acessos.
+          {adminEmail ?? "Sessão admin não detectada."} · Acesso interno: {selfHasAccess ? "ativo" : "inativo"}
         </p>
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={onGoToAcessos}
-            className="btn-primary"
-          >
+          <button type="button" onClick={onGoToAcessos} className="btn-primary">
             <ShieldCheck size={14} /> Ir para Acessos
           </button>
           <Link to="/entrega" className="btn-ghost border border-white/15">
@@ -465,16 +551,19 @@ function AcessosSection({
 
       {/* Flow */}
       <div className="glass-strong p-5">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-2">
           <LayoutGrid size={16} className="text-accent" />
-          <h2 className="font-heading font-semibold text-sm">Fluxo de liberação manual</h2>
+          <h2 className="font-heading font-semibold text-sm">Liberar acesso manualmente</h2>
         </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Use esta área para liberar acesso após confirmar o pagamento no checkout externo ou para conceder acesso de teste/cortesia.
+        </p>
         <ol className="space-y-2 text-sm text-foreground/85">
           {[
             "Confirme o pagamento no gateway ou WhatsApp.",
             "Busque o comprador pelo e-mail usado na compra.",
             "Confira se o usuário foi encontrado.",
-            "Libere ou revogue acesso.",
+            "Libere ou revogue acesso (pago confirmado, teste interno, cortesia ou código premium).",
             "Oriente o comprador a entrar em Minha área.",
           ].map((s, i) => (
             <li key={i} className="flex items-start gap-3">
@@ -748,20 +837,32 @@ function PendenciasSection() {
 }
 
 function MensagensSection() {
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const loginLink = origin ? `${origin}${LOGIN_URL}` : LOGIN_URL;
+  const entregaLink = origin ? `${origin}${ENTREGA_URL}` : ENTREGA_URL;
+
   return (
     <div className="space-y-3">
+      <p className="text-xs text-muted-foreground">
+        Mensagens prontas para responder clientes. Use os botões para copiar o texto puro ou com link.
+      </p>
       {SUPPORT_MESSAGES.map((m) => (
         <div key={m.title} className="glass-strong p-5">
           <div className="flex items-start justify-between gap-3 mb-2">
             <h3 className="text-sm font-heading font-semibold text-foreground">{m.title}</h3>
-            <CopyButton text={m.text} label="Copiar mensagem" compact />
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{m.text}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3">{m.text}</p>
+          <div className="flex flex-wrap gap-2">
+            <CopyButton text={m.text} label="Copiar mensagem" compact />
+            <CopyButton text={`${m.text}\n\nLogin: ${loginLink}`} label="Copiar com link de login" compact />
+            <CopyButton text={`${m.text}\n\nMinha área: ${entregaLink}`} label="Copiar com link da área interna" compact />
+          </div>
         </div>
       ))}
     </div>
   );
 }
+
 
 function ConfigSection() {
   const checkoutOk = isValidUrl(APP_CONFIG.CHECKOUT_FABRICA_URL);

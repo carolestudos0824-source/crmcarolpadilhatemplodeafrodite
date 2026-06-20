@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Loader2, RefreshCw, ShieldCheck, UserCheck, UserX, Eye, Search } from "lucide-react";
+import { Loader2, RefreshCw, ShieldCheck, UserCheck, UserX, Eye, Search, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -191,6 +191,23 @@ export function BuyersList({
                     title="Ver"
                   >
                     <Eye size={14} /> Ver
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!b.email}
+                    onClick={async () => {
+                      if (!b.email) return;
+                      try {
+                        await navigator.clipboard.writeText(b.email);
+                        toast.success("E-mail copiado.");
+                      } catch {
+                        toast.error("Não foi possível copiar.");
+                      }
+                    }}
+                    className="px-3 py-2 rounded-xl border border-white/15 hover:bg-white/5 text-xs inline-flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    title="Copiar e-mail"
+                  >
+                    <Copy size={14} /> Copiar
                   </button>
                   {b.has_access ? (
                     <button
