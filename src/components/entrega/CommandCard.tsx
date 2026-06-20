@@ -316,15 +316,18 @@ export const CommandCard = ({
                       {correctionPrompt}
                     </pre>
                   </div>
-                  <div className="mt-2 flex justify-end">
+                  <div className="mt-2 flex flex-col items-end gap-1">
                     <button
-                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Prompt de correção copiado. Cole no Lovable do seu app.")}
+                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Correção copiada.")}
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >
                       {copiedKey === "fix" ? <Check size={16} /> : <Copy size={16} />}
-                      {copiedKey === "fix" ? "Copiado" : "Copiar correção para o Lovable"}
+                      {copiedKey === "fix" ? "Copiado" : "Copiar correção"}
                     </button>
+                    <span className="text-[10px] text-muted-foreground/80">
+                      Use quando o Lovable não entregar o resultado esperado.
+                    </span>
                   </div>
                 </div>
               ) : (
