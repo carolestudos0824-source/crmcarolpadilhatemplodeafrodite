@@ -339,61 +339,139 @@ function OverviewSection({
   selfHasAccess: boolean | null;
   onGoToAcessos: () => void;
 }) {
+  const [metrics, setMetrics] = useState<{
+    loading: boolean;
+    buyersWithAccess: number | null;
+    totalUsers: number | null;
+    giftRedemptions: number | null;
+    supportMessages: number | null;
+    bySource: { manual: number; gift: number; other: number };
+  }>({
+    loading: true,
+    buyersWithAccess: null,
+    totalUsers: null,
+    giftRedemptions: null,
+    supportMessages: null,
+    bySource: { manual: 0, gift: 0, other: 0 },
+  });
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const [buyersRes, giftsRes, supportRes] = await Promise.all([
+        (supabase as any).rpc("admin_list_buyers", { _limit: 200 }),
+        supabase.from("gift_redemptions").select("*", { count: "exact", head: true }),
+        supabase.from("support_messages").select("*", { count: "exact", head: true }),
+      ]);
+      if (!mounted) return;
+      const rows = (buyersRes.data as Buyer[] | null) ?? [];
+      const active = rows.filter((r) => r.has_access);
+      const bySource = { manual: 0, gift: 0, other: 0 };
+      for (const r of active) {
+        const s = (r.source ?? "").toLowerCase();
+        if (s === "manual") bySource.manual++;
+        else if (s === "gift") bySource.gift++;
+        else bySource.other++;
+      }
+      setMetrics({
+        loading: false,
+        buyersWithAccess: active.length,
+        totalUsers: rows.length,
+        giftRedemptions: giftsRes.count ?? null,
+        supportMessages: supportRes.count ?? null,
+        bySource,
+      });
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const checkoutPending = !isValidUrl(APP_CONFIG.CHECKOUT_FABRICA_URL);
+  const fmt = (n: number | null) => (n === null ? "—" : String(n));
+
   return (
     <div className="space-y-4">
+      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <span>
+          Vendas automáticas ainda não conectadas. Por enquanto, compradores confirmados devem ser registrados/liberados manualmente.
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatusCard
+          icon={<UserCheck size={16} />}
+          title="Vendas confirmadas"
+          badge={metrics.loading ? "…" : fmt(metrics.buyersWithAccess)}
+          tone="ok"
+          text="Baseado nos acessos liberados manualmente."
+        />
+        <StatusCard
+          icon={<CreditCard size={16} />}
+          title="Receita estimada"
+          badge="—"
+          tone="muted"
+          text="Indisponível até conectar checkout real."
+        />
+        <StatusCard
           icon={<ShieldCheck size={16} />}
-          title="Acesso manual"
-          badge="Ativo"
+          title="Acessos ativos"
+          badge={metrics.loading ? "…" : fmt(metrics.buyersWithAccess)}
           tone="ok"
-          text="Admin confirma pagamento e libera acesso manualmente."
+          text={`Manual: ${metrics.bySource.manual} · Código: ${metrics.bySource.gift} · Outros: ${metrics.bySource.other}`}
         />
         <StatusCard
-          icon={<UserCheck size={16} />}
-          title="Admin logado"
-          badge={adminEmail ? "OK" : "—"}
-          tone={adminEmail ? "ok" : "muted"}
-          text={adminEmail ?? "Sessão admin não detectada."}
+          icon={<AlertTriangle size={16} />}
+          title="Pendentes de liberação"
+          badge="—"
+          tone="muted"
+          text="Sem fila automática até conectar checkout/webhook."
         />
         <StatusCard
-          icon={<Search size={16} />}
-          title="Busca por comprador"
-          badge="Disponível"
+          icon={<Bot size={16} />}
+          title="Códigos premium usados"
+          badge={metrics.loading ? "…" : fmt(metrics.giftRedemptions)}
           tone="ok"
-          text="Localize compradores pelo e-mail usado na compra."
+          text="Total de resgates registrados."
         />
         <StatusCard
-          icon={<LayoutGrid size={16} />}
-          title="Fluxo de liberação"
-          badge="Pronto"
+          icon={<Mail size={16} />}
+          title="Mensagens recebidas"
+          badge={metrics.loading ? "…" : fmt(metrics.supportMessages)}
           tone="ok"
-          text="Liberação e revogação prontas para uso operacional."
+          text="Suporte recebido pela área interna."
         />
         <StatusCard
-          icon={<UserCheck size={16} />}
-          title="Meu acesso interno"
-          badge={selfHasAccess ? "Ativo" : "Sem acesso"}
-          tone={selfHasAccess ? "ok" : "warn"}
-          text={
-            selfHasAccess
-              ? "Você consegue entrar em Minha área para testes."
-              : "Libere o teste admin na seção Acessos."
-          }
+          icon={<CreditCard size={16} />}
+          title="Status do checkout"
+          badge={checkoutPending ? "Pendente" : "Configurado"}
+          tone={checkoutPending ? "warn" : "ok"}
+          text={checkoutPending ? "Checkout real pendente (URL ainda placeholder)." : "Checkout configurado com URL real."}
+        />
+        <StatusCard
+          icon={<ShieldCheck size={16} />}
+          title="Status do produto"
+          badge={checkoutPending ? "Manual" : "Operacional"}
+          tone={checkoutPending ? "warn" : "ok"}
+          text={checkoutPending ? "Pronto para venda após checkout real." : "Operacional."}
         />
       </div>
 
       <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-2">Próximos passos</h3>
+        <h3 className="font-heading font-semibold text-sm mb-2">Automação de pagamento</h3>
+        <p className="text-xs text-muted-foreground">
+          Webhook: não configurado. Controle manual até conectar checkout real. Automação de pagamento é uma etapa futura — nesta versão, todos os acessos são confirmados manualmente.
+        </p>
+      </div>
+
+      <div className="glass-strong p-5">
+        <h3 className="font-heading font-semibold text-sm mb-1">Admin logado</h3>
         <p className="text-xs text-muted-foreground mb-3">
-          Use a barra lateral para navegar entre as áreas admin. Para liberar um comprador agora, vá direto para Acessos.
+          {adminEmail ?? "Sessão admin não detectada."} · Acesso interno: {selfHasAccess ? "ativo" : "inativo"}
         </p>
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={onGoToAcessos}
-            className="btn-primary"
-          >
+          <button type="button" onClick={onGoToAcessos} className="btn-primary">
             <ShieldCheck size={14} /> Ir para Acessos
           </button>
           <Link to="/entrega" className="btn-ghost border border-white/15">
