@@ -1625,11 +1625,12 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       { title: "Agente Arquiteto", desc: "Ajuda você a pensar, corrigir e decidir antes de construir." },
     ];
     const journey: [string, string][] = [
-      ["Escolha ou descreva sua ideia", "Comece com uma ideia simples. O programa vai ajudar você a transformar essa ideia em plano."],
-      ["Gere o plano do app", "Defina público, dor, promessa, MVP, telas, fluxo e estrutura."],
-      ["Construa no Lovable", "Copie os comandos, cole no Lovable e crie o app uma etapa por vez."],
-      ["Prepare a venda e a entrega", "Crie página de venda, preço, checkout, obrigado e área de entrega."],
-      ["Divulgue e valide com pessoas reais", "Crie campanha, criativos, convide usuários e melhore com feedback real."],
+      ["Comece com clareza", "Entenda o Lovable, escolha sua ideia e decida o que o app precisa fazer."],
+      ["Planeje antes de construir", "Defina público, dor, promessa, MVP, telas e fluxo principal."],
+      ["Construa a base no Lovable", "Copie um comando por vez, cole no Lovable e crie o app uma etapa por vez."],
+      ["Prepare venda, entrega e confiança", "Página de venda, monetização, checkout, termos e área de entrega."],
+      ["Publique, teste e divulgue", "Publique no domínio, faça o teste final e crie campanhas com criativos."],
+      ["Meça, valide e melhore", "Use métricas e feedback real para lançar uma nova versão sem quebrar o que funciona."],
     ];
 
     // Mapa inteligente: fases agrupam módulos existentes da trilha.
