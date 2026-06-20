@@ -79,6 +79,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "telas", label: "Telas e Fluxo", icon: "Map" },
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
+  { id: "seguranca", label: "Segurança do App", icon: "ShieldCheck" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
   { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
