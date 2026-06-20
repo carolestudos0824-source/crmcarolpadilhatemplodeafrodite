@@ -1361,7 +1361,7 @@ function ChecklistCampanhas({
   return (
     <GlassCard className="p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-heading font-semibold">Checklist do módulo</h3>
+        <h3 className="font-heading font-semibold">Revisão da etapa</h3>
         <span className="text-xs text-muted-foreground">
           {done}/{total} • {pct}%
         </span>
