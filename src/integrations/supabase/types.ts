@@ -604,7 +604,7 @@ export type Database = {
           has_access: boolean
           id: string
           source: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -612,7 +612,7 @@ export type Database = {
           has_access?: boolean
           id?: string
           source?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -620,7 +620,7 @@ export type Database = {
           has_access?: boolean
           id?: string
           source?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
