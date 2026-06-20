@@ -1602,6 +1602,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "publicar") {
     return <PublicarDominioModule />;
   }
+  if (active === "teste") {
+    return <TesteFinalModule />;
+  }
   if (active === "comece") {
     const valueCards = [
       { title: "Programa", desc: "Mostra a ordem certa do que fazer." },
