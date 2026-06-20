@@ -51,6 +51,7 @@ export type ModuleId =
   | "monetizacao"
   | "checkout"
   | "publicar"
+  | "teste"
   | "seo"
   | "campanhas"
   | "criativos"
