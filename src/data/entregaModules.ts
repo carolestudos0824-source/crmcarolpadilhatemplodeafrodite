@@ -44,6 +44,7 @@ export type ModuleId =
   | "ideias"
   | "planejar"
   | "mvp"
+  | "telas"
   | "construir"
   | "login"
   | "venda"
