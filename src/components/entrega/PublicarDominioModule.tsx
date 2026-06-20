@@ -323,6 +323,14 @@ export function PublicarDominioModule() {
         </div>
       </GlassCard>
 
+      <CopyCommandWarning />
+      <p className="text-xs text-muted-foreground mb-4">
+        Use a aba <strong className="text-foreground/90">Fazer no Lovable</strong> quando
+        quiser aplicar no app. Use a aba{" "}
+        <strong className="text-foreground/90">Pensar com o Agente</strong> quando quiser
+        ajuda para decidir antes de construir.
+      </p>
+
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
           <EtapaCard key={e.n} etapa={e} />
