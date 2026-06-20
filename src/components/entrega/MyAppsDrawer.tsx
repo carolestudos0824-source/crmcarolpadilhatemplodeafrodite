@@ -52,6 +52,12 @@ export const MyAppsDrawer = () => {
     duplicateProject,
     deleteProject,
     updateProject,
+    loading,
+    error,
+    hasLocalProjectsToImport,
+    hasLocalContextToImport,
+    importLocalProjects,
+    createProjectFromLocalContext,
   } = useAppProjects();
   const { openEditor } = useProjectContext();
 
@@ -60,17 +66,20 @@ export const MyAppsDrawer = () => {
 
   if (!isDrawerOpen) return null;
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     const name = newName.trim();
     if (!name) {
       toast.error("Dê um nome para o app.");
       return;
     }
-    createProject({ name });
+    const created = await createProject({ name });
+    if (!created) {
+      toast.error("Não foi possível criar. Faça login e tente novamente.");
+      return;
+    }
     setNewName("");
     setCreating(false);
     toast.success(`App "${name}" criado e definido como ativo.`);
-    // Convida a pessoa a preencher o contexto completo
     closeDrawer();
     openEditor();
   };
@@ -107,9 +116,51 @@ export const MyAppsDrawer = () => {
 
         <div className="p-5 space-y-4">
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3 text-[12px] text-muted-foreground">
-            Os projetos ficam salvos neste navegador. Em uma fase futura,
-            poderão ser salvos na sua conta.
+            Os projetos ficam salvos na sua conta.
           </div>
+
+          {loading && (
+            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3 text-[12px] text-muted-foreground">
+              Carregando seus apps…
+            </div>
+          )}
+
+          {error && (
+            <div className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-[12px] text-rose-200">
+              {error}
+            </div>
+          )}
+
+          {hasLocalProjectsToImport && (
+            <div className="rounded-lg border border-accent/30 bg-accent/[0.06] p-3 text-[12px] text-foreground/90 space-y-2">
+              <p>Encontramos apps salvos neste navegador. Deseja salvar esses apps na sua conta?</p>
+              <button
+                onClick={async () => {
+                  const n = await importLocalProjects();
+                  if (n > 0) toast.success(`${n} app(s) salvos na sua conta.`);
+                }}
+                className="px-3 py-1.5 rounded-md border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              >
+                Salvar na minha conta
+              </button>
+            </div>
+          )}
+
+          {hasLocalContextToImport && (
+            <div className="rounded-lg border border-accent/30 bg-accent/[0.06] p-3 text-[12px] text-foreground/90 space-y-2">
+              <p>Encontramos um contexto salvo neste navegador. Deseja transformar isso em um app em construção?</p>
+              <button
+                onClick={async () => {
+                  const created = await createProjectFromLocalContext();
+                  if (created) toast.success(`App "${created.name}" criado a partir do contexto.`);
+                }}
+                className="px-3 py-1.5 rounded-md border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              >
+                Criar app com este contexto
+              </button>
+            </div>
+          )}
+
 
           {!creating && (
             <button
