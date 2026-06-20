@@ -314,6 +314,7 @@ function AdminAccessInner() {
             }}
           />
         )}
+        {section === "vendas" && <SalesPanel />}
         {section === "codigos" && <GiftCodesPanel />}
         {section === "pendencias" && <PendenciasSection />}
         {section === "mensagens" && <MensagensSection />}
