@@ -100,7 +100,7 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3, GitBranch,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3, GitBranch, ClipboardCheck,
 };
 
 // Módulos contabilizados no progresso global. Inclui os 23 módulos da jornada
