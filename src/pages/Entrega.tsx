@@ -33,6 +33,7 @@ import {
   ChevronDown,
   BookOpen,
   Map as MapIcon,
+  Globe,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
@@ -46,6 +47,7 @@ import { FundamentosModule } from "@/components/entrega/FundamentosModule";
 import { PlanejarModule } from "@/components/entrega/PlanejarModule";
 import { MvpArquiteturaModule } from "@/components/entrega/MvpArquiteturaModule";
 import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
+import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -87,14 +89,15 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe,
 };
 
-// Módulos contabilizados no progresso global. "planejar", "mvp" e "telas" foram
-// adicionados em rodadas recentes sem entrar no cálculo global (serão
-// incorporados em rodada futura, quando a estrutura estiver validada).
+// Módulos contabilizados no progresso global. "planejar", "mvp", "telas" e
+// "publicar" foram adicionados em rodadas recentes sem entrar no cálculo global
+// (serão incorporados em rodada futura, quando a estrutura estiver validada).
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
-  (id) => id !== "planejar" && id !== "mvp" && id !== "telas",
+  (id) =>
+    id !== "planejar" && id !== "mvp" && id !== "telas" && id !== "publicar",
 );
 
 
@@ -119,6 +122,7 @@ function EntregaInner() {
     "pagina-de-venda": "venda",
     "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
+    "publicar-dominio": "publicar",
     "seo-geo": "seo",
     "campanhas": "campanhas",
     "criativos": "criativos",
@@ -1587,6 +1591,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
   if (active === "telas") {
     return <TelasFluxoModule />;
+  }
+  if (active === "publicar") {
+    return <PublicarDominioModule />;
   }
   if (active === "comece") {
     const valueCards = [

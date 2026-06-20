@@ -50,6 +50,7 @@ export type ModuleId =
   | "venda"
   | "monetizacao"
   | "checkout"
+  | "publicar"
   | "seo"
   | "campanhas"
   | "criativos"
@@ -76,6 +77,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
   { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
+  { id: "publicar", label: "Publicar e Domínio", icon: "Globe" },
   { id: "seo", label: "SEO e GEO", icon: "Search" },
   { id: "campanhas", label: "Campanhas", icon: "Rocket" },
   { id: "criativos", label: "Criativos", icon: "Image" },
@@ -3538,6 +3540,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
 
     doNow: "Crie pagamento, página de obrigado, área de entrega protegida, libere o acesso e teste como comprador.",
     advanceWhen: "Antes de divulgar, faça o caminho completo como se você fosse o comprador.",
+  },
+  publicar: {
+    doNow: "Publique o app, teste o link público, revise domínio, favicon e imagem social, e abra no celular antes de divulgar.",
+    advanceWhen: "Avance quando o link público abrir corretamente em navegador, aba anônima e celular, com favicon, título e imagem social revisados.",
   },
   seo: {
     doNow: "Escolha palavras, crie páginas, responda dúvidas, adicione marcações e revise antes de publicar.",
