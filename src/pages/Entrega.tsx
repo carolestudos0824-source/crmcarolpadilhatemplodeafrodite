@@ -49,6 +49,7 @@ import { PlanejarModule } from "@/components/entrega/PlanejarModule";
 import { MvpArquiteturaModule } from "@/components/entrega/MvpArquiteturaModule";
 import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
 import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
+import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
