@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft, Sparkles } from "lucide-react";
+import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft, Sparkles, ShieldCheck, ArrowRight } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -219,10 +219,10 @@ export default function Login() {
               Acesso ainda não liberado
             </h1>
             <p className="text-sm text-muted-foreground mb-2">
-              Seu login foi criado com sucesso, mas seu acesso ao programa ainda não foi liberado.
+              Seu login foi criado, mas este e-mail ainda não tem acesso ao programa.
             </p>
             <p className="text-xs text-muted-foreground/80 mb-6">
-              Confira se você entrou com o mesmo e-mail usado na compra. Se o pagamento já foi confirmado e o acesso ainda não apareceu, fale com o suporte.
+              Confira se você entrou com o mesmo e-mail usado na compra.
             </p>
 
             {view === "no_access" ? (
@@ -234,21 +234,27 @@ export default function Login() {
                   <Gift size={16} /> Tenho um código de acesso
                 </button>
                 <button
-                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                  className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm flex items-center justify-center gap-2"
-                >
-                  <LifeBuoy size={14} /> Falar com suporte
-                </button>
-                <button
                   onClick={async () => {
                     await clearSession();
                     setView("auth");
                     setEmail("");
                     setPassword("");
                   }}
-                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-sm text-muted-foreground hover:text-foreground"
+                  className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm"
                 >
                   Tentar com outro e-mail
+                </button>
+                <button
+                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-sm flex items-center justify-center gap-2"
+                >
+                  <LifeBuoy size={14} /> Falar com suporte
+                </button>
+                <button
+                  onClick={() => navigate("/checkout?plano=fabrica")}
+                  className="w-full px-4 py-3 rounded-xl border border-accent/40 bg-accent/10 text-accent text-sm flex items-center justify-center gap-2"
+                >
+                  Garantir acesso
                 </button>
                 <button
                   onClick={recheckAccess}
@@ -284,16 +290,17 @@ export default function Login() {
 
   return (
     <Section>
-      <div className="max-w-md mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="flex justify-center mb-8">
           <Logo size="lg" asLink={false} />
         </div>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] items-start">
         <div className="glass-strong p-8">
           <h1 className="text-2xl font-heading font-bold mb-1">
             Entrar na Fábrica de Apps com IA
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Entre com o mesmo e-mail usado na compra para acessar seu programa.
+            Use o mesmo e-mail informado na compra para acessar seu programa.
           </p>
 
           <button
@@ -323,7 +330,7 @@ export default function Login() {
 
           <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
             {([
-              ["magic", "Sem senha"],
+              ["magic", "Link por e-mail"],
               ["signin", "Com senha"],
               ["signup", "Criar conta"],
             ] as [Tab, string][]).map(([key, label]) => (
@@ -350,8 +357,8 @@ export default function Login() {
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <Sparkles size={16} className="mt-0.5 shrink-0 text-accent" />
                 <p>
-                  Digite seu e-mail e enviaremos um link seguro para acessar sua
-                  área. Sem precisar lembrar de senha.
+                  Digite seu e-mail e receba um link seguro para acessar sua
+                  área, sem precisar lembrar senha.
                 </p>
               </div>
               <div>
@@ -386,21 +393,11 @@ export default function Login() {
                     <Loader2 size={16} className="animate-spin" /> Enviando…
                   </>
                 ) : (
-                  "Enviar link de acesso"
+                  "Receber link seguro"
                 )}
               </button>
 
               <div className="pt-2 space-y-2 text-sm">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setTab("signin");
-                    resetMessages();
-                  }}
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
-                >
-                  <KeyRound size={14} /> Prefiro entrar com senha
-                </button>
                 <button
                   type="button"
                   onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
@@ -585,10 +582,57 @@ export default function Login() {
           <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-xs text-muted-foreground flex gap-2">
             <Mail size={14} className="mt-0.5 shrink-0 text-accent" />
             <p>
-              Após a compra, os dados de acesso são enviados para o e-mail
-              informado no pagamento. Verifique também spam e promoções.
+              Após a compra, entre usando o mesmo e-mail informado no pagamento.
+              Se o acesso ainda não aparecer, verifique spam, promoções ou fale
+              com suporte.
             </p>
           </div>
+        </div>
+
+        {/* Sidebar de orientação */}
+        <aside className="space-y-6">
+          <div className="glass-strong p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <ShieldCheck size={18} className="text-accent" />
+              <h2 className="font-heading font-semibold text-lg">
+                Como acessar seu programa
+              </h2>
+            </div>
+            <ol className="space-y-3 text-sm text-muted-foreground">
+              {[
+                "Entre com o mesmo e-mail usado na compra.",
+                "Use Google, link por e-mail ou senha.",
+                "Se o acesso ainda não aparecer, tente outro e-mail ou fale com suporte.",
+              ].map((step, i) => (
+                <li key={i} className="flex gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-5 rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-muted-foreground/90">
+              Login não libera acesso automaticamente. O acesso aparece quando o
+              e-mail está liberado no sistema.
+            </div>
+          </div>
+
+          <div className="glass-strong p-6">
+            <h3 className="font-heading font-semibold text-base mb-2">
+              Ainda não tem acesso?
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Garanta a Fábrica de Apps com IA por R$47, pagamento único.
+            </p>
+            <button
+              onClick={() => navigate("/checkout?plano=fabrica")}
+              className="btn-primary w-full justify-center"
+            >
+              Garantir acesso <ArrowRight size={16} />
+            </button>
+          </div>
+        </aside>
         </div>
       </div>
     </Section>
