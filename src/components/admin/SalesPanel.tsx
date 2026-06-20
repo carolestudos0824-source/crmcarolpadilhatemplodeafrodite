@@ -51,6 +51,22 @@ const ACCESS_STATUS_LABEL: Record<string, string> = {
 const ACCESS_MESSAGE =
   "Seu acesso à Fábrica de Apps com IA foi liberado. Entre com o mesmo e-mail usado na compra e acesse sua área.";
 
+const AWAITING_LOGIN_INSTRUCTION =
+  "Seu pagamento foi confirmado. Para liberar seu acesso, entre na Fábrica de Apps com IA usando o mesmo e-mail informado na compra. Você pode usar Google ou link por e-mail. Depois disso, me avise para eu finalizar sua liberação.";
+
+const FRIENDLY_NO_USER_MSG =
+  "Venda registrada, mas ainda não existe login criado com este e-mail. Peça para a pessoa entrar uma vez usando o mesmo e-mail da compra. Depois volte aqui e clique em Liberar acesso.";
+
+function isNoUserError(msg?: string | null) {
+  if (!msg) return false;
+  const m = msg.toLowerCase();
+  return m.includes("ainda não criou conta") || m.includes("não criou conta") || m.includes("comprador ainda não");
+}
+
+function isAwaitingFirstLogin(sale: { payment_status: string; access_status: string }) {
+  return sale.payment_status === "paid_confirmed" && sale.access_status === "pending_access";
+}
+
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
 
@@ -133,9 +149,15 @@ export function SalesPanel() {
 
   const grantAccess = async (sale: ManualSale) => {
     const { data, error } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: sale.id });
-    if (error) return toast.error(error.message);
+    if (error) {
+      if (isNoUserError(error.message)) return toast.warning(FRIENDLY_NO_USER_MSG, { duration: 8000 });
+      return toast.error("Não foi possível liberar acesso agora. Tente novamente em instantes.");
+    }
     const res = data as { success?: boolean; error?: string } | null;
-    if (!res?.success) return toast.error(res?.error ?? "Não foi possível liberar acesso.");
+    if (!res?.success) {
+      if (isNoUserError(res?.error)) return toast.warning(FRIENDLY_NO_USER_MSG, { duration: 8000 });
+      return toast.error(res?.error ?? "Não foi possível liberar acesso.");
+    }
     toast.success(`Acesso liberado para ${sale.buyer_email}.`);
     reload();
     if (selected?.id === sale.id) setSelected(null);
@@ -250,7 +272,7 @@ export function SalesPanel() {
                     </td>
                     <td className="px-4 py-3">{fmtMoney(s.amount, s.currency)}</td>
                     <td className="px-4 py-3"><Badge variant={paymentTone(s.payment_status)}>{PAYMENT_STATUS_LABEL[s.payment_status] ?? s.payment_status}</Badge></td>
-                    <td className="px-4 py-3"><Badge variant={accessTone(s.access_status)}>{ACCESS_STATUS_LABEL[s.access_status] ?? s.access_status}</Badge></td>
+                    <td className="px-4 py-3"><Badge variant={accessTone(s.access_status)}>{isAwaitingFirstLogin(s) ? "Aguardando primeiro login" : (ACCESS_STATUS_LABEL[s.access_status] ?? s.access_status)}</Badge></td>
                     <td className="px-4 py-3 text-xs text-muted-foreground">{fmtDate(s.created_at)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
@@ -431,11 +453,14 @@ function CreateSaleDrawer({
       if (alsoGrant) {
         const { data: gData, error: gErr } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: res.id });
         if (gErr) {
-          toast.error(`Venda criada, mas não foi possível liberar acesso: ${gErr.message}`);
+          if (isNoUserError(gErr.message)) toast.warning(FRIENDLY_NO_USER_MSG, { duration: 9000 });
+          else toast.error(`Venda criada, mas não foi possível liberar acesso agora.`);
         } else {
           const gRes = gData as { success?: boolean; error?: string } | null;
-          if (!gRes?.success) toast.error(`Venda criada, mas: ${gRes?.error ?? "falha ao liberar."}`);
-          else toast.success("Acesso liberado.");
+          if (!gRes?.success) {
+            if (isNoUserError(gRes?.error)) toast.warning(FRIENDLY_NO_USER_MSG, { duration: 9000 });
+            else toast.error(`Venda criada, mas: ${gRes?.error ?? "falha ao liberar."}`);
+          } else toast.success("Acesso liberado.");
         }
       }
       onCreated();
@@ -512,7 +537,7 @@ function SaleDetailDrawer({
         <Row label="Produto" value={sale.product_name} />
         <Row label="Valor pago" value={fmtMoney(sale.amount, sale.currency)} />
         <Row label="Status do pagamento" value={PAYMENT_STATUS_LABEL[sale.payment_status] ?? sale.payment_status} />
-        <Row label="Status do acesso" value={ACCESS_STATUS_LABEL[sale.access_status] ?? sale.access_status} />
+        <Row label="Status do acesso" value={isAwaitingFirstLogin(sale) ? "Aguardando primeiro login" : (ACCESS_STATUS_LABEL[sale.access_status] ?? sale.access_status)} />
         <Row label="Origem" value={sale.access_source} />
         <Row label="Método de pagamento" value={sale.payment_method ?? "Não registrado"} />
         <Row label="Referência" value={sale.payment_reference ?? "Não registrado"} />
@@ -522,12 +547,26 @@ function SaleDetailDrawer({
         <Row label="Observações internas" value={sale.admin_notes ?? "—"} />
       </div>
 
+      {isAwaitingFirstLogin(sale) && (
+        <div className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 space-y-2">
+          <div className="flex items-start gap-2">
+            <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+            <div>
+              <div className="font-medium">Próximo passo: aguardar primeiro login</div>
+              <p className="text-xs text-amber-100/80 mt-1">
+                Pagamento confirmado, mas ainda não existe conta criada com este e-mail. Peça para o comprador entrar uma vez em /login com o mesmo e-mail da compra. Depois clique em “Tentar liberar novamente”.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mt-5 space-y-2">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ações</div>
         <div className="flex flex-wrap gap-2">
           {sale.access_status !== "access_granted" && (
             <button type="button" onClick={onGrant} className="btn-primary">
-              <ShieldCheck size={14} /> Liberar acesso
+              <ShieldCheck size={14} /> {isAwaitingFirstLogin(sale) ? "Tentar liberar novamente" : "Liberar acesso"}
             </button>
           )}
           {sale.access_status === "access_granted" && (
@@ -538,11 +577,11 @@ function SaleDetailDrawer({
           <button type="button" onClick={() => copyText(sale.buyer_email, "E-mail copiado")} className="btn-ghost border border-white/15">
             <Copy size={14} /> Copiar e-mail
           </button>
+          <button type="button" onClick={() => copyText(AWAITING_LOGIN_INSTRUCTION, "Instrução copiada")} className="btn-ghost border border-white/15">
+            <Copy size={14} /> Copiar instrução de acesso
+          </button>
           <button type="button" onClick={() => copyText(ACCESS_MESSAGE, "Mensagem copiada")} className="btn-ghost border border-white/15">
             <Copy size={14} /> Copiar mensagem de acesso liberado
-          </button>
-          <button type="button" onClick={() => copyText("Entre com o mesmo e-mail informado no pagamento. Se usar outro e-mail, o acesso pode não aparecer.", "Mensagem copiada")} className="btn-ghost border border-white/15">
-            <Copy size={14} /> Copiar “use o mesmo e-mail”
           </button>
         </div>
       </div>
