@@ -131,6 +131,23 @@ export const CommandCard = ({
 
       {open && !isGuided && (
         <div className="space-y-4 pt-2 border-t border-white/10">
+          {!isFilled && (
+            <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-3 flex items-start gap-2 text-[12px]">
+              <Info size={14} className="text-amber-300 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-foreground/90">
+                  Preencha o <strong>Contexto do meu app</strong> para os comandos ficarem mais precisos.
+                </p>
+                <button
+                  type="button"
+                  onClick={openEditor}
+                  className="mt-1 text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                >
+                  Preencher contexto
+                </button>
+              </div>
+            </div>
+          )}
           <dl className="grid sm:grid-cols-2 gap-3 text-sm">
             {[
               ["Quando usar", whenToUse],
