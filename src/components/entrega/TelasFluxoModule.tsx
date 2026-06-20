@@ -36,15 +36,6 @@ type Etapa = {
   tabs: Record<TabId, string>;
 };
 
-const LOVABLE_PREAMBLE = `Você está no projeto do aplicativo que estou criando. Execute a tarefa abaixo neste app. Não explique o comando. Não responda dizendo que este texto é um conteúdo de módulo. Aplique a orientação no app atual.
-
-Tarefa:
-`;
-
-const wrapLovable = (task: string) => `${LOVABLE_PREAMBLE}${task}
-
-Importante:
-Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`;
 
 const ETAPAS: Etapa[] = [
   {
