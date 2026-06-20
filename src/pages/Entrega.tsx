@@ -46,6 +46,7 @@ import { FundamentosModule } from "@/components/entrega/FundamentosModule";
 import { PlanejarModule } from "@/components/entrega/PlanejarModule";
 import { MvpArquiteturaModule } from "@/components/entrega/MvpArquiteturaModule";
 import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
+import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
