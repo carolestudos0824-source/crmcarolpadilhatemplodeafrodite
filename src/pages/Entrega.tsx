@@ -63,6 +63,7 @@ import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { ModuleReviewCard } from "@/components/entrega/ModuleReviewCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
+import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -2322,6 +2323,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <ValidacaoIntro />
+        <ViabilityAnalysisCard />
         <ModuleHeader
           title="Siga as etapas de Validação"
           subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
