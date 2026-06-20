@@ -60,17 +60,32 @@ const SUPPORT_MESSAGES = [
   {
     title: "Use o mesmo e-mail",
     text:
-      "Verifique se você entrou com o mesmo e-mail usado na compra. Se entrou com outro e-mail, o acesso pode não aparecer.",
+      "Entre com o mesmo e-mail informado no pagamento. Se usar outro e-mail, o acesso pode não aparecer.",
   },
   {
-    title: "Acesso ainda não localizado",
+    title: "Aguardando primeiro login",
     text:
-      "Não localizei sua liberação neste e-mail. Me envie o comprovante ou o e-mail usado na compra para eu verificar.",
+      "Seu pagamento foi confirmado. Para liberar seu acesso, entre uma vez usando o mesmo e-mail informado na compra. Depois disso, me avise para eu finalizar sua liberação.",
+  },
+  {
+    title: "Acesso não localizado",
+    text:
+      "Não localizei acesso neste e-mail. Envie o comprovante ou o e-mail usado na compra para eu verificar.",
   },
   {
     title: "Boas-vindas",
     text:
       "Bem-vindo à Fábrica de Apps com IA. Comece pelo primeiro módulo e siga a jornada em ordem.",
+  },
+  {
+    title: "Checkout pendente",
+    text:
+      "Recebi sua mensagem. Assim que o pagamento for confirmado, libero seu acesso pelo e-mail informado.",
+  },
+  {
+    title: "E-mail diferente",
+    text:
+      "Verifique se você entrou com o mesmo e-mail usado na compra. Se entrou com outro e-mail, o acesso pode não aparecer.",
   },
 ];
 
