@@ -47,6 +47,7 @@ export type ModuleId =
   | "telas"
   | "construir"
   | "login"
+  | "seguranca"
   | "venda"
   | "monetizacao"
   | "checkout"
