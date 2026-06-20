@@ -86,6 +86,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "seo", label: "SEO e GEO", icon: "Search" },
   { id: "campanhas", label: "Campanhas", icon: "Rocket" },
   { id: "criativos", label: "Criativos", icon: "Image" },
+  { id: "metricas", label: "Métricas do App", icon: "BarChart3" },
   { id: "validacao", label: "Validação", icon: "Users" },
   { id: "checklist", label: "Checklist", icon: "ListChecks" },
   { id: "erros", label: "Erros comuns", icon: "AlertTriangle" },
