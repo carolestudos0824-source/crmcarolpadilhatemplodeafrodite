@@ -582,10 +582,57 @@ export default function Login() {
           <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-xs text-muted-foreground flex gap-2">
             <Mail size={14} className="mt-0.5 shrink-0 text-accent" />
             <p>
-              Após a compra, os dados de acesso são enviados para o e-mail
-              informado no pagamento. Verifique também spam e promoções.
+              Após a compra, entre usando o mesmo e-mail informado no pagamento.
+              Se o acesso ainda não aparecer, verifique spam, promoções ou fale
+              com suporte.
             </p>
           </div>
+        </div>
+
+        {/* Sidebar de orientação */}
+        <aside className="space-y-6">
+          <div className="glass-strong p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <ShieldCheck size={18} className="text-accent" />
+              <h2 className="font-heading font-semibold text-lg">
+                Como acessar seu programa
+              </h2>
+            </div>
+            <ol className="space-y-3 text-sm text-muted-foreground">
+              {[
+                "Entre com o mesmo e-mail usado na compra.",
+                "Use Google, link por e-mail ou senha.",
+                "Se o acesso ainda não aparecer, tente outro e-mail ou fale com suporte.",
+              ].map((step, i) => (
+                <li key={i} className="flex gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-5 rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-muted-foreground/90">
+              Login não libera acesso automaticamente. O acesso aparece quando o
+              e-mail está liberado no sistema.
+            </div>
+          </div>
+
+          <div className="glass-strong p-6">
+            <h3 className="font-heading font-semibold text-base mb-2">
+              Ainda não tem acesso?
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Garanta a Fábrica de Apps com IA por R$47, pagamento único.
+            </p>
+            <button
+              onClick={() => navigate("/checkout?plano=fabrica")}
+              className="btn-primary w-full justify-center"
+            >
+              Garantir acesso <ArrowRight size={16} />
+            </button>
+          </div>
+        </aside>
         </div>
       </div>
     </Section>
