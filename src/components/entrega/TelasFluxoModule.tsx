@@ -245,7 +245,9 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           {etapa.tabs[tab]}
         </pre>
       </div>
-      {tab !== "avancar" && <CopyBtn text={etapa.tabs[tab]} label="Copiar comando" />}
+      {tab !== "avancar" && (
+        <CopyBtn text={etapa.tabs[tab]} label="Copiar para o Lovable do meu app" />
+      )}
     </GlassCard>
   );
 }
