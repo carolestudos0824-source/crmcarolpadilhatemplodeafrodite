@@ -207,9 +207,24 @@ function EntregaInner() {
   // 40% comandos usados + 30% módulos concluídos + 30% checklist final.
   const commandsDone = progress.commandsDoneCount;
 
+  // Conclusão automática dos módulos novos: se todos os itens do checklist
+  // interno daquele módulo estiverem marcados, o módulo conta como concluído.
+  // Conclusão manual (setModuleDone) continua valendo via OR — não apaga nada.
+  const effectiveModuleDone = useMemo(() => {
+    const merged: Record<string, boolean> = { ...moduleDone };
+    for (const m of AUTO_MODULE_CHECKLIST) {
+      let done = 0;
+      for (const k of Object.keys(checklist)) {
+        if (k.startsWith(m.prefix) && checklist[k]) done++;
+      }
+      if (m.total > 0 && done >= m.total) merged[m.id] = true;
+    }
+    return merged as Record<ModuleId, boolean>;
+  }, [moduleDone, checklist]);
+
   const modulesDoneCount = useMemo(
-    () => PROGRESS_MODULE_IDS.filter((id) => !!moduleDone[id]).length,
-    [moduleDone],
+    () => PROGRESS_MODULE_IDS.filter((id) => !!effectiveModuleDone[id]).length,
+    [effectiveModuleDone],
   );
   const checklistDoneCount = useMemo(
     () => allChecklistItems.filter((k) => checklist[k]).length,
