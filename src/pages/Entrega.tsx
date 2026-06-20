@@ -402,6 +402,7 @@ function EntregaInner() {
                 {email}
               </span>
             )}
+            <MyAppsHeaderButton />
             <ContextHeaderButton />
             <FontSizeControl />
             {auth.isAdmin && (
