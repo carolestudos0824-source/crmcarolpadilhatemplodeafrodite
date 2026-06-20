@@ -70,6 +70,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "ideias", label: "Ideias prontas", icon: "Lightbulb" },
   { id: "planejar", label: "Planejar o App", icon: "ClipboardList" },
   { id: "mvp", label: "MVP e Arquitetura", icon: "Workflow" },
+  { id: "telas", label: "Telas e Fluxo", icon: "Map" },
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
