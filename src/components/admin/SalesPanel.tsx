@@ -51,6 +51,22 @@ const ACCESS_STATUS_LABEL: Record<string, string> = {
 const ACCESS_MESSAGE =
   "Seu acesso à Fábrica de Apps com IA foi liberado. Entre com o mesmo e-mail usado na compra e acesse sua área.";
 
+const AWAITING_LOGIN_INSTRUCTION =
+  "Seu pagamento foi confirmado. Para liberar seu acesso, entre na Fábrica de Apps com IA usando o mesmo e-mail informado na compra. Você pode usar Google ou link por e-mail. Depois disso, me avise para eu finalizar sua liberação.";
+
+const FRIENDLY_NO_USER_MSG =
+  "Venda registrada, mas ainda não existe login criado com este e-mail. Peça para a pessoa entrar uma vez usando o mesmo e-mail da compra. Depois volte aqui e clique em Liberar acesso.";
+
+function isNoUserError(msg?: string | null) {
+  if (!msg) return false;
+  const m = msg.toLowerCase();
+  return m.includes("ainda não criou conta") || m.includes("não criou conta") || m.includes("comprador ainda não");
+}
+
+function isAwaitingFirstLogin(sale: { payment_status: string; access_status: string }) {
+  return sale.payment_status === "paid_confirmed" && sale.access_status === "pending_access";
+}
+
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
 
