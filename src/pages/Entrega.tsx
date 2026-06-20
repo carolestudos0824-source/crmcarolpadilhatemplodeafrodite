@@ -1610,6 +1610,28 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       ["Prepare a venda e a entrega", "Crie página de venda, preço, checkout, obrigado e área de entrega."],
       ["Divulgue e valide com pessoas reais", "Crie campanha, criativos, convide usuários e melhore com feedback real."],
     ];
+
+    // Mapa inteligente: fases agrupam módulos existentes da trilha.
+    // Apenas orientação visual — não altera navegação, progresso ou contadores.
+    const phaseMap: { title: string; mods: ModuleId[] }[] = [
+      { title: "Fase 1 — Ideia e planejamento", mods: ["ideias", "planejar", "mvp", "telas"] },
+      { title: "Fase 2 — Construção", mods: ["construir", "login"] },
+      { title: "Fase 3 — Venda", mods: ["venda", "monetizacao", "checkout"] },
+      { title: "Fase 4 — Publicação e confiança", mods: ["publicar", "seo"] },
+      { title: "Fase 5 — Divulgação e validação", mods: ["criativos", "campanhas", "validacao"] },
+      { title: "Fase 6 — Melhoria", mods: ["checklist", "erros"] },
+    ];
+    const moduleLabel = (id: ModuleId) =>
+      MODULES.find((m) => m.id === id)?.label ?? id;
+
+    const naoPule = [
+      "Não vá para Construir app sem planejar a ideia.",
+      "Não vá para Checkout sem decidir monetização.",
+      "Não divulgue sem testar no celular.",
+      "Não rode campanha sem página de venda clara.",
+      "Não valide com opinião. Valide com comportamento real.",
+    ];
+
     return (
       <section>
         <header className="mb-6">
