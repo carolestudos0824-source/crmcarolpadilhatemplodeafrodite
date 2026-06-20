@@ -236,17 +236,21 @@ export const CommandCard = ({
                     {commandText}
                   </pre>
                 </div>
-                <div className="mt-2 flex justify-end">
+                <div className="mt-2 flex flex-col items-end gap-1">
                   <button
                     onClick={() =>
-                      copyText(commandText, "main", "Comando copiado. Agora cole no Lovable.")
+                      copyText(wrapLovable(commandText), "main", "Comando copiado. Agora cole no Lovable do seu app.")
                     }
                     className="btn-primary text-sm min-h-[44px]"
                     type="button"
+                    title="Cole no projeto do app que você está criando."
                   >
                     {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                    {copiedKey === "main" ? "Copiado" : "Copiar e colar no Lovable"}
+                    {copiedKey === "main" ? "Copiado" : "Copiar para o Lovable do meu app"}
                   </button>
+                  <span className="text-[10px] text-muted-foreground/80">
+                    Cole no projeto do app que você está criando, não na Fábrica de Apps.
+                  </span>
                 </div>
               </div>
             </div>
