@@ -177,10 +177,10 @@ export function ViabilityAnalysisCard() {
               Análise de Viabilidade da Ideia
             </h3>
             <p className="text-xs md:text-sm text-muted-foreground mt-1">
-              Descobrir se a ideia tem mercado, concorrência, diferencial, riscos e caminho realista antes de construir.
+              Este prompt não constrói o app. Ele ajuda você a decidir se vale construir, o que cortar e qual MVP mandar depois para o Lovable.
             </p>
             <p className="text-[11px] text-muted-foreground mt-2">
-              <strong className="text-foreground/80">Quando usar:</strong> antes de investir tempo e créditos no Lovable, principalmente se você ainda não sabe se a ideia é forte. Este prompt é feito para o <strong className="text-foreground/80">Agente Arquiteto</strong>.
+              <strong className="text-foreground/80">Quando usar:</strong> antes de investir tempo e créditos no Lovable, principalmente se você ainda não sabe se a ideia é forte. Este prompt é feito para o <strong className="text-foreground/80">Agente Arquiteto</strong>, não para colar direto no Lovable.
             </p>
           </div>
         </div>
@@ -191,25 +191,25 @@ export function ViabilityAnalysisCard() {
             className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition border-white/20 bg-white/[0.03] text-foreground hover:bg-white/10"
           >
             <Settings2 size={14} />
-            Revisar prompt antes de copiar
-          </button>
-          <button
-            onClick={() => setStudioOpen(true)}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-          >
-            <Bot size={14} />
-            Revisar com o Agente
+            Editar análise antes de copiar
           </button>
           <button
             onClick={copy}
             className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition ${
               copied
                 ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-                : "border-white/15 bg-white/5 text-foreground hover:bg-white/10"
+                : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
             }`}
           >
-            {copied ? <Check size={14} /> : <Copy size={14} />}
+            {copied ? <Check size={14} /> : <Bot size={14} />}
             {copied ? "Copiado!" : "Copiar para o Agente"}
+          </button>
+          <button
+            onClick={() => setStudioOpen(true)}
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition border-white/15 bg-white/5 text-foreground hover:bg-white/10"
+          >
+            <Settings2 size={14} />
+            Abrir no Estúdio
           </button>
         </div>
         <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
