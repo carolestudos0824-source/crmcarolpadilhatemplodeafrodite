@@ -27,6 +27,23 @@ export type AppModel = {
   database: string[];
   command: string;
   checklist: string[];
+  // Blueprint fields (optional, used by the rich "Mapa inicial do app" modal)
+  shortDescription?: string;
+  promise?: string;
+  expectedResult?: string;
+  mainAction?: string;
+  mvp?: string[];
+  cutFromFirst?: string[];
+  screensWithRole?: { name: string; role: string }[];
+  loginAccess?: string;
+  adminArea?: string;
+  paymentNotes?: string;
+  differentiator?: string;
+  risks?: string[];
+  testFirst?: string[];
+  buyerPersona?: string;
+  validationTest?: string;
+  visualStyleSuggestion?: string;
 };
 
 export type CommonError = {
