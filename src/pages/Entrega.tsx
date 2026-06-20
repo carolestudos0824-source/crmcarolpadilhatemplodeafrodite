@@ -2075,6 +2075,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "metricas") {
     return <MetricasAppModule />;
   }
+  if (active === "melhorias") {
+    return <MelhoriasVersoesModule />;
+  }
   if (active === "validacao") {
     return (
       <section>
