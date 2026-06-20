@@ -3581,6 +3581,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     doNow: "Liste 10 pessoas reais que podem testar e copie a mensagem de convite.",
     advanceWhen: "Avance quando pelo menos 5 pessoas testarem e responderem o feedback.",
   },
+  melhorias: {
+    doNow: "Organize feedbacks, separe bug de melhoria, priorize 5 mudanças e teste a nova versão antes de divulgar.",
+    advanceWhen: "Avance quando a nova versão estiver aplicada, testada e registrada, sem quebrar o que já funcionava.",
+  },
   checklist: {
     doNow: "Marque tudo que você já fez. Use a barra de progresso como guia.",
     advanceWhen: "Avance quando seu progresso geral estiver acima de 70%.",
