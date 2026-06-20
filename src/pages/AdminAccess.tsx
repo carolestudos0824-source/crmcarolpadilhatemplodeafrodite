@@ -36,12 +36,12 @@ const inputCls =
 const PENDENCIAS_KEY = "fabrica_admin_prelaunch_checklist_v1";
 
 const PENDENCIAS_ITEMS = [
-  { id: "checkout", label: "Checkout configurado" },
+  { id: "checkout", label: "Checkout real configurado (marcar somente após CHECKOUT_FABRICA_URL conter a URL real do pagamento)" },
   { id: "suporte", label: "E-mail de suporte configurado" },
   { id: "legal", label: "Dados legais preenchidos" },
   { id: "fluxo", label: "Fluxo de liberação testado" },
   { id: "interna", label: "Área interna revisada" },
-  { id: "mensagem", label: "Mensagem para comprador pronta" },
+  { id: "mensagem", label: "Mensagem pós-compra pronta" },
   { id: "admin", label: "Acesso admin funcionando" },
   { id: "mobile", label: "Teste mobile realizado" },
 ];
