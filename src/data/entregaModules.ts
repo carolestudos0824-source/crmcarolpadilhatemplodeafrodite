@@ -3514,6 +3514,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     doNow: "Transforme o plano em arquitetura: MVP, funcionalidades essenciais, telas, dados e regras principais.",
     advanceWhen: "Avance quando você tiver um prompt de arquitetura claro para começar a construção no Lovable.",
   },
+  telas: {
+    doNow: "Organize as telas, defina o fluxo do usuário, separe áreas públicas e restritas e defina o CTA principal de cada tela.",
+    advanceWhen: "Avance quando você tiver um mapa claro das telas e do caminho do usuário, pronto para construir.",
+  },
   construir: {
     doNow: "Comece pelo Comando 1. Copie, cole no Lovable e espere o resultado antes do próximo.",
     advanceWhen: "Não avance se o Lovable ainda não entregou o resultado esperado. Volte, corrija ou use a aba Corrigir erro.",
