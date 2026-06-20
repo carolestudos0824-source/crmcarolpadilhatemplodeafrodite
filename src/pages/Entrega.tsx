@@ -2876,11 +2876,15 @@ const Select = ({
 export default function Entrega() {
   return (
     <ProjectContextProvider>
-      <UserProgressProvider>
-        <EntregaInner />
-        <ProjectContextDrawer />
-      </UserProgressProvider>
+      <AppProjectsProvider>
+        <UserProgressProvider>
+          <EntregaInner />
+          <ProjectContextDrawer />
+          <MyAppsDrawer />
+        </UserProgressProvider>
+      </AppProjectsProvider>
     </ProjectContextProvider>
   );
 }
+
 
