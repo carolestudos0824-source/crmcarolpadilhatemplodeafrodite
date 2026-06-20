@@ -64,6 +64,8 @@ import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
 import { ProjectContextProvider, useProjectContext } from "@/hooks/useProjectContext";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
+import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
+import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
