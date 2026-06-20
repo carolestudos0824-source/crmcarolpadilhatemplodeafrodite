@@ -346,27 +346,22 @@ export const PromptReviewDialog = ({
               </button>
               <button
                 type="button"
-                onClick={handleImprove}
-                disabled={improving}
-                className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25 disabled:opacity-60"
-                title="Melhorar com IA"
+                onClick={handleImproveWithAgent}
+                className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25"
+                title="Sem custo de API nesta fase: você melhora com o Agente Arquiteto."
               >
-                {improving ? (
-                  <>
-                    <Loader2 size={12} className="animate-spin" /> Melhorando prompt…
-                  </>
-                ) : (
-                  <>
-                    <Sparkles size={12} /> Melhorar com IA
-                  </>
-                )}
+                <Sparkles size={12} /> Melhorar com o Agente
               </button>
             </div>
           </div>
 
           <p className="text-[11px] text-muted-foreground/90">
-            Use <strong className="text-violet-200">Melhorar com IA</strong> para lapidar o prompt antes de gastar créditos no Lovable.
+            Use <strong className="text-violet-200">Melhorar com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
           </p>
+          <p className="text-[11px] text-muted-foreground/70">
+            Sem custo de API nesta fase: você melhora com o Agente Arquiteto.
+          </p>
+
 
           <textarea
             id="prompt-final-textarea"
