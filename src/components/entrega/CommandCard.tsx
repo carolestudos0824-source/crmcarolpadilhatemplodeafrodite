@@ -4,6 +4,7 @@ import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
+import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
 
 type Props = {
   number: number;
