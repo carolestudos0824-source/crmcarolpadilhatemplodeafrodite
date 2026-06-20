@@ -38,6 +38,10 @@ import {
   BarChart3,
   GitBranch,
   ClipboardCheck,
+  Compass,
+  FolderKanban,
+  Bookmark,
+  Repeat,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
@@ -130,6 +134,29 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
   { id: "seguranca", prefix: "seguranca_step__", total: 12 },
 ];
 
+// Organização visual dos 24 módulos por fase da jornada. NÃO altera
+// MODULE_ORDER nem PROGRESS_MODULE_IDS (progresso global preservado), apenas
+// agrupa os módulos existentes no painel lateral.
+const SIDEBAR_GROUPS: { title: string; modules: ModuleId[] }[] = [
+  { title: "Comece aqui", modules: ["fundamentos", "comece", "ideias", "planejar", "mvp", "telas"] },
+  { title: "Construir o app", modules: ["construir", "login", "seguranca", "teste", "erros"] },
+  { title: "Vender o app", modules: ["venda", "monetizacao", "checkout", "legal"] },
+  { title: "Publicar e crescer", modules: ["publicar", "seo", "campanhas", "criativos", "metricas"] },
+  { title: "Evoluir", modules: ["validacao", "melhorias", "checklist", "ativar"] },
+];
+
+const SIDEBAR_STATUS_LABEL: Record<string, string> = {
+  ideia: "Ideia",
+  planejando: "Planejando",
+  construindo: "Construindo",
+  revisando: "Revisando",
+  publicado: "Publicado",
+  vendendo: "Vendendo",
+  escalando: "Escalando",
+  pausado: "Pausado",
+  arquivado: "Arquivado",
+};
+
 
 // ====== Página ======
 
@@ -177,6 +204,7 @@ function EntregaInner() {
   const auth = useAuthState();
   const progress = useUserProgress();
   const appProjects = useAppProjects();
+  const projectCtx = useProjectContext();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL slug ↔ internal module id
@@ -435,35 +463,145 @@ function EntregaInner() {
           } lg:sticky lg:top-14 lg:block lg:w-72 lg:shrink-0 lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto lg:p-4 lg:bg-transparent`}
         >
           <div className="lg:pr-2">
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3 px-2">
-              Seu caminho
-            </div>
-            <nav className="space-y-1">
-              {MODULES.map((m) => {
-                const Icon = ICONS[m.icon] ?? Circle;
-                const isActive = active === m.id;
-                const isDone = !!effectiveModuleDone[m.id];
-                return (
-                  <button
-                    key={m.id}
-                    onClick={() => goTo(m.id)}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left transition border ${
-                      isActive
-                        ? "bg-accent/15 border-accent/40 text-accent"
-                        : "border-transparent hover:bg-white/5 text-foreground/85"
-                    }`}
-                  >
-                    <Icon size={16} className="shrink-0" />
-                    <span className="flex-1 leading-tight">{m.label}</span>
-                    {isDone ? (
-                      <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
-                    ) : (
-                      <Circle size={14} className="text-muted-foreground/40 shrink-0" />
+            {/* App ativo + atalhos */}
+            <div className="mb-4 rounded-xl border border-accent/25 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent p-3">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                App ativo
+              </div>
+              {appProjects.activeProject ? (
+                <>
+                  <div className="text-sm font-medium text-foreground truncate" title={appProjects.activeProject.name}>
+                    {appProjects.activeProject.name}
+                  </div>
+                  <div className="text-[11px] text-muted-foreground truncate">
+                    {SIDEBAR_STATUS_LABEL[appProjects.activeProject.status] ?? appProjects.activeProject.status}
+                    {appProjects.activeProject.currentModuleId && (
+                      <>
+                        {" · "}
+                        {MODULES.find((m) => m.id === appProjects.activeProject!.currentModuleId)?.label ??
+                          appProjects.activeProject.currentModuleId}
+                      </>
                     )}
-                  </button>
-                );
-              })}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-sm font-medium text-foreground">Contexto temporário</div>
+                  <div className="text-[11px] text-muted-foreground">
+                    Crie ou selecione um app para acompanhar a jornada.
+                  </div>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={appProjects.openDrawer}
+                className="mt-2 text-[11px] inline-flex items-center gap-1 px-2 py-1 rounded-md border border-white/15 hover:bg-white/5"
+              >
+                <Repeat size={12} /> Trocar app
+              </button>
+            </div>
+
+            <div
+              className="mb-4 text-[11px] text-muted-foreground px-2 leading-snug"
+              title="Construa em ordem"
+            >
+              Construa em ordem. Escolha seu app, siga a etapa atual, use o Estúdio de Prompt e revise antes de avançar.
+            </div>
+
+            {/* Central do Projeto */}
+            <div className="mb-4">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 px-2">
+                Central do Projeto
+              </div>
+              <div className="space-y-1">
+                <button
+                  type="button"
+                  onClick={appProjects.openDrawer}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
+                >
+                  <FolderKanban size={16} className="shrink-0" />
+                  <span className="flex-1 leading-tight">Meus Apps em Construção</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={projectCtx.openEditor}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
+                >
+                  <ClipboardList size={16} className="shrink-0" />
+                  <span className="flex-1 leading-tight">Contexto do meu app</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={appProjects.openDrawer}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
+                  title="Prompts salvos ficam disponíveis no drawer do app ativo"
+                >
+                  <Bookmark size={16} className="shrink-0" />
+                  <span className="flex-1 leading-tight">Prompts salvos</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const target = (appProjects.activeProject?.currentModuleId as ModuleId | undefined) ?? active;
+                    goTo(target);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-accent/30 bg-accent/10 text-accent hover:bg-accent/15"
+                >
+                  <Compass size={16} className="shrink-0" />
+                  <span className="flex-1 leading-tight">
+                    {appProjects.activeProject?.currentModuleId
+                      ? `Continuar: ${
+                          MODULES.find((m) => m.id === appProjects.activeProject!.currentModuleId)?.label ?? "etapa atual"
+                        }`
+                      : "Próximo passo"}
+                  </span>
+                  <ArrowRight size={14} className="shrink-0" />
+                </button>
+              </div>
+            </div>
+
+            {/* Módulos por fase */}
+            <nav className="space-y-4">
+              {SIDEBAR_GROUPS.map((group) => (
+                <div key={group.title}>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 px-2">
+                    {group.title}
+                  </div>
+                  <div className="space-y-1">
+                    {group.modules.map((id) => {
+                      const m = MODULES.find((x) => x.id === id);
+                      if (!m) return null;
+                      const Icon = ICONS[m.icon] ?? Circle;
+                      const isActive = active === m.id;
+                      const isDone = !!effectiveModuleDone[m.id];
+                      return (
+                        <button
+                          key={m.id}
+                          onClick={() => goTo(m.id)}
+                          aria-current={isActive ? "step" : undefined}
+                          className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left transition border ${
+                            isActive
+                              ? "bg-accent/15 border-accent/50 text-accent shadow-[0_0_0_1px_rgba(0,194,255,0.25)]"
+                              : "border-transparent hover:bg-white/5 text-foreground/85"
+                          }`}
+                        >
+                          <Icon size={16} className="shrink-0" />
+                          <span className="flex-1 leading-tight">{m.label}</span>
+                          {isDone ? (
+                            <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+                          ) : isActive ? (
+                            <span className="h-2 w-2 rounded-full bg-accent shrink-0 shadow-[0_0_8px_rgba(0,194,255,0.8)]" />
+                          ) : (
+                            <Circle size={14} className="text-muted-foreground/40 shrink-0" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </nav>
+
 
             {/* Progresso geral ponderado */}
             <div className="mt-6 px-2">
