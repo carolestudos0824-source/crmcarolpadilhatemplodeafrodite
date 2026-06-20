@@ -180,17 +180,23 @@ function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: str
     }
   };
   return (
-    <button
-      onClick={handle}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
-        ok
-          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-      }`}
-    >
-      {ok ? <Check size={14} /> : <Copy size={14} />}
-      {ok ? "Copiado!" : label}
-    </button>
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        onClick={handle}
+        title="Cole no projeto do app que você está criando."
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
+          ok
+            ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+            : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+        }`}
+      >
+        {ok ? <Check size={14} /> : <Copy size={14} />}
+        {ok ? "Copiado!" : label}
+      </button>
+      <span className="text-[11px] text-muted-foreground">
+        Cole no projeto do app que você está criando.
+      </span>
+    </div>
   );
 }
 
