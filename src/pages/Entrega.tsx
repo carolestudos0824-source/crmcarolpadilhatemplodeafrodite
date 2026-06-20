@@ -136,6 +136,7 @@ function EntregaInner() {
     "seo-geo": "seo",
     "campanhas": "campanhas",
     "criativos": "criativos",
+    "metricas-app": "metricas",
     "validacao": "validacao",
     "checklist": "checklist",
     "erros-comuns": "erros",
