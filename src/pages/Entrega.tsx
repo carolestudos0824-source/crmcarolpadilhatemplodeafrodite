@@ -120,6 +120,7 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
   { id: "teste", prefix: "teste_step__", total: 12 },
   { id: "metricas", prefix: "metricas_step__", total: 10 },
   { id: "melhorias", prefix: "melhorias_step__", total: 10 },
+  { id: "seguranca", prefix: "seguranca_step__", total: 12 },
 ];
 
 
