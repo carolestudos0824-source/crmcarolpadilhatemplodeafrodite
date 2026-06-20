@@ -36,12 +36,12 @@ const inputCls =
 const PENDENCIAS_KEY = "fabrica_admin_prelaunch_checklist_v1";
 
 const PENDENCIAS_ITEMS = [
-  { id: "checkout", label: "Checkout configurado" },
+  { id: "checkout", label: "Checkout real configurado (marcar somente após CHECKOUT_FABRICA_URL conter a URL real do pagamento)" },
   { id: "suporte", label: "E-mail de suporte configurado" },
   { id: "legal", label: "Dados legais preenchidos" },
   { id: "fluxo", label: "Fluxo de liberação testado" },
   { id: "interna", label: "Área interna revisada" },
-  { id: "mensagem", label: "Mensagem para comprador pronta" },
+  { id: "mensagem", label: "Mensagem pós-compra pronta" },
   { id: "admin", label: "Acesso admin funcionando" },
   { id: "mobile", label: "Teste mobile realizado" },
 ];
@@ -711,9 +711,12 @@ function PendenciasSection() {
   return (
     <div className="space-y-4">
       <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-1">Checklist antes da venda pública</h3>
-        <p className="text-xs text-muted-foreground mb-4">
-          Salvo apenas no seu navegador. Não interfere no progresso do aluno. {done}/{PENDENCIAS_ITEMS.length} concluídos.
+        <h3 className="font-heading font-semibold text-sm mb-1">Prontidão para venda pública</h3>
+        <p className="text-xs text-muted-foreground mb-3">
+          Salvo apenas no seu navegador. Não interfere no acesso nem no progresso de quem compra. {done}/{PENDENCIAS_ITEMS.length} concluídos.
+        </p>
+        <p className="text-[11px] text-muted-foreground/80 mb-4 rounded-md border border-white/10 bg-white/5 px-3 py-2">
+          Marque os itens manualmente conforme forem concluídos. O único bloqueio real para venda pública agora é a URL real do checkout.
         </p>
         <ul className="space-y-1">
           {PENDENCIAS_ITEMS.map((item) => {
