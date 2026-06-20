@@ -115,23 +115,12 @@ export const PromptReviewDialog = ({
 
 
   const [drafts, setDrafts] = useState<{ lovable: string; agent: string }>(originals);
-  const [improving, setImproving] = useState(false);
-  const [improveError, setImproveError] = useState<string | null>(null);
-  const [improvement, setImprovement] = useState<Improvement | null>(null);
 
   useEffect(() => {
     if (open) {
       setDrafts(originals);
-      setImprovement(null);
-      setImproveError(null);
     }
   }, [open, originals]);
-
-  // Clear improvement panel when switching tabs (it belongs to the previous text)
-  useEffect(() => {
-    setImprovement(null);
-    setImproveError(null);
-  }, [mode]);
 
   if (!open) return null;
 
@@ -145,7 +134,7 @@ export const PromptReviewDialog = ({
       toast.success("Prompt copiado. Revise no Lovable antes de executar.");
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
 
@@ -154,13 +143,12 @@ export const PromptReviewDialog = ({
       await navigator.clipboard.writeText(text);
       toast.success("Prompt copiado para o Agente Arquiteto.");
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
 
   const restore = () => {
     setDrafts((d) => ({ ...d, [mode]: originals[mode] }));
-    setImprovement(null);
     toast("Versão original restaurada.");
   };
 
@@ -171,87 +159,17 @@ export const PromptReviewDialog = ({
     el.select();
   };
 
-  const handleImprove = async () => {
-    if (improving) return;
-    setImproveError(null);
-    setImprovement(null);
-
-    if (!text || text.trim().length < 50) {
-      setImproveError("Escreva pelo menos 50 caracteres para a IA conseguir melhorar.");
-      return;
-    }
-    if (text.length > 12000) {
-      setImproveError(
-        `Prompt muito longo (${text.length} caracteres). Reduza para no máximo 12000 antes de melhorar.`,
-      );
-      return;
-    }
-
-    setImproving(true);
+  const handleImproveWithAgent = async () => {
+    const improvePrompt = buildAgentImprovePrompt(text);
     try {
-      const { data, error } = await supabase.functions.invoke("improve-prompt", {
-        body: {
-          prompt: text,
-          mode,
-          projectContext: context,
-          moduleTitle: stepName,
-          moduleObjective: stepObjective ?? "",
-          commandText: command ?? "",
-        },
-      });
-      if (error) {
-        // supabase wraps non-2xx; try to surface server message
-        const ctx = (error as { context?: Response }).context;
-        let msg: string | null = null;
-        if (ctx && typeof ctx === "object" && "json" in ctx) {
-          try {
-            const body = await (ctx as Response).clone().json();
-            if (body?.error) msg = body.error as string;
-          } catch {
-            /* ignore */
-          }
-        }
-        setImproveError(msg ?? "Não foi possível melhorar automaticamente agora.");
-        return;
-      }
-      if (!data?.improvedPrompt) {
-        setImproveError("Não foi possível melhorar automaticamente agora.");
-        return;
-      }
-      setImprovement({
-        improvedPrompt: String(data.improvedPrompt),
-        improvements: Array.isArray(data.improvements) ? data.improvements : [],
-        warnings: Array.isArray(data.warnings) ? data.warnings : [],
-      });
-      toast.success("Prompt melhorado. Revise a versão antes de aplicar.");
-    } catch (e) {
-      setImproveError(e instanceof Error ? e.message : "Não foi possível melhorar automaticamente agora.");
-    } finally {
-      setImproving(false);
-    }
-  };
-
-  const applyImprovement = () => {
-    if (!improvement) return;
-    setText(improvement.improvedPrompt);
-    setImprovement(null);
-    toast.success("Versão melhorada aplicada na aba ativa.");
-  };
-
-  const discardImprovement = () => {
-    setImprovement(null);
-    toast("Sua versão foi mantida.");
-  };
-
-  const copyImprovement = async () => {
-    if (!improvement) return;
-    try {
-      await navigator.clipboard.writeText(improvement.improvedPrompt);
-      toast.success("Versão melhorada copiada.");
+      await navigator.clipboard.writeText(improvePrompt);
+      toast.success("Prompt copiado para melhorar com o Agente.");
     } catch {
-      toast.error("Não foi possível copiar.");
+      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
+
+
 
   return (
     <div
