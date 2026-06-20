@@ -387,7 +387,7 @@ function EntregaInner() {
               {MODULES.map((m) => {
                 const Icon = ICONS[m.icon] ?? Circle;
                 const isActive = active === m.id;
-                const isDone = !!moduleDone[m.id];
+                const isDone = !!effectiveModuleDone[m.id];
                 return (
                   <button
                     key={m.id}
