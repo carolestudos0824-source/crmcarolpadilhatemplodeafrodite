@@ -25,6 +25,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { AdminShell, ADMIN_SECTIONS, type AdminSectionKey } from "@/components/admin/AdminShell";
 import { GiftCodesPanel } from "@/components/admin/GiftCodesPanel";
 import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
+import { BuyersPanel } from "@/components/admin/BuyersPanel";
 import { AccessLogs } from "@/components/admin/AccessLogs";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
 import { AdminErrorBoundary, AdminRouteErrorFallback } from "@/components/admin/AdminErrorBoundary";
