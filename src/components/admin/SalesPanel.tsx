@@ -453,11 +453,14 @@ function CreateSaleDrawer({
       if (alsoGrant) {
         const { data: gData, error: gErr } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: res.id });
         if (gErr) {
-          toast.error(`Venda criada, mas não foi possível liberar acesso: ${gErr.message}`);
+          if (isNoUserError(gErr.message)) toast.warning(FRIENDLY_NO_USER_MSG, { duration: 9000 });
+          else toast.error(`Venda criada, mas não foi possível liberar acesso agora.`);
         } else {
           const gRes = gData as { success?: boolean; error?: string } | null;
-          if (!gRes?.success) toast.error(`Venda criada, mas: ${gRes?.error ?? "falha ao liberar."}`);
-          else toast.success("Acesso liberado.");
+          if (!gRes?.success) {
+            if (isNoUserError(gRes?.error)) toast.warning(FRIENDLY_NO_USER_MSG, { duration: 9000 });
+            else toast.error(`Venda criada, mas: ${gRes?.error ?? "falha ao liberar."}`);
+          } else toast.success("Acesso liberado.");
         }
       }
       onCreated();
