@@ -49,6 +49,7 @@ import { PlanejarModule } from "@/components/entrega/PlanejarModule";
 import { MvpArquiteturaModule } from "@/components/entrega/MvpArquiteturaModule";
 import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
 import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
+import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -90,15 +91,17 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck,
 };
 
-// Módulos contabilizados no progresso global. "planejar", "mvp", "telas" e
-// "publicar" foram adicionados em rodadas recentes sem entrar no cálculo global
-// (serão incorporados em rodada futura, quando a estrutura estiver validada).
+// Módulos contabilizados no progresso global. "planejar", "mvp", "telas",
+// "publicar" e "teste" foram adicionados em rodadas recentes sem entrar no
+// cálculo global (serão incorporados em rodada futura, quando a estrutura
+// estiver validada).
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
   (id) =>
-    id !== "planejar" && id !== "mvp" && id !== "telas" && id !== "publicar",
+    id !== "planejar" && id !== "mvp" && id !== "telas" &&
+    id !== "publicar" && id !== "teste",
 );
 
 
@@ -124,6 +127,7 @@ function EntregaInner() {
     "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
     "publicar-dominio": "publicar",
+    "teste-final": "teste",
     "seo-geo": "seo",
     "campanhas": "campanhas",
     "criativos": "criativos",
@@ -1597,6 +1601,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
   if (active === "publicar") {
     return <PublicarDominioModule />;
+  }
+  if (active === "teste") {
+    return <TesteFinalModule />;
   }
   if (active === "comece") {
     const valueCards = [
