@@ -238,8 +238,8 @@ export const MyAppsDrawer = () => {
                         <Pencil size={11} /> Editar
                       </button>
                       <button
-                        onClick={() => {
-                          const copy = duplicateProject(p.id);
+                        onClick={async () => {
+                          const copy = await duplicateProject(p.id);
                           if (copy) toast.success(`Duplicado: ${copy.name}`);
                         }}
                         className="px-2.5 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-[11px] inline-flex items-center gap-1"
