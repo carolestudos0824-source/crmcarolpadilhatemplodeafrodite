@@ -32,14 +32,25 @@ type Etapa = {
   tabs: Record<TabId, string>;
 };
 
+const LOVABLE_PREAMBLE = `Você está no projeto do aplicativo que estou criando. Execute a tarefa abaixo neste app. Não explique o comando. Não responda dizendo que este texto é um conteúdo de módulo. Aplique a orientação no app atual.
+
+Tarefa:
+`;
+
+const wrapLovable = (task: string) => `${LOVABLE_PREAMBLE}${task}
+
+Importante:
+Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`;
+
 const ETAPAS: Etapa[] = [
   {
     n: 1,
     icon: PanelTop,
     title: "Mapear as telas principais",
     tabs: {
-      lovable:
-        "Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.",
+      lovable: wrapLovable(
+        `Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.`,
+      ),
       agente:
         "Me ajude a mapear as telas essenciais do meu app. Quero saber quais telas preciso para o usuário entrar, entender a proposta, realizar a ação principal e receber o resultado.",
       corrigir:
@@ -53,8 +64,9 @@ const ETAPAS: Etapa[] = [
     icon: Route,
     title: "Definir o fluxo do usuário",
     tabs: {
-      lovable:
-        "Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.",
+      lovable: wrapLovable(
+        `Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.`,
+      ),
       agente:
         "Me ajude a desenhar o caminho do usuário dentro do app. Quero um fluxo simples, sem etapas desnecessárias, com início, ação principal e resultado claro.",
       corrigir:
@@ -68,8 +80,9 @@ const ETAPAS: Etapa[] = [
     icon: ShieldCheck,
     title: "Organizar telas públicas e restritas",
     tabs: {
-      lovable:
-        "Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.",
+      lovable: wrapLovable(
+        `Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.`,
+      ),
       agente:
         "Me ajude a decidir quais telas do meu app devem ser públicas e quais devem ser restritas. Considere venda, entrega, login, pagamento, privacidade e experiência do usuário.",
       corrigir:
@@ -83,8 +96,22 @@ const ETAPAS: Etapa[] = [
     icon: MousePointerClick,
     title: "Definir CTA e próximo passo",
     tabs: {
-      lovable:
-        "Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.",
+      lovable: `${LOVABLE_PREAMBLE}Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
+
+Para cada tela, entregue:
+
+1. Nome da tela.
+2. Objetivo da tela.
+3. CTA principal recomendado.
+4. Texto do botão.
+5. O que acontece depois do clique.
+6. Se existem botões demais, simplifique.
+
+Importante:
+Não crie CTAs genéricos. Cada botão deve indicar uma ação clara.
+Não coloque muitos botões competindo entre si.
+Não prometa resultado garantido.
+Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`,
       agente:
         "Me ajude a definir o CTA principal de cada tela do meu app. Quero evitar botões demais e deixar o próximo passo óbvio para o usuário.",
       corrigir:
@@ -97,8 +124,9 @@ const ETAPAS: Etapa[] = [
     icon: LayoutTemplate,
     title: "Criar mapa final de fluxo",
     tabs: {
-      lovable:
-        "Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.",
+      lovable: wrapLovable(
+        `Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.`,
+      ),
       agente:
         "Organize meu app em um mapa final de fluxo. Quero uma visão clara das telas, ordem de navegação, CTAs, áreas restritas e pontos críticos antes de construir no Lovable.",
       corrigir:
