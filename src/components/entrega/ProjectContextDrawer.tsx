@@ -243,19 +243,34 @@ export const ProjectContextDrawer = () => {
         <div className="sticky bottom-0 flex flex-wrap gap-2 justify-end p-4 border-t border-white/10 bg-background/95 backdrop-blur">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-xs"
             type="button"
           >
             <RotateCcw size={14} /> Limpar
           </button>
-          <button
-            onClick={save}
-            className="btn-primary text-sm"
-            type="button"
-          >
+          {activeProject ? (
+            <button
+              onClick={saveInActiveApp}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              type="button"
+              title={`Salvar em "${activeProject.name}"`}
+            >
+              <FolderCheck size={14} /> Salvar neste app
+            </button>
+          ) : (
+            <button
+              onClick={saveAsNewApp}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              type="button"
+            >
+              <FolderPlus size={14} /> Salvar como novo app
+            </button>
+          )}
+          <button onClick={save} className="btn-primary text-xs" type="button">
             <Save size={14} /> Salvar contexto
           </button>
         </div>
+
       </div>
     </div>
   );
