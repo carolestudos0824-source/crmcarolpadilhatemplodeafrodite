@@ -1,25 +1,26 @@
-import { AlertTriangle, Bot } from "lucide-react";
+import { Sparkles, Bot } from "lucide-react";
 
 /**
- * Preâmbulo padrão acrescentado a todo comando que o aluno copia para colar
- * no projeto do APP DELE no Lovable. Evita que o Lovable interprete o texto
- * como pedido para alterar a própria Fábrica de Apps.
+ * Preâmbulo natural acrescentado a todo comando que a aluna copia para colar
+ * no projeto do APP DELA no Lovable. Garante que o Lovable entenda o contexto
+ * sem soar técnico ou agressivo.
  *
  * Esta string NÃO conta como comando novo. Não entra em nenhum array
  * COMMANDS_* e não afeta TOTAL_COMMANDS / commandsDone / progresso global.
  */
 export const LOVABLE_PREAMBLE =
-  "Você está no projeto do aplicativo que estou criando. Execute a tarefa abaixo neste app. Não explique o comando. Não responda dizendo que este texto é conteúdo de um módulo ou programa. Aplique a orientação no app atual.";
+  "Contexto: estou no projeto do aplicativo que estou criando no Lovable.\n\nAplique a tarefa abaixo neste app. Não explique o comando. Faça a alteração solicitada de forma objetiva e preserve o que já está funcionando.";
 
-/** Monta o texto final que o aluno copia para o Lovable do APP DELE. */
+/** Monta o texto final que a aluna copia para o Lovable do APP DELA. */
 export const wrapLovable = (task: string): string =>
   `${LOVABLE_PREAMBLE}\n\nTarefa:\n${(task ?? "").trim()}`;
 
 type Variant = "lovable" | "agent";
 
 /**
- * Aviso visual exibido antes da lista de comandos copiáveis em cada módulo.
- * Apenas UI. Não altera contagem, prefixos, checklist ou progresso.
+ * Orientação elegante exibida antes da lista de comandos copiáveis.
+ * Discreta, integrada ao design, sem cara de alerta ou bronca.
+ * Apenas UI — não altera contagem, prefixos, checklist ou progresso.
  */
 export const CopyCommandWarning = ({
   variant = "lovable",
@@ -28,16 +29,16 @@ export const CopyCommandWarning = ({
 }) => {
   if (variant === "agent") {
     return (
-      <div className="mb-5 rounded-xl border border-amber-400/30 bg-amber-400/5 p-4 flex items-start gap-3">
-        <Bot size={18} className="text-amber-300 shrink-0 mt-0.5" />
+      <div className="mb-5 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+        <Bot size={16} className="text-amber-300 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="text-sm font-semibold text-amber-200">
-            Importante: estes comandos são para o Agente Arquiteto
+          <p className="text-sm font-medium text-foreground/95">
+            Como usar os comandos
           </p>
-          <p className="text-xs text-amber-100/80 leading-relaxed">
-            Estes comandos são para você colar no chat do Agente Arquiteto e
-            pensar sua estratégia. Não cole dentro do Lovable do seu app, e
-            não cole dentro da Fábrica de Apps com IA.
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Use estes comandos para pensar com o Agente Arquiteto antes de
+            aplicar no Lovable. Eles ajudam você a clarear a ideia, decidir o
+            próximo passo e organizar a estratégia.
           </p>
         </div>
       </div>
@@ -45,20 +46,19 @@ export const CopyCommandWarning = ({
   }
 
   return (
-    <div className="mb-5 rounded-xl border border-amber-400/30 bg-amber-400/5 p-4 flex items-start gap-3">
-      <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+    <div className="mb-5 rounded-xl border border-accent/20 bg-accent/[0.04] p-4 flex items-start gap-3">
+      <Sparkles size={16} className="text-accent shrink-0 mt-0.5" />
       <div className="space-y-1">
-        <p className="text-sm font-semibold text-amber-200">
-          Importante: onde colar estes comandos
+        <p className="text-sm font-medium text-foreground/95">
+          Como usar os comandos
         </p>
-        <p className="text-xs text-amber-100/85 leading-relaxed">
-          Estes comandos são para você copiar e colar no projeto do aplicativo
-          que está criando no Lovable. Não cole dentro da Fábrica de Apps com
-          IA, porque este programa é apenas o guia.
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Abra o projeto do seu aplicativo no Lovable, cole o comando da etapa
+          e aguarde a aplicação. Depois volte aqui e marque como feito.
         </p>
-        <p className="text-[11px] text-amber-100/60 leading-relaxed">
-          Se você colar o comando aqui dentro da Fábrica de Apps, o Lovable
-          pode entender que você quer alterar este programa, e não o seu app.
+        <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+          Use um comando por vez. Se o resultado não ficar bom, use a aba
+          Corrigir erro.
         </p>
       </div>
     </div>
@@ -70,16 +70,15 @@ export const CopyCommandWarning = ({
  * ou navegação. Pode ser usado em qualquer módulo com comandos.
  */
 export const BeforeAdvanceTip = () => (
-  <div className="mb-5 rounded-xl border border-emerald-400/25 bg-emerald-400/5 p-4 flex items-start gap-3">
+  <div className="mb-5 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.04] p-4 flex items-start gap-3">
     <span className="text-emerald-300 shrink-0 mt-0.5 text-base">→</span>
     <div className="space-y-1">
-      <p className="text-sm font-semibold text-emerald-200">Antes de avançar</p>
-      <p className="text-xs text-emerald-100/85 leading-relaxed">
-        Avance apenas quando esta etapa estiver clara ou funcionando. Se estiver
-        confuso, use o Agente Arquiteto. Se o Lovable errou, vá para Erros
-        comuns.
+      <p className="text-sm font-medium text-foreground/95">Antes de avançar</p>
+      <p className="text-xs text-muted-foreground leading-relaxed">
+        Avance apenas quando esta etapa estiver clara ou funcionando. Se
+        estiver confuso, use o Agente Arquiteto. Se o Lovable errou, use a aba
+        Corrigir erro.
       </p>
     </div>
   </div>
 );
-
