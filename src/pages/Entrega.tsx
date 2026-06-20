@@ -1592,6 +1592,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "telas") {
     return <TelasFluxoModule />;
   }
+  if (active === "publicar") {
+    return <PublicarDominioModule />;
+  }
   if (active === "comece") {
     const valueCards = [
       { title: "Programa", desc: "Mostra a ordem certa do que fazer." },
