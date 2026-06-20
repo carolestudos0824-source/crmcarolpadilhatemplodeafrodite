@@ -219,10 +219,10 @@ export default function Login() {
               Acesso ainda não liberado
             </h1>
             <p className="text-sm text-muted-foreground mb-2">
-              Seu login foi criado com sucesso, mas seu acesso ao programa ainda não foi liberado.
+              Seu login foi criado, mas este e-mail ainda não tem acesso ao programa.
             </p>
             <p className="text-xs text-muted-foreground/80 mb-6">
-              Confira se você entrou com o mesmo e-mail usado na compra. Se o pagamento já foi confirmado e o acesso ainda não apareceu, fale com o suporte.
+              Confira se você entrou com o mesmo e-mail usado na compra.
             </p>
 
             {view === "no_access" ? (
@@ -234,21 +234,27 @@ export default function Login() {
                   <Gift size={16} /> Tenho um código de acesso
                 </button>
                 <button
-                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                  className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm flex items-center justify-center gap-2"
-                >
-                  <LifeBuoy size={14} /> Falar com suporte
-                </button>
-                <button
                   onClick={async () => {
                     await clearSession();
                     setView("auth");
                     setEmail("");
                     setPassword("");
                   }}
-                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-sm text-muted-foreground hover:text-foreground"
+                  className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm"
                 >
                   Tentar com outro e-mail
+                </button>
+                <button
+                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-sm flex items-center justify-center gap-2"
+                >
+                  <LifeBuoy size={14} /> Falar com suporte
+                </button>
+                <button
+                  onClick={() => navigate("/checkout?plano=fabrica")}
+                  className="w-full px-4 py-3 rounded-xl border border-accent/40 bg-accent/10 text-accent text-sm flex items-center justify-center gap-2"
+                >
+                  Garantir acesso
                 </button>
                 <button
                   onClick={recheckAccess}
