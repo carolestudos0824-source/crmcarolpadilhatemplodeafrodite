@@ -122,6 +122,7 @@ function EntregaInner() {
     "pagina-de-venda": "venda",
     "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
+    "publicar-dominio": "publicar",
     "seo-geo": "seo",
     "campanhas": "campanhas",
     "criativos": "criativos",
