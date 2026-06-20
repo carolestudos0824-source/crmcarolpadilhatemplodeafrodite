@@ -1830,7 +1830,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return <FundamentosModule />;
   }
   if (active === "planejar") {
-    return <PlanejarModule />;
+    return <PlanejarModule goTo={goTo} />;
   }
   if (active === "mvp") {
     return <MvpArquiteturaModule />;
