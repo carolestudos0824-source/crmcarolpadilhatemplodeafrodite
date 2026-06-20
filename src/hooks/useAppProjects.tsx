@@ -8,19 +8,21 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import {
   EMPTY_PROJECT_CONTEXT,
   useProjectContext,
   type ProjectContext,
+  type YesNo,
 } from "@/hooks/useProjectContext";
 
 /**
- * "Meus Apps em Construção" — permite gerenciar múltiplos projetos de app.
- * Persistido apenas no navegador (localStorage). Não toca em banco/auth.
- *
- * Cada projeto carrega seu próprio ProjectContext. Ao selecionar, o contexto
- * do projeto vira o contexto ativo no useProjectContext. Para sincronizar de
- * volta, use saveActiveFromCurrent().
+ * "Meus Apps em Construção" — fonte real agora é Supabase (RLS por auth.uid()).
+ * localStorage só é usado para:
+ *  - cache do id do app ativo: `fabrica_apps_active_project_id`
+ *  - migração dos projetos antigos: `fabrica_apps_projects`
+ *  - migração do contexto temporário: `fabrica_apps_project_context`
  */
 
 export type AppProjectStatus =
@@ -30,7 +32,9 @@ export type AppProjectStatus =
   | "revisando"
   | "publicado"
   | "vendendo"
-  | "pausado";
+  | "escalando"
+  | "pausado"
+  | "arquivado";
 
 export const APP_PROJECT_STATUSES: AppProjectStatus[] = [
   "ideia",
@@ -39,7 +43,9 @@ export const APP_PROJECT_STATUSES: AppProjectStatus[] = [
   "revisando",
   "publicado",
   "vendendo",
+  "escalando",
   "pausado",
+  "arquivado",
 ];
 
 export type AppProject = {
@@ -47,41 +53,84 @@ export type AppProject = {
   name: string;
   status: AppProjectStatus;
   currentModuleId: string | null;
+  completedModuleIds: string[];
   context: ProjectContext;
+  archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
+export type SavedPrompt = {
+  id: string;
+  projectId: string;
+  moduleId: string | null;
+  moduleTitle: string | null;
+  promptType: string;
+  title: string | null;
+  promptText: string;
+  source: string;
+  createdAt: string;
+};
+
 const PROJECTS_KEY = "fabrica_apps_projects";
 const ACTIVE_KEY = "fabrica_apps_active_project_id";
+const LOCAL_CONTEXT_KEY = "fabrica_apps_project_context";
 
-const newId = () =>
-  typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : `p_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+type DbRow = Database["public"]["Tables"]["user_app_projects"]["Row"];
+type DbInsert = Database["public"]["Tables"]["user_app_projects"]["Insert"];
+type DbUpdate = Database["public"]["Tables"]["user_app_projects"]["Update"];
+type DbPromptRow = Database["public"]["Tables"]["user_app_project_prompts"]["Row"];
 
-const readProjects = (): AppProject[] => {
-  try {
-    const raw = localStorage.getItem(PROJECTS_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.map((p) => ({
-      ...p,
-      context: { ...EMPTY_PROJECT_CONTEXT, ...(p?.context ?? {}) },
-    }));
-  } catch {
-    return [];
-  }
-};
+const ynToBool = (v: YesNo) => v === "sim";
+const boolToYn = (v: boolean): YesNo => (v ? "sim" : "nao");
 
-const writeProjects = (projects: AppProject[]) => {
-  try {
-    localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
-  } catch {
-    /* ignore quota errors */
-  }
-};
+const rowToProject = (r: DbRow): AppProject => ({
+  id: r.id,
+  name: r.app_name,
+  status: (APP_PROJECT_STATUSES.includes(r.status as AppProjectStatus)
+    ? (r.status as AppProjectStatus)
+    : "ideia"),
+  currentModuleId: r.current_module_id,
+  completedModuleIds: r.completed_module_ids ?? [],
+  archivedAt: r.archived_at,
+  createdAt: r.created_at,
+  updatedAt: r.updated_at,
+  context: {
+    appName: r.app_name,
+    appDoes: r.app_description ?? "",
+    audience: r.target_audience ?? "",
+    problem: r.problem_solved ?? "",
+    promise: r.main_promise ?? "",
+    mainAction: r.main_user_action ?? "",
+    productSold: r.product_or_service ?? "",
+    pricingModel: r.pricing_model ?? "",
+    needsLogin: boolToYn(r.needs_login),
+    needsDatabase: boolToYn(r.needs_database),
+    needsPaidArea: boolToYn(r.needs_paid_area),
+    needsAdmin: boolToYn(r.needs_admin),
+    needsCheckout: boolToYn(r.needs_checkout),
+    visualStyle: r.visual_style ?? "",
+    notes: r.notes ?? "",
+  },
+});
+
+const contextToColumns = (c: ProjectContext) => ({
+  app_name: (c.appName || "").trim() || "Meu app",
+  app_description: c.appDoes?.trim() ? c.appDoes : null,
+  target_audience: c.audience?.trim() ? c.audience : null,
+  problem_solved: c.problem?.trim() ? c.problem : null,
+  main_promise: c.promise?.trim() ? c.promise : null,
+  main_user_action: c.mainAction?.trim() ? c.mainAction : null,
+  product_or_service: c.productSold?.trim() ? c.productSold : null,
+  pricing_model: c.pricingModel?.trim() ? c.pricingModel : null,
+  needs_login: ynToBool(c.needsLogin),
+  needs_database: ynToBool(c.needsDatabase),
+  needs_paid_area: ynToBool(c.needsPaidArea),
+  needs_admin: ynToBool(c.needsAdmin),
+  needs_checkout: ynToBool(c.needsCheckout),
+  visual_style: c.visualStyle?.trim() ? c.visualStyle : null,
+  notes: c.notes?.trim() ? c.notes : null,
+});
 
 const readActiveId = (): string | null => {
   try {
@@ -90,7 +139,6 @@ const readActiveId = (): string | null => {
     return null;
   }
 };
-
 const writeActiveId = (id: string | null) => {
   try {
     if (id) localStorage.setItem(ACTIVE_KEY, id);
@@ -100,79 +148,214 @@ const writeActiveId = (id: string | null) => {
   }
 };
 
+const readLegacyProjects = (): unknown[] => {
+  try {
+    const raw = localStorage.getItem(PROJECTS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+const readLocalContext = (): ProjectContext | null => {
+  try {
+    const raw = localStorage.getItem(LOCAL_CONTEXT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    const merged = { ...EMPTY_PROJECT_CONTEXT, ...parsed } as ProjectContext;
+    const hasAny = Object.values(merged).some(
+      (v) => typeof v === "string" && v.trim().length > 0,
+    );
+    return hasAny ? merged : null;
+  } catch {
+    return null;
+  }
+};
+
+const sortProjects = (list: AppProject[]) =>
+  [...list].sort((a, b) => {
+    const aArch = a.archivedAt || a.status === "arquivado" ? 1 : 0;
+    const bArch = b.archivedAt || b.status === "arquivado" ? 1 : 0;
+    if (aArch !== bArch) return aArch - bArch;
+    const av = new Date(a.updatedAt).getTime();
+    const bv = new Date(b.updatedAt).getTime();
+    return bv - av;
+  });
+
 type Ctx = {
   projects: AppProject[];
   activeId: string | null;
   activeProject: AppProject | null;
+  loading: boolean;
+  error: string | null;
   isDrawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
-  createProject: (input: { name: string; context?: ProjectContext }) => AppProject;
+  refreshProjects: () => Promise<void>;
+  createProject: (input: { name: string; context?: ProjectContext }) => Promise<AppProject | null>;
   selectProject: (id: string) => void;
-  duplicateProject: (id: string) => AppProject | null;
-  deleteProject: (id: string) => void;
-  updateProject: (id: string, patch: Partial<Omit<AppProject, "id" | "createdAt">>) => void;
+  duplicateProject: (id: string) => Promise<AppProject | null>;
+  deleteProject: (id: string) => Promise<void>;
+  archiveProject: (id: string) => Promise<void>;
+  updateProject: (
+    id: string,
+    patch: Partial<Pick<AppProject, "name" | "status" | "currentModuleId">> & {
+      context?: ProjectContext;
+    },
+  ) => Promise<void>;
   saveActiveFromCurrent: () => boolean;
+  saveContextToActiveProject: (context: ProjectContext) => Promise<boolean>;
+  createProjectFromContext: (context: ProjectContext, name?: string) => Promise<AppProject | null>;
   setCurrentModule: (moduleId: string) => void;
+  markModuleDone: (moduleId: string) => void;
+  savePromptToActiveProject: (payload: {
+    promptType: string;
+    promptText: string;
+    source: string;
+    moduleId?: string | null;
+    moduleTitle?: string | null;
+    title?: string | null;
+  }) => Promise<SavedPrompt | null>;
+  listPrompts: (projectId: string) => Promise<SavedPrompt[]>;
+  deletePrompt: (promptId: string) => Promise<void>;
+  // Migration helpers
+  hasLocalProjectsToImport: boolean;
+  hasLocalContextToImport: boolean;
+  importLocalProjects: () => Promise<number>;
+  createProjectFromLocalContext: () => Promise<AppProject | null>;
 };
 
 const AppProjectsContext = createContext<Ctx | null>(null);
 
 export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
   const { context, setContext } = useProjectContext();
+  const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<AppProject[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeId, setActiveIdState] = useState<string | null>(readActiveId());
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const bootstrapped = useRef(false);
+  const [hasLocalProjectsToImport, setHasLocalProjectsToImport] = useState(false);
+  const [hasLocalContextToImport, setHasLocalContextToImport] = useState(false);
 
-  // Bootstrap once
+  const lastModuleSavedRef = useRef<{ id: string; mod: string } | null>(null);
+
+  // Auth bootstrap
   useEffect(() => {
-    if (bootstrapped.current) return;
-    bootstrapped.current = true;
-    const list = readProjects();
-    const aid = readActiveId();
-    setProjects(list);
-    if (aid && list.some((p) => p.id === aid)) {
-      setActiveId(aid);
-      const proj = list.find((p) => p.id === aid);
-      if (proj) setContext(proj.context);
-    }
-  }, [setContext]);
-
-  const persist = useCallback((next: AppProject[]) => {
-    setProjects(next);
-    writeProjects(next);
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUserId(session?.user?.id ?? null);
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      setUserId(data.session?.user?.id ?? null);
+    });
+    return () => sub.subscription.unsubscribe();
   }, []);
+
+  const setActiveId = useCallback((id: string | null) => {
+    setActiveIdState(id);
+    writeActiveId(id);
+  }, []);
+
+  const fetchProjects = useCallback(async (uid: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: err } = await supabase
+        .from("user_app_projects")
+        .select("*")
+        .eq("user_id", uid);
+      if (err) throw err;
+      const list = sortProjects((data ?? []).map(rowToProject));
+      setProjects(list);
+      // Active id reconciliation
+      const aid = readActiveId();
+      if (aid && list.some((p) => p.id === aid)) {
+        const proj = list.find((p) => p.id === aid)!;
+        setContext(proj.context);
+      } else if (aid) {
+        // stale id
+        setActiveId(null);
+      }
+      // migration flags
+      setHasLocalProjectsToImport(list.length === 0 && readLegacyProjects().length > 0);
+      setHasLocalContextToImport(list.length === 0 && readLocalContext() !== null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Falha ao carregar seus apps.");
+    } finally {
+      setLoading(false);
+    }
+  }, [setContext, setActiveId]);
+
+  useEffect(() => {
+    if (!userId) {
+      setProjects([]);
+      setHasLocalProjectsToImport(readLegacyProjects().length > 0);
+      setHasLocalContextToImport(readLocalContext() !== null);
+      return;
+    }
+    void fetchProjects(userId);
+  }, [userId, fetchProjects]);
+
+  const refreshProjects = useCallback(async () => {
+    if (userId) await fetchProjects(userId);
+  }, [userId, fetchProjects]);
 
   const activeProject = useMemo(
     () => projects.find((p) => p.id === activeId) ?? null,
     [projects, activeId],
   );
 
+  const upsertLocal = useCallback((p: AppProject) => {
+    setProjects((prev) => {
+      const exists = prev.some((x) => x.id === p.id);
+      const next = exists ? prev.map((x) => (x.id === p.id ? p : x)) : [p, ...prev];
+      return sortProjects(next);
+    });
+  }, []);
+
+  const removeLocal = useCallback((id: string) => {
+    setProjects((prev) => prev.filter((p) => p.id !== id));
+  }, []);
+
   const createProject = useCallback<Ctx["createProject"]>(
-    ({ name, context: initialContext }) => {
-      const now = new Date().toISOString();
-      const proj: AppProject = {
-        id: newId(),
-        name: name.trim() || "Meu app",
-        status: "ideia",
-        currentModuleId: null,
-        context: {
-          ...EMPTY_PROJECT_CONTEXT,
-          ...(initialContext ?? {}),
-          appName: name.trim() || initialContext?.appName || "Meu app",
-        },
-        createdAt: now,
-        updatedAt: now,
+    async ({ name, context: initialContext }) => {
+      if (!userId) {
+        setError("Faça login para salvar seus apps.");
+        return null;
+      }
+      const ctx: ProjectContext = {
+        ...EMPTY_PROJECT_CONTEXT,
+        ...(initialContext ?? {}),
+        appName: (name?.trim() || initialContext?.appName?.trim() || "Meu app"),
       };
-      const next = [proj, ...projects];
-      persist(next);
+      const insert: DbInsert = {
+        user_id: userId,
+        ...contextToColumns(ctx),
+        status: "ideia",
+        last_opened_at: new Date().toISOString(),
+      };
+      const { data, error: err } = await supabase
+        .from("user_app_projects")
+        .insert(insert)
+        .select("*")
+        .single();
+      if (err || !data) {
+        setError(err?.message || "Não foi possível criar o app.");
+        return null;
+      }
+      const proj = rowToProject(data);
+      upsertLocal(proj);
       setActiveId(proj.id);
-      writeActiveId(proj.id);
       setContext(proj.context);
       return proj;
     },
-    [projects, persist, setContext],
+    [userId, upsertLocal, setActiveId, setContext],
+  );
+
+  const createProjectFromContext = useCallback<Ctx["createProjectFromContext"]>(
+    async (ctx, name) => createProject({ name: name ?? ctx.appName, context: ctx }),
+    [createProject],
   );
 
   const selectProject = useCallback(
@@ -180,112 +363,385 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = projects.find((p) => p.id === id);
       if (!proj) return;
       setActiveId(id);
-      writeActiveId(id);
       setContext(proj.context);
+      // bump last_opened_at (fire and forget)
+      if (userId) {
+        void supabase
+          .from("user_app_projects")
+          .update({ last_opened_at: new Date().toISOString() })
+          .eq("id", id)
+          .eq("user_id", userId);
+      }
     },
-    [projects, setContext],
+    [projects, setActiveId, setContext, userId],
   );
 
   const updateProject = useCallback<Ctx["updateProject"]>(
-    (id, patch) => {
-      const next = projects.map((p) =>
-        p.id === id
-          ? { ...p, ...patch, updatedAt: new Date().toISOString() }
-          : p,
-      );
-      persist(next);
-    },
-    [projects, persist],
-  );
-
-  const duplicateProject = useCallback(
-    (id: string): AppProject | null => {
-      const src = projects.find((p) => p.id === id);
-      if (!src) return null;
-      const now = new Date().toISOString();
-      const copy: AppProject = {
-        ...src,
-        id: newId(),
-        name: `${src.name} (cópia)`,
-        context: { ...src.context, appName: `${src.context.appName} (cópia)` },
-        createdAt: now,
-        updatedAt: now,
-      };
-      persist([copy, ...projects]);
-      return copy;
-    },
-    [projects, persist],
-  );
-
-  const deleteProject = useCallback(
-    (id: string) => {
-      const next = projects.filter((p) => p.id !== id);
-      persist(next);
-      if (activeId === id) {
-        setActiveId(null);
-        writeActiveId(null);
+    async (id, patch) => {
+      if (!userId) return;
+      const current = projects.find((p) => p.id === id);
+      if (!current) return;
+      const update: DbUpdate = {};
+      if (patch.name !== undefined) update.app_name = patch.name.trim() || "Meu app";
+      if (patch.status !== undefined) update.status = patch.status;
+      if (patch.currentModuleId !== undefined) update.current_module_id = patch.currentModuleId;
+      if (patch.context !== undefined) Object.assign(update, contextToColumns(patch.context));
+      const { data, error: err } = await supabase
+        .from("user_app_projects")
+        .update(update)
+        .eq("id", id)
+        .eq("user_id", userId)
+        .select("*")
+        .single();
+      if (err || !data) {
+        setError(err?.message || "Não foi possível salvar o app.");
+        return;
       }
+      const proj = rowToProject(data);
+      upsertLocal(proj);
+      if (id === activeId && patch.context !== undefined) setContext(proj.context);
     },
-    [projects, persist, activeId],
+    [userId, projects, activeId, upsertLocal, setContext],
   );
 
+  const saveContextToActiveProject = useCallback<Ctx["saveContextToActiveProject"]>(
+    async (ctx) => {
+      if (!activeId || !userId) return false;
+      const { data, error: err } = await supabase
+        .from("user_app_projects")
+        .update({ ...contextToColumns(ctx), last_opened_at: new Date().toISOString() })
+        .eq("id", activeId)
+        .eq("user_id", userId)
+        .select("*")
+        .single();
+      if (err || !data) {
+        setError(err?.message || "Não foi possível salvar o contexto neste app.");
+        return false;
+      }
+      const proj = rowToProject(data);
+      upsertLocal(proj);
+      setContext(proj.context);
+      return true;
+    },
+    [activeId, userId, upsertLocal, setContext],
+  );
+
+  // Legacy alias kept for compat (uses currently loaded context from provider).
   const saveActiveFromCurrent = useCallback(() => {
     if (!activeId) return false;
-    const next = projects.map((p) =>
-      p.id === activeId
-        ? {
-            ...p,
-            context,
-            name: context.appName.trim() || p.name,
-            updatedAt: new Date().toISOString(),
-          }
-        : p,
-    );
-    persist(next);
+    void saveContextToActiveProject(context);
     return true;
-  }, [activeId, projects, context, persist]);
+  }, [activeId, context, saveContextToActiveProject]);
+
+  const duplicateProject = useCallback<Ctx["duplicateProject"]>(
+    async (id) => {
+      if (!userId) return null;
+      const src = projects.find((p) => p.id === id);
+      if (!src) return null;
+      const copyName = `${src.name} — cópia`;
+      const insert: DbInsert = {
+        user_id: userId,
+        ...contextToColumns({ ...src.context, appName: copyName }),
+        status: src.status,
+        current_module_id: src.currentModuleId,
+        completed_module_ids: src.completedModuleIds,
+        last_opened_at: new Date().toISOString(),
+      };
+      const { data, error: err } = await supabase
+        .from("user_app_projects")
+        .insert(insert)
+        .select("*")
+        .single();
+      if (err || !data) {
+        setError(err?.message || "Não foi possível duplicar.");
+        return null;
+      }
+      const proj = rowToProject(data);
+      upsertLocal(proj);
+      return proj;
+    },
+    [userId, projects, upsertLocal],
+  );
+
+  const deleteProject = useCallback<Ctx["deleteProject"]>(
+    async (id) => {
+      if (!userId) return;
+      const { error: err } = await supabase
+        .from("user_app_projects")
+        .delete()
+        .eq("id", id)
+        .eq("user_id", userId);
+      if (err) {
+        setError(err.message);
+        return;
+      }
+      removeLocal(id);
+      if (activeId === id) setActiveId(null);
+    },
+    [userId, activeId, removeLocal, setActiveId],
+  );
+
+  const archiveProject = useCallback<Ctx["archiveProject"]>(
+    async (id) => {
+      if (!userId) return;
+      const { data, error: err } = await supabase
+        .from("user_app_projects")
+        .update({ status: "arquivado", archived_at: new Date().toISOString() })
+        .eq("id", id)
+        .eq("user_id", userId)
+        .select("*")
+        .single();
+      if (err || !data) {
+        setError(err?.message || "Não foi possível arquivar.");
+        return;
+      }
+      upsertLocal(rowToProject(data));
+    },
+    [userId, upsertLocal],
+  );
 
   const setCurrentModule = useCallback(
     (moduleId: string) => {
-      if (!activeId) return;
-      const next = projects.map((p) =>
-        p.id === activeId
-          ? { ...p, currentModuleId: moduleId, updatedAt: new Date().toISOString() }
-          : p,
+      if (!activeId || !userId) return;
+      // dedupe: skip if same as last persisted module for this project
+      const last = lastModuleSavedRef.current;
+      if (last && last.id === activeId && last.mod === moduleId) return;
+      const current = projects.find((p) => p.id === activeId);
+      if (current && current.currentModuleId === moduleId) {
+        lastModuleSavedRef.current = { id: activeId, mod: moduleId };
+        return;
+      }
+      lastModuleSavedRef.current = { id: activeId, mod: moduleId };
+      // optimistic local update
+      setProjects((prev) =>
+        prev.map((p) =>
+          p.id === activeId ? { ...p, currentModuleId: moduleId } : p,
+        ),
       );
-      persist(next);
+      void supabase
+        .from("user_app_projects")
+        .update({
+          current_module_id: moduleId,
+          last_opened_at: new Date().toISOString(),
+        })
+        .eq("id", activeId)
+        .eq("user_id", userId);
     },
-    [activeId, projects, persist],
+    [activeId, userId, projects],
   );
+
+  const markModuleDone = useCallback(
+    (moduleId: string) => {
+      if (!activeId || !userId) return;
+      const current = projects.find((p) => p.id === activeId);
+      if (!current) return;
+      if (current.completedModuleIds.includes(moduleId)) return;
+      const next = [...current.completedModuleIds, moduleId];
+      setProjects((prev) =>
+        prev.map((p) =>
+          p.id === activeId ? { ...p, completedModuleIds: next } : p,
+        ),
+      );
+      void supabase
+        .from("user_app_projects")
+        .update({ completed_module_ids: next })
+        .eq("id", activeId)
+        .eq("user_id", userId);
+    },
+    [activeId, userId, projects],
+  );
+
+  const savePromptToActiveProject = useCallback<Ctx["savePromptToActiveProject"]>(
+    async (payload) => {
+      if (!activeId || !userId) return null;
+      const { data, error: err } = await supabase
+        .from("user_app_project_prompts")
+        .insert({
+          user_id: userId,
+          project_id: activeId,
+          prompt_type: payload.promptType,
+          prompt_text: payload.promptText,
+          source: payload.source,
+          module_id: payload.moduleId ?? null,
+          module_title: payload.moduleTitle ?? null,
+          title: payload.title ?? null,
+        })
+        .select("*")
+        .single();
+      if (err || !data) {
+        setError(err?.message || "Não foi possível salvar este prompt.");
+        return null;
+      }
+      const row = data as DbPromptRow;
+      return {
+        id: row.id,
+        projectId: row.project_id,
+        moduleId: row.module_id,
+        moduleTitle: row.module_title,
+        promptType: row.prompt_type,
+        title: row.title,
+        promptText: row.prompt_text,
+        source: row.source,
+        createdAt: row.created_at,
+      };
+    },
+    [activeId, userId],
+  );
+
+  const listPrompts = useCallback<Ctx["listPrompts"]>(
+    async (projectId) => {
+      if (!userId) return [];
+      const { data, error: err } = await supabase
+        .from("user_app_project_prompts")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("project_id", projectId)
+        .order("created_at", { ascending: false });
+      if (err || !data) return [];
+      return data.map((row) => ({
+        id: row.id,
+        projectId: row.project_id,
+        moduleId: row.module_id,
+        moduleTitle: row.module_title,
+        promptType: row.prompt_type,
+        title: row.title,
+        promptText: row.prompt_text,
+        source: row.source,
+        createdAt: row.created_at,
+      }));
+    },
+    [userId],
+  );
+
+  const deletePrompt = useCallback<Ctx["deletePrompt"]>(
+    async (promptId) => {
+      if (!userId) return;
+      await supabase
+        .from("user_app_project_prompts")
+        .delete()
+        .eq("id", promptId)
+        .eq("user_id", userId);
+    },
+    [userId],
+  );
+
+  const importLocalProjects = useCallback<Ctx["importLocalProjects"]>(async () => {
+    if (!userId) return 0;
+    const legacy = readLegacyProjects();
+    if (legacy.length === 0) return 0;
+    const inserts: DbInsert[] = legacy.map((raw) => {
+      const r = (raw ?? {}) as {
+        name?: string;
+        status?: string;
+        currentModuleId?: string | null;
+        context?: Partial<ProjectContext>;
+        createdAt?: string;
+        updatedAt?: string;
+      };
+      const ctx: ProjectContext = {
+        ...EMPTY_PROJECT_CONTEXT,
+        ...(r.context ?? {}),
+        appName: r.name || r.context?.appName || "Meu app",
+      };
+      return {
+        user_id: userId,
+        ...contextToColumns(ctx),
+        status: APP_PROJECT_STATUSES.includes(r.status as AppProjectStatus)
+          ? (r.status as AppProjectStatus)
+          : "ideia",
+        current_module_id: r.currentModuleId ?? null,
+        last_opened_at: new Date().toISOString(),
+      };
+    });
+    const { data, error: err } = await supabase
+      .from("user_app_projects")
+      .insert(inserts)
+      .select("*");
+    if (err || !data) {
+      setError(err?.message || "Não foi possível importar os apps locais.");
+      return 0;
+    }
+    const projs = data.map(rowToProject);
+    setProjects((prev) => sortProjects([...projs, ...prev]));
+    // try to map old active id by name to first imported
+    const oldActiveId = readActiveId();
+    const match =
+      legacy.findIndex((r) => (r as { id?: string })?.id === oldActiveId) ?? -1;
+    if (match >= 0 && projs[match]) {
+      setActiveId(projs[match].id);
+      setContext(projs[match].context);
+    }
+    setHasLocalProjectsToImport(false);
+    return projs.length;
+  }, [userId, setActiveId, setContext]);
+
+  const createProjectFromLocalContext = useCallback<Ctx["createProjectFromLocalContext"]>(async () => {
+    const ctx = readLocalContext();
+    if (!ctx) return null;
+    const proj = await createProject({
+      name: ctx.appName?.trim() || "Meu app em construção",
+      context: ctx,
+    });
+    if (proj) setHasLocalContextToImport(false);
+    return proj;
+  }, [createProject]);
 
   const value = useMemo<Ctx>(
     () => ({
       projects,
       activeId,
       activeProject,
+      loading,
+      error,
       isDrawerOpen,
       openDrawer: () => setDrawerOpen(true),
       closeDrawer: () => setDrawerOpen(false),
+      refreshProjects,
       createProject,
       selectProject,
       duplicateProject,
       deleteProject,
+      archiveProject,
       updateProject,
       saveActiveFromCurrent,
+      saveContextToActiveProject,
+      createProjectFromContext,
       setCurrentModule,
+      markModuleDone,
+      savePromptToActiveProject,
+      listPrompts,
+      deletePrompt,
+      hasLocalProjectsToImport,
+      hasLocalContextToImport,
+      importLocalProjects,
+      createProjectFromLocalContext,
     }),
     [
       projects,
       activeId,
       activeProject,
+      loading,
+      error,
       isDrawerOpen,
+      refreshProjects,
       createProject,
       selectProject,
       duplicateProject,
       deleteProject,
+      archiveProject,
       updateProject,
       saveActiveFromCurrent,
+      saveContextToActiveProject,
+      createProjectFromContext,
       setCurrentModule,
+      markModuleDone,
+      savePromptToActiveProject,
+      listPrompts,
+      deletePrompt,
+      hasLocalProjectsToImport,
+      hasLocalContextToImport,
+      importLocalProjects,
+      createProjectFromLocalContext,
     ],
   );
 
@@ -297,29 +753,34 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
 export const useAppProjects = (): Ctx => {
   const ctx = useContext(AppProjectsContext);
   if (!ctx) {
-    // Fallback seguro: permite uso fora do provider sem quebrar.
     return {
       projects: [],
       activeId: null,
       activeProject: null,
+      loading: false,
+      error: null,
       isDrawerOpen: false,
       openDrawer: () => {},
       closeDrawer: () => {},
-      createProject: () => ({
-        id: "",
-        name: "",
-        status: "ideia",
-        currentModuleId: null,
-        context: EMPTY_PROJECT_CONTEXT,
-        createdAt: "",
-        updatedAt: "",
-      }),
+      refreshProjects: async () => {},
+      createProject: async () => null,
       selectProject: () => {},
-      duplicateProject: () => null,
-      deleteProject: () => {},
-      updateProject: () => {},
+      duplicateProject: async () => null,
+      deleteProject: async () => {},
+      archiveProject: async () => {},
+      updateProject: async () => {},
       saveActiveFromCurrent: () => false,
+      saveContextToActiveProject: async () => false,
+      createProjectFromContext: async () => null,
       setCurrentModule: () => {},
+      markModuleDone: () => {},
+      savePromptToActiveProject: async () => null,
+      listPrompts: async () => [],
+      deletePrompt: async () => {},
+      hasLocalProjectsToImport: false,
+      hasLocalContextToImport: false,
+      importLocalProjects: async () => 0,
+      createProjectFromLocalContext: async () => null,
     };
   }
   return ctx;
