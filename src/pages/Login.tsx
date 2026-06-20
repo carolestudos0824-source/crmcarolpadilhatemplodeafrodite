@@ -217,9 +217,11 @@ export default function Login() {
             <h1 className="text-2xl font-heading font-bold mb-2">
               Acesso ainda não liberado
             </h1>
-            <p className="text-sm text-muted-foreground mb-6">
-              Sua conta foi criada, mas seu acesso aos materiais ainda não está
-              ativo.
+            <p className="text-sm text-muted-foreground mb-2">
+              Seu login foi criado com sucesso, mas seu acesso ao programa ainda não foi liberado.
+            </p>
+            <p className="text-xs text-muted-foreground/80 mb-6">
+              Confira se você entrou com o mesmo e-mail usado na compra. Se o pagamento já foi confirmado e o acesso ainda não apareceu, fale com o suporte.
             </p>
 
             {view === "no_access" ? (
