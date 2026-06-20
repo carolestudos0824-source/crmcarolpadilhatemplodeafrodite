@@ -3545,6 +3545,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     doNow: "Crie pagamento, página de obrigado, área de entrega protegida, libere o acesso e teste como comprador.",
     advanceWhen: "Antes de divulgar, faça o caminho completo como se você fosse o comprador.",
   },
+  legal: {
+    doNow: "Revise termos, privacidade, suporte, pagamento e entrega. Remova promessas exageradas e deixe links legais acessíveis.",
+    advanceWhen: "Avance quando o app tiver termos, privacidade, suporte claros e textos sem promessa irreal.",
+  },
   publicar: {
     doNow: "Publique o app, teste o link público, revise domínio, favicon e imagem social, e abra no celular antes de divulgar.",
     advanceWhen: "Avance quando o link público abrir corretamente em navegador, aba anônima e celular, com favicon, título e imagem social revisados.",
