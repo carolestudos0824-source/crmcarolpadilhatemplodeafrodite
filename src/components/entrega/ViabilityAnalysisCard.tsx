@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Compass, Bot, Copy, Check, Settings2 } from "lucide-react";
+import { Compass, Bot, Check, Settings2 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
