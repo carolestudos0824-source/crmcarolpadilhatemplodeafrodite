@@ -2323,6 +2323,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <ValidacaoIntro />
+        <ViabilityAnalysisCard />
         <ModuleHeader
           title="Siga as etapas de Validação"
           subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
