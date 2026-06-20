@@ -1585,6 +1585,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "mvp") {
     return <MvpArquiteturaModule />;
   }
+  if (active === "telas") {
+    return <TelasFluxoModule />;
+  }
   if (active === "comece") {
     const valueCards = [
       { title: "Programa", desc: "Mostra a ordem certa do que fazer." },
