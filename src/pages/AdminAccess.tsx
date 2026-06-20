@@ -551,16 +551,19 @@ function AcessosSection({
 
       {/* Flow */}
       <div className="glass-strong p-5">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-2">
           <LayoutGrid size={16} className="text-accent" />
-          <h2 className="font-heading font-semibold text-sm">Fluxo de liberação manual</h2>
+          <h2 className="font-heading font-semibold text-sm">Liberar acesso manualmente</h2>
         </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Use esta área para liberar acesso após confirmar o pagamento no checkout externo ou para conceder acesso de teste/cortesia.
+        </p>
         <ol className="space-y-2 text-sm text-foreground/85">
           {[
             "Confirme o pagamento no gateway ou WhatsApp.",
             "Busque o comprador pelo e-mail usado na compra.",
             "Confira se o usuário foi encontrado.",
-            "Libere ou revogue acesso.",
+            "Libere ou revogue acesso (pago confirmado, teste interno, cortesia ou código premium).",
             "Oriente o comprador a entrar em Minha área.",
           ].map((s, i) => (
             <li key={i} className="flex items-start gap-3">
