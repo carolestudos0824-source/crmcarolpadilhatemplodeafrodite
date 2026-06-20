@@ -21,6 +21,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { supabase } from "@/integrations/supabase/client";
+import { useAppProjects } from "@/hooks/useAppProjects";
 
 type Props = {
   open: boolean;
@@ -67,6 +68,7 @@ export const PromptReviewDialog = ({
   customPrompts,
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
+  const { activeProject } = useAppProjects();
   const [mode, setMode] = useState<Mode>("lovable");
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -241,6 +243,10 @@ export const PromptReviewDialog = ({
             <p className="text-xs text-muted-foreground mt-1">
               Revise, edite e ajuste o comando antes de gastar créditos no Lovable.
             </p>
+            <p className="text-[11px] text-muted-foreground/90 mt-1 truncate">
+              {activeProject ? `App ativo: ${activeProject.name}` : "App ativo: contexto temporário"}
+            </p>
+
           </div>
           <button
             onClick={onClose}

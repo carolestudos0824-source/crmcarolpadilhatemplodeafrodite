@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Save, RotateCcw } from "lucide-react";
+import { X, Save, RotateCcw, FolderPlus, FolderCheck } from "lucide-react";
 import { toast } from "sonner";
 import {
   EMPTY_PROJECT_CONTEXT,
@@ -7,6 +7,7 @@ import {
   type ProjectContext,
   type YesNo,
 } from "@/hooks/useProjectContext";
+import { useAppProjects } from "@/hooks/useAppProjects";
 
 /**
  * Drawer "Contexto do meu app". Salva tudo apenas no navegador
@@ -52,6 +53,7 @@ const YesNoSelect = ({
 
 export const ProjectContextDrawer = () => {
   const { context, setContext, isEditorOpen, closeEditor } = useProjectContext();
+  const { activeProject, saveActiveFromCurrent, createProject } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
 
   useEffect(() => {
@@ -66,6 +68,27 @@ export const ProjectContextDrawer = () => {
   const save = () => {
     setContext(draft);
     toast.success("Contexto do seu app salvo.");
+    closeEditor();
+  };
+
+  const saveInActiveApp = () => {
+    setContext(draft);
+    // saveActiveFromCurrent lê o contexto do useProjectContext, que acabou de
+    // ser atualizado de forma síncrona via setState; mas como a leitura aqui
+    // ocorre antes do re-render, passamos o draft direto atualizando o projeto
+    // pelo próximo ciclo. Para garantir, salvamos contexto e depois persistimos.
+    setTimeout(() => {
+      const ok = saveActiveFromCurrent();
+      if (ok) toast.success(`Salvo em "${activeProject?.name}".`);
+    }, 0);
+    closeEditor();
+  };
+
+  const saveAsNewApp = () => {
+    const name = draft.appName.trim() || "Meu app";
+    setContext(draft);
+    createProject({ name, context: draft });
+    toast.success(`App "${name}" criado a partir deste contexto.`);
     closeEditor();
   };
 
@@ -84,21 +107,28 @@ export const ProjectContextDrawer = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 z-10 flex items-center justify-between p-5 border-b border-white/10 bg-background/95 backdrop-blur">
-          <div>
+          <div className="min-w-0">
             <h2 className="font-heading font-bold text-lg">Contexto do meu app</h2>
             <p className="text-xs text-muted-foreground">
               Preencha uma vez. Os prompts copiados ficam mais precisos para o app
               que você está criando no Lovable.
             </p>
+            <p className="text-[11px] mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-muted-foreground max-w-full">
+              <FolderCheck size={11} className="text-accent shrink-0" />
+              <span className="truncate">
+                {activeProject ? `App ativo: ${activeProject.name}` : "App ativo: contexto temporário"}
+              </span>
+            </p>
           </div>
           <button
             onClick={closeEditor}
-            className="p-2 rounded-lg hover:bg-white/5"
+            className="p-2 rounded-lg hover:bg-white/5 shrink-0"
             aria-label="Fechar"
           >
             <X size={18} />
           </button>
         </div>
+
 
         <div className="p-5 space-y-4">
           <Field label="Nome do app">
@@ -213,19 +243,34 @@ export const ProjectContextDrawer = () => {
         <div className="sticky bottom-0 flex flex-wrap gap-2 justify-end p-4 border-t border-white/10 bg-background/95 backdrop-blur">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-xs"
             type="button"
           >
             <RotateCcw size={14} /> Limpar
           </button>
-          <button
-            onClick={save}
-            className="btn-primary text-sm"
-            type="button"
-          >
+          {activeProject ? (
+            <button
+              onClick={saveInActiveApp}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              type="button"
+              title={`Salvar em "${activeProject.name}"`}
+            >
+              <FolderCheck size={14} /> Salvar neste app
+            </button>
+          ) : (
+            <button
+              onClick={saveAsNewApp}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              type="button"
+            >
+              <FolderPlus size={14} /> Salvar como novo app
+            </button>
+          )}
+          <button onClick={save} className="btn-primary text-xs" type="button">
             <Save size={14} /> Salvar contexto
           </button>
         </div>
+
       </div>
     </div>
   );
