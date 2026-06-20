@@ -142,6 +142,7 @@ function EntregaInner() {
     "telas-fluxo": "telas",
     "construir-app": "construir",
     "login-banco": "login",
+    "seguranca-app": "seguranca",
     "pagina-de-venda": "venda",
     "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
