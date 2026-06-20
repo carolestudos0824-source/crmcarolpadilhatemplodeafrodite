@@ -304,31 +304,9 @@ function AdminAccessInner() {
           />
         )}
         {section === "compradores" && (
-          <CompradoresSection
-            email={email}
-            setEmail={setEmail}
-            status={status}
-            onSearch={onSearch}
-            onGoToAcessos={() => changeSection("acessos")}
-            onViewBuyer={(b) => {
-              if (b.email) {
-                setEmail(b.email);
-                void onSearch({ preventDefault: () => {} } as React.FormEvent);
-                changeSection("acessos");
-              }
-            }}
-            onSetBuyerAccess={async (b, has) => {
-              const { data, error } = await supabase.rpc("admin_set_access", {
-                _user_id: b.user_id,
-                _has_access: has,
-              });
-              if (error) throw new Error(error.message);
-              const res = data as { success?: boolean; error?: string } | null;
-              if (!res?.success) throw new Error(res?.error ?? "Falha na operação.");
-              bumpLogs();
-            }}
-          />
+          <BuyersPanel onGoToSales={() => changeSection("vendas")} />
         )}
+
         {section === "vendas" && <SalesPanel />}
         {section === "codigos" && <GiftCodesPanel />}
         {section === "pendencias" && <PendenciasSection />}
