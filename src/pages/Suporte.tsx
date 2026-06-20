@@ -69,8 +69,7 @@ export default function Suporte() {
             Precisa de ajuda para acessar o material? Envie uma mensagem para o suporte por e-mail.
           </p>
           <p className="text-sm text-muted-foreground/90 bg-white/5 border border-white/10 rounded-xl p-4 leading-relaxed mb-8 text-left">
-            O suporte é para <strong className="text-foreground">acesso ao material, problemas técnicos e dúvidas de navegação</strong>.
-            Dúvidas estratégicas sobre o seu aplicativo podem ser contratadas no <strong className="text-foreground">Blueprint Personalizado</strong>.
+            O suporte é para <strong className="text-foreground">acesso ao programa, problemas técnicos, dúvidas de uso do Agente Arquiteto, do Lovable e da trilha</strong>. A resposta acontece em dias úteis.
           </p>
           <div className="flex justify-center">
             <button className="btn-primary" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
@@ -78,6 +77,28 @@ export default function Suporte() {
             </button>
           </div>
         </div>
+
+        <div className="glass-strong p-6 md:p-8">
+          <h2 className="text-xl font-heading font-bold mb-4">Dúvidas mais comuns</h2>
+          <ul className="space-y-3 text-sm text-foreground/90">
+            {[
+              ["Comprei e ainda não consegui acessar", "A liberação pode levar alguns minutos após a confirmação do pagamento. Use o mesmo e-mail informado na compra para entrar em /login. Se continuar sem acesso, escreva para o suporte."],
+              ["Não sei onde entrar depois da compra", "Acesse /login com o e-mail usado na compra. A área do programa fica em /entrega."],
+              ["Esqueci minha senha", "Na tela de login, use a opção de redefinir senha. Você receberá um e-mail com o link."],
+              ["Meu acesso ainda não foi liberado", "Aguarde a confirmação do pagamento. Se já se passaram algumas horas, fale com o suporte com o e-mail e a data da compra."],
+              ["Não sei usar o Agente Arquiteto", "O Agente Arquiteto fica no ChatGPT. Você precisa estar logada em uma conta ChatGPT. O link de acesso está na área do programa."],
+              ["Não sei onde colar os comandos", "Os comandos são copiados na Fábrica de Apps e colados no Lovable do app que você está criando. Cada módulo explica o passo a passo."],
+              ["O Lovable não aplicou meu comando", "Use a aba “Corrigir erro” do módulo. Copie a correção e cole no Lovable. Se persistir, peça ajuda ao Agente Arquiteto antes de mexer em tudo."],
+              ["Preciso testar meu app antes de divulgar", "Use o módulo “Teste Final do App” na área do programa. Ele lista o que revisar no celular, login, checkout e entrega."],
+            ].map(([q, a]) => (
+              <li key={q} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                <p className="font-semibold text-foreground mb-1">{q}</p>
+                <p className="text-muted-foreground leading-relaxed">{a}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
 
         <div className="glass-strong p-6 md:p-8">
           <h2 className="text-xl font-heading font-bold mb-2">Ou envie pelo formulário</h2>
