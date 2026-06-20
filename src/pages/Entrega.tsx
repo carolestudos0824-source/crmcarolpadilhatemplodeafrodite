@@ -526,6 +526,7 @@ function EntregaInner() {
           <ModuleReviewCard
             moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
             isSecurity={active === "seguranca"}
+            objective={MODULE_HINTS[active]?.doNow}
           />
 
 
