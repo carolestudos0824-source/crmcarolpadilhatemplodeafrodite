@@ -40,7 +40,7 @@ describe("MvpArquiteturaModule", () => {
     fireEvent.click(screen.getAllByRole("button", { name: /Pensar com o Agente/i })[0]);
     expect(screen.getByText(/transformar minha ideia em um MVP simples/i)).toBeInTheDocument();
     fireEvent.click(screen.getAllByRole("button", { name: /Corrigir erro/i })[0]);
-    fireEvent.click(screen.getAllByRole("button", { name: /Copiar comando/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Copiar correção/i })[0]);
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("MVP grande demais"));
     fireEvent.click(screen.getAllByRole("button", { name: /Quando avançar/i })[0]);
     expect(screen.getByText(/Avance quando a primeira versão do app estiver simples/i)).toBeInTheDocument();
