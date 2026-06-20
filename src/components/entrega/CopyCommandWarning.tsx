@@ -1,7 +1,7 @@
 import { Sparkles } from "lucide-react";
 
 /**
- * Preâmbulo natural acrescentado a todo comando que a aluna copia para colar
+ * Preâmbulo natural acrescentado a todo comando que a pessoa copia para colar
  * no projeto do APP DELA no Lovable. Garante que o Lovable entenda o contexto
  * sem soar técnico ou agressivo.
  *
