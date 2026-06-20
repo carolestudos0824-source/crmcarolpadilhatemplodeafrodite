@@ -2822,8 +2822,12 @@ const Select = ({
 
 export default function Entrega() {
   return (
-    <UserProgressProvider>
-      <EntregaInner />
-    </UserProgressProvider>
+    <ProjectContextProvider>
+      <UserProgressProvider>
+        <EntregaInner />
+        <ProjectContextDrawer />
+      </UserProgressProvider>
+    </ProjectContextProvider>
   );
 }
+
