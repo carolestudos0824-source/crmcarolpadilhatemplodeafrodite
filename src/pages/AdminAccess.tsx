@@ -358,34 +358,53 @@ function OverviewSection({
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const [buyersRes, giftsRes, supportRes] = await Promise.all([
-        (supabase as any).rpc("admin_list_buyers", { _limit: 200 }),
-        supabase.from("gift_redemptions").select("*", { count: "exact", head: true }),
-        supabase.from("support_messages").select("*", { count: "exact", head: true }),
-      ]);
-      if (!mounted) return;
-      const rows = (buyersRes.data as Buyer[] | null) ?? [];
-      const active = rows.filter((r) => r.has_access);
-      const bySource = { manual: 0, gift: 0, other: 0 };
-      for (const r of active) {
-        const s = (r.source ?? "").toLowerCase();
-        if (s === "manual") bySource.manual++;
-        else if (s === "gift") bySource.gift++;
-        else bySource.other++;
+      try {
+        const [buyersRes, giftsRes, supportRes] = await Promise.all([
+          (supabase as any).rpc("admin_list_buyers", { _limit: 200 }).catch((e: unknown) => ({ data: null, error: e })),
+          supabase.from("gift_redemptions").select("*", { count: "exact", head: true }).then(
+            (r) => r,
+            (e) => ({ data: null, count: null, error: e }),
+          ),
+          supabase.from("support_messages").select("*", { count: "exact", head: true }).then(
+            (r) => r,
+            (e) => ({ data: null, count: null, error: e }),
+          ),
+        ]);
+        if (!mounted) return;
+        const rows = (buyersRes?.data as Buyer[] | null) ?? [];
+        const active = rows.filter((r) => r && r.has_access);
+        const bySource = { manual: 0, gift: 0, other: 0 };
+        for (const r of active) {
+          const s = (r.source ?? "").toLowerCase();
+          if (s === "manual") bySource.manual++;
+          else if (s === "gift") bySource.gift++;
+          else bySource.other++;
+        }
+        setMetrics({
+          loading: false,
+          buyersWithAccess: active.length,
+          totalUsers: rows.length,
+          giftRedemptions: giftsRes?.count ?? null,
+          supportMessages: supportRes?.count ?? null,
+          bySource,
+        });
+      } catch {
+        if (!mounted) return;
+        setMetrics({
+          loading: false,
+          buyersWithAccess: null,
+          totalUsers: null,
+          giftRedemptions: null,
+          supportMessages: null,
+          bySource: { manual: 0, gift: 0, other: 0 },
+        });
       }
-      setMetrics({
-        loading: false,
-        buyersWithAccess: active.length,
-        totalUsers: rows.length,
-        giftRedemptions: giftsRes.count ?? null,
-        supportMessages: supportRes.count ?? null,
-        bySource,
-      });
     })();
     return () => {
       mounted = false;
     };
   }, []);
+
 
   const checkoutPending = !isValidUrl(APP_CONFIG.CHECKOUT_FABRICA_URL);
   const fmt = (n: number | null) => (n === null ? "—" : String(n));
