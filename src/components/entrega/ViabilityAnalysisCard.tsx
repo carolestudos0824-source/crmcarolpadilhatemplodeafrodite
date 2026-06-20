@@ -17,7 +17,9 @@ export function buildViabilityPrompt(ctx: {
   pricingModel?: string;
   notes?: string;
 }) {
-  return `Estou usando a Fábrica de Apps com IA para transformar uma ideia em aplicativo.
+  return `Este prompt é para o Agente Arquiteto analisar a ideia antes de construir no Lovable.
+
+Estou usando a Fábrica de Apps com IA para transformar uma ideia em aplicativo.
 
 Quero avaliar a viabilidade desta ideia antes de construir no Lovable.
 
