@@ -495,6 +495,39 @@ export type Database = {
         }
         Relationships: []
       }
+      prompt_improvement_logs: {
+        Row: {
+          created_at: string
+          id: string
+          input_length: number
+          mode: string
+          module_id: string | null
+          module_title: string | null
+          output_length: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          input_length?: number
+          mode: string
+          module_id?: string | null
+          module_title?: string | null
+          output_length?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          input_length?: number
+          mode?: string
+          module_id?: string | null
+          module_title?: string | null
+          output_length?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       quiz_responses: {
         Row: {
           created_at: string
