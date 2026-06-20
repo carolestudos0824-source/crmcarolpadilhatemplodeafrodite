@@ -49,8 +49,25 @@ export const CommandCard = ({
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
+  const [reviewOpen, setReviewOpen] = useState(false);
   const { isCommandDone, toggleCommand } = useUserProgress();
+  const { context, isFilled, openEditor } = useProjectContext();
   const done = isCommandDone(completedKey);
+
+  const enrichedLovable = () =>
+    buildLovablePrompt({
+      context,
+      stepName: title,
+      stepObjective: objective ?? description,
+      command: commandText,
+    });
+  const enrichedAgent = () =>
+    buildAgentPrompt({
+      context,
+      stepName: title,
+      stepObjective: objective ?? description,
+      command: agentPrompt || commandText,
+    });
 
   const toggleDone = () => {
     toggleCommand(completedKey);
