@@ -357,8 +357,8 @@ export default function Login() {
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <Sparkles size={16} className="mt-0.5 shrink-0 text-accent" />
                 <p>
-                  Digite seu e-mail e enviaremos um link seguro para acessar sua
-                  área. Sem precisar lembrar de senha.
+                  Digite seu e-mail e receba um link seguro para acessar sua
+                  área, sem precisar lembrar senha.
                 </p>
               </div>
               <div>
