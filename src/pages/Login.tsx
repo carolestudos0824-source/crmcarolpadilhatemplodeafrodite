@@ -330,7 +330,7 @@ export default function Login() {
 
           <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
             {([
-              ["magic", "Sem senha"],
+              ["magic", "Link por e-mail"],
               ["signin", "Com senha"],
               ["signup", "Criar conta"],
             ] as [Tab, string][]).map(([key, label]) => (
