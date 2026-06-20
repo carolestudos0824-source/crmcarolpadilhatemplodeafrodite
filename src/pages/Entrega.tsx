@@ -62,6 +62,8 @@ import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesMod
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
+import { ProjectContextProvider, useProjectContext } from "@/hooks/useProjectContext";
+import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
 import {
@@ -127,6 +129,26 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
 
 
 // ====== Página ======
+
+const ContextHeaderButton = () => {
+  const { openEditor, isFilled } = useProjectContext();
+  return (
+    <button
+      type="button"
+      onClick={openEditor}
+      className={`px-3 py-1.5 rounded-full border inline-flex items-center gap-1 ${
+        isFilled
+          ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-200"
+          : "border-amber-400/30 bg-amber-400/10 text-amber-200"
+      }`}
+      title="Contexto do meu app"
+    >
+      <ClipboardList size={12} />
+      <span className="hidden sm:inline">Contexto do meu app</span>
+      <span className="sm:hidden">Contexto</span>
+    </button>
+  );
+};
 
 function EntregaInner() {
   const navigate = useNavigate();
@@ -358,6 +380,7 @@ function EntregaInner() {
                 {email}
               </span>
             )}
+            <ContextHeaderButton />
             <FontSizeControl />
             {auth.isAdmin && (
               <button
@@ -2822,8 +2845,12 @@ const Select = ({
 
 export default function Entrega() {
   return (
-    <UserProgressProvider>
-      <EntregaInner />
-    </UserProgressProvider>
+    <ProjectContextProvider>
+      <UserProgressProvider>
+        <EntregaInner />
+        <ProjectContextDrawer />
+      </UserProgressProvider>
+    </ProjectContextProvider>
   );
 }
+

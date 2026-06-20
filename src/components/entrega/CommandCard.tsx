@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink } from "lucide-react";
+import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
 import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
+import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 
 type Props = {
   number: number;
@@ -46,8 +49,25 @@ export const CommandCard = ({
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
+  const [reviewOpen, setReviewOpen] = useState(false);
   const { isCommandDone, toggleCommand } = useUserProgress();
+  const { context, isFilled, openEditor } = useProjectContext();
   const done = isCommandDone(completedKey);
+
+  const enrichedLovable = () =>
+    buildLovablePrompt({
+      context,
+      stepName: title,
+      stepObjective: objective ?? description,
+      command: commandText,
+    });
+  const enrichedAgent = () =>
+    buildAgentPrompt({
+      context,
+      stepName: title,
+      stepObjective: objective ?? description,
+      command: agentPrompt || commandText,
+    });
 
   const toggleDone = () => {
     toggleCommand(completedKey);
@@ -77,6 +97,7 @@ export const CommandCard = ({
     !!advanceCriteria;
 
   return (
+    <>
     <GlassCard className="p-5 md:p-6 space-y-4 scroll-mt-24">
       <button
         type="button"
@@ -111,6 +132,23 @@ export const CommandCard = ({
 
       {open && !isGuided && (
         <div className="space-y-4 pt-2 border-t border-white/10">
+          {!isFilled && (
+            <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-3 flex items-start gap-2 text-[12px]">
+              <Info size={14} className="text-amber-300 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-foreground/90">
+                  Preencha o <strong>Contexto do meu app</strong> para os comandos ficarem mais precisos.
+                </p>
+                <button
+                  type="button"
+                  onClick={openEditor}
+                  className="mt-1 text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                >
+                  Preencher contexto
+                </button>
+              </div>
+            </div>
+          )}
           <dl className="grid sm:grid-cols-2 gap-3 text-sm">
             {[
               ["Quando usar", whenToUse],
@@ -140,17 +178,36 @@ export const CommandCard = ({
                 {commandText}
               </pre>
             </div>
-            <div className="mt-2 flex flex-col items-end gap-1">
-              <button
-                onClick={() =>
-                  copyText(wrapLovable(commandText), "main", "Comando copiado.")
-                }
-                className="btn-primary text-sm"
-                type="button"
-              >
-                {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                {copiedKey === "main" ? "Copiado" : "Copiar comando"}
-              </button>
+            <div className="mt-2 flex flex-col items-end gap-2">
+              <div className="flex flex-wrap justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setReviewOpen(true)}
+                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-white/15 hover:bg-white/5"
+                >
+                  <FileText size={14} /> Revisar prompt antes de copiar
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.")
+                  }
+                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                >
+                  {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
+                  Revisar com o Agente
+                </button>
+                <button
+                  onClick={() =>
+                    copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
+                  }
+                  className="btn-primary text-sm"
+                  type="button"
+                >
+                  {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
+                  Copiar para o Lovable
+                </button>
+              </div>
               <span className="text-[10px] text-muted-foreground/80">
                 Cole no projeto do seu app no Lovable.
               </span>
@@ -173,6 +230,23 @@ export const CommandCard = ({
 
       {open && isGuided && (
         <div className="space-y-4 pt-2 border-t border-white/10">
+          {!isFilled && (
+            <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-3 flex items-start gap-2 text-[12px]">
+              <Info size={14} className="text-amber-300 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-foreground/90">
+                  Preencha o <strong>Contexto do meu app</strong> para os comandos ficarem mais precisos.
+                </p>
+                <button
+                  type="button"
+                  onClick={openEditor}
+                  className="mt-1 text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                >
+                  Preencher contexto
+                </button>
+              </div>
+            </div>
+          )}
           {objective && (
             <div className="rounded-lg border border-accent/25 bg-accent/5 p-3 flex items-start gap-2">
               <Target size={14} className="text-accent shrink-0 mt-0.5" />
@@ -235,17 +309,36 @@ export const CommandCard = ({
                     {commandText}
                   </pre>
                 </div>
-                <div className="mt-2 flex flex-col items-end gap-1">
-                  <button
-                    onClick={() =>
-                      copyText(wrapLovable(commandText), "main", "Comando copiado.")
-                    }
-                    className="btn-primary text-sm min-h-[44px]"
-                    type="button"
-                  >
-                    {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                    {copiedKey === "main" ? "Copiado" : "Copiar comando"}
-                  </button>
+                <div className="mt-2 flex flex-col items-end gap-2">
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setReviewOpen(true)}
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+                    >
+                      <FileText size={14} /> Revisar prompt antes de copiar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.")
+                      }
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                    >
+                      {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
+                      Revisar com o Agente
+                    </button>
+                    <button
+                      onClick={() =>
+                        copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
+                      }
+                      className="btn-primary text-sm min-h-[44px]"
+                      type="button"
+                    >
+                      {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
+                      Copiar para o Lovable
+                    </button>
+                  </div>
                   <span className="text-[10px] text-muted-foreground/80">
                     Cole no projeto do seu app no Lovable.
                   </span>
@@ -386,5 +479,13 @@ export const CommandCard = ({
         </div>
       )}
     </GlassCard>
+    <PromptReviewDialog
+      open={reviewOpen}
+      onClose={() => setReviewOpen(false)}
+      stepName={title}
+      stepObjective={objective ?? description}
+      command={commandText}
+    />
+    </>
   );
 };
