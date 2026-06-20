@@ -143,17 +143,16 @@ export const CommandCard = ({
             <div className="mt-2 flex flex-col items-end gap-1">
               <button
                 onClick={() =>
-                  copyText(wrapLovable(commandText), "main", "Comando copiado. Agora cole no Lovable do seu app.")
+                  copyText(wrapLovable(commandText), "main", "Comando copiado.")
                 }
                 className="btn-primary text-sm"
                 type="button"
-                title="Cole no projeto do app que você está criando."
               >
                 {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                {copiedKey === "main" ? "Copiado" : "Copiar para o Lovable do meu app"}
+                {copiedKey === "main" ? "Copiado" : "Copiar comando"}
               </button>
               <span className="text-[10px] text-muted-foreground/80">
-                Cole no projeto do app que você está criando, não na Fábrica de Apps.
+                Cole no projeto do seu app no Lovable.
               </span>
             </div>
           </div>
@@ -239,17 +238,16 @@ export const CommandCard = ({
                 <div className="mt-2 flex flex-col items-end gap-1">
                   <button
                     onClick={() =>
-                      copyText(wrapLovable(commandText), "main", "Comando copiado. Agora cole no Lovable do seu app.")
+                      copyText(wrapLovable(commandText), "main", "Comando copiado.")
                     }
                     className="btn-primary text-sm min-h-[44px]"
                     type="button"
-                    title="Cole no projeto do app que você está criando."
                   >
                     {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                    {copiedKey === "main" ? "Copiado" : "Copiar para o Lovable do meu app"}
+                    {copiedKey === "main" ? "Copiado" : "Copiar comando"}
                   </button>
                   <span className="text-[10px] text-muted-foreground/80">
-                    Cole no projeto do app que você está criando, não na Fábrica de Apps.
+                    Cole no projeto do seu app no Lovable.
                   </span>
                 </div>
               </div>
@@ -276,23 +274,28 @@ export const CommandCard = ({
                       {agentPrompt}
                     </pre>
                   </div>
-                  <div className="mt-2 flex flex-wrap justify-end gap-2">
-                    <a
-                      href={APP_CONFIG.GPT_AGENT_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
-                    >
-                      <ExternalLink size={14} /> Abrir Agente Arquiteto
-                    </a>
-                    <button
-                      onClick={() => copyText(agentPrompt, "agent", "Prompt do Agente copiado.")}
-                      type="button"
-                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
-                    >
-                      {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                      {copiedKey === "agent" ? "Copiado" : "Copiar para o Agente Arquiteto"}
-                    </button>
+                  <div className="mt-2 flex flex-col items-end gap-1">
+                    <div className="flex flex-wrap justify-end gap-2">
+                      <a
+                        href={APP_CONFIG.GPT_AGENT_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+                      >
+                        <ExternalLink size={14} /> Abrir Agente Arquiteto
+                      </a>
+                      <button
+                        onClick={() => copyText(agentPrompt, "agent", "Prompt do Agente copiado.")}
+                        type="button"
+                        className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                      >
+                        {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
+                        {copiedKey === "agent" ? "Copiado" : "Copiar para o Agente"}
+                      </button>
+                    </div>
+                    <span className="text-[10px] text-muted-foreground/80">
+                      Use para pensar antes de aplicar.
+                    </span>
                   </div>
                 </div>
               ) : (
@@ -313,15 +316,18 @@ export const CommandCard = ({
                       {correctionPrompt}
                     </pre>
                   </div>
-                  <div className="mt-2 flex justify-end">
+                  <div className="mt-2 flex flex-col items-end gap-1">
                     <button
-                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Prompt de correção copiado. Cole no Lovable do seu app.")}
+                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Correção copiada.")}
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >
                       {copiedKey === "fix" ? <Check size={16} /> : <Copy size={16} />}
-                      {copiedKey === "fix" ? "Copiado" : "Copiar correção para o Lovable"}
+                      {copiedKey === "fix" ? "Copiado" : "Copiar correção"}
                     </button>
+                    <span className="text-[10px] text-muted-foreground/80">
+                      Use quando o Lovable não entregar o resultado esperado.
+                    </span>
                   </div>
                 </div>
               ) : (

@@ -17,10 +17,13 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
-  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import {
+  CopyCommandWarning,
+  wrapLovable,
+} from "@/components/entrega/CopyCommandWarning";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso organizar as telas e o fluxo do usuário. Me ajude a definir: primeira tela, telas públicas, telas restritas, ação principal, formulários, resultado, pagamento, entrega e caminho ideal para o usuário não se perder.`;
 
@@ -33,15 +36,6 @@ type Etapa = {
   tabs: Record<TabId, string>;
 };
 
-const LOVABLE_PREAMBLE = `Você está no projeto do aplicativo que estou criando. Execute a tarefa abaixo neste app. Não explique o comando. Não responda dizendo que este texto é um conteúdo de módulo. Aplique a orientação no app atual.
-
-Tarefa:
-`;
-
-const wrapLovable = (task: string) => `${LOVABLE_PREAMBLE}${task}
-
-Importante:
-Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`;
 
 const ETAPAS: Etapa[] = [
   {
@@ -97,7 +91,8 @@ const ETAPAS: Etapa[] = [
     icon: MousePointerClick,
     title: "Definir CTA e próximo passo",
     tabs: {
-      lovable: `${LOVABLE_PREAMBLE}Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
+      lovable: wrapLovable(
+        `Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
 
 Para cada tela, entregue:
 
@@ -109,10 +104,11 @@ Para cada tela, entregue:
 6. Se existem botões demais, simplifique.
 
 Importante:
-Não crie CTAs genéricos. Cada botão deve indicar uma ação clara.
+Não crie CTAs genéricos.
 Não coloque muitos botões competindo entre si.
 Não prometa resultado garantido.
 Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`,
+      ),
       agente:
         "Me ajude a definir o CTA principal de cada tela do meu app. Quero evitar botões demais e deixar o próximo passo óbvio para o usuário.",
       corrigir:
@@ -168,24 +164,31 @@ const TAB_META: { id: TabId; label: string; icon: typeof MapIcon }[] = [
 
 const CHECKLIST_PREFIX = "telas_step__";
 
-function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: string }) {
+function CopyBtn({
+  text,
+  label = "Copiar comando",
+  hint,
+}: {
+  text: string;
+  label?: string;
+  hint?: string;
+}) {
   const [ok, setOk] = useState(false);
   const handle = async () => {
     try {
       await navigator.clipboard.writeText(text.trim());
       setOk(true);
-      toast.success("Copiado! Agora cole no Lovable.");
+      toast.success("Copiado!");
       setTimeout(() => setOk(false), 1600);
     } catch {
       toast.error("Não foi possível copiar.");
     }
   };
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-1">
       <button
         onClick={handle}
-        title="Cole no projeto do app que você está criando."
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-fit ${
           ok
             ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
             : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
@@ -194,9 +197,9 @@ function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: str
         {ok ? <Check size={14} /> : <Copy size={14} />}
         {ok ? "Copiado!" : label}
       </button>
-      <span className="text-[11px] text-muted-foreground">
-        Cole no projeto do app que você está criando.
-      </span>
+      {hint && (
+        <span className="text-[10px] text-muted-foreground/80">{hint}</span>
+      )}
     </div>
   );
 }
@@ -247,7 +250,23 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         </pre>
       </div>
       {tab !== "avancar" && (
-        <CopyBtn text={etapa.tabs[tab]} label="Copiar para o Lovable do meu app" />
+        <CopyBtn
+          text={etapa.tabs[tab]}
+          label={
+            tab === "agente"
+              ? "Copiar para o Agente"
+              : tab === "corrigir"
+              ? "Copiar correção"
+              : "Copiar comando"
+          }
+          hint={
+            tab === "agente"
+              ? "Use para pensar antes de aplicar."
+              : tab === "corrigir"
+              ? "Use quando o Lovable não entregar o resultado esperado."
+              : "Cole no projeto do seu app no Lovable."
+          }
+        />
       )}
     </GlassCard>
   );
@@ -337,26 +356,7 @@ export function TelasFluxoModule() {
         </div>
       </GlassCard>
 
-      <GlassCard className="p-5 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-white/[0.02] to-transparent">
-        <div className="flex items-start gap-3">
-          <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
-          <div>
-            <h3 className="font-heading font-semibold text-base text-amber-100 mb-1">
-              Importante: onde colar estes comandos
-            </h3>
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              Estes comandos são para você copiar e colar no Lovable do app que está
-              construindo. Não cole dentro da Fábrica de Apps com IA, porque este
-              programa é apenas o guia. Abra o projeto do seu aplicativo no Lovable e
-              cole o comando lá.
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              Se você colar este comando aqui dentro da Fábrica de Apps, o Lovable
-              pode entender que você quer alterar este programa, e não o seu app.
-            </p>
-          </div>
-        </div>
-      </GlassCard>
+      <CopyCommandWarning />
 
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (

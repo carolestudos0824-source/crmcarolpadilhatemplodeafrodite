@@ -219,21 +219,21 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
       {tab !== "avancar" && (
         <div className="flex flex-col gap-1">
           <CopyBtn
-            text={
-              tab === "agente"
-                ? etapa.tabs[tab]
-                : wrapLovable(etapa.tabs[tab])
-            }
+            text={tab === "agente" ? etapa.tabs[tab] : wrapLovable(etapa.tabs[tab])}
             label={
               tab === "agente"
-                ? "Copiar para o Agente Arquiteto"
-                : "Copiar para o Lovable do meu app"
+                ? "Copiar para o Agente"
+                : tab === "corrigir"
+                ? "Copiar correção"
+                : "Copiar comando"
             }
           />
           <span className="text-[10px] text-muted-foreground/80">
             {tab === "agente"
-              ? "Cole no chat do Agente Arquiteto, não no Lovable."
-              : "Cole no projeto do app que você está criando, não na Fábrica de Apps."}
+              ? "Use para pensar antes de aplicar."
+              : tab === "corrigir"
+              ? "Use quando o Lovable não entregar o resultado esperado."
+              : "Cole no projeto do seu app no Lovable."}
           </span>
         </div>
       )}
