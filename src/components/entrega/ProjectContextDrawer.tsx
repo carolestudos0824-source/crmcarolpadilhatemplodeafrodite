@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Save, RotateCcw } from "lucide-react";
+import { X, Save, RotateCcw, FolderPlus, FolderCheck } from "lucide-react";
 import { toast } from "sonner";
 import {
   EMPTY_PROJECT_CONTEXT,
@@ -7,6 +7,7 @@ import {
   type ProjectContext,
   type YesNo,
 } from "@/hooks/useProjectContext";
+import { useAppProjects } from "@/hooks/useAppProjects";
 
 /**
  * Drawer "Contexto do meu app". Salva tudo apenas no navegador
