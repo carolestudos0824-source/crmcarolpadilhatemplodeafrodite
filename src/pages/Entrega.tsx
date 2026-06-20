@@ -141,6 +141,7 @@ function EntregaInner() {
     "criativos": "criativos",
     "metricas-app": "metricas",
     "validacao": "validacao",
+    "melhorias-versoes": "melhorias",
     "checklist": "checklist",
     "erros-comuns": "erros",
     "ativar-acesso": "ativar",
