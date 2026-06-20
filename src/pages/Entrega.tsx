@@ -97,17 +97,18 @@ const TOTAL_COMMANDS =
 
 const ICONS: Record<string, typeof Sparkles> = {
   Sparkles, Lightbulb, Hammer, Lock, Megaphone, ShoppingCart, Search,
-  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3,
+  Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3, GitBranch,
 };
 
 // Módulos contabilizados no progresso global. "planejar", "mvp", "telas",
-// "legal", "publicar" e "teste" foram adicionados em rodadas recentes sem
-// entrar no cálculo global (serão incorporados em rodada futura, quando a
-// estrutura estiver validada).
+// "legal", "publicar", "teste", "metricas" e "melhorias" foram adicionados em
+// rodadas recentes sem entrar no cálculo global (serão incorporados em rodada
+// futura, quando a estrutura estiver validada).
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
   (id) =>
     id !== "planejar" && id !== "mvp" && id !== "telas" &&
-    id !== "legal" && id !== "publicar" && id !== "teste" && id !== "metricas",
+    id !== "legal" && id !== "publicar" && id !== "teste" &&
+    id !== "metricas" && id !== "melhorias",
 );
 
 
