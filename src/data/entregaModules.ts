@@ -3537,6 +3537,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
     doNow: "Crie login simples, depois perfil do usuário, depois proteja a área restrita. Teste cada passo antes de avançar.",
     advanceWhen: "Não avance para venda ou checkout antes de testar se o usuário consegue entrar, sair e acessar a área correta.",
   },
+  seguranca: {
+    doNow: "Revise rotas públicas, área restrita, painel admin, dados do usuário, banco, RLS, chaves secretas e teste tentativas de acesso indevido.",
+    advanceWhen: "Avance quando visitante, usuário comum, comprador e admin estiverem vendo apenas o que devem ver.",
+  },
   venda: {
     doNow: "Defina a promessa, crie a landing, explique o preço, responda dúvidas e reforce confiança.",
     advanceWhen: "Antes de criar checkout, garanta que a pessoa entende o valor do app em menos de 10 segundos.",
