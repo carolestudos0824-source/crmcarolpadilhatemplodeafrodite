@@ -113,6 +113,7 @@ function EntregaInner() {
     "ideias-prontas": "ideias",
     "planejar-app": "planejar",
     "mvp-arquitetura": "mvp",
+    "telas-fluxo": "telas",
     "construir-app": "construir",
     "login-banco": "login",
     "pagina-de-venda": "venda",
