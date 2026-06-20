@@ -270,7 +270,35 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* NÃO INCLUSO */}
+      {/* PARA QUEM É / NÃO É PARA QUEM */}
+      <Section eyebrow="Audiência" title="Para quem é e para quem não é">
+        <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          <div className="glass-strong p-6 md:p-8">
+            <h3 className="font-heading font-bold text-xl mb-4">Para quem é</h3>
+            <ul className="space-y-3">
+              {paraQuemE.map((item) => (
+                <li key={item} className="flex gap-3 text-base text-foreground/90 leading-relaxed">
+                  <Check size={18} className="text-accent shrink-0 mt-1" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="glass-strong p-6 md:p-8">
+            <h3 className="font-heading font-bold text-xl mb-4">Não é para quem</h3>
+            <ul className="space-y-3">
+              {naoEParaQuem.map((item) => (
+                <li key={item} className="flex gap-3 text-base text-foreground/90 leading-relaxed">
+                  <span className="text-destructive/80 shrink-0 mt-1">✕</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* O QUE NÃO ESTÁ INCLUSO */}
       <Section eyebrow="Importante" title="O que não está incluso">
         <div className="glass-strong p-6 md:p-10 max-w-3xl mx-auto">
           <ul className="space-y-3">
@@ -282,6 +310,7 @@ export default function Home() {
           </ul>
         </div>
       </Section>
+
 
       {/* FAQ */}
       <Section eyebrow="Dúvidas" title="Perguntas frequentes">
