@@ -96,13 +96,14 @@ export function SalesPanel() {
       setLoading(true);
       setError(null);
       try {
-        const { data, error } = await withTimeout(
+        const res = (await withTimeout(
           (supabase as any).rpc("admin_list_manual_sales", { _limit: 200 }),
           10000,
           "lista de vendas",
-        );
+        )) as { data: ManualSale[] | null; error: { message: string } | null };
         if (!mounted) return;
-        if (error) throw new Error(error.message);
+        if (res.error) throw new Error(res.error.message);
+        const data = res.data;
         setSales((data as ManualSale[]) ?? []);
       } catch (e) {
         if (!mounted) return;
