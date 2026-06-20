@@ -53,6 +53,7 @@ import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
 import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
 import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
+import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
