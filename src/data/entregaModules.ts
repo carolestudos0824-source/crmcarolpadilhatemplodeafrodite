@@ -89,6 +89,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "criativos", label: "Criativos", icon: "Image" },
   { id: "metricas", label: "Métricas do App", icon: "BarChart3" },
   { id: "validacao", label: "Validação", icon: "Users" },
+  { id: "melhorias", label: "Melhorias e Versões", icon: "GitBranch" },
   { id: "checklist", label: "Checklist", icon: "ListChecks" },
   { id: "erros", label: "Erros comuns", icon: "AlertTriangle" },
   { id: "ativar", label: "Ativar acesso", icon: "Gift" },
