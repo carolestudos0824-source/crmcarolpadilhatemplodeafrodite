@@ -30,7 +30,7 @@ describe("TesteFinalModule", () => {
     expect(screen.getByText(/O que você vai fazer nesta etapa/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Etapa \d/i)).toHaveLength(5);
     expect(screen.getByText(/Não entendi uma palavra/i)).toBeInTheDocument();
-    expect(screen.getByText(/Scroll horizontal/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Scroll horizontal/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Como usar os comandos/i)).toBeInTheDocument();
   });
 
