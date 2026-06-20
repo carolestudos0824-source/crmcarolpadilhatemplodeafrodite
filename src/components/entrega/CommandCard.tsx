@@ -291,7 +291,7 @@ export const CommandCard = ({
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                     >
                       {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                      {copiedKey === "agent" ? "Copiado" : "Copiar para conversar com o Agente"}
+                      {copiedKey === "agent" ? "Copiado" : "Copiar para o Agente Arquiteto"}
                     </button>
                   </div>
                 </div>
