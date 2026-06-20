@@ -243,6 +243,10 @@ export const PromptReviewDialog = ({
             <p className="text-xs text-muted-foreground mt-1">
               Revise, edite e ajuste o comando antes de gastar créditos no Lovable.
             </p>
+            <p className="text-[11px] text-muted-foreground/90 mt-1 truncate">
+              {activeProject ? `App ativo: ${activeProject.name}` : "App ativo: contexto temporário"}
+            </p>
+
           </div>
           <button
             onClick={onClose}
