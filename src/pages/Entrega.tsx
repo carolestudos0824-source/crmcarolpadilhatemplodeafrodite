@@ -524,6 +524,7 @@ const CommandList = ({
   moduleKey: string;
 }) => (
   <div className="space-y-3">
+    <CopyCommandWarning />
     {commands.map((c, i) => (
       <CommandCard
         key={c.n}
