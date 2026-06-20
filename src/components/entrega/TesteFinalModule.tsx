@@ -282,8 +282,8 @@ export function TesteFinalModule() {
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
             Um app bonito ainda pode estar quebrado. O teste final existe para encontrar
-            erros antes dos usuários encontrarem. Antes de divulgar, você precisa agir
-            como comprador, visitante e usuária real.
+            erros antes que outras pessoas encontrem. Antes de divulgar, você precisa agir
+            como quem compra, visitante e pessoa usuária real.
           </p>
         </div>
       </GlassCard>
