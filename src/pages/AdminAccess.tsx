@@ -834,20 +834,32 @@ function PendenciasSection() {
 }
 
 function MensagensSection() {
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const loginLink = origin ? `${origin}${LOGIN_URL}` : LOGIN_URL;
+  const entregaLink = origin ? `${origin}${ENTREGA_URL}` : ENTREGA_URL;
+
   return (
     <div className="space-y-3">
+      <p className="text-xs text-muted-foreground">
+        Mensagens prontas para responder clientes. Use os botões para copiar o texto puro ou com link.
+      </p>
       {SUPPORT_MESSAGES.map((m) => (
         <div key={m.title} className="glass-strong p-5">
           <div className="flex items-start justify-between gap-3 mb-2">
             <h3 className="text-sm font-heading font-semibold text-foreground">{m.title}</h3>
-            <CopyButton text={m.text} label="Copiar mensagem" compact />
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{m.text}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3">{m.text}</p>
+          <div className="flex flex-wrap gap-2">
+            <CopyButton text={m.text} label="Copiar mensagem" compact />
+            <CopyButton text={`${m.text}\n\nLogin: ${loginLink}`} label="Copiar com link de login" compact />
+            <CopyButton text={`${m.text}\n\nMinha área: ${entregaLink}`} label="Copiar com link da área interna" compact />
+          </div>
         </div>
       ))}
     </div>
   );
 }
+
 
 function ConfigSection() {
   const checkoutOk = isValidUrl(APP_CONFIG.CHECKOUT_FABRICA_URL);
