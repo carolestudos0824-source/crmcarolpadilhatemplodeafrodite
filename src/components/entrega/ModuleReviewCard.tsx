@@ -156,8 +156,8 @@ export function ModuleReviewCard({
             Revisar esta etapa no app
           </h3>
           <p className="text-xs md:text-sm text-muted-foreground mt-1">
-            Antes de avançar, peça para a IA conferir se tudo que foi construído neste
-            módulo realmente aparece e funciona no aplicativo.
+            Antes de avançar, peça para a IA conferir se tudo que esta etapa pediu foi
+            realmente aplicado no app que você está criando no Lovable.
           </p>
         </div>
       </div>
