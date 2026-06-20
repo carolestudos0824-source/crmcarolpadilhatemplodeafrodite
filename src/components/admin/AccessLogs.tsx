@@ -68,8 +68,8 @@ export function AccessLogs({ refreshKey = 0 }: { refreshKey?: number }) {
     setLoading(true);
     setError(null);
     const [{ data: userData }, res] = await withTimeout<any>(Promise.all([
-      supabase.auth.getUser().catch(() => ({ data: { user: null } })),
-      (supabase as any).rpc("admin_list_access_logs", { _limit: 50 }).catch((e: unknown) => ({ data: null, error: e })),
+      Promise.resolve(supabase.auth.getUser()).catch(() => ({ data: { user: null } })),
+      Promise.resolve((supabase as any).rpc("admin_list_access_logs", { _limit: 50 })).catch((e: unknown) => ({ data: null, error: e })),
     ]), 10000, "histórico de acessos").catch((e) => ([
       { data: { user: null } },
       { data: null, error: e },
