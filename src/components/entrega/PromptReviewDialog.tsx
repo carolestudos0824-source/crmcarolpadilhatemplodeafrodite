@@ -68,6 +68,7 @@ export const PromptReviewDialog = ({
   customPrompts,
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
+  const { activeProject } = useAppProjects();
   const [mode, setMode] = useState<Mode>("lovable");
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
