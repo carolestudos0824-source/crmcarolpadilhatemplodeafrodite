@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -32,14 +33,25 @@ type Etapa = {
   tabs: Record<TabId, string>;
 };
 
+const LOVABLE_PREAMBLE = `Você está no projeto do aplicativo que estou criando. Execute a tarefa abaixo neste app. Não explique o comando. Não responda dizendo que este texto é um conteúdo de módulo. Aplique a orientação no app atual.
+
+Tarefa:
+`;
+
+const wrapLovable = (task: string) => `${LOVABLE_PREAMBLE}${task}
+
+Importante:
+Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`;
+
 const ETAPAS: Etapa[] = [
   {
     n: 1,
     icon: PanelTop,
     title: "Mapear as telas principais",
     tabs: {
-      lovable:
-        "Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.",
+      lovable: wrapLovable(
+        `Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.`,
+      ),
       agente:
         "Me ajude a mapear as telas essenciais do meu app. Quero saber quais telas preciso para o usuário entrar, entender a proposta, realizar a ação principal e receber o resultado.",
       corrigir:
@@ -53,8 +65,9 @@ const ETAPAS: Etapa[] = [
     icon: Route,
     title: "Definir o fluxo do usuário",
     tabs: {
-      lovable:
-        "Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.",
+      lovable: wrapLovable(
+        `Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.`,
+      ),
       agente:
         "Me ajude a desenhar o caminho do usuário dentro do app. Quero um fluxo simples, sem etapas desnecessárias, com início, ação principal e resultado claro.",
       corrigir:
@@ -68,8 +81,9 @@ const ETAPAS: Etapa[] = [
     icon: ShieldCheck,
     title: "Organizar telas públicas e restritas",
     tabs: {
-      lovable:
-        "Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.",
+      lovable: wrapLovable(
+        `Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.`,
+      ),
       agente:
         "Me ajude a decidir quais telas do meu app devem ser públicas e quais devem ser restritas. Considere venda, entrega, login, pagamento, privacidade e experiência do usuário.",
       corrigir:
@@ -83,8 +97,22 @@ const ETAPAS: Etapa[] = [
     icon: MousePointerClick,
     title: "Definir CTA e próximo passo",
     tabs: {
-      lovable:
-        "Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.",
+      lovable: `${LOVABLE_PREAMBLE}Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
+
+Para cada tela, entregue:
+
+1. Nome da tela.
+2. Objetivo da tela.
+3. CTA principal recomendado.
+4. Texto do botão.
+5. O que acontece depois do clique.
+6. Se existem botões demais, simplifique.
+
+Importante:
+Não crie CTAs genéricos. Cada botão deve indicar uma ação clara.
+Não coloque muitos botões competindo entre si.
+Não prometa resultado garantido.
+Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`,
       agente:
         "Me ajude a definir o CTA principal de cada tela do meu app. Quero evitar botões demais e deixar o próximo passo óbvio para o usuário.",
       corrigir:
@@ -97,8 +125,9 @@ const ETAPAS: Etapa[] = [
     icon: LayoutTemplate,
     title: "Criar mapa final de fluxo",
     tabs: {
-      lovable:
-        "Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.",
+      lovable: wrapLovable(
+        `Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.`,
+      ),
       agente:
         "Organize meu app em um mapa final de fluxo. Quero uma visão clara das telas, ordem de navegação, CTAs, áreas restritas e pontos críticos antes de construir no Lovable.",
       corrigir:
@@ -152,17 +181,23 @@ function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: str
     }
   };
   return (
-    <button
-      onClick={handle}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
-        ok
-          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-      }`}
-    >
-      {ok ? <Check size={14} /> : <Copy size={14} />}
-      {ok ? "Copiado!" : label}
-    </button>
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        onClick={handle}
+        title="Cole no projeto do app que você está criando."
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
+          ok
+            ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+            : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+        }`}
+      >
+        {ok ? <Check size={14} /> : <Copy size={14} />}
+        {ok ? "Copiado!" : label}
+      </button>
+      <span className="text-[11px] text-muted-foreground">
+        Cole no projeto do app que você está criando.
+      </span>
+    </div>
   );
 }
 
@@ -211,7 +246,9 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           {etapa.tabs[tab]}
         </pre>
       </div>
-      {tab !== "avancar" && <CopyBtn text={etapa.tabs[tab]} label="Copiar comando" />}
+      {tab !== "avancar" && (
+        <CopyBtn text={etapa.tabs[tab]} label="Copiar para o Lovable do meu app" />
+      )}
     </GlassCard>
   );
 }
@@ -294,6 +331,30 @@ export function TelasFluxoModule() {
           <p className="text-[11px] text-muted-foreground mt-2">
             Copia um prompt pronto para você colar no Agente Arquiteto.
           </p>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            Use este botão para pensar com o Agente. Use os comandos das etapas para colar no Lovable do seu app.
+          </p>
+        </div>
+      </GlassCard>
+
+      <GlassCard className="p-5 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-white/[0.02] to-transparent">
+        <div className="flex items-start gap-3">
+          <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+          <div>
+            <h3 className="font-heading font-semibold text-base text-amber-100 mb-1">
+              Importante: onde colar estes comandos
+            </h3>
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              Estes comandos são para você copiar e colar no Lovable do app que está
+              construindo. Não cole dentro da Fábrica de Apps com IA, porque este
+              programa é apenas o guia. Abra o projeto do seu aplicativo no Lovable e
+              cole o comando lá.
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Se você colar este comando aqui dentro da Fábrica de Apps, o Lovable
+              pode entender que você quer alterar este programa, e não o seu app.
+            </p>
+          </div>
         </div>
       </GlassCard>
 
