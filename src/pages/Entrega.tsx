@@ -512,6 +512,9 @@ function EntregaInner() {
             </div>
           )}
 
+          <TwoPathsExplainer />
+
+
           <ModuleContent
             active={active}
             checklist={checklist}
