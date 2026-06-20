@@ -32,6 +32,7 @@ import {
   Loader2,
   ChevronDown,
   BookOpen,
+  Map as MapIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
