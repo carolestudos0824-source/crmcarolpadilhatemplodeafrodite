@@ -62,6 +62,8 @@ import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesMod
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
+import { ProjectContextProvider, useProjectContext } from "@/hooks/useProjectContext";
+import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
 import {
