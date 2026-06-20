@@ -56,6 +56,7 @@ export type ModuleId =
   | "seo"
   | "campanhas"
   | "criativos"
+  | "metricas"
   | "validacao"
   | "checklist"
   | "erros"
@@ -85,6 +86,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "seo", label: "SEO e GEO", icon: "Search" },
   { id: "campanhas", label: "Campanhas", icon: "Rocket" },
   { id: "criativos", label: "Criativos", icon: "Image" },
+  { id: "metricas", label: "Métricas do App", icon: "BarChart3" },
   { id: "validacao", label: "Validação", icon: "Users" },
   { id: "checklist", label: "Checklist", icon: "ListChecks" },
   { id: "erros", label: "Erros comuns", icon: "AlertTriangle" },
@@ -3568,6 +3570,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
   criativos: {
     doNow: "Use o gerador rápido para criar 3 criativos diferentes no formato escolhido.",
     advanceWhen: "Avance quando você tiver 3 criativos prontos para testar.",
+  },
+  metricas: {
+    doNow: "Defina a ação principal, escolha poucas métricas, mapeie o funil e identifique pontos de abandono.",
+    advanceWhen: "Avance quando você souber quais números vai acompanhar e como eles vão orientar as próximas melhorias.",
   },
   validacao: {
     doNow: "Liste 10 pessoas reais que podem testar e copie a mensagem de convite.",
