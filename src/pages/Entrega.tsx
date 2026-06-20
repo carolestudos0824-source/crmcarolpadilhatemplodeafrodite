@@ -2389,6 +2389,23 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           subtitle="Acompanhe se sua ideia já virou um app claro, funcional, vendável e pronto para ser testado com pessoas reais."
         />
 
+        {APP_CONFIG.CHECKOUT_FABRICA_URL === "COLE_AQUI_A_URL_REAL" && (
+          <GlassCard className="p-4 mb-5 border-red-400/40 bg-red-500/10">
+            <div className="flex items-start gap-3">
+              <AlertTriangle size={18} className="text-red-300 shrink-0 mt-0.5" />
+              <div>
+                <h3 className="text-sm font-heading font-bold text-red-100">
+                  Checkout real pendente
+                </h3>
+                <p className="text-xs text-red-100/90 mt-1 leading-relaxed">
+                  Este programa ainda não está pronto para venda pública enquanto o link real
+                  de pagamento não for configurado.
+                </p>
+              </div>
+            </div>
+          </GlassCard>
+        )}
+
         <GlassCard className="p-4 mb-5 border-accent/30">
           <p className="text-sm text-foreground/90">
             Você não precisa estar com tudo perfeito para validar. Mas precisa ter o básico funcionando antes de divulgar.
