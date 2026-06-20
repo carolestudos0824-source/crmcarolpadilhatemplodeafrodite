@@ -393,7 +393,7 @@ export default function Login() {
                     <Loader2 size={16} className="animate-spin" /> Enviando…
                   </>
                 ) : (
-                  "Enviar link de acesso"
+                  "Receber link seguro"
                 )}
               </button>
 
