@@ -107,21 +107,28 @@ export const ProjectContextDrawer = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 z-10 flex items-center justify-between p-5 border-b border-white/10 bg-background/95 backdrop-blur">
-          <div>
+          <div className="min-w-0">
             <h2 className="font-heading font-bold text-lg">Contexto do meu app</h2>
             <p className="text-xs text-muted-foreground">
               Preencha uma vez. Os prompts copiados ficam mais precisos para o app
               que você está criando no Lovable.
             </p>
+            <p className="text-[11px] mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-muted-foreground max-w-full">
+              <FolderCheck size={11} className="text-accent shrink-0" />
+              <span className="truncate">
+                {activeProject ? `App ativo: ${activeProject.name}` : "App ativo: contexto temporário"}
+              </span>
+            </p>
           </div>
           <button
             onClick={closeEditor}
-            className="p-2 rounded-lg hover:bg-white/5"
+            className="p-2 rounded-lg hover:bg-white/5 shrink-0"
             aria-label="Fechar"
           >
             <X size={18} />
           </button>
         </div>
+
 
         <div className="p-5 space-y-4">
           <Field label="Nome do app">
