@@ -1444,6 +1444,8 @@ export function CampaignsModule({
         </p>
       </header>
 
+      <CopyCommandWarning variant="agent" />
+
       <GlassCard className="p-5 mb-5 border-accent/20 bg-accent/5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-1">
