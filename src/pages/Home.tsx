@@ -64,10 +64,35 @@ const beneficios = [
 
 const naoIncluso = [
   "Não desenvolvemos o app por você",
-  "Não garantimos vendas ou aprovação da ideia",
+  "Não prometemos venda nem resultado garantido",
   "Não substitui validação com usuários reais",
   "Não inclui tráfego pago ou gestão de anúncios",
   "Não inclui suporte individual ilimitado",
+];
+
+const dores = [
+  "Não saber por onde começar",
+  "Copiar prompt genérico e receber app quebrado",
+  "Ter tela bonita, mas sem login, banco, segurança ou venda",
+  "Medo de publicar e o primeiro usuário encontrar erro",
+  "Medo de alguém acessar área paga sem permissão",
+  "Medo de gastar créditos sem chegar em um app funcional",
+];
+
+const paraQuemE = [
+  "Pessoas empreendedoras com uma ideia para tirar do papel",
+  "Criadores de conteúdo que querem transformar audiência em produto",
+  "Terapeutas, mentores e profissionais digitais",
+  "Prestadores de serviço e pequenos negócios",
+  "Infoprodutores que querem um app próprio",
+  "Iniciantes que querem criar sem depender de programação",
+];
+
+const naoEParaQuem = [
+  "Quem quer promessa de dinheiro fácil",
+  "Quem quer app pronto sem pensar nem revisar",
+  "Quem espera resultado garantido",
+  "Quem quer pular segurança, teste e revisão",
 ];
 
 const faqs = [
@@ -93,10 +118,10 @@ export default function Home() {
           <div className="space-y-6 animate-fade-up">
             <span className="inline-block text-xs uppercase tracking-[0.3em] text-accent">Fábrica de Apps com IA</span>
             <h1 className="text-4xl md:text-6xl font-heading font-bold leading-[1.05] text-gradient">
-              Tire sua ideia do papel com um plano de app, prompts prontos e campanha de lançamento
+              Crie seu app do zero com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              A Fábrica de Apps com IA transforma sua ideia em diagnóstico, MVP, arquitetura, banco de dados, telas, monetização, prompts para IA e campanha pronta para divulgar.
+              Siga uma jornada guiada com 24 etapas, comandos prontos para o Lovable, revisão dentro do app e um Agente Arquiteto para ajudar você a pensar cada decisão.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
@@ -113,6 +138,25 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* DOR */}
+      <Section
+        eyebrow="A dor real"
+        title="Você não precisa de mais prompts soltos"
+        subtitle="Você precisa saber o que pedir, em qual ordem e como revisar se ficou certo."
+      >
+        <div className="max-w-3xl mx-auto glass-strong p-6 md:p-10">
+          <ul className="grid sm:grid-cols-2 gap-3">
+            {dores.map((d) => (
+              <li key={d} className="flex items-start gap-3 text-base text-foreground/90">
+                <span className="text-destructive/80 shrink-0 mt-1">•</span>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
 
       {/* PLANO EXECUTÁVEL */}
       <Section
@@ -226,7 +270,35 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* NÃO INCLUSO */}
+      {/* PARA QUEM É / NÃO É PARA QUEM */}
+      <Section eyebrow="Audiência" title="Para quem é e para quem não é">
+        <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          <div className="glass-strong p-6 md:p-8">
+            <h3 className="font-heading font-bold text-xl mb-4">Para quem é</h3>
+            <ul className="space-y-3">
+              {paraQuemE.map((item) => (
+                <li key={item} className="flex gap-3 text-base text-foreground/90 leading-relaxed">
+                  <Check size={18} className="text-accent shrink-0 mt-1" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="glass-strong p-6 md:p-8">
+            <h3 className="font-heading font-bold text-xl mb-4">Não é para quem</h3>
+            <ul className="space-y-3">
+              {naoEParaQuem.map((item) => (
+                <li key={item} className="flex gap-3 text-base text-foreground/90 leading-relaxed">
+                  <span className="text-destructive/80 shrink-0 mt-1">✕</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* O QUE NÃO ESTÁ INCLUSO */}
       <Section eyebrow="Importante" title="O que não está incluso">
         <div className="glass-strong p-6 md:p-10 max-w-3xl mx-auto">
           <ul className="space-y-3">
@@ -238,6 +310,7 @@ export default function Home() {
           </ul>
         </div>
       </Section>
+
 
       {/* FAQ */}
       <Section eyebrow="Dúvidas" title="Perguntas frequentes">

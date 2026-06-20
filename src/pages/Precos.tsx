@@ -7,7 +7,7 @@ export default function Precos() {
     <Section
       eyebrow="Plano"
       title="Uma única oferta para começar"
-      subtitle="Tudo o que você precisa para transformar sua ideia em um app validável com IA."
+      subtitle="Você não está comprando apenas prompts. Você está comprando uma trilha organizada para construir com mais clareza, menos erro e mais segurança."
     >
       <div className="max-w-md mx-auto">
         <PricingCard plan={PLANS[0]} />

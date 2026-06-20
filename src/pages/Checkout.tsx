@@ -17,13 +17,13 @@ export default function Checkout() {
         <div className="glass-strong p-6 md:p-8 flex flex-col gap-4">
           <h3 className="font-heading font-bold text-xl">Finalize sua compra</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Acesso ao agente, prompts, checklists e manual rápido para transformar ideias em apps validáveis com IA.
+            Acesso à Fábrica de Apps com IA: jornada guiada com 24 etapas, comandos prontos para o Lovable, Agente Arquiteto externo e revisão dentro do app. Preço único de R$47.
           </p>
           <div className="text-xs text-muted-foreground/90 bg-white/5 border border-white/10 rounded-xl p-3 leading-relaxed">
-            Você está adquirindo um produto digital de autoatendimento. Após a compra, receberá instruções para acessar a área de entrega, onde encontrará o agente, prompts, checklists e manual de uso. A construção do aplicativo não está inclusa.
+            Você está adquirindo um produto digital de autoatendimento. Após a compra, receberá instruções para acessar a área de entrega, com a jornada guiada, comandos prontos, Agente Arquiteto e materiais de apoio. A construção do aplicativo não está inclusa.
           </div>
           <div className="text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed">
-            Após a compra, você receberá acesso à área de entrega com o link do agente, prompts, checklists e manual de uso. Para usar o agente, é necessário estar logado no ChatGPT.
+            Após a confirmação do pagamento, seu acesso é liberado conforme o fluxo atual da Fábrica. Para usar o Agente Arquiteto, é necessário estar logado no ChatGPT.
           </div>
           <button
             className="btn-primary w-full"
