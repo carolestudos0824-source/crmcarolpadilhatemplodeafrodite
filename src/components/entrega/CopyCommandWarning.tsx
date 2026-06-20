@@ -11,7 +11,7 @@ import { Sparkles } from "lucide-react";
 export const LOVABLE_PREAMBLE =
   "Contexto: estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable. O projeto que deve ser alterado é este app atual que estou criando no Lovable. Não trate a Fábrica de Apps com IA como o app final — ela é apenas o programa-guia.\n\nAplique a tarefa abaixo neste app. Não explique o comando. Faça a alteração solicitada de forma objetiva e preserve o que já está funcionando.";
 
-/** Monta o texto final que a aluna copia para o Lovable do APP DELA. */
+/** Monta o texto final que a pessoa copia para o Lovable do APP DELA. */
 export const wrapLovable = (task: string): string =>
   `${LOVABLE_PREAMBLE}\n\nTarefa:\n${(task ?? "").trim()}`;
 
