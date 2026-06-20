@@ -19,6 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import {
+  CopyCommandWarning,
+  wrapLovable,
+} from "@/components/entrega/CopyCommandWarning";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso planejar antes de construir. Me ajude a definir: qual problema meu app resolve, para quem ele é feito, qual é a promessa principal, qual é a ação principal do usuário e quais funcionalidades devem entrar somente na primeira versão.`;
 
