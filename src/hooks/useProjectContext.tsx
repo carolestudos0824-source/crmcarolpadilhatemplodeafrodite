@@ -56,6 +56,7 @@ export const EMPTY_PROJECT_CONTEXT: ProjectContext = {
 };
 
 const STORAGE_KEY = "fabrica_apps_project_context";
+const LEGACY_STORAGE_KEY = "fabrica_project_context";
 
 type Ctx = {
   context: ProjectContext;
@@ -70,7 +71,20 @@ const ProjectContextContext = createContext<Ctx | null>(null);
 
 const readStored = (): ProjectContext => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY);
+    // Migração one-shot: se chave nova vazia e existir dado na chave antiga,
+    // copia para a nova. Mantém a antiga intacta nesta rodada.
+    if (!raw) {
+      const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (legacy) {
+        try {
+          localStorage.setItem(STORAGE_KEY, legacy);
+          raw = legacy;
+        } catch {
+          /* ignore quota errors */
+        }
+      }
+    }
     if (!raw) return EMPTY_PROJECT_CONTEXT;
     const parsed = JSON.parse(raw);
     return { ...EMPTY_PROJECT_CONTEXT, ...parsed };
