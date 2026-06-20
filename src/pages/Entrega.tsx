@@ -1646,6 +1646,47 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           </p>
         </header>
 
+        <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+          <h2 className="font-heading font-bold text-lg md:text-xl mb-2">
+            Como usar a Fábrica de Apps com IA
+          </h2>
+          <p className="text-sm text-foreground/90 mb-4 leading-relaxed">
+            Este programa é o seu guia. Você copia os comandos daqui e cola no Lovable
+            do aplicativo que está criando. A Fábrica de Apps não é o app final. Ela
+            ensina você a construir o seu próprio app passo a passo.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-3">
+            <div className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-3">
+              <h4 className="font-heading font-semibold text-sm text-amber-200 mb-1">
+                Agente Arquiteto
+              </h4>
+              <p className="text-xs text-amber-100/85">
+                Use para pensar, decidir, tirar dúvidas e organizar ideias antes de
+                construir.
+              </p>
+            </div>
+            <div className="rounded-xl border border-accent/30 bg-accent/5 p-3">
+              <h4 className="font-heading font-semibold text-sm text-accent mb-1">
+                Lovable
+              </h4>
+              <p className="text-xs text-foreground/75">
+                Use para aplicar comandos e construir o app.
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/5 p-3">
+              <h4 className="font-heading font-semibold text-sm text-emerald-300 mb-1">
+                Fábrica de Apps
+              </h4>
+              <p className="text-xs text-foreground/75">
+                Use como trilha guiada para saber qual etapa fazer agora e quando
+                avançar.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+
+
+
         <GlassCard className="p-5 mb-6">
           <p className="text-sm text-foreground/90 mb-4">
             Aqui você não recebeu apenas uma lista de comandos. Você recebeu uma jornada guiada para transformar uma ideia em app, o app em oferta e a oferta em validação real.
