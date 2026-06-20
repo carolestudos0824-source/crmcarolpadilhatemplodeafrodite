@@ -97,6 +97,7 @@ export const CommandCard = ({
     !!advanceCriteria;
 
   return (
+    <>
     <GlassCard className="p-5 md:p-6 space-y-4 scroll-mt-24">
       <button
         type="button"
