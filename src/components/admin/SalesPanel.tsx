@@ -272,7 +272,7 @@ export function SalesPanel() {
                     </td>
                     <td className="px-4 py-3">{fmtMoney(s.amount, s.currency)}</td>
                     <td className="px-4 py-3"><Badge variant={paymentTone(s.payment_status)}>{PAYMENT_STATUS_LABEL[s.payment_status] ?? s.payment_status}</Badge></td>
-                    <td className="px-4 py-3"><Badge variant={accessTone(s.access_status)}>{ACCESS_STATUS_LABEL[s.access_status] ?? s.access_status}</Badge></td>
+                    <td className="px-4 py-3"><Badge variant={accessTone(s.access_status)}>{isAwaitingFirstLogin(s) ? "Aguardando primeiro login" : (ACCESS_STATUS_LABEL[s.access_status] ?? s.access_status)}</Badge></td>
                     <td className="px-4 py-3 text-xs text-muted-foreground">{fmtDate(s.created_at)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
