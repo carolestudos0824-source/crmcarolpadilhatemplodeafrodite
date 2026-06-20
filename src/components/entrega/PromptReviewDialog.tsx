@@ -21,6 +21,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { supabase } from "@/integrations/supabase/client";
+import { useAppProjects } from "@/hooks/useAppProjects";
 
 type Props = {
   open: boolean;
