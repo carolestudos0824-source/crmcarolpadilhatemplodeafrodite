@@ -36,6 +36,7 @@ import {
   Globe,
   Scale,
   BarChart3,
+  GitBranch,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
