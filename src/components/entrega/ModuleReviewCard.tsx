@@ -67,7 +67,7 @@ export function ModuleReviewCard({
     {
       icon: CheckCircle,
       title: "O que preciso testar?",
-      text: "Teste a etapa como visitante, usuária real, compradora ou admin, quando fizer sentido.",
+      text: "Teste a etapa como visitante, pessoa usuária, quem compra ou admin, quando fizer sentido.",
     },
   ];
 
