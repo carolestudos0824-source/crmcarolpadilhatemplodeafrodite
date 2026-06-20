@@ -544,12 +544,26 @@ function SaleDetailDrawer({
         <Row label="Observações internas" value={sale.admin_notes ?? "—"} />
       </div>
 
+      {isAwaitingFirstLogin(sale) && (
+        <div className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 space-y-2">
+          <div className="flex items-start gap-2">
+            <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+            <div>
+              <div className="font-medium">Próximo passo: aguardar primeiro login</div>
+              <p className="text-xs text-amber-100/80 mt-1">
+                Pagamento confirmado, mas ainda não existe conta criada com este e-mail. Peça para o comprador entrar uma vez em /login com o mesmo e-mail da compra. Depois clique em “Tentar liberar novamente”.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mt-5 space-y-2">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ações</div>
         <div className="flex flex-wrap gap-2">
           {sale.access_status !== "access_granted" && (
             <button type="button" onClick={onGrant} className="btn-primary">
-              <ShieldCheck size={14} /> Liberar acesso
+              <ShieldCheck size={14} /> {isAwaitingFirstLogin(sale) ? "Tentar liberar novamente" : "Liberar acesso"}
             </button>
           )}
           {sale.access_status === "access_granted" && (
@@ -560,11 +574,11 @@ function SaleDetailDrawer({
           <button type="button" onClick={() => copyText(sale.buyer_email, "E-mail copiado")} className="btn-ghost border border-white/15">
             <Copy size={14} /> Copiar e-mail
           </button>
+          <button type="button" onClick={() => copyText(AWAITING_LOGIN_INSTRUCTION, "Instrução copiada")} className="btn-ghost border border-white/15">
+            <Copy size={14} /> Copiar instrução de acesso
+          </button>
           <button type="button" onClick={() => copyText(ACCESS_MESSAGE, "Mensagem copiada")} className="btn-ghost border border-white/15">
             <Copy size={14} /> Copiar mensagem de acesso liberado
-          </button>
-          <button type="button" onClick={() => copyText("Entre com o mesmo e-mail informado no pagamento. Se usar outro e-mail, o acesso pode não aparecer.", "Mensagem copiada")} className="btn-ghost border border-white/15">
-            <Copy size={14} /> Copiar “use o mesmo e-mail”
           </button>
         </div>
       </div>
