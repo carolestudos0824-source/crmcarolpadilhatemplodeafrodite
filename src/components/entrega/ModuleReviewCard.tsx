@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle } from "lucide-react";
+import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
 const SECURITY_AGENT_PROMPT = `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
