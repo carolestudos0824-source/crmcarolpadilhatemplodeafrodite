@@ -91,7 +91,8 @@ const ETAPAS: Etapa[] = [
     icon: MousePointerClick,
     title: "Definir CTA e próximo passo",
     tabs: {
-      lovable: `${LOVABLE_PREAMBLE}Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
+      lovable: wrapLovable(
+        `Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
 
 Para cada tela, entregue:
 
@@ -103,10 +104,11 @@ Para cada tela, entregue:
 6. Se existem botões demais, simplifique.
 
 Importante:
-Não crie CTAs genéricos. Cada botão deve indicar uma ação clara.
+Não crie CTAs genéricos.
 Não coloque muitos botões competindo entre si.
 Não prometa resultado garantido.
 Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`,
+      ),
       agente:
         "Me ajude a definir o CTA principal de cada tela do meu app. Quero evitar botões demais e deixar o próximo passo óbvio para o usuário.",
       corrigir:
