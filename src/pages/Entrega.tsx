@@ -100,16 +100,26 @@ const ICONS: Record<string, typeof Sparkles> = {
   Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3, GitBranch,
 };
 
-// Módulos contabilizados no progresso global. "planejar", "mvp", "telas",
-// "legal", "publicar", "teste", "metricas" e "melhorias" foram adicionados em
-// rodadas recentes sem entrar no cálculo global (serão incorporados em rodada
-// futura, quando a estrutura estiver validada).
-const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
-  (id) =>
-    id !== "planejar" && id !== "mvp" && id !== "telas" &&
-    id !== "legal" && id !== "publicar" && id !== "teste" &&
-    id !== "metricas" && id !== "melhorias",
-);
+// Módulos contabilizados no progresso global. Inclui os 23 módulos da jornada
+// oficial — os 8 módulos novos (planejar, mvp, telas, legal, publicar, teste,
+// metricas, melhorias) também contam e são marcados como concluídos
+// automaticamente quando todos os itens do checklist interno do módulo são
+// marcados (ver AUTO_MODULE_CHECKLIST abaixo).
+const PROGRESS_MODULE_IDS: ModuleId[] = [...MODULE_ORDER];
+
+// Para cada módulo novo, número de itens do checklist interno. Quando todos os
+// itens estiverem marcados em `progress.checklist`, o módulo é considerado
+// concluído no progresso global, sem precisar de botão manual.
+const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] = [
+  { id: "planejar", prefix: "planejar_step__", total: 6 },
+  { id: "mvp", prefix: "mvp_step__", total: 7 },
+  { id: "telas", prefix: "telas_step__", total: 7 },
+  { id: "legal", prefix: "legal_step__", total: 10 },
+  { id: "publicar", prefix: "publicar_step__", total: 10 },
+  { id: "teste", prefix: "teste_step__", total: 12 },
+  { id: "metricas", prefix: "metricas_step__", total: 10 },
+  { id: "melhorias", prefix: "melhorias_step__", total: 10 },
+];
 
 
 // ====== Página ======
