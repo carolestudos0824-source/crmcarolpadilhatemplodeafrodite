@@ -105,7 +105,7 @@ const ICONS: Record<string, typeof Sparkles> = {
 const PROGRESS_MODULE_IDS: ModuleId[] = MODULE_ORDER.filter(
   (id) =>
     id !== "planejar" && id !== "mvp" && id !== "telas" &&
-    id !== "legal" && id !== "publicar" && id !== "teste",
+    id !== "legal" && id !== "publicar" && id !== "teste" && id !== "metricas",
 );
 
 
