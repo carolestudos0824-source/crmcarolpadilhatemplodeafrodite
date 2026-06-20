@@ -190,8 +190,8 @@ export function ModuleReviewCard({
               : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
           }`}
         >
-          {okAgent ? <Check size={14} /> : <Copy size={14} />}
-          {okAgent ? "Copiado!" : "Copiar para o Agente Arquiteto"}
+          {okAgent ? <Check size={14} /> : <Bot size={14} />}
+          {okAgent ? "Copiado!" : "Revisar com o Agente"}
         </button>
         <button
           onClick={() => copyTo(lovableText, setOkLovable, "Lovable")}
@@ -202,7 +202,7 @@ export function ModuleReviewCard({
           }`}
         >
           {okLovable ? <Check size={14} /> : <Copy size={14} />}
-          {okLovable ? "Copiado!" : "Copiar para o Lovable revisar"}
+          {okLovable ? "Copiado!" : "Pedir revisão ao Lovable"}
         </button>
       </div>
       <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
