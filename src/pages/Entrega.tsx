@@ -55,6 +55,7 @@ import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModul
 import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
 import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
+import { ModuleReviewCard } from "@/components/entrega/ModuleReviewCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
 import { clearSession } from "@/lib/auth";
@@ -492,6 +493,12 @@ function EntregaInner() {
             setChecklist={setChecklist}
             goTo={goTo}
           />
+
+          <ModuleReviewCard
+            moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
+            isSecurity={active === "seguranca"}
+          />
+
 
           {/* Quando posso avançar? */}
           {active !== "comece" && (
