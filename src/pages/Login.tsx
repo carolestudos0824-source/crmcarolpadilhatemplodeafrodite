@@ -239,10 +239,15 @@ export default function Login() {
                   <LifeBuoy size={14} /> Falar com suporte
                 </button>
                 <button
-                  onClick={() => navigate("/")}
+                  onClick={async () => {
+                    await clearSession();
+                    setView("auth");
+                    setEmail("");
+                    setPassword("");
+                  }}
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-sm text-muted-foreground hover:text-foreground"
                 >
-                  Voltar para o início
+                  Tentar com outro e-mail
                 </button>
                 <button
                   onClick={recheckAccess}
