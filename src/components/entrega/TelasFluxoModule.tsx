@@ -250,7 +250,23 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         </pre>
       </div>
       {tab !== "avancar" && (
-        <CopyBtn text={etapa.tabs[tab]} label="Copiar para o Lovable do meu app" />
+        <CopyBtn
+          text={etapa.tabs[tab]}
+          label={
+            tab === "agente"
+              ? "Copiar para o Agente"
+              : tab === "corrigir"
+              ? "Copiar correção"
+              : "Copiar comando"
+          }
+          hint={
+            tab === "agente"
+              ? "Use para pensar antes de aplicar."
+              : tab === "corrigir"
+              ? "Use quando o Lovable não entregar o resultado esperado."
+              : "Cole no projeto do seu app no Lovable."
+          }
+        />
       )}
     </GlassCard>
   );
