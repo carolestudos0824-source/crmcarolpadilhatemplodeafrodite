@@ -717,6 +717,137 @@ export type Database = {
         }
         Relationships: []
       }
+      user_app_project_prompts: {
+        Row: {
+          created_at: string
+          id: string
+          module_id: string | null
+          module_title: string | null
+          project_id: string
+          prompt_text: string
+          prompt_type: string
+          source: string
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          module_title?: string | null
+          project_id: string
+          prompt_text: string
+          prompt_type: string
+          source: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          module_title?: string | null
+          project_id?: string
+          prompt_text?: string
+          prompt_type?: string
+          source?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_app_project_prompts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_app_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_app_projects: {
+        Row: {
+          app_description: string | null
+          app_name: string
+          archived_at: string | null
+          completed_module_ids: string[]
+          created_at: string
+          current_module_id: string | null
+          id: string
+          last_opened_at: string | null
+          main_promise: string | null
+          main_user_action: string | null
+          needs_admin: boolean
+          needs_checkout: boolean
+          needs_database: boolean
+          needs_login: boolean
+          needs_paid_area: boolean
+          notes: string | null
+          pricing_model: string | null
+          problem_solved: string | null
+          product_or_service: string | null
+          status: string
+          target_audience: string | null
+          updated_at: string
+          user_id: string
+          visual_style: string | null
+        }
+        Insert: {
+          app_description?: string | null
+          app_name: string
+          archived_at?: string | null
+          completed_module_ids?: string[]
+          created_at?: string
+          current_module_id?: string | null
+          id?: string
+          last_opened_at?: string | null
+          main_promise?: string | null
+          main_user_action?: string | null
+          needs_admin?: boolean
+          needs_checkout?: boolean
+          needs_database?: boolean
+          needs_login?: boolean
+          needs_paid_area?: boolean
+          notes?: string | null
+          pricing_model?: string | null
+          problem_solved?: string | null
+          product_or_service?: string | null
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          user_id: string
+          visual_style?: string | null
+        }
+        Update: {
+          app_description?: string | null
+          app_name?: string
+          archived_at?: string | null
+          completed_module_ids?: string[]
+          created_at?: string
+          current_module_id?: string | null
+          id?: string
+          last_opened_at?: string | null
+          main_promise?: string | null
+          main_user_action?: string | null
+          needs_admin?: boolean
+          needs_checkout?: boolean
+          needs_database?: boolean
+          needs_login?: boolean
+          needs_paid_area?: boolean
+          notes?: string | null
+          pricing_model?: string | null
+          problem_solved?: string | null
+          product_or_service?: string | null
+          status?: string
+          target_audience?: string | null
+          updated_at?: string
+          user_id?: string
+          visual_style?: string | null
+        }
+        Relationships: []
+      }
       user_events: {
         Row: {
           created_at: string
