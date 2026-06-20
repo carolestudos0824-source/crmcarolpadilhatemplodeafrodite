@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Loader2, RefreshCw, Search, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { withTimeout } from "@/lib/promiseTimeout";
 
 type AuditLog = {
   id: string;
@@ -89,10 +90,13 @@ export function AdminAuditLog({ refreshKey = 0 }: { refreshKey?: number }) {
   const load = async () => {
     setLoading(true);
     setError(null);
-    const [{ data: userData }, res] = await Promise.all([
-      supabase.auth.getUser(),
-      (supabase as any).rpc("admin_list_admin_audit_logs", { _limit: 50 }),
-    ]);
+    const [{ data: userData }, res] = await withTimeout<any>(Promise.all([
+      supabase.auth.getUser().catch(() => ({ data: { user: null } })),
+      (supabase as any).rpc("admin_list_admin_audit_logs", { _limit: 50 }).catch((e: unknown) => ({ data: null, error: e })),
+    ]), 10000, "log admin").catch((e) => ([
+      { data: { user: null } },
+      { data: null, error: e },
+    ]));
     setMyId(userData.user?.id ?? null);
     if (res.error) {
       const msg = res.error.message || "";
