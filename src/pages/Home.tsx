@@ -118,10 +118,10 @@ export default function Home() {
           <div className="space-y-6 animate-fade-up">
             <span className="inline-block text-xs uppercase tracking-[0.3em] text-accent">Fábrica de Apps com IA</span>
             <h1 className="text-4xl md:text-6xl font-heading font-bold leading-[1.05] text-gradient">
-              Tire sua ideia do papel com um plano de app, prompts prontos e campanha de lançamento
+              Crie seu app do zero com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              A Fábrica de Apps com IA transforma sua ideia em diagnóstico, MVP, arquitetura, banco de dados, telas, monetização, prompts para IA e campanha pronta para divulgar.
+              Siga uma jornada guiada com 24 etapas, comandos prontos para o Lovable, revisão dentro do app e um Agente Arquiteto para ajudar você a pensar cada decisão.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
