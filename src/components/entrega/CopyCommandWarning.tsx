@@ -1,4 +1,4 @@
-import { Sparkles, Bot } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 /**
  * Preâmbulo natural acrescentado a todo comando que a aluna copia para colar
@@ -27,27 +27,11 @@ export const CopyCommandWarning = ({
 }: {
   variant?: Variant;
 }) => {
-  if (variant === "agent") {
-    return (
-      <div className="mb-5 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
-        <Bot size={16} className="text-amber-300 shrink-0 mt-0.5" />
-        <div className="space-y-1">
-          <p className="text-sm font-medium text-foreground/95">
-            Como usar os comandos
-          </p>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Use estes comandos para pensar com o Agente Arquiteto antes de
-            aplicar no Lovable. Eles ajudam você a clarear a ideia, decidir o
-            próximo passo e organizar a estratégia.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const iconTone = variant === "agent" ? "text-primary" : "text-accent";
 
   return (
-    <div className="mb-5 rounded-xl border border-accent/20 bg-accent/[0.04] p-4 flex items-start gap-3">
-      <Sparkles size={16} className="text-accent shrink-0 mt-0.5" />
+    <div className="mb-5 rounded-xl border border-accent/20 bg-card/40 p-4 flex items-start gap-3 shadow-sm">
+      <Sparkles size={16} className={`${iconTone} shrink-0 mt-0.5`} />
       <div className="space-y-1">
         <p className="text-sm font-medium text-foreground/95">
           Como usar os comandos
