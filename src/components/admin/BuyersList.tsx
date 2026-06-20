@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Loader2, RefreshCw, ShieldCheck, UserCheck, UserX, Eye, Search, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { withTimeout } from "@/lib/promiseTimeout";
 
 export type Buyer = {
   user_id: string;
@@ -45,7 +46,11 @@ export function BuyersList({
   const load = async () => {
     setLoading(true);
     setError(null);
-    const { data, error } = await (supabase as any).rpc("admin_list_buyers", { _limit: 50 });
+    const { data, error } = await withTimeout(
+      (supabase as any).rpc("admin_list_buyers", { _limit: 50 }),
+      10000,
+      "compradores",
+    ).catch((e) => ({ data: null, error: e }));
     if (error) {
       const msg = error.message || "";
       const isPerm =
