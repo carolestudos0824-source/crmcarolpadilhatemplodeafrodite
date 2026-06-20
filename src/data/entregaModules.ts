@@ -2956,8 +2956,8 @@ export const APP_MODELS: AppModel[] = [
     database: ["profissionais", "servicos", "clientes", "agendamentos"],
     command: `Crie no Lovable um app chamado AgendaPro Local.
 
-Público: profissionais autônomos (barbeiros, manicures, esteticistas, personal trainers).
-Dor: perdem horários e clientes por usarem só WhatsApp.
+Público: profissionais autônomos.
+Dor: perdem horários por usarem só WhatsApp.
 
 MVP:
 1. Cadastro de serviços
@@ -2967,8 +2967,189 @@ MVP:
 5. Painel do profissional
 
 Banco: profissionais, servicos, clientes, agendamentos.
-Mobile first. Sem inchar.`,
+Mobile first.`,
     checklist: ["Profissional cria serviço", "Cliente é cadastrado", "Agendamento confirmado", "Painel mostra agenda do dia"],
+    shortDescription: "Agenda online para profissionais autônomos organizarem horários, serviços e clientes em um só lugar.",
+    promise: "Nunca mais perder um horário ou cliente por causa de mensagem no WhatsApp.",
+    expectedResult: "O profissional abre o app no celular e vê a agenda do dia com nome, serviço e horário de cada cliente.",
+    mainAction: "Marcar um novo horário em até 2 toques.",
+    mvp: [
+      "Cadastrar serviços com duração e preço",
+      "Ver agenda do dia/semana",
+      "Cadastrar cliente rápido",
+      "Marcar e confirmar agendamento",
+      "Painel simples com totais do dia",
+    ],
+    cutFromFirst: ["Integração com Google Calendar", "Pagamento online", "Programa de fidelidade", "App nativo"],
+    screensWithRole: [
+      { name: "Login", role: "Entrar com e-mail/senha." },
+      { name: "Agenda", role: "Ver e marcar horários do dia." },
+      { name: "Serviços", role: "Cadastrar serviços e preços." },
+      { name: "Clientes", role: "Buscar e cadastrar clientes." },
+      { name: "Painel", role: "Totais do dia e próximos atendimentos." },
+    ],
+    loginAccess: "Login obrigatório por profissional. Cada profissional só vê os próprios dados.",
+    adminArea: "Sem painel admin nesta versão. O próprio profissional administra a conta.",
+    paymentNotes: "Cobrança recorrente externa (Stripe/Hotmart). O app só libera acesso de quem está pago.",
+    differentiator: "Feito para uma única pessoa autônoma: simples, em português, mobile first.",
+    risks: ["Profissional resistir a sair do WhatsApp", "Cliente esquecer de confirmar"],
+    testFirst: ["Cadastrar 5 serviços e 5 clientes reais", "Marcar 1 dia inteiro de atendimentos", "Ver agenda no celular"],
+    buyerPersona: "Profissional autônomo, 25–55 anos, atende em casa ou em salão pequeno.",
+    validationTest: "Conseguir 3 profissionais pagando R$29–49/mês por 30 dias seguidos.",
+    visualStyleSuggestion: "Clean, claro, mobile first, com destaque para horários e nomes.",
+  },
+  {
+    name: "Tarot Digital",
+    audience: "Tarólogas, terapeutas holísticas e oraculistas.",
+    pain: "Vendem por DM, cobram por Pix e perdem clientes que queriam comprar sozinhos.",
+    monetization: "Assinatura mensal da profissional + venda avulsa de leituras.",
+    screens: ["Home pública", "Catálogo de leituras", "Compra", "Área do cliente", "Painel"],
+    database: ["taróloga", "leituras", "clientes", "pedidos", "mensagens"],
+    command: `Crie no Lovable um app chamado Tarot Digital.
+
+Público: tarólogas e oraculistas.
+Dor: vendem por DM e Pix, perdem clientes que queriam comprar sozinhos.
+
+MVP:
+1. Catálogo público de leituras
+2. Compra simples com link de pagamento
+3. Área do cliente para ver a leitura entregue
+4. Painel da tarólogá para enviar a leitura
+5. E-mail quando a leitura é liberada
+
+Banco: tarólogá, leituras, clientes, pedidos, mensagens.
+Mobile first. Estilo místico e elegante.`,
+    checklist: ["Cliente compra leitura", "Tarólogá recebe pedido", "Tarólogá entrega leitura", "Cliente abre a área"],
+    shortDescription: "Vitrine + área do cliente para tarólogas venderem leituras digitais sem depender de DM.",
+    promise: "Vender leituras em um link só, sem ficar respondendo Pix e print de comprovante.",
+    expectedResult: "A cliente entra, escolhe uma leitura, paga e recebe o resultado na própria área dela.",
+    mainAction: "Comprar uma leitura em menos de 2 minutos.",
+    mvp: [
+      "Catálogo público de leituras",
+      "Compra com link de pagamento",
+      "Painel da tarólogá com pedidos",
+      "Área do cliente com leitura entregue",
+      "E-mail quando a leitura sai",
+    ],
+    cutFromFirst: ["Chat ao vivo", "Agendamento de chamada", "App nativo", "Comunidade interna"],
+    screensWithRole: [
+      { name: "Home pública", role: "Apresentar a tarólogá e suas leituras." },
+      { name: "Catálogo", role: "Listar leituras com preço." },
+      { name: "Compra", role: "Receber dados e abrir pagamento." },
+      { name: "Área do cliente", role: "Ver leituras compradas." },
+      { name: "Painel", role: "Receber e responder pedidos." },
+    ],
+    loginAccess: "Login obrigatório para a cliente. Tarólogá tem login separado.",
+    adminArea: "Painel da tarólogá lista pedidos, libera leitura e marca como entregue.",
+    paymentNotes: "Pagamento via link externo (Stripe/Hotmart/Pix). Liberação manual ou via webhook.",
+    differentiator: "Feito para o ritual: visual místico, linguagem acolhedora, foco no cuidado.",
+    risks: ["Cliente esperar resposta instantânea", "Comprovantes de Pix manuais"],
+    testFirst: ["Cadastrar 3 tipos de leitura", "Fazer 3 vendas reais", "Entregar 3 leituras pelo painel"],
+    buyerPersona: "Tarólogá ou terapeuta, 28–55 anos, já vende por Instagram.",
+    validationTest: "10 leituras vendidas em 30 dias, com a tarólogá pagando R$49/mês.",
+    visualStyleSuggestion: "Místico, escuro, com toques dourados e tipografia elegante.",
+  },
+  {
+    name: "Área de Membros Express",
+    audience: "Infoprodutores, mentores e criadores que vendem conteúdo digital.",
+    pain: "Pagam plataformas caras só para entregar um curso simples.",
+    monetization: "Assinatura mensal do criador.",
+    screens: ["Login do aluno", "Lista de módulos", "Aula", "Materiais", "Painel do criador"],
+    database: ["criadores", "alunos", "modulos", "aulas", "materiais", "acessos"],
+    command: `Crie no Lovable um app chamado Área de Membros Express.
+
+Público: infoprodutores, mentores e criadores.
+Dor: usam plataformas caras só para entregar um curso simples.
+
+MVP:
+1. Login do aluno
+2. Lista de módulos e aulas
+3. Player com vídeo embed (YouTube/Vimeo)
+4. Materiais para download
+5. Painel do criador
+
+Banco: criadores, alunos, modulos, aulas, materiais, acessos.
+Mobile first. Visual limpo e premium.`,
+    checklist: ["Criador cadastra módulo", "Aluno entra com login", "Aluno vê aula", "Aluno baixa material"],
+    shortDescription: "Área de membros simples e premium para vender e entregar conteúdo digital sem plataforma cara.",
+    promise: "Entregar seu curso em uma área profissional, sem pagar plataforma cara nem mexer em código.",
+    expectedResult: "Aluno entra com login, abre o módulo certo e assiste à aula no celular ou no computador.",
+    mainAction: "Assistir a próxima aula em 1 toque.",
+    mvp: [
+      "Login do aluno",
+      "Lista de módulos e aulas",
+      "Player com vídeo embed",
+      "Materiais para download",
+      "Painel do criador",
+    ],
+    cutFromFirst: ["Comunidade interna", "Comentários", "Gamificação", "App nativo", "Hospedagem de vídeo"],
+    screensWithRole: [
+      { name: "Login", role: "Entrar como aluno." },
+      { name: "Módulos", role: "Ver progresso e abrir aulas." },
+      { name: "Aula", role: "Assistir e marcar como vista." },
+      { name: "Materiais", role: "Baixar PDFs e bônus." },
+      { name: "Painel do criador", role: "Cadastrar conteúdo e liberar acesso." },
+    ],
+    loginAccess: "Login obrigatório para o aluno. Acesso liberado pelo criador ou via integração com checkout externo.",
+    adminArea: "Painel do criador para gerenciar módulos, aulas e quem tem acesso.",
+    paymentNotes: "Pagamento via Hotmart/Stripe/Kiwify. O app só controla o acesso após a venda.",
+    differentiator: "Foco em entrega rápida do conteúdo: nada de tela cheia, só o essencial para o aluno aprender.",
+    risks: ["Aluno reclamar de função que outra plataforma tem", "Vídeos pesados"],
+    testFirst: ["Cadastrar 1 módulo com 3 aulas", "Liberar acesso para 5 alunos", "Coletar feedback em 7 dias"],
+    buyerPersona: "Criador de curso digital com até 500 alunos, 25–50 anos.",
+    validationTest: "3 criadores pagando R$97/mês com pelo menos 10 alunos ativos cada.",
+    visualStyleSuggestion: "Premium, escuro, foco no conteúdo, tipografia legível.",
+  },
+  {
+    name: "App de Mentoria",
+    audience: "Mentores que acompanham alunos em jornadas de 30 a 180 dias.",
+    pain: "Perdem alunos por falta de organização entre encontros, tarefas e materiais.",
+    monetization: "Assinatura mensal do mentor.",
+    screens: ["Login", "Mentorados", "Plano do aluno", "Encontros", "Materiais"],
+    database: ["mentores", "alunos", "encontros", "tarefas", "materiais"],
+    command: `Crie no Lovable um app chamado App de Mentoria.
+
+Público: mentores que acompanham alunos em jornadas.
+Dor: perdem alunos por falta de organização entre encontros e tarefas.
+
+MVP:
+1. Cadastrar mentorados
+2. Plano individual com tarefas
+3. Agenda de encontros
+4. Materiais por aluno
+5. Painel do mentor com status de cada aluno
+
+Banco: mentores, alunos, encontros, tarefas, materiais.
+Mobile first. Foco em clareza.`,
+    checklist: ["Mentor cadastra aluno", "Aluno vê tarefas", "Encontro agendado", "Material acessado"],
+    shortDescription: "Espaço único para o mentor organizar alunos, encontros, tarefas e materiais — sem perder ninguém no caminho.",
+    promise: "Acompanhar todo aluno com clareza, sem depender de planilha ou caixa de mensagens lotada.",
+    expectedResult: "Mentor abre o app e vê o status de cada aluno: tarefas pendentes, próximo encontro, último contato.",
+    mainAction: "Abrir o aluno e atualizar o plano dele em 30 segundos.",
+    mvp: [
+      "Cadastrar mentorado",
+      "Criar plano com tarefas",
+      "Agendar encontros",
+      "Anexar materiais ao aluno",
+      "Painel do mentor",
+    ],
+    cutFromFirst: ["Chat ao vivo", "Pagamento dentro do app", "Avaliação 360", "Integração com calendário"],
+    screensWithRole: [
+      { name: "Login", role: "Entrar como mentor ou aluno." },
+      { name: "Mentorados", role: "Ver lista e status de cada aluno." },
+      { name: "Plano do aluno", role: "Criar tarefas e marcar progresso." },
+      { name: "Encontros", role: "Agendar e registrar conversas." },
+      { name: "Materiais", role: "Anexar PDFs, vídeos e links." },
+    ],
+    loginAccess: "Login obrigatório. Mentor enxerga todos os alunos; cada aluno só vê o próprio plano.",
+    adminArea: "Painel do mentor com filtros por status (em dia, atrasado, sumido).",
+    paymentNotes: "Cobrança fora do app. O app só dá acesso a quem o mentor liberar.",
+    differentiator: "Não é CRM nem LMS: é um app feito para a relação mentor↔aluno.",
+    risks: ["Aluno não entrar no app", "Mentor não atualizar status"],
+    testFirst: ["Cadastrar 5 alunos reais", "Rodar 1 ciclo de 30 dias", "Coletar 3 depoimentos"],
+    buyerPersona: "Mentor com 5–50 alunos ativos, 30–55 anos.",
+    validationTest: "3 mentores pagando R$149/mês com pelo menos 5 alunos ativos cada.",
+    visualStyleSuggestion: "Clean, organizado, com destaque para status e prazos.",
   },
   {
     name: "CardápioZap",
