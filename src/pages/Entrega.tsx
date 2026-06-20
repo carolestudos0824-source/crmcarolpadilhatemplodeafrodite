@@ -134,6 +134,29 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
   { id: "seguranca", prefix: "seguranca_step__", total: 12 },
 ];
 
+// Organização visual dos 24 módulos por fase da jornada. NÃO altera
+// MODULE_ORDER nem PROGRESS_MODULE_IDS (progresso global preservado), apenas
+// agrupa os módulos existentes no painel lateral.
+const SIDEBAR_GROUPS: { title: string; modules: ModuleId[] }[] = [
+  { title: "Comece aqui", modules: ["fundamentos", "comece", "ideias", "planejar", "mvp", "telas"] },
+  { title: "Construir o app", modules: ["construir", "login", "seguranca", "teste", "erros"] },
+  { title: "Vender o app", modules: ["venda", "monetizacao", "checkout", "legal"] },
+  { title: "Publicar e crescer", modules: ["publicar", "seo", "campanhas", "criativos", "metricas"] },
+  { title: "Evoluir", modules: ["validacao", "melhorias", "checklist", "ativar"] },
+];
+
+const SIDEBAR_STATUS_LABEL: Record<string, string> = {
+  ideia: "Ideia",
+  planejando: "Planejando",
+  construindo: "Construindo",
+  revisando: "Revisando",
+  publicado: "Publicado",
+  vendendo: "Vendendo",
+  escalando: "Escalando",
+  pausado: "Pausado",
+  arquivado: "Arquivado",
+};
+
 
 // ====== Página ======
 
