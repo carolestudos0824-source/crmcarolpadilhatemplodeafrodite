@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
