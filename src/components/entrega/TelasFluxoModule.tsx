@@ -424,7 +424,7 @@ export function TelasFluxoModule() {
           })}
         </ul>
         <p className="text-[11px] text-muted-foreground mt-3">
-          Este checklist é salvo na sua conta, mas não afeta o progresso geral nesta rodada.
+          Quando todos os itens estiverem marcados, este módulo é concluído na sua jornada.
         </p>
       </GlassCard>
     </section>
