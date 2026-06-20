@@ -493,6 +493,12 @@ function EntregaInner() {
             goTo={goTo}
           />
 
+          <ModuleReviewCard
+            moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
+            isSecurity={active === "seguranca"}
+          />
+
+
           {/* Quando posso avançar? */}
           {active !== "comece" && (
             <div className="mt-8 rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
