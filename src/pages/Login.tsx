@@ -400,16 +400,6 @@ export default function Login() {
               <div className="pt-2 space-y-2 text-sm">
                 <button
                   type="button"
-                  onClick={() => {
-                    setTab("signin");
-                    resetMessages();
-                  }}
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
-                >
-                  <KeyRound size={14} /> Prefiro entrar com senha
-                </button>
-                <button
-                  type="button"
                   onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
                 >
