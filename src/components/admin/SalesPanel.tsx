@@ -149,9 +149,15 @@ export function SalesPanel() {
 
   const grantAccess = async (sale: ManualSale) => {
     const { data, error } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: sale.id });
-    if (error) return toast.error(error.message);
+    if (error) {
+      if (isNoUserError(error.message)) return toast.warning(FRIENDLY_NO_USER_MSG, { duration: 8000 });
+      return toast.error("Não foi possível liberar acesso agora. Tente novamente em instantes.");
+    }
     const res = data as { success?: boolean; error?: string } | null;
-    if (!res?.success) return toast.error(res?.error ?? "Não foi possível liberar acesso.");
+    if (!res?.success) {
+      if (isNoUserError(res?.error)) return toast.warning(FRIENDLY_NO_USER_MSG, { duration: 8000 });
+      return toast.error(res?.error ?? "Não foi possível liberar acesso.");
+    }
     toast.success(`Acesso liberado para ${sale.buyer_email}.`);
     reload();
     if (selected?.id === sale.id) setSelected(null);
