@@ -10,6 +10,7 @@ import {
   requestPasswordRecovery,
   signUpWithPassword,
   checkUserAccess,
+  clearSession,
 } from "@/lib/auth";
 import { openSupportEmail } from "@/lib/openLink";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
