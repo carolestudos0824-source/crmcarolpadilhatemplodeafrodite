@@ -57,6 +57,7 @@ export type ModuleId =
   | "campanhas"
   | "criativos"
   | "metricas"
+  | "melhorias"
   | "validacao"
   | "checklist"
   | "erros"
