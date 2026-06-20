@@ -33,6 +33,7 @@ import {
   ChevronDown,
   BookOpen,
   Map as MapIcon,
+  Globe,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
