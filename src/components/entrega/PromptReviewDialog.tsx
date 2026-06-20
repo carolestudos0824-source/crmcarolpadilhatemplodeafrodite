@@ -14,13 +14,11 @@ import {
   AlertTriangle,
   Settings2,
   Sparkles,
-  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
-import { supabase } from "@/integrations/supabase/client";
 import { useAppProjects } from "@/hooks/useAppProjects";
 
 type Props = {
@@ -38,11 +36,42 @@ type Props = {
 
 type Mode = "lovable" | "agent";
 
-type Improvement = {
-  improvedPrompt: string;
-  improvements: string[];
-  warnings: string[];
-};
+function buildAgentImprovePrompt(currentText: string) {
+  return `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
+
+Quero melhorar este prompt antes de enviar ao Lovable.
+
+Meu objetivo é evitar prompt fraco, retrabalho e gasto errado de créditos no Lovable.
+
+Prompt atual que quero melhorar:
+
+${currentText}
+
+Analise e melhore este prompt com foco em:
+
+1. Clareza
+2. Completude
+3. Ordem lógica
+4. Segurança
+5. Preservação do que já funciona
+6. Escopo correto da etapa
+7. Evitar comandos vagos
+8. Evitar pedir coisas demais de uma vez
+9. Evitar quebrar login, banco, acesso, admin, checkout, entrega, layout ou progresso
+10. Incluir o que testar depois
+
+Regras:
+
+- Preserve a intenção original.
+- Não transforme a Fábrica de Apps com IA no app final.
+- O app final é o projeto que estou criando no Lovable.
+- Se faltar contexto, me pergunte antes ou faça suposições claras.
+- Não prometa resultado financeiro garantido.
+- Não prometa segurança 100%.
+- Entregue uma versão final pronta para colar no Lovable.
+- Depois explique rapidamente o que você melhorou.`;
+}
+
 
 const QUALITY_CHECKS: { label: string; match: (text: string) => boolean }[] = [
   { label: "Contexto do app incluído", match: (t) => /Contexto do meu app:/i.test(t) },
