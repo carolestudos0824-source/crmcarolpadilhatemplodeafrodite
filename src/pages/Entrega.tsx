@@ -38,6 +38,10 @@ import {
   BarChart3,
   GitBranch,
   ClipboardCheck,
+  Compass,
+  FolderKanban,
+  Bookmark,
+  Repeat,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
