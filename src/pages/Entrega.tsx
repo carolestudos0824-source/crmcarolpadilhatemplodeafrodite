@@ -1830,7 +1830,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return <FundamentosModule />;
   }
   if (active === "planejar") {
-    return <PlanejarModule />;
+    return <PlanejarModule goTo={goTo} />;
   }
   if (active === "mvp") {
     return <MvpArquiteturaModule />;
@@ -2122,6 +2122,22 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           title="Ideias prontas para criar no Lovable"
           subtitle="Escolha um modelo de app, copie o comando e cole no Lovable."
         />
+        <div className="rounded-xl border border-amber-400/30 bg-amber-400/[0.06] p-4 mb-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+          <div className="min-w-0">
+            <h3 className="text-sm font-heading font-bold text-foreground/95">
+              Antes de construir, valide a ideia
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Use a análise de viabilidade para entender mercado, concorrência, riscos e MVP antes de gastar créditos no Lovable.
+            </p>
+          </div>
+          <button
+            onClick={() => goTo("validacao")}
+            className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-xs font-semibold"
+          >
+            Analisar viabilidade
+          </button>
+        </div>
         <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-muted-foreground mb-6">
           Essas ideias têm dor clara, público definido e forma possível de monetização.
           Mesmo assim, valide com usuários reais antes de investir pesado.

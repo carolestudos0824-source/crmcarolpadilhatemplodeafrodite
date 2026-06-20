@@ -241,7 +241,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
   );
 }
 
-export function PlanejarModule() {
+export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
 
   const copyAgentHelp = async () => {
@@ -272,6 +272,27 @@ export function PlanejarModule() {
           vai usar e qual será a ação principal.
         </p>
       </header>
+
+      {goTo && (
+        <GlassCard className="p-4 mb-4 border-amber-400/30 bg-amber-400/[0.06]">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+            <div className="min-w-0">
+              <h3 className="text-sm font-heading font-bold text-foreground/95">
+                Quer saber se a ideia vale construir?
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Antes de montar o MVP, você pode pedir uma análise de viabilidade ao Agente.
+              </p>
+            </div>
+            <button
+              onClick={() => goTo("validacao")}
+              className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-xs font-semibold"
+            >
+              Analisar viabilidade
+            </button>
+          </div>
+        </GlassCard>
+      )}
 
       <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
