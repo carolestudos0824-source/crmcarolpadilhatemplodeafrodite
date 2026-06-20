@@ -57,6 +57,7 @@ export type ModuleId =
   | "campanhas"
   | "criativos"
   | "metricas"
+  | "melhorias"
   | "validacao"
   | "checklist"
   | "erros"
@@ -88,6 +89,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "criativos", label: "Criativos", icon: "Image" },
   { id: "metricas", label: "Métricas do App", icon: "BarChart3" },
   { id: "validacao", label: "Validação", icon: "Users" },
+  { id: "melhorias", label: "Melhorias e Versões", icon: "GitBranch" },
   { id: "checklist", label: "Checklist", icon: "ListChecks" },
   { id: "erros", label: "Erros comuns", icon: "AlertTriangle" },
   { id: "ativar", label: "Ativar acesso", icon: "Gift" },
@@ -3578,6 +3580,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
   validacao: {
     doNow: "Liste 10 pessoas reais que podem testar e copie a mensagem de convite.",
     advanceWhen: "Avance quando pelo menos 5 pessoas testarem e responderem o feedback.",
+  },
+  melhorias: {
+    doNow: "Organize feedbacks, separe bug de melhoria, priorize 5 mudanças e teste a nova versão antes de divulgar.",
+    advanceWhen: "Avance quando a nova versão estiver aplicada, testada e registrada, sem quebrar o que já funcionava.",
   },
   checklist: {
     doNow: "Marque tudo que você já fez. Use a barra de progresso como guia.",
