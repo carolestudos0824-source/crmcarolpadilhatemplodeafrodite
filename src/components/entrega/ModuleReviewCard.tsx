@@ -27,7 +27,7 @@ Quero conferir:
 1. O que já foi aplicado corretamente.
 2. O que ainda falta fazer.
 3. O que pode estar quebrado.
-4. O que preciso testar como usuária real.
+4. O que preciso testar como pessoa usuária real.
 5. Se posso avançar para o próximo módulo ou se preciso corrigir algo antes.
 
 Considere que estou criando meu app no Lovable e quero evitar avançar com erros.`;
