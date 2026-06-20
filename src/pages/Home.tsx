@@ -139,6 +139,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* DOR */}
+      <Section
+        eyebrow="A dor real"
+        title="Você não precisa de mais prompts soltos"
+        subtitle="Você precisa saber o que pedir, em qual ordem e como revisar se ficou certo."
+      >
+        <div className="max-w-3xl mx-auto glass-strong p-6 md:p-10">
+          <ul className="grid sm:grid-cols-2 gap-3">
+            {dores.map((d) => (
+              <li key={d} className="flex items-start gap-3 text-base text-foreground/90">
+                <span className="text-destructive/80 shrink-0 mt-1">•</span>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+
       {/* PLANO EXECUTÁVEL */}
       <Section
         eyebrow="Mais do que um PDF"
