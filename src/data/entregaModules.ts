@@ -85,7 +85,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
   { id: "legal", label: "Legal e Confiança", icon: "Scale" },
   { id: "publicar", label: "Publicar e Domínio", icon: "Globe" },
-  { id: "teste", label: "Teste Final do App", icon: "ShieldCheck" },
+  { id: "teste", label: "Teste Final do App", icon: "ClipboardCheck" },
   { id: "seo", label: "SEO e GEO", icon: "Search" },
   { id: "campanhas", label: "Campanhas", icon: "Rocket" },
   { id: "criativos", label: "Criativos", icon: "Image" },
