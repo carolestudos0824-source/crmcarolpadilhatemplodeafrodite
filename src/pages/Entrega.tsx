@@ -153,6 +153,25 @@ const ContextHeaderButton = () => {
   );
 };
 
+const MyAppsHeaderButton = () => {
+  const { openDrawer, activeProject, projects } = useAppProjects();
+  const label = activeProject ? `App: ${activeProject.name}` : "Meus Apps";
+  return (
+    <button
+      type="button"
+      onClick={openDrawer}
+      className="px-3 py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[200px]"
+      title="Meus Apps em Construção"
+    >
+      <span className="truncate">{label}</span>
+      {projects.length > 0 && (
+        <span className="text-[10px] opacity-70">({projects.length})</span>
+      )}
+    </button>
+  );
+};
+
+
 function EntregaInner() {
   const navigate = useNavigate();
   const auth = useAuthState();
