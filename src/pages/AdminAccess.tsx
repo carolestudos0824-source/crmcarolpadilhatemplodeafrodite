@@ -992,18 +992,50 @@ function ConfigSection() {
   ].filter(Boolean) as string[];
   const legalOk = legalMissing.length === 0;
 
+  const publicUrl = typeof window !== "undefined" ? window.location.origin : "—";
+
   const items = [
     {
       icon: <CreditCard size={16} />,
       title: "Checkout",
       ok: checkoutOk,
-      text: checkoutOk ? "CHECKOUT_FABRICA_URL aponta para URL válida." : "CHECKOUT_FABRICA_URL ainda está placeholder ou vazio.",
+      text: checkoutOk ? "Checkout configurado." : "Checkout real pendente (CHECKOUT_FABRICA_URL ainda placeholder ou vazio).",
     },
     {
       icon: <Mail size={16} />,
       title: "Suporte",
       ok: supportOk,
       text: supportOk ? (APP_CONFIG.SUPORTE_EMAIL as string) : "E-mail de suporte ainda não configurado.",
+    },
+    {
+      icon: <ExternalLink size={16} />,
+      title: "URL pública do app",
+      ok: true,
+      text: publicUrl,
+    },
+    {
+      icon: <ShieldCheck size={16} />,
+      title: "Login Google",
+      ok: true,
+      text: "Habilitado no Lovable Cloud. Login não concede admin nem acesso pago automaticamente.",
+    },
+    {
+      icon: <UserCheck size={16} />,
+      title: "Área interna",
+      ok: true,
+      text: "/entrega protegida por login e status de acesso.",
+    },
+    {
+      icon: <ShoppingCartIcon />,
+      title: "Painel de vendas manuais",
+      ok: true,
+      text: "Operacional. Registre vendas e libere acesso pela aba Vendas.",
+    },
+    {
+      icon: <AlertTriangle size={16} />,
+      title: "Webhook de pagamento",
+      ok: false,
+      text: "Não configurado. Webhook será uma etapa futura.",
     },
     {
       icon: <Bot size={16} />,
