@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { withTimeout } from "@/lib/promiseTimeout";
 
 type GiftCode = {
   id: string;
@@ -68,7 +69,7 @@ export function GiftCodesPanel() {
   const load = async () => {
     setLoading(true);
     setError(null);
-    const [codesRes, redRes] = await Promise.all([
+    const [codesRes, redRes] = await withTimeout<any>(Promise.all([
       supabase
         .from("gift_codes")
         .select("id, code, duration_days, max_uses, current_uses, is_active, expires_at, created_at")
@@ -79,7 +80,10 @@ export function GiftCodesPanel() {
         .select("id, gift_code_id, user_id, redeemed_at")
         .order("redeemed_at", { ascending: false })
         .limit(20),
-    ]);
+    ]), 10000, "códigos premium").catch((e) => ([
+      { data: null, error: e },
+      { data: null, error: e },
+    ]));
     if (codesRes.error) {
       const msg = codesRes.error.message || "";
       const isPermission =
