@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Copy, Check, Loader2, Inbox as InboxIcon, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { withTimeout } from "@/lib/promiseTimeout";
 
 type SupportMessage = {
   id: string;
@@ -22,10 +23,11 @@ export function SupportInbox() {
   const load = async () => {
     setLoading(true);
     setError(null);
-    const { data, error } = await supabase
+    const { data, error } = await withTimeout<any>(supabase
       .from("support_messages")
       .select("id, created_at, name, email, message, status")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false }), 10000, "mensagens recebidas")
+      .catch((e) => ({ data: null, error: e }));
     if (error) {
       setError(error.message);
       setMessages([]);
