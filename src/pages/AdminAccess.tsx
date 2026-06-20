@@ -355,7 +355,7 @@ function OverviewSection({
     (async () => {
       try {
         const [buyersRes, giftsRes, supportRes] = await withTimeout(Promise.all([
-          (supabase as any).rpc("admin_list_buyers", { _limit: 200 }).catch((e: unknown) => ({ data: null, error: e })),
+          Promise.resolve((supabase as any).rpc("admin_list_buyers", { _limit: 200 })).catch((e: unknown) => ({ data: null, error: e })),
           supabase.from("gift_redemptions").select("*", { count: "exact", head: true }).then(
             (r) => r,
             (e) => ({ data: null, count: null, error: e }),
