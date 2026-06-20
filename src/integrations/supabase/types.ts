@@ -384,6 +384,66 @@ export type Database = {
         }
         Relationships: []
       }
+      manual_sales: {
+        Row: {
+          access_granted_at: string | null
+          access_revoked_at: string | null
+          access_source: string
+          access_status: string
+          admin_notes: string | null
+          amount: number
+          buyer_email: string
+          buyer_name: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          id: string
+          payment_method: string | null
+          payment_reference: string | null
+          payment_status: string
+          product_name: string
+          updated_at: string
+        }
+        Insert: {
+          access_granted_at?: string | null
+          access_revoked_at?: string | null
+          access_source?: string
+          access_status?: string
+          admin_notes?: string | null
+          amount?: number
+          buyer_email: string
+          buyer_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          product_name?: string
+          updated_at?: string
+        }
+        Update: {
+          access_granted_at?: string | null
+          access_revoked_at?: string | null
+          access_source?: string
+          access_status?: string
+          admin_notes?: string | null
+          amount?: number
+          buyer_email?: string
+          buyer_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          product_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -789,6 +849,23 @@ export type Database = {
         }
         Returns: Json
       }
+      admin_create_manual_sale: {
+        Args: {
+          _admin_notes?: string
+          _amount?: number
+          _buyer_email: string
+          _buyer_name?: string
+          _payment_method?: string
+          _payment_reference?: string
+          _payment_status?: string
+        }
+        Returns: Json
+      }
+      admin_get_manual_sale: { Args: { _sale_id: string }; Returns: Json }
+      admin_grant_access_from_sale: {
+        Args: { _sale_id: string }
+        Returns: Json
+      }
       admin_list_access_logs: {
         Args: { _limit?: number }
         Returns: {
@@ -831,6 +908,32 @@ export type Database = {
           user_id: string
         }[]
       }
+      admin_list_manual_sales: {
+        Args: {
+          _access_status?: string
+          _limit?: number
+          _payment_status?: string
+          _search?: string
+        }
+        Returns: {
+          access_granted_at: string
+          access_revoked_at: string
+          access_source: string
+          access_status: string
+          admin_notes: string
+          amount: number
+          buyer_email: string
+          buyer_name: string
+          created_at: string
+          currency: string
+          id: string
+          payment_method: string
+          payment_reference: string
+          payment_status: string
+          product_name: string
+          updated_at: string
+        }[]
+      }
       admin_lookup_user: {
         Args: { _email: string }
         Returns: {
@@ -842,12 +945,28 @@ export type Database = {
           user_id: string
         }[]
       }
+      admin_revoke_access_from_sale: {
+        Args: { _sale_id: string }
+        Returns: Json
+      }
       admin_set_access: {
         Args: { _has_access: boolean; _user_id: string }
         Returns: Json
       }
       admin_set_gift_code_active: {
         Args: { _code_id: string; _is_active: boolean }
+        Returns: Json
+      }
+      admin_update_manual_sale: {
+        Args: {
+          _admin_notes?: string
+          _amount?: number
+          _buyer_name?: string
+          _payment_method?: string
+          _payment_reference?: string
+          _payment_status?: string
+          _sale_id: string
+        }
         Returns: Json
       }
       apply_arcano_backfill: { Args: { _payload: Json }; Returns: Json }
