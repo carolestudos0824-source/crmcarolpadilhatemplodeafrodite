@@ -354,7 +354,7 @@ function OverviewSection({
     let mounted = true;
     (async () => {
       try {
-        const [buyersRes, giftsRes, supportRes] = await Promise.all([
+        const [buyersRes, giftsRes, supportRes] = await withTimeout(Promise.all([
           (supabase as any).rpc("admin_list_buyers", { _limit: 200 }).catch((e: unknown) => ({ data: null, error: e })),
           supabase.from("gift_redemptions").select("*", { count: "exact", head: true }).then(
             (r) => r,
@@ -364,7 +364,7 @@ function OverviewSection({
             (r) => r,
             (e) => ({ data: null, count: null, error: e }),
           ),
-        ]);
+        ]), 10000, "métricas admin");
         if (!mounted) return;
         const rows = (buyersRes?.data as Buyer[] | null) ?? [];
         const active = rows.filter((r) => r && r.has_access);
