@@ -1635,22 +1635,27 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     // Mapa inteligente: fases agrupam módulos existentes da trilha.
     // Apenas orientação visual — não altera navegação, progresso ou contadores.
     const phaseMap: { title: string; mods: ModuleId[] }[] = [
-      { title: "Fase 1 — Ideia e planejamento", mods: ["ideias", "planejar", "mvp", "telas"] },
-      { title: "Fase 2 — Construção", mods: ["construir", "login"] },
-      { title: "Fase 3 — Venda", mods: ["venda", "monetizacao", "checkout"] },
-      { title: "Fase 4 — Publicação e confiança", mods: ["publicar", "seo"] },
-      { title: "Fase 5 — Divulgação e validação", mods: ["criativos", "campanhas", "validacao"] },
-      { title: "Fase 6 — Melhoria", mods: ["checklist", "erros"] },
+      { title: "Fase 1 — Começar com clareza", mods: ["fundamentos", "comece", "ideias"] },
+      { title: "Fase 2 — Planejar antes de construir", mods: ["planejar", "mvp", "telas"] },
+      { title: "Fase 3 — Construir a base", mods: ["construir", "login"] },
+      { title: "Fase 4 — Preparar venda e entrega", mods: ["venda", "monetizacao", "checkout", "legal"] },
+      { title: "Fase 5 — Publicar e testar", mods: ["publicar", "teste"] },
+      { title: "Fase 6 — Divulgar e ser encontrada", mods: ["seo", "campanhas", "criativos"] },
+      { title: "Fase 7 — Medir, validar e melhorar", mods: ["metricas", "validacao", "melhorias"] },
+      { title: "Fase 8 — Revisar e resolver problemas", mods: ["checklist", "erros", "ativar"] },
     ];
     const moduleLabel = (id: ModuleId) =>
       MODULES.find((m) => m.id === id)?.label ?? id;
 
     const naoPule = [
-      "Não vá para Construir app sem planejar a ideia.",
-      "Não vá para Checkout sem decidir monetização.",
+      "Não construa sem planejar a ideia.",
+      "Não crie telas sem definir o fluxo principal.",
+      "Não venda sem explicar entrega e acesso.",
+      "Não publique sem revisar confiança, termos e suporte.",
       "Não divulgue sem testar no celular.",
-      "Não rode campanha sem página de venda clara.",
-      "Não valide com opinião. Valide com comportamento real.",
+      "Não valide só com elogios.",
+      "Não mude tudo sem olhar métricas.",
+      "Não lance uma nova versão sem testar novamente.",
     ];
 
     return (
