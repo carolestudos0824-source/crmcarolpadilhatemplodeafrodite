@@ -27,7 +27,12 @@ type Props = {
   onClose: () => void;
   stepName: string;
   stepObjective?: string;
-  command: string;
+  command?: string;
+  /**
+   * Optional pre-built prompts. When passed, the dialog uses them as-is
+   * instead of generating from `command`. Useful for ModuleReviewCard.
+   */
+  customPrompts?: { lovable: string; agent: string };
 };
 
 type Mode = "lovable" | "agent";
@@ -42,9 +47,9 @@ const QUALITY_CHECKS: { label: string; match: (text: string) => boolean }[] = [
   { label: "Contexto do app incluído", match: (t) => /Contexto do meu app:/i.test(t) },
   { label: "Etapa atual incluída", match: (t) => /Etapa atual:/i.test(t) },
   { label: "Objetivo da etapa incluído", match: (t) => /Objetivo desta etapa:/i.test(t) },
-  { label: "Tarefa específica incluída", match: (t) => /Tarefa:|Comando que pretendo enviar/i.test(t) },
+  { label: "Tarefa específica incluída", match: (t) => /Tarefa:|Comando que pretendo enviar|Pedido:|Revisão/i.test(t) },
   { label: "Regras de preservação incluídas", match: (t) => /Regras:|Preserve o que já está funcionando|Não trate a Fábrica/i.test(t) },
-  { label: "O que testar depois incluído", match: (t) => /testar|teste/i.test(t) },
+  { label: "O que testar depois incluído", match: (t) => /testar|teste|relatório|riscos/i.test(t) },
 ];
 
 /**
@@ -59,6 +64,7 @@ export const PromptReviewDialog = ({
   stepName,
   stepObjective,
   command,
+  customPrompts,
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
   const [mode, setMode] = useState<Mode>("lovable");
@@ -66,12 +72,16 @@ export const PromptReviewDialog = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const originals = useMemo(
-    () => ({
-      lovable: buildLovablePrompt({ context, stepName, stepObjective, command }),
-      agent: buildAgentPrompt({ context, stepName, stepObjective, command }),
-    }),
-    [context, stepName, stepObjective, command],
+    () =>
+      customPrompts
+        ? { lovable: customPrompts.lovable, agent: customPrompts.agent }
+        : {
+            lovable: buildLovablePrompt({ context, stepName, stepObjective, command: command ?? "" }),
+            agent: buildAgentPrompt({ context, stepName, stepObjective, command: command ?? "" }),
+          },
+    [context, stepName, stepObjective, command, customPrompts],
   );
+
 
   const [drafts, setDrafts] = useState<{ lovable: string; agent: string }>(originals);
   const [improving, setImproving] = useState(false);
