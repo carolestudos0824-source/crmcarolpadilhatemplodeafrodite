@@ -372,7 +372,7 @@ export function SegurancaAppModule() {
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <Eye size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Checklist do módulo</h3>
+          <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
         </div>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
@@ -411,7 +411,7 @@ export function SegurancaAppModule() {
           })}
         </ul>
         <p className="text-[11px] text-muted-foreground mt-3">
-          Quando todos os 12 itens estiverem marcados, este módulo é concluído na sua jornada.
+          Quando todos os 12 itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
     </section>
