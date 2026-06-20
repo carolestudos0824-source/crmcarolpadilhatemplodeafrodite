@@ -4,6 +4,7 @@ import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
+import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
 
 type Props = {
   number: number;
@@ -139,17 +140,21 @@ export const CommandCard = ({
                 {commandText}
               </pre>
             </div>
-            <div className="mt-2 flex justify-end">
+            <div className="mt-2 flex flex-col items-end gap-1">
               <button
                 onClick={() =>
-                  copyText(commandText, "main", "Comando copiado. Agora cole no Lovable.")
+                  copyText(wrapLovable(commandText), "main", "Comando copiado. Agora cole no Lovable do seu app.")
                 }
                 className="btn-primary text-sm"
                 type="button"
+                title="Cole no projeto do app que você está criando."
               >
                 {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                {copiedKey === "main" ? "Copiado" : "Copiar e colar no Lovable"}
+                {copiedKey === "main" ? "Copiado" : "Copiar para o Lovable do meu app"}
               </button>
+              <span className="text-[10px] text-muted-foreground/80">
+                Cole no projeto do app que você está criando, não na Fábrica de Apps.
+              </span>
             </div>
           </div>
 
@@ -231,17 +236,21 @@ export const CommandCard = ({
                     {commandText}
                   </pre>
                 </div>
-                <div className="mt-2 flex justify-end">
+                <div className="mt-2 flex flex-col items-end gap-1">
                   <button
                     onClick={() =>
-                      copyText(commandText, "main", "Comando copiado. Agora cole no Lovable.")
+                      copyText(wrapLovable(commandText), "main", "Comando copiado. Agora cole no Lovable do seu app.")
                     }
                     className="btn-primary text-sm min-h-[44px]"
                     type="button"
+                    title="Cole no projeto do app que você está criando."
                   >
                     {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                    {copiedKey === "main" ? "Copiado" : "Copiar e colar no Lovable"}
+                    {copiedKey === "main" ? "Copiado" : "Copiar para o Lovable do meu app"}
                   </button>
+                  <span className="text-[10px] text-muted-foreground/80">
+                    Cole no projeto do app que você está criando, não na Fábrica de Apps.
+                  </span>
                 </div>
               </div>
             </div>
@@ -282,7 +291,7 @@ export const CommandCard = ({
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                     >
                       {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                      {copiedKey === "agent" ? "Copiado" : "Copiar para conversar com o Agente"}
+                      {copiedKey === "agent" ? "Copiado" : "Copiar para o Agente Arquiteto"}
                     </button>
                   </div>
                 </div>
@@ -306,7 +315,7 @@ export const CommandCard = ({
                   </div>
                   <div className="mt-2 flex justify-end">
                     <button
-                      onClick={() => copyText(correctionPrompt, "fix", "Prompt de correção copiado.")}
+                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Prompt de correção copiado. Cole no Lovable do seu app.")}
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >

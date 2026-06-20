@@ -19,6 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import {
+  CopyCommandWarning,
+  wrapLovable,
+} from "@/components/entrega/CopyCommandWarning";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
 
@@ -211,7 +215,25 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           {etapa.tabs[tab]}
         </pre>
       </div>
-      {tab !== "avancar" && <CopyBtn text={etapa.tabs[tab]} label="Copiar comando" />}
+      {tab !== "avancar" && (
+        <div className="flex flex-col gap-1">
+          <CopyBtn
+            text={
+              tab === "agente" ? etapa.tabs[tab] : wrapLovable(etapa.tabs[tab])
+            }
+            label={
+              tab === "agente"
+                ? "Copiar para o Agente Arquiteto"
+                : "Copiar para o Lovable do meu app"
+            }
+          />
+          <span className="text-[10px] text-muted-foreground/80">
+            {tab === "agente"
+              ? "Cole no chat do Agente Arquiteto, não no Lovable."
+              : "Cole no projeto do app que você está criando, não na Fábrica de Apps."}
+          </span>
+        </div>
+      )}
     </GlassCard>
   );
 }
@@ -296,6 +318,14 @@ export function MvpArquiteturaModule() {
           </p>
         </div>
       </GlassCard>
+
+      <CopyCommandWarning />
+      <p className="text-xs text-muted-foreground mb-4">
+        Use a aba <strong className="text-foreground/90">Fazer no Lovable</strong> quando
+        quiser aplicar no app. Use a aba{" "}
+        <strong className="text-foreground/90">Pensar com o Agente</strong> quando quiser
+        ajuda para decidir antes de construir.
+      </p>
 
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (

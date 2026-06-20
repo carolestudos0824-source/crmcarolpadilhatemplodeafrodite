@@ -40,6 +40,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
@@ -523,6 +524,7 @@ const CommandList = ({
   moduleKey: string;
 }) => (
   <div className="space-y-3">
+    <CopyCommandWarning />
     {commands.map((c, i) => (
       <CommandCard
         key={c.n}

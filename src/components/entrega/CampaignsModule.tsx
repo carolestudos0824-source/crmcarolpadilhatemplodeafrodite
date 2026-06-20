@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { APP_CONFIG } from "@/config/appConfig";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 
 type Checklist = Record<string, boolean>;
 type SetChecklist = (v: Checklist | ((p: Checklist) => Checklist)) => void;
@@ -1442,6 +1443,8 @@ export function CampaignsModule({
           Aquisição é o processo de trazer pessoas para conhecer, testar ou comprar seu app.
         </p>
       </header>
+
+      <CopyCommandWarning variant="agent" />
 
       <GlassCard className="p-5 mb-5 border-accent/20 bg-accent/5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
