@@ -53,7 +53,11 @@ const YesNoSelect = ({
 
 export const ProjectContextDrawer = () => {
   const { context, setContext, isEditorOpen, closeEditor } = useProjectContext();
-  const { activeProject, saveActiveFromCurrent, createProject } = useAppProjects();
+  const {
+    activeProject,
+    saveContextToActiveProject,
+    createProjectFromContext,
+  } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
 
   useEffect(() => {
@@ -71,26 +75,23 @@ export const ProjectContextDrawer = () => {
     closeEditor();
   };
 
-  const saveInActiveApp = () => {
+  const saveInActiveApp = async () => {
     setContext(draft);
-    // saveActiveFromCurrent lê o contexto do useProjectContext, que acabou de
-    // ser atualizado de forma síncrona via setState; mas como a leitura aqui
-    // ocorre antes do re-render, passamos o draft direto atualizando o projeto
-    // pelo próximo ciclo. Para garantir, salvamos contexto e depois persistimos.
-    setTimeout(() => {
-      const ok = saveActiveFromCurrent();
-      if (ok) toast.success(`Salvo em "${activeProject?.name}".`);
-    }, 0);
+    const ok = await saveContextToActiveProject(draft);
+    if (ok) toast.success(`Salvo em "${activeProject?.name}".`);
+    else toast.error("Não foi possível salvar neste app.");
     closeEditor();
   };
 
-  const saveAsNewApp = () => {
+  const saveAsNewApp = async () => {
     const name = draft.appName.trim() || "Meu app";
     setContext(draft);
-    createProject({ name, context: draft });
-    toast.success(`App "${name}" criado a partir deste contexto.`);
+    const created = await createProjectFromContext(draft, name);
+    if (created) toast.success(`App "${name}" criado a partir deste contexto.`);
+    else toast.error("Faça login para salvar este app na sua conta.");
     closeEditor();
   };
+
 
   const reset = () => {
     setDraft(EMPTY_PROJECT_CONTEXT);
