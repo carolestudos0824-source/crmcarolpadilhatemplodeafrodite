@@ -165,7 +165,7 @@ export const PromptReviewDialog = ({
           projectContext: context,
           moduleTitle: stepName,
           moduleObjective: stepObjective ?? "",
-          commandText: command,
+          commandText: command ?? "",
         },
       });
       if (error) {
