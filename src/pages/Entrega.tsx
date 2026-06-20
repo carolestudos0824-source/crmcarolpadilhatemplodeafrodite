@@ -157,6 +157,7 @@ function EntregaInner() {
     "validacao": "validacao",
     "melhorias-versoes": "melhorias",
     "checklist": "checklist",
+    "painel-prontidao": "checklist",
     "erros-comuns": "erros",
     "ativar-acesso": "ativar",
   };
@@ -452,7 +453,7 @@ function EntregaInner() {
                     </span>
                   </li>
                   <li className="flex items-center justify-between gap-2">
-                    <span>Checklist final</span>
+                    <span>Revisão final</span>
                     <span className="text-foreground/80 tabular-nums">
                       {totals.checklist.done} de {totals.checklist.total}
                     </span>
@@ -1997,7 +1998,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <CommandList commands={COMMANDS_MONETIZACAO} moduleKey="monetizacao" />
         <FaixasReferencia />
         <ChecklistBlock
-          title="Checklist do módulo"
+          title="Revisão da etapa"
           items={[
             "Sei qual dor meu app resolve",
             "Sei para quem meu app foi feito",
@@ -2029,7 +2030,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         />
         <CommandList commands={COMMANDS_CHECKOUT} moduleKey="checkout" />
         <ChecklistBlock
-          title="Checklist do módulo"
+          title="Revisão da etapa"
           items={[
             "Comprador entende o que recebeu",
             "Comprador sabe onde entrar",
@@ -2060,7 +2061,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         />
         <CommandList commands={COMMANDS_SEO} moduleKey="seo" />
         <ChecklistBlock
-          title="Checklist do módulo"
+          title="Revisão da etapa"
           items={[
             "Palavras-chave principais definidas",
             "Páginas SEO criadas",
@@ -2095,7 +2096,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         />
         <CommandList commands={COMMANDS_CRIATIVOS} moduleKey="criativos" />
         <ChecklistBlock
-          title="Checklist do módulo"
+          title="Revisão da etapa"
           items={[
             "Defini a dor principal",
             "Defini o público",
@@ -2135,7 +2136,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         />
         <CommandList commands={COMMANDS_VALIDACAO} moduleKey="validacao" />
         <ChecklistBlock
-          title="Checklist do módulo"
+          title="Revisão da etapa"
           items={[
             "Convidei 10 pessoas reais",
             "Pelo menos 5 testaram",
