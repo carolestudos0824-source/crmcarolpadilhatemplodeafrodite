@@ -360,6 +360,7 @@ function EntregaInner() {
                 {email}
               </span>
             )}
+            <ContextHeaderButton />
             <FontSizeControl />
             {auth.isAdmin && (
               <button
