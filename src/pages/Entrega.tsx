@@ -64,6 +64,7 @@ import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
 import { ProjectContextProvider, useProjectContext } from "@/hooks/useProjectContext";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
+import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
 import {
@@ -511,6 +512,9 @@ function EntregaInner() {
               </div>
             </div>
           )}
+
+          <TwoPathsExplainer />
+
 
           <ModuleContent
             active={active}
