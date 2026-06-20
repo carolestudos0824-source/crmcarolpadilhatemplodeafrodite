@@ -54,6 +54,7 @@ import { TelasFluxoModule } from "@/components/entrega/TelasFluxoModule";
 import { PublicarDominioModule } from "@/components/entrega/PublicarDominioModule";
 import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
+import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
 import { clearSession } from "@/lib/auth";
@@ -119,6 +120,7 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
   { id: "teste", prefix: "teste_step__", total: 12 },
   { id: "metricas", prefix: "metricas_step__", total: 10 },
   { id: "melhorias", prefix: "melhorias_step__", total: 10 },
+  { id: "seguranca", prefix: "seguranca_step__", total: 12 },
 ];
 
 
@@ -140,6 +142,7 @@ function EntregaInner() {
     "telas-fluxo": "telas",
     "construir-app": "construir",
     "login-banco": "login",
+    "seguranca-app": "seguranca",
     "pagina-de-venda": "venda",
     "monetizacao": "monetizacao",
     "checkout-entrega": "checkout",
@@ -1956,6 +1959,12 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       </section>
     );
   }
+
+  if (active === "seguranca") {
+    return <SegurancaAppModule />;
+  }
+
+
 
   if (active === "venda") {
     return (

@@ -47,6 +47,7 @@ export type ModuleId =
   | "telas"
   | "construir"
   | "login"
+  | "seguranca"
   | "venda"
   | "monetizacao"
   | "checkout"
@@ -78,6 +79,7 @@ export const MODULES: ModuleMeta[] = [
   { id: "telas", label: "Telas e Fluxo", icon: "Map" },
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
+  { id: "seguranca", label: "Segurança do App", icon: "ShieldCheck" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
   { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
@@ -3535,6 +3537,10 @@ export const MODULE_HINTS: Record<ModuleId, { doNow: string; advanceWhen: string
   login: {
     doNow: "Crie login simples, depois perfil do usuário, depois proteja a área restrita. Teste cada passo antes de avançar.",
     advanceWhen: "Não avance para venda ou checkout antes de testar se o usuário consegue entrar, sair e acessar a área correta.",
+  },
+  seguranca: {
+    doNow: "Revise rotas públicas, área restrita, painel admin, dados do usuário, banco, RLS, chaves secretas e teste tentativas de acesso indevido.",
+    advanceWhen: "Avance quando visitante, usuário comum, comprador e admin estiverem vendo apenas o que devem ver.",
   },
   venda: {
     doNow: "Defina a promessa, crie a landing, explique o preço, responda dúvidas e reforce confiança.",
