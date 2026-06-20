@@ -60,17 +60,32 @@ const SUPPORT_MESSAGES = [
   {
     title: "Use o mesmo e-mail",
     text:
-      "Verifique se você entrou com o mesmo e-mail usado na compra. Se entrou com outro e-mail, o acesso pode não aparecer.",
+      "Entre com o mesmo e-mail informado no pagamento. Se usar outro e-mail, o acesso pode não aparecer.",
   },
   {
-    title: "Acesso ainda não localizado",
+    title: "Aguardando primeiro login",
     text:
-      "Não localizei sua liberação neste e-mail. Me envie o comprovante ou o e-mail usado na compra para eu verificar.",
+      "Seu pagamento foi confirmado. Para liberar seu acesso, entre uma vez usando o mesmo e-mail informado na compra. Depois disso, me avise para eu finalizar sua liberação.",
+  },
+  {
+    title: "Acesso não localizado",
+    text:
+      "Não localizei acesso neste e-mail. Envie o comprovante ou o e-mail usado na compra para eu verificar.",
   },
   {
     title: "Boas-vindas",
     text:
       "Bem-vindo à Fábrica de Apps com IA. Comece pelo primeiro módulo e siga a jornada em ordem.",
+  },
+  {
+    title: "Checkout pendente",
+    text:
+      "Recebi sua mensagem. Assim que o pagamento for confirmado, libero seu acesso pelo e-mail informado.",
+  },
+  {
+    title: "E-mail diferente",
+    text:
+      "Verifique se você entrou com o mesmo e-mail usado na compra. Se entrou com outro e-mail, o acesso pode não aparecer.",
   },
 ];
 
@@ -268,7 +283,7 @@ function AdminAccessInner() {
           <OverviewSection
             adminEmail={adminEmail}
             selfHasAccess={selfHasAccess}
-            onGoToAcessos={() => changeSection("acessos")}
+            onGoTo={changeSection}
           />
         )}
         {section === "acessos" && (
@@ -330,132 +345,187 @@ function AdminAccessInner() {
 function OverviewSection({
   adminEmail,
   selfHasAccess,
-  onGoToAcessos,
+  onGoTo,
 }: {
   adminEmail: string | null;
   selfHasAccess: boolean | null;
-  onGoToAcessos: () => void;
+  onGoTo: (k: AdminSectionKey) => void;
 }) {
   const [metrics, setMetrics] = useState<{
     loading: boolean;
-    buyersWithAccess: number | null;
-    totalUsers: number | null;
+    error: string | null;
+    revenueConfirmed: number;
+    salesConfirmed: number;
+    pendingAccess: number;
+    accessGranted: number;
+    accessRevoked: number;
     giftRedemptions: number | null;
     supportMessages: number | null;
-    bySource: { manual: number; gift: number; other: number };
   }>({
     loading: true,
-    buyersWithAccess: null,
-    totalUsers: null,
+    error: null,
+    revenueConfirmed: 0,
+    salesConfirmed: 0,
+    pendingAccess: 0,
+    accessGranted: 0,
+    accessRevoked: 0,
     giftRedemptions: null,
     supportMessages: null,
-    bySource: { manual: 0, gift: 0, other: 0 },
   });
 
-  useEffect(() => {
-    let mounted = true;
+  const load = () => {
+    setMetrics((m) => ({ ...m, loading: true, error: null }));
+    let cancelled = false;
     (async () => {
       try {
-        const [buyersRes, giftsRes, supportRes] = await withTimeout(Promise.all([
-          Promise.resolve((supabase as any).rpc("admin_list_buyers", { _limit: 200 })).catch((e: unknown) => ({ data: null, error: e })),
+        const [salesRes, giftsRes, supportRes] = await withTimeout(Promise.all([
+          (supabase as any)
+            .rpc("admin_list_manual_sales", { _limit: 500 })
+            .then((r: any) => r, (e: unknown) => ({ data: null, error: e })),
           supabase.from("gift_redemptions").select("*", { count: "exact", head: true }).then(
-            (r) => r,
-            (e) => ({ data: null, count: null, error: e }),
+            (r) => r, (e) => ({ data: null, count: null, error: e }),
           ),
           supabase.from("support_messages").select("*", { count: "exact", head: true }).then(
-            (r) => r,
-            (e) => ({ data: null, count: null, error: e }),
+            (r) => r, (e) => ({ data: null, count: null, error: e }),
           ),
         ]), 10000, "métricas admin");
-        if (!mounted) return;
-        const rows = (buyersRes?.data as Buyer[] | null) ?? [];
-        const active = rows.filter((r) => r && r.has_access);
-        const bySource = { manual: 0, gift: 0, other: 0 };
-        for (const r of active) {
-          const s = (r.source ?? "").toLowerCase();
-          if (s === "manual") bySource.manual++;
-          else if (s === "gift") bySource.gift++;
-          else bySource.other++;
+        if (cancelled) return;
+
+        const sales = (salesRes?.data as Array<{
+          amount: number | string | null;
+          payment_status: string | null;
+          access_status: string | null;
+        }> | null) ?? [];
+
+        let revenue = 0;
+        let confirmed = 0;
+        let pending = 0;
+        let granted = 0;
+        let revoked = 0;
+        for (const s of sales) {
+          const paid = s.payment_status === "paid_confirmed";
+          if (paid) {
+            confirmed++;
+            const amt = typeof s.amount === "string" ? Number(s.amount) : (s.amount ?? 0);
+            if (!Number.isNaN(amt)) revenue += amt;
+            if (s.access_status === "pending_access") pending++;
+          }
+          if (s.access_status === "access_granted") granted++;
+          if (s.access_status === "access_revoked") revoked++;
         }
+
         setMetrics({
           loading: false,
-          buyersWithAccess: active.length,
-          totalUsers: rows.length,
+          error: salesRes?.error ? "Não foi possível carregar vendas manuais." : null,
+          revenueConfirmed: revenue,
+          salesConfirmed: confirmed,
+          pendingAccess: pending,
+          accessGranted: granted,
+          accessRevoked: revoked,
           giftRedemptions: giftsRes?.count ?? null,
           supportMessages: supportRes?.count ?? null,
-          bySource,
         });
-      } catch {
-        if (!mounted) return;
-        setMetrics({
+      } catch (e) {
+        if (cancelled) return;
+        setMetrics((m) => ({
+          ...m,
           loading: false,
-          buyersWithAccess: null,
-          totalUsers: null,
-          giftRedemptions: null,
-          supportMessages: null,
-          bySource: { manual: 0, gift: 0, other: 0 },
-        });
+          error: e instanceof Error ? e.message : "Erro ao carregar métricas.",
+        }));
       }
     })();
-    return () => {
-      mounted = false;
-    };
+    return () => { cancelled = true; };
+  };
+
+  useEffect(() => {
+    const cleanup = load();
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const checkoutPending = !isValidUrl(APP_CONFIG.CHECKOUT_FABRICA_URL);
+  const fmtBRL = (n: number) =>
+    n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const fmt = (n: number | null) => (n === null ? "—" : String(n));
+  const dash = (n: number | null) => (metrics.loading ? "…" : fmt(n));
+
+  if (metrics.error && metrics.salesConfirmed === 0 && !metrics.loading) {
+    return (
+      <div className="space-y-4">
+        <div className="glass-strong p-6 text-center">
+          <AlertTriangle className="mx-auto text-amber-300 mb-2" size={24} />
+          <h3 className="font-heading font-semibold text-sm mb-1">Não foi possível carregar esta área</h3>
+          <p className="text-xs text-muted-foreground mb-4">{metrics.error}</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <button onClick={load} className="btn-primary text-xs">
+              <RefreshIcon /> Tentar novamente
+            </button>
+            <button onClick={() => onGoTo("vendas")} className="btn-ghost border border-white/15 text-xs">
+              Ir para Vendas
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
         <AlertTriangle size={16} className="shrink-0 mt-0.5" />
         <span>
-          Vendas automáticas ainda não conectadas. Por enquanto, compradores confirmados devem ser registrados/liberados manualmente.
+          Vendas automáticas ainda não conectadas. Os dados abaixo vêm das vendas manuais registradas no admin.
         </span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatusCard
+          icon={<CreditCard size={16} />}
+          title="Receita manual confirmada"
+          badge={metrics.loading ? "…" : fmtBRL(metrics.revenueConfirmed)}
+          tone={metrics.revenueConfirmed > 0 ? "ok" : "muted"}
+          text="Soma de vendas manuais com pagamento confirmado."
+        />
+        <StatusCard
           icon={<UserCheck size={16} />}
           title="Vendas confirmadas"
-          badge={metrics.loading ? "…" : fmt(metrics.buyersWithAccess)}
-          tone="ok"
-          text="Baseado nos acessos liberados manualmente."
-        />
-        <StatusCard
-          icon={<CreditCard size={16} />}
-          title="Receita estimada"
-          badge="—"
-          tone="muted"
-          text="Indisponível até conectar checkout real."
-        />
-        <StatusCard
-          icon={<ShieldCheck size={16} />}
-          title="Acessos ativos"
-          badge={metrics.loading ? "…" : fmt(metrics.buyersWithAccess)}
-          tone="ok"
-          text={`Manual: ${metrics.bySource.manual} · Código: ${metrics.bySource.gift} · Outros: ${metrics.bySource.other}`}
+          badge={dash(metrics.salesConfirmed)}
+          tone={metrics.salesConfirmed > 0 ? "ok" : "muted"}
+          text="Vendas com pagamento confirmado em manual_sales."
         />
         <StatusCard
           icon={<AlertTriangle size={16} />}
-          title="Pendentes de liberação"
-          badge="—"
-          tone="muted"
-          text="Sem fila automática até conectar checkout/webhook."
+          title="Aguardando liberação"
+          badge={dash(metrics.pendingAccess)}
+          tone={metrics.pendingAccess > 0 ? "warn" : "muted"}
+          text="Aguardando primeiro login/liberação do comprador."
+        />
+        <StatusCard
+          icon={<ShieldCheck size={16} />}
+          title="Acessos liberados"
+          badge={dash(metrics.accessGranted)}
+          tone={metrics.accessGranted > 0 ? "ok" : "muted"}
+          text="Vendas marcadas como acesso liberado."
+        />
+        <StatusCard
+          icon={<ShieldOff size={16} />}
+          title="Acessos revogados"
+          badge={dash(metrics.accessRevoked)}
+          tone={metrics.accessRevoked > 0 ? "warn" : "muted"}
+          text="Vendas marcadas como acesso revogado."
         />
         <StatusCard
           icon={<Bot size={16} />}
           title="Códigos premium usados"
-          badge={metrics.loading ? "…" : fmt(metrics.giftRedemptions)}
-          tone="ok"
+          badge={dash(metrics.giftRedemptions)}
+          tone="muted"
           text="Total de resgates registrados."
         />
         <StatusCard
           icon={<Mail size={16} />}
           title="Mensagens recebidas"
-          badge={metrics.loading ? "…" : fmt(metrics.supportMessages)}
-          tone="ok"
+          badge={dash(metrics.supportMessages)}
+          tone="muted"
           text="Suporte recebido pela área interna."
         />
         <StatusCard
@@ -463,21 +533,35 @@ function OverviewSection({
           title="Status do checkout"
           badge={checkoutPending ? "Pendente" : "Configurado"}
           tone={checkoutPending ? "warn" : "ok"}
-          text={checkoutPending ? "Checkout real pendente (URL ainda placeholder)." : "Checkout configurado com URL real."}
-        />
-        <StatusCard
-          icon={<ShieldCheck size={16} />}
-          title="Status do produto"
-          badge={checkoutPending ? "Manual" : "Operacional"}
-          tone={checkoutPending ? "warn" : "ok"}
-          text={checkoutPending ? "Pronto para venda após checkout real." : "Operacional."}
+          text={checkoutPending ? "Checkout real pendente." : "Checkout configurado."}
         />
       </div>
 
       <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-2">Automação de pagamento</h3>
+        <h3 className="font-heading font-semibold text-sm mb-3">Próximas ações</h3>
+        <div className="flex flex-wrap gap-2">
+          <button onClick={() => onGoTo("vendas")} className="btn-primary text-xs">
+            <ShoppingCartIcon /> Registrar venda manual
+          </button>
+          <button onClick={() => onGoTo("vendas")} className="btn-ghost border border-white/15 text-xs">
+            Ver vendas
+          </button>
+          <button onClick={() => onGoTo("acessos")} className="btn-ghost border border-white/15 text-xs">
+            <ShieldCheck size={14} /> Liberar acesso
+          </button>
+          <button onClick={() => onGoTo("inbox")} className="btn-ghost border border-white/15 text-xs">
+            <Mail size={14} /> Ver mensagens
+          </button>
+          <button onClick={() => onGoTo("pendencias")} className="btn-ghost border border-white/15 text-xs">
+            Prontidão para venda pública
+          </button>
+        </div>
+      </div>
+
+      <div className="glass-strong p-5">
+        <h3 className="font-heading font-semibold text-sm mb-1">Automação de pagamento</h3>
         <p className="text-xs text-muted-foreground">
-          Webhook: não configurado. Controle manual até conectar checkout real. Automação de pagamento é uma etapa futura — nesta versão, todos os acessos são confirmados manualmente.
+          Webhook: não configurado. Webhook de pagamento é uma etapa futura — por enquanto todos os acessos são confirmados manualmente.
         </p>
       </div>
 
@@ -487,7 +571,7 @@ function OverviewSection({
           {adminEmail ?? "Sessão admin não detectada."} · Acesso interno: {selfHasAccess ? "ativo" : "inativo"}
         </p>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={onGoToAcessos} className="btn-primary">
+          <button type="button" onClick={() => onGoTo("acessos")} className="btn-primary">
             <ShieldCheck size={14} /> Ir para Acessos
           </button>
           <Link to="/entrega" className="btn-ghost border border-white/15">
@@ -498,6 +582,23 @@ function OverviewSection({
 
       <AdminAuditLog />
     </div>
+  );
+}
+
+function RefreshIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12a9 9 0 0 1 15-6.7L21 8" /><path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-15 6.7L3 16" /><path d="M3 21v-5h5" />
+    </svg>
+  );
+}
+function ShoppingCartIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6" />
+    </svg>
   );
 }
 
@@ -891,18 +992,50 @@ function ConfigSection() {
   ].filter(Boolean) as string[];
   const legalOk = legalMissing.length === 0;
 
+  const publicUrl = typeof window !== "undefined" ? window.location.origin : "—";
+
   const items = [
     {
       icon: <CreditCard size={16} />,
       title: "Checkout",
       ok: checkoutOk,
-      text: checkoutOk ? "CHECKOUT_FABRICA_URL aponta para URL válida." : "CHECKOUT_FABRICA_URL ainda está placeholder ou vazio.",
+      text: checkoutOk ? "Checkout configurado." : "Checkout real pendente (CHECKOUT_FABRICA_URL ainda placeholder ou vazio).",
     },
     {
       icon: <Mail size={16} />,
       title: "Suporte",
       ok: supportOk,
       text: supportOk ? (APP_CONFIG.SUPORTE_EMAIL as string) : "E-mail de suporte ainda não configurado.",
+    },
+    {
+      icon: <ExternalLink size={16} />,
+      title: "URL pública do app",
+      ok: true,
+      text: publicUrl,
+    },
+    {
+      icon: <ShieldCheck size={16} />,
+      title: "Login Google",
+      ok: true,
+      text: "Habilitado no Lovable Cloud. Login não concede admin nem acesso pago automaticamente.",
+    },
+    {
+      icon: <UserCheck size={16} />,
+      title: "Área interna",
+      ok: true,
+      text: "/entrega protegida por login e status de acesso.",
+    },
+    {
+      icon: <ShoppingCartIcon />,
+      title: "Painel de vendas manuais",
+      ok: true,
+      text: "Operacional. Registre vendas e libere acesso pela aba Vendas.",
+    },
+    {
+      icon: <AlertTriangle size={16} />,
+      title: "Webhook de pagamento",
+      ok: false,
+      text: "Não configurado. Webhook será uma etapa futura.",
     },
     {
       icon: <Bot size={16} />,

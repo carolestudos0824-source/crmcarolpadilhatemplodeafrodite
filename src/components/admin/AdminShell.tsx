@@ -35,14 +35,14 @@ export const ADMIN_SECTIONS: {
   title: string;
   subtitle: string;
 }[] = [
-  { key: "overview", label: "Visão geral", icon: LayoutGrid, title: "Visão geral", subtitle: "Status operacional do painel admin." },
+  { key: "overview", label: "Visão geral", icon: LayoutGrid, title: "Visão geral", subtitle: "Painel operacional com dados das vendas manuais e acessos." },
   { key: "vendas", label: "Vendas", icon: ShoppingCart, title: "Vendas manuais", subtitle: "Registre vendas confirmadas e libere acesso enquanto o checkout automático não está conectado." },
-  { key: "acessos", label: "Acessos", icon: ShieldCheck, title: "Painel Admin de Acessos", subtitle: "Libere, consulte ou revogue o acesso de compradores." },
-  { key: "compradores", label: "Compradores", icon: Users, title: "Compradores", subtitle: "Busca operacional por e-mail do comprador." },
+  { key: "compradores", label: "Compradores", icon: Users, title: "Compradores", subtitle: "Consolidação de compradores, vendas, acessos e códigos premium." },
+  { key: "acessos", label: "Acessos", icon: ShieldCheck, title: "Gerenciar acesso", subtitle: "Libere ou revogue acesso depois de confirmar pagamento, teste, cortesia ou código." },
   { key: "codigos", label: "Códigos premium", icon: KeyRound, title: "Códigos premium", subtitle: "Crie, consulte e acompanhe códigos de acesso." },
-  { key: "pendencias", label: "Pendências", icon: ListChecks, title: "Prontidão para venda pública", subtitle: "Conferência final antes de divulgar e vender o programa." },
-  { key: "mensagens", label: "Mensagens rápidas", icon: MessageSquare, title: "Mensagens rápidas", subtitle: "Respostas prontas que você copia para responder clientes." },
   { key: "inbox", label: "Mensagens recebidas", icon: Inbox, title: "Mensagens recebidas", subtitle: "Mensagens enviadas pelos clientes pelo formulário de /suporte." },
+  { key: "mensagens", label: "Mensagens rápidas", icon: MessageSquare, title: "Mensagens rápidas", subtitle: "Respostas prontas que você copia para responder clientes." },
+  { key: "pendencias", label: "Pendências", icon: ListChecks, title: "Prontidão para venda pública", subtitle: "Conferência final antes de divulgar e vender o programa." },
   { key: "config", label: "Configurações admin", icon: Settings, title: "Configurações admin", subtitle: "Status de configuração do sistema." },
 ];
 
