@@ -176,6 +176,7 @@ function EntregaInner() {
   const navigate = useNavigate();
   const auth = useAuthState();
   const progress = useUserProgress();
+  const appProjects = useAppProjects();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL slug ↔ internal module id
