@@ -290,16 +290,17 @@ export default function Login() {
 
   return (
     <Section>
-      <div className="max-w-md mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="flex justify-center mb-8">
           <Logo size="lg" asLink={false} />
         </div>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] items-start">
         <div className="glass-strong p-8">
           <h1 className="text-2xl font-heading font-bold mb-1">
             Entrar na Fábrica de Apps com IA
           </h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Entre com o mesmo e-mail usado na compra para acessar seu programa.
+            Use o mesmo e-mail informado na compra para acessar seu programa.
           </p>
 
           <button
