@@ -64,3 +64,22 @@ export const CopyCommandWarning = ({
     </div>
   );
 };
+
+/**
+ * Bloco "Antes de avançar" — orientação curta e leve, sem alterar progresso
+ * ou navegação. Pode ser usado em qualquer módulo com comandos.
+ */
+export const BeforeAdvanceTip = () => (
+  <div className="mb-5 rounded-xl border border-emerald-400/25 bg-emerald-400/5 p-4 flex items-start gap-3">
+    <span className="text-emerald-300 shrink-0 mt-0.5 text-base">→</span>
+    <div className="space-y-1">
+      <p className="text-sm font-semibold text-emerald-200">Antes de avançar</p>
+      <p className="text-xs text-emerald-100/85 leading-relaxed">
+        Avance apenas quando esta etapa estiver clara ou funcionando. Se estiver
+        confuso, use o Agente Arquiteto. Se o Lovable errou, vá para Erros
+        comuns.
+      </p>
+    </div>
+  </div>
+);
+

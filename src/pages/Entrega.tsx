@@ -40,7 +40,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
-import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning, BeforeAdvanceTip } from "@/components/entrega/CopyCommandWarning";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
@@ -545,6 +545,7 @@ const CommandList = ({
         advanceCriteria={c.advanceCriteria}
       />
     ))}
+    <BeforeAdvanceTip />
   </div>
 );
 
@@ -1610,6 +1611,28 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       ["Prepare a venda e a entrega", "Crie página de venda, preço, checkout, obrigado e área de entrega."],
       ["Divulgue e valide com pessoas reais", "Crie campanha, criativos, convide usuários e melhore com feedback real."],
     ];
+
+    // Mapa inteligente: fases agrupam módulos existentes da trilha.
+    // Apenas orientação visual — não altera navegação, progresso ou contadores.
+    const phaseMap: { title: string; mods: ModuleId[] }[] = [
+      { title: "Fase 1 — Ideia e planejamento", mods: ["ideias", "planejar", "mvp", "telas"] },
+      { title: "Fase 2 — Construção", mods: ["construir", "login"] },
+      { title: "Fase 3 — Venda", mods: ["venda", "monetizacao", "checkout"] },
+      { title: "Fase 4 — Publicação e confiança", mods: ["publicar", "seo"] },
+      { title: "Fase 5 — Divulgação e validação", mods: ["criativos", "campanhas", "validacao"] },
+      { title: "Fase 6 — Melhoria", mods: ["checklist", "erros"] },
+    ];
+    const moduleLabel = (id: ModuleId) =>
+      MODULES.find((m) => m.id === id)?.label ?? id;
+
+    const naoPule = [
+      "Não vá para Construir app sem planejar a ideia.",
+      "Não vá para Checkout sem decidir monetização.",
+      "Não divulgue sem testar no celular.",
+      "Não rode campanha sem página de venda clara.",
+      "Não valide com opinião. Valide com comportamento real.",
+    ];
+
     return (
       <section>
         <header className="mb-6">
@@ -1623,6 +1646,47 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             Você não precisa saber programar. Siga a jornada, copie um comando por vez, cole no Lovable e avance apenas quando cada etapa estiver funcionando.
           </p>
         </header>
+
+        <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+          <h2 className="font-heading font-bold text-lg md:text-xl mb-2">
+            Como usar a Fábrica de Apps com IA
+          </h2>
+          <p className="text-sm text-foreground/90 mb-4 leading-relaxed">
+            Este programa é o seu guia. Você copia os comandos daqui e cola no Lovable
+            do aplicativo que está criando. A Fábrica de Apps não é o app final. Ela
+            ensina você a construir o seu próprio app passo a passo.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-3">
+            <div className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-3">
+              <h4 className="font-heading font-semibold text-sm text-amber-200 mb-1">
+                Agente Arquiteto
+              </h4>
+              <p className="text-xs text-amber-100/85">
+                Use para pensar, decidir, tirar dúvidas e organizar ideias antes de
+                construir.
+              </p>
+            </div>
+            <div className="rounded-xl border border-accent/30 bg-accent/5 p-3">
+              <h4 className="font-heading font-semibold text-sm text-accent mb-1">
+                Lovable
+              </h4>
+              <p className="text-xs text-foreground/75">
+                Use para aplicar comandos e construir o app.
+              </p>
+            </div>
+            <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/5 p-3">
+              <h4 className="font-heading font-semibold text-sm text-emerald-300 mb-1">
+                Fábrica de Apps
+              </h4>
+              <p className="text-xs text-foreground/75">
+                Use como trilha guiada para saber qual etapa fazer agora e quando
+                avançar.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+
+
 
         <GlassCard className="p-5 mb-6">
           <p className="text-sm text-foreground/90 mb-4">
@@ -1664,6 +1728,65 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
             </GlassCard>
           ))}
         </div>
+
+        <GlassCard className="p-5 mb-6">
+          <h3 className="font-heading font-semibold text-base md:text-lg mb-1">
+            Mapa da jornada
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {phaseMap.map((phase) => {
+              const mods = phase.mods.filter((m) =>
+                (MODULE_ORDER as string[]).includes(m),
+              );
+              if (mods.length === 0) return null;
+              return (
+                <div
+                  key={phase.title}
+                  className="rounded-xl border border-white/10 bg-white/5 p-3"
+                >
+                  <h4 className="font-heading font-semibold text-sm text-accent mb-2">
+                    {phase.title}
+                  </h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {mods.map((m) => (
+                      <li key={m}>
+                        <button
+                          type="button"
+                          onClick={() => goTo(m)}
+                          className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85"
+                        >
+                          {moduleLabel(m)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </GlassCard>
+
+        <GlassCard className="p-5 mb-6 border-rose-400/30 bg-rose-400/5">
+          <h3 className="font-heading font-semibold text-base md:text-lg mb-2 text-rose-200">
+            Não pule estas etapas
+          </h3>
+          <ul className="space-y-1.5 text-sm text-foreground/90">
+            {naoPule.map((item) => (
+              <li key={item} className="flex gap-2">
+                <span className="text-rose-300 shrink-0">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-[11px] text-muted-foreground mt-3">
+            Orientação visual. Você ainda pode navegar livremente pelos módulos.
+          </p>
+        </GlassCard>
+
+
 
         <GlassCard className="p-5 mb-4">
           <h3 className="font-heading font-semibold mb-3">Como usar este programa</h3>
