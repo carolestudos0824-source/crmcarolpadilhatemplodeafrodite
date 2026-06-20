@@ -62,16 +62,20 @@ describe("MvpArquiteturaModule", () => {
     expect(keys.every((k) => k.startsWith("mvp_step__"))).toBe(true);
   });
 
-  it("TOTAL_COMMANDS preserved and PROGRESS_MODULE_IDS excludes planejar+mvp", async () => {
+  it("TOTAL_COMMANDS preserved and planejar+mvp tracked via AUTO_MODULE_CHECKLIST", async () => {
     const fs = await import("node:fs");
     const entrega = fs.readFileSync("src/pages/Entrega.tsx", "utf8");
-    expect(entrega).toMatch(/id !== "planejar" && id !== "mvp"/);
+    // planejar/mvp now count toward progress automatically via the internal
+    // checklist (see AUTO_MODULE_CHECKLIST in Entrega.tsx), not via exclusion.
+    expect(entrega).toMatch(/AUTO_MODULE_CHECKLIST/);
+    expect(entrega).toMatch(/id:\s*"planejar"/);
+    expect(entrega).toMatch(/id:\s*"mvp"/);
     const m = await import("@/data/entregaModules");
     const total =
       m.COMMANDS_CONSTRUIR.length + m.COMMANDS_LOGIN.length + m.COMMANDS_VENDA.length +
       m.COMMANDS_CHECKOUT.length + m.COMMANDS_SEO.length + m.COMMANDS_CAMPANHAS.length +
       m.COMMANDS_CRIATIVOS.length + m.COMMANDS_VALIDACAO.length + m.COMMANDS_MONETIZACAO.length;
-    // snapshot current value to detect drift caused by the new module
+    // snapshot current value to detect drift caused by new modules
     expect(total).toBe(54);
   });
 });
