@@ -64,10 +64,35 @@ const beneficios = [
 
 const naoIncluso = [
   "Não desenvolvemos o app por você",
-  "Não garantimos vendas ou aprovação da ideia",
+  "Não prometemos venda nem resultado garantido",
   "Não substitui validação com usuários reais",
   "Não inclui tráfego pago ou gestão de anúncios",
   "Não inclui suporte individual ilimitado",
+];
+
+const dores = [
+  "Não saber por onde começar",
+  "Copiar prompt genérico e receber app quebrado",
+  "Ter tela bonita, mas sem login, banco, segurança ou venda",
+  "Medo de publicar e o primeiro usuário encontrar erro",
+  "Medo de alguém acessar área paga sem permissão",
+  "Medo de gastar créditos sem chegar em um app funcional",
+];
+
+const paraQuemE = [
+  "Pessoas empreendedoras com uma ideia para tirar do papel",
+  "Criadores de conteúdo que querem transformar audiência em produto",
+  "Terapeutas, mentores e profissionais digitais",
+  "Prestadores de serviço e pequenos negócios",
+  "Infoprodutores que querem um app próprio",
+  "Iniciantes que querem criar sem depender de programação",
+];
+
+const naoEParaQuem = [
+  "Quem quer promessa de dinheiro fácil",
+  "Quem quer app pronto sem pensar nem revisar",
+  "Quem espera resultado garantido",
+  "Quem quer pular segurança, teste e revisão",
 ];
 
 const faqs = [
