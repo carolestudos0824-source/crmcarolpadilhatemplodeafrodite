@@ -283,7 +283,7 @@ function AdminAccessInner() {
           <OverviewSection
             adminEmail={adminEmail}
             selfHasAccess={selfHasAccess}
-            onGoToAcessos={() => changeSection("acessos")}
+            onGoTo={changeSection}
           />
         )}
         {section === "acessos" && (
