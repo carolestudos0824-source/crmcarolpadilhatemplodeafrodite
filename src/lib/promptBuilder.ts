@@ -504,6 +504,7 @@ export type AgentIntent =
   | "oferta_vendas"
   | "revisao"
   | "bug"
+  | "seguranca"
   | "gerar_prompt"
   | "proximo_passo"
   | "planejar_funcionalidade"
