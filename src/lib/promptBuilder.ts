@@ -303,13 +303,23 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     ],
   },
   melhorias: {
-    actionTitle: "PLANO DE MELHORIAS E NOVA VERSÃO DO APP",
+    actionTitle: "PLANO DE MELHORIAS E NOVAS VERSÕES DO APP",
     directRequest:
-      "Organize feedbacks e planeje a próxima versão do meu app sem quebrar o que já funciona.",
+      "Analise o app atual e proponha melhorias organizadas por prioridade, sem refazer o app inteiro e sem quebrar o que já funciona.",
     mandatoryChecks: [
-      "Separar bug de melhoria.",
-      "Priorizar até 5 mudanças.",
-      "Indicar como testar a nova versão.",
+      "Identificar o que já está funcionando bem.",
+      "Identificar melhorias de experiência do usuário.",
+      "Identificar melhorias de layout e clareza.",
+      "Identificar melhorias de performance ou estabilidade, se houver.",
+      "Separar melhorias urgentes, importantes e futuras.",
+      "Evitar adicionar funcionalidades grandes demais sem validação.",
+      "Manter o MVP simples e funcional.",
+      "Preservar login, banco, área paga, admin, checkout, layout aprovado e dados do usuário.",
+      "Sugerir uma próxima versão realista.",
+      "Informar o que testar depois de cada melhoria.",
+    ],
+    preserveExtras: [
+      "prompts e estrutura atual do app",
     ],
   },
   checklist: {
