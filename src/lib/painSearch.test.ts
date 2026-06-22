@@ -26,6 +26,17 @@ describe("analyzePain", () => {
     expect(r?.moduleId).toBe("seguranca");
   });
 
+  it("recomenda Segurança quando o texto fala em admin", () => {
+    const r = analyzePain("preciso revisar quem pode virar admin");
+    expect(r?.moduleId).toBe("seguranca");
+  });
+
+  it("sempre retorna um checklist com pelo menos 3 itens", () => {
+    const r = analyzePain("quero vender meu app");
+    expect(r?.checklist.length).toBeGreaterThanOrEqual(3);
+  });
+
+
   it("recomenda Página de venda / Telas para melhorias visuais", () => {
     const r = analyzePain("quero melhorar a landing");
     expect(r?.moduleId).toBe("venda");

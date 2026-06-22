@@ -154,6 +154,20 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
             </pre>
           </div>
 
+          <div className="mt-3">
+            <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">
+              Checklist rápido antes de executar
+            </div>
+            <ul className="space-y-1 text-sm text-foreground/85">
+              {recommendation.checklist.map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <span className="mt-1.5 size-1.5 rounded-full bg-accent shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
