@@ -19,6 +19,7 @@ type Props = {
   commandText: string;
   defaultOpen?: boolean;
   completedKey: string;
+  moduleId?: string;
   // Campos opcionais — usados pelo módulo "Construir app" (central guiada).
   objective?: string;
   whenLovableDirect?: string;
