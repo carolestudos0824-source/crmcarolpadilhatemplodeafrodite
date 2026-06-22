@@ -694,12 +694,14 @@ function EntregaInner() {
           <TwoPathsExplainer />
 
 
-          <ModuleContent
-            active={active}
-            checklist={checklist}
-            setChecklist={setChecklist}
-            goTo={goTo}
-          />
+          <div id="modules-list">
+            <ModuleContent
+              active={active}
+              checklist={checklist}
+              setChecklist={setChecklist}
+              goTo={goTo}
+            />
+          </div>
 
           <ModuleReviewCard
             moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
