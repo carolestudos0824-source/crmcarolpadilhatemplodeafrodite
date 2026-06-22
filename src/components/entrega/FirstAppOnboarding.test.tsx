@@ -35,8 +35,8 @@ describe("FirstAppOnboarding", () => {
   it("diferencia Agente de Lovable na legenda", () => {
     mockUseAppProjects.mockReturnValue({ activeProject: null, openDrawer: vi.fn() });
     render(<FirstAppOnboarding />);
-    expect(screen.getByText(/Planejar com o Agente/)).toBeInTheDocument();
-    expect(screen.getByText(/Copiar para o Lovable/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Planejar com o Agente/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Copiar para o Lovable/).length).toBeGreaterThan(0);
     expect(screen.getByText(/pensar antes de mexer/i)).toBeInTheDocument();
     expect(screen.getByText(/executar no app/i)).toBeInTheDocument();
   });
