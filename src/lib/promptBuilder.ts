@@ -541,11 +541,36 @@ ${stepObjective?.trim() || "[não informado]"}
 O que estou tentando decidir:
 ${decision || "[não informado]"}
 
+Regra obrigatória de resposta:
+Não me devolva apenas perguntas. Primeiro analise o contexto, assuma hipóteses razoáveis e me entregue uma recomendação prática. Se faltar informação, faça no máximo 3 perguntas no final, mas não use a falta de dados como desculpa para não orientar.
+
+Formato obrigatório da sua resposta:
+1. Análise rápida do contexto (com hipóteses claras quando faltar dado).
+2. Recomendação principal já decidida.
+3. Justificativa da recomendação.
+4. O que você faria agora, na prática.
+5. O que eu deveria evitar agora.
+6. No máximo 3 perguntas finais, só se forem essenciais.
+${moduleId === "monetizacao" || moduleId === "venda" || moduleId === "checkout"
+    ? `
+Para decisões de monetização, oferta ou checkout, sua recomendação deve cobrir obrigatoriamente:
+- Modelo de monetização recomendado
+- Preço inicial sugerido (faixa realista)
+- O que fica gratuito
+- O que fica pago
+- Melhor gatilho de compra
+- Oferta principal
+- Upsell futuro, se fizer sentido
+- O que não usar agora
+- Justificativa comercial
+- Próximo passo recomendado
+`
+    : ""}
 Importante:
 Responda como consultor de produto, UX e monetização.
 Não execute nada.
 Não crie prompt de implementação ainda.
-Primeiro me ajude a decidir.
+Primeiro me ajude a decidir com uma recomendação clara — não com uma lista de perguntas.
 No final, pergunte se eu quero transformar a análise em um prompt pronto para Lovable.`;
 };
 
