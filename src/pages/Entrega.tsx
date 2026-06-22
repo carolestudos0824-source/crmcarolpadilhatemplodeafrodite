@@ -69,6 +69,7 @@ import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
 import { ProjectContextProvider, useProjectContext } from "@/hooks/useProjectContext";
+import { wrapErrorCorrection } from "@/lib/promptBuilder";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
@@ -698,6 +699,7 @@ function EntregaInner() {
             moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
             isSecurity={active === "seguranca"}
             objective={MODULE_HINTS[active]?.doNow}
+            moduleId={active}
           />
 
 
@@ -787,6 +789,7 @@ const CommandList = ({
         commandText={c.content}
         defaultOpen={i === 0}
         completedKey={`${moduleKey}_${c.n}`}
+        moduleId={moduleKey}
         objective={c.objective}
         whenLovableDirect={c.whenLovableDirect}
         whenAgentFirst={c.whenAgentFirst}
@@ -2667,6 +2670,7 @@ const SEVERITY_STYLES: Record<string, string> = {
 function ErrorsModule() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("Todos");
+  const { context } = useProjectContext();
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -2681,6 +2685,14 @@ function ErrorsModule() {
       );
     });
   }, [query, category]);
+
+  const wrapForError = (e: { title: string; explanation: string; command: string }) =>
+    wrapErrorCorrection({
+      context,
+      errorTitle: e.title,
+      errorExplanation: e.explanation,
+      command: e.command,
+    });
 
   const copy = async (text: string) => {
     try {
@@ -2795,11 +2807,11 @@ function ErrorsModule() {
             </p>
             <div className="rounded-lg border border-white/10 bg-black/40 max-h-40 overflow-auto">
               <pre className="text-xs p-3 whitespace-pre-wrap font-mono text-foreground/85">
-                {e.command}
+                {wrapForError(e)}
               </pre>
             </div>
             <button
-              onClick={() => copy(e.command)}
+              onClick={() => copy(wrapForError(e))}
               className="px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 text-sm font-semibold"
             >
               <Copy size={14} /> Copiar

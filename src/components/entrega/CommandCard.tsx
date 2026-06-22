@@ -19,6 +19,7 @@ type Props = {
   commandText: string;
   defaultOpen?: boolean;
   completedKey: string;
+  moduleId?: string;
   // Campos opcionais — usados pelo módulo "Construir app" (central guiada).
   objective?: string;
   whenLovableDirect?: string;
@@ -39,6 +40,7 @@ export const CommandCard = ({
   commandText,
   defaultOpen = false,
   completedKey,
+  moduleId,
   objective,
   whenLovableDirect,
   whenAgentFirst,
@@ -60,6 +62,7 @@ export const CommandCard = ({
       stepName: title,
       stepObjective: objective ?? description,
       command: commandText,
+      moduleId,
     });
   const enrichedAgent = () =>
     buildAgentPrompt({
@@ -67,6 +70,7 @@ export const CommandCard = ({
       stepName: title,
       stepObjective: objective ?? description,
       command: agentPrompt || commandText,
+      moduleId,
     });
 
   const toggleDone = () => {
@@ -485,6 +489,7 @@ export const CommandCard = ({
       stepName={title}
       stepObjective={objective ?? description}
       command={commandText}
+      moduleId={moduleId}
     />
     </>
   );

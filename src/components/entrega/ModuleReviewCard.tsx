@@ -13,10 +13,12 @@ export function ModuleReviewCard({
   moduleName,
   isSecurity = false,
   objective,
+  moduleId,
 }: {
   moduleName: string;
   isSecurity?: boolean;
   objective?: string;
+  moduleId?: string;
 }) {
   const [okAgent, setOkAgent] = useState(false);
   const [okLovable, setOkLovable] = useState(false);
@@ -28,12 +30,14 @@ export function ModuleReviewCard({
     stepName: moduleName,
     stepObjective: objective,
     isSecurity,
+    moduleId,
   });
   const lovableText = buildReviewLovablePrompt({
     context,
     stepName: moduleName,
     stepObjective: objective,
     isSecurity,
+    moduleId,
   });
 
   const copyTo = async (

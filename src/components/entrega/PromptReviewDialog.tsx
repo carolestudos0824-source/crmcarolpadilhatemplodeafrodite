@@ -27,6 +27,7 @@ type Props = {
   stepName: string;
   stepObjective?: string;
   command?: string;
+  moduleId?: string;
   /**
    * Optional pre-built prompts. When passed, the dialog uses them as-is
    * instead of generating from `command`. Useful for ModuleReviewCard.
@@ -74,12 +75,14 @@ Regras:
 
 
 const QUALITY_CHECKS: { label: string; match: (text: string) => boolean }[] = [
-  { label: "Contexto do app incluído", match: (t) => /Contexto do meu app:/i.test(t) },
+  { label: "Título de ação incluído", match: (t) => /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9 ]{6,}/m.test(t.split("\n")[0] ?? "") },
+  { label: "Dados do app incluídos", match: (t) => /Dados do app:|Contexto do meu app:/i.test(t) },
   { label: "Etapa atual incluída", match: (t) => /Etapa atual:/i.test(t) },
-  { label: "Objetivo da etapa incluído", match: (t) => /Objetivo desta etapa:/i.test(t) },
-  { label: "Tarefa específica incluída", match: (t) => /Tarefa:|Comando que pretendo enviar|Pedido:|Revisão/i.test(t) },
-  { label: "Regras de preservação incluídas", match: (t) => /Regras:|Preserve o que já está funcionando|Não trate a Fábrica/i.test(t) },
-  { label: "O que testar depois incluído", match: (t) => /testar|teste|relatório|riscos/i.test(t) },
+  { label: "Tarefa específica incluída", match: (t) => /Tarefa específica:|Comando atual:|Pedido direto:|Pedido:/i.test(t) },
+  { label: "Regras de preservação incluídas", match: (t) => /Preserve|Regras de preservação/i.test(t) },
+  { label: "O que não fazer incluído", match: (t) => /O que não fazer|não refaça|não altere checkout/i.test(t) },
+  { label: "O que testar depois incluído", match: (t) => /testar|teste|riscos/i.test(t) },
+  { label: "Entrega esperada incluída", match: (t) => /Entrega esperada|Entregue:|próximo comando/i.test(t) },
 ];
 
 /**
@@ -94,6 +97,7 @@ export const PromptReviewDialog = ({
   stepName,
   stepObjective,
   command,
+  moduleId,
   customPrompts,
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
@@ -107,10 +111,10 @@ export const PromptReviewDialog = ({
       customPrompts
         ? { lovable: customPrompts.lovable, agent: customPrompts.agent }
         : {
-            lovable: buildLovablePrompt({ context, stepName, stepObjective, command: command ?? "" }),
-            agent: buildAgentPrompt({ context, stepName, stepObjective, command: command ?? "" }),
+            lovable: buildLovablePrompt({ context, stepName, stepObjective, command: command ?? "", moduleId }),
+            agent: buildAgentPrompt({ context, stepName, stepObjective, command: command ?? "", moduleId }),
           },
-    [context, stepName, stepObjective, command, customPrompts],
+    [context, stepName, stepObjective, command, moduleId, customPrompts],
   );
 
 
