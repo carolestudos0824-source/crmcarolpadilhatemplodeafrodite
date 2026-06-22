@@ -390,10 +390,10 @@ export const PromptReviewDialog = ({
           {/* Checklist de qualidade */}
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
             <p className="text-[11px] uppercase tracking-wider text-foreground/80 mb-2">
-              Qualidade do prompt
+              {mode === "lovable" ? "Qualidade do prompt executivo" : "Qualidade do prompt consultivo"}
             </p>
             <ul className="grid sm:grid-cols-2 gap-1.5">
-              {QUALITY_CHECKS.map((c) => {
+              {(mode === "lovable" ? QUALITY_CHECKS_LOVABLE : QUALITY_CHECKS_AGENT).map((c) => {
                 const ok = c.match(text);
                 return (
                   <li
