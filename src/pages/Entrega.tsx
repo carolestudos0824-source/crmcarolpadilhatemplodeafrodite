@@ -989,27 +989,34 @@ const ConstruirIntro = () => {
         )}
       </div>
 
-      {/* Modos renomeados */}
-      <div>
-        <div className="text-[11px] uppercase tracking-wider text-accent mb-3 px-1">
-          Escolha seu caminho
-        </div>
-        <div className="grid md:grid-cols-3 gap-3">
-          {modes.map((m) => {
-            const tone =
-              m.tone === "amber"
-                ? "border-amber-400/30 bg-amber-400/5"
-                : m.tone === "rose"
-                ? "border-rose-400/30 bg-rose-400/5"
-                : "border-accent/30 bg-accent/5";
-            return (
-              <GlassCard key={m.title} className={`p-4 border ${tone}`}>
-                <h3 className="font-heading font-semibold text-sm mb-1.5">{m.title}</h3>
-                <p className="text-[13px] text-foreground/80 leading-snug">{m.text}</p>
-              </GlassCard>
-            );
-          })}
-        </div>
+      {/* Modos renomeados — colapsado por padrão para reduzir peso visual */}
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowPaths((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Escolha seu caminho</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showPaths ? "rotate-180" : ""}`} />
+        </button>
+        {showPaths && (
+          <div className="px-4 pb-4 grid md:grid-cols-3 gap-3">
+            {modes.map((m) => {
+              const tone =
+                m.tone === "amber"
+                  ? "border-amber-400/30 bg-amber-400/5"
+                  : m.tone === "rose"
+                  ? "border-rose-400/30 bg-rose-400/5"
+                  : "border-accent/30 bg-accent/5";
+              return (
+                <GlassCard key={m.title} className={`p-4 border ${tone}`}>
+                  <h3 className="font-heading font-semibold text-sm mb-1.5">{m.title}</h3>
+                  <p className="text-[13px] text-foreground/80 leading-snug">{m.text}</p>
+                </GlassCard>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Microglossário */}
