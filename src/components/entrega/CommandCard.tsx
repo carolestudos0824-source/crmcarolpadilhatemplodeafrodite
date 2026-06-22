@@ -40,6 +40,7 @@ export const CommandCard = ({
   commandText,
   defaultOpen = false,
   completedKey,
+  moduleId,
   objective,
   whenLovableDirect,
   whenAgentFirst,
@@ -61,6 +62,7 @@ export const CommandCard = ({
       stepName: title,
       stepObjective: objective ?? description,
       command: commandText,
+      moduleId,
     });
   const enrichedAgent = () =>
     buildAgentPrompt({
@@ -68,6 +70,7 @@ export const CommandCard = ({
       stepName: title,
       stepObjective: objective ?? description,
       command: agentPrompt || commandText,
+      moduleId,
     });
 
   const toggleDone = () => {
