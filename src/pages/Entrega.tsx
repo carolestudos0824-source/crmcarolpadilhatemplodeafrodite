@@ -69,6 +69,7 @@ import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
 import { ProjectContextProvider, useProjectContext } from "@/hooks/useProjectContext";
+import { wrapErrorCorrection } from "@/lib/promptBuilder";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
