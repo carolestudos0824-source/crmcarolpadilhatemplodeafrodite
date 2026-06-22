@@ -11,28 +11,50 @@ import type { ProjectContext } from "@/hooks/useProjectContext";
  * texto copiado.
  */
 
-const value = (v: string) => (v && v.trim() ? v.trim() : "[não preenchido]");
-const yesNo = (v: string) =>
-  v === "sim" ? "Sim" : v === "nao" ? "Não" : "[não preenchido]";
+const value = (v: string) => (v && v.trim() ? v.trim() : "");
+const yesNo = (v: string) => (v === "sim" ? "Sim" : v === "nao" ? "Não" : "");
 
-const renderContextBlock = (c: ProjectContext): string =>
-  [
-    `- Nome do app: ${value(c.appName)}`,
-    `- O que o app faz: ${value(c.appDoes)}`,
-    `- Público-alvo: ${value(c.audience)}`,
-    `- Problema que resolve: ${value(c.problem)}`,
-    `- Promessa principal: ${value(c.promise)}`,
-    `- Ação principal do usuário: ${value(c.mainAction)}`,
-    `- Produto/serviço vendido: ${value(c.productSold)}`,
-    `- Modelo de cobrança: ${value(c.pricingModel)}`,
-    `- Login: ${yesNo(c.needsLogin)}`,
-    `- Banco de dados: ${yesNo(c.needsDatabase)}`,
-    `- Área paga: ${yesNo(c.needsPaidArea)}`,
-    `- Admin: ${yesNo(c.needsAdmin)}`,
-    `- Checkout: ${yesNo(c.needsCheckout)}`,
-    `- Estilo visual: ${value(c.visualStyle)}`,
-    `- Observações: ${value(c.notes)}`,
-  ].join("\n");
+export const resolveAppName = (c: Pick<ProjectContext, "appName">): string => {
+  const n = (c.appName ?? "").trim();
+  return n || "app ainda sem nome";
+};
+
+/**
+ * Render only filled context fields. Always includes the app name (with a
+ * friendly fallback when missing). Appends a single friendly note if any
+ * field is empty — never lists "[não preenchido]" multiple times.
+ */
+const renderContextBlock = (c: ProjectContext): string => {
+  const lines: string[] = [`- Nome do app: ${resolveAppName(c)}`];
+  const push = (label: string, v: string) => {
+    if (v) lines.push(`- ${label}: ${v}`);
+  };
+  push("O que o app faz", value(c.appDoes));
+  push("Público-alvo", value(c.audience));
+  push("Problema que resolve", value(c.problem));
+  push("Promessa principal", value(c.promise));
+  push("Ação principal do usuário", value(c.mainAction));
+  push("Produto/serviço vendido", value(c.productSold));
+  push("Modelo de cobrança", value(c.pricingModel));
+  push("Login", yesNo(c.needsLogin));
+  push("Banco de dados", yesNo(c.needsDatabase));
+  push("Área paga", yesNo(c.needsPaidArea));
+  push("Admin", yesNo(c.needsAdmin));
+  push("Checkout", yesNo(c.needsCheckout));
+  push("Estilo visual", value(c.visualStyle));
+  push("Observações", value(c.notes));
+
+  const totalFields = 14; // sem contar o nome
+  const filled = lines.length - 1;
+  if (filled < totalFields) {
+    lines.push(
+      "",
+      "Alguns dados do app ainda não foram preenchidos. Assuma hipóteses razoáveis e recomende o melhor caminho.",
+    );
+  }
+  return lines.join("\n");
+};
+
 
 // ---------- Mapa de intenções por módulo ----------
 
@@ -457,8 +479,11 @@ export const buildLovablePrompt = ({
   const intent = getIntent(moduleId);
   const preserve = [...PRESERVE_BASE, ...(intent.preserveExtras ?? [])];
   const task = applyContextPlaceholders(command.trim(), context);
+  const appName = resolveAppName(context);
 
   return `${intent.actionTitle}
+
+Use este prompt no projeto Lovable do app: ${appName}.
 
 Pedido direto:
 ${intent.directRequest}
@@ -492,8 +517,9 @@ O que testar depois:
 Entrega esperada:
 ${bullets(EXPECTED)}
 
-Nota: aplique este comando ao app atual no Lovable, não à plataforma Fábrica de Apps.`;
+Nota: aplique este prompt somente no projeto Lovable do app ${appName}.`;
 };
+
 
 // ---------- Detecção de intenção do Estúdio (modo Agente) ----------
 
@@ -670,10 +696,11 @@ export const buildAgentPrompt = ({
   const decision = applyContextPlaceholders(command.trim(), context);
   const agentIntent = detectAgentIntent({ moduleId, stepName, command });
   const intentBlock = INTENT_BLOCKS[agentIntent];
+  const appName = resolveAppName(context);
 
   return `CONSULTORIA ANTES DE IMPLEMENTAR — ${intent.actionTitle}
 
-Quero pensar antes de aplicar qualquer mudança no meu app.
+Estou criando o app ${appName}. Quero analisar a etapa ${stepName} antes de implementar.
 
 Não implemente nada.
 Não altere arquivos.
@@ -692,8 +719,6 @@ ${stepObjective?.trim() || "[não informado]"}
 O que estou tentando decidir:
 ${decision || "[não informado]"}
 
-Intenção detectada: ${agentIntent}
-
 Regra obrigatória de resposta:
 Não me devolva apenas perguntas. Primeiro analise o contexto disponível, assuma hipóteses razoáveis e entregue uma recomendação prática. Se faltar informação, faça no máximo 3 perguntas no final, mas não use a falta de dados como desculpa para não orientar.
 
@@ -709,12 +734,13 @@ Formato obrigatório da sua resposta:
 ${intentBlock}
 
 Importante:
-Responda como consultor de produto, UX e monetização para quem está criando um app no Lovable e não sabe programar.
+Responda como consultor de produto, UX e monetização para quem está criando o app ${appName} no Lovable e não sabe programar.
 Não execute nada.
 Não crie prompt de implementação ainda, a menos que o modo detectado seja "gerar_prompt" ou eu peça explicitamente.
 Primeiro me ajude a decidir com uma recomendação clara — não com uma lista de perguntas.
-No final, pergunte se eu quero transformar a análise em um prompt pronto para Lovable.`;
+No final, pergunte se eu quero transformar a análise em um prompt pronto para Lovable do app ${appName}.`;
 };
+
 
 // ---------- Builders de revisão (Revisar etapa) ----------
 
@@ -784,7 +810,7 @@ Entregue:
 - riscos encontrados
 - próximo comando recomendado, se necessário
 
-Nota: revise o app atual no Lovable, não a plataforma Fábrica de Apps.`;
+Nota: aplique este prompt somente no projeto Lovable do app ${resolveAppName(context)}.`;
 };
 
 export const buildReviewAgentPrompt = ({
@@ -812,7 +838,7 @@ ${isSecurity ? securityAnalysisBlock : standardAnalysisBlock}
 
 Depois, me sugira o próximo comando que eu deveria enviar ao Lovable se algo estiver faltando.
 
-Não revise a plataforma Fábrica de Apps. O app revisado é o meu projeto no Lovable.`;
+Aplique esta revisão somente no projeto Lovable do app ${resolveAppName(context)}.`;
 };
 
 // ---------- Wrapper para "Erros comuns" ----------
@@ -855,5 +881,5 @@ Explique a causa provável.
 Depois:
 Corrija apenas o necessário e diga exatamente o que testar.
 
-Nota: aplique no app atual no Lovable, não na plataforma Fábrica de Apps.`;
+Nota: aplique este prompt somente no projeto Lovable do app ${resolveAppName(context)}.`;
 };
