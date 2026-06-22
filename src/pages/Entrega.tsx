@@ -788,6 +788,7 @@ const CommandList = ({
         commandText={c.content}
         defaultOpen={i === 0}
         completedKey={`${moduleKey}_${c.n}`}
+        moduleId={moduleKey}
         objective={c.objective}
         whenLovableDirect={c.whenLovableDirect}
         whenAgentFirst={c.whenAgentFirst}
