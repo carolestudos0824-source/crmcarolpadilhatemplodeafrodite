@@ -853,12 +853,12 @@ const ConstruirIntro = () => {
     const ctx = activeProject?.context;
     const missingKey =
       !ctx?.audience?.trim() ||
-      !ctx?.pain?.trim() ||
+      !ctx?.problem?.trim() ||
       !ctx?.promise?.trim();
     const hint = missingKey
       ? "\n\nAlguns dados do app ainda não foram preenchidos. Assuma hipóteses razoáveis e construa uma primeira versão simples."
       : "";
-    const text = raw.replaceAll("[nome do app ativo]", appName) + hint;
+    const text = raw.split("[nome do app ativo]").join(appName) + hint;
     try {
       await navigator.clipboard.writeText(text);
       toast.success(
