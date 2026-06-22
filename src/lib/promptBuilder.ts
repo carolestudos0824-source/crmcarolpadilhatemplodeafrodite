@@ -203,10 +203,14 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     directRequest:
       "Revise termos, privacidade, suporte e promessas do meu app para reduzir risco e aumentar confiança.",
     mandatoryChecks: [
-      "Revisar termos e privacidade.",
-      "Revisar canal de suporte.",
-      "Remover promessas exageradas.",
-      "Conferir links legais acessíveis.",
+      "Revisar termos de uso.",
+      "Revisar política de privacidade.",
+      "Incluir aviso de responsabilidade.",
+      "Conferir conformidade básica com LGPD.",
+      "Listar quais dados são coletados e por quê.",
+      "Conferir clareza sobre checkout, pagamento e reembolso.",
+      "Remover promessas exageradas ou garantia de resultado.",
+      "Conferir links legais acessíveis no rodapé e no checkout.",
     ],
   },
   publicar: {
@@ -214,9 +218,13 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     directRequest:
       "Prepare a publicação do meu app e revise domínio, metadados e abertura em diferentes dispositivos.",
     mandatoryChecks: [
-      "Testar link público em navegador e aba anônima.",
-      "Conferir favicon, título e imagem social.",
-      "Abrir no celular antes de divulgar.",
+      "Conferir domínio configurado e acessível.",
+      "Conferir favicon.",
+      "Conferir imagem social/OG.",
+      "Conferir título e descrição da página.",
+      "Testar abertura no mobile.",
+      "Conferir links principais (home, checkout, login, suporte).",
+      "Fazer teste pós-publicação em aba anônima.",
     ],
   },
   teste: {
@@ -236,10 +244,13 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     directRequest:
       "Estruture SEO e GEO do meu app sem criar páginas vazias.",
     mandatoryChecks: [
-      "Definir palavras-chave reais.",
-      "Estruturar páginas úteis.",
-      "Incluir marcações básicas.",
-      "Revisar antes de publicar.",
+      "Definir palavra-chave principal.",
+      "Confirmar nicho do app.",
+      "Revisar título da página.",
+      "Revisar meta descrição.",
+      "Estruturar headings (h1, h2) com hierarquia.",
+      "Garantir conteúdo rastreável e útil.",
+      "Garantir clareza para mecanismos de busca e IA (GEO).",
     ],
   },
   campanhas: {
@@ -258,9 +269,13 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     directRequest:
       "Crie criativos para divulgar o meu app no formato escolhido.",
     mandatoryChecks: [
-      "Gerar pelo menos 3 variações.",
-      "Adequar ao público e dor.",
-      "Manter promessa coerente com o app.",
+      "Sugerir variação para anúncio pago.",
+      "Sugerir variação para story.",
+      "Sugerir variação para reels.",
+      "Sugerir criativo estático.",
+      "Escrever headline forte.",
+      "Incluir chamada para ação clara.",
+      "Manter promessa coerente com o app, sem exagero.",
     ],
   },
   metricas: {
@@ -288,13 +303,23 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     ],
   },
   melhorias: {
-    actionTitle: "PLANO DE MELHORIAS E NOVA VERSÃO DO APP",
+    actionTitle: "PLANO DE MELHORIAS E NOVAS VERSÕES DO APP",
     directRequest:
-      "Organize feedbacks e planeje a próxima versão do meu app sem quebrar o que já funciona.",
+      "Analise o app atual e proponha melhorias organizadas por prioridade, sem refazer o app inteiro e sem quebrar o que já funciona.",
     mandatoryChecks: [
-      "Separar bug de melhoria.",
-      "Priorizar até 5 mudanças.",
-      "Indicar como testar a nova versão.",
+      "Identificar o que já está funcionando bem.",
+      "Identificar melhorias de experiência do usuário.",
+      "Identificar melhorias de layout e clareza.",
+      "Identificar melhorias de performance ou estabilidade, se houver.",
+      "Separar melhorias urgentes, importantes e futuras.",
+      "Evitar adicionar funcionalidades grandes demais sem validação.",
+      "Manter o MVP simples e funcional.",
+      "Preservar login, banco, área paga, admin, checkout, layout aprovado e dados do usuário.",
+      "Sugerir uma próxima versão realista.",
+      "Informar o que testar depois de cada melhoria.",
+    ],
+    preserveExtras: [
+      "prompts e estrutura atual do app",
     ],
   },
   checklist: {
@@ -324,7 +349,14 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     actionTitle: "ATIVAÇÃO DE ACESSO AO PROGRAMA",
     directRequest:
       "Confirme a ativação do meu acesso e me oriente sobre o próximo passo.",
-    mandatoryChecks: ["Validar acesso.", "Indicar próximo módulo."],
+    mandatoryChecks: [
+      "Conferir e-mail correto usado na compra.",
+      "Confirmar login com Google funcionando.",
+      "Indicar liberação manual via admin quando necessário.",
+      "Sugerir mensagem para enviar ao cliente após liberação.",
+      "Explicar o que fazer se o acesso não aparecer.",
+      "Conferir status do pagamento e do acesso antes de liberar.",
+    ],
   },
 };
 
