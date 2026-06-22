@@ -66,6 +66,7 @@ import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesMod
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
+import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -681,6 +682,8 @@ function EntregaInner() {
           )}
 
           <PainSearchNextStep goTo={goTo} />
+
+          <FirstAppOnboarding />
 
           <JourneyStartGuide
             active={active}
