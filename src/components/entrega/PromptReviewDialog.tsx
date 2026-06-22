@@ -27,6 +27,7 @@ type Props = {
   stepName: string;
   stepObjective?: string;
   command?: string;
+  moduleId?: string;
   /**
    * Optional pre-built prompts. When passed, the dialog uses them as-is
    * instead of generating from `command`. Useful for ModuleReviewCard.
