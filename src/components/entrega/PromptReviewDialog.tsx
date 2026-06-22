@@ -74,15 +74,22 @@ Regras:
 }
 
 
-const QUALITY_CHECKS: { label: string; match: (text: string) => boolean }[] = [
+const QUALITY_CHECKS_LOVABLE: { label: string; match: (text: string) => boolean }[] = [
   { label: "Título de ação incluído", match: (t) => /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9 ]{6,}/m.test(t.split("\n")[0] ?? "") },
   { label: "Dados do app incluídos", match: (t) => /Dados do app:|Contexto do meu app:/i.test(t) },
-  { label: "Etapa atual incluída", match: (t) => /Etapa atual:/i.test(t) },
   { label: "Tarefa específica incluída", match: (t) => /Tarefa específica:|Comando atual:|Pedido direto:|Pedido:/i.test(t) },
   { label: "Regras de preservação incluídas", match: (t) => /Preserve|Regras de preservação/i.test(t) },
-  { label: "O que não fazer incluído", match: (t) => /O que não fazer|não refaça|não altere checkout/i.test(t) },
   { label: "O que testar depois incluído", match: (t) => /testar|teste|riscos/i.test(t) },
   { label: "Entrega esperada incluída", match: (t) => /Entrega esperada|Entregue:|próximo comando/i.test(t) },
+];
+
+const QUALITY_CHECKS_AGENT: { label: string; match: (text: string) => boolean }[] = [
+  { label: "Contexto do app incluído", match: (t) => /Dados do app:|Contexto do meu app:/i.test(t) },
+  { label: "Pedido de análise (não implementação)", match: (t) => /Analise|consultor|me explique|me ajude a decidir/i.test(t) },
+  { label: "Dúvida/decisão explicitada", match: (t) => /tentando decidir|decisão|dúvida|me ajude a decidir/i.test(t) },
+  { label: "Pedido de riscos", match: (t) => /riscos?/i.test(t) },
+  { label: "Proibição de implementar", match: (t) => /Não implemente|Não altere arquivos|Não gere código|Não execute/i.test(t) },
+  { label: "Fecha perguntando se vira prompt Lovable", match: (t) => /transformar.*prompt.*Lovable|prompt pronto para Lovable/i.test(t) },
 ];
 
 /**
@@ -135,7 +142,7 @@ export const PromptReviewDialog = ({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toast.success("Prompt copiado. Revise no Lovable antes de executar.");
+      toast.success("Prompt executivo copiado. Use no Lovable para aplicar a mudança.");
       setTimeout(() => setCopied(false), 1500);
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
@@ -145,7 +152,7 @@ export const PromptReviewDialog = ({
   const copyAgent = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.success("Prompt copiado para o Agente Arquiteto.");
+      toast.success("Prompt consultivo copiado. Cole no Agente para analisar antes de implementar.");
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
@@ -236,8 +243,8 @@ export const PromptReviewDialog = ({
           </div>
           <p className="text-[11px] text-muted-foreground/90">
             {mode === "lovable"
-              ? "Use este quando quiser aplicar direto no projeto do seu app no Lovable."
-              : "Use este quando quiser conversar com o Agente Arquiteto, melhorar o comando e depois levar a versão final ao Lovable."}
+              ? "Use este prompt quando quiser aplicar mudanças diretamente no projeto."
+              : "Use este prompt quando quiser conversar, revisar e decidir antes de mexer no app."}
           </p>
         </div>
 
@@ -383,10 +390,10 @@ export const PromptReviewDialog = ({
           {/* Checklist de qualidade */}
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
             <p className="text-[11px] uppercase tracking-wider text-foreground/80 mb-2">
-              Qualidade do prompt
+              {mode === "lovable" ? "Qualidade do prompt executivo" : "Qualidade do prompt consultivo"}
             </p>
             <ul className="grid sm:grid-cols-2 gap-1.5">
-              {QUALITY_CHECKS.map((c) => {
+              {(mode === "lovable" ? QUALITY_CHECKS_LOVABLE : QUALITY_CHECKS_AGENT).map((c) => {
                 const ok = c.match(text);
                 return (
                   <li
@@ -452,7 +459,7 @@ export const PromptReviewDialog = ({
             onClick={copyAgent}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm"
           >
-            <Bot size={14} /> Copiar para o Agente
+            <Bot size={14} /> Planejar com o Agente
           </button>
           <button
             type="button"

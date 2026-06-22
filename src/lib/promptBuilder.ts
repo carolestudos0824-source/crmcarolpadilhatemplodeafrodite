@@ -503,11 +503,31 @@ export const buildAgentPrompt = ({
   moduleId,
 }: PromptBuildInput): string => {
   const intent = getIntent(moduleId);
-  const task = applyContextPlaceholders(command.trim(), context);
+  const decision = applyContextPlaceholders(command.trim(), context);
 
-  return `REVISÃO DE PROMPT — ${intent.actionTitle}
+  return `CONSULTORIA ANTES DE IMPLEMENTAR — ${intent.actionTitle}
 
-Quero que você revise este comando antes de eu enviar ao Lovable.
+Quero pensar antes de aplicar qualquer mudança no meu app.
+
+Não implemente nada.
+Não altere arquivos.
+Não gere código ainda.
+Não escreva como se eu fosse colar isso direto no Lovable.
+
+Analise esta etapa do meu app e me explique:
+
+1. Qual é o objetivo real desta etapa?
+2. Essa etapa faz sentido para o usuário final?
+3. Onde ela deveria entrar no fluxo ou na página?
+4. O que está bom?
+5. O que está confuso?
+6. O que pode prejudicar conversão ou clareza?
+7. Qual texto você sugere?
+8. Qual estrutura visual você recomenda?
+9. Quais riscos existem se eu implementar isso agora?
+10. O que você cortaria para deixar mais simples?
+11. Depois da análise, me dê uma recomendação final.
+12. Só depois da minha aprovação, transforme isso em um prompt pronto para Lovable.
 
 Dados do app:
 ${renderContextBlock(context)}
@@ -515,31 +535,18 @@ ${renderContextBlock(context)}
 Etapa atual:
 ${stepName}
 
-Objetivo desta etapa:
+Objetivo da etapa:
 ${stepObjective?.trim() || "[não informado]"}
 
-Comando atual:
-${task}
+O que estou tentando decidir:
+${decision || "[não informado]"}
 
-Analise:
-1. Se o comando está claro.
-2. Se está completo.
-3. Se está específico para o meu app.
-4. Se está grande demais.
-5. Se falta contexto.
-6. Se existe risco de quebrar algo.
-7. Se preserva login, banco, acesso, admin, checkout, layout e dados.
-8. Se o escopo está correto para esta etapa.
-9. Se existe algo que deveria ser cortado.
-10. O que precisa ser testado depois.
-
-Entregue:
-- versão final pronta para colar no Lovable
-- o que você melhorou
-- riscos encontrados
-- o que eu devo conferir depois
-
-Não transforme a Fábrica de Apps no app final. O app final é o meu projeto no Lovable.`;
+Importante:
+Responda como consultor de produto, UX e monetização.
+Não execute nada.
+Não crie prompt de implementação ainda.
+Primeiro me ajude a decidir.
+No final, pergunte se eu quero transformar a análise em um prompt pronto para Lovable.`;
 };
 
 // ---------- Builders de revisão (Revisar etapa) ----------
