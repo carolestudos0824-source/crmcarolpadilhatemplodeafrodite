@@ -361,13 +361,13 @@ export const PromptReviewDialog = ({
                 className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25"
                 title="Sem custo de API nesta fase: você melhora com o Agente Arquiteto."
               >
-                <Sparkles size={12} /> Melhorar com o Agente
+                <Sparkles size={12} /> Refinar este prompt com o Agente
               </button>
             </div>
           </div>
 
           <p className="text-[11px] text-muted-foreground/90">
-            Use <strong className="text-violet-200">Melhorar com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
+            Use <strong className="text-violet-200">Refinar este prompt com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
           </p>
           <p className="text-[11px] text-muted-foreground/70">
             Sem custo de API nesta fase: você melhora com o Agente Arquiteto.
@@ -420,8 +420,8 @@ export const PromptReviewDialog = ({
             <ol className="list-decimal pl-5 space-y-0.5">
               <li>Revise o texto.</li>
               <li>Edite o que precisar.</li>
-              <li>Opcional: clique em Melhorar com o Agente para lapidar antes de copiar.</li>
-              <li>Escolha Lovable para executar ou Agente para melhorar.</li>
+              <li>Opcional: clique em Refinar este prompt com o Agente para lapidar antes de copiar.</li>
+              <li>Escolha Lovable para executar a mudança ou Agente para planejar antes.</li>
               <li>
                 Depois de aplicar, volte ao módulo e use “Revisar esta etapa
                 no app”.
