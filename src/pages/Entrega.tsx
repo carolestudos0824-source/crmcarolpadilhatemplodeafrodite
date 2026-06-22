@@ -845,12 +845,27 @@ const ConstruirIntro = () => {
   const [showZero, setShowZero] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
   const [showPaths, setShowPaths] = useState(false);
+  const { activeProject } = useAppProjects();
 
   const copyFirst = async () => {
-    const first = COMMANDS_CONSTRUIR[0]?.content ?? "";
+    const raw = COMMANDS_CONSTRUIR[0]?.content ?? "";
+    const appName = activeProject?.name?.trim() || "seu app";
+    const ctx = activeProject?.context;
+    const missingKey =
+      !ctx?.audience?.trim() ||
+      !ctx?.pain?.trim() ||
+      !ctx?.promise?.trim();
+    const hint = missingKey
+      ? "\n\nAlguns dados do app ainda não foram preenchidos. Assuma hipóteses razoáveis e construa uma primeira versão simples."
+      : "";
+    const text = raw.replaceAll("[nome do app ativo]", appName) + hint;
     try {
-      await navigator.clipboard.writeText(first);
-      toast.success("Primeiro comando copiado. Cole no Lovable.");
+      await navigator.clipboard.writeText(text);
+      toast.success(
+        activeProject
+          ? `Etapa 1 copiada para ${appName}. Cole no Lovable.`
+          : "Etapa 1 copiada. Selecione um app em Meus Apps para personalizar.",
+      );
     } catch {
       toast.error("Não foi possível copiar. Selecione e copie manualmente.");
     }
