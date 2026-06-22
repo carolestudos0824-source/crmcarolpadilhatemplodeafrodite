@@ -183,6 +183,19 @@ const sortProjects = (list: AppProject[]) =>
     return bv - av;
   });
 
+export const pickAutoActive = (list: AppProject[]): AppProject | null => {
+  if (!list.length) return null;
+  const active = list.filter((p) => !p.archivedAt && p.status !== "arquivado");
+  const pool = active.length ? active : list;
+  const ts = (p: AppProject) => {
+    const u = Date.parse(p.updatedAt || "");
+    if (!Number.isNaN(u)) return u;
+    const c = Date.parse(p.createdAt || "");
+    return Number.isNaN(c) ? 0 : c;
+  };
+  return [...pool].sort((a, b) => ts(b) - ts(a))[0] ?? pool[0] ?? null;
+};
+
 type Ctx = {
   projects: AppProject[];
   activeId: string | null;
@@ -270,12 +283,18 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       setProjects(list);
       // Active id reconciliation
       const aid = readActiveId();
-      if (aid && list.some((p) => p.id === aid)) {
-        const proj = list.find((p) => p.id === aid)!;
-        setContext(proj.context);
-      } else if (aid) {
-        // stale id
-        setActiveId(null);
+      const valid = aid ? list.find((p) => p.id === aid) : null;
+      if (valid) {
+        setContext(valid.context);
+      } else {
+        // stale or missing id — auto-select most recent non-archived if any
+        const fallback = pickAutoActive(list);
+        if (fallback) {
+          setActiveId(fallback.id);
+          setContext(fallback.context);
+        } else if (aid) {
+          setActiveId(null);
+        }
       }
       // migration flags
       setHasLocalProjectsToImport(list.length === 0 && readLegacyProjects().length > 0);
@@ -476,9 +495,18 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
       removeLocal(id);
-      if (activeId === id) setActiveId(null);
+      if (activeId === id) {
+        const remaining = projects.filter((p) => p.id !== id);
+        const next = pickAutoActive(remaining);
+        if (next) {
+          setActiveId(next.id);
+          setContext(next.context);
+        } else {
+          setActiveId(null);
+        }
+      }
     },
-    [userId, activeId, removeLocal, setActiveId],
+    [userId, activeId, projects, removeLocal, setActiveId, setContext],
   );
 
   const archiveProject = useCallback<Ctx["archiveProject"]>(
