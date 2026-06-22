@@ -349,7 +349,14 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
     actionTitle: "ATIVAÇÃO DE ACESSO AO PROGRAMA",
     directRequest:
       "Confirme a ativação do meu acesso e me oriente sobre o próximo passo.",
-    mandatoryChecks: ["Validar acesso.", "Indicar próximo módulo."],
+    mandatoryChecks: [
+      "Conferir e-mail correto usado na compra.",
+      "Confirmar login com Google funcionando.",
+      "Indicar liberação manual via admin quando necessário.",
+      "Sugerir mensagem para enviar ao cliente após liberação.",
+      "Explicar o que fazer se o acesso não aparecer.",
+      "Conferir status do pagamento e do acesso antes de liberar.",
+    ],
   },
 };
 
