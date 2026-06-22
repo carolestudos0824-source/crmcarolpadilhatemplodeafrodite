@@ -285,6 +285,15 @@ export const PromptReviewDialog = ({
               criando antes de enviar ao Lovable ou ao Agente.
             </p>
           </div>
+          {!hasActiveApp && (
+            <div className="rounded-lg border border-red-400/40 bg-red-400/[0.08] p-3 text-[12px]">
+              <p className="text-red-100 font-medium">Nenhum app ativo selecionado.</p>
+              <p className="text-red-100/90 mt-1">
+                Para evitar prompt errado, selecione ou crie um app em <strong>Meus Apps</strong> antes de copiar para o Lovable.
+              </p>
+            </div>
+          )}
+
 
           {/* Indicador de contexto */}
           <div
