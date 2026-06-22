@@ -681,17 +681,48 @@ function EntregaInner() {
             </div>
           )}
 
-          <PainSearchNextStep goTo={goTo} />
+          {active === "construir" ? (
+            <details className="mb-6 rounded-xl border border-white/10 bg-white/[0.03] group">
+              <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition">
+                <span>
+                  Dicas e busca inteligente
+                  <span className="ml-2 text-muted-foreground/60">
+                    (oculto para você focar em Copiar Etapa 1)
+                  </span>
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">
+                  Mostrar
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-accent hidden group-open:inline">
+                  Ocultar
+                </span>
+              </summary>
+              <div className="p-3 space-y-3">
+                <PainSearchNextStep goTo={goTo} />
+                <FirstAppOnboarding />
+                <JourneyStartGuide
+                  active={active}
+                  goTo={goTo}
+                  effectiveModuleDone={effectiveModuleDone}
+                />
+                <TwoPathsExplainer />
+              </div>
+            </details>
+          ) : (
+            <>
+              <PainSearchNextStep goTo={goTo} />
 
-          <FirstAppOnboarding />
+              <FirstAppOnboarding />
 
-          <JourneyStartGuide
-            active={active}
-            goTo={goTo}
-            effectiveModuleDone={effectiveModuleDone}
-          />
+              <JourneyStartGuide
+                active={active}
+                goTo={goTo}
+                effectiveModuleDone={effectiveModuleDone}
+              />
 
-          <TwoPathsExplainer />
+              <TwoPathsExplainer />
+            </>
+          )}
 
 
           <div id="modules-list">
