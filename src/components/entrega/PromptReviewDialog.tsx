@@ -243,8 +243,8 @@ export const PromptReviewDialog = ({
           </div>
           <p className="text-[11px] text-muted-foreground/90">
             {mode === "lovable"
-              ? "Use este quando quiser aplicar direto no projeto do seu app no Lovable."
-              : "Use este quando quiser conversar com o Agente Arquiteto, melhorar o comando e depois levar a versão final ao Lovable."}
+              ? "Use este prompt quando quiser aplicar mudanças diretamente no projeto."
+              : "Use este prompt quando quiser conversar, revisar e decidir antes de mexer no app."}
           </p>
         </div>
 
