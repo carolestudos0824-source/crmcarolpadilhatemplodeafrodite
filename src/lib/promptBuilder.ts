@@ -627,7 +627,7 @@ const INTENT_BLOCKS: Record<AgentIntent, string> = {
   seguranca: `Modo Segurança — sua resposta DEVE entregar:
 1. Diagnóstico dos principais riscos de segurança do app.
 2. Quais dados precisam ser protegidos.
-3. Quem pode acessar o quê.
+3. Quem pode acessar o quê (permissões por papel).
 4. Regras de autenticação necessárias.
 5. Regras de autorização necessárias.
 6. Recomendações de RLS no Supabase, se o app usar Supabase.
