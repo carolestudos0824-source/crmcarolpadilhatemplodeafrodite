@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildAgentPrompt, detectAgentIntent } from "./promptBuilder";
+import { buildAgentPrompt, buildLovablePrompt, detectAgentIntent } from "./promptBuilder";
 import { EMPTY_PROJECT_CONTEXT } from "@/hooks/useProjectContext";
 
 const ctx = {
@@ -10,6 +10,13 @@ const ctx = {
   problem: "Vendas perdidas no WhatsApp",
   promise: "Atender e vender em um só app",
 };
+
+const jogoDoAmor = {
+  ...EMPTY_PROJECT_CONTEXT,
+  appName: "Jogo do Amor",
+  appDoes: "Perguntas e desafios para casais",
+};
+
 
 describe("buildAgentPrompt — modo consultivo inteligente", () => {
   it("nunca instrui a responder apenas com perguntas", () => {
@@ -98,3 +105,66 @@ describe("buildAgentPrompt — modo consultivo inteligente", () => {
     expect(p).toMatch(/Próximo passo recomendado/);
   });
 });
+
+describe("contexto do app ativo — separação plataforma × app-alvo", () => {
+  it("Prompt para Lovable usa o nome do app ativo, não 'Fábrica de Apps'", () => {
+    const p = buildLovablePrompt({
+      context: jogoDoAmor,
+      stepName: "Definir telas",
+      command: "Crie as telas iniciais",
+      moduleId: "telas",
+    });
+    expect(p).toMatch(/Jogo do Amor/);
+    expect(p).toMatch(/Use este prompt no projeto Lovable do app: Jogo do Amor/);
+    expect(p).not.toMatch(/Fábrica de Apps/i);
+    expect(p).not.toMatch(/não a plataforma/i);
+  });
+
+  it("Prompt para o Agente usa o nome do app ativo", () => {
+    const p = buildAgentPrompt({
+      context: jogoDoAmor,
+      stepName: "Definir monetização",
+      command: "Como cobrar pelo Jogo do Amor?",
+      moduleId: "monetizacao",
+    });
+    expect(p).toMatch(/Estou criando o app Jogo do Amor/);
+    expect(p).toMatch(/Jogo do Amor/);
+    expect(p).not.toMatch(/Fábrica de Apps/i);
+  });
+
+  it("não mostra [não preenchido] em massa quando faltam dados", () => {
+    const sparse = { ...EMPTY_PROJECT_CONTEXT, appName: "Jogo do Amor", appDoes: "App para casais" };
+    const p = buildLovablePrompt({
+      context: sparse,
+      stepName: "MVP",
+      command: "Defina o MVP",
+      moduleId: "mvp",
+    });
+    // Não deve repetir "[não preenchido]" dezenas de vezes
+    const matches = p.match(/\[não preenchido\]/g) ?? [];
+    expect(matches.length).toBe(0);
+    // Mas deve incluir a nota amigável
+    expect(p).toMatch(/Alguns dados do app ainda não foram preenchidos/);
+  });
+
+  it("fallback de nome do app quando appName está vazio", () => {
+    const sem = { ...EMPTY_PROJECT_CONTEXT };
+    const p = buildAgentPrompt({
+      context: sem,
+      stepName: "Qualquer",
+      command: "Me ajude",
+    });
+    expect(p).toMatch(/app ainda sem nome/);
+    expect(p).not.toMatch(/Fábrica de Apps/i);
+  });
+
+  it("nenhum prompt menciona 'plataforma Fábrica de Apps' como app-alvo", () => {
+    const pL = buildLovablePrompt({ context: ctx, stepName: "X", command: "Y", moduleId: "telas" });
+    const pA = buildAgentPrompt({ context: ctx, stepName: "X", command: "Y", moduleId: "telas" });
+    expect(pL).not.toMatch(/não a plataforma Fábrica de Apps/i);
+    expect(pA).not.toMatch(/não a plataforma Fábrica de Apps/i);
+    expect(pL).not.toMatch(/Fábrica de Apps/i);
+    expect(pA).not.toMatch(/Fábrica de Apps/i);
+  });
+});
+
