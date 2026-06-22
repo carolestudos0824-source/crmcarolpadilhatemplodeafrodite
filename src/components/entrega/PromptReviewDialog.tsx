@@ -142,7 +142,7 @@ export const PromptReviewDialog = ({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toast.success("Prompt copiado. Revise no Lovable antes de executar.");
+      toast.success("Prompt executivo copiado. Use no Lovable para aplicar a mudança.");
       setTimeout(() => setCopied(false), 1500);
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
@@ -152,7 +152,7 @@ export const PromptReviewDialog = ({
   const copyAgent = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.success("Prompt copiado para o Agente Arquiteto.");
+      toast.success("Prompt consultivo copiado. Cole no Agente para analisar antes de implementar.");
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
