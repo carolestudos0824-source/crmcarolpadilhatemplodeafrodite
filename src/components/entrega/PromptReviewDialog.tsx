@@ -459,7 +459,7 @@ export const PromptReviewDialog = ({
             onClick={copyAgent}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm"
           >
-            <Bot size={14} /> Copiar para o Agente
+            <Bot size={14} /> Planejar com o Agente
           </button>
           <button
             type="button"
