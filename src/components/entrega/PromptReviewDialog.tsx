@@ -74,15 +74,22 @@ Regras:
 }
 
 
-const QUALITY_CHECKS: { label: string; match: (text: string) => boolean }[] = [
+const QUALITY_CHECKS_LOVABLE: { label: string; match: (text: string) => boolean }[] = [
   { label: "Título de ação incluído", match: (t) => /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ0-9 ]{6,}/m.test(t.split("\n")[0] ?? "") },
   { label: "Dados do app incluídos", match: (t) => /Dados do app:|Contexto do meu app:/i.test(t) },
-  { label: "Etapa atual incluída", match: (t) => /Etapa atual:/i.test(t) },
   { label: "Tarefa específica incluída", match: (t) => /Tarefa específica:|Comando atual:|Pedido direto:|Pedido:/i.test(t) },
   { label: "Regras de preservação incluídas", match: (t) => /Preserve|Regras de preservação/i.test(t) },
-  { label: "O que não fazer incluído", match: (t) => /O que não fazer|não refaça|não altere checkout/i.test(t) },
   { label: "O que testar depois incluído", match: (t) => /testar|teste|riscos/i.test(t) },
   { label: "Entrega esperada incluída", match: (t) => /Entrega esperada|Entregue:|próximo comando/i.test(t) },
+];
+
+const QUALITY_CHECKS_AGENT: { label: string; match: (text: string) => boolean }[] = [
+  { label: "Contexto do app incluído", match: (t) => /Dados do app:|Contexto do meu app:/i.test(t) },
+  { label: "Pedido de análise (não implementação)", match: (t) => /Analise|consultor|me explique|me ajude a decidir/i.test(t) },
+  { label: "Dúvida/decisão explicitada", match: (t) => /tentando decidir|decisão|dúvida|me ajude a decidir/i.test(t) },
+  { label: "Pedido de riscos", match: (t) => /riscos?/i.test(t) },
+  { label: "Proibição de implementar", match: (t) => /Não implemente|Não altere arquivos|Não gere código|Não execute/i.test(t) },
+  { label: "Fecha perguntando se vira prompt Lovable", match: (t) => /transformar.*prompt.*Lovable|prompt pronto para Lovable/i.test(t) },
 ];
 
 /**
