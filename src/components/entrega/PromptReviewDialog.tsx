@@ -361,7 +361,7 @@ export const PromptReviewDialog = ({
                 className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25"
                 title="Sem custo de API nesta fase: você melhora com o Agente Arquiteto."
               >
-                <Sparkles size={12} /> Melhorar com o Agente
+                <Sparkles size={12} /> Refinar este prompt com o Agente
               </button>
             </div>
           </div>
