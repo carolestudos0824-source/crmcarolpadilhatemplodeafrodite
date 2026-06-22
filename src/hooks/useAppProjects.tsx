@@ -495,9 +495,18 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
       removeLocal(id);
-      if (activeId === id) setActiveId(null);
+      if (activeId === id) {
+        const remaining = projects.filter((p) => p.id !== id);
+        const next = pickAutoActive(remaining);
+        if (next) {
+          setActiveId(next.id);
+          setContext(next.context);
+        } else {
+          setActiveId(null);
+        }
+      }
     },
-    [userId, activeId, removeLocal, setActiveId],
+    [userId, activeId, projects, removeLocal, setActiveId, setContext],
   );
 
   const archiveProject = useCallback<Ctx["archiveProject"]>(
