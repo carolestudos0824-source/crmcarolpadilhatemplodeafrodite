@@ -61,6 +61,7 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
 
   return (
     <section
+      id="pain-search"
       aria-label="Busca inteligente de dor e próximo passo"
       className="mb-6 rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-background/40 to-background/10 p-5 shadow-[0_0_30px_-15px_hsl(var(--accent))]"
     >

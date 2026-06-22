@@ -66,6 +66,7 @@ import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesMod
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
+import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -682,6 +683,8 @@ function EntregaInner() {
 
           <PainSearchNextStep goTo={goTo} />
 
+          <FirstAppOnboarding />
+
           <JourneyStartGuide
             active={active}
             goTo={goTo}
@@ -691,12 +694,14 @@ function EntregaInner() {
           <TwoPathsExplainer />
 
 
-          <ModuleContent
-            active={active}
-            checklist={checklist}
-            setChecklist={setChecklist}
-            goTo={goTo}
-          />
+          <div id="modules-list">
+            <ModuleContent
+              active={active}
+              checklist={checklist}
+              setChecklist={setChecklist}
+              goTo={goTo}
+            />
+          </div>
 
           <ModuleReviewCard
             moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
