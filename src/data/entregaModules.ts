@@ -133,75 +133,69 @@ const cmd = (
 export const COMMANDS_CONSTRUIR: Command[] = [
   {
     n: 1,
-    title: "Transformar ideia em plano",
-    purpose: "Serve para o Lovable entender sua ideia antes de construir.",
-    when: "Use primeiro, antes de pedir telas ou banco.",
-    where: "Cole no Lovable, no campo de conversa do projeto.",
-    result: "Um plano com MVP, telas, fluxo e estrutura.",
+    title: "Criar primeira versão do app",
+    purpose: "Pede ao Lovable que construa a base funcional do app ativo.",
+    when: "Use como primeiro comando do módulo Construir app.",
+    where: "Cole no Lovable, no projeto do seu app ativo.",
+    result: "Primeira versão navegável com telas principais e fluxo do usuário.",
     objective:
-      "Transformar uma ideia solta em plano com público, dor, MVP, fluxo e estrutura.",
-    whenLovableDirect: "Quando o usuário já sabe a ideia, público e problema.",
+      "Construir a base funcional inicial do app ativo, com telas principais, navegação e estrutura visual mobile first.",
+    whenLovableDirect:
+      "Quando o app ativo já está selecionado e você quer ver a primeira versão funcionando.",
     whenAgentFirst:
-      "Quando a ideia ainda está confusa, ampla demais ou sem monetização clara.",
-    content: `Você é um especialista em produto digital, UX e Lovable.
+      "Quando você ainda quer revisar escopo, MVP ou ordem das telas antes de construir.",
+    content: `Construa a primeira versão do app [nome do app ativo] no Lovable.
 
-Minha ideia é:
-[descreva sua ideia]
+Use o contexto já definido para este app.
 
-Quem vai usar:
-[descreva o público]
+Objetivo:
+Criar a base funcional inicial do aplicativo, com telas principais, navegação e estrutura visual mobile first.
 
-Problema que resolve:
-[descreva a dor]
+Crie:
+1. Tela inicial do app.
+2. Fluxo principal do usuário.
+3. Tela de entrega ou resultado principal.
+4. Estrutura visual limpa.
+5. Navegação básica entre as telas.
 
-Antes de construir, gere um plano com:
-1. Veredito estratégico
-2. Usuário principal
-3. Ação principal
-4. MVP com no máximo 5 funcionalidades
-5. O que cortar agora
-6. Fluxo do usuário
-7. Estrutura das telas
-8. Banco de dados necessário
-9. Riscos técnicos
-10. Primeiro prompt de construção
+Regras:
+- Mantenha o MVP simples.
+- Não adicione mais de 5 funcionalidades principais.
+- Não implemente pagamento real agora.
+- Não implemente domínio agora.
+- Não crie recursos avançados fora do MVP.
+- Use textos claros para usuário leigo.
+- Priorize mobile first.
 
-Não escreva código ainda.
-Não crie telas ainda.
-Primeiro entregue o plano.`,
-    agentPrompt: `Quero criar um aplicativo, mas antes preciso validar a ideia.
+Entregue:
+- primeira versão navegável;
+- telas principais conectadas;
+- layout consistente;
+- próximo passo recomendado.`,
+    agentPrompt: `Quero construir a primeira versão do app ativo no Lovable.
 
-Ideia:
-[descreva sua ideia]
+Antes de eu colar o prompt de construção, analise como Arquiteto de Aplicativos:
 
-Público:
-[quem vai usar]
+1. O MVP proposto está enxuto? Tem no máximo 5 funcionalidades?
+2. Quais telas são realmente essenciais para a primeira versão?
+3. Qual deve ser o fluxo principal do usuário?
+4. O que devo cortar agora para evitar inflar o escopo?
+5. Qual deve ser o primeiro prompt de construção, executivo, para colar no Lovable?
 
-Como pretendo monetizar:
-[assinatura, venda única, freemium, serviço, não sei]
+Use o contexto já definido para o app ativo. Se faltar algum dado, assuma hipóteses razoáveis e siga em frente.`,
+    correctionPrompt: `A primeira versão ficou ampla demais ou confusa. Simplifique.
 
-Analise como Arquiteto de Aplicativos.
+Mantenha apenas:
+1. Tela inicial
+2. Ação principal
+3. Resultado da ação
+4. Navegação mínima
+5. Estado vazio e mensagem de erro
 
-Quero:
-1. Veredito sincero
-2. Se essa ideia vende ou não
-3. Qual deve ser o MVP
-4. Quais funções cortar
-5. Como construir no Lovable
-6. Qual prompt final devo colar no Lovable.`,
-    correctionPrompt: `O plano ficou genérico. Refaça com mais precisão.
-
-Não aumente o escopo.
-Corte tudo que não for essencial.
-Mantenha o MVP com no máximo 5 funcionalidades.
-Explique:
-1. Ação principal do usuário
-2. Fluxo real em até 5 passos
-3. Funcionalidades essenciais
-4. O que fica fora
-5. Primeiro comando de construção.`,
+Remova qualquer função que não ajude o usuário a completar a ação principal.
+Não adicione pagamento, domínio ou recursos avançados agora.`,
     advanceCriteria:
-      "Avance apenas quando tiver nome do app, público, promessa, MVP com até 5 funções e fluxo principal.",
+      "Avance quando a primeira versão abrir, tiver visual coerente, fluxo principal funcionando e não estiver inchada.",
   },
   {
     n: 2,
