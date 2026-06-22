@@ -183,6 +183,19 @@ const sortProjects = (list: AppProject[]) =>
     return bv - av;
   });
 
+export const pickAutoActive = (list: AppProject[]): AppProject | null => {
+  if (!list.length) return null;
+  const active = list.filter((p) => !p.archivedAt && p.status !== "arquivado");
+  const pool = active.length ? active : list;
+  const ts = (p: AppProject) => {
+    const u = Date.parse(p.updatedAt || "");
+    if (!Number.isNaN(u)) return u;
+    const c = Date.parse(p.createdAt || "");
+    return Number.isNaN(c) ? 0 : c;
+  };
+  return [...pool].sort((a, b) => ts(b) - ts(a))[0] ?? pool[0] ?? null;
+};
+
 type Ctx = {
   projects: AppProject[];
   activeId: string | null;
