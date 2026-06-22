@@ -681,17 +681,48 @@ function EntregaInner() {
             </div>
           )}
 
-          <PainSearchNextStep goTo={goTo} />
+          {active === "construir" ? (
+            <details className="mb-6 rounded-xl border border-white/10 bg-white/[0.03] group">
+              <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition">
+                <span>
+                  Dicas e busca inteligente
+                  <span className="ml-2 text-muted-foreground/60">
+                    (oculto para você focar em Copiar Etapa 1)
+                  </span>
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">
+                  Mostrar
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-accent hidden group-open:inline">
+                  Ocultar
+                </span>
+              </summary>
+              <div className="p-3 space-y-3">
+                <PainSearchNextStep goTo={goTo} />
+                <FirstAppOnboarding />
+                <JourneyStartGuide
+                  active={active}
+                  goTo={goTo}
+                  effectiveModuleDone={effectiveModuleDone}
+                />
+                <TwoPathsExplainer />
+              </div>
+            </details>
+          ) : (
+            <>
+              <PainSearchNextStep goTo={goTo} />
 
-          <FirstAppOnboarding />
+              <FirstAppOnboarding />
 
-          <JourneyStartGuide
-            active={active}
-            goTo={goTo}
-            effectiveModuleDone={effectiveModuleDone}
-          />
+              <JourneyStartGuide
+                active={active}
+                goTo={goTo}
+                effectiveModuleDone={effectiveModuleDone}
+              />
 
-          <TwoPathsExplainer />
+              <TwoPathsExplainer />
+            </>
+          )}
 
 
           <div id="modules-list">
@@ -813,6 +844,7 @@ const CommandList = ({
 const ConstruirIntro = () => {
   const [showZero, setShowZero] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
+  const [showPaths, setShowPaths] = useState(false);
 
   const copyFirst = async () => {
     const first = COMMANDS_CONSTRUIR[0]?.content ?? "";
@@ -925,6 +957,24 @@ const ConstruirIntro = () => {
           </a>
         </div>
 
+        {/* Instrução reforçada: ação principal */}
+        <div className="mt-4 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2 text-[12px] text-foreground/90">
+          ⚡ Copie <strong>apenas uma etapa por vez</strong>. Só avance quando o Lovable entregar o resultado esperado.
+        </div>
+
+        {/* 3 caminhos rápidos */}
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11.5px] text-foreground/80">
+          <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span className="text-accent font-semibold">Sei o que fazer:</span> copiar etapa e colar no Lovable.
+          </div>
+          <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span className="text-amber-300 font-semibold">Estou inseguro:</span> abrir o Agente Arquiteto antes.
+          </div>
+          <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span className="text-accent font-semibold">Estou perdido:</span> usar a Busca Inteligente no topo.
+          </div>
+        </div>
+
         {showZero && (
           <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
             <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
@@ -939,27 +989,34 @@ const ConstruirIntro = () => {
         )}
       </div>
 
-      {/* Modos renomeados */}
-      <div>
-        <div className="text-[11px] uppercase tracking-wider text-accent mb-3 px-1">
-          Escolha seu caminho
-        </div>
-        <div className="grid md:grid-cols-3 gap-3">
-          {modes.map((m) => {
-            const tone =
-              m.tone === "amber"
-                ? "border-amber-400/30 bg-amber-400/5"
-                : m.tone === "rose"
-                ? "border-rose-400/30 bg-rose-400/5"
-                : "border-accent/30 bg-accent/5";
-            return (
-              <GlassCard key={m.title} className={`p-4 border ${tone}`}>
-                <h3 className="font-heading font-semibold text-sm mb-1.5">{m.title}</h3>
-                <p className="text-[13px] text-foreground/80 leading-snug">{m.text}</p>
-              </GlassCard>
-            );
-          })}
-        </div>
+      {/* Modos renomeados — colapsado por padrão para reduzir peso visual */}
+      <div className="rounded-xl border border-white/10 bg-white/5">
+        <button
+          type="button"
+          onClick={() => setShowPaths((v) => !v)}
+          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
+        >
+          <span className="text-sm font-semibold text-foreground/90">Escolha seu caminho</span>
+          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showPaths ? "rotate-180" : ""}`} />
+        </button>
+        {showPaths && (
+          <div className="px-4 pb-4 grid md:grid-cols-3 gap-3">
+            {modes.map((m) => {
+              const tone =
+                m.tone === "amber"
+                  ? "border-amber-400/30 bg-amber-400/5"
+                  : m.tone === "rose"
+                  ? "border-rose-400/30 bg-rose-400/5"
+                  : "border-accent/30 bg-accent/5";
+              return (
+                <GlassCard key={m.title} className={`p-4 border ${tone}`}>
+                  <h3 className="font-heading font-semibold text-sm mb-1.5">{m.title}</h3>
+                  <p className="text-[13px] text-foreground/80 leading-snug">{m.text}</p>
+                </GlassCard>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Microglossário */}
