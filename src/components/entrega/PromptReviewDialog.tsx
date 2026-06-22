@@ -97,6 +97,7 @@ export const PromptReviewDialog = ({
   stepName,
   stepObjective,
   command,
+  moduleId,
   customPrompts,
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
@@ -110,10 +111,10 @@ export const PromptReviewDialog = ({
       customPrompts
         ? { lovable: customPrompts.lovable, agent: customPrompts.agent }
         : {
-            lovable: buildLovablePrompt({ context, stepName, stepObjective, command: command ?? "" }),
-            agent: buildAgentPrompt({ context, stepName, stepObjective, command: command ?? "" }),
+            lovable: buildLovablePrompt({ context, stepName, stepObjective, command: command ?? "", moduleId }),
+            agent: buildAgentPrompt({ context, stepName, stepObjective, command: command ?? "", moduleId }),
           },
-    [context, stepName, stepObjective, command, customPrompts],
+    [context, stepName, stepObjective, command, moduleId, customPrompts],
   );
 
 
