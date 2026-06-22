@@ -489,6 +489,7 @@ export const CommandCard = ({
       stepName={title}
       stepObjective={objective ?? description}
       command={commandText}
+      moduleId={moduleId}
     />
     </>
   );
