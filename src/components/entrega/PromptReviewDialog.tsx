@@ -115,15 +115,26 @@ export const PromptReviewDialog = ({
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Contexto efetivo: o nome do app SEMPRE vem do app ativo de "Meus Apps"
+  // quando ele existir. Isso impede que o prompt gerado fale sobre a
+  // plataforma Fábrica de Apps em vez do app que o usuário está criando.
+  const effectiveContext = useMemo(() => {
+    const activeName = activeProject?.name?.trim();
+    if (!activeName) return context;
+    return { ...context, appName: activeName };
+  }, [context, activeProject?.name]);
+
+  const hasActiveApp = Boolean(activeProject?.name?.trim());
+
   const originals = useMemo(
     () =>
       customPrompts
         ? { lovable: customPrompts.lovable, agent: customPrompts.agent }
         : {
-            lovable: buildLovablePrompt({ context, stepName, stepObjective, command: command ?? "", moduleId }),
-            agent: buildAgentPrompt({ context, stepName, stepObjective, command: command ?? "", moduleId }),
+            lovable: buildLovablePrompt({ context: effectiveContext, stepName, stepObjective, command: command ?? "", moduleId }),
+            agent: buildAgentPrompt({ context: effectiveContext, stepName, stepObjective, command: command ?? "", moduleId }),
           },
-    [context, stepName, stepObjective, command, moduleId, customPrompts],
+    [effectiveContext, stepName, stepObjective, command, moduleId, customPrompts],
   );
 
 
@@ -135,12 +146,17 @@ export const PromptReviewDialog = ({
     }
   }, [open, originals]);
 
+
   if (!open) return null;
 
   const text = drafts[mode];
   const setText = (next: string) => setDrafts((d) => ({ ...d, [mode]: next }));
 
   const copy = async () => {
+    if (!hasActiveApp) {
+      toast.error("Selecione um app antes de copiar o prompt para o Lovable.");
+      return;
+    }
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -154,11 +170,16 @@ export const PromptReviewDialog = ({
   const copyAgent = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.success("Prompt consultivo copiado. Cole no Agente para analisar antes de implementar.");
+      if (hasActiveApp) {
+        toast.success("Prompt consultivo copiado. Cole no Agente para analisar antes de implementar.");
+      } else {
+        toast("Prompt consultivo copiado com contexto temporário. Para aplicar no Lovable, selecione um app.");
+      }
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
+
 
   const restore = () => {
     setDrafts((d) => ({ ...d, [mode]: originals[mode] }));
@@ -204,8 +225,9 @@ export const PromptReviewDialog = ({
               Revise, edite e ajuste o comando antes de gastar créditos no Lovable.
             </p>
             <p className="text-[11px] text-muted-foreground/90 mt-1 truncate">
-              {activeProject ? `App ativo: ${activeProject.name}` : "App ativo: contexto temporário"}
+              {hasActiveApp ? `App ativo: ${activeProject!.name}` : "Nenhum app ativo selecionado"}
             </p>
+
 
           </div>
           <button
@@ -466,11 +488,14 @@ export const PromptReviewDialog = ({
           <button
             type="button"
             onClick={copy}
-            className="btn-primary text-sm"
+            disabled={!hasActiveApp}
+            className={`btn-primary text-sm ${!hasActiveApp ? "opacity-50 cursor-not-allowed" : ""}`}
+            title={!hasActiveApp ? "Selecione um app antes de gerar prompt para Lovable." : undefined}
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
             Copiar para o Lovable
           </button>
+
         </div>
       </div>
     </div>
