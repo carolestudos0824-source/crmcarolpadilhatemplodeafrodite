@@ -528,6 +528,17 @@ export const detectAgentIntent = (input: {
   if (input.moduleId === "venda" || has("oferta", "página de venda", "pagina de venda", "headline", "copy de venda", "vender o app")) {
     return "oferta_vendas";
   }
+  if (
+    input.moduleId === "seguranca" ||
+    has(
+      "segurança", "seguranca", " rls", "rls)", "rls.", "rls,",
+      "permiss", "autenticaç", "autenticacao",
+      "dados privados", "vazamento", "proteção", "protecao",
+      "policies", "supabase security",
+    )
+  ) {
+    return "seguranca";
+  }
   if (input.moduleId === "erros" || has("bug", "erro", "quebrou", "não funciona", "nao funciona", "tela branca")) {
     return "bug";
   }
