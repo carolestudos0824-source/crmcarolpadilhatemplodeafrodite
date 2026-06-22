@@ -844,6 +844,7 @@ const CommandList = ({
 const ConstruirIntro = () => {
   const [showZero, setShowZero] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
+  const [showPaths, setShowPaths] = useState(false);
 
   const copyFirst = async () => {
     const first = COMMANDS_CONSTRUIR[0]?.content ?? "";
@@ -956,7 +957,23 @@ const ConstruirIntro = () => {
           </a>
         </div>
 
-        {showZero && (
+        {/* Instrução reforçada: ação principal */}
+        <div className="mt-4 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2 text-[12px] text-foreground/90">
+          ⚡ Copie <strong>apenas uma etapa por vez</strong>. Só avance quando o Lovable entregar o resultado esperado.
+        </div>
+
+        {/* 3 caminhos rápidos */}
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11.5px] text-foreground/80">
+          <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span className="text-accent font-semibold">Sei o que fazer:</span> copiar etapa e colar no Lovable.
+          </div>
+          <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span className="text-amber-300 font-semibold">Estou inseguro:</span> abrir o Agente Arquiteto antes.
+          </div>
+          <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+            <span className="text-accent font-semibold">Estou perdido:</span> usar a Busca Inteligente no topo.
+          </div>
+        </div>
           <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
             <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
             <ol className="list-decimal list-inside space-y-1">
