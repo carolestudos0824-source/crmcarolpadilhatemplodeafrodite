@@ -55,6 +55,12 @@ const RULES: Rule[] = [
       avoid: "Mexer em página de venda, copy ou layout antes de confirmar que o pagamento funciona.",
       prompt:
         "Implementar checkout Stripe em modo pagamento único (R$47) integrando com a função stripe-create-checkout. Após pagamento aprovado, o webhook deve liberar acesso em user_access.has_access = true para o user_id do comprador. Manter RLS, admin_grant_access_from_sale e a rota /entrega como estão.",
+      checklist: [
+        "Tenho um app ativo selecionado em Meus Apps",
+        "Sei o preço final que vou cobrar",
+        "Stripe está conectado (chave configurada)",
+        "Vou testar o fluxo com cartão sandbox antes de divulgar",
+      ],
     }),
   },
   {
@@ -74,6 +80,12 @@ const RULES: Rule[] = [
       avoid: "Implementar Stripe ou página de venda antes de fechar o modelo de cobrança.",
       prompt:
         "Analisar o app ativo e recomendar o melhor modelo de monetização (venda única, assinatura ou freemium), com preço sugerido, justificativa e próximo passo prático. Não implementar nada agora.",
+      checklist: [
+        "Sei quem é meu público pagante",
+        "Sei o que será gratuito e o que será pago",
+        "Já comparei com 1 ou 2 concorrentes",
+        "Estou pronto para decidir um preço inicial, mesmo que ajuste depois",
+      ],
     }),
   },
   {
@@ -81,6 +93,7 @@ const RULES: Rule[] = [
     keywords: [
       "seguranca", "segurança", "login", "acesso", "rls", "permissao",
       "permissão", "dados privados", "vazamento", "autenticacao", "autenticação",
+      "admin",
     ],
     build: () => ({
       pain: "dúvida ou risco de segurança no app",
@@ -93,6 +106,12 @@ const RULES: Rule[] = [
       avoid: "Aplicar correções amplas de RLS sem entender o impacto em login, admin e checkout.",
       prompt:
         "Auditar a segurança do app ativo: autenticação, políticas RLS, permissões por papel, exposição de dados privados e risco de vazamento entre usuários. Entregar diagnóstico com prioridades e próximo passo prático. Não alterar nada agora.",
+      checklist: [
+        "Listei quais tabelas guardam dados privados",
+        "Sei quem é admin e quem é usuário comum",
+        "Tenho conta de teste para validar permissões",
+        "Não vou aplicar mudança em produção sem diagnóstico",
+      ],
     }),
   },
   {
@@ -112,6 +131,12 @@ const RULES: Rule[] = [
       avoid: "Refatorar layout inteiro ou trocar fontes/cores sem aprovar o plano.",
       prompt:
         "Analisar a página de venda / tela atual do app ativo e recomendar 3 ajustes objetivos de copy, hierarquia visual ou CTA com maior impacto em conversão. Não implementar agora.",
+      checklist: [
+        "Sei qual é a tela exata que quero melhorar",
+        "Tenho clareza do público-alvo e da promessa",
+        "Decidi se é ajuste de copy, layout ou CTA",
+        "Vou aprovar o plano antes de copiar para o Lovable",
+      ],
     }),
   },
   {
@@ -131,6 +156,12 @@ const RULES: Rule[] = [
       avoid: "Mandar 'conserta isso' direto para o Lovable sem descrever sintoma, console e passo a passo.",
       prompt:
         "Diagnosticar o erro relatado no app ativo. Listar causa provável, arquivos envolvidos e correção mínima segura. Depois gerar um prompt para o Lovable que aplique só essa correção, sem mexer em login, banco, checkout ou layout.",
+      checklist: [
+        "Sei reproduzir o erro passo a passo",
+        "Tenho a mensagem de erro ou print do console",
+        "Sei desde quando o erro apareceu",
+        "Vou pedir correção mínima, não refatoração",
+      ],
     }),
   },
   {
@@ -152,6 +183,12 @@ const RULES: Rule[] = [
       avoid: "Sair copiando prompts sem saber em que fase do app você está.",
       prompt:
         "Analisar o estado atual do app ativo (o que já existe, o que falta, o que está bloqueando venda) e recomendar a próxima ação mais importante. Indicar qual módulo abrir e se deve usar o Agente ou o Lovable. Não implementar agora.",
+      checklist: [
+        "Tenho um app ativo selecionado em Meus Apps",
+        "Sei descrever em uma frase o que o app faz hoje",
+        "Sei o que ainda não funciona ou não existe",
+        "Estou disposto a seguir a recomendação do Agente antes de executar",
+      ],
     }),
   },
 ];
