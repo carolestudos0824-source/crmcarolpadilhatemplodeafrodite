@@ -2807,11 +2807,11 @@ function ErrorsModule() {
             </p>
             <div className="rounded-lg border border-white/10 bg-black/40 max-h-40 overflow-auto">
               <pre className="text-xs p-3 whitespace-pre-wrap font-mono text-foreground/85">
-                {e.command}
+                {wrapForError(e)}
               </pre>
             </div>
             <button
-              onClick={() => copy(e.command)}
+              onClick={() => copy(wrapForError(e))}
               className="px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 text-sm font-semibold"
             >
               <Copy size={14} /> Copiar
