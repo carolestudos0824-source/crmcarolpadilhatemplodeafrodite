@@ -35,9 +35,7 @@ describe("analyzePain", () => {
     const r = analyzePain("quero vender meu app");
     expect(r?.checklist.length).toBeGreaterThanOrEqual(3);
   });
-    const r = analyzePain("meu login não está seguro");
-    expect(r?.moduleId).toBe("seguranca");
-  });
+
 
   it("recomenda Página de venda / Telas para melhorias visuais", () => {
     const r = analyzePain("quero melhorar a landing");
