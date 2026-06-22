@@ -974,6 +974,8 @@ const ConstruirIntro = () => {
             <span className="text-accent font-semibold">Estou perdido:</span> usar a Busca Inteligente no topo.
           </div>
         </div>
+
+        {showZero && (
           <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
             <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
             <ol className="list-decimal list-inside space-y-1">
