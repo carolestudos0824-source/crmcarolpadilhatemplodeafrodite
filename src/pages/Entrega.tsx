@@ -65,6 +65,7 @@ import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
+import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -678,6 +679,8 @@ function EntregaInner() {
               </div>
             </div>
           )}
+
+          <PainSearchNextStep goTo={goTo} />
 
           <JourneyStartGuide
             active={active}
