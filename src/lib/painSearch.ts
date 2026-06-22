@@ -16,6 +16,7 @@ export type PainRecommendation = {
   why: string;
   avoid: string;
   prompt: string;
+  checklist: string[];
 };
 
 type Rule = {
