@@ -85,9 +85,11 @@ const QUALITY_CHECKS_LOVABLE: { label: string; match: (text: string) => boolean 
 
 const QUALITY_CHECKS_AGENT: { label: string; match: (text: string) => boolean }[] = [
   { label: "Contexto do app incluído", match: (t) => /Dados do app:|Contexto do meu app:/i.test(t) },
-  { label: "Pedido de análise (não implementação)", match: (t) => /Analise|consultor|me explique|me ajude a decidir/i.test(t) },
-  { label: "Dúvida/decisão explicitada", match: (t) => /tentando decidir|decisão|dúvida|me ajude a decidir/i.test(t) },
-  { label: "Pedido de riscos", match: (t) => /riscos?/i.test(t) },
+  { label: "Pedido de recomendação prática", match: (t) => /Recomendação (principal|prática)|entregue uma recomendação prática|recomendação já decidida/i.test(t) },
+  { label: "Hipóteses obrigatórias quando faltar dado", match: (t) => /hipóteses razoáveis|com hipóteses|assuma hipóteses/i.test(t) },
+  { label: "Proíbe responder só com perguntas", match: (t) => /Não me devolva apenas perguntas|não use a falta de dados como desculpa/i.test(t) },
+  { label: "Máximo de 3 perguntas finais", match: (t) => /no máximo 3 perguntas/i.test(t) },
+  { label: "Próximo passo incluído", match: (t) => /próximo passo/i.test(t) },
   { label: "Proibição de implementar", match: (t) => /Não implemente|Não altere arquivos|Não gere código|Não execute/i.test(t) },
   { label: "Fecha perguntando se vira prompt Lovable", match: (t) => /transformar.*prompt.*Lovable|prompt pronto para Lovable/i.test(t) },
 ];

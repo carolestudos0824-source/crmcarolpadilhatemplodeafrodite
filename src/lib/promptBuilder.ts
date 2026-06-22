@@ -495,6 +495,145 @@ ${bullets(EXPECTED)}
 Nota: aplique este comando ao app atual no Lovable, não à plataforma Fábrica de Apps.`;
 };
 
+// ---------- Detecção de intenção do Estúdio (modo Agente) ----------
+
+export type AgentIntent =
+  | "monetizacao"
+  | "criar_app"
+  | "ux_tela"
+  | "oferta_vendas"
+  | "revisao"
+  | "bug"
+  | "gerar_prompt"
+  | "proximo_passo"
+  | "planejar_funcionalidade"
+  | "generico";
+
+export const detectAgentIntent = (input: {
+  moduleId?: string;
+  stepName?: string;
+  command?: string;
+}): AgentIntent => {
+  const hay = `${input.moduleId ?? ""} ${input.stepName ?? ""} ${input.command ?? ""}`.toLowerCase();
+  const has = (...words: string[]) => words.some((w) => hay.includes(w));
+
+  if (
+    input.moduleId === "monetizacao" ||
+    input.moduleId === "checkout" ||
+    has("monetiz", "preç", "preco", "cobrar", "cobranç", "assinatura", "plano de cobranç", "pagamento", "checkout", "ticket")
+  ) {
+    return "monetizacao";
+  }
+  if (input.moduleId === "venda" || has("oferta", "página de venda", "pagina de venda", "headline", "copy de venda", "vender o app")) {
+    return "oferta_vendas";
+  }
+  if (input.moduleId === "erros" || has("bug", "erro", "quebrou", "não funciona", "nao funciona", "tela branca")) {
+    return "bug";
+  }
+  if (input.moduleId === "telas" || has("ux", "tela", "layout", "landing", "seção", "secao", "fluxo da tela")) {
+    return "ux_tela";
+  }
+  if (
+    input.moduleId === "comece" ||
+    input.moduleId === "mvp" ||
+    input.moduleId === "planejar" ||
+    has("criar app", "do zero", "novo app", "começar app", "comecar app", "primeira versão", "primeira versao")
+  ) {
+    return "criar_app";
+  }
+  if (has("próximo passo", "proximo passo", "o que faço agora", "o que faco agora")) {
+    return "proximo_passo";
+  }
+  if (has("gerar prompt", "prompt para lovable", "prompt pronto")) {
+    return "gerar_prompt";
+  }
+  if (has("revisar", "antes de implementar", "vale a pena", "devo implementar")) {
+    return "revisao";
+  }
+  if (has("funcionalidade", "feature", "recurso novo")) {
+    return "planejar_funcionalidade";
+  }
+  return "generico";
+};
+
+const INTENT_BLOCKS: Record<AgentIntent, string> = {
+  monetizacao: `Modo Monetização — sua resposta DEVE cobrir, nesta ordem:
+1. Diagnóstico comercial do app.
+2. Público com maior chance de pagar.
+3. Dor ou desejo que gera compra.
+4. Modelo de cobrança recomendado.
+5. Preço inicial sugerido (faixa realista).
+6. O que fica gratuito.
+7. O que fica pago.
+8. Oferta principal.
+9. Upsell futuro, se fizer sentido.
+10. O que não usar agora.
+11. Justificativa comercial.
+12. Próximo passo recomendado.
+13. No máximo 3 perguntas finais.`,
+  criar_app: `Modo Criação de App do Zero — sua resposta DEVE entregar:
+1. Veredito estratégico.
+2. MVP com no máximo 5 funcionalidades.
+3. Fluxo do usuário.
+4. Stack recomendada.
+5. Estrutura de páginas.
+6. Modelo de dados simples.
+7. Monetização inicial.
+8. Prompt pronto para Lovable (somente após recomendação).
+9. Próximo passo.`,
+  ux_tela: `Modo UX/Tela — sua resposta DEVE entregar:
+1. Problema da tela.
+2. O que está confuso.
+3. O que manter.
+4. O que cortar.
+5. Nova estrutura da tela.
+6. Texto sugerido.
+7. Prompt para Lovable, somente se eu pedir.`,
+  oferta_vendas: `Modo Oferta/Vendas — sua resposta DEVE entregar:
+1. Promessa central.
+2. Oferta principal.
+3. Preço sugerido.
+4. Headline.
+5. Subheadline.
+6. Benefícios.
+7. Prova/argumento.
+8. CTA.
+9. Objeções.
+10. Estrutura da página de venda.`,
+  revisao: `Modo Revisão — sua resposta DEVE:
+1. Analisar a decisão.
+2. Apontar riscos.
+3. Dar alternativa melhor.
+4. Recomendar implementar ou não.
+5. Perguntar se deve transformar em prompt para Lovable.`,
+  bug: `Modo Correção — sua resposta DEVE:
+1. Hipótese da causa provável.
+2. Onde provavelmente está o problema.
+3. Correção mínima recomendada (sem refazer o app).
+4. O que preservar (login, banco, área paga, admin, checkout, layout, dados).
+5. O que testar depois.`,
+  gerar_prompt: `Modo Geração de Prompt — sua resposta DEVE:
+1. Resumir a decisão em uma frase.
+2. Entregar um prompt pronto para colar no Lovable, executivo e específico.
+3. Listar o que esse prompt preserva e o que não faz.`,
+  proximo_passo: `Modo Próximo Passo — sua resposta DEVE:
+1. Diagnóstico curto do momento atual do app.
+2. Recomendação do próximo passo único e prático.
+3. Por que esse passo agora.
+4. O que NÃO fazer ainda.`,
+  planejar_funcionalidade: `Modo Planejar Funcionalidade — sua resposta DEVE:
+1. Avaliar se a funcionalidade vale a pena agora.
+2. Versão mínima da funcionalidade.
+3. Telas/dados envolvidos.
+4. Riscos de quebrar o que já funciona.
+5. Próximo passo recomendado.`,
+  generico: `Modo Consultivo — sua resposta DEVE:
+1. Análise rápida do contexto, com hipóteses se faltar dado.
+2. Recomendação prática já decidida.
+3. Justificativa curta.
+4. Próximo passo concreto.`,
+};
+
 export const buildAgentPrompt = ({
   context,
   stepName,
@@ -504,6 +643,8 @@ export const buildAgentPrompt = ({
 }: PromptBuildInput): string => {
   const intent = getIntent(moduleId);
   const decision = applyContextPlaceholders(command.trim(), context);
+  const agentIntent = detectAgentIntent({ moduleId, stepName, command });
+  const intentBlock = INTENT_BLOCKS[agentIntent];
 
   return `CONSULTORIA ANTES DE IMPLEMENTAR — ${intent.actionTitle}
 
@@ -513,21 +654,6 @@ Não implemente nada.
 Não altere arquivos.
 Não gere código ainda.
 Não escreva como se eu fosse colar isso direto no Lovable.
-
-Analise esta etapa do meu app e me explique:
-
-1. Qual é o objetivo real desta etapa?
-2. Essa etapa faz sentido para o usuário final?
-3. Onde ela deveria entrar no fluxo ou na página?
-4. O que está bom?
-5. O que está confuso?
-6. O que pode prejudicar conversão ou clareza?
-7. Qual texto você sugere?
-8. Qual estrutura visual você recomenda?
-9. Quais riscos existem se eu implementar isso agora?
-10. O que você cortaria para deixar mais simples?
-11. Depois da análise, me dê uma recomendação final.
-12. Só depois da minha aprovação, transforme isso em um prompt pronto para Lovable.
 
 Dados do app:
 ${renderContextBlock(context)}
@@ -541,8 +667,10 @@ ${stepObjective?.trim() || "[não informado]"}
 O que estou tentando decidir:
 ${decision || "[não informado]"}
 
+Intenção detectada: ${agentIntent}
+
 Regra obrigatória de resposta:
-Não me devolva apenas perguntas. Primeiro analise o contexto, assuma hipóteses razoáveis e me entregue uma recomendação prática. Se faltar informação, faça no máximo 3 perguntas no final, mas não use a falta de dados como desculpa para não orientar.
+Não me devolva apenas perguntas. Primeiro analise o contexto disponível, assuma hipóteses razoáveis e entregue uma recomendação prática. Se faltar informação, faça no máximo 3 perguntas no final, mas não use a falta de dados como desculpa para não orientar.
 
 Formato obrigatório da sua resposta:
 1. Análise rápida do contexto (com hipóteses claras quando faltar dado).
@@ -550,26 +678,15 @@ Formato obrigatório da sua resposta:
 3. Justificativa da recomendação.
 4. O que você faria agora, na prática.
 5. O que eu deveria evitar agora.
-6. No máximo 3 perguntas finais, só se forem essenciais.
-${moduleId === "monetizacao" || moduleId === "venda" || moduleId === "checkout"
-    ? `
-Para decisões de monetização, oferta ou checkout, sua recomendação deve cobrir obrigatoriamente:
-- Modelo de monetização recomendado
-- Preço inicial sugerido (faixa realista)
-- O que fica gratuito
-- O que fica pago
-- Melhor gatilho de compra
-- Oferta principal
-- Upsell futuro, se fizer sentido
-- O que não usar agora
-- Justificativa comercial
-- Próximo passo recomendado
-`
-    : ""}
+6. Próximo passo recomendado.
+7. No máximo 3 perguntas finais, só se forem essenciais.
+
+${intentBlock}
+
 Importante:
-Responda como consultor de produto, UX e monetização.
+Responda como consultor de produto, UX e monetização para quem está criando um app no Lovable e não sabe programar.
 Não execute nada.
-Não crie prompt de implementação ainda.
+Não crie prompt de implementação ainda, a menos que o modo detectado seja "gerar_prompt" ou eu peça explicitamente.
 Primeiro me ajude a decidir com uma recomendação clara — não com uma lista de perguntas.
 No final, pergunte se eu quero transformar a análise em um prompt pronto para Lovable.`;
 };
