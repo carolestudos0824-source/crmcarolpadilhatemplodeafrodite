@@ -420,8 +420,8 @@ export const PromptReviewDialog = ({
             <ol className="list-decimal pl-5 space-y-0.5">
               <li>Revise o texto.</li>
               <li>Edite o que precisar.</li>
-              <li>Opcional: clique em Melhorar com o Agente para lapidar antes de copiar.</li>
-              <li>Escolha Lovable para executar ou Agente para melhorar.</li>
+              <li>Opcional: clique em Refinar este prompt com o Agente para lapidar antes de copiar.</li>
+              <li>Escolha Lovable para executar a mudança ou Agente para planejar antes.</li>
               <li>
                 Depois de aplicar, volte ao módulo e use “Revisar esta etapa
                 no app”.
