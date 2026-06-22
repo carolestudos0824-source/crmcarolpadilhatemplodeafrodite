@@ -367,7 +367,7 @@ export const PromptReviewDialog = ({
           </div>
 
           <p className="text-[11px] text-muted-foreground/90">
-            Use <strong className="text-violet-200">Melhorar com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
+            Use <strong className="text-violet-200">Refinar este prompt com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
           </p>
           <p className="text-[11px] text-muted-foreground/70">
             Sem custo de API nesta fase: você melhora com o Agente Arquiteto.
