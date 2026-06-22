@@ -504,6 +504,7 @@ export type AgentIntent =
   | "oferta_vendas"
   | "revisao"
   | "bug"
+  | "seguranca"
   | "gerar_prompt"
   | "proximo_passo"
   | "planejar_funcionalidade"
@@ -526,6 +527,17 @@ export const detectAgentIntent = (input: {
   }
   if (input.moduleId === "venda" || has("oferta", "página de venda", "pagina de venda", "headline", "copy de venda", "vender o app")) {
     return "oferta_vendas";
+  }
+  if (
+    input.moduleId === "seguranca" ||
+    has(
+      "segurança", "seguranca", " rls", "rls)", "rls.", "rls,",
+      "permiss", "autenticaç", "autenticacao",
+      "dados privados", "vazamento", "proteção", "protecao",
+      "policies", "supabase security",
+    )
+  ) {
+    return "seguranca";
   }
   if (input.moduleId === "erros" || has("bug", "erro", "quebrou", "não funciona", "nao funciona", "tela branca")) {
     return "bug";
@@ -612,6 +624,19 @@ const INTENT_BLOCKS: Record<AgentIntent, string> = {
 3. Correção mínima recomendada (sem refazer o app).
 4. O que preservar (login, banco, área paga, admin, checkout, layout, dados).
 5. O que testar depois.`,
+  seguranca: `Modo Segurança — sua resposta DEVE entregar:
+1. Diagnóstico dos principais riscos de segurança do app.
+2. Quais dados precisam ser protegidos.
+3. Quem pode acessar o quê (permissões por papel).
+4. Regras de autenticação necessárias.
+5. Regras de autorização necessárias.
+6. Recomendações de RLS no Supabase, se o app usar Supabase.
+7. Riscos de vazamento entre usuários.
+8. Cuidados com área paga, admin e dados privados.
+9. O que não publicar antes de corrigir.
+10. Checklist de testes manuais de segurança.
+11. Próximo passo recomendado.
+12. No máximo 3 perguntas finais, apenas se forem essenciais.`,
   gerar_prompt: `Modo Geração de Prompt — sua resposta DEVE:
 1. Resumir a decisão em uma frase.
 2. Entregar um prompt pronto para colar no Lovable, executivo e específico.

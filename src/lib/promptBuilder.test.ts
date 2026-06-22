@@ -60,4 +60,41 @@ describe("buildAgentPrompt — modo consultivo inteligente", () => {
     expect(detectAgentIntent({ moduleId: "venda" })).toBe("oferta_vendas");
     expect(detectAgentIntent({ command: "estou com um bug, tela branca" })).toBe("bug");
   });
+
+  it("moduleId 'seguranca' gera intenção 'seguranca' com bloco específico", () => {
+    expect(detectAgentIntent({ moduleId: "seguranca" })).toBe("seguranca");
+    expect(detectAgentIntent({ command: "preciso revisar RLS e permissões" })).toBe("seguranca");
+    expect(detectAgentIntent({ command: "tem risco de vazamento entre usuários" })).toBe("seguranca");
+
+    const p = buildAgentPrompt({
+      context: ctx,
+      stepName: "Revisar segurança",
+      command: "Quero auditar a segurança do app",
+      moduleId: "seguranca",
+    });
+    expect(p).toMatch(/Modo Segurança/);
+    expect(p).toMatch(/RLS/);
+    expect(p).toMatch(/permiss/i);
+    expect(p).toMatch(/autenticaç/i);
+    expect(p).toMatch(/autorizaç/i);
+    expect(p).toMatch(/dados privados/i);
+    expect(p).toMatch(/vazamento entre usuários/i);
+    expect(p).toMatch(/testes manuais de segurança/i);
+    expect(p).toMatch(/Próximo passo/i);
+    expect(p).toMatch(/no máximo 3 perguntas/i);
+  });
+
+  it("formato obrigatório do agente tem 7 passos, incluindo próximo passo", () => {
+    const p = buildAgentPrompt({
+      context: ctx,
+      stepName: "Etapa qualquer",
+      command: "Me ajude a decidir",
+      moduleId: "legal",
+    });
+    // Verifica os 7 itens numerados do formato obrigatório
+    for (const n of [1, 2, 3, 4, 5, 6, 7]) {
+      expect(p).toMatch(new RegExp(`\\n${n}\\. `));
+    }
+    expect(p).toMatch(/Próximo passo recomendado/);
+  });
 });
