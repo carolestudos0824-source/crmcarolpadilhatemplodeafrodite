@@ -2669,6 +2669,7 @@ const SEVERITY_STYLES: Record<string, string> = {
 function ErrorsModule() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("Todos");
+  const { context } = useProjectContext();
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -2683,6 +2684,14 @@ function ErrorsModule() {
       );
     });
   }, [query, category]);
+
+  const wrapForError = (e: { title: string; explanation: string; command: string }) =>
+    wrapErrorCorrection({
+      context,
+      errorTitle: e.title,
+      errorExplanation: e.explanation,
+      command: e.command,
+    });
 
   const copy = async (text: string) => {
     try {
