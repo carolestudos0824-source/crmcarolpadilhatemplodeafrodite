@@ -270,12 +270,18 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       setProjects(list);
       // Active id reconciliation
       const aid = readActiveId();
-      if (aid && list.some((p) => p.id === aid)) {
-        const proj = list.find((p) => p.id === aid)!;
-        setContext(proj.context);
-      } else if (aid) {
-        // stale id
-        setActiveId(null);
+      const valid = aid ? list.find((p) => p.id === aid) : null;
+      if (valid) {
+        setContext(valid.context);
+      } else {
+        // stale or missing id — auto-select most recent non-archived if any
+        const fallback = pickAutoActive(list);
+        if (fallback) {
+          setActiveId(fallback.id);
+          setContext(fallback.context);
+        } else if (aid) {
+          setActiveId(null);
+        }
       }
       // migration flags
       setHasLocalProjectsToImport(list.length === 0 && readLegacyProjects().length > 0);
