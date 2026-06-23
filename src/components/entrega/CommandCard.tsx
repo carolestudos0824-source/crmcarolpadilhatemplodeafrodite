@@ -385,6 +385,8 @@ export const CommandCard = ({
                     storageKey={`cmdcard__${completedKey}__agent`}
                     onChange={setEditedAgent}
                     hideCopyButton
+                    saveTitle={`${title} — Agente`}
+                    saveSourceModule={moduleId}
                   />
 
                   <div className="mt-2 flex flex-col items-end gap-1">
