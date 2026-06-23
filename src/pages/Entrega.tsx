@@ -1804,15 +1804,21 @@ const CriativosIntro = () => {
 
 
 const ValidacaoIntro = () => {
-  const [showZero, setShowZero] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
+  const { activeProject } = useAppProjects();
+
+  const appName = activeProject?.name?.trim() || "meu app";
+
+  const inviteMessage = `Oi! Estou testando um app simples chamado ${appName}. Você pode usar por alguns minutos e me dizer onde travou, o que ficou confuso e se usaria de novo? Não quero elogio, quero feedback real.`;
+
+  const agentValidationPrompt = `Estou na etapa de validação do programa "Fábrica de Apps com IA". Meu app é "${appName}". Preciso validar com 10 pessoas reais (não com opinião, com comportamento).\n\nMe ajude a:\n1. Escolher 10 pessoas realmente parecidas com meu público.\n2. Escrever uma mensagem de convite simples e honesta.\n3. Definir o que observar enquanto a pessoa usa.\n4. Diferenciar sinal forte de sinal fraco no feedback.\n5. Decidir o que ajustar primeiro depois dos testes.\n\nMe oriente passo a passo, sem encher de teoria.`;
 
   const tutorialSteps = [
     "Escolha 10 pessoas",
     "Envie o convite",
     "Observe o uso",
-    "Anote dúvidas",
-    "Melhore o app",
+    "Anote dúvidas e travas",
+    "Melhore uma coisa por vez",
   ];
 
   const glossary: [string, string][] = [
@@ -1831,8 +1837,48 @@ const ValidacaoIntro = () => {
     ["Sinal forte", "uso real, cadastro, compra, retorno, indicação ou pedido de acesso."],
   ];
 
+  const guideMeThisStep = async () => {
+    try {
+      await navigator.clipboard.writeText(agentValidationPrompt);
+      openAgenteArquiteto();
+      toast.success(
+        "Prompt copiado. Cole no Agente Arquiteto para revisar sua validação antes de enviar convites.",
+      );
+    } catch {
+      openAgenteArquiteto();
+      toast.error("Não consegui copiar automaticamente. Copie o prompt manualmente.");
+    }
+  };
+
+  const copyInvite = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteMessage);
+      toast.success("Mensagem de convite copiada. Envie para 10 pessoas reais agora.");
+    } catch {
+      toast.error("Não foi possível copiar. Selecione manualmente.");
+    }
+  };
+
+  const reviewInviteWithAgent = async () => {
+    const prompt = `Quero revisar este convite que vou mandar para pessoas reais testarem meu app "${appName}":\n\n${inviteMessage}\n\nMe diga se está claro, honesto e se ajuda a coletar feedback real (não elogio). Sugira pequenos ajustes se necessário.`;
+    try {
+      await navigator.clipboard.writeText(prompt);
+      openAgenteArquiteto();
+      toast.success("Convite copiado. Cole no Agente Arquiteto para revisar antes de enviar.");
+    } catch {
+      openAgenteArquiteto();
+      toast.error("Não consegui copiar automaticamente. Copie o convite manualmente.");
+    }
+  };
+
+  const explainStepWithAgent = () => {
+    openAgenteArquiteto();
+    toast.success("Pergunte ao Agente Arquiteto o que ainda não ficou claro nesta etapa.");
+  };
+
   return (
     <section className="mb-8 space-y-6">
+      {/* CARD PRINCIPAL DA ETAPA */}
       <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
         <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
           <Sparkles size={12} /> Validação — Modo Guiado
@@ -1840,13 +1886,19 @@ const ValidacaoIntro = () => {
         <h2 className="text-2xl md:text-3xl font-heading font-bold text-gradient leading-tight mb-2">
           Valide seu app com pessoas reais
         </h2>
-        <p className="text-sm md:text-base text-foreground/85 max-w-3xl mb-3 leading-relaxed">
-          Nesta etapa, você testa se pessoas reais entendem, usam e demonstram
-          interesse pelo seu app antes de gastar tempo ou dinheiro escalando.
-        </p>
-        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-2">
-          Não valide com opinião. Valide com comportamento.
-        </p>
+
+        <div className="rounded-xl border border-accent/30 bg-accent/10 p-4 mb-4">
+          <div className="text-[11px] uppercase tracking-wider text-accent font-semibold mb-1">
+            Meta desta etapa
+          </div>
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            Conseguir <strong>10 pessoas reais</strong> usando seu app e anotar onde elas travam.
+          </p>
+          <p className="text-[13px] text-accent/90 mt-2 font-medium">
+            Não peça opinião. Observe comportamento.
+          </p>
+        </div>
+
         <p className="text-xs md:text-sm text-muted-foreground max-w-3xl mb-5">
           Validação é descobrir se alguém realmente entende, usa e quer continuar usando o que você criou.
         </p>
@@ -1868,51 +1920,64 @@ const ValidacaoIntro = () => {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-3">
-            Você não precisa de 1.000 pessoas para validar. Precisa de 10 pessoas reais usando com atenção.
+            Você não precisa de 1.000 usuários. Precisa de 10 pessoas reais usando com atenção.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => setShowZero((v) => !v)}
-            className="btn-primary text-sm min-h-[44px]"
-            type="button"
-          >
-            <Sparkles size={14} /> Não sei validar meu app
-          </button>
-          <a
-            href={APP_CONFIG.GPT_AGENT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
-          >
-            <Sparkles size={14} /> Abrir Agente Arquiteto
-          </a>
-          <a
-            href={LOVABLE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
-          >
-            <ExternalLink size={14} /> Abrir Lovable
-          </a>
+        {/* CTA PRINCIPAL ORIENTADOR */}
+        <button
+          onClick={guideMeThisStep}
+          type="button"
+          className="btn-primary text-sm min-h-[48px] w-full sm:w-auto"
+        >
+          <Sparkles size={14} /> Me guiar nesta etapa
+        </button>
+      </div>
+
+      {/* BLOCO FAÇA AGORA */}
+      <div className="rounded-2xl border border-cyan-400/40 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-transparent p-5 md:p-6">
+        <div className="text-[11px] uppercase tracking-[0.18em] text-cyan-300 font-semibold mb-2">
+          Faça agora
+        </div>
+        <h3 className="text-xl md:text-2xl font-heading font-bold leading-tight mb-2">
+          Escolha 10 pessoas reais e envie o convite
+        </h3>
+        <p className="text-sm text-foreground/80 mb-4">
+          Não precisa explicar o app. Peça para usarem e te contarem onde travaram, o que confundiu e se voltariam a usar.
+        </p>
+
+        <div className="rounded-xl border border-white/10 bg-black/30 p-4 mb-4">
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+            Mensagem de convite
+          </div>
+          <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
+            {inviteMessage}
+          </p>
         </div>
 
-        {showZero && (
-          <div className="mt-5 rounded-xl border border-accent/30 bg-accent/5 p-4 text-[13px] md:text-sm text-foreground/90 leading-relaxed">
-            <div className="font-semibold mb-2 text-accent">Faça só isso agora:</div>
-            <ol className="list-decimal list-inside space-y-1">
-              <li>Escolha 10 pessoas parecidas com seu público real.</li>
-              <li>Envie uma mensagem simples de convite.</li>
-              <li>Peça para elas testarem sem explicar demais.</li>
-              <li>Anote onde travaram, o que perguntaram e se demonstraram interesse.</li>
-              <li>Melhore apenas o que apareceu repetidamente.</li>
-            </ol>
-            <p className="text-xs text-muted-foreground mt-3">
-              Se você não sabe quem chamar, quais perguntas fazer ou como interpretar respostas, converse com o Agente antes de mudar o app.
-            </p>
-          </div>
-        )}
+        <div className="grid sm:grid-cols-3 gap-2">
+          <button
+            type="button"
+            onClick={copyInvite}
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-semibold hover:from-cyan-400 hover:to-blue-500 transition min-h-[44px]"
+          >
+            <Copy size={14} /> Copiar mensagem de convite
+          </button>
+          <button
+            type="button"
+            onClick={() => toast.success("Abra um bloco de notas ou planilha e liste 10 nomes que se parecem com seu público real.")}
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-white/15 bg-white/5 text-foreground/90 hover:bg-white/10 text-sm font-semibold min-h-[44px]"
+          >
+            <ListChecks size={14} /> Anotar meus 10 testadores
+          </button>
+          <button
+            type="button"
+            onClick={reviewInviteWithAgent}
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold min-h-[44px]"
+          >
+            <Sparkles size={14} /> Revisar convite com o Agente
+          </button>
+        </div>
       </div>
 
       <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100 flex items-start gap-3">
@@ -1922,15 +1987,25 @@ const ValidacaoIntro = () => {
         </div>
       </div>
 
+      {/* GLOSSÁRIO + EXPLICAR COM AGENTE */}
       <div className="rounded-xl border border-white/10 bg-white/5">
-        <button
-          type="button"
-          onClick={() => setShowGlossary((v) => !v)}
-          className="w-full flex items-center justify-between gap-3 p-4 text-left min-h-[48px]"
-        >
-          <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
-          <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
-        </button>
+        <div className="flex flex-wrap items-center justify-between gap-2 p-2">
+          <button
+            type="button"
+            onClick={() => setShowGlossary((v) => !v)}
+            className="flex-1 flex items-center justify-between gap-3 p-2 text-left min-h-[44px] rounded-lg hover:bg-white/5"
+          >
+            <span className="text-sm font-semibold text-foreground/90">Não entendi uma palavra</span>
+            <ChevronDown size={16} className={`text-muted-foreground transition-transform ${showGlossary ? "rotate-180" : ""}`} />
+          </button>
+          <button
+            type="button"
+            onClick={explainStepWithAgent}
+            className="inline-flex items-center gap-2 text-xs px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 min-h-[40px]"
+          >
+            <Sparkles size={12} /> Explicar esta etapa com o Agente
+          </button>
+        </div>
         {showGlossary && (
           <dl className="px-4 pb-4 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
             {glossary.map(([term, def]) => (
@@ -1941,6 +2016,21 @@ const ValidacaoIntro = () => {
             ))}
           </dl>
         )}
+      </div>
+
+      {/* LOVABLE REBAIXADO COMO AÇÃO SECUNDÁRIA */}
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+        <p className="text-xs text-muted-foreground">
+          Use o Lovable depois de coletar feedback real. Não ajuste o app antes de observar 10 pessoas usando.
+        </p>
+        <a
+          href={LOVABLE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 text-xs px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-foreground/70 min-h-[40px]"
+        >
+          <ExternalLink size={12} /> Abrir Lovable depois
+        </a>
       </div>
     </section>
   );
