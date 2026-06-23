@@ -68,13 +68,15 @@ export function EditablePromptBox({
   const [copied, setCopied] = useState(false);
   const taRef = useRef<HTMLTextAreaElement>(null);
 
-  // auto-resize
   useEffect(() => {
+    if (!expanded) return;
     const ta = taRef.current;
     if (!ta) return;
     ta.style.height = "auto";
     ta.style.height = `${ta.scrollHeight}px`;
-  }, [value]);
+  }, [value, expanded]);
+
+
 
   useEffect(() => {
     if (!storageKey || typeof window === "undefined") return;
