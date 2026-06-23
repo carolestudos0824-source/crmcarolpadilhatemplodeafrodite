@@ -359,16 +359,18 @@ export default function Login() {
   };
 
   const onGoogle = async () => {
+    setGoogleError(null);
     setMagicError(null);
     setGoogleLoading(true);
+    console.info({ auth_flow: "google_oauth_requested", tab: authTab });
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/entrega",
         extraParams: { prompt: "select_account" },
       });
       if (result.error) {
-        setMagicError(
-          "Não foi possível entrar com Google agora. Tente novamente, ou use link por e-mail.",
+        setGoogleError(
+          "Não foi possível entrar com Google. Tente novamente ou use e-mail e senha.",
         );
         setGoogleLoading(false);
         return;
@@ -376,12 +378,13 @@ export default function Login() {
       if (result.redirected) return;
       navigate("/entrega");
     } catch {
-      setMagicError(
-        "Não foi possível entrar com Google agora. Tente novamente, ou use link por e-mail.",
+      setGoogleError(
+        "Não foi possível entrar com Google. Tente novamente ou use e-mail e senha.",
       );
       setGoogleLoading(false);
     }
   };
+
 
   const toggleVisibility = (
     setter: React.Dispatch<React.SetStateAction<boolean>>,
