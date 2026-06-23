@@ -233,6 +233,14 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         </div>
       </div>
 
+      <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 mb-4">
+        <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
+          Resultado esperado
+        </div>
+        <p className="text-sm text-foreground/90">{etapa.resultado}</p>
+      </div>
+
+
       <div className="flex flex-wrap gap-2 mb-4">
         {TAB_META.map((t) => {
           const TIcon = t.icon;
