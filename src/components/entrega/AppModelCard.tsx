@@ -207,7 +207,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
       await navigator.clipboard.writeText(agentPrompt);
       openAgenteArquiteto();
       toast.success(
-        "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole o prompt lá para revisar sua ideia.",
+        "Tudo pronto. O prompt foi copiado e o Agente Arquiteto abriu em outra aba. Cole lá para revisar, tirar dúvidas e melhorar seu app antes de construir.",
       );
     } catch {
       setAgentFallback(agentPrompt);
