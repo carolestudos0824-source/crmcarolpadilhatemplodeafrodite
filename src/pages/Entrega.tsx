@@ -817,13 +817,38 @@ function EntregaInner() {
             >
               <CheckCircle2 size={14} /> Marcar módulo como concluído
             </button>
-            <button
-              onClick={() => nextModule && goTo(nextModule)}
-              disabled={!nextModule}
-              className="btn-primary text-sm disabled:opacity-30"
-            >
-              Próximo passo <ArrowRight size={14} />
-            </button>
+            {(() => {
+              const isIdeias = active === "ideias";
+              const hasChosenIdea = !!appProjects.activeProject;
+              const blockIdeias = isIdeias && !hasChosenIdea;
+              const ideiasLabel = isIdeias
+                ? hasChosenIdea
+                  ? "Próximo passo: Planejar o App"
+                  : "Escolha uma ideia para avançar"
+                : null;
+              const handleClick = () => {
+                if (blockIdeias) return;
+                if (isIdeias && hasChosenIdea) {
+                  goTo("planejar");
+                  return;
+                }
+                if (nextModule) goTo(nextModule);
+              };
+              const disabled = blockIdeias || (!isIdeias && !nextModule);
+              return (
+                <button
+                  onClick={handleClick}
+                  disabled={disabled}
+                  className={
+                    blockIdeias
+                      ? "px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-muted-foreground text-sm cursor-not-allowed inline-flex items-center gap-2"
+                      : "btn-primary text-sm disabled:opacity-30"
+                  }
+                >
+                  {ideiasLabel ?? "Próximo passo"} {!blockIdeias && <ArrowRight size={14} />}
+                </button>
+              );
+            })()}
           </div>
         </main>
 
