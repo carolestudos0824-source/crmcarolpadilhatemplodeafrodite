@@ -323,6 +323,8 @@ export const CommandCard = ({
                   storageKey={`cmdcard__${completedKey}__guided`}
                   onChange={setEditedCommand}
                   hideCopyButton
+                  saveTitle={title}
+                  saveSourceModule={moduleId}
                 />
 
                 <div className="mt-2 flex flex-col items-end gap-2">
