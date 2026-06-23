@@ -70,6 +70,7 @@ import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCar
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
@@ -623,6 +624,24 @@ function EntregaInner() {
 
         {/* MAIN */}
         <main className="flex-1 min-w-0 p-4 md:p-8">
+          {/* Boas-vindas: Agente Arquiteto como guia central */}
+          {active === "comece" && (
+            <div className="mb-6">
+              <AgentArchitectCard
+                eyebrow="Não sabe por onde começar?"
+                title="O Agente Arquiteto é seu guia"
+                subtitle="Use ele para revisar ideias, entender os prompts, simplificar o MVP e decidir o próximo passo dentro da Fábrica de Apps com IA."
+                description="Recomendado para iniciantes antes de copiar qualquer prompt para o Lovable. Tire dúvidas, valide sua ideia e só então construa."
+                benefits={[
+                  "Entenda o que construir primeiro",
+                  "Evite criar um app inchado",
+                  "Tire dúvidas sobre telas, dados e funcionalidades",
+                ]}
+                ctaLabel="Abrir Agente Arquiteto"
+              />
+            </div>
+          )}
+
           {/* O que você vai fazer nesta etapa */}
           {active !== "comece" && (
             <div className="mb-6 rounded-xl border border-accent/30 bg-accent/10 p-4 flex items-start gap-3">

@@ -194,6 +194,10 @@ export const CommandCard = ({
             />
 
             <div className="mt-2 flex flex-col items-end gap-2">
+              <p className="w-full text-xs text-cyan-300/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-lg px-3 py-2 text-left">
+                <strong className="font-semibold text-cyan-200">Dica para iniciantes:</strong>{" "}
+                revise este prompt com o Agente Arquiteto antes de colar no Lovable.
+              </p>
               <div className="flex flex-wrap justify-end gap-2">
                 <button
                   type="button"
