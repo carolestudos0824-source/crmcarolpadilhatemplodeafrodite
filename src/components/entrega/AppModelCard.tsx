@@ -357,7 +357,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                   Use esta ideia como ponto de partida. Você pode trocar o nome, adaptar o público e transformar isso em um app em construção.
                 </p>
                 <p className="text-xs text-accent/90 mt-2">
-                  Antes de copiar para o Lovable, você pode revisar este plano com o Agente Arquiteto de Aplicativos.
+                  Recomendado para iniciantes: revise este plano com o Agente Arquiteto antes de construir. Ele ajuda você a entender, simplificar e melhorar o app.
                 </p>
               </div>
               <button
