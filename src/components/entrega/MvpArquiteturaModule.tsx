@@ -237,7 +237,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar correção"
               : "Copiar comando"
           }
-          helperText="Você pode copiar direto ou revisar o prompt antes de colar no Lovable."
+          
         />
       )}
 
@@ -284,16 +284,25 @@ export function MvpArquiteturaModule() {
           Agora você vai transformar o plano do app em uma estrutura simples, com telas,
           funcionalidades, dados e regras essenciais.
         </p>
+        <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
+          Em cada etapa, você pode copiar o comando direto ou revisar o prompt antes de colar no chat do seu projeto no Lovable.
+        </p>
       </header>
 
       <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
-          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            Um MVP não é o app dos sonhos. É a primeira versão simples, clara e testável.
-            Aqui você vai decidir o que entra agora, como o app se organiza e o que deve
-            ficar para depois.
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+              Um MVP não é o app dos sonhos. É a primeira versão simples, clara e testável.
+              Aqui você vai decidir o que entra agora, como o app se organiza e o que deve
+              ficar para depois.
+            </p>
+            <p className="text-sm text-foreground/80 leading-relaxed">
+              O MVP é o <strong className="text-foreground/95">quê</strong>: quais funcionalidades entram na primeira versão.
+              A arquitetura é o <strong className="text-foreground/95">como</strong>: as telas, os dados e as regras que sustentam essas funcionalidades.
+            </p>
+          </div>
         </div>
       </GlassCard>
 
