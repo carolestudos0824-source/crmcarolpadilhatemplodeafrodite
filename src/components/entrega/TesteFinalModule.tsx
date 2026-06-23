@@ -124,20 +124,44 @@ const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "Página branca", def: "Quando a tela carrega vazia por erro de código, rota ou carregamento." },
 ];
 
-const CHECKLIST_ITEMS = [
-  "Testei como visitante",
-  "Testei como usuário logado",
-  "Testei login e logout",
-  "Testei botões principais",
-  "Testei formulários",
-  "Testei links",
-  "Testei checkout",
-  "Testei página de obrigado",
-  "Testei área de entrega",
-  "Testei no celular",
-  "Não encontrei scroll horizontal",
-  "Corrigi erros críticos antes de divulgar",
+const CHECKLIST_GROUPS: { title: string; items: string[] }[] = [
+  {
+    title: "Acesso",
+    items: [
+      "Testei como visitante",
+      "Testei login e logout",
+      "Testei como usuário logado",
+    ],
+  },
+  {
+    title: "Navegação",
+    items: [
+      "Testei botões principais",
+      "Testei links",
+      "Não encontrei página branca",
+      "Não encontrei scroll horizontal",
+    ],
+  },
+  {
+    title: "Conversão",
+    items: [
+      "Testei formulários",
+      "Testei checkout",
+      "Testei página de obrigado",
+    ],
+  },
+  {
+    title: "Entrega e mobile",
+    items: [
+      "Testei área de entrega",
+      "Testei no celular",
+      "Corrigi erros críticos antes de divulgar",
+    ],
+  },
 ];
+
+const CHECKLIST_TOTAL = CHECKLIST_GROUPS.reduce((acc, g) => acc + g.items.length, 0);
+
 
 const TAB_META: { id: TabId; label: string; icon: typeof ShieldCheck }[] = [
   { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
@@ -358,50 +382,121 @@ export function TesteFinalModule() {
       </GlassCard>
 
       <GlassCard className="p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <Bug size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
+        <div className="flex items-start gap-2 mb-1">
+          <Bug size={16} className="text-emerald-300 mt-1" />
+          <h3 className="font-heading font-semibold text-base">
+            Checklist final de publicação
+          </h3>
         </div>
-        <ul className="space-y-2">
-          {CHECKLIST_ITEMS.map((item) => {
-            const key = `${CHECKLIST_PREFIX}${item}`;
-            const done = !!checklist[key];
-            return (
-              <li key={item}>
-                <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
-                  <input
-                    type="checkbox"
-                    checked={done}
-                    onChange={() => toggleItem(item)}
-                    className="accent-accent w-4 h-4"
-                  />
-                  <span
-                    className={`text-sm ${
-                      done ? "line-through text-muted-foreground" : ""
-                    }`}
-                  >
-                    {item}
-                  </span>
-                  {done ? (
-                    <CheckCircle2
-                      size={14}
-                      className="text-emerald-400 shrink-0 ml-auto"
-                    />
-                  ) : (
-                    <Circle
-                      size={14}
-                      className="text-muted-foreground/40 shrink-0 ml-auto"
-                    />
-                  )}
-                </label>
-              </li>
-            );
-          })}
-        </ul>
-        <p className="text-[11px] text-muted-foreground mt-3">
-          Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
+        <p className="text-sm text-foreground/80 mb-3">
+          Antes de divulgar seu app, marque os testes principais. Isso evita
+          publicar com erro de login, botão, checkout, entrega ou visual no
+          celular.
         </p>
+
+        {(() => {
+          const doneCount = CHECKLIST_GROUPS.reduce(
+            (acc, g) =>
+              acc +
+              g.items.filter((it) => !!checklist[`${CHECKLIST_PREFIX}${it}`]).length,
+            0,
+          );
+          const allDone = doneCount === CHECKLIST_TOTAL;
+          const pct = Math.round((doneCount / CHECKLIST_TOTAL) * 100);
+
+          const finishTest = () => {
+            if (!allDone) return;
+            toast.success("Teste final concluído. Seu app está pronto para divulgação inicial.");
+          };
+
+          return (
+            <>
+              <div className="mb-4 rounded-lg border border-white/10 bg-white/5 p-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs text-foreground/80">
+                    {doneCount} de {CHECKLIST_TOTAL} testes concluídos
+                  </span>
+                  <span className="text-[11px] text-muted-foreground tabular-nums">
+                    {pct}%
+                  </span>
+                </div>
+                <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <div
+                    className="h-full bg-accent transition-all duration-500"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-5">
+                {CHECKLIST_GROUPS.map((group) => (
+                  <div key={group.title}>
+                    <div className="text-[10px] uppercase tracking-wider text-accent/80 mb-2">
+                      {group.title}
+                    </div>
+                    <ul className="space-y-2">
+                      {group.items.map((item) => {
+                        const key = `${CHECKLIST_PREFIX}${item}`;
+                        const done = !!checklist[key];
+                        return (
+                          <li key={item}>
+                            <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
+                              <input
+                                type="checkbox"
+                                checked={done}
+                                onChange={() => toggleItem(item)}
+                                className="accent-accent w-4 h-4 shrink-0"
+                              />
+                              <span
+                                className={`text-sm ${
+                                  done ? "line-through text-muted-foreground" : ""
+                                }`}
+                              >
+                                {item}
+                              </span>
+                            </label>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {allDone && (
+                <div className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 flex items-start gap-2">
+                  <CheckCircle2 size={16} className="text-emerald-300 shrink-0 mt-0.5" />
+                  <p className="text-sm text-emerald-100 leading-snug">
+                    Teste final concluído. Seu app está pronto para divulgação
+                    inicial.
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-5 flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-[11px] text-muted-foreground">
+                  Quando todos os testes estiverem marcados, esta etapa será
+                  considerada concluída na sua jornada.
+                </p>
+                <button
+                  type="button"
+                  onClick={finishTest}
+                  disabled={!allDone}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                    allDone
+                      ? "bg-accent text-accent-foreground hover:bg-accent/90"
+                      : "bg-white/5 text-muted-foreground border border-white/10 cursor-not-allowed"
+                  }`}
+                >
+                  <CheckCircle2 size={14} />
+                  Concluir teste final
+                </button>
+              </div>
+            </>
+          );
+        })()}
       </GlassCard>
+
     </section>
   );
 }
