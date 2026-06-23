@@ -748,7 +748,7 @@ function EntregaInner() {
 
           {active !== "fundamentos" && (
             <GpsDoAppCard
-              defaultCollapsed={active === "telas"}
+              defaultCollapsed
               descriptionOverride={
                 active === "telas"
                   ? "Use o GPS para confirmar em que ponto da construção você está e o que falta antes de seguir para o próximo módulo."
@@ -757,9 +757,9 @@ function EntregaInner() {
             />
           )}
 
-          {active !== "fundamentos" && (
+          {active !== "fundamentos" && auth.isAdmin && (
             <ArquitetoMelhoriasCard
-              defaultCollapsed={active === "telas"}
+              defaultCollapsed
               descriptionOverride={
                 active === "telas"
                   ? "Use o Arquiteto para decidir se uma ideia nova de tela ou fluxo vale entrar agora ou ficar para depois."
