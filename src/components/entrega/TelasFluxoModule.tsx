@@ -20,8 +20,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
+import { wrapLovable, LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useAppProjects } from "@/hooks/useAppProjects";
+import { FolderKanban } from "lucide-react";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso organizar as telas e o fluxo do usuário. Me ajude a definir: primeira tela, telas públicas, telas restritas, ação principal, formulários, resultado, pagamento, entrega e caminho ideal para o usuário não se perder.`;
 
@@ -154,8 +156,8 @@ const CHECKLIST_ITEMS = [
 ];
 
 const TAB_META: { id: TabId; label: string; icon: typeof MapIcon }[] = [
-  { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
-  { id: "agente", label: "Pensar com o Agente", icon: Bot },
+  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
+  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
 ];
@@ -164,7 +166,7 @@ const CHECKLIST_PREFIX = "telas_step__";
 
 function CopyBtn({
   text,
-  label = "Copiar comando",
+  label = "Copiar para implementar no Lovable",
   hint,
 }: {
   text: string;
@@ -204,7 +206,22 @@ function CopyBtn({
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const [auditCopied, setAuditCopied] = useState(false);
   const Icon = etapa.icon;
+
+  const handleCopyAudit = async () => {
+    try {
+      await navigator.clipboard.writeText(LOVABLE_AUDIT_PROMPT(etapa.tabs.lovable).trim());
+      setAuditCopied(true);
+      toast.success("Auditoria copiada.", {
+        description: "Cole no Lovable. Ele só vai analisar, não vai implementar.",
+      });
+      setTimeout(() => setAuditCopied(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
+
   return (
     <GlassCard className="p-5 md:p-6">
       <div className="flex items-start gap-4 mb-4">
@@ -229,7 +246,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition min-h-[36px] ${
                 active
                   ? "bg-accent/15 border-accent/40 text-accent"
                   : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
@@ -261,16 +278,39 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar para o Agente"
               : tab === "corrigir"
               ? "Copiar correção"
-              : "Copiar comando"
+              : "Copiar para implementar no Lovable"
           }
           helperText={
             tab === "agente"
-              ? "Use para pensar antes de aplicar."
+              ? "Use para revisar com o Agente antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
               : undefined
           }
         />
+      )}
+
+      {tab === "lovable" && (
+        <div className="mt-3 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={handleCopyAudit}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-full sm:w-fit justify-center min-h-[44px] ${
+              auditCopied
+                ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+                : "border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+            }`}
+          >
+            {auditCopied ? <Check size={14} /> : <ShieldCheck size={14} />}
+            {auditCopied ? "Auditoria copiada!" : "Copiar auditoria para o Lovable"}
+          </button>
+          <div className="inline-flex items-start gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[11px] text-cyan-100/90 leading-snug">
+            <ShieldCheck size={12} className="mt-0.5 shrink-0" />
+            <span>
+              <strong className="text-cyan-50">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
+            </span>
+          </div>
+        </div>
       )}
 
     </GlassCard>
@@ -279,6 +319,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 
 export function TelasFluxoModule() {
   const { checklist, setChecklist } = useUserProgress();
+  const { activeProject, openDrawer } = useAppProjects();
 
   const copyAgentHelp = async () => {
     try {
@@ -367,6 +408,29 @@ export function TelasFluxoModule() {
       </GlassCard>
 
 
+
+      {!activeProject && (
+        <GlassCard className="p-4 sm:p-5 mb-5 border-amber-400/30 bg-amber-400/[0.04]">
+          <div className="flex items-start gap-3">
+            <FolderKanban size={18} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm md:text-base font-heading font-semibold text-amber-100 mb-1">
+                Escolha um app antes de copiar os comandos
+              </h3>
+              <p className="text-xs md:text-sm text-foreground/80 leading-relaxed mb-3">
+                Os comandos ficam melhores quando o contexto do seu app está preenchido. Escolha ou crie um app antes de copiar para o Lovable.
+              </p>
+              <button
+                type="button"
+                onClick={openDrawer}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-100 hover:bg-amber-400/15 text-xs font-semibold transition min-h-[40px]"
+              >
+                <FolderKanban size={12} /> Escolher app
+              </button>
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
