@@ -72,7 +72,7 @@ const YesNoSelect = ({
 );
 
 export const ProjectContextDrawer = () => {
-  const { context, setContext, isEditorOpen, closeEditor } = useProjectContext();
+  const { context, setContext, clearTemporaryContext, isEditorOpen, closeEditor } = useProjectContext();
   const {
     activeProject,
     saveContextToActiveProject,
@@ -82,8 +82,20 @@ export const ProjectContextDrawer = () => {
   const [confirmReset, setConfirmReset] = useState(false);
 
   useEffect(() => {
-    if (isEditorOpen) setDraft(context);
-  }, [isEditorOpen, context]);
+    if (!isEditorOpen) return;
+
+    if (activeProject) {
+      setDraft(activeProject.context);
+      if (import.meta.env.DEV) console.debug("origem: app ativo");
+      return;
+    }
+
+    setDraft(context);
+    if (import.meta.env.DEV) {
+      const hasContext = Object.values(context).some((value) => value.trim().length > 0);
+      console.debug(hasContext ? "origem: contexto temporário" : "origem: vazio");
+    }
+  }, [isEditorOpen, activeProject, context]);
 
   if (!isEditorOpen) return null;
 
@@ -117,7 +129,7 @@ export const ProjectContextDrawer = () => {
 
   const reset = () => {
     setDraft(EMPTY_PROJECT_CONTEXT);
-    setContext(EMPTY_PROJECT_CONTEXT);
+    clearTemporaryContext();
     setConfirmReset(false);
     toast("Contexto limpo. Os campos voltaram ao estado inicial.");
   };
