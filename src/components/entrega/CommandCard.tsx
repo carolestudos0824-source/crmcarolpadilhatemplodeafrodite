@@ -183,11 +183,13 @@ export const CommandCard = ({
             <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-accent mb-1.5">
               <Sparkles size={12} /> Texto pronto para colar no Lovable
             </div>
-            <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
-              <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/90">
-                {commandText}
-              </pre>
-            </div>
+            <EditablePromptBox
+              originalPrompt={commandText}
+              storageKey={`cmdcard__${completedKey}__main`}
+              onChange={setEditedCommand}
+              hideCopyButton
+            />
+
             <div className="mt-2 flex flex-col items-end gap-2">
               <div className="flex flex-wrap justify-end gap-2">
                 <button
