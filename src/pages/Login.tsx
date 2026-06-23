@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft, ShieldCheck, ArrowRight, ChevronDown } from "lucide-react";
+import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft, ShieldCheck, ArrowRight } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
 import { APP_CONFIG } from "@/config/appConfig";
