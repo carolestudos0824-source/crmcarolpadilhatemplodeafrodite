@@ -125,6 +125,8 @@ export default function Login() {
 
   // ============ Google ============
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleError, setGoogleError] = useState<string | null>(null);
+
 
   // ============ Tabs + password sub-accordion ============
   const [authTab, setAuthTab] = useState<"entrar" | "criar">("criar");
