@@ -289,7 +289,7 @@ export const ProjectContextDrawer = () => {
         <div className="sticky bottom-0 p-4 border-t border-white/10 bg-background/95 backdrop-blur space-y-2">
           <div className="flex flex-wrap gap-2 justify-end">
             <button
-              onClick={reset}
+              onClick={() => setConfirmReset(true)}
               className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-xs text-muted-foreground"
               type="button"
             >
