@@ -308,8 +308,8 @@ export const CommandCard = ({
           {/* Tabs */}
           <div className="flex flex-wrap gap-1.5 border-b border-white/10 pb-2 -mb-1">
             {[
-              { id: "lovable", label: "Fazer no Lovable", icon: Code2, color: "text-accent border-accent/50 bg-accent/10" },
-              { id: "agent", label: "Pensar com o Agente", icon: Bot, color: "text-amber-200 border-amber-400/50 bg-amber-400/10", disabled: !agentPrompt && !whenAgentFirst },
+              { id: "lovable", label: "Implementar no Lovable", icon: Code2, color: "text-accent border-accent/50 bg-accent/10" },
+              { id: "agent", label: "Revisar com o Agente primeiro", icon: Bot, color: "text-amber-200 border-amber-400/50 bg-amber-400/10", disabled: !agentPrompt && !whenAgentFirst },
               { id: "fix", label: "Corrigir erro", icon: Wrench, color: "text-rose-200 border-rose-400/50 bg-rose-400/10", disabled: !correctionPrompt },
               { id: "advance", label: "Quando avançar", icon: Compass, color: "text-emerald-200 border-emerald-400/50 bg-emerald-400/10" },
             ].map((t) => {
