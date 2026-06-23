@@ -56,6 +56,19 @@ export const CommandCard = ({
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
+
+  const handleRevisarComAgente = (key: string) => {
+    const prompt = enrichedAgent();
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1800);
+    void copyPromptAndOpenAgent({
+      prompt,
+      successMessage:
+        "Prompt copiado para o Agente. O Agente foi aberto. Cole com Ctrl+V para revisar antes de continuar.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
   const [editedCommand, setEditedCommand] = useState(commandText);
   const [editedAgent, setEditedAgent] = useState(agentPrompt ?? "");
   const [editedCorrection, setEditedCorrection] = useState(correctionPrompt ?? "");
