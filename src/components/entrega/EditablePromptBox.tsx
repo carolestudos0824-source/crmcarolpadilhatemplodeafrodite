@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Copy, Check, RotateCcw, Settings2 } from "lucide-react";
+import { Copy, Check, RotateCcw, Settings2, Bookmark } from "lucide-react";
 import { usePromptStudio, type PromptStudioOptions } from "./PromptStudioProvider";
+import { useAuthState } from "@/hooks/useAuthState";
+import { savePromptForUser } from "@/lib/savePrompt";
 
 type Props = {
   originalPrompt: string;
@@ -19,6 +21,12 @@ type Props = {
   className?: string;
   /** When provided, renders an "Editar no Estúdio" button that opens the global PromptStudio. */
   studio?: PromptStudioOptions;
+  /** Title used when saving this prompt to "Prompts salvos". Falls back to a snippet. */
+  saveTitle?: string;
+  /** Source module identifier used when saving. Optional. */
+  saveSourceModule?: string;
+  /** Hide the built-in save button when the parent doesn't want it (default: shown). */
+  hideSaveButton?: boolean;
 };
 
 
@@ -35,8 +43,14 @@ export function EditablePromptBox({
   hideCopyButton,
   className,
   studio,
+  saveTitle,
+  saveSourceModule,
+  hideSaveButton,
 }: Props) {
   const { openPromptStudio } = usePromptStudio();
+  const auth = useAuthState();
+  const userId = auth.status === "authed" ? auth.userId : null;
+  const [saving, setSaving] = useState(false);
 
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
@@ -84,6 +98,31 @@ export function EditablePromptBox({
   };
 
   const edited = value !== originalPrompt;
+
+  const handleSave = async () => {
+    if (saving) return;
+    if (!userId) {
+      toast.error("Entre na sua conta para salvar prompts.");
+      return;
+    }
+    const content = value.trim();
+    if (!content) {
+      toast.error("Não há conteúdo para salvar.");
+      return;
+    }
+    setSaving(true);
+    const result = await savePromptForUser({
+      userId,
+      title: saveTitle ?? "",
+      content,
+      sourceModule: saveSourceModule,
+    });
+    setSaving(false);
+    if (result.status === "ok") toast.success("Prompt salvo.");
+    else if (result.status === "duplicate") toast("Esse prompt já está salvo.");
+    else if (result.status === "empty") toast.error("Não há conteúdo para salvar.");
+    else toast.error("Não foi possível salvar o prompt. Tente novamente.");
+  };
 
   return (
     <div className={`w-full ${className ?? ""}`}>
@@ -138,6 +177,18 @@ export function EditablePromptBox({
           >
             <RotateCcw size={12} />
             Restaurar original
+          </button>
+        )}
+        {!hideSaveButton && (
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/15 bg-white/5 text-xs text-foreground/80 hover:bg-white/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Salvar este prompt em Prompts salvos"
+          >
+            <Bookmark size={12} />
+            {saving ? "Salvando…" : "Salvar prompt"}
           </button>
         )}
       </div>
