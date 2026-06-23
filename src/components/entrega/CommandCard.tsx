@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info, RotateCcw } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
