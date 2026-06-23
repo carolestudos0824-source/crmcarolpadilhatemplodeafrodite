@@ -75,6 +75,7 @@ export type SavedPrompt = {
 const PROJECTS_KEY = "fabrica_apps_projects";
 const ACTIVE_KEY = "fabrica_apps_active_project_id";
 const LOCAL_CONTEXT_KEY = "fabrica_apps_project_context";
+const LOCAL_CONTEXT_SAVED_MARKER_KEY = "fabrica_apps_project_context_saved_at";
 
 type DbRow = Database["public"]["Tables"]["user_app_projects"]["Row"];
 type DbInsert = Database["public"]["Tables"]["user_app_projects"]["Insert"];
@@ -162,11 +163,15 @@ const readLocalContext = (): ProjectContext | null => {
   try {
     const raw = localStorage.getItem(LOCAL_CONTEXT_KEY);
     if (!raw) return null;
+    const hasSavedMarker = Boolean(localStorage.getItem(LOCAL_CONTEXT_SAVED_MARKER_KEY));
     const parsed = JSON.parse(raw);
     const merged = { ...EMPTY_PROJECT_CONTEXT, ...parsed } as ProjectContext;
     const hasAny = Object.values(merged).some(
       (v) => typeof v === "string" && v.trim().length > 0,
     );
+    if (!hasSavedMarker && merged.appName.trim().toLowerCase() === "jogo do amor") {
+      return null;
+    }
     return hasAny ? merged : null;
   } catch {
     return null;
@@ -242,7 +247,7 @@ type Ctx = {
 const AppProjectsContext = createContext<Ctx | null>(null);
 
 export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
-  const { context, setContext } = useProjectContext();
+  const { context, setContext, setRuntimeContext, restoreTemporaryContext } = useProjectContext();
   const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<AppProject[]>([]);
   const [activeId, setActiveIdState] = useState<string | null>(readActiveId());
@@ -285,15 +290,16 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const aid = readActiveId();
       const valid = aid ? list.find((p) => p.id === aid) : null;
       if (valid) {
-        setContext(valid.context);
+        setRuntimeContext(valid.context);
       } else {
         // stale or missing id — auto-select most recent non-archived if any
         const fallback = pickAutoActive(list);
         if (fallback) {
           setActiveId(fallback.id);
-          setContext(fallback.context);
+          setRuntimeContext(fallback.context);
         } else if (aid) {
           setActiveId(null);
+          restoreTemporaryContext();
         }
       }
       // migration flags
@@ -304,7 +310,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  }, [setContext, setActiveId]);
+  }, [setRuntimeContext, restoreTemporaryContext, setActiveId]);
 
   useEffect(() => {
     if (!userId) {
