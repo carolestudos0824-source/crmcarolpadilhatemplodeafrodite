@@ -309,7 +309,10 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
         </div>
         <div className="flex gap-2 pt-2">
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
               setEditedName(model.name);
               setOpen(true);
             }}
@@ -318,7 +321,10 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <Eye size={14} /> Ver plano do app
           </button>
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
               setContext(modelToContext(model, model.name));
               setEditedName(model.name);
               setOpen(true);
@@ -329,6 +335,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <Sparkles size={14} /> Usar esta ideia
           </button>
         </div>
+
       </GlassCard>
 
 
