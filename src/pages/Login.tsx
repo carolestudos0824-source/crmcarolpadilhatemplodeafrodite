@@ -886,8 +886,9 @@ export default function Login() {
               <ol className="space-y-3 text-sm text-muted-foreground">
                 {[
                   "Clique em \u201CCriar conta\u201D.",
-                  "Use o mesmo e-mail informado na compra.",
-                  "Crie sua senha e acesse o programa.",
+                  "Continue com Google ou use o e-mail da compra.",
+                  "Crie seu acesso e entre no programa.",
+
                 ].map((step, i) => (
                   <li key={i} className="flex gap-3">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
