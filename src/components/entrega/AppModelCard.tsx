@@ -228,33 +228,6 @@ Quero que você analise como meu Agente Arquiteto:
 Responda de forma prática, com o próximo prompt pronto para copiar e colar no Lovable.`;
   }, [editedName, model]);
 
-  const copyToLovable = async () => {
-    try {
-      await navigator.clipboard.writeText(lovablePrompt);
-      toast.success("Prompt copiado. Agora cole no Lovable para começar seu app.");
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-
-  const handleReviewWithAgent = async () => {
-    await copyPromptAndOpenAgent({
-      prompt: agentPrompt,
-      successMessage:
-        "Dump copiado. Cole no Agente Arquiteto para revisar sua ideia antes de construir.",
-      onClipboardFail: (p) => setAgentFallback(p),
-    });
-  };
-
-  const handleCopyPostLovable = async () => {
-    await copyPromptAndOpenAgent({
-      prompt: postLovablePrompt,
-      successMessage:
-        "Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.",
-      onClipboardFail: (p) => setAgentFallback(p),
-    });
-  };
-
   const nextLovablePrompt = useMemo(() => {
     const name = editedName.trim() || model.name;
     return `Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
@@ -270,14 +243,81 @@ Regras:
 - Se algo estiver ambíguo, faça a escolha mais simples possível.`;
   }, [editedName, model]);
 
-  const copyNextLovablePrompt = async () => {
-    try {
-      await navigator.clipboard.writeText(nextLovablePrompt);
-      toast.success("Próximo prompt copiado. Cole no Lovable e troque o trecho entre colchetes pelo que o Agente respondeu.");
-    } catch {
-      toast.error("Não foi possível copiar.");
+  const openLovable = () => {
+    if (typeof window !== "undefined") {
+      window.open(LOVABLE_URL, "_blank", "noopener,noreferrer");
     }
   };
+
+  // ===== ETAPA 1 — Dump para o Agente =====
+  /** Só copia o dump. Não abre nada. */
+  const handleCopyAgentDump = async () => {
+    try {
+      await navigator.clipboard.writeText(agentPrompt);
+      toast.success("Dump copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.");
+    } catch {
+      setAgentFallback(agentPrompt);
+    }
+  };
+
+  /** Copia o dump e abre o Agente. Se a cópia falhar, mostra fallback (não abre o Agente vazio). */
+  const handleOpenAgentWithDump = async () => {
+    await copyPromptAndOpenAgent({
+      prompt: agentPrompt,
+      successMessage:
+        "Dump copiado. O Agente Arquiteto abriu em outra aba. Cole com Ctrl+V para revisar sua ideia.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
+
+  // ===== ETAPA 2 — Lovable =====
+  /** Só copia o prompt do Lovable. Não abre o Lovable. */
+  const handleCopyLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(lovablePrompt);
+      toast.success("Prompt copiado. Cole no Lovable para começar a construção.");
+    } catch {
+      toast.error("Não foi possível copiar. Selecione o texto e copie manualmente (Ctrl+C).");
+    }
+  };
+  // Alias mantido para compatibilidade com a chamada existente no JSX.
+  const copyToLovable = handleCopyLovablePrompt;
+
+  // ===== ETAPA 3 — Pós-Lovable =====
+  /** Só copia o prompt pós-Lovable. Não abre o Agente. */
+  const handleCopyPostLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(postLovablePrompt);
+      toast.success("Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.");
+    } catch {
+      setAgentFallback(postLovablePrompt);
+    }
+  };
+  // Alias mantido para compatibilidade com a chamada existente no JSX.
+  const handleCopyPostLovable = handleCopyPostLovablePrompt;
+
+  /** Copia o prompt pós-Lovable e abre o Agente. Fallback se a cópia falhar. */
+  const handleOpenAgentWithPostLovablePrompt = async () => {
+    await copyPromptAndOpenAgent({
+      prompt: postLovablePrompt,
+      successMessage:
+        "Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
+
+  // ===== ETAPA 4 — Próximo prompt Lovable =====
+  /** Só copia o próximo prompt para o Lovable. Não abre Lovable. */
+  const handleCopyNextLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(nextLovablePrompt);
+      toast.success("Próximo prompt copiado. Cole no Lovable para aplicar o ajuste.");
+    } catch {
+      toast.error("Não foi possível copiar. Selecione o texto e copie manualmente (Ctrl+C).");
+    }
+  };
+  // Alias mantido para compatibilidade com a chamada existente no JSX.
+  const copyNextLovablePrompt = handleCopyNextLovablePrompt;
 
 
 
