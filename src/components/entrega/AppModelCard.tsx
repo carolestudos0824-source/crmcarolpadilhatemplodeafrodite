@@ -38,9 +38,13 @@ const buildScreens = (m: AppModel) => {
 
 const buildLovableIdeaPrompt = (m: AppModel, editedName: string) => {
   const name = editedName.trim() || m.name;
-  return `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
+  return `Estou usando a Fábrica de Apps com IA apenas como guia para estruturar este projeto.
 
-A Fábrica é apenas o programa-guia. O app que deve ser criado é este projeto atual no Lovable.
+Importante:
+- Não crie um app chamado Fábrica de Apps com IA.
+- Não inclua a marca, logo, textos, área de membros ou estrutura da Fábrica de Apps com IA no app final.
+- O app que deve ser criado é o projeto descrito abaixo.
+- Construa somente o app do usuário, com o nome, público, funcionalidades e telas descritos neste prompt.
 
 Crie um app chamado: ${name}
 
