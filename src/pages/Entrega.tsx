@@ -1865,6 +1865,7 @@ const ValidacaoIntro = () => {
     });
 
   return (
+    <>
     <section className="mb-8 space-y-6">
       {/* CARD PRINCIPAL DA ETAPA */}
       <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
