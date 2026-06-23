@@ -607,62 +607,8 @@ function EntregaInner() {
                 </div>
               ))}
             </nav>
+            {/* Progresso geral removido — métricas internas geravam ruído sem ajudar na próxima ação. */}
 
-
-            {/* Progresso geral ponderado */}
-            <div className="mt-6 px-2">
-              <div className="rounded-xl border border-accent/25 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent p-3">
-                <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                    Progresso geral
-                  </span>
-                  <span className="text-lg font-heading font-bold text-gradient leading-none">
-                    {overallProgress}%
-                  </span>
-                </div>
-                <div
-                  className="relative h-2 rounded-full bg-white/10 overflow-hidden"
-                  role="progressbar"
-                  aria-valuenow={overallProgress}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                >
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-primary via-accent to-accent transition-all duration-500 shadow-[0_0_12px_rgba(0,194,255,0.45)]"
-                    style={{ width: `${overallProgress}%` }}
-                  />
-                </div>
-
-                <ul className="mt-3 space-y-1.5 text-[11px] text-muted-foreground">
-                  <li className="flex items-center justify-between gap-2">
-                    <span>Comandos usados</span>
-                    <span className="text-foreground/80 tabular-nums">
-                      {totals.commands.done} de {totals.commands.total}
-                    </span>
-                  </li>
-                  <li className="flex items-center justify-between gap-2">
-                    <span>Módulos concluídos</span>
-                    <span className="text-foreground/80 tabular-nums">
-                      {totals.modules.done} de {totals.modules.total}
-                    </span>
-                  </li>
-                  <li className="flex items-center justify-between gap-2">
-                    <span>Revisão final</span>
-                    <span className="text-foreground/80 tabular-nums">
-                      {totals.checklist.done} de {totals.checklist.total}
-                    </span>
-                  </li>
-                </ul>
-
-                {overallProgress >= 100 && (
-                  <div className="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-[11px] text-emerald-200 leading-snug">
-                    <strong className="block text-emerald-100 mb-0.5">Programa concluído.</strong>
-                    Agora valide seu app com usuários reais.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
         </aside>
 
         {/* MAIN */}
