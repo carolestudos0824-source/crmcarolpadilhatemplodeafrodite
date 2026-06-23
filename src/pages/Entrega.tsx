@@ -77,6 +77,7 @@ import { wrapErrorCorrection } from "@/lib/promptBuilder";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
+import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
