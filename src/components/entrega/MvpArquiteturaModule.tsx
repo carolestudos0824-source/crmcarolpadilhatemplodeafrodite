@@ -24,6 +24,7 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { PromptEditDialog } from "@/components/entrega/PromptEditDialog";
 
 

@@ -24,6 +24,7 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso revisar a segurança contra invasão. Me ajude a proteger rotas públicas, área restrita, área paga, painel admin, dados dos usuários, banco de dados, RLS, RPCs, chaves secretas, APIs, checkout e permissões. Quero saber o que pode ficar público, o que deve ficar privado e como testar se alguém consegue acessar o que não deveria.`;
 

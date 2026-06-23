@@ -24,6 +24,7 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso fazer um teste final antes de divulgar. Me ajude a criar um checklist completo para testar: desktop, mobile, login, formulários, botões, checkout, entrega, links, textos, imagens, erros, página branca, scroll horizontal e experiência do usuário.`;
 
