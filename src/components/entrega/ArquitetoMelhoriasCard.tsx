@@ -78,7 +78,18 @@ export const ARQUITETO_MELHORIAS_META = {
   status: "active" as const,
 };
 
-export function ArquitetoMelhoriasCard() {
+type ArquitetoMelhoriasCardProps = {
+  defaultCollapsed?: boolean;
+  descriptionOverride?: string;
+};
+
+const ARQUITETO_DEFAULT_DESCRIPTION =
+  "Use para planejar melhorias futuras do seu app com estratégia, decidindo o que vale adicionar agora, o que fica para depois e como evoluir sem inflar o projeto.";
+
+export function ArquitetoMelhoriasCard({
+  defaultCollapsed = false,
+  descriptionOverride,
+}: ArquitetoMelhoriasCardProps = {}) {
   return (
     <GlassCard className="mt-4 p-5">
       <div className="flex items-start gap-3">
@@ -98,11 +109,10 @@ export function ArquitetoMelhoriasCard() {
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
-            Use para planejar melhorias futuras do seu app com estratégia, decidindo o que vale adicionar agora, o que fica para depois e como evoluir sem inflar o projeto.
+            {descriptionOverride ?? ARQUITETO_DEFAULT_DESCRIPTION}
           </p>
           <EditablePromptBox
-            collapsible
-
+            collapsible={defaultCollapsed}
             saveSourceModule="arquiteto-melhorias"
             originalPrompt={ARQUITETO_MELHORIAS_PROMPT}
             storageKey="arquiteto_melhorias_prompt"
