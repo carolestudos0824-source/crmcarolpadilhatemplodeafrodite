@@ -255,6 +255,32 @@ Responda de forma prática, com o próximo prompt pronto para copiar e colar no 
     });
   };
 
+  const nextLovablePrompt = useMemo(() => {
+    const name = editedName.trim() || model.name;
+    return `Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
+
+Instruções do Agente:
+
+[COLE AQUI O PRÓXIMO PASSO/COMANDO QUE O AGENTE GEROU]
+
+Regras:
+- Mantenha tudo que já está funcionando.
+- Altere apenas o necessário para aplicar o ajuste acima.
+- Não adicione funcionalidades que não foram pedidas.
+- Se algo estiver ambíguo, faça a escolha mais simples possível.`;
+  }, [editedName, model]);
+
+  const copyNextLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(nextLovablePrompt);
+      toast.success("Próximo prompt copiado. Cole no Lovable e troque o trecho entre colchetes pelo que o Agente respondeu.");
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
+
+
+
 
   const fillContext = () => {
     setContext(modelToContext(model, editedName));
