@@ -319,6 +319,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 
 export function TelasFluxoModule() {
   const { checklist, setChecklist } = useUserProgress();
+  const { activeProject, openDrawer } = useAppProjects();
 
   const copyAgentHelp = async () => {
     try {
