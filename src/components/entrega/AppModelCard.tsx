@@ -473,135 +473,214 @@ Responda de forma prática, com o próximo prompt pronto para copiar e colar no 
                 </div>
               </section>
 
-              {/* ===== Etapa 1 · Dump para o Agente ===== */}
-              <section className="rounded-2xl border border-cyan-400/40 bg-gradient-to-br from-[#07111F] to-[#0B1220] p-4 sm:p-5 space-y-3 shadow-[0_0_40px_-12px_rgba(34,211,238,0.35)]">
-                <div className="flex items-start justify-between gap-3 flex-wrap">
-                  <div className="min-w-0">
-                    <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-cyan-400/40 bg-cyan-500/15 text-cyan-300 font-semibold mb-1.5">
-                      <Bot size={11} /> Etapa 1
+              {/* ===== Etapa 1 · Dump para o Agente — Premium Card ===== */}
+              <section
+                className="relative overflow-hidden rounded-[20px] border border-cyan-400/50 p-4 sm:p-6 space-y-4 shadow-[0_0_50px_-12px_rgba(34,211,238,0.45)]"
+                style={{ background: "linear-gradient(135deg, #07111F 0%, #0B1220 100%)" }}
+              >
+                <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none" />
+
+                {/* Header */}
+                <div className="relative flex items-start justify-between gap-3 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] px-2.5 py-1 rounded-md border border-cyan-400/40 bg-cyan-500/15 text-cyan-300 font-bold mb-2">
+                      <Bot size={11} /> Etapa 1 · Agente
                     </div>
-                    <h4 className="font-heading font-bold text-lg text-foreground">Dump completo do app</h4>
-                    <p className="text-xs text-foreground/75 mt-1">
+                    <h4 className="font-heading font-bold text-xl sm:text-2xl text-foreground leading-tight">
+                      Dump completo do app
+                    </h4>
+                    <p className="text-sm text-foreground/80 mt-1.5">
                       Copie este conteúdo e cole no Agente Arquiteto para revisar sua ideia antes de construir.
                     </p>
-                    <p className="text-[11.5px] text-foreground/60 mt-1 leading-snug">
-                      O dump reúne nome, público, dor, MVP, telas, banco de dados, monetização e regras de construção. O Agente usa isso para revisar e melhorar seu app antes do Lovable.
+                    <p className="text-[12px] text-foreground/60 mt-1 leading-snug">
+                      Reúne nome, público, dor, MVP, telas, banco de dados, monetização e regras de construção.
                     </p>
                   </div>
+                  <span className="inline-flex items-center gap-1.5 shrink-0 text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-emerald-400/40 bg-emerald-400/10 text-emerald-300 font-semibold">
+                    <Check size={10} /> Pronto para copiar
+                  </span>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleReviewWithAgent}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-semibold hover:from-cyan-400 hover:to-blue-500 transition"
-                >
-                  <Copy size={15} /> Copiar dump para o Agente
-                </button>
-
-                <textarea
-                  readOnly
-                  value={agentPrompt}
-                  onFocus={(e) => e.currentTarget.select()}
-                  className="w-full h-56 rounded-lg border border-cyan-400/20 bg-black/40 p-3 text-[11.5px] font-mono text-foreground/90 leading-relaxed resize-y"
-                />
-
-                <div className="flex flex-wrap gap-2">
+                {/* Sticky action bar */}
+                <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={handleReviewWithAgent}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/20 text-xs font-semibold"
+                    className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:from-cyan-400 hover:to-blue-500 transition shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)]"
                   >
-                    <Copy size={13} /> Copiar dump para o Agente
+                    <Copy size={16} /> Copiar dump para o Agente
                   </button>
                   <a
                     href={AGENTE_ARQUITETO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => openAgenteArquiteto()}
-                    className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-cyan-400/30 bg-cyan-500/[0.06] text-cyan-200 hover:bg-cyan-500/15 text-sm font-semibold"
                   >
-                    <ExternalLink size={13} /> Abrir Agente Arquiteto
+                    <ExternalLink size={14} /> Abrir Agente
                   </a>
+                </div>
+
+                {/* Prompt body */}
+                <div
+                  className="relative rounded-xl border border-cyan-400/20 overflow-hidden"
+                  style={{ background: "#020817" }}
+                >
+                  <textarea
+                    readOnly
+                    value={agentPrompt}
+                    onFocus={(e) => e.currentTarget.select()}
+                    spellCheck={false}
+                    style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" }}
+                    className="scrollbar-prompt w-full h-72 sm:h-80 bg-transparent p-5 sm:p-6 text-[13px] sm:text-[14px] text-[#F8FAFC] leading-[1.7] resize-y outline-none focus:ring-2 focus:ring-cyan-400/40 whitespace-pre-wrap"
+                  />
+                </div>
+
+                {/* Footer */}
+                <div className="relative flex flex-wrap items-center justify-between gap-2 text-[11px] text-foreground/60">
+                  <span>Este é o dump de revisão inicial.</span>
+                  <span className="font-mono">{agentPrompt.length.toLocaleString("pt-BR")} caracteres</span>
                 </div>
               </section>
 
-              {/* ===== Etapa 2 · Lovable ===== */}
-              <section className="rounded-2xl border border-accent/30 bg-accent/[0.05] p-4 sm:p-5 space-y-3">
-                <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-accent/40 bg-accent/15 text-accent font-semibold">
-                  <Sparkles size={11} /> Etapa 2
+              {/* ===== Etapa 2 · Lovable — Premium Card ===== */}
+              <section
+                className="relative overflow-hidden rounded-[20px] border-2 border-[#0EA5E9] p-4 sm:p-6 space-y-4 shadow-[0_0_50px_-12px_rgba(14,165,233,0.55)]"
+                style={{ background: "linear-gradient(135deg, #07111F 0%, #0B1220 100%)" }}
+              >
+                <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-[#0EA5E9]/20 blur-3xl pointer-events-none" />
+
+                {/* Header */}
+                <div className="relative flex items-start justify-between gap-3 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] px-2.5 py-1 rounded-md border border-[#0EA5E9]/50 bg-[#0EA5E9]/15 text-[#7DD3FC] font-bold mb-2">
+                      <Sparkles size={11} /> Etapa 2 · Lovable
+                    </div>
+                    <h4 className="font-heading font-bold text-xl sm:text-2xl text-foreground leading-tight">
+                      Prompt pronto para colar no Lovable
+                    </h4>
+                    <p className="text-sm text-foreground/80 mt-1.5">
+                      Copie este comando exatamente como está e cole no Lovable para começar a construção do app.
+                    </p>
+                    <p className="text-[12px] text-foreground/60 mt-1 leading-snug">
+                      Use este prompt somente depois de revisar a ideia com o Agente na Etapa 1.
+                    </p>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 shrink-0 text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-emerald-400/40 bg-emerald-400/10 text-emerald-300 font-semibold">
+                    <Check size={10} /> Pronto para copiar
+                  </span>
                 </div>
-                <h4 className="font-heading font-bold text-lg text-foreground">Construir no Lovable</h4>
-                <p className="text-xs text-foreground/75">
-                  Use este prompt somente depois de revisar a ideia com o Agente.
-                </p>
 
-                <EditablePromptBox
-                  saveSourceModule="ideias"
-                  originalPrompt={lovablePrompt}
-                  storageKey={`appmodel_prompt__${model.name}`}
-                  copyLabel="Copiar prompt para o Lovable"
-                  helperText="Cole no Lovable como primeiro prompt do app."
-                />
-
-                <div className="flex flex-wrap gap-2">
+                {/* Sticky action bar */}
+                <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={copyToLovable}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold"
+                    className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] text-white text-sm font-bold hover:opacity-90 transition shadow-[0_8px_24px_-8px_rgba(14,165,233,0.7)]"
                   >
-                    <Copy size={13} /> Copiar prompt para o Lovable
+                    <Copy size={16} /> Copiar prompt para o Lovable
                   </button>
                   <a
                     href={LOVABLE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-[#0EA5E9]/40 bg-[#0EA5E9]/[0.08] text-[#7DD3FC] hover:bg-[#0EA5E9]/15 text-sm font-semibold"
                   >
-                    <ExternalLink size={13} /> Abrir Lovable
+                    <ExternalLink size={14} /> Abrir Lovable
                   </a>
+                </div>
+
+                {/* Prompt body — uses EditablePromptBox so o usuário pode editar antes de copiar */}
+                <div
+                  className="relative rounded-xl border border-[#0EA5E9]/25 p-1 overflow-hidden"
+                  style={{ background: "#020817" }}
+                >
+                  <div className="rounded-lg p-3 sm:p-4 scrollbar-prompt">
+                    <EditablePromptBox
+                      saveSourceModule="ideias"
+                      originalPrompt={lovablePrompt}
+                      storageKey={`appmodel_prompt__${model.name}`}
+                      copyLabel="Copiar prompt para o Lovable"
+                      hideCopyButton
+                      hideSaveButton
+                      helperText="Você pode editar antes de copiar. O comando final será o texto desta caixa."
+                    />
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="relative flex flex-wrap items-center justify-between gap-2 text-[11px] text-foreground/60">
+                  <span>Este é o comando de construção inicial.</span>
+                  <span className="font-mono">{lovablePrompt.length.toLocaleString("pt-BR")} caracteres</span>
                 </div>
               </section>
 
-              {/* ===== Etapa 3 · Revisão pós-Lovable ===== */}
-              <section className="rounded-2xl border border-cyan-400/40 bg-cyan-500/[0.05] p-4 sm:p-5 space-y-3">
-                <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-cyan-400/40 bg-cyan-500/15 text-cyan-300 font-semibold">
-                  <Bot size={11} /> Etapa 3
-                </div>
-                <h4 className="font-heading font-bold text-lg text-foreground">Revisar o resultado do Lovable</h4>
-                <p className="text-xs text-foreground/75">
-                  Quando o Lovable terminar a construção, copie a resposta dele e volte aqui. Este prompt pede ao Agente para analisar o que foi criado, apontar problemas e gerar o próximo comando para o Lovable.
-                </p>
+              {/* ===== Etapa 3 · Revisão pós-Lovable — Premium Card ===== */}
+              <section
+                className="relative overflow-hidden rounded-[20px] border border-amber-300/40 p-4 sm:p-6 space-y-4 shadow-[0_0_40px_-12px_rgba(251,191,36,0.25)]"
+                style={{ background: "linear-gradient(135deg, #0B1220 0%, #111827 100%)" }}
+              >
+                <div className="absolute -bottom-20 -right-20 w-60 h-60 rounded-full bg-amber-300/10 blur-3xl pointer-events-none" />
 
-                <div className="flex flex-wrap gap-2">
+                {/* Header */}
+                <div className="relative flex items-start justify-between gap-3 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] px-2.5 py-1 rounded-md border border-amber-300/40 bg-amber-300/15 text-amber-200 font-bold mb-2">
+                      <Bot size={11} /> Etapa 3 · Agente
+                    </div>
+                    <h4 className="font-heading font-bold text-xl sm:text-2xl text-foreground leading-tight">
+                      Revisar o resultado do Lovable
+                    </h4>
+                    <p className="text-sm text-foreground/80 mt-1.5">
+                      Quando o Lovable terminar, copie a resposta dele e volte ao Agente. Este prompt analisa o que foi criado, aponta problemas e gera o próximo comando para o Lovable.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sticky action bar */}
+                <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={handleCopyPostLovable}
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/20 text-xs font-semibold"
+                    className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-300 text-[#0B1220] text-sm font-bold hover:opacity-90 transition shadow-[0_8px_24px_-8px_rgba(251,191,36,0.55)]"
                   >
-                    <Copy size={13} /> Copiar revisão pós-Lovable
+                    <Copy size={16} /> Copiar revisão pós-Lovable
                   </button>
                   <a
                     href={AGENTE_ARQUITETO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-amber-300/40 bg-amber-300/[0.08] text-amber-200 hover:bg-amber-300/15 text-sm font-semibold"
                   >
-                    <ExternalLink size={13} /> Voltar ao Agente com resultado
+                    <ExternalLink size={14} /> Voltar ao Agente
                   </a>
                 </div>
 
-                <details className="rounded-lg border border-white/10 bg-black/30">
-                  <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground px-3 py-2">
+                {/* Prompt body */}
+                <details
+                  className="relative rounded-xl border border-amber-300/20 overflow-hidden group"
+                  style={{ background: "#020817" }}
+                >
+                  <summary className="cursor-pointer list-none px-4 py-3 text-[11px] uppercase tracking-wider text-amber-200/80 hover:text-amber-200 transition flex items-center gap-2">
+                    <ChevronDown size={12} className="transition group-open:rotate-180" />
                     Ver prompt completo
                   </summary>
                   <textarea
                     readOnly
                     value={postLovablePrompt}
                     onFocus={(e) => e.currentTarget.select()}
-                    className="w-full h-48 rounded-b-lg bg-black/40 p-3 text-[11.5px] font-mono text-foreground/90 leading-relaxed resize-y border-t border-white/10"
+                    spellCheck={false}
+                    style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" }}
+                    className="scrollbar-prompt w-full h-64 bg-transparent p-5 sm:p-6 text-[13px] sm:text-[14px] text-[#F8FAFC] leading-[1.7] resize-y outline-none focus:ring-2 focus:ring-amber-300/40 whitespace-pre-wrap border-t border-amber-300/15"
                   />
                 </details>
+
+                {/* Footer */}
+                <div className="relative flex flex-wrap items-center justify-between gap-2 text-[11px] text-foreground/60">
+                  <span>Cole junto com o resultado que o Lovable retornou.</span>
+                  <span className="font-mono">{postLovablePrompt.length.toLocaleString("pt-BR")} caracteres</span>
+                </div>
               </section>
+
 
               {/* ===== Ações avançadas (Usar esta ideia) ===== */}
               <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 space-y-2">
