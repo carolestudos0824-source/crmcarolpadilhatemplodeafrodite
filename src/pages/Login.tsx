@@ -602,9 +602,10 @@ export default function Login() {
               {/* === Tab: Entrar === */}
               {authTab === "entrar" && (
                 <div>
-                  <h2 className="text-lg font-heading font-semibold mb-4">
-                    Entrar no meu programa
-                  </h2>
+                  <h2 className="text-lg font-heading font-semibold mb-1">Já tenho conta</h2>
+                  <p className="text-xs text-muted-foreground mb-5">
+                    Entre usando sua conta já criada.
+                  </p>
 
                   <button
                     type="button"
@@ -631,134 +632,121 @@ export default function Login() {
                     <div className="h-px flex-1 bg-white/10" />
                   </div>
 
-                  <form onSubmit={onMagicLink} className="space-y-3">
+                  {/* Login com senha (primário dentro da aba Entrar) */}
+                  <form onSubmit={onSignIn} className="space-y-3">
                     <div>
-                      <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
-                        E-mail da compra
+                      <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
+                        E-mail
                       </label>
                       <input
-                        id="magic-email"
+                        id="signin-email"
                         className={inputCls}
                         type="email"
                         placeholder="seu@email.com"
                         autoComplete="email"
-                        value={magicEmail}
-                        onChange={(e) => setMagicEmail(e.target.value)}
+                        value={signinEmail}
+                        onChange={(e) => setSigninEmail(e.target.value)}
                         required
                       />
                     </div>
 
-                    {magicError && (
+                    <PasswordField
+                      id="signin-password"
+                      label="Senha"
+                      value={signinPassword}
+                      onChange={setSigninPassword}
+                      show={showSigninPassword}
+                      onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
+                      autoComplete="current-password"
+                    />
+
+                    {signinError && (
                       <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                        {magicError}
+                        {signinError}
                       </div>
                     )}
-                    {magicInfo && (
+                    {recoverInfo && (
                       <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                        {magicInfo}
+                        {recoverInfo}
                       </div>
                     )}
 
                     <button
                       type="submit"
-                      disabled={magicLoading}
+                      disabled={signinLoading}
                       className="btn-primary w-full min-h-12"
                     >
-                      {magicLoading ? (
+                      {signinLoading ? (
                         <>
-                          <Loader2 size={16} className="animate-spin" /> Enviando link…
+                          <Loader2 size={16} className="animate-spin" /> Entrando…
                         </>
                       ) : (
-                        "Receber link de acesso"
+                        "Entrar"
                       )}
                     </button>
+
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        onClick={onRecover}
+                        disabled={recovering}
+                        className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
+                      >
+                        <KeyRound size={12} />
+                        {recovering ? "Enviando…" : "Esqueci minha senha"}
+                      </button>
+                    </div>
                   </form>
 
-                  {/* Sub-accordion: senha cadastrada */}
-                  <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                    <button
-                      type="button"
-                      onClick={() => setPasswordOpen((v) => !v)}
-                      aria-expanded={passwordOpen}
-                      className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
-                    >
-                      <span className="text-sm font-medium text-foreground">
-                        Tenho uma senha cadastrada
-                      </span>
-                      <ChevronDown
-                        size={16}
-                        className={`text-muted-foreground transition-transform ${passwordOpen ? "rotate-180" : ""}`}
-                      />
-                    </button>
+                  {/* Entrada sem senha (alternativa secundária) */}
+                  <div className="mt-8 pt-6 border-t border-white/10">
+                    <h3 className="text-sm font-medium text-foreground mb-1">Entrada sem senha</h3>
+                    <p className="text-[11px] text-muted-foreground/80 mb-3">
+                      Use esta opção apenas se preferir receber um link de acesso no e-mail.
+                    </p>
 
-                    {passwordOpen && (
-                      <div className="px-4 pb-4 pt-1 border-t border-white/10">
-                        <form onSubmit={onSignIn} className="space-y-3 pt-3">
-                          <div>
-                            <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
-                              E-mail
-                            </label>
-                            <input
-                              id="signin-email"
-                              className={inputCls}
-                              type="email"
-                              placeholder="seu@email.com"
-                              autoComplete="email"
-                              value={signinEmail}
-                              onChange={(e) => setSigninEmail(e.target.value)}
-                              required
-                            />
-                          </div>
-
-                          <PasswordField
-                            id="signin-password"
-                            label="Senha"
-                            value={signinPassword}
-                            onChange={setSigninPassword}
-                            show={showSigninPassword}
-                            onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
-                            autoComplete="current-password"
-                          />
-
-                          {signinError && (
-                            <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                              {signinError}
-                            </div>
-                          )}
-                          {recoverInfo && (
-                            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                              {recoverInfo}
-                            </div>
-                          )}
-
-                          <button
-                            type="submit"
-                            disabled={signinLoading}
-                            className="btn-primary w-full min-h-12"
-                          >
-                            {signinLoading ? (
-                              <>
-                                <Loader2 size={16} className="animate-spin" /> Entrando…
-                              </>
-                            ) : (
-                              "Entrar com senha"
-                            )}
-                          </button>
-
-                          <div className="pt-1">
-                            <button
-                              type="button"
-                              onClick={onRecover}
-                              disabled={recovering}
-                              className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
-                            >
-                              <KeyRound size={12} />
-                              {recovering ? "Enviando…" : "Esqueci minha senha"}
-                            </button>
-                          </div>
-                        </form>
+                    <form onSubmit={onMagicLink} className="space-y-3">
+                      <div>
+                        <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
+                          E-mail da compra
+                        </label>
+                        <input
+                          id="magic-email"
+                          className={inputCls}
+                          type="email"
+                          placeholder="seu@email.com"
+                          autoComplete="email"
+                          value={magicEmail}
+                          onChange={(e) => setMagicEmail(e.target.value)}
+                          required
+                        />
                       </div>
-                    )}
+
+                      {magicError && (
+                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                          {magicError}
+                        </div>
+                      )}
+                      {magicInfo && (
+                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                          {magicInfo}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={magicLoading}
+                        className="w-full min-h-12 rounded-xl border border-white/15 hover:bg-white/5 text-sm font-medium text-foreground transition disabled:opacity-60 flex items-center justify-center gap-2"
+                      >
+                        {magicLoading ? (
+                          <>
+                            <Loader2 size={16} className="animate-spin" /> Enviando link…
+                          </>
+                        ) : (
+                          "Receber link por e-mail"
+                        )}
+                      </button>
+                    </form>
                   </div>
                 </div>
               )}
