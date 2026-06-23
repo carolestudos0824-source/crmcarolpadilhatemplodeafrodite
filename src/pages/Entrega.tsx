@@ -741,7 +741,7 @@ function EntregaInner() {
                 Ferramentas extras
               </h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Use estas ferramentas se quiser revisar estratégia, contexto ou melhorias do programa.
+                Use estas ferramentas se quiser revisar estratégia, contexto ou melhorias do seu app.
               </p>
             </div>
           )}
@@ -757,12 +757,12 @@ function EntregaInner() {
             />
           )}
 
-          {active !== "fundamentos" && auth.isAdmin && (
+          {active !== "fundamentos" && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               descriptionOverride={
                 active === "telas"
-                  ? "Use o Arquiteto para decidir se uma ideia nova de tela ou fluxo vale entrar agora ou ficar para depois."
+                  ? "Use o Arquiteto para decidir se uma ideia nova de tela ou fluxo vale entrar agora ou ficar para depois no seu app."
                   : undefined
               }
             />
