@@ -520,6 +520,8 @@ function EntregaInner() {
                   </button>
                 </>
               )}
+            </div>
+
 
             <div
               className="mb-4 text-[11px] text-muted-foreground px-2 leading-snug"
