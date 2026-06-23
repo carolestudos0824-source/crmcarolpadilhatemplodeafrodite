@@ -25,7 +25,19 @@ export function ModuleReviewCard({
   const [okAgent, setOkAgent] = useState(false);
   const [okLovable, setOkLovable] = useState(false);
   const [studioOpen, setStudioOpen] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
   const { context } = useProjectContext();
+
+  const handleRevisarComAgente = () => {
+    setOkAgent(true);
+    setTimeout(() => setOkAgent(false), 1600);
+    void copyPromptAndOpenAgent({
+      prompt: agentText,
+      successMessage:
+        "Prompt copiado para o Agente. O Agente foi aberto. Cole com Ctrl+V para revisar esta etapa.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
 
   const agentText = buildReviewAgentPrompt({
     context,
