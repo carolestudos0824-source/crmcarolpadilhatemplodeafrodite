@@ -322,7 +322,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
           copyLabel={
             tab === "agente"
-              ? "Revisar com o Agente primeiro"
+              ? "Copiar para revisar com o Agente"
               : "Copiar correção"
           }
           helperText={
