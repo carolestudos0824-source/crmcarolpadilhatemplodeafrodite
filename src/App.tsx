@@ -20,6 +20,7 @@ import Seguranca from "@/pages/Seguranca";
 import NotFound from "@/pages/NotFound";
 
 import ScrollToTop from "@/components/ScrollToTop";
+import { PromptStudioProvider } from "@/components/entrega/PromptStudioProvider";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
     <BrowserRouter>
       <ScrollToTop />
       <Toaster position="top-center" theme="dark" richColors />
+      <PromptStudioProvider>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -79,6 +81,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
+      </PromptStudioProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );

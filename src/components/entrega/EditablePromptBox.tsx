@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Copy, Check, RotateCcw } from "lucide-react";
+import { Copy, Check, RotateCcw, Settings2 } from "lucide-react";
+import { usePromptStudio, type PromptStudioOptions } from "./PromptStudioProvider";
 
 type Props = {
   originalPrompt: string;
@@ -16,7 +17,10 @@ type Props = {
   /** Hide the built-in copy button (when parent renders its own copy action). */
   hideCopyButton?: boolean;
   className?: string;
+  /** When provided, renders an "Editar no Estúdio" button that opens the global PromptStudio. */
+  studio?: PromptStudioOptions;
 };
+
 
 
 export function EditablePromptBox({
@@ -30,7 +34,9 @@ export function EditablePromptBox({
   helperText,
   hideCopyButton,
   className,
+  studio,
 }: Props) {
+  const { openPromptStudio } = usePromptStudio();
 
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
@@ -107,6 +113,22 @@ export function EditablePromptBox({
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
             {copied ? "Copiado!" : copyLabel}
+          </button>
+        )}
+        {studio && (
+          <button
+            type="button"
+            onClick={() =>
+              openPromptStudio({
+                ...studio,
+                command: studio.command ?? value,
+              })
+            }
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-xs text-foreground/80 hover:bg-white/10 transition"
+            title="Abrir no Estúdio de Prompt"
+          >
+            <Settings2 size={12} />
+            Editar no Estúdio
           </button>
         )}
         {edited && (
