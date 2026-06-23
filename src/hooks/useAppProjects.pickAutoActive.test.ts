@@ -19,9 +19,9 @@ describe("pickAutoActive", () => {
     expect(pickAutoActive([])).toBeNull();
   });
 
-  it("returns the only project (Jogo do Amor) when list has 1", () => {
-    const p = mk({ id: "a", name: "Jogo do Amor" });
-    expect(pickAutoActive([p])?.name).toBe("Jogo do Amor");
+  it("returns the only project when list has 1", () => {
+    const p = mk({ id: "a", name: "Clube de Receitas" });
+    expect(pickAutoActive([p])?.name).toBe("Clube de Receitas");
   });
 
   it("picks the most recent by updatedAt", () => {
