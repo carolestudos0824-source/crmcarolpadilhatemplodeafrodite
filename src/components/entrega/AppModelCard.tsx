@@ -16,6 +16,8 @@ import type { AppModel } from "@/data/entregaModules";
 import { useProjectContext, EMPTY_PROJECT_CONTEXT, type ProjectContext } from "@/hooks/useProjectContext";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 /* ---------- helpers ---------- */
 
