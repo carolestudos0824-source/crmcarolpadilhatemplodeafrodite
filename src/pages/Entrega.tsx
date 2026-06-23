@@ -480,7 +480,7 @@ function EntregaInner() {
             {/* App ativo + atalhos */}
             <div className="mb-4 rounded-xl border border-accent/25 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent p-3">
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
-                App ativo
+                App em foco
               </div>
               {appProjects.activeProject ? (
                 <>
@@ -497,23 +497,29 @@ function EntregaInner() {
                       </>
                     )}
                   </div>
+                  <button
+                    type="button"
+                    onClick={appProjects.openDrawer}
+                    className="mt-2 text-[11px] inline-flex items-center gap-1 px-2 py-1 rounded-md border border-white/15 hover:bg-white/5"
+                  >
+                    <Repeat size={12} /> Trocar app
+                  </button>
                 </>
               ) : (
                 <>
-                  <div className="text-sm font-medium text-foreground">Contexto temporário</div>
+                  <div className="text-sm font-medium text-foreground">Nenhum app selecionado</div>
                   <div className="text-[11px] text-muted-foreground">
-                    Crie ou selecione um app para acompanhar a jornada.
+                    Escolha o app que você está validando para acompanhar a jornada.
                   </div>
+                  <button
+                    type="button"
+                    onClick={appProjects.openDrawer}
+                    className="mt-2 text-[11px] inline-flex items-center gap-1 px-2 py-1 rounded-md border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15"
+                  >
+                    <FolderKanban size={12} /> Escolher app
+                  </button>
                 </>
               )}
-              <button
-                type="button"
-                onClick={appProjects.openDrawer}
-                className="mt-2 text-[11px] inline-flex items-center gap-1 px-2 py-1 rounded-md border border-white/15 hover:bg-white/5"
-              >
-                <Repeat size={12} /> Trocar app
-              </button>
-            </div>
 
             <div
               className="mb-4 text-[11px] text-muted-foreground px-2 leading-snug"
