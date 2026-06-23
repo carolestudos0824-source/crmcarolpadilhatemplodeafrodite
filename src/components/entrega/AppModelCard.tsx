@@ -623,6 +623,59 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
         stepObjective="Transformar esta ideia em primeiro prompt forte para o Lovable."
         customPrompts={{ lovable: lovablePrompt, agent: agentPrompt }}
       />
+
+      {/* Fallback do Agente Arquiteto: clipboard bloqueado */}
+      {agentFallback && (
+        <div
+          className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setAgentFallback(null)}
+        >
+          <div
+            className="bg-background border border-white/10 rounded-2xl max-w-xl w-full p-5 space-y-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h4 className="font-heading font-bold text-lg">Copie manualmente o prompt</h4>
+            <p className="text-xs text-muted-foreground">
+              Não foi possível copiar automaticamente. Copie o texto abaixo e cole no Agente Arquiteto.
+            </p>
+            <textarea
+              readOnly
+              value={agentFallback}
+              className="w-full h-64 rounded-lg border border-white/10 bg-black/40 p-3 text-xs text-foreground font-mono"
+              onFocus={(e) => e.currentTarget.select()}
+            />
+            <div className="flex flex-wrap gap-2 justify-end">
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(agentFallback);
+                    toast.success("Prompt copiado.");
+                  } catch {
+                    toast.error("Selecione o texto e copie manualmente (Ctrl+C).");
+                  }
+                }}
+                className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-xs"
+              >
+                Copiar manualmente
+              </button>
+              <a
+                href={AGENTE_ARQUITETO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold"
+              >
+                Abrir Agente Arquiteto
+              </a>
+              <button
+                onClick={() => setAgentFallback(null)}
+                className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-xs"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
