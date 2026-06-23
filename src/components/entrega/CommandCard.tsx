@@ -9,7 +9,8 @@ import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { openAgenteArquiteto, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { AgentClipboardFallback } from "@/components/entrega/AgentClipboardFallback";
 
 
 type Props = {
