@@ -18,6 +18,7 @@ import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { AGENTE_ARQUITETO_URL, openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 
 
 /* ---------- helpers ---------- */
