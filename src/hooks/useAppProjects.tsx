@@ -372,10 +372,10 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = rowToProject(data);
       upsertLocal(proj);
       setActiveId(proj.id);
-      setContext(proj.context);
+      setRuntimeContext(proj.context);
       return proj;
     },
-    [userId, upsertLocal, setActiveId, setContext],
+    [userId, upsertLocal, setActiveId, setRuntimeContext],
   );
 
   const createProjectFromContext = useCallback<Ctx["createProjectFromContext"]>(
@@ -388,7 +388,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = projects.find((p) => p.id === id);
       if (!proj) return;
       setActiveId(id);
-      setContext(proj.context);
+      setRuntimeContext(proj.context);
       // bump last_opened_at (fire and forget)
       if (userId) {
         void supabase
@@ -398,7 +398,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
           .eq("user_id", userId);
       }
     },
-    [projects, setActiveId, setContext, userId],
+    [projects, setActiveId, setRuntimeContext, userId],
   );
 
   const updateProject = useCallback<Ctx["updateProject"]>(
@@ -424,9 +424,9 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      if (id === activeId && patch.context !== undefined) setContext(proj.context);
+      if (id === activeId && patch.context !== undefined) setRuntimeContext(proj.context);
     },
-    [userId, projects, activeId, upsertLocal, setContext],
+    [userId, projects, activeId, upsertLocal, setRuntimeContext],
   );
 
   const saveContextToActiveProject = useCallback<Ctx["saveContextToActiveProject"]>(
@@ -445,10 +445,10 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      setContext(proj.context);
+      setRuntimeContext(proj.context);
       return true;
     },
-    [activeId, userId, upsertLocal, setContext],
+    [activeId, userId, upsertLocal, setRuntimeContext],
   );
 
   // Legacy alias kept for compat (uses currently loaded context from provider).
