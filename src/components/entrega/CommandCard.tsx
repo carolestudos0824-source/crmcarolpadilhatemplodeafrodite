@@ -188,6 +188,8 @@ export const CommandCard = ({
               storageKey={`cmdcard__${completedKey}__main`}
               onChange={setEditedCommand}
               hideCopyButton
+              saveTitle={title}
+              saveSourceModule={moduleId}
             />
 
             <div className="mt-2 flex flex-col items-end gap-2">
@@ -321,6 +323,8 @@ export const CommandCard = ({
                   storageKey={`cmdcard__${completedKey}__guided`}
                   onChange={setEditedCommand}
                   hideCopyButton
+                  saveTitle={title}
+                  saveSourceModule={moduleId}
                 />
 
                 <div className="mt-2 flex flex-col items-end gap-2">
@@ -381,6 +385,8 @@ export const CommandCard = ({
                     storageKey={`cmdcard__${completedKey}__agent`}
                     onChange={setEditedAgent}
                     hideCopyButton
+                    saveTitle={`${title} — Agente`}
+                    saveSourceModule={moduleId}
                   />
 
                   <div className="mt-2 flex flex-col items-end gap-1">
@@ -425,6 +431,8 @@ export const CommandCard = ({
                     storageKey={`cmdcard__${completedKey}__fix`}
                     onChange={setEditedCorrection}
                     hideCopyButton
+                    saveTitle={`${title} — Correção`}
+                    saveSourceModule={moduleId}
                   />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
