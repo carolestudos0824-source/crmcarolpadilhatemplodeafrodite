@@ -754,9 +754,9 @@ export default function Login() {
               {/* === Tab: Criar conta === */}
               {authTab === "criar" && (
                 <div>
-                  <h2 className="text-lg font-heading font-semibold mb-1">Criar conta</h2>
+                  <h2 className="text-lg font-heading font-semibold mb-1">Criar sua conta</h2>
                   <p className="text-xs text-muted-foreground mb-5">
-                    Use o mesmo e-mail informado na compra para criar sua conta de acesso.
+                    Use o mesmo e-mail informado na compra para liberar seu acesso ao programa.
                   </p>
 
                   <form onSubmit={onSignUp} className="space-y-3">
