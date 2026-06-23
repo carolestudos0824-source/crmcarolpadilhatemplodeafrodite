@@ -112,6 +112,7 @@ export default function Login() {
     resetMessages();
     if (!email.trim()) return setErrorMsg("Informe seu e-mail.");
     setLoading(true);
+    console.info({ auth_flow: "magic_link_requested" });
     try {
       const { error } = await withTimeout(
         supabase.auth.signInWithOtp({
@@ -128,7 +129,7 @@ export default function Login() {
         return;
       }
       setInfo(
-        "Enviamos um link de acesso para seu e-mail. Verifique também spam e promoções. O link abre direto sua área.",
+        "Enviamos um link de entrada para seu e-mail. Procure por uma mensagem sobre acesso/login, não redefinição de senha.",
       );
     } catch {
       setErrorMsg(
@@ -215,10 +216,11 @@ export default function Login() {
     }
     setRecovering(true);
     resetMessages();
+    console.info({ auth_flow: "password_recovery_requested" });
     try {
       await withTimeout(requestPasswordRecovery(email), 15000, "recuperação");
       setInfo(
-        "Se o e-mail estiver cadastrado, enviaremos um link de recuperação. Verifique também spam e promoções.",
+        "Enviamos um link para redefinir sua senha. Esse link não entra direto na área do curso.",
       );
     } catch {
       setErrorMsg("Não foi possível enviar agora. Tente novamente em instantes.");
@@ -485,7 +487,7 @@ export default function Login() {
             {/* === Bloco principal 2: Magic link === */}
             <form onSubmit={onMagicLink} className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Digite o e-mail da compra e receba um link seguro para acessar, sem precisar lembrar senha.
+                Receba um link para acessar sua área imediatamente, sem criar nova senha.
               </p>
               <div>
                 <label className="text-xs text-muted-foreground mb-1 block">E-mail da compra</label>
@@ -517,7 +519,7 @@ export default function Login() {
                     <Loader2 size={16} className="animate-spin" /> Enviando…
                   </>
                 ) : (
-                  "Receber link seguro"
+                  "Entrar sem senha por e-mail"
                 )}
               </button>
             </form>
@@ -564,7 +566,7 @@ export default function Login() {
                   )}
                 </button>
 
-                <div className="pt-1">
+                <div className="pt-1 space-y-1">
                   <button
                     type="button"
                     onClick={onRecover}
@@ -572,8 +574,11 @@ export default function Login() {
                     className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition"
                   >
                     <KeyRound size={12} />
-                    {recovering ? "Enviando…" : "Recuperar acesso"}
+                    {recovering ? "Enviando…" : "Redefinir minha senha"}
                   </button>
+                  <p className="text-[11px] text-muted-foreground/80">
+                    Use esta opção apenas se você quer criar uma nova senha.
+                  </p>
                 </div>
               </form>
             </div>
