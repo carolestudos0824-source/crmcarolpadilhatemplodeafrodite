@@ -172,6 +172,7 @@ export function ModuleReviewCard({
         stepObjective={objective}
         customPrompts={{ lovable: lovableText, agent: agentText }}
       />
+      <AgentClipboardFallback prompt={agentFallback} onClose={() => setAgentFallback(null)} />
     </>
   );
 }
