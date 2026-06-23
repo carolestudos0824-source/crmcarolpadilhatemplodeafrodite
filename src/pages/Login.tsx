@@ -288,7 +288,7 @@ export default function Login() {
       }
 
       console.info({ auth_flow: "signup_success" });
-      setSignupInfo("Senha criada com sucesso. Estamos verificando seu acesso...");
+      setSignupInfo("Conta criada com sucesso. Estamos verificando seu acesso...");
 
       if (result.needsConfirmation) {
         setView("check_email");
