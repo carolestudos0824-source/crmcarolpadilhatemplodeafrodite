@@ -117,6 +117,7 @@ export const ProjectContextDrawer = () => {
   const reset = () => {
     setDraft(EMPTY_PROJECT_CONTEXT);
     setContext(EMPTY_PROJECT_CONTEXT);
+    setConfirmReset(false);
     toast("Contexto limpo. Os campos voltaram ao estado inicial.");
   };
 
