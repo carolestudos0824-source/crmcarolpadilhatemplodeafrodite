@@ -70,6 +70,7 @@ import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCar
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
 import { UserProgressProvider, useUserProgress } from "@/hooks/useUserProgress";
