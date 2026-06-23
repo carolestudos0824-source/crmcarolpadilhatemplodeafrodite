@@ -228,11 +228,12 @@ export const PromptReviewDialog = ({
               <h3 className="font-heading font-bold text-lg">Estúdio de Prompt</h3>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Revise, edite e ajuste o comando antes de gastar créditos no Lovable.
+              Edite o comando antes de copiar para o Lovable ou enviar ao Agente.
             </p>
             <p className="text-[11px] text-muted-foreground/90 mt-1 truncate">
               {hasActiveApp ? `App ativo: ${activeProject!.name}` : "Nenhum app ativo selecionado"}
             </p>
+
 
 
           </div>
