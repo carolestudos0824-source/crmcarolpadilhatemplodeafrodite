@@ -348,13 +348,16 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10 sticky top-0 bg-background z-10">
               <div className="min-w-0 flex-1">
                 <div className="text-[11px] uppercase tracking-wider text-accent font-semibold mb-1">
-                  Mapa inicial do app
+                  Plano inicial do app
                 </div>
                 <h3 className="font-heading font-bold text-xl text-foreground truncate">
                   {editedName.trim() || model.name}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1">
                   Use esta ideia como ponto de partida. Você pode trocar o nome, adaptar o público e transformar isso em um app em construção.
+                </p>
+                <p className="text-xs text-accent/90 mt-2">
+                  Antes de copiar para o Lovable, você pode revisar este plano com o Agente Arquiteto de Aplicativos.
                 </p>
               </div>
               <button
