@@ -466,39 +466,50 @@ Regras:
 
               {/* ===== Fluxo recomendado ===== */}
               <section className="space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between flex-wrap gap-1">
                   <h4 className="font-heading font-semibold text-sm text-foreground">Fluxo recomendado</h4>
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Agente → Lovable → Agente</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Agente → Lovable → Agente → Lovable ajusta</span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-2 md:gap-1 items-stretch">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] gap-2 lg:gap-1 items-stretch">
                   {/* Step 1 */}
                   <div className="rounded-xl border border-cyan-400/40 bg-cyan-500/[0.06] p-3">
                     <div className="text-[10px] uppercase tracking-wider text-cyan-300 font-semibold mb-1">Etapa 1 · Agente</div>
-                    <div className="font-heading font-semibold text-sm text-foreground">Revise no Agente</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Agente revisa</div>
                     <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
-                      Cole o dump completo e peça para o Agente revisar o MVP, telas e banco de dados.
+                      Cole o dump completo no Agente para revisar MVP, telas e banco antes de construir.
                     </p>
                   </div>
-                  <ArrowRight size={16} className="hidden md:block self-center text-muted-foreground" />
+                  <ArrowRight size={16} className="hidden lg:block self-center text-muted-foreground" />
                   {/* Step 2 */}
                   <div className="rounded-xl border border-accent/40 bg-accent/[0.06] p-3">
                     <div className="text-[10px] uppercase tracking-wider text-accent font-semibold mb-1">Etapa 2 · Lovable</div>
-                    <div className="font-heading font-semibold text-sm text-foreground">Construa no Lovable</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Lovable constrói</div>
                     <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
-                      Depois da revisão, copie o prompt de construção e cole no Lovable.
+                      Copie o prompt de construção e cole no Lovable para gerar a primeira versão do app.
                     </p>
                   </div>
-                  <ArrowRight size={16} className="hidden md:block self-center text-muted-foreground" />
+                  <ArrowRight size={16} className="hidden lg:block self-center text-muted-foreground" />
                   {/* Step 3 */}
-                  <div className="rounded-xl border border-cyan-400/40 bg-cyan-500/[0.06] p-3">
-                    <div className="text-[10px] uppercase tracking-wider text-cyan-300 font-semibold mb-1">Etapa 3 · Agente</div>
-                    <div className="font-heading font-semibold text-sm text-foreground">Volte ao Agente</div>
+                  <div className="rounded-xl border border-amber-300/40 bg-amber-300/[0.06] p-3">
+                    <div className="text-[10px] uppercase tracking-wider text-amber-200 font-semibold mb-1">Etapa 3 · Agente</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Agente analisa o resultado</div>
                     <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
-                      Copie o resultado do Lovable e cole no Agente para corrigir, melhorar ou continuar.
+                      Cole no Agente o resultado que o Lovable retornou. Ele aponta o que falta e gera o próximo comando.
+                    </p>
+                  </div>
+                  <ArrowRight size={16} className="hidden lg:block self-center text-muted-foreground" />
+                  {/* Step 4 */}
+                  <div className="rounded-xl border border-[#0EA5E9]/40 bg-[#0EA5E9]/[0.06] p-3">
+                    <div className="text-[10px] uppercase tracking-wider text-[#7DD3FC] font-semibold mb-1">Etapa 4 · Lovable</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Aplicar ajuste no Lovable</div>
+                    <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
+                      Volte ao Lovable e cole o próximo prompt gerado pelo Agente. O ciclo se repete até o app ficar pronto.
                     </p>
                   </div>
                 </div>
               </section>
+
+
 
               {/* ===== Etapa 1 · Dump para o Agente — Premium Card ===== */}
               <section
