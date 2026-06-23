@@ -10,7 +10,6 @@ import {
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  buildDraftKey,
   isContextEqual,
   readDraft,
   removeDraft,
