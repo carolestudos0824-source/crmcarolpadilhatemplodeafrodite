@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { X, Save, RotateCcw, FolderPlus, FolderCheck } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { X, Save, RotateCcw, FolderPlus, FolderCheck, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import {
   EMPTY_PROJECT_CONTEXT,
@@ -8,11 +8,23 @@ import {
   type YesNo,
 } from "@/hooks/useProjectContext";
 import { useAppProjects } from "@/hooks/useAppProjects";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  isContextEqual,
+  readDraft,
+  removeDraft,
+  writeDraft,
+  type DraftScope,
+} from "@/lib/contextDraftStorage";
 
 /**
  * Drawer "Contexto do meu app". Salva tudo apenas no navegador
  * (localStorage), via useProjectContext. Não toca em banco/auth.
+ *
+ * Camada adicional de RASCUNHO local (contextDraftStorage) garante que a
+ * usuária não perca o que digitou se fechar o painel sem salvar.
  */
+
 
 const Field = ({
   label,
@@ -79,29 +91,109 @@ export const ProjectContextDrawer = () => {
     createProjectFromContext,
   } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
+  const [baseline, setBaseline] = useState<ProjectContext>(context);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [confirmClose, setConfirmClose] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const skipHydrationRef = useRef(false);
+  const hydratedRef = useRef(false);
+  const draftToastShownRef = useRef(false);
 
+  const scope: DraftScope = useMemo(
+    () => ({ userId, appId: activeProject?.id ?? null }),
+    [userId, activeProject?.id],
+  );
+
+  // Carrega userId uma vez (read-only — não altera auth).
+  useEffect(() => {
+    let active = true;
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (!active) return;
+        setUserId(data.session?.user?.id ?? null);
+      })
+      .catch(() => {
+        if (!active) return;
+        setUserId(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Hidratação ao abrir: contexto oficial/app ativo + restauração de rascunho.
   useEffect(() => {
     if (!isEditorOpen) {
       skipHydrationRef.current = false;
+      hydratedRef.current = false;
+      draftToastShownRef.current = false;
       return;
     }
 
-    if (skipHydrationRef.current) return;
-
-    if (activeProject) {
-      setDraft(activeProject.context);
-      if (import.meta.env.DEV) console.debug("origem: app ativo");
+    if (skipHydrationRef.current) {
+      hydratedRef.current = true;
       return;
     }
 
-    setDraft(context);
-    if (import.meta.env.DEV) {
-      const hasContext = Object.values(context).some((value) => value.trim().length > 0);
-      console.debug(hasContext ? "origem: contexto temporário" : "origem: vazio");
+    const initial: ProjectContext = activeProject ? activeProject.context : context;
+    setBaseline(initial);
+    setDraft(initial);
+
+    const savedDraft = readDraft(scope);
+    if (savedDraft && !isContextEqual(savedDraft, initial)) {
+      setDraft(savedDraft);
+      if (!draftToastShownRef.current) {
+        draftToastShownRef.current = true;
+        toast("Rascunho recuperado. Suas alterações anteriores foram restauradas.");
+      }
     }
-  }, [isEditorOpen, activeProject, context]);
+
+    // Marca hidratação concluída no próximo tick, evitando autosave de draft vazio.
+    const t = window.setTimeout(() => {
+      hydratedRef.current = true;
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [isEditorOpen, activeProject, context, scope]);
+
+  // Autosave do rascunho (debounce 500ms). Só dispara após hidratação.
+  useEffect(() => {
+    if (!isEditorOpen) return;
+    if (!hydratedRef.current) return;
+    if (isContextEqual(draft, baseline)) return;
+
+    const t = window.setTimeout(() => {
+      writeDraft(scope, draft);
+    }, 500);
+    return () => window.clearTimeout(t);
+  }, [draft, baseline, isEditorOpen, scope]);
+
+  const isDirty = useMemo(
+    () => !isContextEqual(draft, baseline),
+    [draft, baseline],
+  );
+
+  const attemptClose = useCallback(() => {
+    if (isDirty) {
+      setConfirmClose(true);
+      return;
+    }
+    closeEditor();
+  }, [isDirty, closeEditor]);
+
+  // ESC passa pelo guard.
+  useEffect(() => {
+    if (!isEditorOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (confirmReset || confirmClose) return; // sub-modais lidam por conta própria
+      e.preventDefault();
+      e.stopPropagation();
+      attemptClose();
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [isEditorOpen, attemptClose, confirmReset, confirmClose]);
 
   if (!isEditorOpen) return null;
 
@@ -119,6 +211,8 @@ export const ProjectContextDrawer = () => {
     } else {
       setContext(draft);
     }
+    removeDraft(scope);
+    setBaseline(draft);
     toast.success("Contexto salvo. Os próximos prompts usarão essas informações.");
     closeEditor();
   };
@@ -127,9 +221,14 @@ export const ProjectContextDrawer = () => {
     const name = draft.appName.trim() || "Meu app";
     const created = await createProjectFromContext(draft, name);
     if (created) {
+      removeDraft(scope);
+      // Também remove a chave "temporary" caso o draft tenha vindo de lá.
+      if (scope.appId !== null) removeDraft({ userId: scope.userId, appId: null });
+      setBaseline(draft);
       toast.success("Novo app criado. Este contexto agora está vinculado ao projeto.");
     } else {
       toast.error("Faça login para salvar este app na sua conta.");
+      return;
     }
     closeEditor();
   };
@@ -137,16 +236,19 @@ export const ProjectContextDrawer = () => {
   const reset = () => {
     skipHydrationRef.current = true;
     setDraft(EMPTY_PROJECT_CONTEXT);
+    setBaseline(EMPTY_PROJECT_CONTEXT);
     clearTemporaryContext();
+    removeDraft(scope);
     if (activeProject) setRuntimeContext(activeProject.context);
     setConfirmReset(false);
     toast("Contexto limpo. Os campos voltaram ao estado inicial.");
   };
 
+
   return (
     <div
       className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex justify-end"
-      onClick={closeEditor}
+      onClick={attemptClose}
     >
       <div
         className="bg-background border-l border-white/10 w-full max-w-xl h-full overflow-auto"
@@ -169,7 +271,7 @@ export const ProjectContextDrawer = () => {
             </p>
           </div>
           <button
-            onClick={closeEditor}
+            onClick={attemptClose}
             className="p-2 rounded-lg hover:bg-white/5 shrink-0"
             aria-label="Fechar"
           >
@@ -379,7 +481,55 @@ export const ProjectContextDrawer = () => {
             </div>
           </div>
         )}
+
+        {confirmClose && (
+          <div
+            className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setConfirmClose(false)}
+          >
+            <div
+              className="w-full max-w-md rounded-2xl border border-amber-400/30 bg-background p-5 space-y-4"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+            >
+              <div className="flex items-start gap-2">
+                <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-heading font-bold text-base text-foreground">
+                    Você tem alterações não salvas
+                  </h3>
+                  <p className="text-[12px] text-muted-foreground mt-1.5 leading-snug">
+                    Se sair agora, suas alterações ficam guardadas como rascunho
+                    neste navegador, mas ainda não serão aplicadas como contexto
+                    oficial do app.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-end">
+                <button
+                  onClick={() => setConfirmClose(false)}
+                  className="px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                  type="button"
+                >
+                  Continuar editando
+                </button>
+                <button
+                  onClick={() => {
+                    setConfirmClose(false);
+                    closeEditor();
+                  }}
+                  className="px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/20 text-xs"
+                  type="button"
+                >
+                  Sair e manter rascunho
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
