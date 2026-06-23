@@ -152,15 +152,17 @@ export const PromptReviewDialog = ({
   const text = drafts[mode];
   const setText = (next: string) => setDrafts((d) => ({ ...d, [mode]: next }));
 
+  const contextComplete = hasActiveApp && isFilled;
+
   const copy = async () => {
-    if (!hasActiveApp) {
-      toast.error("Selecione um app antes de copiar o prompt para o Lovable.");
-      return;
-    }
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toast.success("Prompt executivo copiado. Use no Lovable para aplicar a mudança.");
+      if (contextComplete) {
+        toast.success("Prompt copiado para usar no Lovable.");
+      } else {
+        toast("Prompt copiado. Contexto incompleto: revise antes de colar no Lovable.");
+      }
       setTimeout(() => setCopied(false), 1500);
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
@@ -170,15 +172,18 @@ export const PromptReviewDialog = ({
   const copyAgent = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      if (hasActiveApp) {
-        toast.success("Prompt consultivo copiado. Cole no Agente para analisar antes de implementar.");
+      setCopied(true);
+      if (contextComplete) {
+        toast.success("Prompt copiado para enviar ao Agente.");
       } else {
-        toast("Prompt consultivo copiado com contexto temporário. Para aplicar no Lovable, selecione um app.");
+        toast("Prompt copiado. Contexto incompleto: revise antes de enviar ao Agente.");
       }
+      setTimeout(() => setCopied(false), 1500);
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
+
 
 
   const restore = () => {
