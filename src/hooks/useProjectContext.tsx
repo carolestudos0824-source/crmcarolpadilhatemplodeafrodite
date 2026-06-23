@@ -57,10 +57,26 @@ export const EMPTY_PROJECT_CONTEXT: ProjectContext = {
 
 const STORAGE_KEY = "fabrica_apps_project_context";
 const LEGACY_STORAGE_KEY = "fabrica_project_context";
+const SAVED_MARKER_KEY = "fabrica_apps_project_context_saved_at";
+const TEMPORARY_CONTEXT_KEYS = [
+  STORAGE_KEY,
+  LEGACY_STORAGE_KEY,
+  SAVED_MARKER_KEY,
+  "fabrica_apps_project_context_draft",
+  "fabrica_project_context_draft",
+  "fabrica_apps_temporary_project_context",
+  "fabrica_apps_saved_context",
+  "fabrica_apps_app_context",
+];
+
+const DEMO_APP_NAMES = new Set(["jogo do amor"]);
 
 type Ctx = {
   context: ProjectContext;
   setContext: (next: ProjectContext) => void;
+  setRuntimeContext: (next: ProjectContext) => void;
+  clearTemporaryContext: () => void;
+  restoreTemporaryContext: () => ProjectContext;
   isFilled: boolean;
   openEditor: () => void;
   closeEditor: () => void;
@@ -69,38 +85,61 @@ type Ctx = {
 
 const ProjectContextContext = createContext<Ctx | null>(null);
 
+const normalizeContext = (value: unknown): ProjectContext => {
+  const raw = (value ?? {}) as Partial<Record<keyof ProjectContext, unknown>>;
+  return Object.keys(EMPTY_PROJECT_CONTEXT).reduce((acc, key) => {
+    const k = key as keyof ProjectContext;
+    acc[k] = typeof raw[k] === "string" ? raw[k] : "";
+    return acc;
+  }, { ...EMPTY_PROJECT_CONTEXT });
+};
+
+const hasAnyMeaningful = (c: ProjectContext) =>
+  Object.values(c).some((v) => typeof v === "string" && v.trim().length > 0);
+
+const isBlockedDemoContext = (c: ProjectContext, hasSavedMarker: boolean) => {
+  const appName = c.appName.trim().toLowerCase();
+  return !hasSavedMarker && DEMO_APP_NAMES.has(appName);
+};
+
+const parseStoredContext = (raw: string | null, hasSavedMarker: boolean) => {
+  if (!raw) return null;
+  try {
+    const parsed = normalizeContext(JSON.parse(raw));
+    if (!hasAnyMeaningful(parsed)) return null;
+    if (isBlockedDemoContext(parsed, hasSavedMarker)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
 const readStored = (): ProjectContext => {
   try {
-    let raw = localStorage.getItem(STORAGE_KEY);
-    // Migração one-shot: se chave nova vazia e existir dado na chave antiga,
-    // copia para a nova. Mantém a antiga intacta nesta rodada.
-    if (!raw) {
-      const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
-      if (legacy) {
-        try {
-          localStorage.setItem(STORAGE_KEY, legacy);
-          raw = legacy;
-        } catch {
-          /* ignore quota errors */
-        }
-      }
+    const hasSavedMarker = Boolean(localStorage.getItem(SAVED_MARKER_KEY));
+    const current = parseStoredContext(localStorage.getItem(STORAGE_KEY), hasSavedMarker);
+    if (current) return current;
+
+    const legacy = parseStoredContext(localStorage.getItem(LEGACY_STORAGE_KEY), hasSavedMarker);
+    if (legacy) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy));
+      localStorage.setItem(SAVED_MARKER_KEY, new Date().toISOString());
+      return legacy;
     }
-    if (!raw) return EMPTY_PROJECT_CONTEXT;
-    const parsed = JSON.parse(raw);
-    return { ...EMPTY_PROJECT_CONTEXT, ...parsed };
+
+    return EMPTY_PROJECT_CONTEXT;
   } catch {
     return EMPTY_PROJECT_CONTEXT;
   }
 };
 
-const hasAnyMeaningful = (c: ProjectContext) =>
-  Boolean(
-    c.appName.trim() ||
-      c.appDoes.trim() ||
-      c.audience.trim() ||
-      c.problem.trim() ||
-      c.promise.trim(),
-  );
+const removeTemporaryContextStorage = () => {
+  try {
+    TEMPORARY_CONTEXT_KEYS.forEach((key) => localStorage.removeItem(key));
+  } catch {
+    /* ignore storage errors */
+  }
+};
 
 export const ProjectContextProvider = ({ children }: { children: ReactNode }) => {
   const [context, setContextState] = useState<ProjectContext>(EMPTY_PROJECT_CONTEXT);
@@ -114,21 +153,41 @@ export const ProjectContextProvider = ({ children }: { children: ReactNode }) =>
     setContextState(next);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      localStorage.setItem(SAVED_MARKER_KEY, new Date().toISOString());
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch {
       /* ignore quota errors */
     }
+  }, []);
+
+  const setRuntimeContext = useCallback((next: ProjectContext) => {
+    setContextState(next);
+  }, []);
+
+  const clearTemporaryContext = useCallback(() => {
+    removeTemporaryContextStorage();
+    setContextState(EMPTY_PROJECT_CONTEXT);
+  }, []);
+
+  const restoreTemporaryContext = useCallback(() => {
+    const next = readStored();
+    setContextState(next);
+    return next;
   }, []);
 
   const value = useMemo<Ctx>(
     () => ({
       context,
       setContext,
+      setRuntimeContext,
+      clearTemporaryContext,
+      restoreTemporaryContext,
       isFilled: hasAnyMeaningful(context),
       openEditor: () => setEditorOpen(true),
       closeEditor: () => setEditorOpen(false),
       isEditorOpen,
     }),
-    [context, setContext, isEditorOpen],
+    [context, setContext, setRuntimeContext, clearTemporaryContext, restoreTemporaryContext, isEditorOpen],
   );
 
   return (
@@ -145,6 +204,9 @@ export const useProjectContext = () => {
     return {
       context: EMPTY_PROJECT_CONTEXT,
       setContext: () => {},
+      setRuntimeContext: () => {},
+      clearTemporaryContext: () => {},
+      restoreTemporaryContext: () => EMPTY_PROJECT_CONTEXT,
       isFilled: false,
       openEditor: () => {},
       closeEditor: () => {},
