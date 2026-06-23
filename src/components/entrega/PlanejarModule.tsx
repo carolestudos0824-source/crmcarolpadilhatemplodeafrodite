@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import {
   ClipboardList,
   Target,
-  Users,
   Sparkles,
   MousePointerClick,
   Layers,
@@ -12,17 +11,18 @@ import {
   Bot,
   Wrench,
   ArrowRight,
-  Copy,
-  Check,
   CheckCircle2,
   Circle,
 } from "lucide-react";
+
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso planejar antes de construir. Me ajude a definir: qual problema meu app resolve, para quem ele é feito, qual é a promessa principal, qual é a ação principal do usuário e quais funcionalidades devem entrar somente na primeira versão.`;
 
@@ -187,32 +187,8 @@ const TAB_META: { id: TabId; label: string; icon: typeof Target }[] = [
 
 const CHECKLIST_PREFIX = "planejar_step__";
 
-function CopyBtn({ text, label = "Copiar" }: { text: string; label?: string }) {
-  const [ok, setOk] = useState(false);
-  const handle = async () => {
-    try {
-      await navigator.clipboard.writeText(text.trim());
-      setOk(true);
-      toast.success("Copiado! Agora cole no Lovable.");
-      setTimeout(() => setOk(false), 1600);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-  return (
-    <button
-      onClick={handle}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
-        ok
-          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-      }`}
-    >
-      {ok ? <Check size={14} /> : <Copy size={14} />}
-      {ok ? "Copiado!" : label}
-    </button>
-  );
-}
+
+
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
@@ -262,32 +238,35 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         })}
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-black/40 p-4 mb-3">
-        <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-          {etapa.tabs[tab]}
-        </pre>
-      </div>
-      {tab !== "avancar" && (
-        <div className="flex flex-col gap-1">
-          <CopyBtn
-            text={tab === "agente" ? etapa.tabs[tab] : wrapLovable(etapa.tabs[tab])}
-            label={
-              tab === "agente"
-                ? "Copiar para o Agente"
-                : tab === "corrigir"
-                ? "Copiar correção"
-                : "Copiar comando"
-            }
-          />
-          <span className="text-[10px] text-muted-foreground/80">
-            {tab === "agente"
+      {tab === "avancar" ? (
+        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
+            {etapa.tabs[tab]}
+          </pre>
+        </div>
+      ) : (
+        <EditablePromptBox
+          key={tab}
+          originalPrompt={etapa.tabs[tab]}
+          storageKey={`planejar_prompt__${etapa.n}__${tab}`}
+          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          copyLabel={
+            tab === "agente"
+              ? "Copiar para o Agente"
+              : tab === "corrigir"
+              ? "Copiar correção"
+              : "Copiar comando"
+          }
+          helperText={
+            tab === "agente"
               ? "Use para pensar antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
-              : "Cole no projeto do seu app no Lovable."}
-          </span>
-        </div>
+              : "Cole no projeto do seu app no Lovable."
+          }
+        />
       )}
+
     </GlassCard>
   );
 }
@@ -419,13 +398,13 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             </p>
           </div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-black/40 p-4 mb-3">
-          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-            {PLANO_TEMPLATE}
-          </pre>
-        </div>
-        <CopyBtn text={PLANO_TEMPLATE} label="Copiar modelo do plano" />
+        <EditablePromptBox
+          originalPrompt={PLANO_TEMPLATE}
+          storageKey="planejar_plano_inicial"
+          copyLabel="Copiar modelo do plano"
+        />
       </GlassCard>
+
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
