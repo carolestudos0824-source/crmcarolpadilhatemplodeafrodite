@@ -175,7 +175,11 @@ function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: str
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const [editOpen, setEditOpen] = useState(false);
   const Icon = etapa.icon;
+  const currentPrompt = etapa.tabs[tab];
+  const promptForCopy = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
+  const promptForEditor = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
   return (
     <GlassCard className="p-5 md:p-6">
       <div className="flex items-start gap-4 mb-4">
@@ -219,29 +223,42 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         </pre>
       </div>
       {tab !== "avancar" && (
-        <div className="flex flex-col gap-1">
-          <CopyBtn
-            text={tab === "agente" ? etapa.tabs[tab] : wrapLovable(etapa.tabs[tab])}
-            label={
-              tab === "agente"
-                ? "Copiar para o Agente"
-                : tab === "corrigir"
-                ? "Copiar correção"
-                : "Copiar comando"
-            }
-          />
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <CopyBtn
+              text={promptForCopy}
+              label={
+                tab === "agente"
+                  ? "Copiar para o Agente"
+                  : tab === "corrigir"
+                  ? "Copiar correção"
+                  : "Copiar comando"
+              }
+            />
+            <button
+              onClick={() => setEditOpen(true)}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-white/15 bg-white/5 text-foreground/90 hover:bg-white/10 text-sm font-semibold"
+            >
+              <Pencil size={14} /> Ver / editar prompt
+            </button>
+          </div>
           <span className="text-[10px] text-muted-foreground/80">
-            {tab === "agente"
-              ? "Use para pensar antes de aplicar."
-              : tab === "corrigir"
-              ? "Use quando o Lovable não entregar o resultado esperado."
-              : "Cole no projeto do seu app no Lovable."}
+            Você pode copiar direto ou revisar o prompt antes de colar no Lovable.
           </span>
         </div>
       )}
+
+      <PromptEditDialog
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        stepName={etapa.title}
+        originalPrompt={promptForEditor}
+        storageKey={`mvp_prompt_edit__${etapa.n}__${tab}`}
+      />
     </GlassCard>
   );
 }
+
 
 export function MvpArquiteturaModule() {
   const { checklist, setChecklist } = useUserProgress();
