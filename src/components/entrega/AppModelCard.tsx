@@ -20,7 +20,7 @@ import { useProjectContext, EMPTY_PROJECT_CONTEXT, type ProjectContext } from "@
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent, openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 
 const LOVABLE_URL = "https://lovable.dev";
 
@@ -228,33 +228,6 @@ Quero que você analise como meu Agente Arquiteto:
 Responda de forma prática, com o próximo prompt pronto para copiar e colar no Lovable.`;
   }, [editedName, model]);
 
-  const copyToLovable = async () => {
-    try {
-      await navigator.clipboard.writeText(lovablePrompt);
-      toast.success("Prompt copiado. Agora cole no Lovable para começar seu app.");
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-
-  const handleReviewWithAgent = async () => {
-    await copyPromptAndOpenAgent({
-      prompt: agentPrompt,
-      successMessage:
-        "Dump copiado. Cole no Agente Arquiteto para revisar sua ideia antes de construir.",
-      onClipboardFail: (p) => setAgentFallback(p),
-    });
-  };
-
-  const handleCopyPostLovable = async () => {
-    await copyPromptAndOpenAgent({
-      prompt: postLovablePrompt,
-      successMessage:
-        "Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.",
-      onClipboardFail: (p) => setAgentFallback(p),
-    });
-  };
-
   const nextLovablePrompt = useMemo(() => {
     const name = editedName.trim() || model.name;
     return `Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
@@ -270,14 +243,79 @@ Regras:
 - Se algo estiver ambíguo, faça a escolha mais simples possível.`;
   }, [editedName, model]);
 
-  const copyNextLovablePrompt = async () => {
+  // (Etapas 2 e 4 usam links <a href={LOVABLE_URL}> diretos — não precisa de helper JS.)
+
+
+
+  // ===== ETAPA 1 — Dump para o Agente =====
+  /** Só copia o dump. Não abre nada. */
+  const handleCopyAgentDump = async () => {
     try {
-      await navigator.clipboard.writeText(nextLovablePrompt);
-      toast.success("Próximo prompt copiado. Cole no Lovable e troque o trecho entre colchetes pelo que o Agente respondeu.");
+      await navigator.clipboard.writeText(agentPrompt);
+      toast.success("Dump copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.");
     } catch {
-      toast.error("Não foi possível copiar.");
+      setAgentFallback(agentPrompt);
     }
   };
+
+  /** Copia o dump e abre o Agente. Se a cópia falhar, mostra fallback (não abre o Agente vazio). */
+  const handleOpenAgentWithDump = async () => {
+    await copyPromptAndOpenAgent({
+      prompt: agentPrompt,
+      successMessage:
+        "Dump copiado. O Agente Arquiteto abriu em outra aba. Cole com Ctrl+V para revisar sua ideia.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
+
+  // ===== ETAPA 2 — Lovable =====
+  /** Só copia o prompt do Lovable. Não abre o Lovable. */
+  const handleCopyLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(lovablePrompt);
+      toast.success("Prompt copiado. Cole no Lovable para começar a construção.");
+    } catch {
+      toast.error("Não foi possível copiar. Selecione o texto e copie manualmente (Ctrl+C).");
+    }
+  };
+  // Alias mantido para compatibilidade com a chamada existente no JSX.
+  const copyToLovable = handleCopyLovablePrompt;
+
+  // ===== ETAPA 3 — Pós-Lovable =====
+  /** Só copia o prompt pós-Lovable. Não abre o Agente. */
+  const handleCopyPostLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(postLovablePrompt);
+      toast.success("Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.");
+    } catch {
+      setAgentFallback(postLovablePrompt);
+    }
+  };
+  // Alias mantido para compatibilidade com a chamada existente no JSX.
+  const handleCopyPostLovable = handleCopyPostLovablePrompt;
+
+  /** Copia o prompt pós-Lovable e abre o Agente. Fallback se a cópia falhar. */
+  const handleOpenAgentWithPostLovablePrompt = async () => {
+    await copyPromptAndOpenAgent({
+      prompt: postLovablePrompt,
+      successMessage:
+        "Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
+
+  // ===== ETAPA 4 — Próximo prompt Lovable =====
+  /** Só copia o próximo prompt para o Lovable. Não abre Lovable. */
+  const handleCopyNextLovablePrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(nextLovablePrompt);
+      toast.success("Próximo prompt copiado. Cole no Lovable para aplicar o ajuste.");
+    } catch {
+      toast.error("Não foi possível copiar. Selecione o texto e copie manualmente (Ctrl+C).");
+    }
+  };
+  // Alias mantido para compatibilidade com a chamada existente no JSX.
+  const copyNextLovablePrompt = handleCopyNextLovablePrompt;
 
 
 
@@ -543,20 +581,23 @@ Regras:
                 <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
-                    onClick={handleReviewWithAgent}
+                    onClick={handleCopyAgentDump}
                     className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:from-cyan-400 hover:to-blue-500 transition shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)]"
                   >
                     <Copy size={16} /> Copiar dump para o Agente
                   </button>
-                  <a
-                    href={AGENTE_ARQUITETO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={handleOpenAgentWithDump}
                     className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-cyan-400/30 bg-cyan-500/[0.06] text-cyan-200 hover:bg-cyan-500/15 text-sm font-semibold"
                   >
                     <ExternalLink size={14} /> Abrir Agente
-                  </a>
+                  </button>
                 </div>
+                <p className="relative text-[11.5px] text-foreground/60 leading-snug -mt-1">
+                  O ChatGPT não cola o texto automaticamente. Primeiro copie o dump, depois cole no Agente com Ctrl+V. Ao clicar em <span className="text-cyan-300">“Abrir Agente”</span>, o dump é copiado antes de abrir.
+                </p>
+
 
                 {/* Prompt body */}
                 <div
@@ -683,14 +724,13 @@ Regras:
                   >
                     <Copy size={16} /> Copiar revisão pós-Lovable
                   </button>
-                  <a
-                    href={AGENTE_ARQUITETO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={handleOpenAgentWithPostLovablePrompt}
                     className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-amber-300/40 bg-amber-300/[0.08] text-amber-200 hover:bg-amber-300/15 text-sm font-semibold"
                   >
                     <ExternalLink size={14} /> Voltar ao Agente
-                  </a>
+                  </button>
                 </div>
 
                 {/* Prompt body */}
