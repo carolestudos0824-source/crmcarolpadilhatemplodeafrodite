@@ -411,171 +411,147 @@ export default function Login() {
               </button>
             </form>
 
-            {/* === Bloco recolhido: outras formas === */}
-            <details className="mt-6 group rounded-xl border border-white/10 bg-white/[0.03]">
-              <summary className="cursor-pointer list-none px-4 py-3 flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition">
-                <span>Outras formas de entrada</span>
-                <ChevronDown size={14} className="transition-transform group-open:rotate-180" />
-              </summary>
-
-              <div className="px-4 pb-4 pt-1 space-y-4">
-                <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
-                  Primeiro acesso? Use Google ou link por e-mail acima. Sua conta será criada ou localizada automaticamente.
-                </p>
-
-                <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
-                  {([
-                    ["signin", "Com senha"],
-                    ["signup", "Criar conta"],
-                  ] as [Tab, string][]).map(([key, label]) => (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        setTab(key);
-                        resetMessages();
-                      }}
-                      className={`px-3 py-2 rounded-lg text-xs transition ${
-                        tab === key
-                          ? "bg-accent/20 text-accent"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
+            {/* === Entrar com senha (sempre visível) === */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <h2 className="text-sm font-heading font-semibold mb-1">Entrar com senha</h2>
+              <p className="text-[11px] text-muted-foreground/80 mb-4">
+                Alternativa caso você já tenha cadastrado uma senha. Use o mesmo e-mail da compra.
+              </p>
+              <form onSubmit={onSignIn} className="space-y-3">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">E-mail</label>
+                  <input
+                    className={inputCls}
+                    type="email"
+                    placeholder="seu@email.com"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Senha</label>
+                  <input
+                    className={inputCls}
+                    type="password"
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
                 </div>
 
-                {tab === "signup" ? (
-                  <form onSubmit={onSignUp} className="space-y-3">
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Nome</label>
-                      <input
-                        className={inputCls}
-                        type="text"
-                        placeholder="Seu nome"
-                        autoComplete="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">E-mail</label>
-                      <input
-                        className={inputCls}
-                        type="email"
-                        placeholder="seu@email.com"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Senha</label>
-                      <input
-                        className={inputCls}
-                        type="password"
-                        placeholder="Mínimo 6 caracteres"
-                        autoComplete="new-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        minLength={6}
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Confirmar senha</label>
-                      <input
-                        className={inputCls}
-                        type="password"
-                        placeholder="Repita a senha"
-                        autoComplete="new-password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        minLength={6}
-                      />
-                    </div>
+                <button type="submit" disabled={loading} className="btn-primary w-full">
+                  {loading ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" /> Entrando…
+                    </>
+                  ) : (
+                    "Entrar com senha"
+                  )}
+                </button>
 
-                    {errorMsg && (
-                      <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                        {errorMsg}
-                      </div>
-                    )}
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={onRecover}
+                    disabled={recovering}
+                    className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition"
+                  >
+                    <KeyRound size={12} />
+                    {recovering ? "Enviando…" : "Recuperar acesso"}
+                  </button>
+                </div>
+              </form>
+            </div>
 
-                    <p className="text-[11px] text-muted-foreground">
-                      Use o mesmo e-mail informado na compra. Depois da conta criada, seu acesso será verificado automaticamente.
-                    </p>
+            {/* === Criar conta (sempre visível) === */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <h2 className="text-sm font-heading font-semibold mb-1">Criar conta</h2>
+              <p className="text-[11px] text-muted-foreground/80 mb-4">
+                Primeiro acesso? Você também pode entrar com Google ou link seguro usando o e-mail da compra.
+              </p>
+              <form onSubmit={onSignUp} className="space-y-3">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Nome</label>
+                  <input
+                    className={inputCls}
+                    type="text"
+                    placeholder="Seu nome"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">E-mail</label>
+                  <input
+                    className={inputCls}
+                    type="email"
+                    placeholder="seu@email.com"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Senha</label>
+                  <input
+                    className={inputCls}
+                    type="password"
+                    placeholder="Mínimo 6 caracteres"
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Confirmar senha</label>
+                  <input
+                    className={inputCls}
+                    type="password"
+                    placeholder="Repita a senha"
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
+                </div>
 
-                    <button type="submit" disabled={loading} className="btn-primary w-full">
-                      {loading ? (
-                        <>
-                          <Loader2 size={16} className="animate-spin" /> Criando conta…
-                        </>
-                      ) : (
-                        "Criar conta"
-                      )}
-                    </button>
-                  </form>
-                ) : (
-                  <form onSubmit={onSignIn} className="space-y-3">
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">E-mail</label>
-                      <input
-                        className={inputCls}
-                        type="email"
-                        placeholder="seu@email.com"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Senha</label>
-                      <input
-                        className={inputCls}
-                        type="password"
-                        placeholder="••••••••"
-                        autoComplete="current-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                    </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Use o mesmo e-mail informado na compra. Depois da conta criada, seu acesso será verificado automaticamente.
+                </p>
 
-                    {errorMsg && (
-                      <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                        {errorMsg}
-                      </div>
-                    )}
+                <button type="submit" disabled={loading} className="btn-primary w-full">
+                  {loading ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" /> Criando conta…
+                    </>
+                  ) : (
+                    "Criar conta"
+                  )}
+                </button>
+              </form>
+            </div>
 
-                    <button type="submit" disabled={loading} className="btn-primary w-full">
-                      {loading ? (
-                        <>
-                          <Loader2 size={16} className="animate-spin" /> Entrando…
-                        </>
-                      ) : (
-                        "Entrar com senha"
-                      )}
-                    </button>
+            {/* === Suporte === */}
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <button
+                type="button"
+                onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
+                className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition"
+              >
+                <LifeBuoy size={14} /> Falar com suporte
+              </button>
+            </div>
 
-                    <div className="pt-1">
-                      <button
-                        type="button"
-                        onClick={onRecover}
-                        disabled={recovering}
-                        className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition"
-                      >
-                        <KeyRound size={12} />
-                        {recovering ? "Enviando…" : "Recuperar acesso"}
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </div>
-            </details>
 
             <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-xs text-muted-foreground flex gap-2">
               <Mail size={14} className="mt-0.5 shrink-0 text-accent" />
