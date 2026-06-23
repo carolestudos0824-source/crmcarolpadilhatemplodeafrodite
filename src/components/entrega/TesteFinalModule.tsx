@@ -124,20 +124,44 @@ const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "Página branca", def: "Quando a tela carrega vazia por erro de código, rota ou carregamento." },
 ];
 
-const CHECKLIST_ITEMS = [
-  "Testei como visitante",
-  "Testei como usuário logado",
-  "Testei login e logout",
-  "Testei botões principais",
-  "Testei formulários",
-  "Testei links",
-  "Testei checkout",
-  "Testei página de obrigado",
-  "Testei área de entrega",
-  "Testei no celular",
-  "Não encontrei scroll horizontal",
-  "Corrigi erros críticos antes de divulgar",
+const CHECKLIST_GROUPS: { title: string; items: string[] }[] = [
+  {
+    title: "Acesso",
+    items: [
+      "Testei como visitante",
+      "Testei login e logout",
+      "Testei como usuário logado",
+    ],
+  },
+  {
+    title: "Navegação",
+    items: [
+      "Testei botões principais",
+      "Testei links",
+      "Não encontrei página branca",
+      "Não encontrei scroll horizontal",
+    ],
+  },
+  {
+    title: "Conversão",
+    items: [
+      "Testei formulários",
+      "Testei checkout",
+      "Testei página de obrigado",
+    ],
+  },
+  {
+    title: "Entrega e mobile",
+    items: [
+      "Testei área de entrega",
+      "Testei no celular",
+      "Corrigi erros críticos antes de divulgar",
+    ],
+  },
 ];
+
+const CHECKLIST_TOTAL = CHECKLIST_GROUPS.reduce((acc, g) => acc + g.items.length, 0);
+
 
 const TAB_META: { id: TabId; label: string; icon: typeof ShieldCheck }[] = [
   { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
