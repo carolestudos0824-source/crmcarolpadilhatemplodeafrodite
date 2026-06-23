@@ -685,7 +685,7 @@ function EntregaInner() {
             moduleId={active}
           />
 
-          {(active === "fundamentos" || active === "planejar") && (
+          {active === "planejar" && (
             <div className="mt-8 mb-3">
               <h3 className="text-base font-heading font-bold text-foreground/95">
                 Ferramentas extras
@@ -696,9 +696,9 @@ function EntregaInner() {
             </div>
           )}
 
-          <GpsDoAppCard />
+          {active !== "fundamentos" && <GpsDoAppCard />}
 
-          <ArquitetoMelhoriasCard />
+          {active !== "fundamentos" && <ArquitetoMelhoriasCard />}
 
 
 
