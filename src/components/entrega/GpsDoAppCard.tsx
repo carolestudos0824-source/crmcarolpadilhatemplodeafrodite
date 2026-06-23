@@ -96,7 +96,18 @@ Dados do meu app (preencha antes de me responder a primeira vez):
 - Última coisa que fiz:
 - O que está me travando:`;
 
-export function GpsDoAppCard() {
+type GpsDoAppCardProps = {
+  defaultCollapsed?: boolean;
+  descriptionOverride?: string;
+};
+
+const GPS_DEFAULT_DESCRIPTION =
+  "Veja em que ponto da jornada você está, o que já fez e o que ainda falta para o app ficar pronto, publicável e vendável.";
+
+export function GpsDoAppCard({
+  defaultCollapsed = false,
+  descriptionOverride,
+}: GpsDoAppCardProps = {}) {
   return (
     <GlassCard className="mt-6 p-5">
       <div className="flex items-start gap-3">
@@ -114,11 +125,10 @@ export function GpsDoAppCard() {
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
-            Veja em que ponto da jornada você está, o que já fez e o que ainda falta para o app ficar pronto, publicável e vendável.
+            {descriptionOverride ?? GPS_DEFAULT_DESCRIPTION}
           </p>
           <EditablePromptBox
-            collapsible
-
+            collapsible={defaultCollapsed}
             saveSourceModule="gps-do-app"
             originalPrompt={GPS_PROMPT}
             storageKey="gps_do_app_prompt"
