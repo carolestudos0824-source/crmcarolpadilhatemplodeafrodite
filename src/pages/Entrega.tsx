@@ -61,6 +61,7 @@ import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
 import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { ModuleReviewCard } from "@/components/entrega/ModuleReviewCard";
+import { GpsDoAppCard } from "@/components/entrega/GpsDoAppCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
@@ -740,6 +741,10 @@ function EntregaInner() {
             objective={MODULE_HINTS[active]?.doNow}
             moduleId={active}
           />
+
+          <GpsDoAppCard />
+
+
 
 
           {/* Quando posso avançar? */}
