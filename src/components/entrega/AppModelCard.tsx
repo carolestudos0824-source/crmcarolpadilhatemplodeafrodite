@@ -204,15 +204,12 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
   };
 
   const handleReviewWithAgent = async () => {
-    try {
-      await navigator.clipboard.writeText(agentPrompt);
-      openAgenteArquiteto();
-      toast.success(
+    await copyPromptAndOpenAgent({
+      prompt: agentPrompt,
+      successMessage:
         "Tudo pronto. O prompt foi copiado e o Agente Arquiteto abriu em outra aba. Cole lá para revisar, tirar dúvidas e melhorar seu app antes de construir.",
-      );
-    } catch {
-      setAgentFallback(agentPrompt);
-    }
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
   };
 
   const fillContext = () => {
