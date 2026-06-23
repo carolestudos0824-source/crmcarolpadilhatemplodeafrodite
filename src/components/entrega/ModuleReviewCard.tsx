@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2, ShieldCheck } from "lucide-react";
+import { SearchCheck, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2, ShieldCheck } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import {
@@ -8,7 +8,8 @@ import {
   buildReviewLovablePrompt,
 } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
-import { openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { AgentClipboardFallback } from "@/components/entrega/AgentClipboardFallback";
 
 export function ModuleReviewCard({
   moduleName,
