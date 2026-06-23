@@ -235,6 +235,33 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
     <>
       {/* Card grid */}
       <GlassCard className="p-5 space-y-3 flex flex-col h-full">
+        {(model.category || model.badges?.length) && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {model.category && (
+              <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-white/10 bg-white/5 text-muted-foreground">
+                {model.category}
+              </span>
+            )}
+            {model.badges?.map((b) => {
+              const isHero = b === "Mais vendável";
+              const isEasy = b === "Fácil no Lovable";
+              return (
+                <span
+                  key={b}
+                  className={
+                    isHero
+                      ? "text-[10px] font-semibold px-2 py-0.5 rounded-md border border-accent/40 bg-accent/15 text-accent"
+                      : isEasy
+                      ? "text-[10px] font-semibold px-2 py-0.5 rounded-md border border-emerald-400/40 bg-emerald-400/10 text-emerald-200"
+                      : "text-[10px] font-semibold px-2 py-0.5 rounded-md border border-white/15 bg-white/5 text-foreground/80"
+                  }
+                >
+                  {b}
+                </span>
+              );
+            })}
+          </div>
+        )}
         <h3 className="font-heading font-semibold text-lg">{model.name}</h3>
         {model.shortDescription && (
           <p className="text-xs text-muted-foreground line-clamp-2">{model.shortDescription}</p>
@@ -250,6 +277,16 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <br />
             {model.pain}
           </p>
+          {(model.mvp ?? model.screens)?.length ? (
+            <div>
+              <span className="text-muted-foreground text-xs uppercase tracking-wider">MVP</span>
+              <ul className="mt-0.5 space-y-0.5">
+                {(model.mvp ?? model.screens).slice(0, 3).map((x) => (
+                  <li key={x} className="text-xs flex gap-1.5"><span className="text-accent">•</span>{x}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <p>
             <span className="text-muted-foreground text-xs uppercase tracking-wider">Monetização</span>
             <br />
@@ -268,9 +305,8 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
           </button>
           <button
             onClick={() => {
-              setEditedName(model.name);
-              setOpen(true);
-              setActionsOpen(true);
+              setContext(modelToContext(model, model.name));
+              toast.success("Ideia aplicada ao contexto do seu app.");
             }}
             className="flex-1 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center justify-center gap-2 text-sm font-semibold"
           >
@@ -278,6 +314,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
           </button>
         </div>
       </GlassCard>
+
 
       {/* Blueprint modal */}
       {open && (
