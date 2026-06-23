@@ -579,6 +579,7 @@ export const CommandCard = ({
       command={commandText}
       moduleId={moduleId}
     />
+    <AgentClipboardFallback prompt={agentFallback} onClose={() => setAgentFallback(null)} />
     </>
   );
 };
