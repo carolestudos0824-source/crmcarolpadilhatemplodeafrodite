@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2 } from "lucide-react";
+import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2, ShieldCheck } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import {
@@ -114,7 +114,7 @@ export function ModuleReviewCard({
         <div className="flex flex-col sm:flex-row gap-2">
           <button
             onClick={() => setStudioOpen(true)}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition border-white/20 bg-white/[0.03] text-foreground hover:bg-white/10"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg border text-sm font-semibold transition border-white/20 bg-white/[0.03] text-foreground hover:bg-white/10"
           >
             <Settings2 size={14} />
             Revisar prompt antes de copiar
@@ -124,31 +124,35 @@ export function ModuleReviewCard({
               copyTo(agentText, setOkAgent, "Agente Arquiteto");
               openAgenteArquiteto();
             }}
-            className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition ${
+            className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg border text-sm font-semibold transition ${
               okAgent
                 ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-                : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+                : "border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
             }`}
           >
             {okAgent ? <Check size={14} /> : <Bot size={14} />}
-            {okAgent ? "Copiado!" : "Revisar com o Agente"}
+            {okAgent ? "Copiado!" : "Revisar com o Agente primeiro"}
           </button>
           <button
             onClick={() => copyTo(lovableText, setOkLovable, "Lovable")}
-            className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition ${
+            className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg border text-sm font-semibold transition ${
               okLovable
                 ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-                : "border-white/15 bg-white/5 text-foreground hover:bg-white/10"
+                : "border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
             }`}
           >
-            {okLovable ? <Check size={14} /> : <Copy size={14} />}
-            {okLovable ? "Copiado!" : "Pedir revisão ao Lovable"}
+            {okLovable ? <Check size={14} /> : <ShieldCheck size={14} />}
+            {okLovable ? "Copiado!" : "Copiar auditoria para o Lovable"}
           </button>
         </div>
-        <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
-          Revise o prompt antes de copiar, converse com o Agente se quiser
-          melhorar a análise, ou peça ao Lovable para revisar o projeto atual.
+        <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1 mt-3">
+          <ShieldCheck size={11} className="inline mr-1 -mt-0.5" />
+          <strong className="font-semibold text-cyan-100">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
         </p>
+        <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
+          Está começando? Revise com o Agente primeiro. Esta etapa é uma revisão, então o Lovable apenas analisa — não altera o app.
+        </p>
+
       </GlassCard>
 
       <PromptReviewDialog
