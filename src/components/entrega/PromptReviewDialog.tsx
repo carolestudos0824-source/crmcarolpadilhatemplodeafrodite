@@ -152,15 +152,17 @@ export const PromptReviewDialog = ({
   const text = drafts[mode];
   const setText = (next: string) => setDrafts((d) => ({ ...d, [mode]: next }));
 
+  const contextComplete = hasActiveApp && isFilled;
+
   const copy = async () => {
-    if (!hasActiveApp) {
-      toast.error("Selecione um app antes de copiar o prompt para o Lovable.");
-      return;
-    }
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toast.success("Prompt executivo copiado. Use no Lovable para aplicar a mudança.");
+      if (contextComplete) {
+        toast.success("Prompt copiado para usar no Lovable.");
+      } else {
+        toast("Prompt copiado. Contexto incompleto: revise antes de colar no Lovable.");
+      }
       setTimeout(() => setCopied(false), 1500);
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
@@ -170,21 +172,25 @@ export const PromptReviewDialog = ({
   const copyAgent = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      if (hasActiveApp) {
-        toast.success("Prompt consultivo copiado. Cole no Agente para analisar antes de implementar.");
+      setCopied(true);
+      if (contextComplete) {
+        toast.success("Prompt copiado para enviar ao Agente.");
       } else {
-        toast("Prompt consultivo copiado com contexto temporário. Para aplicar no Lovable, selecione um app.");
+        toast("Prompt copiado. Contexto incompleto: revise antes de enviar ao Agente.");
       }
+      setTimeout(() => setCopied(false), 1500);
     } catch {
       toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
     }
   };
 
 
+
   const restore = () => {
     setDrafts((d) => ({ ...d, [mode]: originals[mode] }));
-    toast("Versão original restaurada.");
+    toast.success("Prompt original restaurado.");
   };
+
 
   const selectAll = () => {
     const el = textareaRef.current;
@@ -222,11 +228,12 @@ export const PromptReviewDialog = ({
               <h3 className="font-heading font-bold text-lg">Estúdio de Prompt</h3>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Revise, edite e ajuste o comando antes de gastar créditos no Lovable.
+              Edite o comando antes de copiar para o Lovable ou enviar ao Agente.
             </p>
             <p className="text-[11px] text-muted-foreground/90 mt-1 truncate">
               {hasActiveApp ? `App ativo: ${activeProject!.name}` : "Nenhum app ativo selecionado"}
             </p>
+
 
 
           </div>
@@ -274,193 +281,93 @@ export const PromptReviewDialog = ({
 
         {/* Body */}
         <div className="p-5 flex-1 overflow-auto space-y-3">
-          {/* Valor / antes de copiar */}
-          <div className="rounded-lg border border-accent/25 bg-accent/[0.06] p-3">
-            <p className="text-sm font-medium text-foreground/95">
-              Antes de copiar, revise
-            </p>
-            <p className="text-[12px] text-muted-foreground leading-snug mt-1">
-              Prompt incompleto pode gerar erro, retrabalho e gasto de créditos.
-              Use este estúdio para ajustar o comando ao app que você está
-              criando antes de enviar ao Lovable ou ao Agente.
-            </p>
-          </div>
-          {!hasActiveApp && (
-            <div className="rounded-lg border border-red-400/40 bg-red-400/[0.08] p-3 text-[12px]">
-              <p className="text-red-100 font-medium">Nenhum app ativo selecionado.</p>
-              <p className="text-red-100/90 mt-1">
-                Para evitar prompt errado, selecione ou crie um app em <strong>Meus Apps</strong> antes de copiar para o Lovable.
-              </p>
-            </div>
-          )}
-
-
-          {/* Indicador de contexto */}
-          <div
-            className={`rounded-lg border p-3 flex items-center justify-between gap-3 flex-wrap ${
-              isFilled
-                ? "border-emerald-400/30 bg-emerald-400/[0.06]"
-                : "border-amber-400/30 bg-amber-400/[0.06]"
-            }`}
-          >
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <span
-                className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[11px] font-semibold ${
-                  isFilled
-                    ? "bg-emerald-400/15 text-emerald-200 border border-emerald-400/30"
-                    : "bg-amber-400/15 text-amber-200 border border-amber-400/30"
-                }`}
-              >
-                {isFilled ? <CheckCircle2 size={12} /> : <AlertTriangle size={12} />}
-                {isFilled ? "Contexto do app preenchido" : "Contexto incompleto"}
-              </span>
-              <span className="text-[11px] text-muted-foreground">
-                Quanto mais completo o contexto, melhor o prompt.
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                openEditor();
-              }}
-              className="text-[11px] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-foreground/90"
-            >
-              <Settings2 size={12} /> Editar contexto
-            </button>
-          </div>
-
-          {!isFilled && (
-            <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-3 text-[12px]">
-              <p className="text-foreground/90">
-                Seu contexto do app ainda está vazio. O prompt vai funcionar,
-                mas pode ficar genérico. Preencha o contexto para gerar comandos
-                mais precisos.
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    openEditor();
-                  }}
-                  className="px-3 py-1.5 rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-[11px]"
-                >
-                  Preencher contexto
-                </button>
-                <button
-                  type="button"
-                  onClick={() => toast("Sem problema, continue editando o prompt.")}
-                  className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-[11px] text-muted-foreground"
-                >
-                  Continuar assim
-                </button>
+          {/* Aviso compacto de contexto (só aparece se algo estiver faltando) */}
+          {!contextComplete && (
+            <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3">
+              <div className="flex items-start gap-2">
+                <AlertTriangle size={14} className="text-amber-300 shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground/95">Contexto incompleto</p>
+                  <p className="text-[12px] text-muted-foreground leading-snug mt-0.5">
+                    O prompt ainda funciona, mas pode ficar genérico. Para melhores resultados, selecione um app ou preencha o contexto.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onClose();
+                        openEditor();
+                      }}
+                      className="px-3 py-1.5 rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-[11px] inline-flex items-center gap-1.5"
+                    >
+                      <Settings2 size={12} /> Editar contexto
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => toast("Sem problema, continue editando o prompt.")}
+                      className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-[11px] text-muted-foreground"
+                    >
+                      Continuar assim
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
           {/* Editor */}
-          <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3 flex items-start gap-2">
-            <Pencil size={14} className="text-amber-300 shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-foreground/95">
-                Edite seu prompt aqui
-              </p>
-              <p className="text-[12px] text-muted-foreground leading-snug">
-                Você pode apagar, escrever, reorganizar ou deixar o comando mais
-                específico antes de copiar.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <label
-              htmlFor="prompt-final-textarea"
-              className="text-[11px] uppercase tracking-wider text-foreground/80"
-            >
-              Edite seu prompt aqui
-            </label>
-            <div className="flex items-center gap-2 flex-wrap">
+          <div>
+            <div className="flex items-center justify-between gap-2 flex-wrap mb-1.5">
+              <label
+                htmlFor="prompt-final-textarea"
+                className="text-[11px] uppercase tracking-wider text-foreground/80 inline-flex items-center gap-1.5"
+              >
+                <Pencil size={12} className="text-accent" /> Edite seu prompt
+              </label>
               <button
                 type="button"
                 onClick={selectAll}
-                className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-muted-foreground"
+                className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-md text-muted-foreground hover:bg-white/5"
+                aria-label="Selecionar tudo"
               >
-                <MousePointerClick size={12} /> Selecionar tudo
-              </button>
-              <button
-                type="button"
-                onClick={handleImproveWithAgent}
-                className="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-md border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25"
-                title="Sem custo de API nesta fase: você melhora com o Agente Arquiteto."
-              >
-                <Sparkles size={12} /> Refinar este prompt com o Agente
+                <MousePointerClick size={11} /> Selecionar tudo
               </button>
             </div>
+            <p className="text-[11px] text-muted-foreground/90 mb-2">
+              Você pode apagar, complementar ou reorganizar o comando antes de copiar.
+            </p>
+            <textarea
+              id="prompt-final-textarea"
+              ref={textareaRef}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              spellCheck={false}
+              placeholder="Escreva ou edite o prompt aqui antes de copiar…"
+              className="w-full min-h-[320px] rounded-xl border border-accent/40 focus:border-accent bg-black/40 p-4 text-xs md:text-[13px] font-mono text-foreground/95 leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent/40 resize-y caret-accent"
+            />
           </div>
 
-          <p className="text-[11px] text-muted-foreground/90">
-            Use <strong className="text-violet-200">Refinar este prompt com o Agente</strong> para lapidar o prompt antes de gastar créditos no Lovable.
-          </p>
-          <p className="text-[11px] text-muted-foreground/70">
-            Sem custo de API nesta fase: você melhora com o Agente Arquiteto.
-          </p>
-
-
-          <textarea
-            id="prompt-final-textarea"
-            ref={textareaRef}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            spellCheck={false}
-            placeholder="Escreva ou edite o prompt aqui antes de copiar…"
-            className="w-full min-h-[300px] rounded-xl border border-accent/40 focus:border-accent bg-black/40 p-4 text-xs md:text-[13px] font-mono text-foreground/95 leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent/40 resize-y caret-accent"
-          />
-
-
-
-
-          {/* Checklist de qualidade */}
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-[11px] uppercase tracking-wider text-foreground/80 mb-2">
+          {/* Checklist de qualidade (compacto) */}
+          <details className="rounded-lg border border-white/10 bg-white/[0.03] p-3 group">
+            <summary className="text-[11px] uppercase tracking-wider text-foreground/80 cursor-pointer select-none">
               {mode === "lovable" ? "Qualidade do prompt executivo" : "Qualidade do prompt consultivo"}
-            </p>
-            <ul className="grid sm:grid-cols-2 gap-1.5">
+            </summary>
+            <ul className="grid sm:grid-cols-2 gap-1.5 mt-3">
               {(mode === "lovable" ? QUALITY_CHECKS_LOVABLE : QUALITY_CHECKS_AGENT).map((c) => {
                 const ok = c.match(text);
                 return (
-                  <li
-                    key={c.label}
-                    className="flex items-center gap-2 text-[12px]"
-                  >
+                  <li key={c.label} className="flex items-center gap-2 text-[12px]">
                     {ok ? (
                       <CheckCircle2 size={13} className="text-emerald-300 shrink-0" />
                     ) : (
                       <Circle size={13} className="text-muted-foreground shrink-0" />
                     )}
-                    <span className={ok ? "text-foreground/90" : "text-muted-foreground"}>
-                      {c.label}
-                    </span>
+                    <span className={ok ? "text-foreground/90" : "text-muted-foreground"}>{c.label}</span>
                   </li>
                 );
               })}
             </ul>
-          </div>
-
-          {/* Como usar */}
-          <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3 text-[12px] text-muted-foreground leading-relaxed">
-            <p className="text-foreground/90 font-medium mb-1">Como usar</p>
-            <ol className="list-decimal pl-5 space-y-0.5">
-              <li>Revise o texto.</li>
-              <li>Edite o que precisar.</li>
-              <li>Opcional: clique em Refinar este prompt com o Agente para lapidar antes de copiar.</li>
-              <li>Escolha Lovable para executar a mudança ou Agente para planejar antes.</li>
-              <li>
-                Depois de aplicar, volte ao módulo e use “Revisar esta etapa
-                no app”.
-              </li>
-            </ol>
-          </div>
+          </details>
         </div>
 
         {/* Footer / botões */}
@@ -477,35 +384,37 @@ export const PromptReviewDialog = ({
             onClick={restore}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm"
           >
-            <RotateCcw size={14} /> Restaurar versão original
+            <RotateCcw size={14} /> Restaurar original
           </button>
-          <a
-            href={APP_CONFIG.GPT_AGENT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-sm"
-          >
-            <ExternalLink size={14} /> Abrir Agente
-          </a>
+          {mode === "lovable" ? (
+            <button
+              type="button"
+              onClick={handleImproveWithAgent}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-violet-400/50 bg-violet-500/15 text-violet-100 hover:bg-violet-500/25 text-sm"
+              title="Use o Agente para melhorar o prompt antes de copiar."
+            >
+              <Sparkles size={14} /> Refinar com Agente
+            </button>
+          ) : (
+            <a
+              href={APP_CONFIG.GPT_AGENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm"
+            >
+              <ExternalLink size={14} /> Enviar para o Agente
+            </a>
+          )}
           <button
             type="button"
-            onClick={copyAgent}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm"
-          >
-            <Bot size={14} /> Planejar com o Agente
-          </button>
-          <button
-            type="button"
-            onClick={copy}
-            disabled={!hasActiveApp}
-            className={`btn-primary text-sm ${!hasActiveApp ? "opacity-50 cursor-not-allowed" : ""}`}
-            title={!hasActiveApp ? "Selecione um app antes de gerar prompt para Lovable." : undefined}
+            onClick={mode === "lovable" ? copy : copyAgent}
+            className="btn-primary text-sm"
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
-            Copiar para o Lovable
+            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar para o Agente"}
           </button>
-
         </div>
+
       </div>
     </div>
   );
