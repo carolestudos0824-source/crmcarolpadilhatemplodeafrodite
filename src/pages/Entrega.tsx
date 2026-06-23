@@ -541,9 +541,8 @@ function EntregaInner() {
                 </button>
                 <button
                   type="button"
-                  onClick={appProjects.openDrawer}
+                  onClick={() => setSavedPromptsOpen(true)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
-                  title="Prompts salvos ficam disponíveis no drawer do app ativo"
                 >
                   <Bookmark size={16} className="shrink-0" />
                   <span className="flex-1 leading-tight">Prompts salvos</span>
