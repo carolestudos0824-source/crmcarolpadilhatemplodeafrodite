@@ -247,7 +247,7 @@ type Ctx = {
 const AppProjectsContext = createContext<Ctx | null>(null);
 
 export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
-  const { context, setContext, setRuntimeContext, restoreTemporaryContext } = useProjectContext();
+  const { context, setRuntimeContext, restoreTemporaryContext } = useProjectContext();
   const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<AppProject[]>([]);
   const [activeId, setActiveIdState] = useState<string | null>(readActiveId());
@@ -291,16 +291,11 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const valid = aid ? list.find((p) => p.id === aid) : null;
       if (valid) {
         setRuntimeContext(valid.context);
+      } else if (aid) {
+        setActiveId(null);
+        restoreTemporaryContext();
       } else {
-        // stale or missing id — auto-select most recent non-archived if any
-        const fallback = pickAutoActive(list);
-        if (fallback) {
-          setActiveId(fallback.id);
-          setRuntimeContext(fallback.context);
-        } else if (aid) {
-          setActiveId(null);
-          restoreTemporaryContext();
-        }
+        restoreTemporaryContext();
       }
       // migration flags
       setHasLocalProjectsToImport(list.length === 0 && readLegacyProjects().length > 0);
