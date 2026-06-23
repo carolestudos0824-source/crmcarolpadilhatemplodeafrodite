@@ -64,11 +64,18 @@ export const FirstAppOnboarding = () => {
           </span>
         </div>
       ) : (
-        <div className="mb-4 flex items-start gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-xs text-yellow-200">
-          <AlertCircle size={14} className="shrink-0 mt-0.5" />
-          <span>
-            Nenhum app ativo selecionado. Comece criando ou selecionando um app em <strong>Meus Apps</strong>.
-          </span>
+        <div className="mb-4 flex items-start justify-between gap-3 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-xs text-yellow-200">
+          <div className="flex items-start gap-2">
+            <AlertCircle size={14} className="shrink-0 mt-0.5" />
+            <span>Para personalizar os prompts, primeiro crie ou selecione um app.</span>
+          </div>
+          <button
+            type="button"
+            onClick={openDrawer}
+            className="shrink-0 px-2 py-1 rounded-md border border-yellow-400/40 hover:bg-yellow-500/10 text-yellow-100 text-[11px] font-medium"
+          >
+            Criar ou selecionar meu app
+          </button>
         </div>
       )}
 
@@ -77,7 +84,7 @@ export const FirstAppOnboarding = () => {
           icon={<FolderPlus size={15} />}
           title="1. Crie ou selecione seu app"
           text="Antes de gerar prompts, escolha qual aplicativo você está construindo. Isso evita contexto errado."
-          buttonLabel="Abrir Meus Apps"
+          buttonLabel="Criar ou selecionar meu app"
           onClick={openDrawer}
         />
         <Step

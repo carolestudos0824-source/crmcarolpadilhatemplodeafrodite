@@ -550,7 +550,11 @@ function EntregaInner() {
                 <button
                   type="button"
                   onClick={() => {
-                    const target = (appProjects.activeProject?.currentModuleId as ModuleId | undefined) ?? active;
+                    if (!appProjects.activeProject) {
+                      appProjects.openDrawer();
+                      return;
+                    }
+                    const target = (appProjects.activeProject.currentModuleId as ModuleId | undefined) ?? active;
                     goTo(target);
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-accent/30 bg-accent/10 text-accent hover:bg-accent/15"
@@ -697,21 +701,7 @@ function EntregaInner() {
                 </div>
               </details>
             </>
-          ) : (
-            <>
-              <PainSearchNextStep goTo={goTo} />
-
-              <FirstAppOnboarding />
-
-              <JourneyStartGuide
-                active={active}
-                goTo={goTo}
-                effectiveModuleDone={effectiveModuleDone}
-              />
-
-              <TwoPathsExplainer />
-            </>
-          )}
+          ) : null}
 
 
 
