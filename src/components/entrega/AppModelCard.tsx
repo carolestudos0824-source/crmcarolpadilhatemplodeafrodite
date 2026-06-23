@@ -17,6 +17,7 @@ import { useProjectContext, EMPTY_PROJECT_CONTEXT, type ProjectContext } from "@
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { AGENTE_ARQUITETO_URL, openAgenteArquiteto } from "@/lib/agenteArquiteto";
 
 
 /* ---------- helpers ---------- */
@@ -180,6 +181,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
   const [actionsOpen, setActionsOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
 
   const { setContext, openEditor } = useProjectContext();
   const {
@@ -194,9 +196,21 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
   const copyToLovable = async () => {
     try {
       await navigator.clipboard.writeText(lovablePrompt);
-      toast.success("Prompt copiado. Cole no Lovable.");
+      toast.success("Prompt copiado. Agora cole no Lovable para começar seu app.");
     } catch {
       toast.error("Não foi possível copiar.");
+    }
+  };
+
+  const handleReviewWithAgent = async () => {
+    try {
+      await navigator.clipboard.writeText(agentPrompt);
+      openAgenteArquiteto();
+      toast.success(
+        "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole o prompt lá para revisar sua ideia.",
+      );
+    } catch {
+      setAgentFallback(agentPrompt);
     }
   };
 
@@ -303,12 +317,14 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             }}
             className="flex-1 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 inline-flex items-center justify-center gap-2 text-sm"
           >
-            <Eye size={14} /> Ver blueprint
+            <Eye size={14} /> Ver plano do app
           </button>
           <button
             onClick={() => {
               setContext(modelToContext(model, model.name));
-              toast.success("Ideia aplicada ao contexto do seu app.");
+              setEditedName(model.name);
+              setOpen(true);
+              toast.success("Ideia selecionada. Abra o plano para revisar com o Agente Arquiteto.");
             }}
             className="flex-1 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center justify-center gap-2 text-sm font-semibold"
           >
@@ -332,13 +348,16 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <div className="flex items-start justify-between gap-3 p-5 border-b border-white/10 sticky top-0 bg-background z-10">
               <div className="min-w-0 flex-1">
                 <div className="text-[11px] uppercase tracking-wider text-accent font-semibold mb-1">
-                  Mapa inicial do app
+                  Plano inicial do app
                 </div>
                 <h3 className="font-heading font-bold text-xl text-foreground truncate">
                   {editedName.trim() || model.name}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1">
                   Use esta ideia como ponto de partida. Você pode trocar o nome, adaptar o público e transformar isso em um app em construção.
+                </p>
+                <p className="text-xs text-accent/90 mt-2">
+                  Antes de copiar para o Lovable, você pode revisar este plano com o Agente Arquiteto de Aplicativos.
                 </p>
               </div>
               <button
@@ -390,8 +409,8 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                     <button onClick={() => setPromptOpen(true)} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs">
                       <Wand2 size={13} /> Abrir no Estúdio de Prompt
                     </button>
-                    <button onClick={() => setPromptOpen(true)} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs">
-                      <Bot size={13} /> Revisar com o Agente
+                    <button onClick={handleReviewWithAgent} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold">
+                      <Bot size={13} /> Revisar com Agente Arquiteto
                     </button>
                     <button onClick={copyToLovable} className="sm:col-span-2 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold">
                       <Copy size={13} /> Copiar para o Lovable
@@ -515,21 +534,30 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                   saveSourceModule="ideias"
                   originalPrompt={lovablePrompt}
                   storageKey={`appmodel_prompt__${model.name}`}
-                  copyLabel="Copiar para o Lovable"
+                  copyLabel="Copiar prompt para o Lovable"
                   helperText="Cole no Lovable como primeiro prompt do app."
                 />
+                <p className="text-[11px] text-muted-foreground">
+                  Fluxo recomendado: revise com o Agente Arquiteto, ajuste o plano e depois copie para o Lovable.
+                </p>
                 <div className="flex flex-wrap gap-2 pt-1">
+                  <button
+                    onClick={handleReviewWithAgent}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold"
+                  >
+                    <Bot size={13} /> Revisar com Agente Arquiteto
+                  </button>
+                  <button
+                    onClick={copyToLovable}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold"
+                  >
+                    <Copy size={13} /> Copiar prompt para o Lovable
+                  </button>
                   <button
                     onClick={() => setPromptOpen(true)}
                     className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
                   >
-                    <Wand2 size={13} /> Revisar prompt antes de copiar
-                  </button>
-                  <button
-                    onClick={() => setPromptOpen(true)}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs"
-                  >
-                    <Bot size={13} /> Revisar com o Agente
+                    <Wand2 size={13} /> Melhorar texto do prompt
                   </button>
                 </div>
                 <p className="text-[11px] text-muted-foreground">
@@ -595,6 +623,59 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
         stepObjective="Transformar esta ideia em primeiro prompt forte para o Lovable."
         customPrompts={{ lovable: lovablePrompt, agent: agentPrompt }}
       />
+
+      {/* Fallback do Agente Arquiteto: clipboard bloqueado */}
+      {agentFallback && (
+        <div
+          className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setAgentFallback(null)}
+        >
+          <div
+            className="bg-background border border-white/10 rounded-2xl max-w-xl w-full p-5 space-y-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h4 className="font-heading font-bold text-lg">Copie manualmente o prompt</h4>
+            <p className="text-xs text-muted-foreground">
+              Não foi possível copiar automaticamente. Copie o texto abaixo e cole no Agente Arquiteto.
+            </p>
+            <textarea
+              readOnly
+              value={agentFallback}
+              className="w-full h-64 rounded-lg border border-white/10 bg-black/40 p-3 text-xs text-foreground font-mono"
+              onFocus={(e) => e.currentTarget.select()}
+            />
+            <div className="flex flex-wrap gap-2 justify-end">
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(agentFallback);
+                    toast.success("Prompt copiado.");
+                  } catch {
+                    toast.error("Selecione o texto e copie manualmente (Ctrl+C).");
+                  }
+                }}
+                className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-xs"
+              >
+                Copiar manualmente
+              </button>
+              <a
+                href={AGENTE_ARQUITETO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold"
+              >
+                Abrir Agente Arquiteto
+              </a>
+              <button
+                onClick={() => setAgentFallback(null)}
+                className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-xs"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
