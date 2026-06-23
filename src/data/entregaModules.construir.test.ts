@@ -34,9 +34,9 @@ describe("COMMANDS_CONSTRUIR Etapa 1 — construção (não plano)", () => {
     expect(content).not.toMatch(/Fábrica de Apps/i);
   });
 
-  it("substitui [nome do app ativo] por 'Jogo do Amor'", () => {
-    const text = content.split("[nome do app ativo]").join("Jogo do Amor");
-    expect(text).toContain("Construa a primeira versão do app Jogo do Amor");
+  it("substitui [nome do app ativo] pelo nome real selecionado", () => {
+    const text = content.split("[nome do app ativo]").join("Clube de Receitas");
+    expect(text).toContain("Construa a primeira versão do app Clube de Receitas");
     expect(text).not.toContain("[nome do app ativo]");
   });
 });
