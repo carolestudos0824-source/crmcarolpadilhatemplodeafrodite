@@ -783,6 +783,7 @@ function EntregaInner() {
         </main>
 
       </div>
+      <SavedPromptsDrawer open={savedPromptsOpen} onClose={() => setSavedPromptsOpen(false)} />
     </div>
   );
 }
