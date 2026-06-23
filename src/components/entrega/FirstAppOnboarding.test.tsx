@@ -19,7 +19,7 @@ describe("FirstAppOnboarding", () => {
   it("sem app ativo, mostra 'Nenhum app ativo selecionado'", () => {
     mockUseAppProjects.mockReturnValue({ activeProject: null, openDrawer: vi.fn() });
     render(<FirstAppOnboarding />);
-    expect(screen.getByText(/Nenhum app ativo selecionado/i)).toBeInTheDocument();
+    expect(screen.getByText(/Para personalizar os prompts/i)).toBeInTheDocument();
   });
 
   it("com app ativo, mostra o nome do app ativo", () => {
