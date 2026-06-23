@@ -238,7 +238,11 @@ Responda de forma prática, com o próximo prompt pronto para copiar e colar no 
 
   const nextLovablePrompt = useMemo(() => {
     const name = editedName.trim() || model.name;
-    return `Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
+    return `Este comando é uma continuação da construção do app ${name}. A Fábrica de Apps com IA é apenas o programa-guia e não deve aparecer no app final.
+
+Não crie, não copie e não inclua marca, logo, textos, área de membros ou estrutura da Fábrica de Apps com IA. Continue construindo apenas o app ${name}.
+
+Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
 
 Instruções do Agente:
 
