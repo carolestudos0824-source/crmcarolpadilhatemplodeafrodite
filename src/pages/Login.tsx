@@ -126,8 +126,9 @@ export default function Login() {
   // ============ Google ============
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  // ============ Accordion (outras formas) ============
-  const [otherOpen, setOtherOpen] = useState(false);
+  // ============ Tabs + password sub-accordion ============
+  const [authTab, setAuthTab] = useState<"entrar" | "criar">("entrar");
+  const [passwordOpen, setPasswordOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
