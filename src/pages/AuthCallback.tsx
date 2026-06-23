@@ -20,6 +20,7 @@ const hasAuthError = () => {
 export default function AuthCallback() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const nextPath = searchParams.get("next") || "/entrega";
   const [message, setMessage] = useState("Validando seu acesso…");
   const [expired, setExpired] = useState(false);
 
@@ -46,7 +47,7 @@ export default function AuthCallback() {
         if (cancelled) return;
 
         if (access.canEnter) {
-          navigate(searchParams.get("next") || "/entrega", { replace: true });
+          navigate(nextPath, { replace: true });
           return;
         }
 
@@ -61,7 +62,7 @@ export default function AuthCallback() {
     return () => {
       cancelled = true;
     };
-  }, [navigate, searchParams]);
+  }, [navigate, nextPath]);
 
   if (expired) {
     return (
