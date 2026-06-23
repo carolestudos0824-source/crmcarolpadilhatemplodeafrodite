@@ -13,8 +13,8 @@ const ctx = {
 
 const jogoDoAmor = {
   ...EMPTY_PROJECT_CONTEXT,
-  appName: "Jogo do Amor",
-  appDoes: "Perguntas e desafios para casais",
+  appName: "Clube de Receitas",
+  appDoes: "Receitas e cardápios para famílias",
 };
 
 
@@ -124,16 +124,16 @@ describe("contexto do app ativo — separação plataforma × app-alvo", () => {
     const p = buildAgentPrompt({
       context: jogoDoAmor,
       stepName: "Definir monetização",
-      command: "Como cobrar pelo Jogo do Amor?",
+      command: "Como cobrar pelo Clube de Receitas?",
       moduleId: "monetizacao",
     });
-    expect(p).toMatch(/Estou criando o app Jogo do Amor/);
-    expect(p).toMatch(/Jogo do Amor/);
+    expect(p).toMatch(/Estou criando o app Clube de Receitas/);
+    expect(p).toMatch(/Clube de Receitas/);
     expect(p).not.toMatch(/Fábrica de Apps/i);
   });
 
   it("não mostra [não preenchido] em massa quando faltam dados", () => {
-    const sparse = { ...EMPTY_PROJECT_CONTEXT, appName: "Jogo do Amor", appDoes: "App para casais" };
+    const sparse = { ...EMPTY_PROJECT_CONTEXT, appName: "Clube de Receitas", appDoes: "App para receitas" };
     const p = buildLovablePrompt({
       context: sparse,
       stepName: "MVP",
