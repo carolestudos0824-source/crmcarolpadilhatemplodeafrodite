@@ -54,6 +54,9 @@ export const CommandCard = ({
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [editedCommand, setEditedCommand] = useState(commandText);
+  const [editedAgent, setEditedAgent] = useState(agentPrompt ?? "");
+  const [editedCorrection, setEditedCorrection] = useState(correctionPrompt ?? "");
   const { isCommandDone, toggleCommand } = useUserProgress();
   const { context, isFilled, openEditor } = useProjectContext();
   const done = isCommandDone(completedKey);
@@ -63,7 +66,7 @@ export const CommandCard = ({
       context,
       stepName: title,
       stepObjective: objective ?? description,
-      command: commandText,
+      command: editedCommand,
       moduleId,
     });
   const enrichedAgent = () =>
@@ -71,9 +74,10 @@ export const CommandCard = ({
       context,
       stepName: title,
       stepObjective: objective ?? description,
-      command: agentPrompt || commandText,
+      command: editedAgent || editedCommand,
       moduleId,
     });
+
 
   const toggleDone = () => {
     toggleCommand(completedKey);
