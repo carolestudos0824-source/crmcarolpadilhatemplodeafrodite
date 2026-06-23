@@ -99,7 +99,9 @@ Regras:
 
 const buildAgentIdeaPrompt = (m: AppModel, editedName: string) => {
   const name = editedName.trim() || m.name;
-  return `Estou usando a Fábrica de Apps com IA para transformar uma ideia em app no Lovable.
+  return `Estou usando a Fábrica de Apps com IA como programa-guia. O app em construção é: ${name}.
+
+Não analise a Fábrica de Apps com IA. Analise apenas a ideia do app abaixo e me ajude a transformá-la num prompt pronto para o Lovable construir esse app (e não a Fábrica).
 
 Quero criar um app chamado: ${name}
 
