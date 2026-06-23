@@ -746,6 +746,17 @@ function EntregaInner() {
             </div>
           )}
 
+          {active === "ideias" && (
+            <div className="mt-10 mb-3">
+              <h3 className="text-base font-heading font-bold text-foreground/95">
+                Depois de escolher uma ideia
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Use o GPS do App e o Arquiteto de Melhorias para revisar a ideia escolhida e decidir os próximos ajustes.
+              </p>
+            </div>
+          )}
+
           {active !== "fundamentos" && (
             <GpsDoAppCard
               defaultCollapsed
@@ -2109,7 +2120,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
 
 
   if (active === "ideias") {
-    return <IdeiasProntasModule onAnalisarViabilidade={() => goTo("validacao")} />;
+    return <IdeiasProntasModule onAnalisarViabilidade={() => goTo("validacao")} onProximoPasso={() => goTo("planejar")} />;
   }
 
 

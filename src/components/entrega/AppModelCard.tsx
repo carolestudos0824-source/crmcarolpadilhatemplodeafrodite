@@ -427,19 +427,7 @@ Regras:
             {model.monetization}
           </p>
         </div>
-        <div className="flex gap-2 pt-2">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setEditedName(model.name);
-              setOpen(true);
-            }}
-            className="flex-1 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 inline-flex items-center justify-center gap-2 text-sm"
-          >
-            <Eye size={14} /> Ver plano do app
-          </button>
+        <div className="flex flex-col sm:flex-row-reverse gap-2 pt-2">
           <button
             type="button"
             onClick={(e) => {
@@ -450,9 +438,21 @@ Regras:
               setOpen(true);
               toast.success("Ideia selecionada. Abra o plano para revisar com o Agente Arquiteto.");
             }}
-            className="flex-1 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center justify-center gap-2 text-sm font-semibold"
+            className="w-full sm:flex-1 min-h-[44px] px-4 py-2.5 rounded-lg border border-accent/60 bg-accent text-background hover:bg-accent/90 inline-flex items-center justify-center gap-2 text-sm font-semibold shadow-[0_0_0_1px_rgba(0,194,255,0.25)]"
           >
             <Sparkles size={14} /> Usar esta ideia
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setEditedName(model.name);
+              setOpen(true);
+            }}
+            className="w-full sm:w-auto min-h-[44px] px-3 py-2 rounded-lg border border-white/10 bg-transparent text-muted-foreground hover:text-foreground hover:bg-white/5 inline-flex items-center justify-center gap-1.5 text-xs"
+          >
+            <Eye size={12} /> Ver plano do app
           </button>
         </div>
 
