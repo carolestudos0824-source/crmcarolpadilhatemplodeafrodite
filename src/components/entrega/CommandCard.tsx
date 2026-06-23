@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info } from "lucide-react";
+import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info, ShieldCheck } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
-import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
+import { wrapLovable, LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
