@@ -9,7 +9,7 @@ import {
   FolderPlus,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
-import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
+
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { APP_CONFIG } from "@/config/appConfig";
