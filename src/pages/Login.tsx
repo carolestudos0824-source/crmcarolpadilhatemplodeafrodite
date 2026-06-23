@@ -836,13 +836,13 @@ export default function Login() {
             <div className={cardCls}>
               <div className="flex items-center gap-2 mb-4">
                 <ShieldCheck size={18} className="text-accent" />
-                <h2 className="font-heading font-semibold text-lg">Como acessar seu programa</h2>
+                <h2 className="font-heading font-semibold text-lg">Como acessar</h2>
               </div>
               <ol className="space-y-3 text-sm text-muted-foreground">
                 {[
-                  "Use o mesmo e-mail informado na compra.",
-                  "Entre com Google, link por e-mail ou senha.",
-                  "Se o acesso não aparecer, confira o e-mail usado no pagamento ou fale com o suporte.",
+                  "Digite o e-mail usado na compra.",
+                  "Clique em \u201CReceber link de acesso\u201D.",
+                  "Abra o e-mail recebido e entre no programa.",
                 ].map((step, i) => (
                   <li key={i} className="flex gap-3">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
@@ -852,11 +852,14 @@ export default function Login() {
                   </li>
                 ))}
               </ol>
+              <p className="text-[11px] text-muted-foreground/70 mt-4">
+                Google e senha são opções alternativas.
+              </p>
             </div>
 
             <div className={cardCls}>
               <h3 className="font-heading font-semibold text-base mb-2">
-                Ainda não tem acesso?
+                Ainda não comprou?
               </h3>
               <p className="text-xs text-muted-foreground mb-3">
                 Garanta a Fábrica de Apps com IA por R$47, pagamento único.
