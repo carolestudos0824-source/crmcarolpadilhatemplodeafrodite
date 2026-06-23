@@ -506,13 +506,14 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         const next = pickAutoActive(remaining);
         if (next) {
           setActiveId(next.id);
-          setContext(next.context);
+          setRuntimeContext(next.context);
         } else {
           setActiveId(null);
+          restoreTemporaryContext();
         }
       }
     },
-    [userId, activeId, projects, removeLocal, setActiveId, setContext],
+    [userId, activeId, projects, removeLocal, setActiveId, setRuntimeContext, restoreTemporaryContext],
   );
 
   const archiveProject = useCallback<Ctx["archiveProject"]>(
@@ -703,11 +704,11 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       legacy.findIndex((r) => (r as { id?: string })?.id === oldActiveId) ?? -1;
     if (match >= 0 && projs[match]) {
       setActiveId(projs[match].id);
-      setContext(projs[match].context);
+      setRuntimeContext(projs[match].context);
     }
     setHasLocalProjectsToImport(false);
     return projs.length;
-  }, [userId, setActiveId, setContext]);
+  }, [userId, setActiveId, setRuntimeContext]);
 
   const createProjectFromLocalContext = useCallback<Ctx["createProjectFromLocalContext"]>(async () => {
     const ctx = readLocalContext();
