@@ -60,6 +60,7 @@ export const AgentArchitectCard = ({
   eyebrow,
   variant = "hero",
   className = "",
+  onClick,
 }: AgentArchitectCardProps) => {
   const hasPrompt = !!prompt && prompt.trim().length > 0;
   const finalCta = ctaLabel ?? (hasPrompt ? "Revisar com o Agente Arquiteto" : "Abrir Agente Arquiteto");
