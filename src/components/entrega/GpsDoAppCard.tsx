@@ -114,7 +114,7 @@ export function GpsDoAppCard() {
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
-            Saiba onde você está, o que falta fazer e o que bloqueia domínio, venda e escala.
+            Veja em que ponto da jornada você está, o que já fez e o que ainda falta para o app ficar pronto, publicável e vendável.
           </p>
           <EditablePromptBox
             originalPrompt={GPS_PROMPT}

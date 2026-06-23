@@ -98,9 +98,7 @@ export function ArquitetoMelhoriasCard() {
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
-            Use para analisar melhorias futuras, prints, ideias, frameworks ou
-            módulos e decidir onde encaixar cada item dentro do programa — sem
-            inflar a experiência.
+            Use para planejar melhorias futuras do seu app com estratégia, decidindo o que vale adicionar agora, o que fica para depois e como evoluir sem inflar o projeto.
           </p>
           <EditablePromptBox
             originalPrompt={ARQUITETO_MELHORIAS_PROMPT}

@@ -262,7 +262,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Use para pensar antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
-              : "Cole no projeto do seu app no Lovable."
+              : undefined
           }
         />
       )}
@@ -300,6 +300,9 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         <p className="text-muted-foreground max-w-3xl">
           Antes de abrir o Lovable, você precisa saber qual problema seu app resolve, quem
           vai usar e qual será a ação principal.
+        </p>
+        <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
+          Os comandos abaixo você copia e cola no chat do seu projeto no Lovable. Você pode ajustar o texto antes de copiar.
         </p>
       </header>
 
