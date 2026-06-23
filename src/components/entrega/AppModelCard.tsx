@@ -210,7 +210,9 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
     return `Analise o resultado que o Lovable gerou para meu app.
 
 Contexto:
-Estou usando a Fábrica de Apps com IA para criar o app: ${name}
+Estou usando a Fábrica de Apps com IA como programa-guia. O app em construção é: ${name}.
+
+Não analise a Fábrica de Apps com IA. Analise apenas o app que o Lovable gerou.
 
 O objetivo do app é:
 ${objective}
