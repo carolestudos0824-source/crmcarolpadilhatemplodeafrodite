@@ -1,4 +1,5 @@
 import { ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Section } from "@/components/Section";
 import { CheckoutSummary } from "@/components/CheckoutSummary";
 import { Logo } from "@/components/Logo";
@@ -7,6 +8,7 @@ import { openConfiguredUrl } from "@/lib/openLink";
 import { APP_CONFIG } from "@/config/appConfig";
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const plan = PLANS[0];
   const checkoutUrl = plan.checkoutUrl();
   return (
