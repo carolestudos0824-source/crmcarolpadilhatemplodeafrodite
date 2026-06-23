@@ -336,9 +336,8 @@ export const MyAppsDrawer = () => {
           <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3 text-[11px] text-muted-foreground flex items-start gap-2">
             <Settings2 size={12} className="mt-0.5 shrink-0" />
             <span>
-              Para editar todos os campos (público, problema, promessa,
-              checkout, etc.), clique em "Editar" — abre o Contexto do meu
-              app.
+              Para alterar público, problema, promessa, checkout e outros
+              dados do app, abra o Contexto do meu app.
             </span>
           </div>
         </div>
