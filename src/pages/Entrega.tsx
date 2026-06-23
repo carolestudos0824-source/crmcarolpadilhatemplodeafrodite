@@ -286,6 +286,7 @@ function EntregaInner() {
   const checklist = progress.checklist;
   const setChecklist = progress.setChecklist;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [savedPromptsOpen, setSavedPromptsOpen] = useState(false);
 
   const allChecklistItems = useMemo(
     () => CHECKLIST_PHASES.flatMap((p) => p.items.map((i) => `${p.phase}__${i}`)),
