@@ -1868,8 +1868,9 @@ const ValidacaoIntro = () => {
 
 function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentProps) {
   if (active === "fundamentos") {
-    return <FundamentosModule />;
+    return <FundamentosModule goTo={goTo} />;
   }
+
   if (active === "planejar") {
     return <PlanejarModule goTo={goTo} />;
   }
