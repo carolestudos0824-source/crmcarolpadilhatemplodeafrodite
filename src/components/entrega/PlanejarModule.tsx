@@ -23,6 +23,8 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso planejar antes de construir. Me ajude a definir: qual problema meu app resolve, para quem ele é feito, qual é a promessa principal, qual é a ação principal do usuário e quais funcionalidades devem entrar somente na primeira versão.`;
 
