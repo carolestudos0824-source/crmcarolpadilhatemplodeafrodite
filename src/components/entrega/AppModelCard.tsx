@@ -486,12 +486,6 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                     <button onClick={() => setPromptOpen(true)} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs">
                       <Wand2 size={13} /> Abrir no Estúdio de Prompt
                     </button>
-                    <button onClick={handleReviewWithAgent} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold">
-                      <Bot size={13} /> Revisar com Agente Arquiteto
-                    </button>
-                    <button onClick={copyToLovable} className="sm:col-span-2 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold">
-                      <Copy size={13} /> Copiar para o Lovable
-                    </button>
                   </div>
                 )}
               </div>
