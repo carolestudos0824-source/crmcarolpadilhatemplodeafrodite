@@ -92,7 +92,7 @@ export type ModuleMeta = {
 };
 
 export const MODULES: ModuleMeta[] = [
-  { id: "fundamentos", label: "Guia do Programa", icon: "BookOpen" },
+  { id: "fundamentos", label: "Como usar o Lovable", icon: "BookOpen" },
   { id: "comece", label: "Comece aqui", icon: "Sparkles" },
   { id: "ideias", label: "Ideias prontas", icon: "Lightbulb" },
   { id: "planejar", label: "Planejar o App", icon: "ClipboardList" },
