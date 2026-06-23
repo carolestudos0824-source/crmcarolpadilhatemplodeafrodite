@@ -509,11 +509,12 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
               {/* Prompt inicial */}
               <section className="space-y-2">
                 <SectionTitle>Primeiro prompt para o Lovable</SectionTitle>
-                <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
-                  <pre className="text-xs p-4 whitespace-pre-wrap font-mono text-foreground/90">
-                    {lovablePrompt}
-                  </pre>
-                </div>
+                <EditablePromptBox
+                  originalPrompt={lovablePrompt}
+                  storageKey={`appmodel_prompt__${model.id}`}
+                  copyLabel="Copiar para o Lovable"
+                  helperText="Cole no Lovable como primeiro prompt do app."
+                />
                 <div className="flex flex-wrap gap-2 pt-1">
                   <button
                     onClick={() => setPromptOpen(true)}
@@ -527,17 +528,12 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                   >
                     <Bot size={13} /> Revisar com o Agente
                   </button>
-                  <button
-                    onClick={copyToLovable}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold ml-auto"
-                  >
-                    <Copy size={13} /> Copiar para o Lovable
-                  </button>
                 </div>
                 <p className="text-[11px] text-muted-foreground">
                   As ideias prontas são pontos de partida. Você pode adaptar tudo antes de mandar ao Lovable. Comece simples: o primeiro app precisa validar a ideia, não ter todas as funções do mundo.
                 </p>
               </section>
+
 
               {/* Checklist (legado) */}
               {model.checklist?.length ? (
