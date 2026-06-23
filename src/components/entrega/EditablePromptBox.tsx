@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Copy, Check, RotateCcw, Settings2 } from "lucide-react";
+import { Copy, Check, RotateCcw, Settings2, Bookmark } from "lucide-react";
 import { usePromptStudio, type PromptStudioOptions } from "./PromptStudioProvider";
+import { useAuthState } from "@/hooks/useAuthState";
+import { savePromptForUser } from "@/lib/savePrompt";
 
 type Props = {
   originalPrompt: string;
@@ -19,6 +21,12 @@ type Props = {
   className?: string;
   /** When provided, renders an "Editar no Estúdio" button that opens the global PromptStudio. */
   studio?: PromptStudioOptions;
+  /** Title used when saving this prompt to "Prompts salvos". Falls back to a snippet. */
+  saveTitle?: string;
+  /** Source module identifier used when saving. Optional. */
+  saveSourceModule?: string;
+  /** Hide the built-in save button when the parent doesn't want it (default: shown). */
+  hideSaveButton?: boolean;
 };
 
 
