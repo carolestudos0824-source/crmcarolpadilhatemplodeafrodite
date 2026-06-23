@@ -237,7 +237,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar correção"
               : "Copiar comando"
           }
-          helperText="Você pode copiar direto ou revisar o prompt antes de colar no Lovable."
+          
         />
       )}
 
