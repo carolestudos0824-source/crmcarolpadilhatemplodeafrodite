@@ -34,7 +34,7 @@ export const IdeiasProntasModule = ({ onAnalisarViabilidade }: Props) => {
         </h2>
         <p className="text-sm text-muted-foreground mt-2 max-w-3xl">
           Escolha uma ideia com dor clara, público definido e monetização possível.
-          Depois veja o blueprint ou use a ideia como contexto do seu app.
+          Depois veja o plano do app ou use a ideia como contexto do seu app.
         </p>
       </header>
 
