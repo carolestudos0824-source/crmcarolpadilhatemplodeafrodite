@@ -77,6 +77,7 @@ import { wrapErrorCorrection } from "@/lib/promptBuilder";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
+import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
 import { APP_CONFIG } from "@/config/appConfig";
 import { openSupportEmail } from "@/lib/openLink";
@@ -285,6 +286,7 @@ function EntregaInner() {
   const checklist = progress.checklist;
   const setChecklist = progress.setChecklist;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [savedPromptsOpen, setSavedPromptsOpen] = useState(false);
 
   const allChecklistItems = useMemo(
     () => CHECKLIST_PHASES.flatMap((p) => p.items.map((i) => `${p.phase}__${i}`)),
@@ -539,9 +541,8 @@ function EntregaInner() {
                 </button>
                 <button
                   type="button"
-                  onClick={appProjects.openDrawer}
+                  onClick={() => setSavedPromptsOpen(true)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
-                  title="Prompts salvos ficam disponíveis no drawer do app ativo"
                 >
                   <Bookmark size={16} className="shrink-0" />
                   <span className="flex-1 leading-tight">Prompts salvos</span>
@@ -782,6 +783,7 @@ function EntregaInner() {
         </main>
 
       </div>
+      <SavedPromptsDrawer open={savedPromptsOpen} onClose={() => setSavedPromptsOpen(false)} />
     </div>
   );
 }
