@@ -17,17 +17,41 @@ import { useAppProjects } from "@/hooks/useAppProjects";
 const Field = ({
   label,
   hint,
+  essential,
   children,
 }: {
   label: string;
   hint?: string;
+  essential?: boolean;
   children: React.ReactNode;
 }) => (
   <label className="block space-y-1.5">
-    <span className="text-xs font-medium text-foreground/90">{label}</span>
+    <span className="flex items-center justify-between gap-2">
+      <span className="text-xs font-medium text-foreground/90">{label}</span>
+      {essential && (
+        <span className="text-[10px] uppercase tracking-wide text-accent/90">
+          Essencial para bons prompts
+        </span>
+      )}
+    </span>
     {children}
     {hint && <span className="block text-[11px] text-muted-foreground">{hint}</span>}
   </label>
+);
+
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <section className="rounded-xl border border-white/10 bg-white/[0.02] p-4 space-y-3">
+    <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+      {title}
+    </h3>
+    <div className="space-y-3">{children}</div>
+  </section>
 );
 
 const inputClass =
@@ -69,17 +93,16 @@ export const ProjectContextDrawer = () => {
   const update = <K extends keyof ProjectContext>(key: K, val: ProjectContext[K]) =>
     setDraft((d) => ({ ...d, [key]: val }));
 
-  const save = () => {
+  const save = async () => {
     setContext(draft);
-    toast.success("Contexto do seu app salvo.");
-    closeEditor();
-  };
-
-  const saveInActiveApp = async () => {
-    setContext(draft);
-    const ok = await saveContextToActiveProject(draft);
-    if (ok) toast.success(`Salvo em "${activeProject?.name}".`);
-    else toast.error("Não foi possível salvar neste app.");
+    if (activeProject) {
+      const ok = await saveContextToActiveProject(draft);
+      if (!ok) {
+        toast.error("Não foi possível salvar neste app.");
+        return;
+      }
+    }
+    toast.success("Contexto salvo. Os próximos prompts usarão essas informações.");
     closeEditor();
   };
 
@@ -87,15 +110,17 @@ export const ProjectContextDrawer = () => {
     const name = draft.appName.trim() || "Meu app";
     setContext(draft);
     const created = await createProjectFromContext(draft, name);
-    if (created) toast.success(`App "${name}" criado a partir deste contexto.`);
-    else toast.error("Faça login para salvar este app na sua conta.");
+    if (created) {
+      toast.success("Novo app criado. Este contexto agora está vinculado ao projeto.");
+    } else {
+      toast.error("Faça login para salvar este app na sua conta.");
+    }
     closeEditor();
   };
 
-
   const reset = () => {
     setDraft(EMPTY_PROJECT_CONTEXT);
-    toast("Campos limpos. Clique em salvar para aplicar.");
+    toast("Contexto limpo.");
   };
 
   return (
@@ -111,13 +136,15 @@ export const ProjectContextDrawer = () => {
           <div className="min-w-0">
             <h2 className="font-heading font-bold text-lg">Contexto do meu app</h2>
             <p className="text-xs text-muted-foreground">
-              Preencha uma vez. Os prompts copiados ficam mais precisos para o app
-              que você está criando no Lovable.
+              Preencha uma vez. Os prompts copiados ficam mais precisos para o
+              app que você está criando.
             </p>
             <p className="text-[11px] mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-muted-foreground max-w-full">
               <FolderCheck size={11} className="text-accent shrink-0" />
               <span className="truncate">
-                {activeProject ? `App ativo: ${activeProject.name}` : "App ativo: contexto temporário"}
+                {activeProject
+                  ? `App ativo: ${activeProject.name}`
+                  : "Contexto temporário — salve como app para guardar na sua conta"}
               </span>
             </p>
           </div>
@@ -130,80 +157,81 @@ export const ProjectContextDrawer = () => {
           </button>
         </div>
 
-
-        <div className="p-5 space-y-4">
-          <Field label="Nome do app">
-            <input
-              className={inputClass}
-              value={draft.appName}
-              onChange={(e) => update("appName", e.target.value)}
-              placeholder="Ex.: Cardápio Fácil"
-            />
-          </Field>
-          <Field label="O que o app faz">
-            <textarea
-              className={inputClass}
-              rows={2}
-              value={draft.appDoes}
-              onChange={(e) => update("appDoes", e.target.value)}
-              placeholder="Ex.: gera cardápios digitais para restaurantes"
-            />
-          </Field>
-          <Field label="Público-alvo">
-            <input
-              className={inputClass}
-              value={draft.audience}
-              onChange={(e) => update("audience", e.target.value)}
-              placeholder="Ex.: donos de restaurantes pequenos"
-            />
-          </Field>
-          <Field label="Problema que resolve">
-            <textarea
-              className={inputClass}
-              rows={2}
-              value={draft.problem}
-              onChange={(e) => update("problem", e.target.value)}
-            />
-          </Field>
-          <Field label="Promessa principal">
-            <input
-              className={inputClass}
-              value={draft.promise}
-              onChange={(e) => update("promise", e.target.value)}
-            />
-          </Field>
-          <Field label="Ação principal do usuário">
-            <input
-              className={inputClass}
-              value={draft.mainAction}
-              onChange={(e) => update("mainAction", e.target.value)}
-              placeholder="Ex.: criar um cardápio em 2 minutos"
-            />
-          </Field>
-          <Field label="Produto/serviço vendido">
-            <input
-              className={inputClass}
-              value={draft.productSold}
-              onChange={(e) => update("productSold", e.target.value)}
-            />
-          </Field>
-          <Field label="Modelo de cobrança">
-            <input
-              className={inputClass}
-              value={draft.pricingModel}
-              onChange={(e) => update("pricingModel", e.target.value)}
-              placeholder="Ex.: assinatura mensal, pagamento único"
-            />
-          </Field>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Precisa de login">
-              <YesNoSelect value={draft.needsLogin} onChange={(v) => update("needsLogin", v)} />
+        <div className="p-5 space-y-4 pb-32">
+          <Section title="Essência do app">
+            <Field label="Nome do app" essential>
+              <input
+                className={inputClass}
+                value={draft.appName}
+                onChange={(e) => update("appName", e.target.value)}
+                placeholder="Ex.: Meu App"
+              />
             </Field>
-            <Field label="Precisa de banco de dados">
+            <Field label="O que o app faz" essential>
+              <textarea
+                className={inputClass}
+                rows={2}
+                value={draft.appDoes}
+                onChange={(e) => update("appDoes", e.target.value)}
+                placeholder="Ex.: ajuda pessoas a resolverem um problema específico com rapidez"
+              />
+            </Field>
+            <Field label="Público-alvo" essential>
+              <input
+                className={inputClass}
+                value={draft.audience}
+                onChange={(e) => update("audience", e.target.value)}
+                placeholder="Ex.: pessoas que querem melhorar seus relacionamentos, vender mais ou organizar uma rotina"
+              />
+            </Field>
+            <Field label="Problema que resolve" essential>
+              <textarea
+                className={inputClass}
+                rows={2}
+                value={draft.problem}
+                onChange={(e) => update("problem", e.target.value)}
+                placeholder="Ex.: dificuldade de tomar decisão, vender, organizar ou acompanhar algo"
+              />
+            </Field>
+            <Field label="Promessa principal">
+              <input
+                className={inputClass}
+                value={draft.promise}
+                onChange={(e) => update("promise", e.target.value)}
+                placeholder="Ex.: chegar ao resultado desejado em menos tempo e com menos esforço"
+              />
+            </Field>
+            <Field label="Ação principal do usuário" essential>
+              <input
+                className={inputClass}
+                value={draft.mainAction}
+                onChange={(e) => update("mainAction", e.target.value)}
+                placeholder="Ex.: preencher dados e receber uma recomendação personalizada"
+              />
+            </Field>
+          </Section>
+
+          <Section title="Oferta e monetização">
+            <Field label="Produto/serviço vendido">
+              <input
+                className={inputClass}
+                value={draft.productSold}
+                onChange={(e) => update("productSold", e.target.value)}
+                placeholder="Ex.: assinatura, plano premium, consultoria, acesso vitalício ou produto digital"
+              />
+            </Field>
+            <Field label="Modelo de cobrança">
+              <input
+                className={inputClass}
+                value={draft.pricingModel}
+                onChange={(e) => update("pricingModel", e.target.value)}
+                placeholder="Ex.: assinatura mensal, pagamento único, freemium ou comissão"
+              />
+            </Field>
+            <Field label="Precisa de checkout">
               <YesNoSelect
-                value={draft.needsDatabase}
-                onChange={(v) => update("needsDatabase", v)}
+                value={draft.needsCheckout}
+                onChange={(v) => update("needsCheckout", v)}
               />
             </Field>
             <Field label="Precisa de área paga">
@@ -212,66 +240,80 @@ export const ProjectContextDrawer = () => {
                 onChange={(v) => update("needsPaidArea", v)}
               />
             </Field>
-            <Field label="Precisa de admin">
-              <YesNoSelect value={draft.needsAdmin} onChange={(v) => update("needsAdmin", v)} />
-            </Field>
-            <Field label="Precisa de checkout">
-              <YesNoSelect
-                value={draft.needsCheckout}
-                onChange={(v) => update("needsCheckout", v)}
+          </Section>
+
+          <Section title="Construção">
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Precisa de login">
+                <YesNoSelect
+                  value={draft.needsLogin}
+                  onChange={(v) => update("needsLogin", v)}
+                />
+              </Field>
+              <Field label="Precisa de banco de dados">
+                <YesNoSelect
+                  value={draft.needsDatabase}
+                  onChange={(v) => update("needsDatabase", v)}
+                />
+              </Field>
+              <Field label="Precisa de admin">
+                <YesNoSelect
+                  value={draft.needsAdmin}
+                  onChange={(v) => update("needsAdmin", v)}
+                />
+              </Field>
+            </div>
+            <Field label="Estilo visual desejado">
+              <input
+                className={inputClass}
+                value={draft.visualStyle}
+                onChange={(e) => update("visualStyle", e.target.value)}
+                placeholder="Ex.: clean, dark, minimalista"
               />
             </Field>
-          </div>
-
-          <Field label="Estilo visual desejado">
-            <input
-              className={inputClass}
-              value={draft.visualStyle}
-              onChange={(e) => update("visualStyle", e.target.value)}
-              placeholder="Ex.: clean, dark, minimalista"
-            />
-          </Field>
-          <Field label="Observações importantes">
-            <textarea
-              className={inputClass}
-              rows={3}
-              value={draft.notes}
-              onChange={(e) => update("notes", e.target.value)}
-            />
-          </Field>
+            <Field label="Observações importantes">
+              <textarea
+                className={inputClass}
+                rows={3}
+                value={draft.notes}
+                onChange={(e) => update("notes", e.target.value)}
+                placeholder="Ex.: regras de negócio, integrações específicas, restrições"
+              />
+            </Field>
+          </Section>
         </div>
 
-        <div className="sticky bottom-0 flex flex-wrap gap-2 justify-end p-4 border-t border-white/10 bg-background/95 backdrop-blur">
-          <button
-            onClick={reset}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-xs"
-            type="button"
-          >
-            <RotateCcw size={14} /> Limpar
-          </button>
-          {activeProject ? (
+        <div className="sticky bottom-0 p-4 border-t border-white/10 bg-background/95 backdrop-blur space-y-2">
+          <div className="flex flex-wrap gap-2 justify-end">
             <button
-              onClick={saveInActiveApp}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
+              onClick={reset}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-xs text-muted-foreground"
               type="button"
-              title={`Salvar em "${activeProject.name}"`}
             >
-              <FolderCheck size={14} /> Salvar neste app
+              <RotateCcw size={14} /> Limpar
             </button>
-          ) : (
             <button
               onClick={saveAsNewApp}
               className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
               type="button"
+              title="Cria um app em construção salvo na sua conta."
             >
               <FolderPlus size={14} /> Salvar como novo app
             </button>
-          )}
-          <button onClick={save} className="btn-primary text-xs" type="button">
-            <Save size={14} /> Salvar contexto
-          </button>
+            <button
+              onClick={save}
+              className="btn-primary text-xs"
+              type="button"
+              title="Atualiza os prompts com estas informações."
+            >
+              <Save size={14} /> Salvar contexto
+            </button>
+          </div>
+          <p className="text-[11px] text-muted-foreground text-right">
+            "Salvar contexto" atualiza os prompts. "Salvar como novo app" cria
+            um projeto na sua conta.
+          </p>
         </div>
-
       </div>
     </div>
   );
