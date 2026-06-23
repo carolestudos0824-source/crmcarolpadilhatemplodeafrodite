@@ -742,6 +742,10 @@ function EntregaInner() {
             moduleId={active}
           />
 
+          <GpsDoAppCard />
+
+
+
 
           {/* Quando posso avançar? */}
           {active !== "comece" && (
