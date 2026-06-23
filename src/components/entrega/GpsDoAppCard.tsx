@@ -103,7 +103,7 @@ export function GpsDoAppCard() {
     try {
       await navigator.clipboard.writeText(GPS_PROMPT);
       setCopied(true);
-      toast.success("Prompt GPS do App copiado. Cole no projeto Lovable do aplicativo que você está construindo.");
+      toast.success("Prompt GPS do App copiado. Cole no Lovable, Cursor ou Claude Code dentro do projeto do aplicativo que você está construindo.");
       setTimeout(() => setCopied(false), 1600);
     } catch {
       toast.error("Não foi possível copiar.");
