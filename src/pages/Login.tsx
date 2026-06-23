@@ -261,23 +261,14 @@ export default function Login() {
           </div>
           <div className="glass-strong p-8">
             <h1 className="text-2xl font-heading font-bold mb-2">
-              Acesso ainda não liberado
+              Este e-mail ainda não tem acesso liberado à Fábrica de Apps com IA.
             </h1>
-            <p className="text-sm text-muted-foreground mb-2">
-              Seu login foi criado, mas este e-mail ainda não tem acesso ao programa.
-            </p>
-            <p className="text-xs text-muted-foreground/80 mb-6">
-              Confira se você entrou com o mesmo e-mail usado na compra.
+            <p className="text-sm text-muted-foreground mb-6">
+              Confira se você entrou com o mesmo e-mail usado na compra. Se comprou com outro e-mail, saia e tente novamente com o e-mail correto.
             </p>
 
             {view === "no_access" ? (
               <div className="space-y-3">
-                <button
-                  onClick={() => setView("code")}
-                  className="btn-primary w-full justify-center"
-                >
-                  <Gift size={16} /> Tenho um código de acesso
-                </button>
                 <button
                   onClick={async () => {
                     await clearSession();
@@ -285,13 +276,13 @@ export default function Login() {
                     setEmail("");
                     setPassword("");
                   }}
-                  className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm"
+                  className="btn-primary w-full justify-center"
                 >
-                  Tentar com outro e-mail
+                  Tentar outro e-mail
                 </button>
                 <button
                   onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                  className="w-full px-4 py-3 rounded-xl border border-white/10 hover:bg-white/5 text-sm flex items-center justify-center gap-2"
+                  className="w-full px-4 py-3 rounded-xl border border-white/15 hover:bg-white/5 text-sm flex items-center justify-center gap-2"
                 >
                   <LifeBuoy size={14} /> Falar com suporte
                 </button>
@@ -302,8 +293,14 @@ export default function Login() {
                   Garantir acesso
                 </button>
                 <button
+                  onClick={() => setView("code")}
+                  className="w-full px-4 py-3 text-xs text-muted-foreground hover:text-foreground inline-flex items-center justify-center gap-2"
+                >
+                  <Gift size={12} /> Tenho um código de acesso
+                </button>
+                <button
                   onClick={recheckAccess}
-                  className="w-full px-4 py-3 text-xs text-accent hover:text-accent/80"
+                  className="w-full px-4 py-2 text-xs text-accent hover:text-accent/80"
                 >
                   Já fui liberado — verificar novamente
                 </button>
@@ -339,77 +336,48 @@ export default function Login() {
         <div className="flex justify-center mb-8">
           <Logo size="lg" asLink={false} />
         </div>
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] items-start">
-        <div className="glass-strong p-8">
-          <h1 className="text-2xl font-heading font-bold mb-1">
-            Entrar na Fábrica de Apps com IA
-          </h1>
-          <p className="text-sm text-muted-foreground mb-6">
-            Use o mesmo e-mail informado na compra para acessar seu programa.
-          </p>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] items-start">
+          <div className="glass-strong p-8">
+            <h1 className="text-2xl font-heading font-bold mb-1">
+              Entrar na Fábrica de Apps com IA
+            </h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              Use o mesmo e-mail informado na compra para acessar seu programa.
+            </p>
 
-          <button
-            type="button"
-            onClick={onGoogle}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white text-gray-900 hover:bg-white/90 transition font-medium text-sm shadow-md disabled:opacity-60"
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-              <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-              <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A9 9 0 0 0 9 18z"/>
-              <path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A9 9 0 0 0 0 9c0 1.452.348 2.827.957 4.04l3.007-2.333z"/>
-              <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A9 9 0 0 0 .957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
-            </svg>
-            Entrar com Google
-          </button>
+            {/* === Bloco principal 1: Google === */}
+            <button
+              type="button"
+              onClick={onGoogle}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-white text-gray-900 hover:bg-white/90 transition font-medium text-sm shadow-md disabled:opacity-60"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A9 9 0 0 0 9 18z"/>
+                <path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A9 9 0 0 0 0 9c0 1.452.348 2.827.957 4.04l3.007-2.333z"/>
+                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A9 9 0 0 0 .957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+              </svg>
+              Entrar com Google
+            </button>
+            <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">
+              Escolha no Google o mesmo e-mail usado na compra.
+            </p>
 
-          <p className="text-[11px] text-muted-foreground/80 mt-3 leading-relaxed">
-            Use o mesmo e-mail da compra. Se entrar com outro e-mail, seu acesso pode não aparecer.
-          </p>
+            {/* === Divider === */}
+            <div className="flex items-center gap-3 my-6">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70">ou</span>
+              <div className="h-px flex-1 bg-white/10" />
+            </div>
 
-          <div className="flex items-center gap-3 my-5">
-            <div className="h-px flex-1 bg-white/10" />
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70">Ou entre com e-mail</span>
-            <div className="h-px flex-1 bg-white/10" />
-          </div>
-
-          <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10 mb-6">
-            {([
-              ["magic", "Link por e-mail"],
-              ["signin", "Com senha"],
-              ["signup", "Criar conta"],
-            ] as [Tab, string][]).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => {
-                  setTab(key);
-                  resetMessages();
-                }}
-                className={`px-3 py-2 rounded-lg text-sm transition ${
-                  tab === key
-                    ? "bg-accent/20 text-accent"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-
-          {tab === "magic" ? (
-            <form onSubmit={onMagicLink} className="space-y-4">
-              <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                <Sparkles size={16} className="mt-0.5 shrink-0 text-accent" />
-                <p>
-                  Digite seu e-mail e receba um link seguro para acessar sua
-                  área, sem precisar lembrar senha.
-                </p>
-              </div>
+            {/* === Bloco principal 2: Magic link === */}
+            <form onSubmit={onMagicLink} className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Digite o e-mail da compra e receba um link seguro para acessar, sem precisar lembrar senha.
+              </p>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  E-mail
-                </label>
+                <label className="text-xs text-muted-foreground mb-1 block">E-mail da compra</label>
                 <input
                   className={inputCls}
                   type="email"
@@ -441,245 +409,221 @@ export default function Login() {
                   "Receber link seguro"
                 )}
               </button>
+            </form>
 
-              <div className="pt-2 space-y-2 text-sm">
-                <button
-                  type="button"
-                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
-                >
-                  <LifeBuoy size={14} /> Falar com suporte
-                </button>
-              </div>
+            {/* === Bloco recolhido: outras formas === */}
+            <details className="mt-6 group rounded-xl border border-white/10 bg-white/[0.03]">
+              <summary className="cursor-pointer list-none px-4 py-3 flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition">
+                <span>Outras formas de entrada</span>
+                <ChevronDown size={14} className="transition-transform group-open:rotate-180" />
+              </summary>
 
-              {isPreviewEnv && (
-                <p className="text-[11px] text-muted-foreground/70 pt-2 border-t border-white/5">
-                  Está testando no preview? Use o mesmo e-mail cadastrado e
-                  liberado no admin.
+              <div className="px-4 pb-4 pt-1 space-y-4">
+                <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+                  Primeiro acesso? Use Google ou link por e-mail acima. Sua conta será criada ou localizada automaticamente.
                 </p>
-              )}
-            </form>
-          ) : tab === "signin" ? (
-            <form onSubmit={onSignIn} className="space-y-4">
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  E-mail
-                </label>
-                <input
-                  className={inputCls}
-                  type="email"
-                  placeholder="seu@email.com"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Senha
-                </label>
-                <input
-                  className={inputCls}
-                  type="password"
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
 
-              {errorMsg && (
-                <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                  {errorMsg}
+                <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+                  {([
+                    ["signin", "Com senha"],
+                    ["signup", "Criar conta"],
+                  ] as [Tab, string][]).map(([key, label]) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setTab(key);
+                        resetMessages();
+                      }}
+                      className={`px-3 py-2 rounded-lg text-xs transition ${
+                        tab === key
+                          ? "bg-accent/20 text-accent"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
-              )}
-              {info && (
-                <div className="rounded-xl border border-accent/30 bg-accent/10 text-accent text-sm px-4 py-3">
-                  {info}
-                </div>
-              )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-primary w-full"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" /> Entrando…
-                  </>
+                {tab === "signup" ? (
+                  <form onSubmit={onSignUp} className="space-y-3">
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">Nome</label>
+                      <input
+                        className={inputCls}
+                        type="text"
+                        placeholder="Seu nome"
+                        autoComplete="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">E-mail</label>
+                      <input
+                        className={inputCls}
+                        type="email"
+                        placeholder="seu@email.com"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">Senha</label>
+                      <input
+                        className={inputCls}
+                        type="password"
+                        placeholder="Mínimo 6 caracteres"
+                        autoComplete="new-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">Confirmar senha</label>
+                      <input
+                        className={inputCls}
+                        type="password"
+                        placeholder="Repita a senha"
+                        autoComplete="new-password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+
+                    {errorMsg && (
+                      <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                        {errorMsg}
+                      </div>
+                    )}
+
+                    <p className="text-[11px] text-muted-foreground">
+                      Use o mesmo e-mail informado na compra. Depois da conta criada, seu acesso será verificado automaticamente.
+                    </p>
+
+                    <button type="submit" disabled={loading} className="btn-primary w-full">
+                      {loading ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" /> Criando conta…
+                        </>
+                      ) : (
+                        "Criar conta"
+                      )}
+                    </button>
+                  </form>
                 ) : (
-                  "Entrar com senha"
+                  <form onSubmit={onSignIn} className="space-y-3">
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">E-mail</label>
+                      <input
+                        className={inputCls}
+                        type="email"
+                        placeholder="seu@email.com"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">Senha</label>
+                      <input
+                        className={inputCls}
+                        type="password"
+                        placeholder="••••••••"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    {errorMsg && (
+                      <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                        {errorMsg}
+                      </div>
+                    )}
+
+                    <button type="submit" disabled={loading} className="btn-primary w-full">
+                      {loading ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" /> Entrando…
+                        </>
+                      ) : (
+                        "Entrar com senha"
+                      )}
+                    </button>
+
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        onClick={onRecover}
+                        disabled={recovering}
+                        className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition"
+                      >
+                        <KeyRound size={12} />
+                        {recovering ? "Enviando…" : "Recuperar acesso"}
+                      </button>
+                    </div>
+                  </form>
                 )}
-              </button>
+              </div>
+            </details>
 
-              <div className="pt-2 space-y-2 text-sm">
-                <button
-                  type="button"
-                  onClick={onRecover}
-                  disabled={recovering}
-                  className="flex items-center gap-2 text-accent hover:text-accent/80 transition"
-                >
-                  <KeyRound size={14} />
-                  {recovering ? "Enviando…" : "Recuperar acesso"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
-                >
-                  <LifeBuoy size={14} />
-                  Falar com suporte
-                </button>
-              </div>
-            </form>
-          ) : (
-            <form onSubmit={onSignUp} className="space-y-4">
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Nome
-                </label>
-                <input
-                  className={inputCls}
-                  type="text"
-                  placeholder="Seu nome"
-                  autoComplete="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  E-mail
-                </label>
-                <input
-                  className={inputCls}
-                  type="email"
-                  placeholder="seu@email.com"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Senha
-                </label>
-                <input
-                  className={inputCls}
-                  type="password"
-                  placeholder="Mínimo 6 caracteres"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Confirmar senha
-                </label>
-                <input
-                  className={inputCls}
-                  type="password"
-                  placeholder="Repita a senha"
-                  autoComplete="new-password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  minLength={6}
-                />
-              </div>
-
-              {errorMsg && (
-                <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                  {errorMsg}
-                </div>
-              )}
-
-              <p className="text-xs text-muted-foreground">
-                Use o mesmo e-mail informado na compra. Depois da conta criada,
-                seu acesso será verificado automaticamente.
+            <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-xs text-muted-foreground flex gap-2">
+              <Mail size={14} className="mt-0.5 shrink-0 text-accent" />
+              <p>
+                Após a compra, entre usando o mesmo e-mail informado no pagamento. Se o acesso ainda não aparecer, verifique spam, promoções ou fale com suporte.
               </p>
+            </div>
+          </div>
 
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            <div className="glass-strong p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <ShieldCheck size={18} className="text-accent" />
+                <h2 className="font-heading font-semibold text-lg">Como acessar seu programa</h2>
+              </div>
+              <ol className="space-y-3 text-sm text-muted-foreground">
+                {[
+                  "Use o mesmo e-mail da compra.",
+                  "Entre com Google ou receba um link seguro.",
+                  "Se o acesso não aparecer, tente outro e-mail ou fale com suporte.",
+                ].map((step, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <span className="pt-0.5">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="glass-strong p-5">
+              <h3 className="font-heading font-semibold text-sm mb-2">Ainda não tem acesso?</h3>
+              <p className="text-xs text-muted-foreground mb-3">
+                Garanta a Fábrica de Apps com IA por R$47, pagamento único.
+              </p>
               <button
-                type="submit"
-                disabled={loading}
-                className="btn-primary w-full"
+                onClick={() => navigate("/checkout?plano=fabrica")}
+                className="btn-primary w-full justify-center text-sm"
               >
-                {loading ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" /> Criando
-                    conta…
-                  </>
-                ) : (
-                  "Criar conta"
-                )}
+                Garantir acesso <ArrowRight size={14} />
               </button>
-            </form>
-          )}
-
-          <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4 text-xs text-muted-foreground flex gap-2">
-            <Mail size={14} className="mt-0.5 shrink-0 text-accent" />
-            <p>
-              Após a compra, entre usando o mesmo e-mail informado no pagamento.
-              Se o acesso ainda não aparecer, verifique spam, promoções ou fale
-              com suporte.
-            </p>
-          </div>
-        </div>
-
-        {/* Sidebar de orientação */}
-        <aside className="space-y-6">
-          <div className="glass-strong p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <ShieldCheck size={18} className="text-accent" />
-              <h2 className="font-heading font-semibold text-lg">
-                Como acessar seu programa
-              </h2>
             </div>
-            <ol className="space-y-3 text-sm text-muted-foreground">
-              {[
-                "Entre com o mesmo e-mail usado na compra.",
-                "Use Google, link por e-mail ou senha.",
-                "Se o acesso ainda não aparecer, tente outro e-mail ou fale com suporte.",
-              ].map((step, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
-                    {i + 1}
-                  </span>
-                  <span className="pt-0.5">{step}</span>
-                </li>
-              ))}
-            </ol>
-            <div className="mt-5 rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-muted-foreground/90">
-              Login não libera acesso automaticamente. O acesso aparece quando o
-              e-mail está liberado no sistema.
-            </div>
-          </div>
-
-          <div className="glass-strong p-6">
-            <h3 className="font-heading font-semibold text-base mb-2">
-              Ainda não tem acesso?
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Garanta a Fábrica de Apps com IA por R$47, pagamento único.
-            </p>
-            <button
-              onClick={() => navigate("/checkout?plano=fabrica")}
-              className="btn-primary w-full justify-center"
-            >
-              Garantir acesso <ArrowRight size={16} />
-            </button>
-          </div>
-        </aside>
+          </aside>
         </div>
       </div>
     </Section>
   );
 }
+
