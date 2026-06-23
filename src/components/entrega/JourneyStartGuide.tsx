@@ -66,8 +66,8 @@ export function JourneyStartGuide({ active, goTo, effectiveModuleDone }: Props) 
     };
   } else if (!completedAny) {
     next = {
-      text: "Comece entendendo o Lovable antes de construir.",
-      cta: "Ir para Comece pelo Lovable",
+      text: "Use o Agente Arquiteto para revisar ideias, entender prompts e decidir o próximo passo.",
+      cta: "Ir para o Guia do Programa",
       action: () => goTo("fundamentos"),
     };
   } else if (currentDone && nextModule) {
