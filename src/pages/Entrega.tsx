@@ -608,6 +608,8 @@ function EntregaInner() {
               ))}
             </nav>
             {/* Progresso geral removido — métricas internas geravam ruído sem ajudar na próxima ação. */}
+          </div>
+
 
         </aside>
 
