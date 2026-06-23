@@ -92,29 +92,109 @@ export const ProjectContextDrawer = () => {
     createProjectFromContext,
   } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
+  const [baseline, setBaseline] = useState<ProjectContext>(context);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [confirmClose, setConfirmClose] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const skipHydrationRef = useRef(false);
+  const hydratedRef = useRef(false);
+  const draftToastShownRef = useRef(false);
 
+  const scope: DraftScope = useMemo(
+    () => ({ userId, appId: activeProject?.id ?? null }),
+    [userId, activeProject?.id],
+  );
+
+  // Carrega userId uma vez (read-only — não altera auth).
+  useEffect(() => {
+    let active = true;
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (!active) return;
+        setUserId(data.session?.user?.id ?? null);
+      })
+      .catch(() => {
+        if (!active) return;
+        setUserId(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Hidratação ao abrir: contexto oficial/app ativo + restauração de rascunho.
   useEffect(() => {
     if (!isEditorOpen) {
       skipHydrationRef.current = false;
+      hydratedRef.current = false;
+      draftToastShownRef.current = false;
       return;
     }
 
-    if (skipHydrationRef.current) return;
-
-    if (activeProject) {
-      setDraft(activeProject.context);
-      if (import.meta.env.DEV) console.debug("origem: app ativo");
+    if (skipHydrationRef.current) {
+      hydratedRef.current = true;
       return;
     }
 
-    setDraft(context);
-    if (import.meta.env.DEV) {
-      const hasContext = Object.values(context).some((value) => value.trim().length > 0);
-      console.debug(hasContext ? "origem: contexto temporário" : "origem: vazio");
+    const initial: ProjectContext = activeProject ? activeProject.context : context;
+    setBaseline(initial);
+    setDraft(initial);
+
+    const savedDraft = readDraft(scope);
+    if (savedDraft && !isContextEqual(savedDraft, initial)) {
+      setDraft(savedDraft);
+      if (!draftToastShownRef.current) {
+        draftToastShownRef.current = true;
+        toast("Rascunho recuperado. Suas alterações anteriores foram restauradas.");
+      }
     }
-  }, [isEditorOpen, activeProject, context]);
+
+    // Marca hidratação concluída no próximo tick, evitando autosave de draft vazio.
+    const t = window.setTimeout(() => {
+      hydratedRef.current = true;
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [isEditorOpen, activeProject, context, scope]);
+
+  // Autosave do rascunho (debounce 500ms). Só dispara após hidratação.
+  useEffect(() => {
+    if (!isEditorOpen) return;
+    if (!hydratedRef.current) return;
+    if (isContextEqual(draft, baseline)) return;
+
+    const t = window.setTimeout(() => {
+      writeDraft(scope, draft);
+    }, 500);
+    return () => window.clearTimeout(t);
+  }, [draft, baseline, isEditorOpen, scope]);
+
+  const isDirty = useMemo(
+    () => !isContextEqual(draft, baseline),
+    [draft, baseline],
+  );
+
+  const attemptClose = useCallback(() => {
+    if (isDirty) {
+      setConfirmClose(true);
+      return;
+    }
+    closeEditor();
+  }, [isDirty, closeEditor]);
+
+  // ESC passa pelo guard.
+  useEffect(() => {
+    if (!isEditorOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (confirmReset || confirmClose) return; // sub-modais lidam por conta própria
+      e.preventDefault();
+      e.stopPropagation();
+      attemptClose();
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [isEditorOpen, attemptClose, confirmReset, confirmClose]);
 
   if (!isEditorOpen) return null;
 
@@ -132,6 +212,8 @@ export const ProjectContextDrawer = () => {
     } else {
       setContext(draft);
     }
+    removeDraft(scope);
+    setBaseline(draft);
     toast.success("Contexto salvo. Os próximos prompts usarão essas informações.");
     closeEditor();
   };
@@ -140,9 +222,14 @@ export const ProjectContextDrawer = () => {
     const name = draft.appName.trim() || "Meu app";
     const created = await createProjectFromContext(draft, name);
     if (created) {
+      removeDraft(scope);
+      // Também remove a chave "temporary" caso o draft tenha vindo de lá.
+      if (scope.appId !== null) removeDraft({ userId: scope.userId, appId: null });
+      setBaseline(draft);
       toast.success("Novo app criado. Este contexto agora está vinculado ao projeto.");
     } else {
       toast.error("Faça login para salvar este app na sua conta.");
+      return;
     }
     closeEditor();
   };
@@ -150,11 +237,14 @@ export const ProjectContextDrawer = () => {
   const reset = () => {
     skipHydrationRef.current = true;
     setDraft(EMPTY_PROJECT_CONTEXT);
+    setBaseline(EMPTY_PROJECT_CONTEXT);
     clearTemporaryContext();
+    removeDraft(scope);
     if (activeProject) setRuntimeContext(activeProject.context);
     setConfirmReset(false);
     toast("Contexto limpo. Os campos voltaram ao estado inicial.");
   };
+
 
   return (
     <div
