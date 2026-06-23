@@ -156,8 +156,8 @@ const CHECKLIST_ITEMS = [
 ];
 
 const TAB_META: { id: TabId; label: string; icon: typeof MapIcon }[] = [
-  { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
-  { id: "agente", label: "Pensar com o Agente", icon: Bot },
+  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
+  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
 ];
