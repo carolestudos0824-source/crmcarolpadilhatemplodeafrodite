@@ -16,6 +16,7 @@ import { openSupportEmail } from "@/lib/openLink";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { withTimeout } from "@/lib/promiseTimeout";
 
 const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
@@ -56,34 +57,55 @@ export default function Login() {
     resetMessages();
     if (!email.trim()) return setErrorMsg("Informe seu e-mail.");
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: { emailRedirectTo: window.location.origin + "/entrega" },
-    });
-    setLoading(false);
-    if (error) {
-      setErrorMsg("Não foi possível enviar o link agora. Tente novamente em alguns minutos.");
-      return;
+    try {
+      const { error } = await withTimeout(
+        supabase.auth.signInWithOtp({
+          email: email.trim().toLowerCase(),
+          options: { emailRedirectTo: window.location.origin + "/entrega" },
+        }),
+        15000,
+        "envio do link",
+      );
+      if (error) {
+        setErrorMsg(
+          "Não foi possível enviar o link agora. Verifique o e-mail e tente novamente em alguns minutos.",
+        );
+        return;
+      }
+      setInfo(
+        "Enviamos um link de acesso para seu e-mail. Verifique também spam e promoções. O link abre direto sua área.",
+      );
+    } catch {
+      setErrorMsg(
+        "Demorou demais para responder. Verifique sua conexão e tente de novo. Se persistir, use Entrar com Google ou fale com suporte.",
+      );
+    } finally {
+      setLoading(false);
     }
-    setInfo("Enviamos um link de acesso para seu e-mail. Verifique também spam e promoções.");
   };
 
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     resetMessages();
-    const result = await loginWithPassword(email, password);
-    setLoading(false);
-
-    if (result.status === "ok") {
-      toast.success("Acesso liberado");
-      navigate("/entrega");
-    } else if (result.status === "no_access") {
-      setView("no_access");
-    } else {
+    try {
+      const result = await withTimeout(loginWithPassword(email, password), 15000, "login");
+      if (result.status === "ok") {
+        toast.success("Acesso liberado");
+        navigate("/entrega");
+      } else if (result.status === "no_access") {
+        setView("no_access");
+      } else {
+        setErrorMsg(
+          "E-mail ou senha inválidos. Se não lembrar a senha, use Entrar sem senha (link por e-mail) ou Recuperar acesso.",
+        );
+      }
+    } catch {
       setErrorMsg(
-        "E-mail ou senha inválidos. Se não lembrar a senha, use Entrar sem senha ou Recuperar senha.",
+        "Demorou demais para responder. Verifique sua conexão e tente de novo.",
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,25 +121,35 @@ export default function Login() {
       return setErrorMsg("As senhas não coincidem.");
 
     setLoading(true);
-    const result = await signUpWithPassword(name, email, password);
-    setLoading(false);
+    try {
+      const result = await withTimeout(
+        signUpWithPassword(name, email, password),
+        20000,
+        "criação da conta",
+      );
 
-    if (result.status === "error") {
-      setErrorMsg(result.message);
-      return;
-    }
+      if (result.status === "error") {
+        setErrorMsg(result.message);
+        return;
+      }
 
-    if (result.needsConfirmation) {
-      setView("check_email");
-      return;
-    }
+      if (result.needsConfirmation) {
+        setView("check_email");
+        return;
+      }
 
-    // session active — check access
-    if (result.userId && (await checkUserAccess(result.userId))) {
-      toast.success("Conta criada e acesso liberado");
-      navigate("/entrega");
-    } else {
-      setView("no_access");
+      if (result.userId && (await checkUserAccess(result.userId))) {
+        toast.success("Conta criada e acesso liberado");
+        navigate("/entrega");
+      } else {
+        setView("no_access");
+      }
+    } catch {
+      setErrorMsg(
+        "Demorou demais para criar a conta. Verifique sua conexão e tente novamente. Se persistir, tente entrar com o mesmo e-mail (talvez a conta já tenha sido criada) ou use Entrar com Google.",
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,11 +160,16 @@ export default function Login() {
     }
     setRecovering(true);
     resetMessages();
-    await requestPasswordRecovery(email);
-    setRecovering(false);
-    setInfo(
-      "Se o e-mail estiver cadastrado, enviaremos um link de recuperação. Verifique também spam e promoções.",
-    );
+    try {
+      await withTimeout(requestPasswordRecovery(email), 15000, "recuperação");
+      setInfo(
+        "Se o e-mail estiver cadastrado, enviaremos um link de recuperação. Verifique também spam e promoções.",
+      );
+    } catch {
+      setErrorMsg("Não foi possível enviar agora. Tente novamente em instantes.");
+    } finally {
+      setRecovering(false);
+    }
   };
 
   const recheckAccess = async () => {
@@ -160,19 +197,27 @@ export default function Login() {
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/entrega",
+        extraParams: {
+          prompt: "select_account",
+        },
       });
       if (result.error) {
-        setErrorMsg("Não foi possível entrar com Google agora. Tente novamente.");
+        setErrorMsg(
+          "Não foi possível entrar com Google agora. Tente novamente, ou use link por e-mail.",
+        );
         setLoading(false);
         return;
       }
       if (result.redirected) return;
       navigate("/entrega");
     } catch {
-      setErrorMsg("Não foi possível entrar com Google agora. Tente novamente.");
+      setErrorMsg(
+        "Não foi possível entrar com Google agora. Tente novamente, ou use link por e-mail.",
+      );
       setLoading(false);
     }
   };
+
 
   // ============== Render ==============
 
