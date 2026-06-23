@@ -9,6 +9,8 @@ import {
   Wand2,
   Bot,
   ChevronDown,
+  ExternalLink,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
@@ -17,8 +19,9 @@ import { useProjectContext, EMPTY_PROJECT_CONTEXT, type ProjectContext } from "@
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
-import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent, openAgenteArquiteto } from "@/lib/agenteArquiteto";
+
+const LOVABLE_URL = "https://lovable.dev";
 
 
 /* ---------- helpers ---------- */
@@ -193,6 +196,36 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
 
   const lovablePrompt = useMemo(() => buildLovableIdeaPrompt(model, editedName), [model, editedName]);
   const agentPrompt = useMemo(() => buildAgentIdeaPrompt(model, editedName), [model, editedName]);
+  const postLovablePrompt = useMemo(() => {
+    const name = editedName.trim() || model.name;
+    const objective = model.shortDescription ?? `App para ${model.audience.toLowerCase()}`;
+    const mvp = (model.mvp ?? model.screens).map((x) => `- ${x}`).join("\n");
+    return `Analise o resultado que o Lovable gerou para meu app.
+
+Contexto:
+Estou usando a Fábrica de Apps com IA para criar o app: ${name}
+
+O objetivo do app é:
+${objective}
+
+O MVP planejado é:
+${mvp}
+
+Agora colei no Lovable o prompt de construção e ele retornou este resultado:
+
+[COLE AQUI A RESPOSTA OU RESULTADO DO LOVABLE]
+
+Quero que você analise como meu Agente Arquiteto:
+1. O que o Lovable criou corretamente.
+2. O que ficou faltando.
+3. O que pode estar errado ou incompleto.
+4. Se o app ainda está simples o suficiente para um MVP.
+5. Quais testes manuais devo fazer agora.
+6. Qual próximo comando devo colar no Lovable para corrigir ou melhorar.
+7. O que devo evitar adicionar neste momento.
+
+Responda de forma prática, com o próximo prompt pronto para copiar e colar no Lovable.`;
+  }, [editedName, model]);
 
   const copyToLovable = async () => {
     try {
@@ -207,10 +240,20 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
     await copyPromptAndOpenAgent({
       prompt: agentPrompt,
       successMessage:
-        "Tudo pronto. O prompt foi copiado e o Agente Arquiteto abriu em outra aba. Cole lá para revisar, tirar dúvidas e melhorar seu app antes de construir.",
+        "Dump copiado. Cole no Agente Arquiteto para revisar sua ideia antes de construir.",
       onClipboardFail: (p) => setAgentFallback(p),
     });
   };
+
+  const handleCopyPostLovable = async () => {
+    await copyPromptAndOpenAgent({
+      prompt: postLovablePrompt,
+      successMessage:
+        "Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
+
 
   const fillContext = () => {
     setContext(modelToContext(model, editedName));
@@ -375,35 +418,8 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             </div>
 
             <div className="p-5 space-y-6">
-              {/* ===== Hero: Comece pelo Agente Arquiteto ===== */}
-              <AgentArchitectCard
-                prompt={agentPrompt}
-                onClick={handleReviewWithAgent}
-                eyebrow="Etapa 1 de 2 · recomendado para iniciantes"
-                subtitle="Antes de construir no Lovable, revise sua ideia com um agente que entende de produto, MVP, telas, banco de dados e monetização."
-                description="Se você é iniciante, clique aqui primeiro. O prompt será copiado e o Agente Arquiteto abrirá para você conversar sobre esse app."
-                successMessage="Tudo pronto. O prompt foi copiado e o Agente Arquiteto abriu em outra aba. Cole lá para revisar, tirar dúvidas e melhorar seu app antes de construir."
-              />
-
-              {/* ===== Etapa 2: Lovable ===== */}
-              <section className="rounded-xl border border-accent/30 bg-accent/[0.05] p-4 space-y-3">
-                <div className="text-[10px] uppercase tracking-[0.18em] text-accent font-semibold">
-                  Etapa 2 · depois da revisão
-                </div>
-                <p className="text-sm text-foreground/85">
-                  Quando o plano estiver revisado, copie o prompt final para construir no Lovable.
-                </p>
-                <button
-                  type="button"
-                  onClick={copyToLovable}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-sm font-semibold"
-                >
-                  <Copy size={16} /> Copiar prompt para o Lovable
-                </button>
-              </section>
-
-              {/* Editable name + main action */}
-              <div className="rounded-xl border border-accent/30 bg-accent/[0.06] p-4 space-y-3">
+              {/* ===== Nome editável ===== */}
+              <div className="rounded-xl border border-accent/30 bg-accent/[0.06] p-4 space-y-2">
                 <label className="block space-y-1.5">
                   <span className="text-xs font-medium text-foreground/90">Nome do app</span>
                   <input
@@ -413,30 +429,199 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                     className="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/40"
                   />
                   <span className="block text-[11px] text-muted-foreground">
-                    Este nome é apenas uma sugestão. Você pode trocar pelo nome que quiser. O prompt e o app salvo usam o nome editado.
+                    Pode trocar pelo nome que quiser. O dump e os prompts usam este nome.
                   </span>
                 </label>
                 {model.shortDescription && (
                   <p className="text-sm text-foreground/90">{model.shortDescription}</p>
                 )}
+              </div>
 
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <button
-                    onClick={() => setActionsOpen((s) => !s)}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-accent text-accent-foreground hover:opacity-90 text-sm font-semibold"
-                  >
-                    <Sparkles size={14} /> Usar esta ideia
-                    <ChevronDown size={14} className={actionsOpen ? "rotate-180 transition-transform" : "transition-transform"} />
-                  </button>
+              {/* ===== Fluxo recomendado ===== */}
+              <section className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-heading font-semibold text-sm text-foreground">Fluxo recomendado</h4>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Agente → Lovable → Agente</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-2 md:gap-1 items-stretch">
+                  {/* Step 1 */}
+                  <div className="rounded-xl border border-cyan-400/40 bg-cyan-500/[0.06] p-3">
+                    <div className="text-[10px] uppercase tracking-wider text-cyan-300 font-semibold mb-1">Etapa 1 · Agente</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Revise no Agente</div>
+                    <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
+                      Cole o dump completo e peça para o Agente revisar o MVP, telas e banco de dados.
+                    </p>
+                  </div>
+                  <ArrowRight size={16} className="hidden md:block self-center text-muted-foreground" />
+                  {/* Step 2 */}
+                  <div className="rounded-xl border border-accent/40 bg-accent/[0.06] p-3">
+                    <div className="text-[10px] uppercase tracking-wider text-accent font-semibold mb-1">Etapa 2 · Lovable</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Construa no Lovable</div>
+                    <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
+                      Depois da revisão, copie o prompt de construção e cole no Lovable.
+                    </p>
+                  </div>
+                  <ArrowRight size={16} className="hidden md:block self-center text-muted-foreground" />
+                  {/* Step 3 */}
+                  <div className="rounded-xl border border-cyan-400/40 bg-cyan-500/[0.06] p-3">
+                    <div className="text-[10px] uppercase tracking-wider text-cyan-300 font-semibold mb-1">Etapa 3 · Agente</div>
+                    <div className="font-heading font-semibold text-sm text-foreground">Volte ao Agente</div>
+                    <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
+                      Copie o resultado do Lovable e cole no Agente para corrigir, melhorar ou continuar.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              {/* ===== Etapa 1 · Dump para o Agente ===== */}
+              <section className="rounded-2xl border border-cyan-400/40 bg-gradient-to-br from-[#07111F] to-[#0B1220] p-4 sm:p-5 space-y-3 shadow-[0_0_40px_-12px_rgba(34,211,238,0.35)]">
+                <div className="flex items-start justify-between gap-3 flex-wrap">
+                  <div className="min-w-0">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-cyan-400/40 bg-cyan-500/15 text-cyan-300 font-semibold mb-1.5">
+                      <Bot size={11} /> Etapa 1
+                    </div>
+                    <h4 className="font-heading font-bold text-lg text-foreground">Dump completo do app</h4>
+                    <p className="text-xs text-foreground/75 mt-1">
+                      Copie este conteúdo e cole no Agente Arquiteto para revisar sua ideia antes de construir.
+                    </p>
+                    <p className="text-[11.5px] text-foreground/60 mt-1 leading-snug">
+                      O dump reúne nome, público, dor, MVP, telas, banco de dados, monetização e regras de construção. O Agente usa isso para revisar e melhorar seu app antes do Lovable.
+                    </p>
+                  </div>
                 </div>
 
+                <button
+                  type="button"
+                  onClick={handleReviewWithAgent}
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-semibold hover:from-cyan-400 hover:to-blue-500 transition"
+                >
+                  <Copy size={15} /> Copiar dump para o Agente
+                </button>
+
+                <textarea
+                  readOnly
+                  value={agentPrompt}
+                  onFocus={(e) => e.currentTarget.select()}
+                  className="w-full h-56 rounded-lg border border-cyan-400/20 bg-black/40 p-3 text-[11.5px] font-mono text-foreground/90 leading-relaxed resize-y"
+                />
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={handleReviewWithAgent}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/20 text-xs font-semibold"
+                  >
+                    <Copy size={13} /> Copiar dump para o Agente
+                  </button>
+                  <a
+                    href={AGENTE_ARQUITETO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => openAgenteArquiteto()}
+                    className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                  >
+                    <ExternalLink size={13} /> Abrir Agente Arquiteto
+                  </a>
+                </div>
+              </section>
+
+              {/* ===== Etapa 2 · Lovable ===== */}
+              <section className="rounded-2xl border border-accent/30 bg-accent/[0.05] p-4 sm:p-5 space-y-3">
+                <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-accent/40 bg-accent/15 text-accent font-semibold">
+                  <Sparkles size={11} /> Etapa 2
+                </div>
+                <h4 className="font-heading font-bold text-lg text-foreground">Construir no Lovable</h4>
+                <p className="text-xs text-foreground/75">
+                  Use este prompt somente depois de revisar a ideia com o Agente.
+                </p>
+
+                <EditablePromptBox
+                  saveSourceModule="ideias"
+                  originalPrompt={lovablePrompt}
+                  storageKey={`appmodel_prompt__${model.name}`}
+                  copyLabel="Copiar prompt para o Lovable"
+                  helperText="Cole no Lovable como primeiro prompt do app."
+                />
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={copyToLovable}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold"
+                  >
+                    <Copy size={13} /> Copiar prompt para o Lovable
+                  </button>
+                  <a
+                    href={LOVABLE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                  >
+                    <ExternalLink size={13} /> Abrir Lovable
+                  </a>
+                </div>
+              </section>
+
+              {/* ===== Etapa 3 · Revisão pós-Lovable ===== */}
+              <section className="rounded-2xl border border-cyan-400/40 bg-cyan-500/[0.05] p-4 sm:p-5 space-y-3">
+                <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border border-cyan-400/40 bg-cyan-500/15 text-cyan-300 font-semibold">
+                  <Bot size={11} /> Etapa 3
+                </div>
+                <h4 className="font-heading font-bold text-lg text-foreground">Revisar o resultado do Lovable</h4>
+                <p className="text-xs text-foreground/75">
+                  Quando o Lovable terminar a construção, copie a resposta dele e volte aqui. Este prompt pede ao Agente para analisar o que foi criado, apontar problemas e gerar o próximo comando para o Lovable.
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={handleCopyPostLovable}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/20 text-xs font-semibold"
+                  >
+                    <Copy size={13} /> Copiar revisão pós-Lovable
+                  </button>
+                  <a
+                    href={AGENTE_ARQUITETO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                  >
+                    <ExternalLink size={13} /> Voltar ao Agente com resultado
+                  </a>
+                </div>
+
+                <details className="rounded-lg border border-white/10 bg-black/30">
+                  <summary className="cursor-pointer text-[11px] uppercase tracking-wider text-muted-foreground px-3 py-2">
+                    Ver prompt completo
+                  </summary>
+                  <textarea
+                    readOnly
+                    value={postLovablePrompt}
+                    onFocus={(e) => e.currentTarget.select()}
+                    className="w-full h-48 rounded-b-lg bg-black/40 p-3 text-[11.5px] font-mono text-foreground/90 leading-relaxed resize-y border-t border-white/10"
+                  />
+                </details>
+              </section>
+
+              {/* ===== Ações avançadas (Usar esta ideia) ===== */}
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setActionsOpen((s) => !s)}
+                  className="w-full inline-flex items-center justify-between gap-2 text-sm font-semibold text-foreground/90"
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Sparkles size={14} className="text-accent" /> Usar esta ideia como meu app
+                  </span>
+                  <ChevronDown size={14} className={actionsOpen ? "rotate-180 transition-transform" : "transition-transform"} />
+                </button>
                 {actionsOpen && (
-                  <div className="grid sm:grid-cols-2 gap-2 pt-2">
+                  <div className="grid sm:grid-cols-3 gap-2 pt-2">
                     <button onClick={onSaveAsNewClick} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs">
                       <FolderPlus size={13} /> Salvar como novo app
                     </button>
                     <button onClick={fillContext} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs">
-                      <ClipboardEdit size={13} /> Preencher Contexto do meu app
+                      <ClipboardEdit size={13} /> Preencher Contexto do app
                     </button>
                     <button onClick={() => setPromptOpen(true)} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs">
                       <Wand2 size={13} /> Abrir no Estúdio de Prompt
@@ -445,7 +630,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                 )}
               </div>
 
-              {/* Primary cards */}
+              {/* ===== Detalhes do plano ===== */}
               <div className="grid sm:grid-cols-2 gap-3">
                 <InfoCard label="Público">{model.audience}</InfoCard>
                 <InfoCard label="Dor">{model.pain}</InfoCard>
@@ -553,43 +738,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                 </section>
               )}
 
-              {/* Prompt inicial */}
-              <section className="space-y-2">
-                <SectionTitle>Primeiro prompt para o Lovable</SectionTitle>
-                <EditablePromptBox
-                  saveSourceModule="ideias"
-                  originalPrompt={lovablePrompt}
-                  storageKey={`appmodel_prompt__${model.name}`}
-                  copyLabel="Copiar prompt para o Lovable"
-                  helperText="Cole no Lovable como primeiro prompt do app."
-                />
-                <p className="text-[11px] text-muted-foreground">
-                  Fluxo recomendado: revise com o Agente Arquiteto, ajuste o plano e depois copie para o Lovable.
-                </p>
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <button
-                    onClick={handleReviewWithAgent}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold"
-                  >
-                    <Bot size={13} /> Revisar com Agente Arquiteto
-                  </button>
-                  <button
-                    onClick={copyToLovable}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold"
-                  >
-                    <Copy size={13} /> Copiar prompt para o Lovable
-                  </button>
-                  <button
-                    onClick={() => setPromptOpen(true)}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
-                  >
-                    <Wand2 size={13} /> Melhorar texto do prompt
-                  </button>
-                </div>
-                <p className="text-[11px] text-muted-foreground">
-                  As ideias prontas são pontos de partida. Você pode adaptar tudo antes de mandar ao Lovable. Comece simples: o primeiro app precisa validar a ideia, não ter todas as funções do mundo.
-                </p>
-              </section>
+
 
 
               {/* Checklist (legado) */}
