@@ -54,6 +54,7 @@ const App = () => (
     <BrowserRouter>
       <ScrollToTop />
       <Toaster position="top-center" theme="dark" richColors />
+      <PromptStudioProvider>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
