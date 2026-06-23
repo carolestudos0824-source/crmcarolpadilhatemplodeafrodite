@@ -35,6 +35,44 @@ export const checkUserAccess = async (userId: string): Promise<boolean> => {
   return !!data?.has_access;
 };
 
+export type ProgramAccess = {
+  hasAccess: boolean;
+  isAdmin: boolean;
+  canEnter: boolean;
+};
+
+export const checkProgramAccess = async (userId: string): Promise<ProgramAccess> => {
+  const [{ data: user }, { data: access }, { data: adminFlag }] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase
+      .from("user_access")
+      .select("has_access")
+      .eq("user_id", userId)
+      .maybeSingle(),
+    supabase.rpc("is_admin"),
+  ]);
+
+  const email = user.user?.email?.trim().toLowerCase();
+  let hasAccess = !!access?.has_access;
+
+  if (!hasAccess && email) {
+    const { data: emailAccess } = await supabase
+      .from("user_access")
+      .select("has_access")
+      .eq("email", email)
+      .maybeSingle();
+    hasAccess = !!emailAccess?.has_access;
+  }
+
+  const isAdmin = !!adminFlag;
+
+  return {
+    hasAccess,
+    isAdmin,
+    canEnter: hasAccess || isAdmin,
+  };
+};
+
 export const loginWithPassword = async (
   email: string,
   password: string,

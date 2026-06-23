@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { checkProgramAccess } from "@/lib/auth";
 
 export type AuthState =
   | { status: "loading" }
@@ -24,21 +25,14 @@ export const useAuthState = (): AuthState => {
         return;
       }
       try {
-        const [{ data: access }, { data: adminFlag }] = await Promise.all([
-          supabase
-            .from("user_access")
-            .select("has_access")
-            .eq("user_id", userId)
-            .maybeSingle(),
-          supabase.rpc("is_admin"),
-        ]);
+        const access = await checkProgramAccess(userId);
         if (cancelled) return;
         setState({
           status: "authed",
           userId,
           email,
-          hasAccess: !!access?.has_access,
-          isAdmin: !!adminFlag,
+          hasAccess: access.hasAccess,
+          isAdmin: access.isAdmin,
         });
       } catch {
         if (cancelled) return;

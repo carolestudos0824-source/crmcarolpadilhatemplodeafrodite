@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Loader2, Mail, KeyRound, LifeBuoy, Gift, ArrowLeft, ShieldCheck, ArrowRight } from "lucide-react";
 import { Section } from "@/components/Section";
@@ -10,6 +10,7 @@ import {
   requestPasswordRecovery,
   signUpWithPassword,
   checkUserAccess,
+  checkProgramAccess,
   clearSession,
 } from "@/lib/auth";
 import { openSupportEmail } from "@/lib/openLink";
@@ -22,7 +23,7 @@ const inputCls =
   "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
 
 type Tab = "magic" | "signin" | "signup";
-type View = "auth" | "no_access" | "code" | "check_email";
+type View = "auth" | "no_access" | "code" | "check_email" | "link_error";
 
 const isPreviewEnv =
   typeof window !== "undefined" &&
@@ -32,6 +33,7 @@ const isPreviewEnv =
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [tab, setTab] = useState<Tab>("magic");
   const [view, setView] = useState<View>("auth");
 
@@ -40,6 +42,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [recovering, setRecovering] = useState(false);
+  const [validatingSession, setValidatingSession] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -52,6 +55,58 @@ export default function Login() {
     setErrorMsg(null);
   };
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const params = new URLSearchParams(location.search);
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const hasAuthError =
+      params.has("auth_error") ||
+      params.has("error") ||
+      params.has("error_description") ||
+      hashParams.has("error") ||
+      hashParams.has("error_description");
+
+    if (hasAuthError) {
+      setView("link_error");
+      setErrorMsg("Este link expirou ou já foi usado. Peça um novo link seguro para acessar.");
+      return;
+    }
+
+    const validateExistingSession = async () => {
+      setValidatingSession(true);
+      try {
+        const { data } = await supabase.auth.getSession();
+        const user = data.session?.user;
+
+        if (!user) return;
+
+        const access = await checkProgramAccess(user.id);
+        if (cancelled) return;
+
+        if (access.canEnter) {
+          navigate("/entrega", { replace: true });
+          return;
+        }
+
+        setEmail(user.email ?? "");
+        setView("no_access");
+      } catch {
+        if (!cancelled) {
+          setErrorMsg("Não foi possível validar seu acesso agora. Peça um novo link seguro ou tente novamente.");
+        }
+      } finally {
+        if (!cancelled) setValidatingSession(false);
+      }
+    };
+
+    void validateExistingSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location.search, navigate]);
+
   const onMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
     resetMessages();
@@ -61,7 +116,7 @@ export default function Login() {
       const { error } = await withTimeout(
         supabase.auth.signInWithOtp({
           email: email.trim().toLowerCase(),
-          options: { emailRedirectTo: window.location.origin + "/entrega" },
+          options: { emailRedirectTo: window.location.origin + "/auth/callback?next=/entrega" },
         }),
         15000,
         "envio do link",
@@ -173,6 +228,7 @@ export default function Login() {
   };
 
   const recheckAccess = async () => {
+    setValidatingSession(true);
     try {
       const { data, error } = await supabase.auth.getUser();
       if (error) throw error;
@@ -180,14 +236,18 @@ export default function Login() {
         toast.info("Faça login novamente para verificar seu acesso.");
         return;
       }
-      if (await checkUserAccess(data.user.id)) {
+      const access = await checkProgramAccess(data.user.id);
+      if (access.canEnter) {
         toast.success("Acesso liberado");
         navigate("/entrega");
       } else {
+        setView("no_access");
         toast.info("Acesso ainda não liberado.");
       }
     } catch {
       toast.error("Não foi possível verificar seu acesso agora. Tente novamente em instantes.");
+    } finally {
+      setValidatingSession(false);
     }
   };
 
@@ -220,6 +280,57 @@ export default function Login() {
 
 
   // ============== Render ==============
+
+  if (validatingSession) {
+    return (
+      <Section>
+        <div className="max-w-md mx-auto">
+          <div className="flex justify-center mb-8">
+            <Logo size="lg" asLink={false} />
+          </div>
+          <div className="glass-strong p-8 text-center">
+            <Loader2 className="mx-auto mb-4 text-accent animate-spin" size={32} />
+            <h1 className="text-2xl font-heading font-bold mb-2">Validando seu acesso…</h1>
+            <p className="text-sm text-muted-foreground">
+              Estamos confirmando seu login e liberando sua área do programa.
+            </p>
+          </div>
+        </div>
+      </Section>
+    );
+  }
+
+  if (view === "link_error") {
+    return (
+      <Section>
+        <div className="max-w-md mx-auto">
+          <div className="flex justify-center mb-8">
+            <Logo size="lg" asLink={false} />
+          </div>
+          <div className="glass-strong p-8 text-center">
+            <Mail className="mx-auto mb-4 text-accent" size={32} />
+            <h1 className="text-2xl font-heading font-bold mb-2">Link seguro expirado</h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              Este link expirou ou já foi usado. Peça um novo link seguro para acessar.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setView("auth");
+                setTab("magic");
+                setInfo(null);
+                setErrorMsg(null);
+                navigate("/login", { replace: true });
+              }}
+              className="btn-primary w-full justify-center"
+            >
+              Enviar novo link
+            </button>
+          </div>
+        </div>
+      </Section>
+    );
+  }
 
   if (view === "check_email") {
     return (

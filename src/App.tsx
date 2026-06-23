@@ -9,6 +9,7 @@ import Precos from "@/pages/Precos";
 import Checkout from "@/pages/Checkout";
 import Obrigado from "@/pages/Obrigado";
 import Login from "@/pages/Login";
+import AuthCallback from "@/pages/AuthCallback";
 import ResetPassword from "@/pages/ResetPassword";
 import Entrega from "@/pages/Entrega";
 import AdminAccess from "@/pages/AdminAccess";
@@ -63,6 +64,7 @@ const App = () => (
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/obrigado" element={<Obrigado />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/conecte-se" element={<Navigate to="/login" replace />} />
           <Route path="/Conecte-se" element={<Navigate to="/login" replace />} />
