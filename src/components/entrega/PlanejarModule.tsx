@@ -32,6 +32,7 @@ type Etapa = {
   n: number;
   icon: typeof Target;
   title: string;
+  resultado: string;
   tabs: Record<TabId, string>;
 };
 
@@ -40,6 +41,8 @@ const ETAPAS: Etapa[] = [
     n: 1,
     icon: Target,
     title: "Definir problema e público",
+    resultado:
+      "Você sai sabendo exatamente qual dor o app resolve e para quem ele foi criado.",
     tabs: {
       lovable:
         "Crie uma seção de planejamento para meu app explicando claramente qual problema ele resolve e para qual público ele foi criado. Use linguagem simples, direta e sem promessas exageradas.",
@@ -55,6 +58,8 @@ const ETAPAS: Etapa[] = [
     n: 2,
     icon: Sparkles,
     title: "Escrever a promessa do app",
+    resultado:
+      "Você sai com uma frase clara que explica qual transformação o app promete.",
     tabs: {
       lovable:
         "Crie uma frase de promessa para meu app explicando o que ele ajuda o usuário a fazer. A promessa deve ser clara, realista e sem garantir resultado.",
@@ -69,6 +74,8 @@ const ETAPAS: Etapa[] = [
     n: 3,
     icon: MousePointerClick,
     title: "Definir ação principal",
+    resultado:
+      "Você sai sabendo qual é a primeira ação que o usuário deve fazer dentro do app.",
     tabs: {
       lovable:
         "Defina a ação principal do usuário dentro do meu app. Explique o que a pessoa precisa fazer primeiro e qual resultado ela deve receber depois dessa ação.",
@@ -83,6 +90,8 @@ const ETAPAS: Etapa[] = [
     n: 4,
     icon: Layers,
     title: "Separar essencial de extra",
+    resultado:
+      "Você sai com uma lista curta do que entra no MVP e do que fica para depois.",
     tabs: {
       lovable:
         "Crie uma lista separando funcionalidades essenciais da primeira versão e funcionalidades extras que devem ficar para depois. Mantenha o MVP simples.",
@@ -98,6 +107,8 @@ const ETAPAS: Etapa[] = [
     n: 5,
     icon: FileText,
     title: "Criar plano inicial do app",
+    resultado:
+      "Você sai com um plano simples, pronto para orientar a construção no Lovable.",
     tabs: {
       lovable:
         "Crie um plano inicial do meu app com: nome provisório, público, problema, promessa, ação principal, funcionalidades essenciais e o que ficará para depois.",
@@ -135,12 +146,44 @@ const CHECKLIST_ITEMS = [
   "Tenho um plano inicial do app",
 ];
 
+const CRITICAL_ITEMS = new Set([
+  "Sei qual problema meu app resolve",
+  "Sei para quem ele foi feito",
+  "Defini a ação principal do usuário",
+  "Separei o essencial do extra",
+  "Tenho um plano inicial do app",
+]);
+
+const PLANO_TEMPLATE = `Plano inicial do app
+
+Problema:
+[Qual dor o app resolve]
+
+Público:
+[Quem vai usar]
+
+Promessa:
+[Qual resultado o app entrega]
+
+Ação principal:
+[O que o usuário faz primeiro]
+
+Essencial no MVP:
+[Até 5 funcionalidades essenciais]
+
+Fora do MVP:
+[Funcionalidades que ficam para depois]
+
+Primeira versão:
+[O que precisa existir para testar com usuários reais]`;
+
 const TAB_META: { id: TabId; label: string; icon: typeof Target }[] = [
-  { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
+  { id: "lovable", label: "Copiar comando de planejamento", icon: Wrench },
   { id: "agente", label: "Pensar com o Agente", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
 ];
+
 
 const CHECKLIST_PREFIX = "planejar_step__";
 
