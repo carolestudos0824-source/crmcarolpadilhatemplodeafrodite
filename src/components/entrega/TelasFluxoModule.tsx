@@ -366,7 +366,7 @@ export function TelasFluxoModule() {
         </div>
       </GlassCard>
 
-      <CopyCommandWarning />
+
 
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
