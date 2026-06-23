@@ -513,7 +513,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                 <SectionTitle>Primeiro prompt para o Lovable</SectionTitle>
                 <EditablePromptBox
                   originalPrompt={lovablePrompt}
-                  storageKey={`appmodel_prompt__${model.id}`}
+                  storageKey={`appmodel_prompt__${model.name}`}
                   copyLabel="Copiar para o Lovable"
                   helperText="Cole no Lovable como primeiro prompt do app."
                 />
