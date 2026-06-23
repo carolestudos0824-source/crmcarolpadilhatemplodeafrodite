@@ -72,6 +72,10 @@ export const AgentArchitectCard = ({
   const finalBenefits = benefits ?? (variant === "hero" ? DEFAULT_BENEFITS.slice(0, 3) : []);
 
   const handleClick = async () => {
+    if (onClick) {
+      await onClick();
+      return;
+    }
     if (hasPrompt) {
       try {
         await navigator.clipboard.writeText(prompt!);
