@@ -206,7 +206,22 @@ function CopyBtn({
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const [auditCopied, setAuditCopied] = useState(false);
   const Icon = etapa.icon;
+
+  const handleCopyAudit = async () => {
+    try {
+      await navigator.clipboard.writeText(LOVABLE_AUDIT_PROMPT(etapa.tabs.lovable).trim());
+      setAuditCopied(true);
+      toast.success("Auditoria copiada.", {
+        description: "Cole no Lovable. Ele só vai analisar, não vai implementar.",
+      });
+      setTimeout(() => setAuditCopied(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
+
   return (
     <GlassCard className="p-5 md:p-6">
       <div className="flex items-start gap-4 mb-4">
@@ -231,7 +246,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition min-h-[36px] ${
                 active
                   ? "bg-accent/15 border-accent/40 text-accent"
                   : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
@@ -263,16 +278,39 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar para o Agente"
               : tab === "corrigir"
               ? "Copiar correção"
-              : "Copiar comando"
+              : "Copiar para implementar no Lovable"
           }
           helperText={
             tab === "agente"
-              ? "Use para pensar antes de aplicar."
+              ? "Use para revisar com o Agente antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
               : undefined
           }
         />
+      )}
+
+      {tab === "lovable" && (
+        <div className="mt-3 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={handleCopyAudit}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-full sm:w-fit justify-center min-h-[44px] ${
+              auditCopied
+                ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+                : "border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+            }`}
+          >
+            {auditCopied ? <Check size={14} /> : <ShieldCheck size={14} />}
+            {auditCopied ? "Auditoria copiada!" : "Copiar auditoria para o Lovable"}
+          </button>
+          <div className="inline-flex items-start gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[11px] text-cyan-100/90 leading-snug">
+            <ShieldCheck size={12} className="mt-0.5 shrink-0" />
+            <span>
+              <strong className="text-cyan-50">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
+            </span>
+          </div>
+        </div>
       )}
 
     </GlassCard>
