@@ -420,20 +420,22 @@ export const CommandCard = ({
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-rose-300 mb-1.5">
                     <Wrench size={12} /> Se o Lovable errar, cole este texto
                   </div>
-                  <div className="rounded-xl border border-rose-400/20 bg-rose-950/20 max-h-72 overflow-auto">
-                    <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
-                      {correctionPrompt}
-                    </pre>
-                  </div>
+                  <EditablePromptBox
+                    originalPrompt={correctionPrompt}
+                    storageKey={`cmdcard__${completedKey}__fix`}
+                    onChange={setEditedCorrection}
+                    hideCopyButton
+                  />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
-                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Correção copiada.")}
+                      onClick={() => copyText(wrapLovable(editedCorrection || correctionPrompt), "fix", "Correção copiada.")}
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >
                       {copiedKey === "fix" ? <Check size={16} /> : <Copy size={16} />}
                       {copiedKey === "fix" ? "Copiado" : "Copiar correção"}
                     </button>
+
                     <span className="text-[10px] text-muted-foreground/80">
                       Use quando o Lovable não entregar o resultado esperado.
                     </span>
