@@ -87,11 +87,23 @@ const ProjectContextContext = createContext<Ctx | null>(null);
 
 const normalizeContext = (value: unknown): ProjectContext => {
   const raw = (value ?? {}) as Partial<Record<keyof ProjectContext, unknown>>;
-  return Object.keys(EMPTY_PROJECT_CONTEXT).reduce((acc, key) => {
-    const k = key as keyof ProjectContext;
-    acc[k] = typeof raw[k] === "string" ? raw[k] : "";
-    return acc;
-  }, { ...EMPTY_PROJECT_CONTEXT });
+  return {
+    appName: typeof raw.appName === "string" ? raw.appName : "",
+    appDoes: typeof raw.appDoes === "string" ? raw.appDoes : "",
+    audience: typeof raw.audience === "string" ? raw.audience : "",
+    problem: typeof raw.problem === "string" ? raw.problem : "",
+    promise: typeof raw.promise === "string" ? raw.promise : "",
+    mainAction: typeof raw.mainAction === "string" ? raw.mainAction : "",
+    productSold: typeof raw.productSold === "string" ? raw.productSold : "",
+    pricingModel: typeof raw.pricingModel === "string" ? raw.pricingModel : "",
+    needsLogin: raw.needsLogin === "sim" || raw.needsLogin === "nao" ? raw.needsLogin : "",
+    needsDatabase: raw.needsDatabase === "sim" || raw.needsDatabase === "nao" ? raw.needsDatabase : "",
+    needsPaidArea: raw.needsPaidArea === "sim" || raw.needsPaidArea === "nao" ? raw.needsPaidArea : "",
+    needsAdmin: raw.needsAdmin === "sim" || raw.needsAdmin === "nao" ? raw.needsAdmin : "",
+    needsCheckout: raw.needsCheckout === "sim" || raw.needsCheckout === "nao" ? raw.needsCheckout : "",
+    visualStyle: typeof raw.visualStyle === "string" ? raw.visualStyle : "",
+    notes: typeof raw.notes === "string" ? raw.notes : "",
+  };
 };
 
 const hasAnyMeaningful = (c: ProjectContext) =>
