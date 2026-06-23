@@ -194,16 +194,16 @@ export const CommandCard = ({
               saveSourceModule={moduleId}
             />
 
-            <div className="mt-2 flex flex-col items-end gap-2">
+            <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
               <p className="w-full text-xs text-cyan-300/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-lg px-3 py-2 text-left">
                 <strong className="font-semibold text-cyan-200">Dica para iniciantes:</strong>{" "}
                 revise este prompt com o Agente Arquiteto antes de colar no Lovable.
               </p>
-              <div className="flex flex-wrap justify-end gap-2">
+              <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                 <button
                   type="button"
                   onClick={() => setReviewOpen(true)}
-                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-white/15 hover:bg-white/5"
+                  className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
                 >
                   <FileText size={14} /> Revisar prompt antes de copiar
                 </button>
@@ -213,10 +213,10 @@ export const CommandCard = ({
                     copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.");
                     openAgenteArquiteto();
                   }}
-                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                  className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                 >
                   {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
-                  Revisar com o Agente
+                  Revisar com o Agente primeiro
                 </button>
                 <button
                   type="button"
@@ -228,26 +228,36 @@ export const CommandCard = ({
                       "Cole no Lovable para ele analisar sem alterar seu app.",
                     )
                   }
-                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+                  className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
                 >
                   {copiedKey === "audit" ? <Check size={14} /> : <ShieldCheck size={14} />}
                   Copiar auditoria para o Lovable
                 </button>
                 <button
                   onClick={() =>
-                    copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
+                    copyText(
+                      enrichedLovable(),
+                      "main",
+                      "Comando para Lovable copiado",
+                      "Cole no Lovable para implementar no app.",
+                    )
                   }
-                  className="btn-primary text-sm"
+                  className="btn-primary text-sm min-h-[44px] inline-flex items-center justify-center gap-2"
                   type="button"
                 >
                   {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                  Copiar para o Lovable
+                  Copiar para implementar no Lovable
                 </button>
               </div>
-              <span className="text-[11px] text-muted-foreground/90 text-right max-w-md">
-                Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para o Lovable. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
+              <span className="block text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1 text-left sm:text-right max-w-md self-stretch sm:self-end">
+                <ShieldCheck size={11} className="inline mr-1 -mt-0.5" />
+                <strong className="font-semibold text-cyan-100">Somente auditoria.</strong> Não implemente nada.
+              </span>
+              <span className="text-[11px] text-muted-foreground/90 text-left sm:text-right max-w-md">
+                Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para implementar. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
               </span>
             </div>
+
           </div>
 
           <div className="flex items-center justify-between flex-wrap gap-3 pt-2 border-t border-white/5">
@@ -298,8 +308,8 @@ export const CommandCard = ({
           {/* Tabs */}
           <div className="flex flex-wrap gap-1.5 border-b border-white/10 pb-2 -mb-1">
             {[
-              { id: "lovable", label: "Fazer no Lovable", icon: Code2, color: "text-accent border-accent/50 bg-accent/10" },
-              { id: "agent", label: "Pensar com o Agente", icon: Bot, color: "text-amber-200 border-amber-400/50 bg-amber-400/10", disabled: !agentPrompt && !whenAgentFirst },
+              { id: "lovable", label: "Implementar no Lovable", icon: Code2, color: "text-accent border-accent/50 bg-accent/10" },
+              { id: "agent", label: "Revisar com o Agente primeiro", icon: Bot, color: "text-amber-200 border-amber-400/50 bg-amber-400/10", disabled: !agentPrompt && !whenAgentFirst },
               { id: "fix", label: "Corrigir erro", icon: Wrench, color: "text-rose-200 border-rose-400/50 bg-rose-400/10", disabled: !correctionPrompt },
               { id: "advance", label: "Quando avançar", icon: Compass, color: "text-emerald-200 border-emerald-400/50 bg-emerald-400/10" },
             ].map((t) => {
@@ -349,12 +359,12 @@ export const CommandCard = ({
                   saveSourceModule={moduleId}
                 />
 
-                <div className="mt-2 flex flex-col items-end gap-2">
-                  <div className="flex flex-wrap justify-end gap-2">
+                <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
+                  <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                     <button
                       type="button"
                       onClick={() => setReviewOpen(true)}
-                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+                      className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
                     >
                       <FileText size={14} /> Revisar prompt antes de copiar
                     </button>
@@ -364,10 +374,10 @@ export const CommandCard = ({
                         copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.");
                         openAgenteArquiteto();
                       }}
-                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
+                      className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                     >
                       {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
-                      Revisar com o Agente
+                      Revisar com o Agente primeiro
                     </button>
                     <button
                       type="button"
@@ -379,25 +389,35 @@ export const CommandCard = ({
                           "Cole no Lovable para ele analisar sem alterar seu app.",
                         )
                       }
-                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+                      className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
                     >
                       {copiedKey === "audit" ? <Check size={14} /> : <ShieldCheck size={14} />}
                       Copiar auditoria para o Lovable
                     </button>
                     <button
                       onClick={() =>
-                        copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
+                        copyText(
+                          enrichedLovable(),
+                          "main",
+                          "Comando para Lovable copiado",
+                          "Cole no Lovable para implementar no app.",
+                        )
                       }
-                      className="btn-primary text-sm min-h-[44px]"
+                      className="btn-primary text-sm min-h-[44px] inline-flex items-center justify-center gap-2"
                       type="button"
                     >
                       {copiedKey === "main" ? <Check size={16} /> : <Copy size={16} />}
-                      Copiar para o Lovable
+                      Copiar para implementar no Lovable
                     </button>
                   </div>
-                  <span className="text-[11px] text-muted-foreground/90 text-right max-w-md">
-                    Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para o Lovable. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
+                  <span className="block text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1 text-left sm:text-right max-w-md self-stretch sm:self-end">
+                    <ShieldCheck size={11} className="inline mr-1 -mt-0.5" />
+                    <strong className="font-semibold text-cyan-100">Somente auditoria.</strong> Não implemente nada.
                   </span>
+                  <span className="text-[11px] text-muted-foreground/90 text-left sm:text-right max-w-md">
+                    Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para implementar. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
+                  </span>
+
                 </div>
               </div>
             </div>
