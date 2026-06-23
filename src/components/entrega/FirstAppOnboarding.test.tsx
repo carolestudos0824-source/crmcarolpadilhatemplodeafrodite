@@ -22,14 +22,14 @@ describe("FirstAppOnboarding", () => {
     expect(screen.getByText(/Nenhum app ativo selecionado/i)).toBeInTheDocument();
   });
 
-  it("com app ativo 'Jogo do Amor', mostra 'App ativo: Jogo do Amor'", () => {
+  it("com app ativo, mostra o nome do app ativo", () => {
     mockUseAppProjects.mockReturnValue({
-      activeProject: { name: "Jogo do Amor" },
+      activeProject: { name: "Clube de Receitas" },
       openDrawer: vi.fn(),
     });
     render(<FirstAppOnboarding />);
     expect(screen.getByText(/App ativo:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Jogo do Amor/)).toBeInTheDocument();
+    expect(screen.getByText(/Clube de Receitas/)).toBeInTheDocument();
   });
 
   it("diferencia Agente de Lovable na legenda", () => {

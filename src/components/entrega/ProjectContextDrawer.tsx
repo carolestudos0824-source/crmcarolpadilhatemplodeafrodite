@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, Save, RotateCcw, FolderPlus, FolderCheck } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -72,7 +72,7 @@ const YesNoSelect = ({
 );
 
 export const ProjectContextDrawer = () => {
-  const { context, setContext, isEditorOpen, closeEditor } = useProjectContext();
+  const { context, setContext, setRuntimeContext, clearTemporaryContext, isEditorOpen, closeEditor } = useProjectContext();
   const {
     activeProject,
     saveContextToActiveProject,
@@ -80,10 +80,28 @@ export const ProjectContextDrawer = () => {
   } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
   const [confirmReset, setConfirmReset] = useState(false);
+  const skipHydrationRef = useRef(false);
 
   useEffect(() => {
-    if (isEditorOpen) setDraft(context);
-  }, [isEditorOpen, context]);
+    if (!isEditorOpen) {
+      skipHydrationRef.current = false;
+      return;
+    }
+
+    if (skipHydrationRef.current) return;
+
+    if (activeProject) {
+      setDraft(activeProject.context);
+      if (import.meta.env.DEV) console.debug("origem: app ativo");
+      return;
+    }
+
+    setDraft(context);
+    if (import.meta.env.DEV) {
+      const hasContext = Object.values(context).some((value) => value.trim().length > 0);
+      console.debug(hasContext ? "origem: contexto temporário" : "origem: vazio");
+    }
+  }, [isEditorOpen, activeProject, context]);
 
   if (!isEditorOpen) return null;
 
@@ -91,13 +109,15 @@ export const ProjectContextDrawer = () => {
     setDraft((d) => ({ ...d, [key]: val }));
 
   const save = async () => {
-    setContext(draft);
     if (activeProject) {
       const ok = await saveContextToActiveProject(draft);
       if (!ok) {
         toast.error("Não foi possível salvar neste app.");
         return;
       }
+      setRuntimeContext(draft);
+    } else {
+      setContext(draft);
     }
     toast.success("Contexto salvo. Os próximos prompts usarão essas informações.");
     closeEditor();
@@ -105,7 +125,6 @@ export const ProjectContextDrawer = () => {
 
   const saveAsNewApp = async () => {
     const name = draft.appName.trim() || "Meu app";
-    setContext(draft);
     const created = await createProjectFromContext(draft, name);
     if (created) {
       toast.success("Novo app criado. Este contexto agora está vinculado ao projeto.");
@@ -116,8 +135,10 @@ export const ProjectContextDrawer = () => {
   };
 
   const reset = () => {
+    skipHydrationRef.current = true;
     setDraft(EMPTY_PROJECT_CONTEXT);
-    setContext(EMPTY_PROJECT_CONTEXT);
+    clearTemporaryContext();
+    if (activeProject) setRuntimeContext(activeProject.context);
     setConfirmReset(false);
     toast("Contexto limpo. Os campos voltaram ao estado inicial.");
   };

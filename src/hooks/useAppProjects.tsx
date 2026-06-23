@@ -75,6 +75,8 @@ export type SavedPrompt = {
 const PROJECTS_KEY = "fabrica_apps_projects";
 const ACTIVE_KEY = "fabrica_apps_active_project_id";
 const LOCAL_CONTEXT_KEY = "fabrica_apps_project_context";
+const LOCAL_CONTEXT_SAVED_MARKER_KEY = "fabrica_apps_project_context_saved_at";
+const BLOCKED_UNMARKED_CONTEXT_NAMES = new Set([["jogo", "do", "amor"].join(" ")]);
 
 type DbRow = Database["public"]["Tables"]["user_app_projects"]["Row"];
 type DbInsert = Database["public"]["Tables"]["user_app_projects"]["Insert"];
@@ -162,11 +164,15 @@ const readLocalContext = (): ProjectContext | null => {
   try {
     const raw = localStorage.getItem(LOCAL_CONTEXT_KEY);
     if (!raw) return null;
+    const hasSavedMarker = Boolean(localStorage.getItem(LOCAL_CONTEXT_SAVED_MARKER_KEY));
     const parsed = JSON.parse(raw);
     const merged = { ...EMPTY_PROJECT_CONTEXT, ...parsed } as ProjectContext;
     const hasAny = Object.values(merged).some(
       (v) => typeof v === "string" && v.trim().length > 0,
     );
+    if (!hasSavedMarker && BLOCKED_UNMARKED_CONTEXT_NAMES.has(merged.appName.trim().toLowerCase())) {
+      return null;
+    }
     return hasAny ? merged : null;
   } catch {
     return null;
@@ -242,7 +248,7 @@ type Ctx = {
 const AppProjectsContext = createContext<Ctx | null>(null);
 
 export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
-  const { context, setContext } = useProjectContext();
+  const { context, setRuntimeContext, restoreTemporaryContext } = useProjectContext();
   const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<AppProject[]>([]);
   const [activeId, setActiveIdState] = useState<string | null>(readActiveId());
@@ -285,16 +291,12 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const aid = readActiveId();
       const valid = aid ? list.find((p) => p.id === aid) : null;
       if (valid) {
-        setContext(valid.context);
+        setRuntimeContext(valid.context);
+      } else if (aid) {
+        setActiveId(null);
+        restoreTemporaryContext();
       } else {
-        // stale or missing id — auto-select most recent non-archived if any
-        const fallback = pickAutoActive(list);
-        if (fallback) {
-          setActiveId(fallback.id);
-          setContext(fallback.context);
-        } else if (aid) {
-          setActiveId(null);
-        }
+        restoreTemporaryContext();
       }
       // migration flags
       setHasLocalProjectsToImport(list.length === 0 && readLegacyProjects().length > 0);
@@ -304,7 +306,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  }, [setContext, setActiveId]);
+  }, [setRuntimeContext, restoreTemporaryContext, setActiveId]);
 
   useEffect(() => {
     if (!userId) {
@@ -366,10 +368,10 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = rowToProject(data);
       upsertLocal(proj);
       setActiveId(proj.id);
-      setContext(proj.context);
+      setRuntimeContext(proj.context);
       return proj;
     },
-    [userId, upsertLocal, setActiveId, setContext],
+    [userId, upsertLocal, setActiveId, setRuntimeContext],
   );
 
   const createProjectFromContext = useCallback<Ctx["createProjectFromContext"]>(
@@ -382,7 +384,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = projects.find((p) => p.id === id);
       if (!proj) return;
       setActiveId(id);
-      setContext(proj.context);
+      setRuntimeContext(proj.context);
       // bump last_opened_at (fire and forget)
       if (userId) {
         void supabase
@@ -392,7 +394,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
           .eq("user_id", userId);
       }
     },
-    [projects, setActiveId, setContext, userId],
+    [projects, setActiveId, setRuntimeContext, userId],
   );
 
   const updateProject = useCallback<Ctx["updateProject"]>(
@@ -418,9 +420,9 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      if (id === activeId && patch.context !== undefined) setContext(proj.context);
+      if (id === activeId && patch.context !== undefined) setRuntimeContext(proj.context);
     },
-    [userId, projects, activeId, upsertLocal, setContext],
+    [userId, projects, activeId, upsertLocal, setRuntimeContext],
   );
 
   const saveContextToActiveProject = useCallback<Ctx["saveContextToActiveProject"]>(
@@ -439,10 +441,10 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      setContext(proj.context);
+      setRuntimeContext(proj.context);
       return true;
     },
-    [activeId, userId, upsertLocal, setContext],
+    [activeId, userId, upsertLocal, setRuntimeContext],
   );
 
   // Legacy alias kept for compat (uses currently loaded context from provider).
@@ -500,13 +502,14 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         const next = pickAutoActive(remaining);
         if (next) {
           setActiveId(next.id);
-          setContext(next.context);
+          setRuntimeContext(next.context);
         } else {
           setActiveId(null);
+          restoreTemporaryContext();
         }
       }
     },
-    [userId, activeId, projects, removeLocal, setActiveId, setContext],
+    [userId, activeId, projects, removeLocal, setActiveId, setRuntimeContext, restoreTemporaryContext],
   );
 
   const archiveProject = useCallback<Ctx["archiveProject"]>(
@@ -697,11 +700,11 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       legacy.findIndex((r) => (r as { id?: string })?.id === oldActiveId) ?? -1;
     if (match >= 0 && projs[match]) {
       setActiveId(projs[match].id);
-      setContext(projs[match].context);
+      setRuntimeContext(projs[match].context);
     }
     setHasLocalProjectsToImport(false);
     return projs.length;
-  }, [userId, setActiveId, setContext]);
+  }, [userId, setActiveId, setRuntimeContext]);
 
   const createProjectFromLocalContext = useCallback<Ctx["createProjectFromLocalContext"]>(async () => {
     const ctx = readLocalContext();
