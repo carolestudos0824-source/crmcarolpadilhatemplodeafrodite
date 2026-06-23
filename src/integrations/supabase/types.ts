@@ -561,6 +561,33 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_prompts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          source_module: string | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          source_module?: string | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          source_module?: string | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscription_events: {
         Row: {
           amount_cents: number | null
