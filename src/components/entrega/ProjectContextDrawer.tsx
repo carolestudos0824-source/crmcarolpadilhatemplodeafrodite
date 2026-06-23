@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { X, Save, RotateCcw, FolderPlus, FolderCheck } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { X, Save, RotateCcw, FolderPlus, FolderCheck, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import {
   EMPTY_PROJECT_CONTEXT,
@@ -8,11 +8,24 @@ import {
   type YesNo,
 } from "@/hooks/useProjectContext";
 import { useAppProjects } from "@/hooks/useAppProjects";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  buildDraftKey,
+  isContextEqual,
+  readDraft,
+  removeDraft,
+  writeDraft,
+  type DraftScope,
+} from "@/lib/contextDraftStorage";
 
 /**
  * Drawer "Contexto do meu app". Salva tudo apenas no navegador
  * (localStorage), via useProjectContext. Não toca em banco/auth.
+ *
+ * Camada adicional de RASCUNHO local (contextDraftStorage) garante que a
+ * usuária não perca o que digitou se fechar o painel sem salvar.
  */
+
 
 const Field = ({
   label,
