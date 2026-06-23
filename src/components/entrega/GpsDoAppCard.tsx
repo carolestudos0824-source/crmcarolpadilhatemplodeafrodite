@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { toast } from "sonner";
-import { Copy, Check, Compass, Crown } from "lucide-react";
+import { Compass, Crown } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 const GPS_PROMPT = `Atue como GPS de Construção de App.
 
