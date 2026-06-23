@@ -262,7 +262,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Use para pensar antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
-              : "Cole no projeto do seu app no Lovable."
+              : undefined
           }
         />
       )}
