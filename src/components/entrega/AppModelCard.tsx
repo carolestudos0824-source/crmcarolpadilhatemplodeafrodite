@@ -719,6 +719,78 @@ Regras:
                 </div>
               </section>
 
+              {/* ===== Etapa 4 · Aplicar ajuste no Lovable — Premium Card ===== */}
+              <section
+                className="relative overflow-hidden rounded-[20px] border-2 border-[#0EA5E9]/70 p-4 sm:p-6 space-y-4 shadow-[0_0_40px_-12px_rgba(14,165,233,0.45)]"
+                style={{ background: "linear-gradient(135deg, #07111F 0%, #0B1220 100%)" }}
+              >
+                <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-[#0EA5E9]/15 blur-3xl pointer-events-none" />
+
+                {/* Header */}
+                <div className="relative flex items-start justify-between gap-3 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] px-2.5 py-1 rounded-md border border-[#0EA5E9]/50 bg-[#0EA5E9]/15 text-[#7DD3FC] font-bold mb-2">
+                      <Sparkles size={11} /> Etapa 4 · Lovable
+                    </div>
+                    <h4 className="font-heading font-bold text-xl sm:text-2xl text-foreground leading-tight">
+                      Aplicar ajuste no Lovable
+                    </h4>
+                    <p className="text-sm text-foreground/80 mt-1.5">
+                      Cole no Lovable o próximo prompt gerado pelo Agente para corrigir, melhorar ou continuar a construção do app.
+                    </p>
+                    <p className="text-[12px] text-foreground/60 mt-1 leading-snug">
+                      O ciclo Agente → Lovable se repete até o app ficar pronto. Troque o trecho entre colchetes pelo texto que o Agente respondeu.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sticky action bar */}
+                <div className="relative flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={copyNextLovablePrompt}
+                    className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#0EA5E9] to-[#22D3EE] text-white text-sm font-bold hover:opacity-90 transition shadow-[0_8px_24px_-8px_rgba(14,165,233,0.7)]"
+                  >
+                    <Copy size={16} /> Copiar próximo prompt para o Lovable
+                  </button>
+                  <a
+                    href={LOVABLE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-[#0EA5E9]/40 bg-[#0EA5E9]/[0.08] text-[#7DD3FC] hover:bg-[#0EA5E9]/15 text-sm font-semibold"
+                  >
+                    <ExternalLink size={14} /> Abrir Lovable
+                  </a>
+                </div>
+
+                {/* Prompt body */}
+                <details
+                  className="relative rounded-xl border border-[#0EA5E9]/25 overflow-hidden group"
+                  style={{ background: "#020817" }}
+                >
+                  <summary className="cursor-pointer list-none px-4 py-3 text-[11px] uppercase tracking-wider text-[#7DD3FC]/80 hover:text-[#7DD3FC] transition flex items-center gap-2">
+                    <ChevronDown size={12} className="transition group-open:rotate-180" />
+                    Ver template do próximo prompt
+                  </summary>
+                  <textarea
+                    readOnly
+                    value={nextLovablePrompt}
+                    onFocus={(e) => e.currentTarget.select()}
+                    spellCheck={false}
+                    style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" }}
+                    className="scrollbar-prompt w-full h-56 bg-transparent p-5 sm:p-6 text-[13px] sm:text-[14px] text-[#F8FAFC] leading-[1.7] resize-y outline-none focus:ring-2 focus:ring-[#0EA5E9]/40 whitespace-pre-wrap border-t border-[#0EA5E9]/15"
+                  />
+                </details>
+
+                {/* Footer */}
+                <div className="relative flex flex-wrap items-center justify-between gap-2 text-[11px] text-foreground/60">
+                  <span>Use sempre que o Agente devolver um próximo passo.</span>
+                  <span className="font-mono">{nextLovablePrompt.length.toLocaleString("pt-BR")} caracteres</span>
+                </div>
+              </section>
+
+
+
 
               {/* ===== Ações avançadas (Usar esta ideia) ===== */}
               <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 space-y-2">
