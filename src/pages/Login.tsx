@@ -126,6 +126,9 @@ export default function Login() {
   // ============ Google ============
   const [googleLoading, setGoogleLoading] = useState(false);
 
+  // ============ Accordion (outras formas) ============
+  const [otherOpen, setOtherOpen] = useState(false);
+
   useEffect(() => {
     let cancelled = false;
 
