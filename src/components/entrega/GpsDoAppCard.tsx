@@ -117,6 +117,7 @@ export function GpsDoAppCard() {
             Veja em que ponto da jornada você está, o que já fez e o que ainda falta para o app ficar pronto, publicável e vendável.
           </p>
           <EditablePromptBox
+            saveSourceModule="gps-do-app"
             originalPrompt={GPS_PROMPT}
             storageKey="gps_do_app_prompt"
             copyLabel="Copiar prompt do GPS do App"
