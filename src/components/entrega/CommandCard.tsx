@@ -431,6 +431,8 @@ export const CommandCard = ({
                     storageKey={`cmdcard__${completedKey}__fix`}
                     onChange={setEditedCorrection}
                     hideCopyButton
+                    saveTitle={`${title} — Correção`}
+                    saveSourceModule={moduleId}
                   />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
