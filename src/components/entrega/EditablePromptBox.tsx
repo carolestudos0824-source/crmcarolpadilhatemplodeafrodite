@@ -115,6 +115,22 @@ export function EditablePromptBox({
             {copied ? "Copiado!" : copyLabel}
           </button>
         )}
+        {studio && (
+          <button
+            type="button"
+            onClick={() =>
+              openPromptStudio({
+                ...studio,
+                command: studio.command ?? value,
+              })
+            }
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-xs text-foreground/80 hover:bg-white/10 transition"
+            title="Abrir no Estúdio de Prompt"
+          >
+            <Settings2 size={12} />
+            Editar no Estúdio
+          </button>
+        )}
         {edited && (
           <button
             onClick={handleRestore}
