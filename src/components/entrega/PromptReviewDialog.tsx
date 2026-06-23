@@ -188,8 +188,9 @@ export const PromptReviewDialog = ({
 
   const restore = () => {
     setDrafts((d) => ({ ...d, [mode]: originals[mode] }));
-    toast("Versão original restaurada.");
+    toast.success("Prompt original restaurado.");
   };
+
 
   const selectAll = () => {
     const el = textareaRef.current;
