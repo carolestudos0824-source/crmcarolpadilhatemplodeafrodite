@@ -40,7 +40,7 @@ export function EditablePromptBox({
   onChange,
   placeholder,
   storageKey,
-  copyLabel = "Copiar comando",
+  copyLabel = "Copiar para implementar no Lovable",
   transformOnCopy,
   helperText,
   hideCopyButton,

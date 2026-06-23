@@ -36,9 +36,9 @@ describe("TesteFinalModule", () => {
 
   it("tabs switch and copy buttons work with preamble", () => {
     render(<TesteFinalModule />);
-    fireEvent.click(screen.getAllByRole("button", { name: /Copiar comando/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Copiar para implementar no Lovable/i })[0]);
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("Contexto:"));
-    fireEvent.click(screen.getAllByRole("button", { name: /Pensar com o Agente/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Revisar com o Agente primeiro/i })[0]);
     fireEvent.click(screen.getAllByRole("button", { name: /Copiar para o Agente/i })[0]);
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("visitante"));
     fireEvent.click(screen.getAllByRole("button", { name: /Corrigir erro/i })[0]);

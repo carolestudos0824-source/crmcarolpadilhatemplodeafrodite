@@ -64,12 +64,12 @@ describe("PlanejarModule", () => {
 
   it("switches tabs inside an etapa and updates content", () => {
     render(<PlanejarModule />);
-    // Default tab "Fazer no Lovable" shows the lovable prompt of etapa 1
+    // Default tab "Implementar no Lovable" shows the lovable prompt of etapa 1
     expect(
       screen.getByText(/Crie uma seção de planejamento para meu app/i),
     ).toBeInTheDocument();
-    // Click "Pensar com o Agente" on etapa 1
-    const agentBtns = screen.getAllByRole("button", { name: /Pensar com o Agente/i });
+    // Click "Revisar com o Agente primeiro" on etapa 1
+    const agentBtns = screen.getAllByRole("button", { name: /Revisar com o Agente primeiro/i });
     fireEvent.click(agentBtns[0]);
     expect(
       screen.getByText(/Me ajude a definir o problema e o público do meu app/i),
@@ -83,7 +83,7 @@ describe("PlanejarModule", () => {
 
   it("copy button writes prompt to clipboard", async () => {
     render(<PlanejarModule />);
-    const copyBtns = screen.getAllByRole("button", { name: /^Copiar comando$/i });
+    const copyBtns = screen.getAllByRole("button", { name: /^Copiar para implementar no Lovable$/i });
     fireEvent.click(copyBtns[0]);
     expect(writeText).toHaveBeenCalledTimes(1);
     expect(writeText.mock.calls[0][0]).toMatch(/Crie uma seção de planejamento/i);

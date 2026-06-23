@@ -2263,7 +2263,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <CreativeGenerator />
         <ModuleHeader
           title="Siga as etapas de Criativos"
-          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
+          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Implementar no Lovable, com texto pronto para copiar."
         />
         <CommandList commands={COMMANDS_CRIATIVOS} moduleKey="criativos" />
         <ChecklistBlock
@@ -2304,7 +2304,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <ViabilityAnalysisCard />
         <ModuleHeader
           title="Siga as etapas de Validação"
-          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Fazer no Lovable, com texto pronto para copiar."
+          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Implementar no Lovable, com texto pronto para copiar."
         />
         <CommandList commands={COMMANDS_VALIDACAO} moduleKey="validacao" />
         <ChecklistBlock
@@ -2875,7 +2875,7 @@ Entregue:
             </pre>
           </div>
           <button onClick={copy} className="mt-3 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 text-sm font-semibold">
-            <Copy size={14} /> Copiar comando
+            <Copy size={14} /> Copiar para implementar no Lovable
           </button>
         </div>
       )}
@@ -2972,7 +2972,7 @@ Regras:
             </pre>
           </div>
           <button onClick={copy} className="mt-3 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center gap-2 text-sm font-semibold">
-            <Copy size={14} /> Copiar comando
+            <Copy size={14} /> Copiar para implementar no Lovable
           </button>
         </div>
       )}
