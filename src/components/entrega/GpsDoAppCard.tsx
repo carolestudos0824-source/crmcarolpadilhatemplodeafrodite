@@ -102,14 +102,14 @@ type GpsDoAppCardProps = {
 };
 
 const GPS_DEFAULT_DESCRIPTION =
-  "Veja em que ponto da jornada você está, o que já fez e o que ainda falta para o app ficar pronto, publicável e vendável.";
+  "Veja em que ponto seu app está, o que já foi feito e qual é a próxima ação para chegar até a publicação com menos retrabalho.";
 
 export function GpsDoAppCard({
   defaultCollapsed = false,
   descriptionOverride,
 }: GpsDoAppCardProps = {}) {
   return (
-    <GlassCard className="mt-6 p-5">
+    <GlassCard className="mt-6 p-4 sm:p-5">
       <div className="flex items-start gap-3">
         <div className="rounded-lg bg-accent/10 border border-accent/20 p-2 shrink-0">
           <Compass size={18} className="text-accent" />
@@ -117,11 +117,11 @@ export function GpsDoAppCard({
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1">
             <h3 className="text-base font-semibold text-foreground">GPS do App</h3>
+            <span className="inline-flex items-center gap-1 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-0.5 text-[10px] font-medium text-cyan-200">
+              Diagnóstico da sua jornada
+            </span>
             <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-medium text-amber-200">
               <Crown size={10} /> Estratégico
-            </span>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              Gestão de Construção
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
@@ -132,7 +132,7 @@ export function GpsDoAppCard({
             saveSourceModule="gps-do-app"
             originalPrompt={GPS_PROMPT}
             storageKey="gps_do_app_prompt"
-            copyLabel="Copiar prompt do GPS do App"
+            copyLabel="Copiar diagnóstico do app"
             helperText="Cole no Lovable, Cursor ou Claude Code dentro do projeto do aplicativo."
           />
         </div>

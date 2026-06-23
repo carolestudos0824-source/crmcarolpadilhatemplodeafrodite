@@ -125,14 +125,14 @@ type ArquitetoMelhoriasCardProps = {
 };
 
 const ARQUITETO_DEFAULT_DESCRIPTION =
-  "Use este prompt para avaliar uma ideia, print, sugestão, funcionalidade, checklist ou melhoria antes de colocar no app que você está criando.";
+  "Cole uma ideia, print, sugestão ou melhoria e descubra se isso deve entrar agora no MVP ou ficar para depois.";
 
 export function ArquitetoMelhoriasCard({
   defaultCollapsed = false,
   descriptionOverride,
 }: ArquitetoMelhoriasCardProps = {}) {
   return (
-    <GlassCard className="mt-4 p-5">
+    <GlassCard className="mt-4 p-4 sm:p-5">
       <div className="flex items-start gap-3">
         <div className="rounded-lg bg-accent/10 border border-accent/20 p-2 shrink-0">
           <Ruler size={18} className="text-accent" />
@@ -144,9 +144,6 @@ export function ArquitetoMelhoriasCard({
             </h3>
             <span className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent">
               <Sparkles size={10} /> Para o seu app
-            </span>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              Analise melhorias antes de adicionar ao seu app
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
