@@ -37,6 +37,59 @@ const cardCls = "glass-strong p-6 sm:p-8 rounded-2xl";
 
 type View = "auth" | "no_access" | "code" | "check_email" | "link_error";
 
+type PasswordFieldProps = {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  show: boolean;
+  onToggle: () => void;
+  autoComplete: string;
+  placeholder?: string;
+  minLength?: number;
+};
+
+function PasswordField({
+  id,
+  label,
+  value,
+  onChange,
+  show,
+  onToggle,
+  autoComplete,
+  placeholder,
+  minLength,
+}: PasswordFieldProps) {
+  return (
+    <div>
+      <label htmlFor={id} className="text-xs text-muted-foreground mb-1 block">
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={id}
+          className={`${inputCls} pr-12`}
+          type={show ? "text" : "password"}
+          placeholder={placeholder ?? "••••••••"}
+          autoComplete={autoComplete}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          minLength={minLength}
+        />
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={show ? "Ocultar senha" : "Mostrar senha"}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1"
+        >
+          {show ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
