@@ -71,7 +71,7 @@ import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
-import { openAgenteArquiteto, copyPromptAndOpenAgent, AGENTE_ARQUITETO_URL } from "@/lib/agenteArquiteto";
+import { openAgenteArquiteto, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 import { Bot } from "lucide-react";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
