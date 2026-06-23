@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import {
   ClipboardList,
   Target,
-  Users,
   Sparkles,
   MousePointerClick,
   Layers,
@@ -12,11 +11,10 @@ import {
   Bot,
   Wrench,
   ArrowRight,
-  Copy,
-  Check,
   CheckCircle2,
   Circle,
 } from "lucide-react";
+
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import {
