@@ -12,7 +12,7 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
-  ChevronDown,
+  
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
@@ -127,8 +127,8 @@ export default function Login() {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   // ============ Tabs + password sub-accordion ============
-  const [authTab, setAuthTab] = useState<"entrar" | "criar">("entrar");
-  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<"entrar" | "criar">("criar");
+  
 
   useEffect(() => {
     let cancelled = false;
@@ -576,8 +576,8 @@ export default function Login() {
               {/* Tabs */}
               <div role="tablist" aria-label="Acesso" className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-white/[0.04] border border-white/10 mb-6">
                 {([
-                  { id: "entrar", label: "Entrar" },
                   { id: "criar", label: "Criar conta" },
+                  { id: "entrar", label: "Entrar" },
                 ] as const).map((t) => {
                   const active = authTab === t.id;
                   return (
@@ -602,9 +602,10 @@ export default function Login() {
               {/* === Tab: Entrar === */}
               {authTab === "entrar" && (
                 <div>
-                  <h2 className="text-lg font-heading font-semibold mb-4">
-                    Entrar no meu programa
-                  </h2>
+                  <h2 className="text-lg font-heading font-semibold mb-1">Já tenho conta</h2>
+                  <p className="text-xs text-muted-foreground mb-5">
+                    Entre usando sua conta já criada.
+                  </p>
 
                   <button
                     type="button"
@@ -631,134 +632,121 @@ export default function Login() {
                     <div className="h-px flex-1 bg-white/10" />
                   </div>
 
-                  <form onSubmit={onMagicLink} className="space-y-3">
+                  {/* Login com senha (primário dentro da aba Entrar) */}
+                  <form onSubmit={onSignIn} className="space-y-3">
                     <div>
-                      <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
-                        E-mail da compra
+                      <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
+                        E-mail
                       </label>
                       <input
-                        id="magic-email"
+                        id="signin-email"
                         className={inputCls}
                         type="email"
                         placeholder="seu@email.com"
                         autoComplete="email"
-                        value={magicEmail}
-                        onChange={(e) => setMagicEmail(e.target.value)}
+                        value={signinEmail}
+                        onChange={(e) => setSigninEmail(e.target.value)}
                         required
                       />
                     </div>
 
-                    {magicError && (
+                    <PasswordField
+                      id="signin-password"
+                      label="Senha"
+                      value={signinPassword}
+                      onChange={setSigninPassword}
+                      show={showSigninPassword}
+                      onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
+                      autoComplete="current-password"
+                    />
+
+                    {signinError && (
                       <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                        {magicError}
+                        {signinError}
                       </div>
                     )}
-                    {magicInfo && (
+                    {recoverInfo && (
                       <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                        {magicInfo}
+                        {recoverInfo}
                       </div>
                     )}
 
                     <button
                       type="submit"
-                      disabled={magicLoading}
+                      disabled={signinLoading}
                       className="btn-primary w-full min-h-12"
                     >
-                      {magicLoading ? (
+                      {signinLoading ? (
                         <>
-                          <Loader2 size={16} className="animate-spin" /> Enviando link…
+                          <Loader2 size={16} className="animate-spin" /> Entrando…
                         </>
                       ) : (
-                        "Receber link de acesso"
+                        "Entrar"
                       )}
                     </button>
+
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        onClick={onRecover}
+                        disabled={recovering}
+                        className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
+                      >
+                        <KeyRound size={12} />
+                        {recovering ? "Enviando…" : "Esqueci minha senha"}
+                      </button>
+                    </div>
                   </form>
 
-                  {/* Sub-accordion: senha cadastrada */}
-                  <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                    <button
-                      type="button"
-                      onClick={() => setPasswordOpen((v) => !v)}
-                      aria-expanded={passwordOpen}
-                      className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
-                    >
-                      <span className="text-sm font-medium text-foreground">
-                        Tenho uma senha cadastrada
-                      </span>
-                      <ChevronDown
-                        size={16}
-                        className={`text-muted-foreground transition-transform ${passwordOpen ? "rotate-180" : ""}`}
-                      />
-                    </button>
+                  {/* Entrada sem senha (alternativa secundária) */}
+                  <div className="mt-8 pt-6 border-t border-white/10">
+                    <h3 className="text-sm font-medium text-foreground mb-1">Entrada sem senha</h3>
+                    <p className="text-[11px] text-muted-foreground/80 mb-3">
+                      Use esta opção apenas se preferir receber um link de acesso no e-mail.
+                    </p>
 
-                    {passwordOpen && (
-                      <div className="px-4 pb-4 pt-1 border-t border-white/10">
-                        <form onSubmit={onSignIn} className="space-y-3 pt-3">
-                          <div>
-                            <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
-                              E-mail
-                            </label>
-                            <input
-                              id="signin-email"
-                              className={inputCls}
-                              type="email"
-                              placeholder="seu@email.com"
-                              autoComplete="email"
-                              value={signinEmail}
-                              onChange={(e) => setSigninEmail(e.target.value)}
-                              required
-                            />
-                          </div>
-
-                          <PasswordField
-                            id="signin-password"
-                            label="Senha"
-                            value={signinPassword}
-                            onChange={setSigninPassword}
-                            show={showSigninPassword}
-                            onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
-                            autoComplete="current-password"
-                          />
-
-                          {signinError && (
-                            <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                              {signinError}
-                            </div>
-                          )}
-                          {recoverInfo && (
-                            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                              {recoverInfo}
-                            </div>
-                          )}
-
-                          <button
-                            type="submit"
-                            disabled={signinLoading}
-                            className="btn-primary w-full min-h-12"
-                          >
-                            {signinLoading ? (
-                              <>
-                                <Loader2 size={16} className="animate-spin" /> Entrando…
-                              </>
-                            ) : (
-                              "Entrar com senha"
-                            )}
-                          </button>
-
-                          <div className="pt-1">
-                            <button
-                              type="button"
-                              onClick={onRecover}
-                              disabled={recovering}
-                              className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
-                            >
-                              <KeyRound size={12} />
-                              {recovering ? "Enviando…" : "Esqueci minha senha"}
-                            </button>
-                          </div>
-                        </form>
+                    <form onSubmit={onMagicLink} className="space-y-3">
+                      <div>
+                        <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
+                          E-mail da compra
+                        </label>
+                        <input
+                          id="magic-email"
+                          className={inputCls}
+                          type="email"
+                          placeholder="seu@email.com"
+                          autoComplete="email"
+                          value={magicEmail}
+                          onChange={(e) => setMagicEmail(e.target.value)}
+                          required
+                        />
                       </div>
-                    )}
+
+                      {magicError && (
+                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                          {magicError}
+                        </div>
+                      )}
+                      {magicInfo && (
+                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                          {magicInfo}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={magicLoading}
+                        className="w-full min-h-12 rounded-xl border border-white/15 hover:bg-white/5 text-sm font-medium text-foreground transition disabled:opacity-60 flex items-center justify-center gap-2"
+                      >
+                        {magicLoading ? (
+                          <>
+                            <Loader2 size={16} className="animate-spin" /> Enviando link…
+                          </>
+                        ) : (
+                          "Receber link por e-mail"
+                        )}
+                      </button>
+                    </form>
                   </div>
                 </div>
               )}
@@ -766,9 +754,9 @@ export default function Login() {
               {/* === Tab: Criar conta === */}
               {authTab === "criar" && (
                 <div>
-                  <h2 className="text-lg font-heading font-semibold mb-1">Criar conta</h2>
+                  <h2 className="text-lg font-heading font-semibold mb-1">Criar sua conta</h2>
                   <p className="text-xs text-muted-foreground mb-5">
-                    Use o mesmo e-mail informado na compra para criar sua conta de acesso.
+                    Use o mesmo e-mail informado na compra para liberar seu acesso ao programa.
                   </p>
 
                   <form onSubmit={onSignUp} className="space-y-3">
@@ -848,7 +836,7 @@ export default function Login() {
                           <Loader2 size={16} className="animate-spin" /> Criando conta…
                         </>
                       ) : (
-                        "Criar conta"
+                        "Criar conta e acessar"
                       )}
                     </button>
                   </form>
@@ -862,13 +850,13 @@ export default function Login() {
             <div className={cardCls}>
               <div className="flex items-center gap-2 mb-4">
                 <ShieldCheck size={18} className="text-accent" />
-                <h2 className="font-heading font-semibold text-lg">Como acessar</h2>
+                <h2 className="font-heading font-semibold text-lg">Primeiro acesso?</h2>
               </div>
               <ol className="space-y-3 text-sm text-muted-foreground">
                 {[
-                  "Se já tem conta, use a aba \u201CEntrar\u201D.",
-                  "Se é seu primeiro acesso, use a aba \u201CCriar conta\u201D.",
-                  "Use sempre o mesmo e-mail informado na compra.",
+                  "Clique em \u201CCriar conta\u201D.",
+                  "Use o mesmo e-mail informado na compra.",
+                  "Crie sua senha e acesse o programa.",
                 ].map((step, i) => (
                   <li key={i} className="flex gap-3">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
@@ -878,6 +866,9 @@ export default function Login() {
                   </li>
                 ))}
               </ol>
+              <p className="text-[11px] text-muted-foreground/70 mt-4">
+                Se você já criou uma conta, use a aba Entrar.
+              </p>
             </div>
 
             <div className={cardCls}>
