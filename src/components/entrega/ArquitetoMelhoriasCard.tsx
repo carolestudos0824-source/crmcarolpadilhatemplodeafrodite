@@ -113,8 +113,9 @@ export function ArquitetoMelhoriasCard() {
             </span>
           </div>
           <p className="text-sm text-foreground/80 mb-4">
-            Régua interna para analisar qualquer melhoria, print, prompt ou ideia
-            nova e decidir onde encaixar sem inflar o produto.
+            Use para analisar melhorias futuras, prints, ideias, frameworks ou
+            módulos e decidir onde encaixar cada item dentro do programa — sem
+            inflar a experiência.
           </p>
           <button
             type="button"
