@@ -138,15 +138,15 @@ const CHECKLIST_ITEMS = [
 ];
 
 const TAB_META: { id: TabId; label: string; icon: typeof BarChart3 }[] = [
-  { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
-  { id: "agente", label: "Pensar com o Agente", icon: Bot },
+  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
+  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
 ];
 
 const CHECKLIST_PREFIX = "metricas_step__";
 
-function CopyBtn({ text, label = "Copiar comando" }: { text: string; label?: string }) {
+function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text: string; label?: string }) {
   const [ok, setOk] = useState(false);
   const handle = async () => {
     try {
@@ -231,7 +231,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar para o Agente"
               : tab === "corrigir"
               ? "Copiar correção"
-              : "Copiar comando"
+              : "Copiar para implementar no Lovable"
           }
           helperText={
             tab === "agente"
@@ -328,9 +328,9 @@ export function MetricasAppModule() {
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-4">
-        Use a aba <strong className="text-foreground/90">Fazer no Lovable</strong> quando
+        Use a aba <strong className="text-foreground/90">Implementar no Lovable</strong> quando
         quiser aplicar no app. Use a aba{" "}
-        <strong className="text-foreground/90">Pensar com o Agente</strong> quando quiser
+        <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> quando quiser
         ajuda para decidir antes de construir.
       </p>
 

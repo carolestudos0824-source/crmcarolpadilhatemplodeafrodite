@@ -37,7 +37,7 @@ describe("MvpArquiteturaModule", () => {
   it("switches internal tabs and copies the right prompt", async () => {
     render(<MvpArquiteturaModule />);
     // Card 1 = "Definir o MVP"
-    fireEvent.click(screen.getAllByRole("button", { name: /Pensar com o Agente/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Revisar com o Agente primeiro/i })[0]);
     expect(screen.getByText(/transformar minha ideia em um MVP simples/i)).toBeInTheDocument();
     fireEvent.click(screen.getAllByRole("button", { name: /Corrigir erro/i })[0]);
     fireEvent.click(screen.getAllByRole("button", { name: /Copiar correção/i })[0]);
