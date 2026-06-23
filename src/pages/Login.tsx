@@ -787,7 +787,10 @@ export default function Login() {
                     Use o mesmo e-mail informado na compra para liberar seu acesso ao programa.
                   </p>
 
+                  {renderGoogleBlock("criar")}
+
                   <form onSubmit={onSignUp} className="space-y-3">
+
                     <div>
                       <label htmlFor="signup-name" className="text-xs text-muted-foreground mb-1 block">
                         Nome
