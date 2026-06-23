@@ -189,32 +189,8 @@ const TAB_META: { id: TabId; label: string; icon: typeof Target }[] = [
 
 const CHECKLIST_PREFIX = "planejar_step__";
 
-function CopyBtn({ text, label = "Copiar" }: { text: string; label?: string }) {
-  const [ok, setOk] = useState(false);
-  const handle = async () => {
-    try {
-      await navigator.clipboard.writeText(text.trim());
-      setOk(true);
-      toast.success("Copiado! Agora cole no Lovable.");
-      setTimeout(() => setOk(false), 1600);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-  return (
-    <button
-      onClick={handle}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
-        ok
-          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-      }`}
-    >
-      {ok ? <Check size={14} /> : <Copy size={14} />}
-      {ok ? "Copiado!" : label}
-    </button>
-  );
-}
+
+
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
