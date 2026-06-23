@@ -3,7 +3,7 @@ import {
   ExternalLink,
   Lightbulb,
   AlertTriangle,
-  ArrowRight,
+  ArrowRight: _ArrowRight,
   Compass,
   Search,
   FolderPlus,
