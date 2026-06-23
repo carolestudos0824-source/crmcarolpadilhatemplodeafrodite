@@ -207,9 +207,12 @@ export function FundamentosModule({ goTo }: Props = {}) {
       </div>
 
       {/* Checklist */}
-      <GlassCard className="p-5 md:p-6 mt-6">
+      <p className="text-sm text-muted-foreground mt-6 mb-2">
+        Leia as 5 aulas, marque os pontos abaixo e avance para o primeiro passo da jornada.
+      </p>
+      <GlassCard className="p-5 md:p-6">
         <h3 className="text-base md:text-lg font-heading font-bold mb-3">
-          Antes de avançar, confirme:
+          Antes de avançar, confirme que você entendeu:
         </h3>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item, i) => (
@@ -223,7 +226,7 @@ export function FundamentosModule({ goTo }: Props = {}) {
                     next[i] = e.target.checked;
                     setChecked(next);
                   }}
-                  className="mt-1 h-4 w-4 rounded border-white/20 bg-black/30 accent-[hsl(var(--accent))]"
+                  className="mt-1 h-5 w-5 rounded border-white/20 bg-black/30 accent-[hsl(var(--accent))] shrink-0"
                 />
                 <span className={checked[i] ? "text-foreground/95 line-through decoration-accent/40" : "text-foreground/90 group-hover:text-foreground"}>
                   {item}
@@ -233,12 +236,13 @@ export function FundamentosModule({ goTo }: Props = {}) {
           ))}
         </ul>
         {allChecked && (
-          <div className="mt-4 flex items-center gap-2 text-emerald-300 text-sm">
-            <CheckCircle2 size={16} />
-            Tudo confirmado. Você pode marcar o módulo como concluído no rodapé.
+          <div className="mt-4 flex items-start gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-emerald-100 text-sm">
+            <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
+            <span>Você entendeu a regra principal. Agora pode seguir para Comece aqui.</span>
           </div>
         )}
       </GlassCard>
+
 
       {/* Pronto para começar */}
       <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
