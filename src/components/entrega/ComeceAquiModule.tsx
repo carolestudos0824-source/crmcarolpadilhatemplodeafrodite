@@ -47,15 +47,14 @@ const phaseMap: { title: string; mods: ModuleId[] }[] = [
   { title: "Fase 8 — Revisar e resolver problemas", mods: ["checklist", "erros", "ativar"] },
 ];
 
-const naoPule = [
-  "Não construa sem planejar a ideia.",
-  "Não crie telas sem definir o fluxo principal.",
-  "Não venda sem explicar entrega e acesso.",
-  "Não publique sem revisar confiança, termos e suporte.",
-  "Não divulgue sem testar no celular.",
-  "Não valide só com elogios.",
-  "Não mude tudo sem olhar métricas.",
-  "Não lance uma nova versão sem testar novamente.",
+const regrasAvancar = [
+  "Primeiro escolha um app.",
+  "Depois defina o fluxo principal.",
+  "Só copie comandos quando entender o objetivo da etapa.",
+  "Só publique após revisar confiança, termos e suporte.",
+  "Só divulgue depois de testar com um usuário real.",
+  "Só escale depois de medir uso, feedback e conversão.",
+  "Só avance quando a etapa atual estiver funcionando.",
 ];
 
 const scrollToId = (id: string) => {
@@ -212,43 +211,42 @@ export function ComeceAquiModule({ goTo }: Props) {
         <PainSearchNextStep goTo={goTo} />
       </div>
 
-      {/* Jornada em 6 fases */}
-      <header className="mt-8 mb-4">
+      {/* Resumo: Seu caminho até o app publicado */}
+      <header className="mt-8 mb-3">
         <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
           <Sparkles size={12} /> Sua jornada
         </span>
-        <h2 className="text-xl md:text-2xl font-heading font-bold leading-tight mb-2">
-          Sua jornada em 6 fases
+        <h2 className="text-lg md:text-xl font-heading font-bold leading-tight mb-1">
+          Seu caminho até o app publicado
         </h2>
-        <p className="text-muted-foreground max-w-3xl">
-          Siga em ordem para transformar sua ideia em um app planejado, construível, vendável e validável.
-        </p>
-        <p className="text-sm text-accent mt-2">
-          Não tente fazer tudo de uma vez. Comece pela Etapa 1.
+        <p className="text-sm text-muted-foreground max-w-3xl">
+          Siga uma etapa por vez. Não tente construir, vender e escalar tudo no mesmo dia.
         </p>
       </header>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-        {journey.map(([t, d], i) => (
-          <GlassCard key={t} className="p-4">
-            <div className="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30 text-accent text-sm font-bold flex items-center justify-center mb-2">
+      <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-6">
+        {journey.map(([t], i) => (
+          <li
+            key={t}
+            className="flex items-start gap-2.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2"
+          >
+            <span className="shrink-0 w-6 h-6 rounded-md bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
               {i + 1}
-            </div>
-            <h3 className="font-semibold text-sm mb-1">{t}</h3>
-            <p className="text-xs text-muted-foreground">{d}</p>
-          </GlassCard>
+            </span>
+            <span className="text-xs sm:text-sm text-foreground/85 leading-snug">{t}</span>
+          </li>
         ))}
-      </div>
+      </ol>
 
       {/* Mapa da jornada */}
-      <GlassCard className="p-5 mb-6">
+      <GlassCard className="p-4 sm:p-5 mb-6">
         <h3 className="font-heading font-semibold text-base md:text-lg mb-1">
           Mapa da jornada
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
           Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
         </p>
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {phaseMap.map((phase) => {
             const mods = phase.mods.filter((m) => (MODULE_ORDER as string[]).includes(m));
             if (mods.length === 0) return null;
@@ -261,7 +259,7 @@ export function ComeceAquiModule({ goTo }: Props) {
                       <button
                         type="button"
                         onClick={() => goTo(m)}
-                        className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85"
+                        className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85 min-h-[32px]"
                       >
                         {moduleLabel(m)}
                       </button>
@@ -274,21 +272,21 @@ export function ComeceAquiModule({ goTo }: Props) {
         </div>
       </GlassCard>
 
-      {/* Não pule */}
-      <GlassCard className="p-5 mb-6 border-rose-400/30 bg-rose-400/5">
-        <h3 className="font-heading font-semibold text-base md:text-lg mb-2 text-rose-200">
-          Não pule estas etapas
+      {/* Regras para avançar sem se perder */}
+      <GlassCard className="p-4 sm:p-5 mb-6 border-accent/25 bg-accent/[0.04]">
+        <h3 className="font-heading font-semibold text-base md:text-lg mb-2 text-foreground">
+          Regras para avançar sem se perder
         </h3>
         <ul className="space-y-1.5 text-sm text-foreground/90">
-          {naoPule.map((item) => (
+          {regrasAvancar.map((item) => (
             <li key={item} className="flex gap-2">
-              <span className="text-rose-300 shrink-0">•</span>
-              <span>{item}</span>
+              <span className="text-accent shrink-0">✓</span>
+              <span className="leading-snug">{item}</span>
             </li>
           ))}
         </ul>
         <p className="text-[11px] text-muted-foreground mt-3">
-          Orientação visual. Você ainda pode navegar livremente pelos módulos.
+          Você ainda pode navegar livremente pelos módulos, mas a ordem recomendada evita retrabalho.
         </p>
       </GlassCard>
 
