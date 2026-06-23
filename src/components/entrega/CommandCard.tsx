@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info } from "lucide-react";
+import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info, ShieldCheck } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
-import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
+import { wrapLovable, LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
@@ -88,11 +88,12 @@ export const CommandCard = ({
     text: string,
     key: string,
     successMsg: string,
+    description?: string,
   ) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedKey(key);
-      toast.success(successMsg);
+      toast.success(successMsg, description ? { description } : undefined);
       setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1800);
     } catch {
       toast.error("Não foi possível copiar. Selecione e copie manualmente.");
@@ -218,6 +219,21 @@ export const CommandCard = ({
                   Revisar com o Agente
                 </button>
                 <button
+                  type="button"
+                  onClick={() =>
+                    copyText(
+                      LOVABLE_AUDIT_PROMPT(editedCommand),
+                      "audit",
+                      "Prompt de auditoria copiado",
+                      "Cole no Lovable para ele analisar sem alterar seu app.",
+                    )
+                  }
+                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+                >
+                  {copiedKey === "audit" ? <Check size={14} /> : <ShieldCheck size={14} />}
+                  Copiar auditoria para o Lovable
+                </button>
+                <button
                   onClick={() =>
                     copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
                   }
@@ -228,8 +244,8 @@ export const CommandCard = ({
                   Copiar para o Lovable
                 </button>
               </div>
-              <span className="text-[10px] text-muted-foreground/80">
-                Cole no projeto do seu app no Lovable.
+              <span className="text-[11px] text-muted-foreground/90 text-right max-w-md">
+                Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para o Lovable. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
               </span>
             </div>
           </div>
@@ -354,6 +370,21 @@ export const CommandCard = ({
                       Revisar com o Agente
                     </button>
                     <button
+                      type="button"
+                      onClick={() =>
+                        copyText(
+                          LOVABLE_AUDIT_PROMPT(editedCommand),
+                          "audit",
+                          "Prompt de auditoria copiado",
+                          "Cole no Lovable para ele analisar sem alterar seu app.",
+                        )
+                      }
+                      className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+                    >
+                      {copiedKey === "audit" ? <Check size={14} /> : <ShieldCheck size={14} />}
+                      Copiar auditoria para o Lovable
+                    </button>
+                    <button
                       onClick={() =>
                         copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
                       }
@@ -364,8 +395,8 @@ export const CommandCard = ({
                       Copiar para o Lovable
                     </button>
                   </div>
-                  <span className="text-[10px] text-muted-foreground/80">
-                    Cole no projeto do seu app no Lovable.
+                  <span className="text-[11px] text-muted-foreground/90 text-right max-w-md">
+                    Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para o Lovable. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
                   </span>
                 </div>
               </div>
