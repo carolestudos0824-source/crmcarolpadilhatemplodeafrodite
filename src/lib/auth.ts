@@ -117,7 +117,7 @@ export const signUpWithPassword = async (
   if (error) {
     const msg = error.message.toLowerCase();
     if (msg.includes("registered") || msg.includes("exists")) {
-      return { status: "error", message: "Este e-mail já está cadastrado. Use a aba Entrar." };
+      return { status: "error", message: "Este e-mail já está cadastrado. Use a opção 'Tenho uma senha cadastrada' ou receba um link de acesso." };
     }
     if (msg.includes("password")) {
       return { status: "error", message: "Senha muito fraca. Use ao menos 6 caracteres." };
