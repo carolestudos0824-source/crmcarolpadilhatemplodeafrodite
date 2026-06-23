@@ -99,6 +99,31 @@ export function EditablePromptBox({
 
   const edited = value !== originalPrompt;
 
+  const handleSave = async () => {
+    if (saving) return;
+    if (!userId) {
+      toast.error("Entre na sua conta para salvar prompts.");
+      return;
+    }
+    const content = value.trim();
+    if (!content) {
+      toast.error("Não há conteúdo para salvar.");
+      return;
+    }
+    setSaving(true);
+    const result = await savePromptForUser({
+      userId,
+      title: saveTitle ?? "",
+      content,
+      sourceModule: saveSourceModule,
+    });
+    setSaving(false);
+    if (result.status === "ok") toast.success("Prompt salvo.");
+    else if (result.status === "duplicate") toast("Esse prompt já está salvo.");
+    else if (result.status === "empty") toast.error("Não há conteúdo para salvar.");
+    else toast.error("Não foi possível salvar o prompt. Tente novamente.");
+  };
+
   return (
     <div className={`w-full ${className ?? ""}`}>
       <textarea
