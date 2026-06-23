@@ -42,7 +42,8 @@ export type ProgramAccess = {
 };
 
 export const checkProgramAccess = async (userId: string): Promise<ProgramAccess> => {
-  const [{ data: access }, { data: adminFlag }] = await Promise.all([
+  const [{ data: user }, { data: access }, { data: adminFlag }] = await Promise.all([
+    supabase.auth.getUser(),
     supabase
       .from("user_access")
       .select("has_access")
@@ -51,7 +52,18 @@ export const checkProgramAccess = async (userId: string): Promise<ProgramAccess>
     supabase.rpc("is_admin"),
   ]);
 
-  const hasAccess = !!access?.has_access;
+  const email = user.user?.email?.trim().toLowerCase();
+  let hasAccess = !!access?.has_access;
+
+  if (!hasAccess && email) {
+    const { data: emailAccess } = await supabase
+      .from("user_access")
+      .select("has_access")
+      .eq("email", email)
+      .maybeSingle();
+    hasAccess = !!emailAccess?.has_access;
+  }
+
   const isAdmin = !!adminFlag;
 
   return {
