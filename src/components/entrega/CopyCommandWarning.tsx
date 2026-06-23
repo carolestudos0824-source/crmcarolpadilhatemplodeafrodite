@@ -52,18 +52,20 @@ Pedido que quero analisar:
 ${pedido}
 
 Responda com:
-1. O que este pedido quer alterar.
-2. Quais arquivos ou áreas seriam impactados.
-3. Se isso é seguro para o estágio atual do app.
-4. Se mexe em banco, auth, RLS, pagamento, permissões ou dados.
+1. O que entendi do pedido (1 ou 2 frases).
+2. O que este pedido quer alterar.
+3. Áreas impactadas (arquivos, telas, fluxos).
+4. O que NÃO será alterado (auth, RLS, banco, checkout, permissões, progresso, regras de acesso — quando aplicável).
 5. Riscos de quebrar algo.
-6. O que deve ser cortado ou simplificado.
-7. Se recomenda implementar agora ou depois.
-8. Prompt seguro de implementação, mas apenas se for aprovado depois.
+6. Se é seguro avançar agora.
+7. Como validar depois, se for implementado.
+8. Próximo passo único.
+9. Recomendação: implementar agora, implementar depois, simplificar ou cortar.
 
 Importante:
-Não implemente nada nesta resposta.
-Apenas audite.`;
+Não implemente nada nesta resposta. Apenas audite.
+Você pode sugerir um caminho seguro, mas não deve alterar nada.
+Não invente melhorias fora deste pedido e não proponha roadmap novo.`;
 
 type Variant = "lovable" | "agent";
 
