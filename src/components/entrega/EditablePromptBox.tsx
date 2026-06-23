@@ -34,7 +34,9 @@ export function EditablePromptBox({
   helperText,
   hideCopyButton,
   className,
+  studio,
 }: Props) {
+  const { openPromptStudio } = usePromptStudio();
 
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
