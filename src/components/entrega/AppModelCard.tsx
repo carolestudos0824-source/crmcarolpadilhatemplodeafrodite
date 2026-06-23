@@ -252,7 +252,7 @@ Regras:
   const handleCopyAgentDump = async () => {
     try {
       await navigator.clipboard.writeText(agentPrompt);
-      toast.success("Dump copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.");
+      toast.success("Prompt copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.");
     } catch {
       setAgentFallback(agentPrompt);
     }
@@ -263,7 +263,7 @@ Regras:
     await copyPromptAndOpenAgent({
       prompt: agentPrompt,
       successMessage:
-        "Dump copiado. O Agente Arquiteto abriu em outra aba. Cole com Ctrl+V para revisar sua ideia.",
+        "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole com Ctrl+V para revisar sua ideia.",
       onClipboardFail: (p) => setAgentFallback(p),
     });
   };
@@ -494,7 +494,7 @@ Regras:
                     className="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/40"
                   />
                   <span className="block text-[11px] text-muted-foreground">
-                    Pode trocar pelo nome que quiser. O dump e os prompts usam este nome.
+                    Pode trocar pelo nome que quiser. O prompt usa este nome.
                   </span>
                 </label>
                 {model.shortDescription && (
@@ -514,7 +514,7 @@ Regras:
                     <div className="text-[10px] uppercase tracking-wider text-cyan-300 font-semibold mb-1">Etapa 1 · Agente</div>
                     <div className="font-heading font-semibold text-sm text-foreground">Agente revisa</div>
                     <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
-                      Cole o dump completo no Agente para revisar MVP, telas e banco antes de construir.
+                      Cole o prompt completo no Agente para revisar MVP, telas e banco antes de construir.
                     </p>
                   </div>
                   <ArrowRight size={16} className="hidden lg:block self-center text-muted-foreground" />
@@ -563,13 +563,13 @@ Regras:
                       <Bot size={11} /> Etapa 1 · Agente
                     </div>
                     <h4 className="font-heading font-bold text-xl sm:text-2xl text-foreground leading-tight">
-                      Dump completo do app
+                      Prompt para o Agente Arquiteto
                     </h4>
                     <p className="text-sm text-foreground/80 mt-1.5">
-                      Copie este conteúdo e cole no Agente Arquiteto para revisar sua ideia antes de construir.
+                      Copie este prompt e cole no Agente Arquiteto para revisar sua ideia antes de construir.
                     </p>
                     <p className="text-[12px] text-foreground/60 mt-1 leading-snug">
-                      Reúne nome, público, dor, MVP, telas, banco de dados, monetização e regras de construção.
+                      Este prompt reúne nome, público, dor, MVP, telas, banco de dados, monetização e regras de construção.
                     </p>
                   </div>
                   <span className="inline-flex items-center gap-1.5 shrink-0 text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-emerald-400/40 bg-emerald-400/10 text-emerald-300 font-semibold">
@@ -584,7 +584,7 @@ Regras:
                     onClick={handleCopyAgentDump}
                     className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:from-cyan-400 hover:to-blue-500 transition shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)]"
                   >
-                    <Copy size={16} /> Copiar dump para o Agente
+                    <Copy size={16} /> Copiar prompt para o Agente
                   </button>
                   <button
                     type="button"
@@ -595,7 +595,7 @@ Regras:
                   </button>
                 </div>
                 <p className="relative text-[11.5px] text-foreground/60 leading-snug -mt-1">
-                  O ChatGPT não cola o texto automaticamente. Primeiro copie o dump, depois cole no Agente com Ctrl+V. Ao clicar em <span className="text-cyan-300">“Abrir Agente”</span>, o dump é copiado antes de abrir.
+                  O ChatGPT não cola o texto automaticamente. Primeiro copie o prompt, depois cole no Agente com Ctrl+V. Ao clicar em <span className="text-cyan-300">“Abrir Agente”</span>, o prompt é copiado antes de abrir.
                 </p>
 
 
@@ -616,7 +616,7 @@ Regras:
 
                 {/* Footer */}
                 <div className="relative flex flex-wrap items-center justify-between gap-2 text-[11px] text-foreground/60">
-                  <span>Este é o dump de revisão inicial.</span>
+                  <span>Este é o prompt de revisão inicial.</span>
                   <span className="font-mono">{agentPrompt.length.toLocaleString("pt-BR")} caracteres</span>
                 </div>
               </section>
@@ -1040,7 +1040,7 @@ Regras:
           >
             <h4 className="font-heading font-bold text-lg">Copie manualmente o prompt</h4>
             <p className="text-xs text-muted-foreground">
-              Não foi possível copiar automaticamente. Copie o texto abaixo e cole no Agente Arquiteto.
+              Não foi possível copiar automaticamente. Copie o prompt abaixo e cole no Agente Arquiteto.
             </p>
             <textarea
               readOnly
