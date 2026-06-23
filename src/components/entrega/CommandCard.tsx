@@ -376,11 +376,13 @@ export const CommandCard = ({
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
                     <Bot size={12} /> Texto pronto para conversar com o Agente
                   </div>
-                  <div className="rounded-xl border border-amber-400/20 bg-amber-950/20 max-h-72 overflow-auto">
-                    <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
-                      {agentPrompt}
-                    </pre>
-                  </div>
+                  <EditablePromptBox
+                    originalPrompt={agentPrompt}
+                    storageKey={`cmdcard__${completedKey}__agent`}
+                    onChange={setEditedAgent}
+                    hideCopyButton
+                  />
+
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <div className="flex flex-wrap justify-end gap-2">
                       <a
