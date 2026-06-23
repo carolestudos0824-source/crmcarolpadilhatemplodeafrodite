@@ -556,7 +556,19 @@ export default function Login() {
                   />
                 </div>
 
+                {errorMsg && (
+                  <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                    {errorMsg}
+                  </div>
+                )}
+                {info && (
+                  <div className="rounded-xl border border-accent/30 bg-accent/10 text-accent text-sm px-4 py-3">
+                    {info}
+                  </div>
+                )}
+
                 <button type="submit" disabled={loading} className="btn-primary w-full">
+
                   {loading ? (
                     <>
                       <Loader2 size={16} className="animate-spin" /> Entrando…
