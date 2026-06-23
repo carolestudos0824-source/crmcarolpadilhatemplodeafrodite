@@ -317,6 +317,47 @@ export const ProjectContextDrawer = () => {
             um projeto na sua conta.
           </p>
         </div>
+
+        {confirmReset && (
+          <div
+            className="fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setConfirmReset(false)}
+          >
+            <div
+              className="w-full max-w-md rounded-2xl border border-white/10 bg-background p-5 space-y-4"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+            >
+              <div>
+                <h3 className="font-heading font-bold text-base text-foreground">
+                  Limpar contexto temporário?
+                </h3>
+                <p className="text-[12px] text-muted-foreground mt-1.5 leading-snug">
+                  Isso vai apagar os dados preenchidos nesta gaveta e remover o
+                  contexto temporário salvo neste navegador. Apps salvos na sua
+                  conta não serão apagados.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-end">
+                <button
+                  onClick={() => setConfirmReset(false)}
+                  className="px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                  type="button"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={reset}
+                  className="px-3 py-2 rounded-lg border border-rose-500/40 bg-rose-500/10 text-rose-200 hover:bg-rose-500/20 text-xs inline-flex items-center gap-2"
+                  type="button"
+                >
+                  <RotateCcw size={14} /> Limpar contexto
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
