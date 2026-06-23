@@ -576,8 +576,8 @@ export default function Login() {
               {/* Tabs */}
               <div role="tablist" aria-label="Acesso" className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-white/[0.04] border border-white/10 mb-6">
                 {([
-                  { id: "entrar", label: "Entrar" },
                   { id: "criar", label: "Criar conta" },
+                  { id: "entrar", label: "Entrar" },
                 ] as const).map((t) => {
                   const active = authTab === t.id;
                   return (
