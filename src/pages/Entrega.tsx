@@ -507,15 +507,15 @@ function EntregaInner() {
               ) : (
                 <>
                   <div className="text-sm font-medium text-foreground">Nenhum app selecionado</div>
-                  <div className="text-[11px] text-muted-foreground">
-                    Escolha o app que você está validando para acompanhar a jornada.
+                  <div className="text-[11px] text-muted-foreground mb-2.5">
+                    Escolha o app que você está construindo para liberar a jornada.
                   </div>
                   <button
                     type="button"
                     onClick={appProjects.openDrawer}
-                    className="mt-2 text-[11px] inline-flex items-center gap-1 px-2 py-1 rounded-md border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15"
+                    className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-accent/50 bg-gradient-to-r from-accent/20 to-accent/10 text-accent hover:from-accent/25 hover:to-accent/15 text-xs font-semibold transition min-h-[44px] shadow-[0_0_20px_-12px_rgba(34,211,238,0.5)]"
                   >
-                    <FolderKanban size={12} /> Escolher app
+                    <FolderKanban size={14} /> Criar ou selecionar app
                   </button>
                 </>
               )}

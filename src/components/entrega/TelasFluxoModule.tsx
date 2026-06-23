@@ -410,22 +410,24 @@ export function TelasFluxoModule() {
 
 
       {!activeProject && (
-        <GlassCard className="p-4 sm:p-5 mb-5 border-amber-400/30 bg-amber-400/[0.04]">
+        <GlassCard className="p-4 sm:p-5 mb-5 border-amber-400/50 bg-gradient-to-br from-amber-400/[0.08] via-amber-400/[0.04] to-transparent shadow-[0_0_24px_-16px_rgba(251,191,36,0.5)]">
           <div className="flex items-start gap-3">
-            <FolderKanban size={18} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="shrink-0 w-10 h-10 rounded-lg bg-amber-400/15 border border-amber-400/40 flex items-center justify-center text-amber-300">
+              <FolderKanban size={20} />
+            </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-sm md:text-base font-heading font-semibold text-amber-100 mb-1">
-                Escolha um app antes de copiar os comandos
+              <h3 className="text-sm md:text-base font-heading font-semibold text-amber-100 mb-1.5">
+                Escolha seu app para começar
               </h3>
               <p className="text-xs md:text-sm text-foreground/80 leading-relaxed mb-3">
-                Os comandos ficam melhores quando o contexto do seu app está preenchido. Escolha ou crie um app antes de copiar para o Lovable.
+                Antes de copiar comandos ou avançar na jornada, selecione ou crie o app que você quer construir. Isso permite personalizar os prompts, salvar progresso e revisar a entrega com mais precisão.
               </p>
               <button
                 type="button"
                 onClick={openDrawer}
-                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-100 hover:bg-amber-400/15 text-xs font-semibold transition min-h-[40px]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-amber-400/50 bg-gradient-to-r from-amber-400/20 to-amber-400/10 text-amber-100 hover:from-amber-400/25 hover:to-amber-400/15 text-sm font-semibold transition min-h-[44px]"
               >
-                <FolderKanban size={12} /> Escolher app
+                <FolderKanban size={14} /> Criar ou selecionar app
               </button>
             </div>
           </div>

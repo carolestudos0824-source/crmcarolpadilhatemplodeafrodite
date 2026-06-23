@@ -113,13 +113,12 @@ export const AgentArchitectCard = ({
   return (
     <section
       aria-label={title}
-      className={`relative overflow-hidden rounded-2xl border border-cyan-400/40 bg-gradient-to-br from-[#07111F] via-[#0B1220] to-[#08243f] p-5 sm:p-6 shadow-[0_0_40px_-12px_rgba(34,211,238,0.35)] ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-gradient-to-br from-[#07111F] via-[#0B1220] to-[#08243f] p-4 sm:p-5 shadow-[0_0_20px_-12px_rgba(34,211,238,0.35)] ${className}`}
     >
-      <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" />
-      <div className="relative flex flex-col gap-4">
+      <div className="relative flex flex-col gap-3">
         <div className="flex items-start gap-3">
-          <div className="shrink-0 w-12 h-12 rounded-xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
-            <Bot size={26} />
+          <div className="shrink-0 w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
+            <Bot size={22} />
           </div>
           <div className="min-w-0">
             {eyebrow && (
@@ -127,10 +126,10 @@ export const AgentArchitectCard = ({
                 {eyebrow}
               </div>
             )}
-            <h3 className="font-heading font-bold text-2xl sm:text-[26px] leading-tight text-foreground">
+            <h3 className="font-heading font-bold text-lg sm:text-xl leading-tight text-foreground">
               {title}
             </h3>
-            <p className="text-sm text-foreground/80 mt-1.5">{subtitle}</p>
+            <p className="text-sm text-foreground/80 mt-1">{subtitle}</p>
           </div>
         </div>
 
@@ -153,9 +152,9 @@ export const AgentArchitectCard = ({
         <button
           type="button"
           onClick={handleClick}
-          className="w-full inline-flex items-center justify-center gap-2.5 px-5 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-heading font-bold text-base sm:text-lg shadow-[0_10px_30px_-10px_rgba(34,211,238,0.6)] hover:from-cyan-400 hover:to-blue-500 transition"
+          className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-heading font-semibold text-sm sm:text-base shadow-[0_6px_20px_-10px_rgba(34,211,238,0.5)] hover:from-cyan-400 hover:to-blue-500 transition min-h-[44px]"
         >
-          <Bot size={20} /> {finalCta}
+          <Bot size={18} /> {finalCta}
         </button>
 
         {hasPrompt && (
