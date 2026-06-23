@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X, Save, RotateCcw, FolderPlus, FolderCheck } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -80,9 +80,15 @@ export const ProjectContextDrawer = () => {
   } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
   const [confirmReset, setConfirmReset] = useState(false);
+  const skipHydrationRef = useRef(false);
 
   useEffect(() => {
-    if (!isEditorOpen) return;
+    if (!isEditorOpen) {
+      skipHydrationRef.current = false;
+      return;
+    }
+
+    if (skipHydrationRef.current) return;
 
     if (activeProject) {
       setDraft(activeProject.context);
@@ -129,6 +135,7 @@ export const ProjectContextDrawer = () => {
   };
 
   const reset = () => {
+    skipHydrationRef.current = true;
     setDraft(EMPTY_PROJECT_CONTEXT);
     clearTemporaryContext();
     setConfirmReset(false);
