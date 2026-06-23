@@ -635,7 +635,7 @@ export default function Login() {
                       <Loader2 size={16} className="animate-spin" /> Enviando link…
                     </>
                   ) : (
-                    "Entrar sem senha por e-mail"
+                    "Receber link de acesso"
                   )}
                 </button>
               </form>
