@@ -27,7 +27,10 @@ type Props = {
   saveSourceModule?: string;
   /** Hide the built-in save button when the parent doesn't want it (default: shown). */
   hideSaveButton?: boolean;
+  /** When true, the prompt textarea is collapsed by default; user clicks "Ver prompt completo" to expand. */
+  collapsible?: boolean;
 };
+
 
 
 
