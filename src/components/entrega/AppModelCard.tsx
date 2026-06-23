@@ -196,6 +196,36 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
 
   const lovablePrompt = useMemo(() => buildLovableIdeaPrompt(model, editedName), [model, editedName]);
   const agentPrompt = useMemo(() => buildAgentIdeaPrompt(model, editedName), [model, editedName]);
+  const postLovablePrompt = useMemo(() => {
+    const name = editedName.trim() || model.name;
+    const objective = model.shortDescription ?? `App para ${model.audience.toLowerCase()}`;
+    const mvp = (model.mvp ?? model.screens).map((x) => `- ${x}`).join("\n");
+    return `Analise o resultado que o Lovable gerou para meu app.
+
+Contexto:
+Estou usando a Fábrica de Apps com IA para criar o app: ${name}
+
+O objetivo do app é:
+${objective}
+
+O MVP planejado é:
+${mvp}
+
+Agora colei no Lovable o prompt de construção e ele retornou este resultado:
+
+[COLE AQUI A RESPOSTA OU RESULTADO DO LOVABLE]
+
+Quero que você analise como meu Agente Arquiteto:
+1. O que o Lovable criou corretamente.
+2. O que ficou faltando.
+3. O que pode estar errado ou incompleto.
+4. Se o app ainda está simples o suficiente para um MVP.
+5. Quais testes manuais devo fazer agora.
+6. Qual próximo comando devo colar no Lovable para corrigir ou melhorar.
+7. O que devo evitar adicionar neste momento.
+
+Responda de forma prática, com o próximo prompt pronto para copiar e colar no Lovable.`;
+  }, [editedName, model]);
 
   const copyToLovable = async () => {
     try {
@@ -210,10 +240,20 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
     await copyPromptAndOpenAgent({
       prompt: agentPrompt,
       successMessage:
-        "Tudo pronto. O prompt foi copiado e o Agente Arquiteto abriu em outra aba. Cole lá para revisar, tirar dúvidas e melhorar seu app antes de construir.",
+        "Dump copiado. Cole no Agente Arquiteto para revisar sua ideia antes de construir.",
       onClipboardFail: (p) => setAgentFallback(p),
     });
   };
+
+  const handleCopyPostLovable = async () => {
+    await copyPromptAndOpenAgent({
+      prompt: postLovablePrompt,
+      successMessage:
+        "Prompt pós-Lovable copiado. Cole no Agente junto com o resultado do Lovable.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
+
 
   const fillContext = () => {
     setContext(modelToContext(model, editedName));
