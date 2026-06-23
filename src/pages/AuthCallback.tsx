@@ -31,6 +31,7 @@ export default function AuthCallback() {
 
   useEffect(() => {
     let cancelled = false;
+    console.info({ auth_flow: "auth_callback_loaded" });
 
     const finishLogin = async () => {
       if (hasAuthError()) {
