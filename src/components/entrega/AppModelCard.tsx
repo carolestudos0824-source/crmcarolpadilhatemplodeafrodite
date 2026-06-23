@@ -38,9 +38,13 @@ const buildScreens = (m: AppModel) => {
 
 const buildLovableIdeaPrompt = (m: AppModel, editedName: string) => {
   const name = editedName.trim() || m.name;
-  return `Estou usando a Fábrica de Apps com IA como guia para criar meu próprio aplicativo no Lovable.
+  return `Estou usando a Fábrica de Apps com IA apenas como guia para estruturar este projeto.
 
-A Fábrica é apenas o programa-guia. O app que deve ser criado é este projeto atual no Lovable.
+Importante:
+- Não crie um app chamado Fábrica de Apps com IA.
+- Não inclua a marca, logo, textos, área de membros ou estrutura da Fábrica de Apps com IA no app final.
+- O app que deve ser criado é o projeto descrito abaixo.
+- Construa somente o app do usuário, com o nome, público, funcionalidades e telas descritos neste prompt.
 
 Crie um app chamado: ${name}
 
@@ -95,7 +99,9 @@ Regras:
 
 const buildAgentIdeaPrompt = (m: AppModel, editedName: string) => {
   const name = editedName.trim() || m.name;
-  return `Estou usando a Fábrica de Apps com IA para transformar uma ideia em app no Lovable.
+  return `Estou usando a Fábrica de Apps com IA como programa-guia. O app em construção é: ${name}.
+
+Não analise a Fábrica de Apps com IA. Analise apenas a ideia do app abaixo e me ajude a transformá-la num prompt pronto para o Lovable construir esse app (e não a Fábrica).
 
 Quero criar um app chamado: ${name}
 
@@ -204,7 +210,9 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
     return `Analise o resultado que o Lovable gerou para meu app.
 
 Contexto:
-Estou usando a Fábrica de Apps com IA para criar o app: ${name}
+Estou usando a Fábrica de Apps com IA como programa-guia. O app em construção é: ${name}.
+
+Não analise a Fábrica de Apps com IA. Analise apenas o app que o Lovable gerou.
 
 O objetivo do app é:
 ${objective}
@@ -230,7 +238,11 @@ Responda de forma prática, com o próximo prompt pronto para copiar e colar no 
 
   const nextLovablePrompt = useMemo(() => {
     const name = editedName.trim() || model.name;
-    return `Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
+    return `Este comando é uma continuação da construção do app ${name}. A Fábrica de Apps com IA é apenas o programa-guia e não deve aparecer no app final.
+
+Não crie, não copie e não inclua marca, logo, textos, área de membros ou estrutura da Fábrica de Apps com IA. Continue construindo apenas o app ${name}.
+
+Aplique no app "${name}" o próximo ajuste sugerido pelo Agente Arquiteto.
 
 Instruções do Agente:
 
@@ -691,6 +703,9 @@ Regras:
                   <span>Este é o comando de construção inicial.</span>
                   <span className="font-mono">{lovablePrompt.length.toLocaleString("pt-BR")} caracteres</span>
                 </div>
+                <p className="relative text-[11px] text-foreground/55 leading-relaxed">
+                  Este prompt é para construir o app escolhido. A Fábrica de Apps com IA não será incluída no app final — ela aparece no texto apenas para orientar o Lovable sobre o método.
+                </p>
               </section>
 
               {/* ===== Etapa 3 · Revisão pós-Lovable — Premium Card ===== */}
