@@ -409,6 +409,29 @@ export function TelasFluxoModule() {
 
 
 
+      {!activeProject && (
+        <GlassCard className="p-4 sm:p-5 mb-5 border-amber-400/30 bg-amber-400/[0.04]">
+          <div className="flex items-start gap-3">
+            <FolderKanban size={18} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm md:text-base font-heading font-semibold text-amber-100 mb-1">
+                Escolha um app antes de copiar os comandos
+              </h3>
+              <p className="text-xs md:text-sm text-foreground/80 leading-relaxed mb-3">
+                Os comandos ficam melhores quando o contexto do seu app está preenchido. Escolha ou crie um app antes de copiar para o Lovable.
+              </p>
+              <button
+                type="button"
+                onClick={openDrawer}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-100 hover:bg-amber-400/15 text-xs font-semibold transition min-h-[40px]"
+              >
+                <FolderKanban size={12} /> Escolher app
+              </button>
+            </div>
+          </div>
+        </GlassCard>
+      )}
+
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
           <EtapaCard key={e.n} etapa={e} />
