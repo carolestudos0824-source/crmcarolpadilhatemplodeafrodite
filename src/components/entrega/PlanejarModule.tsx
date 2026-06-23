@@ -247,6 +247,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
       ) : (
         <EditablePromptBox
           key={tab}
+          saveSourceModule="planejar"
           originalPrompt={etapa.tabs[tab]}
           storageKey={`planejar_prompt__${etapa.n}__${tab}`}
           transformOnCopy={tab === "agente" ? undefined : wrapLovable}
@@ -402,6 +403,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           </div>
         </div>
         <EditablePromptBox
+          saveSourceModule="planejar"
           originalPrompt={PLANO_TEMPLATE}
           storageKey="planejar_plano_inicial"
           copyLabel="Copiar modelo do plano"

@@ -512,6 +512,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
               <section className="space-y-2">
                 <SectionTitle>Primeiro prompt para o Lovable</SectionTitle>
                 <EditablePromptBox
+                  saveSourceModule="ideias"
                   originalPrompt={lovablePrompt}
                   storageKey={`appmodel_prompt__${model.name}`}
                   copyLabel="Copiar para o Lovable"
