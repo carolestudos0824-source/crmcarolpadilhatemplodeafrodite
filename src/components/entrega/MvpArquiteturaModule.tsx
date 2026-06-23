@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  Pencil,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -23,6 +24,8 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { PromptEditDialog } from "@/components/entrega/PromptEditDialog";
+
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
 
