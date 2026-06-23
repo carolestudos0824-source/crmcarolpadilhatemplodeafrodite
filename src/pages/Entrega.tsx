@@ -757,12 +757,12 @@ function EntregaInner() {
             />
           )}
 
-          {active !== "fundamentos" && auth.isAdmin && (
+          {active !== "fundamentos" && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               descriptionOverride={
                 active === "telas"
-                  ? "Use o Arquiteto para decidir se uma ideia nova de tela ou fluxo vale entrar agora ou ficar para depois."
+                  ? "Use o Arquiteto para decidir se uma ideia nova de tela ou fluxo vale entrar agora ou ficar para depois no seu app."
                   : undefined
               }
             />
