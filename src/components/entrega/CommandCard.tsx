@@ -218,6 +218,21 @@ export const CommandCard = ({
                   Revisar com o Agente
                 </button>
                 <button
+                  type="button"
+                  onClick={() =>
+                    copyText(
+                      LOVABLE_AUDIT_PROMPT(editedCommand),
+                      "audit",
+                      "Prompt de auditoria copiado",
+                      "Cole no Lovable para ele analisar sem alterar seu app.",
+                    )
+                  }
+                  className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+                >
+                  {copiedKey === "audit" ? <Check size={14} /> : <ShieldCheck size={14} />}
+                  Copiar auditoria para o Lovable
+                </button>
+                <button
                   onClick={() =>
                     copyText(enrichedLovable(), "main", "Copiado para o Lovable.")
                   }
@@ -228,8 +243,8 @@ export const CommandCard = ({
                   Copiar para o Lovable
                 </button>
               </div>
-              <span className="text-[10px] text-muted-foreground/80">
-                Cole no projeto do seu app no Lovable.
+              <span className="text-[11px] text-muted-foreground/90 text-right max-w-md">
+                Está começando? Revise com o Agente primeiro. Já sabe o que quer alterar? Copie direto para o Lovable. A auditoria é o caminho do meio: o Lovable analisa sem alterar nada.
               </span>
             </div>
           </div>
