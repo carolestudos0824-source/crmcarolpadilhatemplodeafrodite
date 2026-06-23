@@ -243,11 +243,9 @@ Regras:
 - Se algo estiver ambíguo, faça a escolha mais simples possível.`;
   }, [editedName, model]);
 
-  const openLovable = () => {
-    if (typeof window !== "undefined") {
-      window.open(LOVABLE_URL, "_blank", "noopener,noreferrer");
-    }
-  };
+  // (Etapas 2 e 4 usam links <a href={LOVABLE_URL}> diretos — não precisa de helper JS.)
+
+
 
   // ===== ETAPA 1 — Dump para o Agente =====
   /** Só copia o dump. Não abre nada. */
