@@ -1,0 +1,113 @@
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { Copy, Check, RotateCcw } from "lucide-react";
+
+type Props = {
+  originalPrompt: string;
+  onCopy?: (text: string) => void;
+  placeholder?: string;
+  storageKey?: string;
+  copyLabel?: string;
+  /** Optional transform applied to the text right before it is copied. */
+  transformOnCopy?: (text: string) => string;
+  /** Optional helper text shown below the action buttons. */
+  helperText?: string;
+};
+
+export function EditablePromptBox({
+  originalPrompt,
+  onCopy,
+  placeholder,
+  storageKey,
+  copyLabel = "Copiar comando",
+  transformOnCopy,
+  helperText,
+}: Props) {
+  const [value, setValue] = useState<string>(() => {
+    if (storageKey && typeof window !== "undefined") {
+      const saved = window.localStorage.getItem(storageKey);
+      if (saved !== null) return saved;
+    }
+    return originalPrompt;
+  });
+  const [copied, setCopied] = useState(false);
+  const taRef = useRef<HTMLTextAreaElement>(null);
+
+  // auto-resize
+  useEffect(() => {
+    const ta = taRef.current;
+    if (!ta) return;
+    ta.style.height = "auto";
+    ta.style.height = `${ta.scrollHeight}px`;
+  }, [value]);
+
+  useEffect(() => {
+    if (!storageKey || typeof window === "undefined") return;
+    if (value === originalPrompt) {
+      window.localStorage.removeItem(storageKey);
+    } else {
+      window.localStorage.setItem(storageKey, value);
+    }
+  }, [value, storageKey, originalPrompt]);
+
+  const handleCopy = async () => {
+    try {
+      const out = transformOnCopy ? transformOnCopy(value) : value;
+      await navigator.clipboard.writeText(out.trim());
+      setCopied(true);
+      toast.success("Comando copiado.");
+      onCopy?.(out);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
+
+  const handleRestore = () => {
+    setValue(originalPrompt);
+    toast.success("Prompt original restaurado.");
+  };
+
+  const edited = value !== originalPrompt;
+
+  return (
+    <div className="w-full">
+      <textarea
+        ref={taRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+        spellCheck={false}
+        className="w-full min-h-[140px] resize-y rounded-xl border border-white/10 bg-black/40 p-4 text-[13px] font-mono leading-relaxed text-foreground/90 outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition"
+      />
+      <p className="text-[11px] text-muted-foreground/80 mt-1.5">
+        Você pode editar este comando antes de copiar.
+      </p>
+      <div className="flex flex-wrap items-center gap-2 mt-3">
+        <button
+          onClick={handleCopy}
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
+            copied
+              ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+              : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+          }`}
+        >
+          {copied ? <Check size={14} /> : <Copy size={14} />}
+          {copied ? "Copiado!" : copyLabel}
+        </button>
+        {edited && (
+          <button
+            onClick={handleRestore}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-xs text-foreground/70 hover:bg-white/10 transition"
+          >
+            <RotateCcw size={12} />
+            Restaurar original
+          </button>
+        )}
+      </div>
+      {helperText && (
+        <p className="text-[10px] text-muted-foreground/80 mt-2">{helperText}</p>
+      )}
+    </div>
+  );
+}
