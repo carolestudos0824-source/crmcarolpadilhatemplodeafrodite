@@ -39,7 +39,8 @@ export interface AgentArchitectCardProps {
   className?: string;
   /** Sobrescreve o comportamento padrão do CTA. Quando passado, é executado em vez do handler interno. */
   onClick?: () => void | Promise<void>;
-}
+  /** Quando a cópia automática falha, recebe o prompt para mostrar fallback (modal manual). Se ausente, abrimos o Agente assim mesmo com toast de erro. */
+  onCopyFail?: (prompt: string) => void;
 
 const DEFAULT_BENEFITS = [
   "Entenda o que construir primeiro",
