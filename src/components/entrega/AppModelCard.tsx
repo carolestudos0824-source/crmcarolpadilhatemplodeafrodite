@@ -534,21 +534,30 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
                   saveSourceModule="ideias"
                   originalPrompt={lovablePrompt}
                   storageKey={`appmodel_prompt__${model.name}`}
-                  copyLabel="Copiar para o Lovable"
+                  copyLabel="Copiar prompt para o Lovable"
                   helperText="Cole no Lovable como primeiro prompt do app."
                 />
+                <p className="text-[11px] text-muted-foreground">
+                  Fluxo recomendado: revise com o Agente Arquiteto, ajuste o plano e depois copie para o Lovable.
+                </p>
                 <div className="flex flex-wrap gap-2 pt-1">
+                  <button
+                    onClick={handleReviewWithAgent}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold"
+                  >
+                    <Bot size={13} /> Revisar com Agente Arquiteto
+                  </button>
+                  <button
+                    onClick={copyToLovable}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs font-semibold"
+                  >
+                    <Copy size={13} /> Copiar prompt para o Lovable
+                  </button>
                   <button
                     onClick={() => setPromptOpen(true)}
                     className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
                   >
-                    <Wand2 size={13} /> Revisar prompt antes de copiar
-                  </button>
-                  <button
-                    onClick={() => setPromptOpen(true)}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs"
-                  >
-                    <Bot size={13} /> Revisar com o Agente
+                    <Wand2 size={13} /> Melhorar texto do prompt
                   </button>
                 </div>
                 <p className="text-[11px] text-muted-foreground">
