@@ -41,6 +41,7 @@ export interface AgentArchitectCardProps {
   onClick?: () => void | Promise<void>;
   /** Quando a cópia automática falha, recebe o prompt para mostrar fallback (modal manual). Se ausente, abrimos o Agente assim mesmo com toast de erro. */
   onCopyFail?: (prompt: string) => void;
+}
 
 const DEFAULT_BENEFITS = [
   "Entenda o que construir primeiro",
@@ -61,6 +62,7 @@ export const AgentArchitectCard = ({
   variant = "hero",
   className = "",
   onClick,
+  onCopyFail,
 }: AgentArchitectCardProps) => {
   const hasPrompt = !!prompt && prompt.trim().length > 0;
   const finalCta = ctaLabel ?? (hasPrompt ? "Revisar com o Agente Arquiteto" : "Abrir Agente Arquiteto");
@@ -76,24 +78,11 @@ export const AgentArchitectCard = ({
       await onClick();
       return;
     }
-    if (hasPrompt) {
-      try {
-        await navigator.clipboard.writeText(prompt!);
-        openAgenteArquiteto();
-        toast.success(
-          successMessage ??
-            "Prompt copiado. Cole no Agente Arquiteto para revisar sua ideia antes de construir.",
-        );
-      } catch {
-        openAgenteArquiteto();
-        toast.error(
-          "Não consegui copiar automaticamente. Copie o prompt manualmente e cole no Agente Arquiteto.",
-        );
-      }
-      return;
-    }
-    openAgenteArquiteto();
-    toast.success("Use o Agente Arquiteto para tirar dúvidas e decidir o próximo passo.");
+    await copyPromptAndOpenAgent({
+      prompt,
+      successMessage,
+      onClipboardFail: onCopyFail,
+    });
   };
 
   if (variant === "compact") {
