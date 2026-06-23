@@ -703,6 +703,9 @@ Regras:
                   <span>Este é o comando de construção inicial.</span>
                   <span className="font-mono">{lovablePrompt.length.toLocaleString("pt-BR")} caracteres</span>
                 </div>
+                <p className="relative text-[11px] text-foreground/55 leading-relaxed">
+                  Este prompt é para construir o app escolhido. A Fábrica de Apps com IA não será incluída no app final — ela aparece no texto apenas para orientar o Lovable sobre o método.
+                </p>
               </section>
 
               {/* ===== Etapa 3 · Revisão pós-Lovable — Premium Card ===== */}
