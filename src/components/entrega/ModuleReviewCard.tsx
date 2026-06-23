@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2 } from "lucide-react";
+import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2, ShieldCheck } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import {
