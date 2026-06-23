@@ -11,6 +11,7 @@ import {
   ChevronDown,
   ExternalLink,
   ArrowRight,
+  Check,
 } from "lucide-react";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
