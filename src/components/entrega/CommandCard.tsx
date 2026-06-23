@@ -88,11 +88,12 @@ export const CommandCard = ({
     text: string,
     key: string,
     successMsg: string,
+    description?: string,
   ) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedKey(key);
-      toast.success(successMsg);
+      toast.success(successMsg, description ? { description } : undefined);
       setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1800);
     } catch {
       toast.error("Não foi possível copiar. Selecione e copie manualmente.");
