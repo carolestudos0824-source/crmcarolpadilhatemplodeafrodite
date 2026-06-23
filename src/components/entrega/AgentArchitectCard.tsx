@@ -38,6 +38,8 @@ export interface AgentArchitectCardProps {
   variant?: "hero" | "compact";
   /** Classe extra para o wrapper. */
   className?: string;
+  /** Sobrescreve o comportamento padrão do CTA. Quando passado, é executado em vez do handler interno. */
+  onClick?: () => void | Promise<void>;
 }
 
 const DEFAULT_BENEFITS = [
