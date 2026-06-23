@@ -50,6 +50,7 @@ import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
 import { CopyCommandWarning, BeforeAdvanceTip } from "@/components/entrega/CopyCommandWarning";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
+import { IdeiasProntasModule } from "@/components/entrega/IdeiasProntasModule";
 import { CampaignsModule } from "@/components/entrega/CampaignsModule";
 import { MonetizacaoIntro, FaixasReferencia } from "@/components/entrega/MonetizacaoModule";
 import { FundamentosModule } from "@/components/entrega/FundamentosModule";
