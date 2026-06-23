@@ -9,6 +9,8 @@ import {
   Wand2,
   Bot,
   ChevronDown,
+  ExternalLink,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
@@ -17,8 +19,9 @@ import { useProjectContext, EMPTY_PROJECT_CONTEXT, type ProjectContext } from "@
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
-import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent, openAgenteArquiteto } from "@/lib/agenteArquiteto";
+
+const LOVABLE_URL = "https://lovable.dev";
 
 
 /* ---------- helpers ---------- */
