@@ -9,7 +9,19 @@ import { Sparkles, ShieldCheck, Bot } from "lucide-react";
  * COMMANDS_* e não afeta TOTAL_COMMANDS / commandsDone / progresso global.
  */
 export const LOVABLE_PREAMBLE =
-  "Contexto: estou usando a Fábrica de Apps com IA APENAS como programa-guia para criar meu próprio aplicativo no Lovable. O projeto que deve ser alterado é este app atual que estou criando no Lovable. Não trate a Fábrica de Apps com IA como o app final, não copie a marca, telas, área de membros ou estrutura dela.\n\nAplique a tarefa abaixo neste app. Preserve o que já está funcionando, não altere áreas não pedidas e, se algo estiver ambíguo, faça a escolha mais simples possível.";
+  `Contexto: estou usando a Fábrica de Apps com IA APENAS como programa-guia para criar meu próprio aplicativo no Lovable. O projeto que deve ser alterado é este app atual que estou criando no Lovable. Não trate a Fábrica de Apps com IA como o app final, não copie a marca, telas, área de membros ou estrutura dela.
+
+Aplique a tarefa abaixo neste app. Preserve o que já está funcionando, não altere áreas não pedidas e, se algo estiver ambíguo, faça a escolha mais simples possível.
+
+Antes de terminar, responda de forma objetiva:
+
+1. O que entendi: explique em 1 ou 2 frases o pedido recebido.
+2. O que alterei: liste apenas o que foi alterado. Se nada foi alterado, diga: "Nada foi alterado.".
+3. O que NÃO alterei: confirme áreas protegidas que não foram tocadas (auth, RLS, banco, checkout, permissões, progresso, regras de acesso), quando aplicável.
+4. Como validar: diga como o aluno pode testar se funcionou.
+5. Próximo passo único: diga apenas UMA próxima ação dentro da etapa atual.
+
+Regra: não sugira melhorias fora da tarefa atual, não invente roadmap novo, não adicione funcionalidades extras e não altere áreas sensíveis sem autorização explícita.`;
 
 /** Monta o texto final que a pessoa copia para o Lovable do APP DELA. */
 export const wrapLovable = (task: string): string =>
