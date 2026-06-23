@@ -9,7 +9,7 @@ import {
   FolderPlus,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
-import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
+
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -134,8 +134,78 @@ export function ComeceAquiModule({ goTo }: Props) {
         </div>
       </header>
 
-      {/* 3 passos */}
-      <FirstAppOnboarding />
+      {/* Comece seu primeiro app em 3 passos */}
+      <section
+        aria-label="Comece seu primeiro app em 3 passos"
+        className="mb-6 rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+      >
+        <header className="mb-4">
+          <h2 className="text-base md:text-lg font-heading font-semibold text-foreground">
+            Comece seu primeiro app em 3 passos
+          </h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Caminho enxuto para sair do zero sem se perder.
+          </p>
+        </header>
+
+        <ol className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+          {[
+            {
+              n: 1,
+              title: "Escolha seu app",
+              text: "Selecione um app existente ou crie um novo projeto para personalizar os comandos.",
+            },
+            {
+              n: 2,
+              title: "Defina o problema principal",
+              text: "Use a Busca Inteligente ou o Agente para clarear o que o app precisa resolver.",
+            },
+            {
+              n: 3,
+              title: "Copie o comando certo",
+              text: "Cole no Lovable um comando por vez e avance só quando funcionar.",
+            },
+          ].map((s) => (
+            <li
+              key={s.n}
+              className="rounded-xl border border-white/10 bg-background/40 p-3"
+            >
+              <div className="w-7 h-7 rounded-lg bg-accent/15 border border-accent/30 text-accent text-sm font-bold flex items-center justify-center mb-2">
+                {s.n}
+              </div>
+              <h3 className="text-sm font-semibold text-foreground mb-1">{s.title}</h3>
+              <p className="text-xs text-muted-foreground leading-snug">{s.text}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {hasApp ? (
+            <button
+              type="button"
+              onClick={() => goTo("ideias")}
+              className="btn-primary w-full sm:w-auto min-h-[44px]"
+            >
+              <Sparkles size={16} /> Continuar pela Etapa 1
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={openDrawer}
+              className="btn-primary w-full sm:w-auto min-h-[44px]"
+            >
+              <FolderPlus size={16} /> Criar ou selecionar app
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => scrollToId("pain-search")}
+            className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 inline-flex items-center gap-1.5"
+          >
+            <Search size={13} /> Usar Busca Inteligente
+          </button>
+        </div>
+      </section>
 
       {/* Busca inteligente */}
       <div className="mt-4">

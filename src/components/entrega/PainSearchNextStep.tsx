@@ -96,26 +96,33 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
         </div>
         <button
           type="submit"
-          className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:opacity-90 transition"
+          className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:opacity-90 transition min-h-[44px]"
         >
-          Descobrir próximo passo
+          Encontrar meu próximo passo
           <ArrowRight size={14} />
         </button>
       </form>
 
       {!submitted && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {PAIN_EXAMPLES.map((ex) => (
-            <button
-              key={ex}
-              type="button"
-              onClick={() => handleExample(ex)}
-              className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-accent/40 transition"
-            >
-              {ex}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {PAIN_EXAMPLES.map((ex) => (
+              <button
+                key={ex}
+                type="button"
+                onClick={() => handleExample(ex)}
+                className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:border-accent/40 transition"
+              >
+                {ex}
+              </button>
+            ))}
+          </div>
+          {!activeProject && (
+            <p className="mt-2 text-[11px] text-muted-foreground/80 leading-snug">
+              Você pode buscar orientação agora, mas para gerar comandos personalizados escolha um app primeiro.
+            </p>
+          )}
+        </>
       )}
 
       {!activeProject && submitted && (
