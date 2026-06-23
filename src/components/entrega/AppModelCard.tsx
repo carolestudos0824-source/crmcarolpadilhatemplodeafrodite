@@ -583,20 +583,23 @@ Regras:
                 <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
-                    onClick={handleReviewWithAgent}
+                    onClick={handleCopyAgentDump}
                     className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:from-cyan-400 hover:to-blue-500 transition shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)]"
                   >
                     <Copy size={16} /> Copiar dump para o Agente
                   </button>
-                  <a
-                    href={AGENTE_ARQUITETO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={handleOpenAgentWithDump}
                     className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-cyan-400/30 bg-cyan-500/[0.06] text-cyan-200 hover:bg-cyan-500/15 text-sm font-semibold"
                   >
                     <ExternalLink size={14} /> Abrir Agente
-                  </a>
+                  </button>
                 </div>
+                <p className="relative text-[11.5px] text-foreground/60 leading-snug -mt-1">
+                  O ChatGPT não cola o texto automaticamente. Primeiro copie o dump, depois cole no Agente com Ctrl+V. Ao clicar em <span className="text-cyan-300">“Abrir Agente”</span>, o dump é copiado antes de abrir.
+                </p>
+
 
                 {/* Prompt body */}
                 <div
