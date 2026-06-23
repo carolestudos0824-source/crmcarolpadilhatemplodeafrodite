@@ -114,8 +114,8 @@ describe("contexto do app ativo — separação plataforma × app-alvo", () => {
       command: "Crie as telas iniciais",
       moduleId: "telas",
     });
-    expect(p).toMatch(/Jogo do Amor/);
-    expect(p).toMatch(/Use este prompt no projeto Lovable do app: Jogo do Amor/);
+    expect(p).toMatch(/Clube de Receitas/);
+    expect(p).toMatch(/Use este prompt no projeto Lovable do app: Clube de Receitas/);
     expect(p).not.toMatch(/Fábrica de Apps/i);
     expect(p).not.toMatch(/não a plataforma/i);
   });
