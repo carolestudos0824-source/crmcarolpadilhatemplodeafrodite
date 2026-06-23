@@ -5,6 +5,7 @@ import { Copy, Check, RotateCcw } from "lucide-react";
 type Props = {
   originalPrompt: string;
   onCopy?: (text: string) => void;
+  onChange?: (text: string) => void;
   placeholder?: string;
   storageKey?: string;
   copyLabel?: string;
@@ -12,17 +13,25 @@ type Props = {
   transformOnCopy?: (text: string) => string;
   /** Optional helper text shown below the action buttons. */
   helperText?: string;
+  /** Hide the built-in copy button (when parent renders its own copy action). */
+  hideCopyButton?: boolean;
+  className?: string;
 };
+
 
 export function EditablePromptBox({
   originalPrompt,
   onCopy,
+  onChange,
   placeholder,
   storageKey,
   copyLabel = "Copiar comando",
   transformOnCopy,
   helperText,
+  hideCopyButton,
+  className,
 }: Props) {
+
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
       const saved = window.localStorage.getItem(storageKey);
@@ -71,11 +80,14 @@ export function EditablePromptBox({
   const edited = value !== originalPrompt;
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${className ?? ""}`}>
       <textarea
         ref={taRef}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange?.(e.target.value);
+        }}
         placeholder={placeholder}
         spellCheck={false}
         className="w-full min-h-[140px] resize-y rounded-xl border border-white/10 bg-black/40 p-4 text-[13px] font-mono leading-relaxed text-foreground/90 outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition"
@@ -84,17 +96,19 @@ export function EditablePromptBox({
         Você pode editar este comando antes de copiar.
       </p>
       <div className="flex flex-wrap items-center gap-2 mt-3">
-        <button
-          onClick={handleCopy}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
-            copied
-              ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-              : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-          }`}
-        >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
-          {copied ? "Copiado!" : copyLabel}
-        </button>
+        {!hideCopyButton && (
+          <button
+            onClick={handleCopy}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
+              copied
+                ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+                : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+            }`}
+          >
+            {copied ? <Check size={14} /> : <Copy size={14} />}
+            {copied ? "Copiado!" : copyLabel}
+          </button>
+        )}
         {edited && (
           <button
             onClick={handleRestore}
@@ -108,6 +122,7 @@ export function EditablePromptBox({
       {helperText && (
         <p className="text-[10px] text-muted-foreground/80 mt-2">{helperText}</p>
       )}
+
     </div>
   );
 }

@@ -8,6 +8,8 @@ import { wrapLovable } from "@/components/entrega/CopyCommandWarning";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 type Props = {
   number: number;
@@ -52,6 +54,9 @@ export const CommandCard = ({
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [editedCommand, setEditedCommand] = useState(commandText);
+  const [editedAgent, setEditedAgent] = useState(agentPrompt ?? "");
+  const [editedCorrection, setEditedCorrection] = useState(correctionPrompt ?? "");
   const { isCommandDone, toggleCommand } = useUserProgress();
   const { context, isFilled, openEditor } = useProjectContext();
   const done = isCommandDone(completedKey);
@@ -61,7 +66,7 @@ export const CommandCard = ({
       context,
       stepName: title,
       stepObjective: objective ?? description,
-      command: commandText,
+      command: editedCommand,
       moduleId,
     });
   const enrichedAgent = () =>
@@ -69,9 +74,10 @@ export const CommandCard = ({
       context,
       stepName: title,
       stepObjective: objective ?? description,
-      command: agentPrompt || commandText,
+      command: editedAgent || editedCommand,
       moduleId,
     });
+
 
   const toggleDone = () => {
     toggleCommand(completedKey);
@@ -177,11 +183,13 @@ export const CommandCard = ({
             <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-accent mb-1.5">
               <Sparkles size={12} /> Texto pronto para colar no Lovable
             </div>
-            <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
-              <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/90">
-                {commandText}
-              </pre>
-            </div>
+            <EditablePromptBox
+              originalPrompt={commandText}
+              storageKey={`cmdcard__${completedKey}__main`}
+              onChange={setEditedCommand}
+              hideCopyButton
+            />
+
             <div className="mt-2 flex flex-col items-end gap-2">
               <div className="flex flex-wrap justify-end gap-2">
                 <button
@@ -308,11 +316,13 @@ export const CommandCard = ({
                 <div className="text-[11px] text-amber-200/90 bg-amber-400/5 border border-amber-400/20 rounded-md px-3 py-2 mb-2">
                   Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
                 </div>
-                <div className="rounded-xl border border-white/10 bg-black/40 max-h-72 overflow-auto">
-                  <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/90">
-                    {commandText}
-                  </pre>
-                </div>
+                <EditablePromptBox
+                  originalPrompt={commandText}
+                  storageKey={`cmdcard__${completedKey}__guided`}
+                  onChange={setEditedCommand}
+                  hideCopyButton
+                />
+
                 <div className="mt-2 flex flex-col items-end gap-2">
                   <div className="flex flex-wrap justify-end gap-2">
                     <button
@@ -366,11 +376,13 @@ export const CommandCard = ({
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
                     <Bot size={12} /> Texto pronto para conversar com o Agente
                   </div>
-                  <div className="rounded-xl border border-amber-400/20 bg-amber-950/20 max-h-72 overflow-auto">
-                    <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
-                      {agentPrompt}
-                    </pre>
-                  </div>
+                  <EditablePromptBox
+                    originalPrompt={agentPrompt}
+                    storageKey={`cmdcard__${completedKey}__agent`}
+                    onChange={setEditedAgent}
+                    hideCopyButton
+                  />
+
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <div className="flex flex-wrap justify-end gap-2">
                       <a
@@ -382,7 +394,7 @@ export const CommandCard = ({
                         <ExternalLink size={14} /> Abrir Agente Arquiteto
                       </a>
                       <button
-                        onClick={() => copyText(agentPrompt, "agent", "Prompt do Agente copiado.")}
+                        onClick={() => copyText(editedAgent || agentPrompt, "agent", "Prompt do Agente copiado.")}
                         type="button"
                         className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                       >
@@ -408,20 +420,22 @@ export const CommandCard = ({
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-rose-300 mb-1.5">
                     <Wrench size={12} /> Se o Lovable errar, cole este texto
                   </div>
-                  <div className="rounded-xl border border-rose-400/20 bg-rose-950/20 max-h-72 overflow-auto">
-                    <pre className="text-xs md:text-[13px] p-4 whitespace-pre-wrap font-mono text-foreground/85">
-                      {correctionPrompt}
-                    </pre>
-                  </div>
+                  <EditablePromptBox
+                    originalPrompt={correctionPrompt}
+                    storageKey={`cmdcard__${completedKey}__fix`}
+                    onChange={setEditedCorrection}
+                    hideCopyButton
+                  />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
-                      onClick={() => copyText(wrapLovable(correctionPrompt), "fix", "Correção copiada.")}
+                      onClick={() => copyText(wrapLovable(editedCorrection || correctionPrompt), "fix", "Correção copiada.")}
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >
                       {copiedKey === "fix" ? <Check size={16} /> : <Copy size={16} />}
                       {copiedKey === "fix" ? "Copiado" : "Copiar correção"}
                     </button>
+
                     <span className="text-[10px] text-muted-foreground/80">
                       Use quando o Lovable não entregar o resultado esperado.
                     </span>

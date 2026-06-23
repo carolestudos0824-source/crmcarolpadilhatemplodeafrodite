@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { toast } from "sonner";
-import { Copy, Check, Compass, Crown } from "lucide-react";
+import { Compass, Crown } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 const GPS_PROMPT = `Atue como GPS de Construção de App.
 
@@ -97,19 +97,6 @@ Dados do meu app (preencha antes de me responder a primeira vez):
 - O que está me travando:`;
 
 export function GpsDoAppCard() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(GPS_PROMPT);
-      setCopied(true);
-      toast.success("Prompt GPS do App copiado. Cole no Lovable, Cursor ou Claude Code dentro do projeto do aplicativo que você está construindo.");
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-
   return (
     <GlassCard className="mt-6 p-5">
       <div className="flex items-start gap-3">
@@ -129,20 +116,15 @@ export function GpsDoAppCard() {
           <p className="text-sm text-foreground/80 mb-4">
             Saiba onde você está, o que falta fazer e o que bloqueia domínio, venda e escala.
           </p>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              copied
-                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                : "bg-accent text-accent-foreground hover:bg-accent/90"
-            }`}
-          >
-            {copied ? <Check size={16} /> : <Copy size={16} />}
-            {copied ? "Copiado!" : "Copiar prompt do GPS do App"}
-          </button>
+          <EditablePromptBox
+            originalPrompt={GPS_PROMPT}
+            storageKey="gps_do_app_prompt"
+            copyLabel="Copiar prompt do GPS do App"
+            helperText="Cole no Lovable, Cursor ou Claude Code dentro do projeto do aplicativo."
+          />
         </div>
       </div>
     </GlassCard>
   );
 }
+

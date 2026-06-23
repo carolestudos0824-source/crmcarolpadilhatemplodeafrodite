@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { toast } from "sonner";
-import { Copy, Check, Ruler, Settings } from "lucide-react";
+import { Ruler, Settings } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 export const ARQUITETO_MELHORIAS_PROMPT = `Atue como Arquiteto de Melhorias do programa.
 
@@ -79,21 +79,6 @@ export const ARQUITETO_MELHORIAS_META = {
 };
 
 export function ArquitetoMelhoriasCard() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(ARQUITETO_MELHORIAS_PROMPT);
-      setCopied(true);
-      toast.success(
-        "Prompt do Arquiteto de Melhorias copiado. Cole no chat da IA para analisar qualquer nova ideia.",
-      );
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-
   return (
     <GlassCard className="mt-4 p-5">
       <div className="flex items-start gap-3">
@@ -117,20 +102,15 @@ export function ArquitetoMelhoriasCard() {
             módulos e decidir onde encaixar cada item dentro do programa — sem
             inflar a experiência.
           </p>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              copied
-                ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                : "bg-accent text-accent-foreground hover:bg-accent/90"
-            }`}
-          >
-            {copied ? <Check size={16} /> : <Copy size={16} />}
-            {copied ? "Copiado!" : "Copiar prompt do Arquiteto de Melhorias"}
-          </button>
+          <EditablePromptBox
+            originalPrompt={ARQUITETO_MELHORIAS_PROMPT}
+            storageKey="arquiteto_melhorias_prompt"
+            copyLabel="Copiar prompt do Arquiteto de Melhorias"
+            helperText="Cole no chat da IA para analisar qualquer nova ideia."
+          />
         </div>
       </div>
     </GlassCard>
   );
 }
+

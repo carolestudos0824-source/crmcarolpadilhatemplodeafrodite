@@ -24,6 +24,7 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso revisar a segurança contra invasão. Me ajude a proteger rotas públicas, área restrita, área paga, painel admin, dados dos usuários, banco de dados, RLS, RPCs, chaves secretas, APIs, checkout e permissões. Quero saber o que pode ficar público, o que deve ficar privado e como testar se alguém consegue acessar o que não deveria.`;
 
@@ -218,31 +219,33 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         })}
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-black/40 p-4 mb-3">
-        <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-          {etapa.tabs[tab]}
-        </pre>
-      </div>
-      {tab !== "avancar" && (
-        <div className="flex flex-col gap-1">
-          <CopyBtn
-            text={tab === "agente" ? etapa.tabs[tab] : wrapLovable(etapa.tabs[tab])}
-            label={
-              tab === "agente"
-                ? "Copiar para o Agente"
-                : tab === "corrigir"
-                ? "Copiar correção"
-                : "Copiar comando"
-            }
-          />
-          <span className="text-[10px] text-muted-foreground/80">
-            {tab === "agente"
+      {tab === "avancar" ? (
+        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
+            {etapa.tabs[tab]}
+          </pre>
+        </div>
+      ) : (
+        <EditablePromptBox
+          key={`${etapa.n}-${tab}`}
+          originalPrompt={etapa.tabs[tab]}
+          storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
+          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          copyLabel={
+            tab === "agente"
+              ? "Copiar para o Agente"
+              : tab === "corrigir"
+              ? "Copiar correção"
+              : "Copiar comando"
+          }
+          helperText={
+            tab === "agente"
               ? "Use para pensar antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
-              : "Cole no projeto do seu app no Lovable."}
-          </span>
-        </div>
+              : "Cole no projeto do seu app no Lovable."
+          }
+        />
       )}
     </GlassCard>
   );

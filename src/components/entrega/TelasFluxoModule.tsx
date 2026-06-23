@@ -24,6 +24,7 @@ import {
   CopyCommandWarning,
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso organizar as telas e o fluxo do usuário. Me ajude a definir: primeira tela, telas públicas, telas restritas, ação principal, formulários, resultado, pagamento, entrega e caminho ideal para o usuário não se perder.`;
 
@@ -244,22 +245,25 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         })}
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-black/40 p-4 mb-3">
-        <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-          {etapa.tabs[tab]}
-        </pre>
-      </div>
-      {tab !== "avancar" && (
-        <CopyBtn
-          text={etapa.tabs[tab]}
-          label={
+      {tab === "avancar" ? (
+        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
+            {etapa.tabs[tab]}
+          </pre>
+        </div>
+      ) : (
+        <EditablePromptBox
+          key={`${etapa.n}-${tab}`}
+          originalPrompt={etapa.tabs[tab]}
+          storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
+          copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
               : tab === "corrigir"
               ? "Copiar correção"
               : "Copiar comando"
           }
-          hint={
+          helperText={
             tab === "agente"
               ? "Use para pensar antes de aplicar."
               : tab === "corrigir"
@@ -268,6 +272,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           }
         />
       )}
+
     </GlassCard>
   );
 }
