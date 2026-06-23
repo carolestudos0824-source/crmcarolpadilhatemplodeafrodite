@@ -181,6 +181,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
   const [actionsOpen, setActionsOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
 
   const { setContext, openEditor } = useProjectContext();
   const {
@@ -195,9 +196,21 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
   const copyToLovable = async () => {
     try {
       await navigator.clipboard.writeText(lovablePrompt);
-      toast.success("Prompt copiado. Cole no Lovable.");
+      toast.success("Prompt copiado. Agora cole no Lovable para começar seu app.");
     } catch {
       toast.error("Não foi possível copiar.");
+    }
+  };
+
+  const handleReviewWithAgent = async () => {
+    try {
+      await navigator.clipboard.writeText(agentPrompt);
+      openAgenteArquiteto();
+      toast.success(
+        "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole o prompt lá para revisar sua ideia.",
+      );
+    } catch {
+      setAgentFallback(agentPrompt);
     }
   };
 
