@@ -5,6 +5,7 @@ import { Copy, Check, RotateCcw } from "lucide-react";
 type Props = {
   originalPrompt: string;
   onCopy?: (text: string) => void;
+  onChange?: (text: string) => void;
   placeholder?: string;
   storageKey?: string;
   copyLabel?: string;
@@ -12,7 +13,11 @@ type Props = {
   transformOnCopy?: (text: string) => string;
   /** Optional helper text shown below the action buttons. */
   helperText?: string;
+  /** Hide the built-in copy button (when parent renders its own copy action). */
+  hideCopyButton?: boolean;
+  className?: string;
 };
+
 
 export function EditablePromptBox({
   originalPrompt,
