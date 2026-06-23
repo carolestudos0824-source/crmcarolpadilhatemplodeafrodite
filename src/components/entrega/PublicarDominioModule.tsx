@@ -24,6 +24,7 @@ import {
   wrapLovable,
 } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso publicar do jeito certo. Me ajude a entender a diferença entre preview e produção, como testar o link público, o que revisar antes de divulgar, como pensar domínio, favicon, imagem social e como fazer um checklist final de publicação.`;
 
@@ -406,6 +407,15 @@ export function PublicarDominioModule() {
           Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
+
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de publicar?"
+          subtitle="Use o Agente Arquiteto para validar se seu app está pronto para sair do preview e ir para divulgação."
+          ctaLabel="Revisar publicação com o Agente Arquiteto"
+        />
+      </div>
     </section>
   );
 }
