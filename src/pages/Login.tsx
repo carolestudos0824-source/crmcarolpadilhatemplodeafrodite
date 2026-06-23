@@ -564,269 +564,294 @@ export default function Login() {
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] items-start">
           {/* ============== Main column ============== */}
           <div className="space-y-5">
-            {/* ===== Card 1: Acesso rápido ===== */}
+            {/* ===== Card principal com tabs ===== */}
             <div className={cardCls}>
               <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-1">
-                Acessar meu programa
+                Acessar a Fábrica de Apps com IA
               </h1>
               <p className="text-sm text-muted-foreground mb-6">
-                Use o mesmo e-mail informado na compra para entrar na Fábrica de Apps com IA.
+                Use o mesmo e-mail informado na compra.
               </p>
 
-              <button
-                type="button"
-                onClick={onGoogle}
-                disabled={googleLoading}
-                className="w-full min-h-12 flex items-center justify-center gap-3 px-4 rounded-xl bg-white text-gray-900 hover:bg-white/90 transition font-medium text-sm shadow-md disabled:opacity-60"
-              >
-                {googleLoading ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-                    <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-                    <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A9 9 0 0 0 9 18z"/>
-                    <path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A9 9 0 0 0 0 9c0 1.452.348 2.827.957 4.04l3.007-2.333z"/>
-                    <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A9 9 0 0 0 .957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
-                  </svg>
-                )}
-                Entrar com Google
-              </button>
-
-              <div className="flex items-center gap-3 my-6">
-                <div className="h-px flex-1 bg-white/10" />
-                <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70">ou</span>
-                <div className="h-px flex-1 bg-white/10" />
+              {/* Tabs */}
+              <div role="tablist" aria-label="Acesso" className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-white/[0.04] border border-white/10 mb-6">
+                {([
+                  { id: "entrar", label: "Entrar" },
+                  { id: "criar", label: "Criar conta" },
+                ] as const).map((t) => {
+                  const active = authTab === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => setAuthTab(t.id)}
+                      className={`min-h-11 rounded-lg text-sm font-medium transition ${
+                        active
+                          ? "bg-accent text-accent-foreground shadow"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  );
+                })}
               </div>
 
-              <form onSubmit={onMagicLink} className="space-y-3">
+              {/* === Tab: Entrar === */}
+              {authTab === "entrar" && (
                 <div>
-                  <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
-                    E-mail da compra
-                  </label>
-                  <input
-                    id="magic-email"
-                    className={inputCls}
-                    type="email"
-                    placeholder="seu@email.com"
-                    autoComplete="email"
-                    value={magicEmail}
-                    onChange={(e) => setMagicEmail(e.target.value)}
-                    required
-                  />
+                  <h2 className="text-lg font-heading font-semibold mb-4">
+                    Entrar no meu programa
+                  </h2>
+
+                  <button
+                    type="button"
+                    onClick={onGoogle}
+                    disabled={googleLoading}
+                    className="w-full min-h-12 flex items-center justify-center gap-3 px-4 rounded-xl bg-white text-gray-900 hover:bg-white/90 transition font-medium text-sm shadow-md disabled:opacity-60"
+                  >
+                    {googleLoading ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A9 9 0 0 0 9 18z"/>
+                        <path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A9 9 0 0 0 0 9c0 1.452.348 2.827.957 4.04l3.007-2.333z"/>
+                        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A9 9 0 0 0 .957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
+                      </svg>
+                    )}
+                    Entrar com Google
+                  </button>
+
+                  <div className="flex items-center gap-3 my-6">
+                    <div className="h-px flex-1 bg-white/10" />
+                    <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70">ou</span>
+                    <div className="h-px flex-1 bg-white/10" />
+                  </div>
+
+                  <form onSubmit={onMagicLink} className="space-y-3">
+                    <div>
+                      <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
+                        E-mail da compra
+                      </label>
+                      <input
+                        id="magic-email"
+                        className={inputCls}
+                        type="email"
+                        placeholder="seu@email.com"
+                        autoComplete="email"
+                        value={magicEmail}
+                        onChange={(e) => setMagicEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    {magicError && (
+                      <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                        {magicError}
+                      </div>
+                    )}
+                    {magicInfo && (
+                      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                        {magicInfo}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={magicLoading}
+                      className="btn-primary w-full min-h-12"
+                    >
+                      {magicLoading ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" /> Enviando link…
+                        </>
+                      ) : (
+                        "Receber link de acesso"
+                      )}
+                    </button>
+                  </form>
+
+                  {/* Sub-accordion: senha cadastrada */}
+                  <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                    <button
+                      type="button"
+                      onClick={() => setPasswordOpen((v) => !v)}
+                      aria-expanded={passwordOpen}
+                      className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
+                    >
+                      <span className="text-sm font-medium text-foreground">
+                        Tenho uma senha cadastrada
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className={`text-muted-foreground transition-transform ${passwordOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+
+                    {passwordOpen && (
+                      <div className="px-4 pb-4 pt-1 border-t border-white/10">
+                        <form onSubmit={onSignIn} className="space-y-3 pt-3">
+                          <div>
+                            <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
+                              E-mail
+                            </label>
+                            <input
+                              id="signin-email"
+                              className={inputCls}
+                              type="email"
+                              placeholder="seu@email.com"
+                              autoComplete="email"
+                              value={signinEmail}
+                              onChange={(e) => setSigninEmail(e.target.value)}
+                              required
+                            />
+                          </div>
+
+                          <PasswordField
+                            id="signin-password"
+                            label="Senha"
+                            value={signinPassword}
+                            onChange={setSigninPassword}
+                            show={showSigninPassword}
+                            onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
+                            autoComplete="current-password"
+                          />
+
+                          {signinError && (
+                            <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                              {signinError}
+                            </div>
+                          )}
+                          {recoverInfo && (
+                            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                              {recoverInfo}
+                            </div>
+                          )}
+
+                          <button
+                            type="submit"
+                            disabled={signinLoading}
+                            className="btn-primary w-full min-h-12"
+                          >
+                            {signinLoading ? (
+                              <>
+                                <Loader2 size={16} className="animate-spin" /> Entrando…
+                              </>
+                            ) : (
+                              "Entrar com senha"
+                            )}
+                          </button>
+
+                          <div className="pt-1">
+                            <button
+                              type="button"
+                              onClick={onRecover}
+                              disabled={recovering}
+                              className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
+                            >
+                              <KeyRound size={12} />
+                              {recovering ? "Enviando…" : "Esqueci minha senha"}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    )}
+                  </div>
                 </div>
+              )}
 
-                {magicError && (
-                  <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                    {magicError}
-                  </div>
-                )}
-                {magicInfo && (
-                  <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                    {magicInfo}
-                  </div>
-                )}
+              {/* === Tab: Criar conta === */}
+              {authTab === "criar" && (
+                <div>
+                  <h2 className="text-lg font-heading font-semibold mb-1">Criar conta</h2>
+                  <p className="text-xs text-muted-foreground mb-5">
+                    Use o mesmo e-mail informado na compra para criar sua conta de acesso.
+                  </p>
 
-                <button
-                  type="submit"
-                  disabled={magicLoading}
-                  className="btn-primary w-full min-h-12"
-                >
-                  {magicLoading ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" /> Enviando link…
-                    </>
-                  ) : (
-                    "Receber link de acesso"
-                  )}
-                </button>
-              </form>
-            </div>
-
-            {/* ===== Accordion: Outras formas de acesso ===== */}
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02]">
-              <button
-                type="button"
-                onClick={() => setOtherOpen((v) => !v)}
-                aria-expanded={otherOpen}
-                className="w-full flex items-center justify-between gap-3 px-5 sm:px-6 py-4 text-left"
-              >
-                <span className="text-sm font-heading font-semibold text-foreground">
-                  Outras formas de acesso
-                </span>
-                <ChevronDown
-                  size={18}
-                  className={`text-muted-foreground transition-transform ${otherOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {otherOpen && (
-                <div className="px-5 sm:px-6 pb-6 pt-2 space-y-8 border-t border-white/10">
-                  {/* Bloco A: senha cadastrada */}
-                  <section>
-                    <h3 className="text-base font-heading font-semibold mb-1">
-                      Tenho uma senha cadastrada
-                    </h3>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      Use esta opção apenas se você já criou uma senha anteriormente.
-                    </p>
-
-                    <form onSubmit={onSignIn} className="space-y-3">
-                      <div>
-                        <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
-                          E-mail
-                        </label>
-                        <input
-                          id="signin-email"
-                          className={inputCls}
-                          type="email"
-                          placeholder="seu@email.com"
-                          autoComplete="email"
-                          value={signinEmail}
-                          onChange={(e) => setSigninEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-
-                      <PasswordField
-                        id="signin-password"
-                        label="Senha"
-                        value={signinPassword}
-                        onChange={setSigninPassword}
-                        show={showSigninPassword}
-                        onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
-                        autoComplete="current-password"
+                  <form onSubmit={onSignUp} className="space-y-3">
+                    <div>
+                      <label htmlFor="signup-name" className="text-xs text-muted-foreground mb-1 block">
+                        Nome
+                      </label>
+                      <input
+                        id="signup-name"
+                        className={inputCls}
+                        type="text"
+                        placeholder="Seu nome"
+                        autoComplete="name"
+                        value={signupName}
+                        onChange={(e) => setSignupName(e.target.value)}
+                        required
                       />
-
-                      {signinError && (
-                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                          {signinError}
-                        </div>
-                      )}
-                      {recoverInfo && (
-                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                          {recoverInfo}
-                        </div>
-                      )}
-
-                      <button
-                        type="submit"
-                        disabled={signinLoading}
-                        className="btn-primary w-full min-h-12"
-                      >
-                        {signinLoading ? (
-                          <>
-                            <Loader2 size={16} className="animate-spin" /> Entrando…
-                          </>
-                        ) : (
-                          "Entrar com senha cadastrada"
-                        )}
-                      </button>
-
-                      <div className="pt-2">
-                        <button
-                          type="button"
-                          onClick={onRecover}
-                          disabled={recovering}
-                          className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
-                        >
-                          <KeyRound size={12} />
-                          {recovering ? "Enviando…" : "Esqueci ou quero redefinir minha senha"}
-                        </button>
-                      </div>
-                    </form>
-                  </section>
-
-                  {/* Bloco B: criar senha */}
-                  <section className="pt-6 border-t border-white/10">
-                    <h3 className="text-base font-heading font-semibold mb-1">
-                      Criar minha senha de acesso
-                    </h3>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      Use esta opção se você já comprou o programa e quer criar uma senha para acessar depois.
-                    </p>
-
-                    <form onSubmit={onSignUp} className="space-y-3">
-                      <div>
-                        <label htmlFor="signup-name" className="text-xs text-muted-foreground mb-1 block">
-                          Nome
-                        </label>
-                        <input
-                          id="signup-name"
-                          className={inputCls}
-                          type="text"
-                          placeholder="Seu nome"
-                          autoComplete="name"
-                          value={signupName}
-                          onChange={(e) => setSignupName(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="signup-email" className="text-xs text-muted-foreground mb-1 block">
-                          E-mail da compra
-                        </label>
-                        <input
-                          id="signup-email"
-                          className={inputCls}
-                          type="email"
-                          placeholder="seu@email.com"
-                          autoComplete="email"
-                          value={signupEmail}
-                          onChange={(e) => setSignupEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-
-                      <PasswordField
-                        id="signup-password"
-                        label="Senha"
-                        value={signupPassword}
-                        onChange={setSignupPassword}
-                        show={showSignupPassword}
-                        onToggle={() => toggleVisibility(setShowSignupPassword, showSignupPassword)}
-                        autoComplete="new-password"
-                        placeholder="Mínimo 6 caracteres"
-                        minLength={6}
+                    </div>
+                    <div>
+                      <label htmlFor="signup-email" className="text-xs text-muted-foreground mb-1 block">
+                        E-mail da compra
+                      </label>
+                      <input
+                        id="signup-email"
+                        className={inputCls}
+                        type="email"
+                        placeholder="seu@email.com"
+                        autoComplete="email"
+                        value={signupEmail}
+                        onChange={(e) => setSignupEmail(e.target.value)}
+                        required
                       />
+                    </div>
 
-                      <PasswordField
-                        id="signup-confirm"
-                        label="Confirmar senha"
-                        value={signupConfirm}
-                        onChange={setSignupConfirm}
-                        show={showSignupConfirm}
-                        onToggle={() => toggleVisibility(setShowSignupConfirm, showSignupConfirm)}
-                        autoComplete="new-password"
-                        placeholder="Repita a senha"
-                        minLength={6}
-                      />
+                    <PasswordField
+                      id="signup-password"
+                      label="Senha"
+                      value={signupPassword}
+                      onChange={setSignupPassword}
+                      show={showSignupPassword}
+                      onToggle={() => toggleVisibility(setShowSignupPassword, showSignupPassword)}
+                      autoComplete="new-password"
+                      placeholder="Mínimo 6 caracteres"
+                      minLength={6}
+                    />
 
-                      {signupError && (
-                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                          {signupError}
-                        </div>
+                    <PasswordField
+                      id="signup-confirm"
+                      label="Confirmar senha"
+                      value={signupConfirm}
+                      onChange={setSignupConfirm}
+                      show={showSignupConfirm}
+                      onToggle={() => toggleVisibility(setShowSignupConfirm, showSignupConfirm)}
+                      autoComplete="new-password"
+                      placeholder="Repita a senha"
+                      minLength={6}
+                    />
+
+                    {signupError && (
+                      <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                        {signupError}
+                      </div>
+                    )}
+                    {signupInfo && (
+                      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                        {signupInfo}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={signupLoading}
+                      className="btn-primary w-full min-h-12"
+                    >
+                      {signupLoading ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" /> Criando conta…
+                        </>
+                      ) : (
+                        "Criar conta"
                       )}
-                      {signupInfo && (
-                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                          {signupInfo}
-                        </div>
-                      )}
-
-                      <button
-                        type="submit"
-                        disabled={signupLoading}
-                        className="btn-primary w-full min-h-12"
-                      >
-                        {signupLoading ? (
-                          <>
-                            <Loader2 size={16} className="animate-spin" /> Criando senha…
-                          </>
-                        ) : (
-                          "Criar senha de acesso"
-                        )}
-                      </button>
-                    </form>
-                  </section>
+                    </button>
+                  </form>
                 </div>
               )}
             </div>
