@@ -166,7 +166,7 @@ const CHECKLIST_PREFIX = "telas_step__";
 
 function CopyBtn({
   text,
-  label = "Copiar comando",
+  label = "Copiar para implementar no Lovable",
   hint,
 }: {
   text: string;
