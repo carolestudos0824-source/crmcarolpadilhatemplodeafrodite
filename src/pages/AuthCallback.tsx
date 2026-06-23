@@ -17,10 +17,15 @@ const hasAuthError = () => {
   );
 };
 
+const safeNextPath = (next: string | null) => {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) return "/entrega";
+  return next;
+};
+
 export default function AuthCallback() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const nextPath = searchParams.get("next") || "/entrega";
+  const nextPath = safeNextPath(searchParams.get("next"));
   const [message, setMessage] = useState("Validando seu acesso…");
   const [expired, setExpired] = useState(false);
 
@@ -34,10 +39,11 @@ export default function AuthCallback() {
       }
 
       try {
-        const { data } = await supabase.auth.getSession();
-        const user = data.session?.user;
+        await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getUser();
+        const user = data.user;
 
-        if (!user) {
+        if (error || !user) {
           setExpired(true);
           return;
         }
