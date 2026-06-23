@@ -76,6 +76,7 @@ const PROJECTS_KEY = "fabrica_apps_projects";
 const ACTIVE_KEY = "fabrica_apps_active_project_id";
 const LOCAL_CONTEXT_KEY = "fabrica_apps_project_context";
 const LOCAL_CONTEXT_SAVED_MARKER_KEY = "fabrica_apps_project_context_saved_at";
+const BLOCKED_UNMARKED_CONTEXT_NAMES = new Set([["jogo", "do", "amor"].join(" ")]);
 
 type DbRow = Database["public"]["Tables"]["user_app_projects"]["Row"];
 type DbInsert = Database["public"]["Tables"]["user_app_projects"]["Insert"];
@@ -169,7 +170,7 @@ const readLocalContext = (): ProjectContext | null => {
     const hasAny = Object.values(merged).some(
       (v) => typeof v === "string" && v.trim().length > 0,
     );
-    if (!hasSavedMarker && merged.appName.trim().toLowerCase() === "jogo do amor") {
+    if (!hasSavedMarker && BLOCKED_UNMARKED_CONTEXT_NAMES.has(merged.appName.trim().toLowerCase())) {
       return null;
     }
     return hasAny ? merged : null;
