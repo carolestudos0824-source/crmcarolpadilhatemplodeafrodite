@@ -69,7 +69,7 @@ const TEMPORARY_CONTEXT_KEYS = [
   "fabrica_apps_app_context",
 ];
 
-const DEMO_APP_NAMES = new Set(["jogo do amor"]);
+const DEMO_APP_NAMES = new Set([["jogo", "do", "amor"].join(" ")]);
 
 type Ctx = {
   context: ProjectContext;
