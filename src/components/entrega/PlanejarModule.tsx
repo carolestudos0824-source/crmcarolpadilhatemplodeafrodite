@@ -32,6 +32,7 @@ type Etapa = {
   n: number;
   icon: typeof Target;
   title: string;
+  resultado: string;
   tabs: Record<TabId, string>;
 };
 
@@ -40,6 +41,8 @@ const ETAPAS: Etapa[] = [
     n: 1,
     icon: Target,
     title: "Definir problema e público",
+    resultado:
+      "Você sai sabendo exatamente qual dor o app resolve e para quem ele foi criado.",
     tabs: {
       lovable:
         "Crie uma seção de planejamento para meu app explicando claramente qual problema ele resolve e para qual público ele foi criado. Use linguagem simples, direta e sem promessas exageradas.",
@@ -55,6 +58,8 @@ const ETAPAS: Etapa[] = [
     n: 2,
     icon: Sparkles,
     title: "Escrever a promessa do app",
+    resultado:
+      "Você sai com uma frase clara que explica qual transformação o app promete.",
     tabs: {
       lovable:
         "Crie uma frase de promessa para meu app explicando o que ele ajuda o usuário a fazer. A promessa deve ser clara, realista e sem garantir resultado.",
@@ -69,6 +74,8 @@ const ETAPAS: Etapa[] = [
     n: 3,
     icon: MousePointerClick,
     title: "Definir ação principal",
+    resultado:
+      "Você sai sabendo qual é a primeira ação que o usuário deve fazer dentro do app.",
     tabs: {
       lovable:
         "Defina a ação principal do usuário dentro do meu app. Explique o que a pessoa precisa fazer primeiro e qual resultado ela deve receber depois dessa ação.",
@@ -83,6 +90,8 @@ const ETAPAS: Etapa[] = [
     n: 4,
     icon: Layers,
     title: "Separar essencial de extra",
+    resultado:
+      "Você sai com uma lista curta do que entra no MVP e do que fica para depois.",
     tabs: {
       lovable:
         "Crie uma lista separando funcionalidades essenciais da primeira versão e funcionalidades extras que devem ficar para depois. Mantenha o MVP simples.",
@@ -98,6 +107,8 @@ const ETAPAS: Etapa[] = [
     n: 5,
     icon: FileText,
     title: "Criar plano inicial do app",
+    resultado:
+      "Você sai com um plano simples, pronto para orientar a construção no Lovable.",
     tabs: {
       lovable:
         "Crie um plano inicial do meu app com: nome provisório, público, problema, promessa, ação principal, funcionalidades essenciais e o que ficará para depois.",
@@ -135,12 +146,44 @@ const CHECKLIST_ITEMS = [
   "Tenho um plano inicial do app",
 ];
 
+const CRITICAL_ITEMS = new Set([
+  "Sei qual problema meu app resolve",
+  "Sei para quem ele foi feito",
+  "Defini a ação principal do usuário",
+  "Separei o essencial do extra",
+  "Tenho um plano inicial do app",
+]);
+
+const PLANO_TEMPLATE = `Plano inicial do app
+
+Problema:
+[Qual dor o app resolve]
+
+Público:
+[Quem vai usar]
+
+Promessa:
+[Qual resultado o app entrega]
+
+Ação principal:
+[O que o usuário faz primeiro]
+
+Essencial no MVP:
+[Até 5 funcionalidades essenciais]
+
+Fora do MVP:
+[Funcionalidades que ficam para depois]
+
+Primeira versão:
+[O que precisa existir para testar com usuários reais]`;
+
 const TAB_META: { id: TabId; label: string; icon: typeof Target }[] = [
-  { id: "lovable", label: "Fazer no Lovable", icon: Wrench },
+  { id: "lovable", label: "Copiar comando de planejamento", icon: Wrench },
   { id: "agente", label: "Pensar com o Agente", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
 ];
+
 
 const CHECKLIST_PREFIX = "planejar_step__";
 
@@ -189,6 +232,14 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           </h3>
         </div>
       </div>
+
+      <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 mb-4">
+        <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
+          Resultado esperado
+        </div>
+        <p className="text-sm text-foreground/90">{etapa.resultado}</p>
+      </div>
+
 
       <div className="flex flex-wrap gap-2 mb-4">
         {TAB_META.map((t) => {
@@ -343,8 +394,8 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-4">
-        Use a aba <strong className="text-foreground/90">Fazer no Lovable</strong> quando
-        quiser aplicar no app. Use a aba{" "}
+        Use a aba <strong className="text-foreground/90">Copiar comando de planejamento</strong>{" "}
+        quando quiser aplicar no app. Use a aba{" "}
         <strong className="text-foreground/90">Pensar com o Agente</strong> quando quiser
         ajuda para decidir antes de construir.
       </p>
@@ -354,6 +405,27 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           <EtapaCard key={e.n} etapa={e} />
         ))}
       </div>
+
+      {/* Plano inicial do app */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/30 bg-accent/[0.05]">
+        <div className="flex items-start gap-3 mb-3">
+          <FileText size={18} className="text-accent shrink-0 mt-0.5" />
+          <div className="min-w-0">
+            <h3 className="text-lg font-heading font-bold leading-tight">
+              Plano inicial do app
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Use este modelo para consolidar suas decisões antes de avançar para MVP e Arquitetura.
+            </p>
+          </div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/40 p-4 mb-3">
+          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
+            {PLANO_TEMPLATE}
+          </pre>
+        </div>
+        <CopyBtn text={PLANO_TEMPLATE} label="Copiar modelo do plano" />
+      </GlassCard>
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
@@ -382,14 +454,21 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           {CHECKLIST_ITEMS.map((item) => {
             const key = `${CHECKLIST_PREFIX}${item}`;
             const done = !!checklist[key];
+            const critical = CRITICAL_ITEMS.has(item);
             return (
               <li key={item}>
-                <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
+                <label
+                  className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition ${
+                    critical
+                      ? "border-accent/30 bg-accent/[0.06] hover:bg-accent/10"
+                      : "border-white/10 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
                   <input
                     type="checkbox"
                     checked={done}
                     onChange={() => toggleItem(item)}
-                    className="accent-accent w-4 h-4"
+                    className="accent-accent w-5 h-5 shrink-0"
                   />
                   <span
                     className={`text-sm ${
@@ -398,12 +477,18 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
                   >
                     {item}
                   </span>
-                  {done ? (
+                  {critical && !done && (
+                    <span className="ml-auto text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-accent/40 bg-accent/10 text-accent shrink-0">
+                      Crítico
+                    </span>
+                  )}
+                  {done && (
                     <CheckCircle2
                       size={14}
                       className="text-emerald-400 shrink-0 ml-auto"
                     />
-                  ) : (
+                  )}
+                  {!critical && !done && (
                     <Circle
                       size={14}
                       className="text-muted-foreground/40 shrink-0 ml-auto"
@@ -414,10 +499,26 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             );
           })}
         </ul>
-        <p className="text-[11px] text-muted-foreground mt-3">
-          Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
-        </p>
+        {(() => {
+          const allCriticalDone = [...CRITICAL_ITEMS].every(
+            (it) => !!checklist[`${CHECKLIST_PREFIX}${it}`],
+          );
+          return allCriticalDone ? (
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-100">
+              <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
+              <span>Planejamento concluído. Agora você pode avançar para MVP e Arquitetura.</span>
+            </div>
+          ) : (
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-100">
+              <ArrowRight size={16} className="mt-0.5 shrink-0" />
+              <span>
+                Ainda não avance. Seu app precisa de problema, público, ação principal e escopo claro.
+              </span>
+            </div>
+          );
+        })()}
       </GlassCard>
+
     </section>
   );
 }

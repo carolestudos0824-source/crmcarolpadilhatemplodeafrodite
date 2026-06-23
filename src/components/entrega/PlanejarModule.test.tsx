@@ -83,11 +83,12 @@ describe("PlanejarModule", () => {
 
   it("copy button writes prompt to clipboard", async () => {
     render(<PlanejarModule />);
-    const copyBtns = screen.getAllByRole("button", { name: /Copiar comando/i });
+    const copyBtns = screen.getAllByRole("button", { name: /^Copiar comando$/i });
     fireEvent.click(copyBtns[0]);
     expect(writeText).toHaveBeenCalledTimes(1);
     expect(writeText.mock.calls[0][0]).toMatch(/Crie uma seção de planejamento/i);
   });
+
 
   it("agent help button copies the architect prompt", () => {
     render(<PlanejarModule />);
