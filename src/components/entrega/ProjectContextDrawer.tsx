@@ -482,7 +482,55 @@ export const ProjectContextDrawer = () => {
             </div>
           </div>
         )}
+
+        {confirmClose && (
+          <div
+            className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setConfirmClose(false)}
+          >
+            <div
+              className="w-full max-w-md rounded-2xl border border-amber-400/30 bg-background p-5 space-y-4"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+            >
+              <div className="flex items-start gap-2">
+                <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-heading font-bold text-base text-foreground">
+                    Você tem alterações não salvas
+                  </h3>
+                  <p className="text-[12px] text-muted-foreground mt-1.5 leading-snug">
+                    Se sair agora, suas alterações ficam guardadas como rascunho
+                    neste navegador, mas ainda não serão aplicadas como contexto
+                    oficial do app.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-end">
+                <button
+                  onClick={() => setConfirmClose(false)}
+                  className="px-3 py-2 rounded-lg border border-white/15 hover:bg-white/5 text-xs"
+                  type="button"
+                >
+                  Continuar editando
+                </button>
+                <button
+                  onClick={() => {
+                    setConfirmClose(false);
+                    closeEditor();
+                  }}
+                  className="px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/20 text-xs"
+                  type="button"
+                >
+                  Sair e manter rascunho
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
