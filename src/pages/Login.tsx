@@ -200,7 +200,7 @@ export default function Login() {
         return;
       }
       setMagicInfo(
-        "Enviamos um link de entrada para seu e-mail. Procure por uma mensagem sobre acesso/login, não redefinição de senha.",
+        "Enviamos um link de acesso para seu e-mail. Abra a mensagem de login e clique para entrar no programa.",
       );
     } catch {
       setMagicError(
