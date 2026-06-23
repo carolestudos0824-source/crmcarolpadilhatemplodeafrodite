@@ -227,6 +227,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         </div>
       ) : (
         <EditablePromptBox
+          saveSourceModule="seguranca"
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
