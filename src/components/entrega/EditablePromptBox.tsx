@@ -27,7 +27,10 @@ type Props = {
   saveSourceModule?: string;
   /** Hide the built-in save button when the parent doesn't want it (default: shown). */
   hideSaveButton?: boolean;
+  /** When true, the prompt textarea is collapsed by default; user clicks "Ver prompt completo" to expand. */
+  collapsible?: boolean;
 };
+
 
 
 
@@ -46,11 +49,14 @@ export function EditablePromptBox({
   saveTitle,
   saveSourceModule,
   hideSaveButton,
+  collapsible = false,
 }: Props) {
   const { openPromptStudio } = usePromptStudio();
   const auth = useAuthState();
   const userId = auth.status === "authed" ? auth.userId : null;
   const [saving, setSaving] = useState(false);
+  const [expanded, setExpanded] = useState(!collapsible);
+
 
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
@@ -62,13 +68,15 @@ export function EditablePromptBox({
   const [copied, setCopied] = useState(false);
   const taRef = useRef<HTMLTextAreaElement>(null);
 
-  // auto-resize
   useEffect(() => {
+    if (!expanded) return;
     const ta = taRef.current;
     if (!ta) return;
     ta.style.height = "auto";
     ta.style.height = `${ta.scrollHeight}px`;
-  }, [value]);
+  }, [value, expanded]);
+
+
 
   useEffect(() => {
     if (!storageKey || typeof window === "undefined") return;
@@ -126,20 +134,50 @@ export function EditablePromptBox({
 
   return (
     <div className={`w-full ${className ?? ""}`}>
-      <textarea
-        ref={taRef}
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange?.(e.target.value);
-        }}
-        placeholder={placeholder}
-        spellCheck={false}
-        className="w-full min-h-[140px] resize-y rounded-xl border border-white/10 bg-black/40 p-4 text-[13px] font-mono leading-relaxed text-foreground/90 outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition"
-      />
-      <p className="text-[11px] text-muted-foreground/80 mt-1.5">
-        Você pode editar este comando antes de copiar.
-      </p>
+      {expanded ? (
+        <>
+          <textarea
+            ref={taRef}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              onChange?.(e.target.value);
+            }}
+            placeholder={placeholder}
+            spellCheck={false}
+            className="w-full min-h-[140px] resize-y rounded-xl border border-white/10 bg-black/40 p-4 text-[13px] font-mono leading-relaxed text-foreground/90 outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition"
+          />
+          <div className="flex items-center justify-between gap-2 mt-1.5">
+            <p className="text-[11px] text-muted-foreground/80">
+              Você pode editar este comando antes de copiar.
+            </p>
+            {collapsible && (
+              <button
+                type="button"
+                onClick={() => setExpanded(false)}
+                className="text-[11px] text-muted-foreground hover:text-foreground transition"
+              >
+                Recolher
+              </button>
+            )}
+          </div>
+        </>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="w-full text-left rounded-xl border border-white/10 bg-black/30 hover:bg-black/40 hover:border-accent/30 transition p-3 group"
+        >
+          <p className="text-[12px] font-mono leading-relaxed text-foreground/70 line-clamp-2">
+            {value.trim().slice(0, 220)}
+            {value.trim().length > 220 ? "…" : ""}
+          </p>
+          <span className="inline-block mt-2 text-[11px] text-accent group-hover:underline">
+            Ver prompt completo
+          </span>
+        </button>
+      )}
+
       <div className="flex flex-wrap items-center gap-2 mt-3">
         {!hideCopyButton && (
           <button

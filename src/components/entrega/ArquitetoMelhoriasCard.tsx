@@ -101,6 +101,8 @@ export function ArquitetoMelhoriasCard() {
             Use para planejar melhorias futuras do seu app com estratégia, decidindo o que vale adicionar agora, o que fica para depois e como evoluir sem inflar o projeto.
           </p>
           <EditablePromptBox
+            collapsible
+
             saveSourceModule="arquiteto-melhorias"
             originalPrompt={ARQUITETO_MELHORIAS_PROMPT}
             storageKey="arquiteto_melhorias_prompt"
