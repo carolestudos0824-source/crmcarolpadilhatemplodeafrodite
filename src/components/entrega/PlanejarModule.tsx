@@ -424,13 +424,13 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             </p>
           </div>
         </div>
-        <div className="rounded-xl border border-white/10 bg-black/40 p-4 mb-3">
-          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-            {PLANO_TEMPLATE}
-          </pre>
-        </div>
-        <CopyBtn text={PLANO_TEMPLATE} label="Copiar modelo do plano" />
+        <EditablePromptBox
+          originalPrompt={PLANO_TEMPLATE}
+          storageKey="planejar_plano_inicial"
+          copyLabel="Copiar modelo do plano"
+        />
       </GlassCard>
+
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
