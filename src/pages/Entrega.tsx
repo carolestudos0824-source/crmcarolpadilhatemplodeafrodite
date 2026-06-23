@@ -697,21 +697,7 @@ function EntregaInner() {
                 </div>
               </details>
             </>
-          ) : (
-            <>
-              <PainSearchNextStep goTo={goTo} />
-
-              <FirstAppOnboarding />
-
-              <JourneyStartGuide
-                active={active}
-                goTo={goTo}
-                effectiveModuleDone={effectiveModuleDone}
-              />
-
-              <TwoPathsExplainer />
-            </>
-          )}
+          ) : null}
 
 
 
