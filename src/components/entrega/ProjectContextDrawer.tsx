@@ -155,15 +155,19 @@ export const ProjectContextDrawer = () => {
 
         <div className="p-5 space-y-4 pb-32">
           <Section title="Essência do app">
-            <Field label="Nome do app" essential>
+            <p className="text-[11px] text-muted-foreground -mt-1">
+              Preencha pelo menos os campos marcados com * para gerar prompts
+              mais precisos.
+            </p>
+            <Field label="Nome do app" required>
               <input
                 className={inputClass}
                 value={draft.appName}
                 onChange={(e) => update("appName", e.target.value)}
-                placeholder="Ex.: Meu App"
+                placeholder="Ex.: Meu App de Finanças"
               />
             </Field>
-            <Field label="O que o app faz" essential>
+            <Field label="O que o app faz" required>
               <textarea
                 className={inputClass}
                 rows={2}
@@ -172,21 +176,21 @@ export const ProjectContextDrawer = () => {
                 placeholder="Ex.: ajuda pessoas a resolverem um problema específico com rapidez"
               />
             </Field>
-            <Field label="Público-alvo" essential>
+            <Field label="Público-alvo" required>
               <input
                 className={inputClass}
                 value={draft.audience}
                 onChange={(e) => update("audience", e.target.value)}
-                placeholder="Ex.: pessoas que querem melhorar seus relacionamentos, vender mais ou organizar uma rotina"
+                placeholder="Ex.: profissionais autônomos, pequenos negócios ou usuários finais"
               />
             </Field>
-            <Field label="Problema que resolve" essential>
+            <Field label="Problema que resolve" required>
               <textarea
                 className={inputClass}
                 rows={2}
                 value={draft.problem}
                 onChange={(e) => update("problem", e.target.value)}
-                placeholder="Ex.: dificuldade de tomar decisão, vender, organizar ou acompanhar algo"
+                placeholder="Ex.: dificuldade de organizar, vender, decidir ou acompanhar algo"
               />
             </Field>
             <Field label="Promessa principal">
@@ -197,7 +201,7 @@ export const ProjectContextDrawer = () => {
                 placeholder="Ex.: chegar ao resultado desejado em menos tempo e com menos esforço"
               />
             </Field>
-            <Field label="Ação principal do usuário" essential>
+            <Field label="Ação principal do usuário" required>
               <input
                 className={inputClass}
                 value={draft.mainAction}
