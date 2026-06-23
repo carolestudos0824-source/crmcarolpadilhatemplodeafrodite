@@ -522,6 +522,28 @@ function EntregaInner() {
               Construa em ordem. Escolha seu app, siga a etapa atual, use o Estúdio de Prompt e revise antes de avançar.
             </div>
 
+            {/* Agente Arquiteto — ferramenta central do programa */}
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={() => {
+                  openAgenteArquiteto();
+                  toast.success(
+                    "Agente Arquiteto aberto. Use ele para revisar ideias, tirar dúvidas e decidir o próximo passo.",
+                  );
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left border border-cyan-400/40 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-cyan-200 hover:from-cyan-500/15 hover:to-blue-500/15 transition shadow-[0_0_24px_-12px_rgba(34,211,238,0.6)]"
+                aria-label="Abrir Agente Arquiteto"
+              >
+                <Bot size={16} className="shrink-0 text-cyan-300" />
+                <span className="flex-1 leading-tight font-semibold">Agente Arquiteto</span>
+                <ExternalLink size={12} className="shrink-0 opacity-70" />
+              </button>
+              <p className="text-[10px] text-muted-foreground mt-1.5 px-1 leading-snug">
+                Tire dúvidas, revise ideias e melhore prompts antes de construir.
+              </p>
+            </div>
+
             {/* Central do Projeto */}
             <div className="mb-4">
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 px-2">
