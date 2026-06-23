@@ -732,6 +732,8 @@ function EntregaInner() {
 
           <GpsDoAppCard />
 
+          <ArquitetoMelhoriasCard />
+
 
 
 
