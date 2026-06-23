@@ -1,86 +1,114 @@
-import { BookOpen, Sparkles, Compass, Workflow, ShieldAlert, Lightbulb } from "lucide-react";
+import { useState } from "react";
+import {
+  BookOpen,
+  Sparkles,
+  Compass,
+  Workflow,
+  ShieldAlert,
+  Lightbulb,
+  CheckCircle2,
+  ArrowRight,
+  Clock,
+} from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
 type Aula = {
   num: number;
   icon: typeof BookOpen;
   title: string;
-  subtitle: string;
-  paragraphs: string[];
+  idea: string;
+  practice: string[];
+  mistake: string;
+  rule: string;
 };
 
 const AULAS: Aula[] = [
   {
     num: 1,
     icon: Lightbulb,
-    title: "Lovable e Fábrica: a cozinha e a receita",
-    subtitle: "O que é cada coisa e por que você precisa das duas.",
-    paragraphs: [
-      "O Lovable é a ferramenta onde o seu aplicativo nasce. É um site onde você conversa, em português normal, e ele constrói o app para você. Você não precisa saber programar. Você descreve o que quer, ele faz.",
-      "A Fábrica de Apps, este programa que você comprou, é o seu mapa. Ela te diz o que pedir ao Lovable, em que ordem, e com quais palavras exatas. Sem o mapa, você ficaria perdida olhando para uma tela em branco sem saber o que falar.",
-      "Pensa assim: o Lovable é a cozinha, cheia de equipamento. A Fábrica é a receita, passo a passo, que transforma esse equipamento em um prato pronto. Cozinha sem receita vira bagunça. Receita sem cozinha não sai do papel. Você precisa dos dois, e agora você tem.",
-      "Não decore nada. Só entenda: aqui você aprende a usar a cozinha. Nos próximos módulos, você segue a receita.",
+    title: "Lovable é a cozinha. A Fábrica é a receita.",
+    idea: "O Lovable constrói, mas você precisa dar direção.",
+    practice: [
+      "A Fábrica entrega os comandos.",
+      "O Lovable executa.",
+      "Você revisa antes de avançar.",
     ],
+    mistake: "Abrir o Lovable sem saber exatamente o que pedir.",
+    rule: "Não peça o app inteiro de uma vez.",
   },
   {
     num: 2,
     icon: Compass,
-    title: "Seus primeiros minutos no Lovable",
-    subtitle: "Conta criada, projeto aberto, e três palavras para reconhecer.",
-    paragraphs: [
-      "Vamos abrir o Lovable pela primeira vez. Calma, é mais simples do que parece.",
-      "Primeiro, você cria uma conta no site do Lovable, do mesmo jeito que cria conta em qualquer lugar, com seu e-mail. Feito isso, você cria um projeto novo. Um projeto é o seu app. Cada app é um projeto separado.",
-      "Quando o projeto abre, você vai ver a tela dividida em duas partes. De um lado, um espaço para você escrever, conversar com o Lovable. É ali que você cola os comandos da Fábrica. Do outro lado, uma prévia, que mostra o seu app tomando forma, ao vivo, conforme você pede as coisas.",
-      "Tem três palavras que você vai ver e precisa reconhecer. O chat, ou conversa, é a caixa onde você digita ou cola o que quer, e tudo começa ali. O preview, ou prévia, é a janela que mostra seu app funcionando, e é ali que você vê o resultado aparecer. E publicar é o botão que coloca seu app no ar, disponível para o mundo, que você só clica quando estiver pronta. No começo, você só constrói e olha a prévia.",
-      "Não precisa entender mais nada agora. Conta criada, projeto aberto, e você sabe onde conversar e onde olhar. Isso basta para começar.",
+    title: "Seus primeiros minutos no Lovable.",
+    idea: "No começo, você só precisa saber criar projeto, colar comando e olhar a prévia.",
+    practice: [
+      "Crie um projeto novo.",
+      "Cole o comando da etapa atual.",
+      "Espere terminar.",
+      "Veja a prévia.",
     ],
+    mistake: "Tentar configurar tudo antes de entender o básico.",
+    rule: "Primeiro faça funcionar. Depois refine.",
   },
   {
     num: 3,
     icon: Sparkles,
-    title: "Como o Lovable pensa, e a regra de ouro",
-    subtitle: "Se você guardar só uma coisa deste módulo, guarde esta.",
-    paragraphs: [
-      "Aqui está a aula mais importante de todas. Se você guardar só uma coisa, guarde esta.",
-      "O Lovable constrói conversando. Você pede, ele faz. Mas ele tem um jeito de trabalhar, e quem respeita esse jeito tem resultado. Quem ignora, sofre.",
-      "A regra de ouro é: um pedido de cada vez.",
-      "A tentação de quem está começando é colar um pedido gigante, como \"cria um app de tarô com login, pagamento, página de venda e dez telas\". O Lovable se perde, mistura tudo, faz metade errado, e você não sabe nem por onde começar a consertar. É como pedir para um cozinheiro fazer dez pratos ao mesmo tempo. Sai tudo queimado.",
-      "O jeito certo é pedir uma coisa, esperar ele terminar, olhar a prévia para conferir se ficou bom, e só então pedir a próxima. Devagar e firme. Cada passo confirmado antes do próximo.",
-      "É exatamente por isso que a Fábrica te dá os comandos separados, um por vez. Não é frescura. É o jeito que funciona. Quando você seguir a Fábrica, você já está seguindo a regra de ouro sem perceber.",
-      "Outra coisa: seja clara. O Lovable é bom, mas não adivinha. Quanto mais específico o pedido, melhor o resultado. Os comandos da Fábrica já vêm prontos e específicos, então no começo é só colar. Com o tempo, você aprende a pedir suas próprias coisas com essa mesma clareza.",
+    title: "Como o Lovable pensa.",
+    idea: "O Lovable responde melhor quando recebe pedidos pequenos, claros e em ordem.",
+    practice: [
+      "Peça uma coisa por vez.",
+      "Use comandos específicos.",
+      "Corrija antes de pedir novas funções.",
     ],
+    mistake: "Pedir login, pagamento, dashboard, área restrita e design no mesmo comando.",
+    rule: "Um pedido de cada vez.",
   },
   {
     num: 4,
     icon: Workflow,
-    title: "A dança entre a Fábrica e o Lovable",
-    subtitle: "O fluxo do dia a dia em quatro passos que se repetem.",
-    paragraphs: [
-      "Agora junte tudo. Como, na prática, você usa este programa junto com o Lovable, no dia a dia.",
-      "O fluxo é uma dança de quatro passos que se repete. Primeiro, você vem para a Fábrica e pega o comando da vez, pois cada módulo aqui te dá os comandos na ordem certa. Segundo, você copia esse comando e cola no chat do Lovable, naquela caixa de conversa, aperta enviar e espera o Lovable trabalhar, deixando ele terminar sem interromper. Terceiro, você olha a prévia e confere se o que ele fez bate com o que o comando pedia, e na maioria das vezes vai estar certo. Quarto, você volta para a Fábrica e marca aquele comando como feito.",
-      "Seu progresso fica salvo na sua conta, então pode marcar com tranquilidade, ele não se perde. E aí você pega o próximo comando, e a dança recomeça.",
-      "É só isso. Pega, cola, confere, marca. Pega, cola, confere, marca. Quando você pega o ritmo, vira automático, e o app vai crescendo na sua frente, um pedaço de cada vez.",
+    title: "A dança entre a Fábrica e o Lovable.",
+    idea: "A Fábrica organiza a estratégia. O Lovable executa a construção.",
+    practice: [
+      "Leia a etapa na Fábrica.",
+      "Copie o comando.",
+      "Cole no Lovable.",
+      "Revise o resultado.",
+      "Volte para a próxima etapa.",
     ],
+    mistake: "Pular etapa porque parece simples.",
+    rule: "Siga a ordem. A pressa quebra o app.",
   },
   {
     num: 5,
     icon: ShieldAlert,
-    title: "Quando o Lovable erra, e ele vai errar",
-    subtitle: "Três regras para não entrar em pânico, e a sua rede de proteção.",
-    paragraphs: [
-      "Última aula, e talvez a que mais vai te salvar de desistir.",
-      "O Lovable erra, e isso é normal. Toda ferramenta que constrói por conta própria, às vezes, entende errado, faz algo torto, ou quebra alguma coisa que estava funcionando. Não é culpa sua. Não é sinal de que você fez algo errado. Faz parte.",
-      "A diferença entre quem desiste e quem termina não é não cometer erros. É saber o que fazer quando eles aparecem.",
-      "A primeira regra é não entrar em pânico e não sair clicando em tudo. Respira. O erro quase sempre tem conserto.",
-      "A segunda regra é que você conserta conversando, do mesmo jeito que constrói. Você diz ao Lovable o que deu errado, por exemplo \"a tela tal parou de funcionar depois da última mudança, por favor conserte\" ou \"isso não ficou como eu pedi, refaça assim\". Ele entende e ajusta.",
-      "A terceira regra, a mais importante de segurança, é que o Lovable guarda um histórico de versões do seu projeto. É como um botão de voltar no tempo. Se algo der muito errado, você consegue voltar para uma versão de antes, quando estava funcionando. Procure por essa função de histórico assim que puder, porque ela é a sua rede de proteção. Saber que ela existe já te deixa mais tranquila para experimentar sem medo.",
-      "A Fábrica te ajuda aqui também, pois tem um módulo inteiro chamado Erros comuns, com os problemas que mais aparecem e o comando pronto para corrigir cada um. Quando travar, é o primeiro lugar para olhar.",
-      "Errar não é o fim. É só mais um passo da construção. Quem entende isso, termina o app.",
+    title: "Quando o Lovable erra.",
+    idea: "Errar faz parte da construção. O importante é corrigir com calma.",
+    practice: [
+      "Leia o erro.",
+      "Volte uma versão, se precisar.",
+      "Peça correção específica.",
+      'Use o módulo "Erros comuns".',
     ],
+    mistake: "Apagar tudo ou começar outro projeto no primeiro erro.",
+    rule: "Erro não é fim. É ajuste de construção.",
   },
 ];
 
-export function FundamentosModule() {
+const CHECKLIST_ITEMS = [
+  "Entendi que devo copiar um comando por vez.",
+  "Entendi que preciso revisar antes de avançar.",
+  "Entendi que o Lovable pode errar.",
+  "Entendi que devo corrigir erros antes de adicionar novas funções.",
+];
+
+type Props = {
+  goTo?: (id: string) => void;
+};
+
+export function FundamentosModule({ goTo }: Props = {}) {
+  const [checked, setChecked] = useState<boolean[]>(() => CHECKLIST_ITEMS.map(() => false));
+  const allChecked = checked.every(Boolean);
+
   return (
     <section>
       <header className="mb-6">
@@ -91,12 +119,34 @@ export function FundamentosModule() {
           Entenda o Lovable antes de construir
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Cinco aulas curtas para você saber onde está pisando. Leia na ordem, sem pressa.
-          Depois daqui, é seguir a Fábrica.
+          Antes de copiar comandos, entenda como o Lovable pensa. Isso evita erro, retrabalho e frustração.
         </p>
       </header>
 
-      <div className="space-y-5">
+      {/* Regra de ouro */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/30 bg-accent/[0.06]">
+        <div className="flex items-start gap-4">
+          <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/20 border border-accent/40 text-accent flex items-center justify-center">
+            <Sparkles size={20} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
+                Regra de ouro
+              </h2>
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/15 bg-white/5 text-muted-foreground">
+                <Clock size={10} /> Leitura rápida: 5 minutos
+              </span>
+            </div>
+            <p className="text-[15px] text-foreground/90 leading-relaxed">
+              Copie um comando por vez. Espere o Lovable terminar. Revise o resultado. Só depois avance.
+            </p>
+          </div>
+        </div>
+      </GlassCard>
+
+      {/* Aulas */}
+      <div className="space-y-4">
         {AULAS.map((aula) => {
           const Icon = aula.icon;
           return (
@@ -109,27 +159,101 @@ export function FundamentosModule() {
                   <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
                     Aula {aula.num}
                   </div>
-                  <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
+                  <h3 className="text-lg md:text-xl font-heading font-bold leading-tight">
                     {aula.title}
-                  </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {aula.subtitle}
-                  </p>
+                  </h3>
                 </div>
               </div>
-              <div className="space-y-3 text-[15px] leading-relaxed text-foreground/90">
-                {aula.paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
+
+              <div className="grid md:grid-cols-2 gap-3 text-sm">
+                <div className="rounded-lg border border-white/10 bg-white/5 p-3 md:col-span-2">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                    Ideia central
+                  </div>
+                  <p className="text-foreground/90">{aula.idea}</p>
+                </div>
+
+                <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                    Na prática
+                  </div>
+                  <ul className="space-y-1">
+                    {aula.practice.map((p) => (
+                      <li key={p} className="flex gap-2 text-foreground/90">
+                        <span className="text-accent">•</span>
+                        <span>{p}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="rounded-lg border border-rose-500/20 bg-rose-500/[0.06] p-3">
+                  <div className="text-[10px] uppercase tracking-wider text-rose-200/90 mb-1">
+                    Erro comum
+                  </div>
+                  <p className="text-foreground/90">{aula.mistake}</p>
+                </div>
+
+                <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 md:col-span-2">
+                  <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
+                    Regra
+                  </div>
+                  <p className="text-foreground/95 font-medium">{aula.rule}</p>
+                </div>
               </div>
             </GlassCard>
           );
         })}
       </div>
 
-      <div className="mt-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
-        <strong className="block mb-1">Pronta para começar?</strong>
-        Agora siga para o módulo <em>Comece aqui</em> e dê o primeiro passo da jornada.
+      {/* Checklist */}
+      <GlassCard className="p-5 md:p-6 mt-6">
+        <h3 className="text-base md:text-lg font-heading font-bold mb-3">
+          Antes de avançar, confirme:
+        </h3>
+        <ul className="space-y-2">
+          {CHECKLIST_ITEMS.map((item, i) => (
+            <li key={item}>
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={checked[i]}
+                  onChange={(e) => {
+                    const next = [...checked];
+                    next[i] = e.target.checked;
+                    setChecked(next);
+                  }}
+                  className="mt-1 h-4 w-4 rounded border-white/20 bg-black/30 accent-[hsl(var(--accent))]"
+                />
+                <span className={checked[i] ? "text-foreground/95 line-through decoration-accent/40" : "text-foreground/90 group-hover:text-foreground"}>
+                  {item}
+                </span>
+              </label>
+            </li>
+          ))}
+        </ul>
+        {allChecked && (
+          <div className="mt-4 flex items-center gap-2 text-emerald-300 text-sm">
+            <CheckCircle2 size={16} />
+            Tudo confirmado. Você pode marcar o módulo como concluído no rodapé.
+          </div>
+        )}
+      </GlassCard>
+
+      {/* Pronto para começar */}
+      <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+        <strong className="block mb-1 text-emerald-100">Pronto para começar?</strong>
+        <p className="text-sm text-emerald-100/90 mb-3">
+          Agora siga para o módulo <em>Comece aqui</em> e inicie o primeiro passo da jornada.
+        </p>
+        {goTo && (
+          <button
+            onClick={() => goTo("comece")}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-emerald-400/40 bg-emerald-400/15 text-emerald-100 hover:bg-emerald-400/25 text-sm font-semibold"
+          >
+            Ir para Comece aqui <ArrowRight size={14} />
+          </button>
+        )}
       </div>
     </section>
   );
