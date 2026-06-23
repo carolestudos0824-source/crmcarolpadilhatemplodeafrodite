@@ -407,6 +407,15 @@ export function PublicarDominioModule() {
           Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
+
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de publicar?"
+          subtitle="Use o Agente Arquiteto para validar se seu app está pronto para sair do preview e ir para divulgação."
+          ctaLabel="Revisar publicação com o Agente Arquiteto"
+        />
+      </div>
     </section>
   );
 }
