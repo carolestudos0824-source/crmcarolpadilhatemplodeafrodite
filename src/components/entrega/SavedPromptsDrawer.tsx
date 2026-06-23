@@ -47,7 +47,7 @@ export const SavedPromptsDrawer = ({ open, onClose }: Props) => {
               Você ainda não salvou nenhum prompt.
             </div>
             <p className="text-xs text-muted-foreground mt-2 leading-snug">
-              Quando encontrar um prompt importante, use o botão “Salvar prompt” para guardar aqui.
+              Em breve, você poderá guardar aqui os prompts mais importantes para reutilizar durante a construção do seu app.
             </p>
           </div>
         </div>
