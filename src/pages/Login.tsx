@@ -641,171 +641,193 @@ export default function Login() {
               </form>
             </div>
 
-            {/* ===== Card 2: Entrar com senha ===== */}
-            <div className={cardCls}>
-              <h2 className="text-xl font-heading font-semibold mb-1">Já tenho senha</h2>
-              <p className="text-xs text-muted-foreground mb-5">
-                Use esta opção se você já criou uma senha anteriormente.
-              </p>
-
-              <form onSubmit={onSignIn} className="space-y-3">
-                <div>
-                  <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
-                    E-mail
-                  </label>
-                  <input
-                    id="signin-email"
-                    className={inputCls}
-                    type="email"
-                    placeholder="seu@email.com"
-                    autoComplete="email"
-                    value={signinEmail}
-                    onChange={(e) => setSigninEmail(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <PasswordField
-                  id="signin-password"
-                  label="Senha"
-                  value={signinPassword}
-                  onChange={setSigninPassword}
-                  show={showSigninPassword}
-                  onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
-                  autoComplete="current-password"
+            {/* ===== Accordion: Outras formas de acesso ===== */}
+            <div className="rounded-2xl border border-white/10 bg-white/[0.02]">
+              <button
+                type="button"
+                onClick={() => setOtherOpen((v) => !v)}
+                aria-expanded={otherOpen}
+                className="w-full flex items-center justify-between gap-3 px-5 sm:px-6 py-4 text-left"
+              >
+                <span className="text-sm font-heading font-semibold text-foreground">
+                  Outras formas de acesso
+                </span>
+                <ChevronDown
+                  size={18}
+                  className={`text-muted-foreground transition-transform ${otherOpen ? "rotate-180" : ""}`}
                 />
+              </button>
 
-                {signinError && (
-                  <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                    {signinError}
-                  </div>
-                )}
-                {recoverInfo && (
-                  <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                    {recoverInfo}
-                  </div>
-                )}
+              {otherOpen && (
+                <div className="px-5 sm:px-6 pb-6 pt-2 space-y-8 border-t border-white/10">
+                  {/* Bloco A: senha cadastrada */}
+                  <section>
+                    <h3 className="text-base font-heading font-semibold mb-1">
+                      Tenho uma senha cadastrada
+                    </h3>
+                    <p className="text-xs text-muted-foreground mb-4">
+                      Use esta opção apenas se você já criou uma senha anteriormente.
+                    </p>
 
-                <button
-                  type="submit"
-                  disabled={signinLoading}
-                  className="btn-primary w-full min-h-12"
-                >
-                  {signinLoading ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" /> Entrando…
-                    </>
-                  ) : (
-                    "Entrar com senha"
-                  )}
-                </button>
+                    <form onSubmit={onSignIn} className="space-y-3">
+                      <div>
+                        <label htmlFor="signin-email" className="text-xs text-muted-foreground mb-1 block">
+                          E-mail
+                        </label>
+                        <input
+                          id="signin-email"
+                          className={inputCls}
+                          type="email"
+                          placeholder="seu@email.com"
+                          autoComplete="email"
+                          value={signinEmail}
+                          onChange={(e) => setSigninEmail(e.target.value)}
+                          required
+                        />
+                      </div>
 
-                <div className="pt-2 space-y-1">
-                  <button
-                    type="button"
-                    onClick={onRecover}
-                    disabled={recovering}
-                    className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
-                  >
-                    <KeyRound size={12} />
-                    {recovering ? "Enviando…" : "Redefinir minha senha"}
-                  </button>
-                  <p className="text-[11px] text-muted-foreground/80">
-                    Use apenas se você quer criar uma nova senha.
-                  </p>
+                      <PasswordField
+                        id="signin-password"
+                        label="Senha"
+                        value={signinPassword}
+                        onChange={setSigninPassword}
+                        show={showSigninPassword}
+                        onToggle={() => toggleVisibility(setShowSigninPassword, showSigninPassword)}
+                        autoComplete="current-password"
+                      />
+
+                      {signinError && (
+                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                          {signinError}
+                        </div>
+                      )}
+                      {recoverInfo && (
+                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                          {recoverInfo}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={signinLoading}
+                        className="btn-primary w-full min-h-12"
+                      >
+                        {signinLoading ? (
+                          <>
+                            <Loader2 size={16} className="animate-spin" /> Entrando…
+                          </>
+                        ) : (
+                          "Entrar com senha cadastrada"
+                        )}
+                      </button>
+
+                      <div className="pt-2">
+                        <button
+                          type="button"
+                          onClick={onRecover}
+                          disabled={recovering}
+                          className="flex items-center gap-2 text-xs text-accent hover:text-accent/80 transition disabled:opacity-60"
+                        >
+                          <KeyRound size={12} />
+                          {recovering ? "Enviando…" : "Esqueci ou quero redefinir minha senha"}
+                        </button>
+                      </div>
+                    </form>
+                  </section>
+
+                  {/* Bloco B: criar senha */}
+                  <section className="pt-6 border-t border-white/10">
+                    <h3 className="text-base font-heading font-semibold mb-1">
+                      Criar minha senha de acesso
+                    </h3>
+                    <p className="text-xs text-muted-foreground mb-4">
+                      Use esta opção se você já comprou o programa e quer criar uma senha para acessar depois.
+                    </p>
+
+                    <form onSubmit={onSignUp} className="space-y-3">
+                      <div>
+                        <label htmlFor="signup-name" className="text-xs text-muted-foreground mb-1 block">
+                          Nome
+                        </label>
+                        <input
+                          id="signup-name"
+                          className={inputCls}
+                          type="text"
+                          placeholder="Seu nome"
+                          autoComplete="name"
+                          value={signupName}
+                          onChange={(e) => setSignupName(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="signup-email" className="text-xs text-muted-foreground mb-1 block">
+                          E-mail da compra
+                        </label>
+                        <input
+                          id="signup-email"
+                          className={inputCls}
+                          type="email"
+                          placeholder="seu@email.com"
+                          autoComplete="email"
+                          value={signupEmail}
+                          onChange={(e) => setSignupEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      <PasswordField
+                        id="signup-password"
+                        label="Senha"
+                        value={signupPassword}
+                        onChange={setSignupPassword}
+                        show={showSignupPassword}
+                        onToggle={() => toggleVisibility(setShowSignupPassword, showSignupPassword)}
+                        autoComplete="new-password"
+                        placeholder="Mínimo 6 caracteres"
+                        minLength={6}
+                      />
+
+                      <PasswordField
+                        id="signup-confirm"
+                        label="Confirmar senha"
+                        value={signupConfirm}
+                        onChange={setSignupConfirm}
+                        show={showSignupConfirm}
+                        onToggle={() => toggleVisibility(setShowSignupConfirm, showSignupConfirm)}
+                        autoComplete="new-password"
+                        placeholder="Repita a senha"
+                        minLength={6}
+                      />
+
+                      {signupError && (
+                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                          {signupError}
+                        </div>
+                      )}
+                      {signupInfo && (
+                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                          {signupInfo}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={signupLoading}
+                        className="btn-primary w-full min-h-12"
+                      >
+                        {signupLoading ? (
+                          <>
+                            <Loader2 size={16} className="animate-spin" /> Criando senha…
+                          </>
+                        ) : (
+                          "Criar senha de acesso"
+                        )}
+                      </button>
+                    </form>
+                  </section>
                 </div>
-              </form>
-            </div>
-
-            {/* ===== Card 3: Primeiro acesso ===== */}
-            <div className={cardCls}>
-              <h2 className="text-xl font-heading font-semibold mb-1">Primeiro acesso?</h2>
-              <p className="text-xs text-muted-foreground mb-5">
-                Crie sua conta usando o mesmo e-mail informado na compra. Seu acesso será
-                verificado automaticamente.
-              </p>
-
-              <form onSubmit={onSignUp} className="space-y-3">
-                <div>
-                  <label htmlFor="signup-name" className="text-xs text-muted-foreground mb-1 block">
-                    Nome
-                  </label>
-                  <input
-                    id="signup-name"
-                    className={inputCls}
-                    type="text"
-                    placeholder="Seu nome"
-                    autoComplete="name"
-                    value={signupName}
-                    onChange={(e) => setSignupName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="signup-email" className="text-xs text-muted-foreground mb-1 block">
-                    E-mail da compra
-                  </label>
-                  <input
-                    id="signup-email"
-                    className={inputCls}
-                    type="email"
-                    placeholder="seu@email.com"
-                    autoComplete="email"
-                    value={signupEmail}
-                    onChange={(e) => setSignupEmail(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <PasswordField
-                  id="signup-password"
-                  label="Senha"
-                  value={signupPassword}
-                  onChange={setSignupPassword}
-                  show={showSignupPassword}
-                  onToggle={() => toggleVisibility(setShowSignupPassword, showSignupPassword)}
-                  autoComplete="new-password"
-                  placeholder="Mínimo 6 caracteres"
-                  minLength={6}
-                />
-
-                <PasswordField
-                  id="signup-confirm"
-                  label="Confirmar senha"
-                  value={signupConfirm}
-                  onChange={setSignupConfirm}
-                  show={showSignupConfirm}
-                  onToggle={() => toggleVisibility(setShowSignupConfirm, showSignupConfirm)}
-                  autoComplete="new-password"
-                  placeholder="Repita a senha"
-                  minLength={6}
-                />
-
-                {signupError && (
-                  <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                    {signupError}
-                  </div>
-                )}
-                {signupInfo && (
-                  <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                    {signupInfo}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={signupLoading}
-                  className="btn-primary w-full min-h-12"
-                >
-                  {signupLoading ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" /> Criando conta…
-                    </>
-                  ) : (
-                    "Criar minha conta"
-                  )}
-                </button>
-              </form>
+              )}
             </div>
           </div>
 
