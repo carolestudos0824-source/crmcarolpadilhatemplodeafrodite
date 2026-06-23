@@ -657,6 +657,44 @@ function EntregaInner() {
                 <TwoPathsExplainer />
               </div>
             </details>
+          ) : active === "comece" ? (
+            <>
+              {/* Bloco principal: onboarding aberto */}
+              <FirstAppOnboarding />
+
+              {/* PainSearch discreto, abaixo do onboarding */}
+              <div className="mt-3 opacity-90">
+                <PainSearchNextStep goTo={goTo} />
+              </div>
+
+              {/* Jornada completa — recolhida */}
+              <details className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] group">
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition">
+                  <span>Ver guia completo da jornada</span>
+                  <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">Mostrar</span>
+                  <span className="text-[10px] uppercase tracking-wider text-accent hidden group-open:inline">Ocultar</span>
+                </summary>
+                <div className="p-3">
+                  <JourneyStartGuide
+                    active={active}
+                    goTo={goTo}
+                    effectiveModuleDone={effectiveModuleDone}
+                  />
+                </div>
+              </details>
+
+              {/* Dois caminhos — recolhido */}
+              <details className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] group">
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground transition">
+                  <span>Entender os dois caminhos</span>
+                  <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">Mostrar</span>
+                  <span className="text-[10px] uppercase tracking-wider text-accent hidden group-open:inline">Ocultar</span>
+                </summary>
+                <div className="p-3">
+                  <TwoPathsExplainer />
+                </div>
+              </details>
+            </>
           ) : (
             <>
               <PainSearchNextStep goTo={goTo} />
@@ -672,6 +710,7 @@ function EntregaInner() {
               <TwoPathsExplainer />
             </>
           )}
+
 
 
           <div id="modules-list">
