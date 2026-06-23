@@ -565,11 +565,11 @@ export default function Login() {
           <div className="space-y-5">
             {/* ===== Card 1: Acesso rápido ===== */}
             <div className={cardCls}>
-              <h1 className="text-2xl font-heading font-bold mb-1">
-                Entrar na Fábrica de Apps com IA
+              <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-1">
+                Acessar meu programa
               </h1>
               <p className="text-sm text-muted-foreground mb-6">
-                Use o mesmo e-mail informado na compra.
+                Use o mesmo e-mail informado na compra para entrar na Fábrica de Apps com IA.
               </p>
 
               <button
