@@ -300,7 +300,7 @@ export default function Login() {
     } catch {
       console.info({ auth_flow: "signup_error" });
       setSignupError(
-        "Não foi possível criar sua conta agora. Tente novamente em alguns segundos.",
+        "Não foi possível criar sua senha agora. Tente novamente em alguns segundos.",
       );
     } finally {
       setSignupLoading(false);
