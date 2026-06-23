@@ -31,7 +31,15 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
       <div className="w-full backdrop-blur-xl bg-background/60 border-b border-white/5">
         <div className="container flex items-center justify-between h-16">
           <Logo size="md" showText />
-          <span className="text-xs text-muted-foreground/80 tracking-wide">Ambiente seguro</span>
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-muted-foreground/80 tracking-wide hidden sm:inline">Ambiente seguro</span>
+            <button
+              className="btn-primary text-xs sm:text-sm"
+              onClick={() => navigate("/login?tab=signup")}
+            >
+              Criar conta / Entrar
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -70,10 +78,10 @@ export const Navbar = ({ offsetTop: _offsetTop = false }: { offsetTop?: boolean 
     } else {
       navLinks = [
         ...BASE_PUBLIC_LINKS,
-        { to: "/login", label: "Já sou aluno" },
+        { to: "/login?tab=login", label: "Já sou aluno" },
       ];
-      ctaLabel = "Já sou aluno";
-      ctaTarget = "/login";
+      ctaLabel = "Criar conta / Entrar";
+      ctaTarget = "/login?tab=signup";
     }
   }
 

@@ -1,4 +1,5 @@
 import { ShieldCheck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Section } from "@/components/Section";
 import { CheckoutSummary } from "@/components/CheckoutSummary";
 import { Logo } from "@/components/Logo";
@@ -7,6 +8,7 @@ import { openConfiguredUrl } from "@/lib/openLink";
 import { APP_CONFIG } from "@/config/appConfig";
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const plan = PLANS[0];
   const checkoutUrl = plan.checkoutUrl();
   return (
@@ -45,6 +47,24 @@ export default function Checkout() {
           </div>
           <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
             Suporte por e-mail apenas para dúvidas de acesso ao material.
+          </p>
+        </div>
+      </div>
+      <div className="max-w-5xl mx-auto mt-6">
+        <div className="glass-strong p-6 md:p-8 rounded-2xl">
+          <h3 className="font-heading font-bold text-lg mb-2">Depois do pagamento</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            Após confirmar sua compra, crie sua conta usando o mesmo e-mail informado no pagamento.
+          </p>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => navigate("/login?tab=signup")}
+          >
+            Já comprei, criar minha conta
+          </button>
+          <p className="text-[11px] text-muted-foreground/70 mt-3">
+            Seu acesso será liberado automaticamente após a confirmação do pagamento.
           </p>
         </div>
       </div>
