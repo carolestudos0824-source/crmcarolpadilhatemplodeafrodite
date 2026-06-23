@@ -268,7 +268,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Use para pensar antes de aplicar."
               : tab === "corrigir"
               ? "Use quando o Lovable não entregar o resultado esperado."
-              : "Cole no projeto do seu app no Lovable."
+              : undefined
           }
         />
       )}
@@ -307,6 +307,14 @@ export function TelasFluxoModule() {
           Um app bom conduz a pessoa sem confusão. Aqui você vai definir quais telas
           existem, o que cada uma faz e qual caminho o usuário deve seguir.
         </p>
+        <div className="max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 space-y-1">
+          <p className="text-xs text-muted-foreground/90">
+            Em cada etapa, você copia o comando e cola no chat do seu projeto no Lovable.
+          </p>
+          <p className="text-xs text-muted-foreground/90">
+            Os comandos também já orientam o Lovable a preservar o que está funcionando antes de aplicar novas mudanças.
+          </p>
+        </div>
       </header>
 
       <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
