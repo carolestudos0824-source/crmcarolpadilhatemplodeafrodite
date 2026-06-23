@@ -547,7 +547,7 @@ function EntregaInner() {
                 <ExternalLink size={12} className="shrink-0 opacity-70" />
               </button>
               <p className="text-[10px] text-muted-foreground mt-1.5 px-1 leading-snug">
-                Tire dúvidas, revise ideias e melhore prompts antes de construir.
+                Use o Agente para revisar ideias, tirar dúvidas e decidir o próximo passo.
               </p>
             </div>
 
