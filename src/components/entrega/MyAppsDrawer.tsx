@@ -100,9 +100,8 @@ export const MyAppsDrawer = () => {
               <h2 className="font-heading font-bold text-lg">Meus Apps em Construção</h2>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5 leading-snug">
-              Organize diferentes apps que você está construindo. Cada app tem
-              seu próprio contexto, etapa atual e status. Quando você seleciona
-              um app, os prompts passam a usar o contexto dele.
+              Organize os apps que você está criando. Cada app mantém seu
+              próprio contexto, etapa atual e status.
             </p>
           </div>
           <button
@@ -146,31 +145,6 @@ export const MyAppsDrawer = () => {
             </div>
           )}
 
-          {hasLocalContextToImport && (
-            <div className="rounded-lg border border-accent/30 bg-accent/[0.06] p-3 text-[12px] text-foreground/90 space-y-2">
-              <p>Encontramos um contexto salvo neste navegador. Deseja transformar isso em um app em construção?</p>
-              <button
-                onClick={async () => {
-                  const created = await createProjectFromLocalContext();
-                  if (created) toast.success(`App "${created.name}" criado a partir do contexto.`);
-                }}
-                className="px-3 py-1.5 rounded-md border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-xs"
-              >
-                Criar app com este contexto
-              </button>
-            </div>
-          )}
-
-
-          {!creating && (
-            <button
-              onClick={() => setCreating(true)}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-sm font-semibold"
-            >
-              <Plus size={14} /> Novo app
-            </button>
-          )}
-
           {creating && (
             <div className="rounded-xl border border-accent/30 bg-accent/[0.06] p-4 space-y-3">
               <label className="block space-y-1">
@@ -205,22 +179,62 @@ export const MyAppsDrawer = () => {
             </div>
           )}
 
-          {projects.length === 0 ? (
-            !creating && (
-              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6 text-center space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  Você ainda não criou nenhum app. Comece salvando o contexto
-                  do seu primeiro projeto.
+          {projects.length === 0 && !creating && hasLocalContextToImport && (
+            <div className="rounded-xl border border-accent/40 bg-accent/[0.08] p-5 space-y-3">
+              <div>
+                <h3 className="font-heading font-bold text-base text-foreground">
+                  Contexto salvo encontrado
+                </h3>
+                <p className="text-[12px] text-muted-foreground mt-1 leading-snug">
+                  Encontramos informações do seu app neste navegador. Você pode
+                  transformar esse contexto em um app em construção.
                 </p>
-                <button
-                  onClick={() => setCreating(true)}
-                  className="btn-primary text-sm"
-                >
-                  <Plus size={14} /> Criar meu primeiro app
-                </button>
               </div>
-            )
-          ) : (
+              <button
+                onClick={async () => {
+                  const created = await createProjectFromLocalContext();
+                  if (created) {
+                    toast.success(`App "${created.name}" criado a partir do contexto.`);
+                  }
+                }}
+                className="btn-primary text-sm w-full justify-center"
+              >
+                Criar app com este contexto
+              </button>
+              <button
+                onClick={() => setCreating(true)}
+                className="w-full text-[12px] text-muted-foreground hover:text-foreground underline underline-offset-2"
+              >
+                Criar app do zero
+              </button>
+            </div>
+          )}
+
+          {projects.length === 0 && !creating && !hasLocalContextToImport && (
+            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6 text-center space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Você ainda não criou nenhum app. Comece criando seu primeiro
+                projeto.
+              </p>
+              <button
+                onClick={() => setCreating(true)}
+                className="btn-primary text-sm"
+              >
+                <Plus size={14} /> Criar meu primeiro app
+              </button>
+            </div>
+          )}
+
+          {projects.length > 0 && !creating && (
+            <button
+              onClick={() => setCreating(true)}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 text-sm font-semibold"
+            >
+              <Plus size={14} /> Novo app
+            </button>
+          )}
+
+          {projects.length > 0 && (
             <ul className="space-y-2">
               {projects.map((p) => {
                 const isActive = p.id === activeId;
@@ -322,9 +336,8 @@ export const MyAppsDrawer = () => {
           <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3 text-[11px] text-muted-foreground flex items-start gap-2">
             <Settings2 size={12} className="mt-0.5 shrink-0" />
             <span>
-              Para editar todos os campos (público, problema, promessa,
-              checkout, etc.), clique em "Editar" — abre o Contexto do meu
-              app.
+              Para alterar público, problema, promessa, checkout e outros
+              dados do app, abra o Contexto do meu app.
             </span>
           </div>
         </div>
