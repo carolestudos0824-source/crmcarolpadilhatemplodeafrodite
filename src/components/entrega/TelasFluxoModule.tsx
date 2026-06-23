@@ -265,52 +265,72 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
             {etapa.tabs[tab]}
           </pre>
         </div>
+      ) : tab === "lovable" ? (
+        <div className="space-y-4">
+          {/* Grupo 1: Antes de implementar */}
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3 sm:p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] uppercase tracking-wider text-accent font-semibold">
+                1. Antes de implementar
+              </span>
+            </div>
+            <EditablePromptBox
+              collapsible
+              saveSourceModule="telas"
+              key={`${etapa.n}-${tab}`}
+              originalPrompt={etapa.tabs[tab]}
+              storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
+              copyLabel="Copiar para implementar no Lovable"
+            />
+          </div>
+
+          {/* Grupo 2: Depois de implementar */}
+          <div className="rounded-xl border border-cyan-400/25 bg-cyan-400/[0.04] p-3 sm:p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] uppercase tracking-wider text-cyan-200 font-semibold">
+                2. Depois de implementar
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={handleCopyAudit}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-full sm:w-fit justify-center min-h-[44px] ${
+                  auditCopied
+                    ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
+                    : "border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
+                }`}
+              >
+                {auditCopied ? <Check size={14} /> : <ShieldCheck size={14} />}
+                {auditCopied ? "Auditoria copiada!" : "Copiar auditoria para o Lovable"}
+              </button>
+              <div className="inline-flex items-start gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[11px] text-cyan-100/90 leading-snug">
+                <ShieldCheck size={12} className="mt-0.5 shrink-0" />
+                <span>
+                  <strong className="text-cyan-50">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       ) : (
         <EditablePromptBox
           collapsible
           saveSourceModule="telas"
-
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
           copyLabel={
             tab === "agente"
-              ? "Copiar para o Agente"
-              : tab === "corrigir"
-              ? "Copiar correção"
-              : "Copiar para implementar no Lovable"
+              ? "Revisar com o Agente primeiro"
+              : "Copiar correção"
           }
           helperText={
             tab === "agente"
               ? "Use para revisar com o Agente antes de aplicar."
-              : tab === "corrigir"
-              ? "Use quando o Lovable não entregar o resultado esperado."
-              : undefined
+              : "Use quando o Lovable não entregar o resultado esperado."
           }
         />
-      )}
-
-      {tab === "lovable" && (
-        <div className="mt-3 flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={handleCopyAudit}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-full sm:w-fit justify-center min-h-[44px] ${
-              auditCopied
-                ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-                : "border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
-            }`}
-          >
-            {auditCopied ? <Check size={14} /> : <ShieldCheck size={14} />}
-            {auditCopied ? "Auditoria copiada!" : "Copiar auditoria para o Lovable"}
-          </button>
-          <div className="inline-flex items-start gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[11px] text-cyan-100/90 leading-snug">
-            <ShieldCheck size={12} className="mt-0.5 shrink-0" />
-            <span>
-              <strong className="text-cyan-50">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
-            </span>
-          </div>
-        </div>
       )}
 
     </GlassCard>
