@@ -1040,7 +1040,7 @@ Regras:
           >
             <h4 className="font-heading font-bold text-lg">Copie manualmente o prompt</h4>
             <p className="text-xs text-muted-foreground">
-              Não foi possível copiar automaticamente. Copie o texto abaixo e cole no Agente Arquiteto.
+              Não foi possível copiar automaticamente. Copie o prompt abaixo e cole no Agente Arquiteto.
             </p>
             <textarea
               readOnly
