@@ -134,20 +134,50 @@ export function EditablePromptBox({
 
   return (
     <div className={`w-full ${className ?? ""}`}>
-      <textarea
-        ref={taRef}
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange?.(e.target.value);
-        }}
-        placeholder={placeholder}
-        spellCheck={false}
-        className="w-full min-h-[140px] resize-y rounded-xl border border-white/10 bg-black/40 p-4 text-[13px] font-mono leading-relaxed text-foreground/90 outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition"
-      />
-      <p className="text-[11px] text-muted-foreground/80 mt-1.5">
-        Você pode editar este comando antes de copiar.
-      </p>
+      {expanded ? (
+        <>
+          <textarea
+            ref={taRef}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              onChange?.(e.target.value);
+            }}
+            placeholder={placeholder}
+            spellCheck={false}
+            className="w-full min-h-[140px] resize-y rounded-xl border border-white/10 bg-black/40 p-4 text-[13px] font-mono leading-relaxed text-foreground/90 outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition"
+          />
+          <div className="flex items-center justify-between gap-2 mt-1.5">
+            <p className="text-[11px] text-muted-foreground/80">
+              Você pode editar este comando antes de copiar.
+            </p>
+            {collapsible && (
+              <button
+                type="button"
+                onClick={() => setExpanded(false)}
+                className="text-[11px] text-muted-foreground hover:text-foreground transition"
+              >
+                Recolher
+              </button>
+            )}
+          </div>
+        </>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="w-full text-left rounded-xl border border-white/10 bg-black/30 hover:bg-black/40 hover:border-accent/30 transition p-3 group"
+        >
+          <p className="text-[12px] font-mono leading-relaxed text-foreground/70 line-clamp-2">
+            {value.trim().slice(0, 220)}
+            {value.trim().length > 220 ? "…" : ""}
+          </p>
+          <span className="inline-block mt-2 text-[11px] text-accent group-hover:underline">
+            Ver prompt completo
+          </span>
+        </button>
+      )}
+
       <div className="flex flex-wrap items-center gap-2 mt-3">
         {!hideCopyButton && (
           <button
