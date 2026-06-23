@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Copy, Check, RotateCcw } from "lucide-react";
+import { Copy, Check, RotateCcw, Settings2 } from "lucide-react";
+import { usePromptStudio, type PromptStudioOptions } from "./PromptStudioProvider";
 
 type Props = {
   originalPrompt: string;
@@ -16,7 +17,10 @@ type Props = {
   /** Hide the built-in copy button (when parent renders its own copy action). */
   hideCopyButton?: boolean;
   className?: string;
+  /** When provided, renders an "Editar no Estúdio" button that opens the global PromptStudio. */
+  studio?: PromptStudioOptions;
 };
+
 
 
 export function EditablePromptBox({
