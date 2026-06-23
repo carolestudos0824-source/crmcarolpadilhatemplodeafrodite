@@ -20,6 +20,7 @@ import Seguranca from "@/pages/Seguranca";
 import NotFound from "@/pages/NotFound";
 
 import ScrollToTop from "@/components/ScrollToTop";
+import { PromptStudioProvider } from "@/components/entrega/PromptStudioProvider";
 
 const queryClient = new QueryClient();
 
