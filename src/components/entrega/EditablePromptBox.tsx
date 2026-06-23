@@ -179,6 +179,18 @@ export function EditablePromptBox({
             Restaurar original
           </button>
         )}
+        {!hideSaveButton && (
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/15 bg-white/5 text-xs text-foreground/80 hover:bg-white/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Salvar este prompt em Prompts salvos"
+          >
+            <Bookmark size={12} />
+            {saving ? "Salvando…" : "Salvar prompt"}
+          </button>
+        )}
       </div>
       {helperText && (
         <p className="text-[10px] text-muted-foreground/80 mt-2">{helperText}</p>
