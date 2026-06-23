@@ -72,7 +72,7 @@ const YesNoSelect = ({
 );
 
 export const ProjectContextDrawer = () => {
-  const { context, setContext, clearTemporaryContext, isEditorOpen, closeEditor } = useProjectContext();
+  const { context, setContext, setRuntimeContext, clearTemporaryContext, isEditorOpen, closeEditor } = useProjectContext();
   const {
     activeProject,
     saveContextToActiveProject,
@@ -103,13 +103,15 @@ export const ProjectContextDrawer = () => {
     setDraft((d) => ({ ...d, [key]: val }));
 
   const save = async () => {
-    setContext(draft);
     if (activeProject) {
       const ok = await saveContextToActiveProject(draft);
       if (!ok) {
         toast.error("Não foi possível salvar neste app.");
         return;
       }
+      setRuntimeContext(draft);
+    } else {
+      setContext(draft);
     }
     toast.success("Contexto salvo. Os próximos prompts usarão essas informações.");
     closeEditor();
@@ -117,7 +119,6 @@ export const ProjectContextDrawer = () => {
 
   const saveAsNewApp = async () => {
     const name = draft.appName.trim() || "Meu app";
-    setContext(draft);
     const created = await createProjectFromContext(draft, name);
     if (created) {
       toast.success("Novo app criado. Este contexto agora está vinculado ao projeto.");
