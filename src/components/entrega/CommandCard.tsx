@@ -381,10 +381,7 @@ export const CommandCard = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
-                        copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.");
-                        openAgenteArquiteto();
-                      }}
+                      onClick={() => handleRevisarComAgente("agent-rev")}
                       className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                     >
                       {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
