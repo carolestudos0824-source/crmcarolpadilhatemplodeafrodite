@@ -79,6 +79,7 @@ export const ProjectContextDrawer = () => {
     createProjectFromContext,
   } = useAppProjects();
   const [draft, setDraft] = useState<ProjectContext>(context);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   useEffect(() => {
     if (isEditorOpen) setDraft(context);
