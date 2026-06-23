@@ -138,6 +138,7 @@ export const ProjectContextDrawer = () => {
     skipHydrationRef.current = true;
     setDraft(EMPTY_PROJECT_CONTEXT);
     clearTemporaryContext();
+    if (activeProject) setRuntimeContext(activeProject.context);
     setConfirmReset(false);
     toast("Contexto limpo. Os campos voltaram ao estado inicial.");
   };
