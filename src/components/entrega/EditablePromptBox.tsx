@@ -49,11 +49,14 @@ export function EditablePromptBox({
   saveTitle,
   saveSourceModule,
   hideSaveButton,
+  collapsible = false,
 }: Props) {
   const { openPromptStudio } = usePromptStudio();
   const auth = useAuthState();
   const userId = auth.status === "authed" ? auth.userId : null;
   const [saving, setSaving] = useState(false);
+  const [expanded, setExpanded] = useState(!collapsible);
+
 
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
