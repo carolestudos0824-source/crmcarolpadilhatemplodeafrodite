@@ -128,7 +128,7 @@ export default function Login() {
 
   // ============ Tabs + password sub-accordion ============
   const [authTab, setAuthTab] = useState<"entrar" | "criar">("criar");
-  const [passwordOpen, setPasswordOpen] = useState(false);
+  
 
   useEffect(() => {
     let cancelled = false;
