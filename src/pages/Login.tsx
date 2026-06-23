@@ -836,7 +836,7 @@ export default function Login() {
                           <Loader2 size={16} className="animate-spin" /> Criando conta…
                         </>
                       ) : (
-                        "Criar conta"
+                        "Criar conta e acessar"
                       )}
                     </button>
                   </form>
