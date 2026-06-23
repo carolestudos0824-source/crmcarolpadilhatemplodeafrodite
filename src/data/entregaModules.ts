@@ -44,7 +44,11 @@ export type AppModel = {
   buyerPersona?: string;
   validationTest?: string;
   visualStyleSuggestion?: string;
+  // Library taxonomy (Ideias prontas page)
+  category?: string;
+  badges?: string[];
 };
+
 
 export type CommonError = {
   category: string;
