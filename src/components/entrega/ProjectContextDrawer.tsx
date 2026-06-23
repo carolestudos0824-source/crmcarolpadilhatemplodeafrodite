@@ -17,22 +17,18 @@ import { useAppProjects } from "@/hooks/useAppProjects";
 const Field = ({
   label,
   hint,
-  essential,
+  required,
   children,
 }: {
   label: string;
   hint?: string;
-  essential?: boolean;
+  required?: boolean;
   children: React.ReactNode;
 }) => (
   <label className="block space-y-1.5">
-    <span className="flex items-center justify-between gap-2">
-      <span className="text-xs font-medium text-foreground/90">{label}</span>
-      {essential && (
-        <span className="text-[10px] uppercase tracking-wide text-accent/90">
-          Essencial para bons prompts
-        </span>
-      )}
+    <span className="text-xs font-medium text-foreground/90">
+      {label}
+      {required && <span className="text-accent ml-0.5">*</span>}
     </span>
     {children}
     {hint && <span className="block text-[11px] text-muted-foreground">{hint}</span>}
