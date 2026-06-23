@@ -423,6 +423,15 @@ export function MvpArquiteturaModule() {
           Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
+
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu MVP está simples, vendável e pronto para construir."
+          ctaLabel="Revisar checklist com o Agente Arquiteto"
+        />
+      </div>
     </section>
   );
 }
