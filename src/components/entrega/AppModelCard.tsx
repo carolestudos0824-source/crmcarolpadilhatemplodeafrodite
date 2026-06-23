@@ -17,7 +17,7 @@ import { useProjectContext, EMPTY_PROJECT_CONTEXT, type ProjectContext } from "@
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { AGENTE_ARQUITETO_URL, openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 
 
@@ -204,15 +204,12 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
   };
 
   const handleReviewWithAgent = async () => {
-    try {
-      await navigator.clipboard.writeText(agentPrompt);
-      openAgenteArquiteto();
-      toast.success(
+    await copyPromptAndOpenAgent({
+      prompt: agentPrompt,
+      successMessage:
         "Tudo pronto. O prompt foi copiado e o Agente Arquiteto abriu em outra aba. Cole lá para revisar, tirar dúvidas e melhorar seu app antes de construir.",
-      );
-    } catch {
-      setAgentFallback(agentPrompt);
-    }
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
   };
 
   const fillContext = () => {
@@ -312,7 +309,10 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
         </div>
         <div className="flex gap-2 pt-2">
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
               setEditedName(model.name);
               setOpen(true);
             }}
@@ -321,7 +321,10 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <Eye size={14} /> Ver plano do app
           </button>
           <button
-            onClick={() => {
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
               setContext(modelToContext(model, model.name));
               setEditedName(model.name);
               setOpen(true);
@@ -332,6 +335,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
             <Sparkles size={14} /> Usar esta ideia
           </button>
         </div>
+
       </GlassCard>
 
 

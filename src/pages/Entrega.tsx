@@ -71,7 +71,7 @@ import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
-import { openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { openAgenteArquiteto, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 import { Bot } from "lucide-react";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
@@ -1804,6 +1804,7 @@ const CriativosIntro = () => {
 
 const ValidacaoIntro = () => {
   const [showGlossary, setShowGlossary] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
   const { activeProject } = useAppProjects();
 
   const appName = activeProject?.name?.trim() || "meu app";
@@ -1828,26 +1829,17 @@ const ValidacaoIntro = () => {
     ["Objeção", "dúvida ou resistência que impede a pessoa de usar ou comprar."],
     ["Interesse real", "ação concreta, como clicar, testar, voltar, perguntar preço, indicar ou comprar."],
     ["Retenção", "quando a pessoa volta a usar depois do primeiro teste."],
-    ["Teste beta", "primeira fase de teste com poucos usuários."],
-    ["Iteração", "melhoria feita após observar feedback."],
-    ["Priorização", "escolha do que corrigir primeiro."],
-    ["Escalar", "divulgar para mais pessoas depois de validar."],
     ["Sinal fraco", "elogio genérico, como 'achei legal'."],
     ["Sinal forte", "uso real, cadastro, compra, retorno, indicação ou pedido de acesso."],
   ];
 
-  const guideMeThisStep = async () => {
-    try {
-      await navigator.clipboard.writeText(agentValidationPrompt);
-      openAgenteArquiteto();
-      toast.success(
+  const guideMeThisStep = () =>
+    copyPromptAndOpenAgent({
+      prompt: agentValidationPrompt,
+      successMessage:
         "Prompt copiado. Cole no Agente Arquiteto para revisar sua validação antes de enviar convites.",
-      );
-    } catch {
-      openAgenteArquiteto();
-      toast.error("Não consegui copiar automaticamente. Copie o prompt manualmente.");
-    }
-  };
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
 
   const copyInvite = async () => {
     try {
@@ -1858,24 +1850,22 @@ const ValidacaoIntro = () => {
     }
   };
 
-  const reviewInviteWithAgent = async () => {
+  const reviewInviteWithAgent = () => {
     const prompt = `Quero revisar este convite que vou mandar para pessoas reais testarem meu app "${appName}":\n\n${inviteMessage}\n\nMe diga se está claro, honesto e se ajuda a coletar feedback real (não elogio). Sugira pequenos ajustes se necessário.`;
-    try {
-      await navigator.clipboard.writeText(prompt);
-      openAgenteArquiteto();
-      toast.success("Convite copiado. Cole no Agente Arquiteto para revisar antes de enviar.");
-    } catch {
-      openAgenteArquiteto();
-      toast.error("Não consegui copiar automaticamente. Copie o convite manualmente.");
-    }
+    return copyPromptAndOpenAgent({
+      prompt,
+      successMessage: "Convite copiado. Cole no Agente Arquiteto para revisar antes de enviar.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
   };
 
-  const explainStepWithAgent = () => {
-    openAgenteArquiteto();
-    toast.success("Pergunte ao Agente Arquiteto o que ainda não ficou claro nesta etapa.");
-  };
+  const explainStepWithAgent = () =>
+    copyPromptAndOpenAgent({
+      emptyMessage: "Pergunte ao Agente Arquiteto o que ainda não ficou claro nesta etapa.",
+    });
 
   return (
+    <>
     <section className="mb-8 space-y-6">
       {/* CARD PRINCIPAL DA ETAPA */}
       <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/10 via-primary/5 to-transparent p-5 md:p-8 neon-shadow">
@@ -2032,6 +2022,60 @@ const ValidacaoIntro = () => {
         </a>
       </div>
     </section>
+
+    {agentFallback && (
+      <div
+        className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+        onClick={() => setAgentFallback(null)}
+      >
+        <div
+          className="bg-background border border-white/10 rounded-2xl max-w-xl w-full p-5 space-y-3"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h4 className="font-heading font-bold text-lg">Copie manualmente o prompt</h4>
+          <p className="text-xs text-muted-foreground">
+            Não foi possível copiar automaticamente. Copie o texto abaixo e cole no Agente Arquiteto.
+          </p>
+          <textarea
+            readOnly
+            value={agentFallback}
+            className="w-full h-64 rounded-lg border border-white/10 bg-black/40 p-3 text-xs text-foreground font-mono"
+            onFocus={(e) => e.currentTarget.select()}
+          />
+          <div className="flex flex-wrap gap-2 justify-end">
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(agentFallback);
+                  toast.success("Prompt copiado.");
+                } catch {
+                  toast.error("Selecione o texto e copie manualmente (Ctrl+C).");
+                }
+              }}
+              className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-xs"
+            >
+              Copiar novamente
+            </button>
+            <button
+              type="button"
+              onClick={() => { openAgenteArquiteto(); }}
+              className="px-3 py-1.5 rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 text-xs font-semibold"
+            >
+              Abrir Agente Arquiteto
+            </button>
+            <button
+              type="button"
+              onClick={() => setAgentFallback(null)}
+              className="px-3 py-1.5 rounded-md border border-white/15 hover:bg-white/5 text-xs"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 
