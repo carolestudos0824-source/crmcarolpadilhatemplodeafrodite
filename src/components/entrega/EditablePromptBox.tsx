@@ -22,12 +22,16 @@ type Props = {
 export function EditablePromptBox({
   originalPrompt,
   onCopy,
+  onChange,
   placeholder,
   storageKey,
   copyLabel = "Copiar comando",
   transformOnCopy,
   helperText,
+  hideCopyButton,
+  className,
 }: Props) {
+
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
       const saved = window.localStorage.getItem(storageKey);
