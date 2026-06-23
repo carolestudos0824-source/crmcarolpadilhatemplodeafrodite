@@ -726,14 +726,13 @@ Regras:
                   >
                     <Copy size={16} /> Copiar revisão pós-Lovable
                   </button>
-                  <a
-                    href={AGENTE_ARQUITETO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={handleOpenAgentWithPostLovablePrompt}
                     className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-amber-300/40 bg-amber-300/[0.08] text-amber-200 hover:bg-amber-300/15 text-sm font-semibold"
                   >
                     <ExternalLink size={14} /> Voltar ao Agente
-                  </a>
+                  </button>
                 </div>
 
                 {/* Prompt body */}
