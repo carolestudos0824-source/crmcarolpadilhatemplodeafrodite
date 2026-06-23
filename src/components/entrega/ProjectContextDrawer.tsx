@@ -249,7 +249,7 @@ export const ProjectContextDrawer = () => {
   return (
     <div
       className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex justify-end"
-      onClick={closeEditor}
+      onClick={attemptClose}
     >
       <div
         className="bg-background border-l border-white/10 w-full max-w-xl h-full overflow-auto"
@@ -272,7 +272,7 @@ export const ProjectContextDrawer = () => {
             </p>
           </div>
           <button
-            onClick={closeEditor}
+            onClick={attemptClose}
             className="p-2 rounded-lg hover:bg-white/5 shrink-0"
             aria-label="Fechar"
           >
