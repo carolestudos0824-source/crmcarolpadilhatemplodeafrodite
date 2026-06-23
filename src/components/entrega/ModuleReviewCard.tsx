@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { SearchCheck, Copy, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2, ShieldCheck } from "lucide-react";
+import { SearchCheck, Check, ClipboardCheck, ListChecks, CheckCircle, Bot, Settings2, ShieldCheck } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import {
@@ -8,7 +8,8 @@ import {
   buildReviewLovablePrompt,
 } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
-import { openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { AgentClipboardFallback } from "@/components/entrega/AgentClipboardFallback";
 
 export function ModuleReviewCard({
   moduleName,
@@ -24,7 +25,19 @@ export function ModuleReviewCard({
   const [okAgent, setOkAgent] = useState(false);
   const [okLovable, setOkLovable] = useState(false);
   const [studioOpen, setStudioOpen] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
   const { context } = useProjectContext();
+
+  const handleRevisarComAgente = () => {
+    setOkAgent(true);
+    setTimeout(() => setOkAgent(false), 1600);
+    void copyPromptAndOpenAgent({
+      prompt: agentText,
+      successMessage:
+        "Prompt copiado para o Agente. O Agente foi aberto. Cole com Ctrl+V para revisar esta etapa.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
 
   const agentText = buildReviewAgentPrompt({
     context,
@@ -120,10 +133,7 @@ export function ModuleReviewCard({
             Revisar prompt antes de copiar
           </button>
           <button
-            onClick={() => {
-              copyTo(agentText, setOkAgent, "Agente Arquiteto");
-              openAgenteArquiteto();
-            }}
+            onClick={handleRevisarComAgente}
             className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg border text-sm font-semibold transition ${
               okAgent
                 ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
@@ -162,6 +172,7 @@ export function ModuleReviewCard({
         stepObjective={objective}
         customPrompts={{ lovable: lovableText, agent: agentText }}
       />
+      <AgentClipboardFallback prompt={agentFallback} onClose={() => setAgentFallback(null)} />
     </>
   );
 }

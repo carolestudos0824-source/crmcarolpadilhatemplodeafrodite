@@ -9,7 +9,8 @@ import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { openAgenteArquiteto } from "@/lib/agenteArquiteto";
+import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { AgentClipboardFallback } from "@/components/entrega/AgentClipboardFallback";
 
 
 type Props = {
@@ -55,6 +56,19 @@ export const CommandCard = ({
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [agentFallback, setAgentFallback] = useState<string | null>(null);
+
+  const handleRevisarComAgente = (key: string) => {
+    const prompt = enrichedAgent();
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1800);
+    void copyPromptAndOpenAgent({
+      prompt,
+      successMessage:
+        "Prompt copiado para o Agente. O Agente foi aberto. Cole com Ctrl+V para revisar antes de continuar.",
+      onClipboardFail: (p) => setAgentFallback(p),
+    });
+  };
   const [editedCommand, setEditedCommand] = useState(commandText);
   const [editedAgent, setEditedAgent] = useState(agentPrompt ?? "");
   const [editedCorrection, setEditedCorrection] = useState(correctionPrompt ?? "");
@@ -209,10 +223,7 @@ export const CommandCard = ({
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.");
-                    openAgenteArquiteto();
-                  }}
+                  onClick={() => handleRevisarComAgente("agent-rev")}
                   className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                 >
                   {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
@@ -370,10 +381,7 @@ export const CommandCard = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
-                        copyText(enrichedAgent(), "agent-rev", "Prompt de revisão para o Agente copiado.");
-                        openAgenteArquiteto();
-                      }}
+                      onClick={() => handleRevisarComAgente("agent-rev")}
                       className="text-sm inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                     >
                       {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
@@ -571,6 +579,7 @@ export const CommandCard = ({
       command={commandText}
       moduleId={moduleId}
     />
+    <AgentClipboardFallback prompt={agentFallback} onClose={() => setAgentFallback(null)} />
     </>
   );
 };
