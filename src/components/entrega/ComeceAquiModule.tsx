@@ -64,8 +64,9 @@ const scrollToId = (id: string) => {
 };
 
 export function ComeceAquiModule({ goTo }: Props) {
-  const { openDrawer } = useAppProjects();
+  const { openDrawer, activeProject } = useAppProjects();
   const moduleLabel = (id: ModuleId) => MODULES.find((m) => m.id === id)?.label ?? id;
+  const hasApp = !!activeProject;
 
   return (
     <section>
@@ -80,24 +81,56 @@ export function ComeceAquiModule({ goTo }: Props) {
         <p className="text-muted-foreground max-w-3xl">
           Você não precisa saber programar. Siga a jornada, copie um comando por vez, cole no Lovable e avance apenas quando cada etapa estiver funcionando.
         </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <button onClick={() => goTo("ideias")} className="btn-primary">
-            <Sparkles size={16} /> Começar pela Etapa 1
-          </button>
-          <button
-            type="button"
-            onClick={openDrawer}
-            className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
-          >
-            <FolderPlus size={16} /> Criar ou selecionar meu app
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToId("pain-search")}
-            className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
-          >
-            <Search size={16} /> Usar Busca Inteligente
-          </button>
+        <div className="mt-5 flex flex-wrap gap-3 items-center">
+          {hasApp ? (
+            <>
+              <button
+                onClick={() => goTo("ideias")}
+                className="btn-primary w-full sm:w-auto min-h-[44px]"
+              >
+                <Sparkles size={16} /> Continuar pela Etapa 1
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToId("pain-search")}
+                className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm min-h-[44px]"
+              >
+                <Search size={16} /> Usar Busca Inteligente
+              </button>
+              <a
+                href={LOVABLE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 inline-flex items-center gap-1.5"
+              >
+                <ExternalLink size={13} /> Abrir Lovable
+              </a>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={openDrawer}
+                className="btn-primary w-full sm:w-auto min-h-[44px]"
+              >
+                <FolderPlus size={16} /> Criar ou selecionar app
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToId("pain-search")}
+                className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm min-h-[44px]"
+              >
+                <Search size={16} /> Usar Busca Inteligente
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo("ideias")}
+                className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 inline-flex items-center gap-1.5"
+              >
+                <Lightbulb size={13} /> Ver ideias prontas
+              </button>
+            </>
+          )}
         </div>
       </header>
 
