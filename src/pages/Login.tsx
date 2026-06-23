@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
+  ChevronDown,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Logo } from "@/components/Logo";
