@@ -8,6 +8,7 @@ import {
   buildReviewLovablePrompt,
 } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
+import { openAgenteArquiteto } from "@/lib/agenteArquiteto";
 
 export function ModuleReviewCard({
   moduleName,
