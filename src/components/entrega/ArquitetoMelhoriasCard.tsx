@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { toast } from "sonner";
-import { Copy, Check, Ruler, Settings } from "lucide-react";
+import { Ruler, Settings } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+
 
 export const ARQUITETO_MELHORIAS_PROMPT = `Atue como Arquiteto de Melhorias do programa.
 
