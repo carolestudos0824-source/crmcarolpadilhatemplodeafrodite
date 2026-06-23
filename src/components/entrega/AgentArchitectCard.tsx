@@ -38,6 +38,8 @@ export interface AgentArchitectCardProps {
   variant?: "hero" | "compact";
   /** Classe extra para o wrapper. */
   className?: string;
+  /** Sobrescreve o comportamento padrão do CTA. Quando passado, é executado em vez do handler interno. */
+  onClick?: () => void | Promise<void>;
 }
 
 const DEFAULT_BENEFITS = [
@@ -58,6 +60,7 @@ export const AgentArchitectCard = ({
   eyebrow,
   variant = "hero",
   className = "",
+  onClick,
 }: AgentArchitectCardProps) => {
   const hasPrompt = !!prompt && prompt.trim().length > 0;
   const finalCta = ctaLabel ?? (hasPrompt ? "Revisar com o Agente Arquiteto" : "Abrir Agente Arquiteto");
@@ -69,6 +72,10 @@ export const AgentArchitectCard = ({
   const finalBenefits = benefits ?? (variant === "hero" ? DEFAULT_BENEFITS.slice(0, 3) : []);
 
   const handleClick = async () => {
+    if (onClick) {
+      await onClick();
+      return;
+    }
     if (hasPrompt) {
       try {
         await navigator.clipboard.writeText(prompt!);
