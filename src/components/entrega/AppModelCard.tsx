@@ -374,6 +374,7 @@ export const AppModelCard = ({ model }: { model: AppModel }) => {
               {/* ===== Hero: Comece pelo Agente Arquiteto ===== */}
               <AgentArchitectCard
                 prompt={agentPrompt}
+                onClick={handleReviewWithAgent}
                 eyebrow="Etapa 1 de 2 · recomendado para iniciantes"
                 subtitle="Antes de construir no Lovable, revise sua ideia com um agente que entende de produto, MVP, telas, banco de dados e monetização."
                 description="Se você é iniciante, clique aqui primeiro. O prompt será copiado e o Agente Arquiteto abrirá para você conversar sobre esse app."
