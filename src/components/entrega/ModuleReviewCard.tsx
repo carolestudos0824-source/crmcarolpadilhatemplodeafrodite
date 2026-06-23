@@ -133,10 +133,7 @@ export function ModuleReviewCard({
             Revisar prompt antes de copiar
           </button>
           <button
-            onClick={() => {
-              copyTo(agentText, setOkAgent, "Agente Arquiteto");
-              openAgenteArquiteto();
-            }}
+            onClick={handleRevisarComAgente}
             className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg border text-sm font-semibold transition ${
               okAgent
                 ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
