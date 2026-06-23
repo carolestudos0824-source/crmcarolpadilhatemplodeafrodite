@@ -2109,7 +2109,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
 
 
   if (active === "ideias") {
-    return <IdeiasProntasModule onAnalisarViabilidade={() => goTo("validacao")} />;
+    return <IdeiasProntasModule onAnalisarViabilidade={() => goTo("validacao")} onProximoPasso={() => goTo("planejar")} />;
   }
 
 
