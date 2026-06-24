@@ -913,33 +913,43 @@ const CommandList = ({
 }: {
   commands: Command[];
   moduleKey: string;
-}) => (
-  <div className="space-y-3">
-    <CopyCommandWarning />
-    {commands.map((c, i) => (
-      <CommandCard
-        key={c.n}
-        number={c.n}
-        title={c.title}
-        description={c.purpose}
-        whenToUse={c.when}
-        whereToPaste={c.where}
-        expectedResult={c.result}
-        commandText={c.content}
-        defaultOpen={i === 0}
-        completedKey={`${moduleKey}_${c.n}`}
-        moduleId={moduleKey}
-        objective={c.objective}
-        whenLovableDirect={c.whenLovableDirect}
-        whenAgentFirst={c.whenAgentFirst}
-        agentPrompt={c.agentPrompt}
-        correctionPrompt={c.correctionPrompt}
-        advanceCriteria={c.advanceCriteria}
-      />
-    ))}
-    <BeforeAdvanceTip />
-  </div>
-);
+}) => {
+  const { isCommandDone } = useUserProgress();
+  // Foco progressivo: abrir somente a primeira etapa ainda não concluída.
+  // Se todas estiverem concluídas, nenhuma fica aberta por padrão (usuário
+  // ainda pode expandir manualmente).
+  const firstPendingIdx = commands.findIndex(
+    (c) => !isCommandDone(`${moduleKey}_${c.n}`),
+  );
+  return (
+    <div className="space-y-3">
+      <CopyCommandWarning />
+      {commands.map((c, i) => (
+        <CommandCard
+          key={c.n}
+          number={c.n}
+          title={c.title}
+          description={c.purpose}
+          whenToUse={c.when}
+          whereToPaste={c.where}
+          expectedResult={c.result}
+          commandText={c.content}
+          defaultOpen={i === firstPendingIdx}
+          completedKey={`${moduleKey}_${c.n}`}
+          moduleId={moduleKey}
+          objective={c.objective}
+          whenLovableDirect={c.whenLovableDirect}
+          whenAgentFirst={c.whenAgentFirst}
+          agentPrompt={c.agentPrompt}
+          correctionPrompt={c.correctionPrompt}
+          advanceCriteria={c.advanceCriteria}
+        />
+      ))}
+      <BeforeAdvanceTip />
+    </div>
+  );
+};
+
 
 const ConstruirIntro = () => {
   const [showZero, setShowZero] = useState(false);
