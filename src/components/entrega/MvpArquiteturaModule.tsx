@@ -206,14 +206,16 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           </h3>
           {isResultStep && (
             <p className="text-xs text-muted-foreground mt-1.5">
-              Este é o comando consolidado para construir a primeira versão do app com base no MVP, telas, dados e regras definidos acima.
+              Este é o comando consolidado para construir a primeira versão funcional do app com base em MVP, telas, dados e regras definidos acima.
+              Próximas versões serão planejadas no módulo Melhorias e Versões.
             </p>
           )}
           {isFeaturesStep && (
             <p className="text-xs text-amber-200/90 mt-1.5">
-              Escolha no máximo 5 funcionalidades principais.
+              Escolha até 5 funcionalidades principais agora. As demais ficam na lista de próximas versões.
             </p>
           )}
+
         </div>
       </div>
 
