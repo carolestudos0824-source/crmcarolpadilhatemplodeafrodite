@@ -2132,8 +2132,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return <PlanejarModule goTo={goTo} />;
   }
   if (active === "mvp") {
-    return <MvpArquiteturaModule />;
+    return <MvpArquiteturaModule goTo={goTo} />;
   }
+
   if (active === "telas") {
     return <TelasFluxoModule />;
   }
