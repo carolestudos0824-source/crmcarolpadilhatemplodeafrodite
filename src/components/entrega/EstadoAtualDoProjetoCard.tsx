@@ -261,6 +261,17 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         />
       </div>
 
+      <p
+        className="mt-2 text-[11px] text-muted-foreground/80"
+        aria-live="polite"
+      >
+        <span className="text-muted-foreground/60">Última ação registrada: </span>
+        {lastActionText ??
+          "Nenhuma ação concluída ainda. Comece pelo próximo passo recomendado."}
+      </p>
+
+
+
       <div className="mt-3 h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-accent/70 to-accent shadow-[0_0_12px_rgba(0,194,255,0.5)] transition-all"
