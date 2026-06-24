@@ -33,6 +33,8 @@ type Props = {
    * instead of generating from `command`. Useful for ModuleReviewCard.
    */
   customPrompts?: { lovable: string; agent: string };
+  /** Aba inicial. Use "agent" quando o usuário entrar pelo caminho de revisão. */
+  initialMode?: Mode;
 };
 
 type Mode = "lovable" | "agent";
