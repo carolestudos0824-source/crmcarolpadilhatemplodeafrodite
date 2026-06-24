@@ -896,7 +896,7 @@ Regras:
                 </ul>
                 {model.cutFromFirst?.length ? (
                   <div className="rounded-lg border border-rose-500/20 bg-rose-500/[0.06] p-3 text-xs text-rose-100/90">
-                    <div className="font-semibold mb-1">Fica fora da primeira versão</div>
+                    <div className="font-semibold mb-1">Fica para próximas versões</div>
                     <ul className="space-y-0.5">
                       {model.cutFromFirst.map((c) => (
                         <li key={c}>— {c}</li>
