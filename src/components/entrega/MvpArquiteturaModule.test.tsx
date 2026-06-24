@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MvpArquiteturaModule } from "./MvpArquiteturaModule";
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
@@ -12,8 +12,16 @@ const setChecklist = vi.fn((updater) => {
   const next = typeof updater === "function" ? updater(checklistStore) : updater;
   Object.assign(checklistStore, next);
 });
+const commandStore: Record<string, boolean> = {};
 vi.mock("@/hooks/useUserProgress", () => ({
-  useUserProgress: () => ({ checklist: checklistStore, setChecklist }),
+  useUserProgress: () => ({
+    checklist: checklistStore,
+    setChecklist,
+    isCommandDone: (k: string) => !!commandStore[k],
+    toggleCommand: (k: string) => {
+      commandStore[k] = !commandStore[k];
+    },
+  }),
 }));
 
 describe("MvpArquiteturaModule", () => {
@@ -29,7 +37,15 @@ describe("MvpArquiteturaModule", () => {
     expect(screen.getByText(/transformar o plano do app em uma estrutura simples/i)).toBeInTheDocument();
     expect(screen.getByText(/Um MVP não é o app dos sonhos/i)).toBeInTheDocument();
     expect(screen.getByText(/O que você vai fazer nesta etapa/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Etapa \d/i)).toHaveLength(5);
+    // 5 etapa cards via CommandCard (title visible for each)
+    expect(screen.getByRole("heading", { level: 3, name: /Definir o MVP/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Listar funcionalidades essenciais/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Mapear telas necessárias/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Definir dados e banco/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Arquitetura pronta para o Lovable/i })).toBeInTheDocument();
+    // Three-path rule visible on main cards
+    expect(screen.getAllByRole("button", { name: /Copiar auditoria para o Lovable/i }).length).toBeGreaterThanOrEqual(5);
+    expect(screen.getAllByText(/Somente auditoria\./i).length).toBeGreaterThanOrEqual(5);
     expect(screen.getByText(/Não entendi uma palavra/i)).toBeInTheDocument();
     expect(screen.getByText(/Banco de dados/i)).toBeInTheDocument();
   });
@@ -43,7 +59,7 @@ describe("MvpArquiteturaModule", () => {
     fireEvent.click(screen.getAllByRole("button", { name: /Copiar correção/i })[0]);
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("MVP grande demais"));
     fireEvent.click(screen.getAllByRole("button", { name: /Quando avançar/i })[0]);
-    expect(screen.getByText(/Avance quando a primeira versão do app estiver simples/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Avance quando a primeira versão do app estiver simples/i).length).toBeGreaterThan(0);
   });
 
   it("copy agent help button copies architect prompt", () => {
@@ -54,7 +70,9 @@ describe("MvpArquiteturaModule", () => {
 
   it("checklist toggles with mvp_step__ prefix", () => {
     render(<MvpArquiteturaModule />);
-    const cb = screen.getAllByRole("checkbox")[0];
+    // Use the module review checklist label (CommandCard also renders its own
+    // command-done checkboxes — target the module checklist explicitly).
+    const cb = screen.getByLabelText(/Defini o MVP do meu app/i);
     fireEvent.click(cb);
     expect(setChecklist).toHaveBeenCalled();
     const keys = Object.keys(checklistStore);
