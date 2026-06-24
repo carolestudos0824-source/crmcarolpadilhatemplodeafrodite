@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   Workflow,
@@ -7,6 +8,10 @@ import {
   CheckCircle2,
   Circle,
   AlertTriangle,
+  Lightbulb,
+  Hammer,
+  Rocket,
+  Check,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -17,6 +22,61 @@ import { CommandCard } from "@/components/entrega/CommandCard";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
+
+export type AppStage = "idea" | "building" | "ready";
+
+const APP_STAGE_STORAGE_KEY = "fabrica_apps_mvp_stage";
+
+const STAGE_OPTIONS: {
+  id: AppStage;
+  label: string;
+  description: string;
+  icon: typeof Lightbulb;
+}[] = [
+  {
+    id: "idea",
+    label: "Tenho só uma ideia",
+    description: "Crie o MVP do zero com arquitetura simples e validável.",
+    icon: Lightbulb,
+  },
+  {
+    id: "building",
+    label: "Já estou construindo",
+    description:
+      "Audite o que já existe, corrija falhas e organize os próximos passos sem recomeçar.",
+    icon: Hammer,
+  },
+  {
+    id: "ready",
+    label: "Já tenho app pronto",
+    description:
+      "Otimize UX, monetização, onboarding, retenção e lançamento sem recriar o produto.",
+    icon: Rocket,
+  },
+];
+
+const STAGE_PREFIX: Record<AppStage, string> = {
+  idea: "",
+  building:
+    "O usuário já está construindo este app. Não recrie tudo do zero. Audite a estrutura atual, preserve o que funciona e proponha correções práticas para arquitetura, fluxo, banco de dados, UX e priorização.",
+  ready:
+    "O usuário já tem um app pronto. Não recrie o MVP. Audite o produto existente e proponha melhorias de UX, monetização, onboarding, retenção, performance, clareza e escala.",
+};
+
+const withStage = (stage: AppStage, prompt: string): string =>
+  stage === "idea" ? prompt : `${STAGE_PREFIX[stage]}\n\n${prompt}`;
+
+const readStoredStage = (): AppStage => {
+  if (typeof window === "undefined") return "idea";
+  try {
+    const v = window.localStorage.getItem(APP_STAGE_STORAGE_KEY);
+    if (v === "idea" || v === "building" || v === "ready") return v;
+  } catch {
+    /* noop */
+  }
+  return "idea";
+};
+
 
 type Etapa = {
   n: number;
@@ -142,6 +202,15 @@ function etapaDescription(e: Etapa) {
 export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
+  const [appStage, setAppStage] = useState<AppStage>(() => readStoredStage());
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(APP_STAGE_STORAGE_KEY, appStage);
+    } catch {
+      /* noop */
+    }
+  }, [appStage]);
 
   const copyAgentHelp = async () => {
     try {
@@ -156,6 +225,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
     const key = `${CHECKLIST_PREFIX}${item}`;
     setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
 
   return (
     <section>
@@ -283,27 +353,95 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         Cada card abaixo oferece os três caminhos do padrão da Fábrica: <strong className="text-foreground/90">Implementar no Lovable</strong>, <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> e <strong className="text-foreground/90">Copiar auditoria para o Lovable</strong> (somente análise, não implementa).
       </p>
 
+      <GlassCard
+        className="p-5 mb-6"
+        aria-labelledby="mvp-stage-selector-title"
+      >
+        <h2
+          id="mvp-stage-selector-title"
+          className="font-heading font-semibold text-base md:text-lg mb-1"
+        >
+          Qual é o momento do seu app?
+        </h2>
+        <p className="text-xs text-muted-foreground mb-4">
+          Escolha onde você está agora. Os comandos das próximas etapas se adaptam ao seu momento.
+        </p>
+        <div
+          role="radiogroup"
+          aria-labelledby="mvp-stage-selector-title"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+        >
+          {STAGE_OPTIONS.map((opt) => {
+            const Icon = opt.icon;
+            const active = appStage === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => setAppStage(opt.id)}
+                className={`text-left rounded-xl border p-4 min-h-[120px] transition flex flex-col gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 ${
+                  active
+                    ? "border-accent/60 bg-accent/10 shadow-[0_0_0_1px_rgba(0,194,255,0.25)]"
+                    : "border-white/10 bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg border ${
+                      active
+                        ? "bg-accent/15 border-accent/40 text-accent"
+                        : "bg-white/5 border-white/10 text-muted-foreground"
+                    }`}
+                  >
+                    <Icon size={16} />
+                  </span>
+                  {active && (
+                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-accent">
+                      <Check size={12} /> Selecionado
+                    </span>
+                  )}
+                </div>
+                <div className={`font-semibold text-sm ${active ? "text-accent" : "text-foreground/90"}`}>
+                  {opt.label}
+                </div>
+                <p className="text-xs text-muted-foreground leading-snug">
+                  {opt.description}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+        {appStage !== "idea" && (
+          <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-3 py-2 mt-3">
+            Os prompts copiados receberão uma instrução extra para que o Lovable e o Agente <strong className="text-cyan-100">auditem o app existente</strong> em vez de recriar tudo do zero.
+          </p>
+        )}
+      </GlassCard>
+
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
           <CommandCard
-            key={e.n}
+            key={`${e.n}-${appStage}`}
             number={e.n}
             title={etapaTitle(e)}
             description={etapaDescription(e)}
             whenToUse={`Use nesta etapa: ${e.title}.`}
             whereToPaste="Cole no chat do seu projeto no Lovable."
             expectedResult={e.tabs.avancar}
-            commandText={e.tabs.lovable}
-            completedKey={`mvp_cmd__${e.n}`}
+            commandText={withStage(appStage, e.tabs.lovable)}
+            completedKey={`mvp_cmd__${e.n}__${appStage}`}
             moduleId="mvp"
             objective={e.title}
-            agentPrompt={e.tabs.agente}
-            correctionPrompt={e.tabs.corrigir}
+            agentPrompt={withStage(appStage, e.tabs.agente)}
+            correctionPrompt={withStage(appStage, e.tabs.corrigir)}
             advanceCriteria={e.tabs.avancar}
             defaultOpen
           />
         ))}
       </div>
+
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
