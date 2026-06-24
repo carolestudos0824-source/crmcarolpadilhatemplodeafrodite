@@ -448,6 +448,19 @@ function EntregaInner() {
                 {email}
               </span>
             )}
+            <button
+              type="button"
+              onClick={() => {
+                openAgenteArquiteto();
+                toast.success("Agente Arquiteto aberto. Use ele para pensar antes de mexer no Lovable.");
+              }}
+              className="lg:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/15"
+              aria-label="Falar com o Agente"
+              title="Falar com o Agente"
+            >
+              <Bot size={12} />
+              <span className="hidden sm:inline">Falar com o Agente</span>
+            </button>
             <MyAppsHeaderButton />
             <ContextHeaderButton />
             <FontSizeControl />
