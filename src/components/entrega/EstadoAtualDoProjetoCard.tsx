@@ -272,13 +272,6 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
 
 
 
-      <div className="mt-3 h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-accent/70 to-accent shadow-[0_0_12px_rgba(0,194,255,0.5)] transition-all"
-          style={{ width: `${percent}%` }}
-        />
-      </div>
-
       <div className="mt-4 flex flex-col md:flex-row md:items-center gap-3 rounded-xl border border-accent/20 bg-accent/[0.06] p-3">
         <div className="flex-1 min-w-0">
           <div className="text-[10px] uppercase tracking-wider text-accent">
