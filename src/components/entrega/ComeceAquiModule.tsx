@@ -178,20 +178,55 @@ export function ComeceAquiModule({ goTo }: Props) {
         <p className="text-sm text-foreground/90 mb-3">
           Você pode começar um app do zero, evoluir um app completo por versões ou auditar um app que já existe. A Fábrica cria qualquer app, construído por versões.
         </p>
-        <div className="grid sm:grid-cols-3 gap-2.5">
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="text-xs font-semibold text-accent mb-1">Começando do zero</div>
-            <div className="text-xs text-muted-foreground">Crie a primeira versão funcional.</div>
-          </div>
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="text-xs font-semibold text-accent mb-1">Quero um app completo</div>
-            <div className="text-xs text-muted-foreground">Construa por versões, sem jogar tudo de uma vez no Lovable.</div>
-          </div>
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="text-xs font-semibold text-accent mb-1">Já tenho um app</div>
-            <div className="text-xs text-muted-foreground">Use os módulos para auditar, corrigir, melhorar e escalar.</div>
-          </div>
+        <div className="grid sm:grid-cols-3 gap-2.5" role="radiogroup" aria-label="Escolha sua jornada">
+          {(Object.keys(JOURNEYS) as JourneyId[]).map((id) => {
+            const j = JOURNEYS[id];
+            const selected = journey === id;
+            const desc =
+              id === "comecando_do_zero"
+                ? "Crie a primeira versão funcional."
+                : id === "app_completo_por_versoes"
+                ? "Construa por versões, sem jogar tudo de uma vez no Lovable."
+                : "Use os módulos para auditar, corrigir, melhorar e escalar.";
+            return (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                onClick={() => pickJourney(id)}
+                className={`text-left rounded-lg border p-3 min-h-[88px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
+                  selected
+                    ? "border-accent bg-accent/15 shadow-[0_0_24px_-12px_rgba(34,211,238,0.7)]"
+                    : "border-white/10 bg-white/5 hover:bg-white/10 hover:border-accent/40"
+                }`}
+              >
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-accent mb-1">
+                  {j.title}
+                  {selected && <Sparkles size={11} />}
+                </div>
+                <div className="text-xs text-muted-foreground">{desc}</div>
+                <div className="mt-2 text-[11px] inline-flex items-center gap-1 text-foreground/80">
+                  <ArrowRight size={11} />
+                  <span>{j.nextLabel}</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
+        {journey && (
+          <div className="mt-3 rounded-lg border border-accent/30 bg-accent/10 p-3 text-xs text-foreground/90 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <span className="flex-1">{JOURNEYS[journey].helper}</span>
+            <button
+              type="button"
+              onClick={() => goTo(JOURNEYS[journey].next)}
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-accent/50 bg-accent/15 text-accent hover:bg-accent/25 font-medium min-h-[36px]"
+            >
+              {JOURNEYS[journey].nextLabel}
+              <ArrowRight size={12} />
+            </button>
+          </div>
+        )}
       </GlassCard>
 
 
