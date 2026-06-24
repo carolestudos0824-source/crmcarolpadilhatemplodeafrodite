@@ -1,52 +1,37 @@
-import { useState } from "react";
 import { toast } from "sonner";
 import {
   Workflow,
-  Boxes,
-  ListChecks,
-  Layout,
-  Database,
-  FileCode,
   HelpCircle,
   Bot,
-  Wrench,
-  ArrowRight,
-  Copy,
-  Check,
+  Sparkles,
   CheckCircle2,
   Circle,
-  Sparkles,
-  Pencil,
   AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAppProjects } from "@/hooks/useAppProjects";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
-import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { PromptEditDialog } from "@/components/entrega/PromptEditDialog";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
-
+import { CommandCard } from "@/components/entrega/CommandCard";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
 
-type TabId = "lovable" | "agente" | "corrigir" | "avancar";
-
 type Etapa = {
   n: number;
-  icon: typeof Workflow;
   title: string;
-  tabs: Record<TabId, string>;
+  tabs: {
+    lovable: string;
+    agente: string;
+    corrigir: string;
+    avancar: string;
+  };
 };
 
 const ETAPAS: Etapa[] = [
   {
     n: 1,
-    icon: Boxes,
     title: "Definir o MVP",
     tabs: {
       lovable:
@@ -61,7 +46,6 @@ const ETAPAS: Etapa[] = [
   },
   {
     n: 2,
-    icon: ListChecks,
     title: "Listar funcionalidades essenciais",
     tabs: {
       lovable:
@@ -76,7 +60,6 @@ const ETAPAS: Etapa[] = [
   },
   {
     n: 3,
-    icon: Layout,
     title: "Mapear telas necessárias",
     tabs: {
       lovable:
@@ -91,7 +74,6 @@ const ETAPAS: Etapa[] = [
   },
   {
     n: 4,
-    icon: Database,
     title: "Definir dados e banco",
     tabs: {
       lovable:
@@ -106,7 +88,6 @@ const ETAPAS: Etapa[] = [
   },
   {
     n: 5,
-    icon: FileCode,
     title: "Criar prompt de arquitetura para o Lovable",
     tabs: {
       lovable:
@@ -142,146 +123,25 @@ const CHECKLIST_ITEMS = [
   "Tenho um prompt de arquitetura claro",
 ];
 
-const TAB_META: { id: TabId; label: string; icon: typeof Workflow }[] = [
-  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
-  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
-  { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
-  { id: "avancar", label: "Quando avançar", icon: ArrowRight },
-];
-
 const CHECKLIST_PREFIX = "mvp_step__";
 
-function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text: string; label?: string }) {
-  const [ok, setOk] = useState(false);
-  const handle = async () => {
-    try {
-      await navigator.clipboard.writeText(text.trim());
-      setOk(true);
-      toast.success("Copiado! Agora cole no Lovable.");
-      setTimeout(() => setOk(false), 1600);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-  return (
-    <button
-      onClick={handle}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition ${
-        ok
-          ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-          : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-      }`}
-    >
-      {ok ? <Check size={14} /> : <Copy size={14} />}
-      {ok ? "Copiado!" : label}
-    </button>
-  );
+function etapaTitle(e: Etapa) {
+  return e.n === 5 ? "Arquitetura pronta para o Lovable" : e.title;
 }
 
-function EtapaCard({ etapa }: { etapa: Etapa }) {
-  const [tab, setTab] = useState<TabId>("lovable");
-  const [editOpen, setEditOpen] = useState(false);
-  const Icon = etapa.icon;
-  const currentPrompt = etapa.tabs[tab];
-  const promptForEditor = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
-  const isResultStep = etapa.n === 5;
-  const isFeaturesStep = etapa.n === 2;
-  return (
-    <GlassCard
-      className={`p-5 md:p-6 ${
-        isResultStep ? "border-accent/40 bg-accent/[0.07]" : ""
-      }`}
-    >
-      <div className="flex items-start gap-4 mb-4">
-        <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
-          <Icon size={20} />
-        </div>
-        <div className="min-w-0">
-          <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
-            {isResultStep ? `Etapa ${etapa.n} · Resultado desta etapa` : `Etapa ${etapa.n}`}
-          </div>
-
-          <h3 className="text-lg md:text-xl font-heading font-bold leading-tight">
-            {isResultStep ? "Arquitetura pronta para o Lovable" : etapa.title}
-          </h3>
-          {isResultStep && (
-            <p className="text-xs text-muted-foreground mt-1.5">
-              Este é o comando consolidado para construir a primeira versão funcional do app com base em MVP, telas, dados e regras definidos acima.
-              Próximas versões serão planejadas no módulo Melhorias e Versões.
-            </p>
-          )}
-          {isFeaturesStep && (
-            <p className="text-xs text-amber-200/90 mt-1.5">
-              Escolha até 5 funcionalidades principais agora. As demais ficam na lista de próximas versões.
-            </p>
-          )}
-
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mb-4">
-        {TAB_META.map((t) => {
-          const TIcon = t.icon;
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-                active
-                  ? "bg-accent/15 border-accent/40 text-accent"
-                  : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
-              }`}
-            >
-              <TIcon size={12} />
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {tab === "avancar" ? (
-        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
-          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-            {etapa.tabs[tab]}
-          </pre>
-        </div>
-      ) : (
-        <EditablePromptBox
-          saveSourceModule="mvp"
-          key={`${etapa.n}-${tab}`}
-          originalPrompt={etapa.tabs[tab]}
-          storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
-          copyLabel={
-            tab === "agente"
-              ? "Copiar para o Agente"
-              : tab === "corrigir"
-              ? "Copiar correção"
-              : isResultStep
-              ? "Copiar arquitetura para implementar no Lovable"
-              : "Copiar para implementar no Lovable"
-          }
-        />
-      )}
-
-      <PromptEditDialog
-        open={editOpen}
-        onClose={() => setEditOpen(false)}
-        stepName={etapa.title}
-        originalPrompt={promptForEditor}
-        storageKey={`mvp_prompt_edit__${etapa.n}__${tab}`}
-      />
-    </GlassCard>
-  );
+function etapaDescription(e: Etapa) {
+  if (e.n === 5) {
+    return "Comando consolidado para construir a primeira versão funcional do app com base em MVP, telas, dados e regras definidos acima.";
+  }
+  if (e.n === 2) {
+    return "Escolha até 5 funcionalidades principais agora. As demais ficam nas próximas versões.";
+  }
+  return `Etapa ${e.n} do desenho de MVP e arquitetura.`;
 }
-
-
 
 export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
-
 
   const copyAgentHelp = async () => {
     try {
@@ -311,12 +171,11 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           funcionalidades, dados e regras essenciais.
         </p>
         <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-          Em cada etapa, você pode copiar o comando direto ou revisar o prompt antes de colar no chat do seu projeto no Lovable.
+          Em cada etapa, use os três caminhos do card: implementar direto no Lovable, revisar com o Agente primeiro, ou copiar uma auditoria para o Lovable analisar sem alterar nada.
         </p>
         <p className="text-xs text-amber-200/90 max-w-3xl mt-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] px-3 py-2">
           <strong className="text-amber-200">Regra da primeira versão:</strong> até 5 funcionalidades principais agora. As demais entram nas próximas versões, no módulo Melhorias e Versões.
         </p>
-
       </header>
 
       {!activeProject && (
@@ -334,7 +193,6 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
               <p className="text-xs text-muted-foreground/90 mt-2">
                 Já tem um app? Use esta etapa como auditoria da estrutura atual antes de evoluir.
               </p>
-
             </div>
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
@@ -382,8 +240,6 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         </div>
       </GlassCard>
 
-
-
       <GlassCard className="p-5 mb-6">
         <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
           O que você vai fazer nesta etapa
@@ -424,15 +280,28 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-4">
-        Use a aba <strong className="text-foreground/90">Implementar no Lovable</strong> quando
-        quiser aplicar no app. Use a aba{" "}
-        <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> quando quiser
-        ajuda para decidir antes de construir.
+        Cada card abaixo oferece os três caminhos do padrão da Fábrica: <strong className="text-foreground/90">Implementar no Lovable</strong>, <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> e <strong className="text-foreground/90">Copiar auditoria para o Lovable</strong> (somente análise, não implementa).
       </p>
 
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
-          <EtapaCard key={e.n} etapa={e} />
+          <CommandCard
+            key={e.n}
+            number={e.n}
+            title={etapaTitle(e)}
+            description={etapaDescription(e)}
+            whenToUse={`Use nesta etapa: ${e.title}.`}
+            whereToPaste="Cole no chat do seu projeto no Lovable."
+            expectedResult={e.tabs.avancar}
+            commandText={e.tabs.lovable}
+            completedKey={`mvp_cmd__${e.n}`}
+            moduleId="mvp"
+            objective={e.title}
+            agentPrompt={e.tabs.agente}
+            correctionPrompt={e.tabs.corrigir}
+            advanceCriteria={e.tabs.avancar}
+            defaultOpen
+          />
         ))}
       </div>
 
@@ -476,7 +345,6 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
                       : "border-white/10 bg-white/5 hover:bg-white/10"
                   }`}
                 >
-
                   <input
                     type="checkbox"
                     checked={done}
