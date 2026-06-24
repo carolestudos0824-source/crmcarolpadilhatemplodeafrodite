@@ -68,6 +68,95 @@ export type Database = {
         }
         Relationships: []
       }
+      agent_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          project_id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          project_id: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          project_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_conversations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_app_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          module_key: string | null
+          project_id: string
+          role: string
+          step_key: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          module_key?: string | null
+          project_id: string
+          role: string
+          step_key?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          module_key?: string | null
+          project_id?: string
+          role?: string
+          step_key?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "agent_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agent_messages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_app_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       atendimentos: {
         Row: {
           cartas: Json | null
@@ -494,6 +583,85 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      project_contexts: {
+        Row: {
+          context_json: Json
+          id: string
+          project_id: string
+          summary: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context_json?: Json
+          id?: string
+          project_id: string
+          summary?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context_json?: Json
+          id?: string
+          project_id?: string
+          summary?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_contexts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "user_app_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_outputs: {
+        Row: {
+          approved: boolean
+          content: string
+          created_at: string
+          id: string
+          module_key: string
+          project_id: string
+          step_key: string | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          approved?: boolean
+          content: string
+          created_at?: string
+          id?: string
+          module_key: string
+          project_id: string
+          step_key?: string | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          approved?: boolean
+          content?: string
+          created_at?: string
+          id?: string
+          module_key?: string
+          project_id?: string
+          step_key?: string | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_outputs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_app_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prompt_improvement_logs: {
         Row: {

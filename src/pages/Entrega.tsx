@@ -84,6 +84,8 @@ import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
 // ProjectStatusBanner desativado em /entrega para evitar duplicidade com o EstadoAtualDoProjetoCard.
 import { EstadoAtualDoProjetoCard } from "@/components/entrega/EstadoAtualDoProjetoCard";
 import { RecommendedModuleHint } from "@/components/entrega/RecommendedModuleHint";
+import { AgentChatProvider } from "@/components/entrega/AgentChatProvider";
+import { AgentChatDrawer } from "@/components/entrega/AgentChatDrawer";
 import { ComeceAquiModule } from "@/components/entrega/ComeceAquiModule";
 import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
@@ -3113,9 +3115,12 @@ export default function Entrega() {
     <ProjectContextProvider>
       <AppProjectsProvider>
         <UserProgressProvider>
-          <EntregaInner />
-          <ProjectContextDrawer />
-          <MyAppsDrawer />
+          <AgentChatProvider>
+            <EntregaInner />
+            <ProjectContextDrawer />
+            <MyAppsDrawer />
+            <AgentChatDrawer />
+          </AgentChatProvider>
         </UserProgressProvider>
       </AppProjectsProvider>
     </ProjectContextProvider>
