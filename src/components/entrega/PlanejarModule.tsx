@@ -305,30 +305,70 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           Planeje seu app antes de construir
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Antes de abrir o Lovable, você precisa saber qual problema seu app resolve, quem
-          vai usar e qual será a ação principal.
+          Antes de abrir o Lovable, defina problema, público, promessa, ação principal e o que fica fora do MVP.
         </p>
         <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-          Os comandos abaixo você copia e cola no chat do seu projeto no Lovable. Você pode ajustar o texto antes de copiar.
+          Copie um comando por vez e avance só quando a etapa estiver clara.
         </p>
       </header>
 
+      {!activeProject && (
+        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent">
+          <div className="flex items-start gap-3 mb-4">
+            <AlertTriangle size={20} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
+                Escolha um app antes de planejar
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1.5">
+                Para gerar um plano útil, primeiro selecione uma ideia ou crie um app em foco.
+                Depois esta etapa vai ajudar você a definir problema, público, promessa, ação principal e escopo do MVP.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+            <button
+              onClick={openDrawer}
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold shadow-[0_0_0_1px_rgba(0,194,255,0.25)] transition"
+            >
+              <Sparkles size={14} /> Criar ou selecionar app
+            </button>
+            {goTo && (
+              <button
+                onClick={() => goTo("ideias")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+              >
+                Ver ideias prontas
+              </button>
+            )}
+            {goTo && (
+              <button
+                onClick={() => goTo("construir")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-sm font-medium transition"
+              >
+                <Search size={14} /> Usar Busca Inteligente
+              </button>
+            )}
+          </div>
+        </GlassCard>
+      )}
+
       {goTo && (
-        <GlassCard className="p-4 mb-4 border-amber-400/30 bg-amber-400/[0.06]">
+        <GlassCard className="p-4 mb-4 border-white/10 bg-white/[0.03]">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
             <div className="min-w-0">
               <h3 className="text-sm font-heading font-bold text-foreground/95">
-                Quer saber se a ideia vale construir?
+                Ainda está em dúvida sobre a ideia?
               </h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Antes de montar o MVP, você pode pedir uma análise de viabilidade ao Agente.
+                Antes de planejar, você pode comparar potencial de venda, clareza do problema e dificuldade de construção.
               </p>
             </div>
             <button
               onClick={() => goTo("validacao")}
-              className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-xs font-semibold"
+              className="shrink-0 w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-lg border border-white/15 bg-white/5 text-foreground/85 hover:bg-white/10 text-xs font-semibold"
             >
-              Analisar viabilidade
+              Comparar viabilidade
             </button>
           </div>
         </GlassCard>
@@ -337,10 +377,14 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
       <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
-          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            Um app começa antes do código. Primeiro você define o problema, o público, a
-            promessa e o que precisa existir na primeira versão.
-          </p>
+          <div className="min-w-0">
+            <h3 className="text-base md:text-lg font-heading font-bold leading-tight mb-1">
+              Um app começa antes do código
+            </h3>
+            <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+              Primeiro defina o problema, o público, a promessa e a ação principal. Depois copie os comandos para o Lovable.
+            </p>
+          </div>
         </div>
       </GlassCard>
 
@@ -371,7 +415,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         <div className="mt-5">
           <button
             onClick={copyAgentHelp}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold transition"
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold transition"
           >
             <Bot size={14} /> Não sei planejar meu app
           </button>
@@ -395,16 +439,19 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         ))}
       </div>
 
-      {/* Plano inicial do app */}
-      <GlassCard className="p-5 md:p-6 mb-6 border-accent/30 bg-accent/[0.05]">
+      {/* Resultado desta etapa: Plano inicial do app */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-accent/[0.07]">
         <div className="flex items-start gap-3 mb-3">
           <FileText size={18} className="text-accent shrink-0 mt-0.5" />
           <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider text-accent mb-1">
+              Resultado desta etapa
+            </div>
             <h3 className="text-lg font-heading font-bold leading-tight">
               Plano inicial do app
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Use este modelo para consolidar suas decisões antes de avançar para MVP e Arquitetura.
+              Este é o resumo que deve guiar a construção do MVP. Copie para o Lovable apenas depois de revisar os 5 pontos acima.
             </p>
           </div>
         </div>
@@ -412,9 +459,11 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           saveSourceModule="planejar"
           originalPrompt={PLANO_TEMPLATE}
           storageKey="planejar_plano_inicial"
-          copyLabel="Copiar modelo do plano"
+          copyLabel="Copiar plano inicial para o Lovable"
         />
       </GlassCard>
+
+
 
 
       <GlassCard className="p-5 mb-6">
