@@ -18,6 +18,44 @@ import {
 } from "@/hooks/useProjectContext";
 
 /**
+ * Verifica se um ProjectContext contém dados úteis nos campos principais
+ * que alimentam os prompts. Usado para evitar que um projeto vazio
+ * sobrescreva em memória o contexto preenchido do Projeto em Foco.
+ */
+export const hasUsefulProjectContext = (c: ProjectContext): boolean => {
+  const keys: (keyof ProjectContext)[] = [
+    "appDoes",
+    "audience",
+    "problem",
+    "promise",
+    "mainAction",
+  ];
+  return keys.some((k) => {
+    const v = c[k];
+    return typeof v === "string" && v.trim().length > 0;
+  });
+};
+
+/**
+ * Mescla preservando campos preenchidos: valores não-vazios de `incoming`
+ * substituem `current`; valores vazios de `incoming` NÃO apagam campos
+ * preenchidos em `current`. Não cria dados fictícios.
+ */
+const mergePreservingFilled = (
+  current: ProjectContext,
+  incoming: ProjectContext,
+): ProjectContext => {
+  const out: ProjectContext = { ...current };
+  (Object.keys(incoming) as (keyof ProjectContext)[]).forEach((k) => {
+    const v = incoming[k];
+    if (typeof v === "string" && v.trim().length > 0) {
+      (out as Record<string, string>)[k] = v;
+    }
+  });
+  return out;
+};
+
+/**
  * "Meus Apps em Construção" — fonte real agora é Supabase (RLS por auth.uid()).
  * localStorage só é usado para:
  *  - cache do id do app ativo: `fabrica_apps_active_project_id`
@@ -260,6 +298,35 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
 
   const lastModuleSavedRef = useRef<{ id: string; mod: string } | null>(null);
 
+  // Mantém sempre o último contexto vivo do useProjectContext para que a
+  // mesclagem segura saiba quais campos já estão preenchidos antes de
+  // aplicar um contexto vindo de um projeto.
+  const liveContextRef = useRef<ProjectContext>(context);
+  useEffect(() => {
+    liveContextRef.current = context;
+  }, [context]);
+
+  /**
+   * Aplica o contexto de um projeto preservando dados já preenchidos.
+   * - Se o contexto do projeto tiver dados úteis, ele é aplicado integralmente
+   *   (o projeto "dono" do contexto manda).
+   * - Se vier praticamente vazio, mesclamos: campos preenchidos do projeto
+   *   substituem; campos vazios NÃO apagam o que já estava em memória.
+   * Isso evita que abrir/trocar para um projeto sem contexto faça os prompts
+   * voltarem ao modo genérico.
+   */
+  const applyProjectContextSafely = useCallback(
+    (incoming: ProjectContext) => {
+      if (hasUsefulProjectContext(incoming)) {
+        setRuntimeContext(incoming);
+        return;
+      }
+      const merged = mergePreservingFilled(liveContextRef.current, incoming);
+      setRuntimeContext(merged);
+    },
+    [setRuntimeContext],
+  );
+
   // Auth bootstrap
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
@@ -291,7 +358,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const aid = readActiveId();
       const valid = aid ? list.find((p) => p.id === aid) : null;
       if (valid) {
-        setRuntimeContext(valid.context);
+        applyProjectContextSafely(valid.context);
       } else if (aid) {
         setActiveId(null);
         restoreTemporaryContext();
@@ -306,7 +373,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  }, [setRuntimeContext, restoreTemporaryContext, setActiveId]);
+  }, [applyProjectContextSafely, restoreTemporaryContext, setActiveId]);
 
   useEffect(() => {
     if (!userId) {
@@ -368,10 +435,10 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = rowToProject(data);
       upsertLocal(proj);
       setActiveId(proj.id);
-      setRuntimeContext(proj.context);
+      applyProjectContextSafely(proj.context);
       return proj;
     },
-    [userId, upsertLocal, setActiveId, setRuntimeContext],
+    [userId, upsertLocal, setActiveId, applyProjectContextSafely],
   );
 
   const createProjectFromContext = useCallback<Ctx["createProjectFromContext"]>(
@@ -384,7 +451,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = projects.find((p) => p.id === id);
       if (!proj) return;
       setActiveId(id);
-      setRuntimeContext(proj.context);
+      applyProjectContextSafely(proj.context);
       // bump last_opened_at (fire and forget)
       if (userId) {
         void supabase
@@ -394,7 +461,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
           .eq("user_id", userId);
       }
     },
-    [projects, setActiveId, setRuntimeContext, userId],
+    [projects, setActiveId, applyProjectContextSafely, userId],
   );
 
   const updateProject = useCallback<Ctx["updateProject"]>(
@@ -420,9 +487,9 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      if (id === activeId && patch.context !== undefined) setRuntimeContext(proj.context);
+      if (id === activeId && patch.context !== undefined) applyProjectContextSafely(proj.context);
     },
-    [userId, projects, activeId, upsertLocal, setRuntimeContext],
+    [userId, projects, activeId, upsertLocal, applyProjectContextSafely],
   );
 
   const saveContextToActiveProject = useCallback<Ctx["saveContextToActiveProject"]>(
@@ -441,10 +508,10 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      setRuntimeContext(proj.context);
+      applyProjectContextSafely(proj.context);
       return true;
     },
-    [activeId, userId, upsertLocal, setRuntimeContext],
+    [activeId, userId, upsertLocal, applyProjectContextSafely],
   );
 
   // Legacy alias kept for compat (uses currently loaded context from provider).
@@ -502,14 +569,14 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         const next = pickAutoActive(remaining);
         if (next) {
           setActiveId(next.id);
-          setRuntimeContext(next.context);
+          applyProjectContextSafely(next.context);
         } else {
           setActiveId(null);
           restoreTemporaryContext();
         }
       }
     },
-    [userId, activeId, projects, removeLocal, setActiveId, setRuntimeContext, restoreTemporaryContext],
+    [userId, activeId, projects, removeLocal, setActiveId, applyProjectContextSafely, restoreTemporaryContext],
   );
 
   const archiveProject = useCallback<Ctx["archiveProject"]>(
@@ -700,11 +767,11 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       legacy.findIndex((r) => (r as { id?: string })?.id === oldActiveId) ?? -1;
     if (match >= 0 && projs[match]) {
       setActiveId(projs[match].id);
-      setRuntimeContext(projs[match].context);
+      applyProjectContextSafely(projs[match].context);
     }
     setHasLocalProjectsToImport(false);
     return projs.length;
-  }, [userId, setActiveId, setRuntimeContext]);
+  }, [userId, setActiveId, applyProjectContextSafely]);
 
   const createProjectFromLocalContext = useCallback<Ctx["createProjectFromLocalContext"]>(async () => {
     const ctx = readLocalContext();
