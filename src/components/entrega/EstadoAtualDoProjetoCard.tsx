@@ -100,6 +100,11 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const activeModuleId = (activeProject?.currentModuleId ?? active) as ModuleId | null;
   const activeModuleLabel = activeModuleId ? MODULE_LABEL[activeModuleId] ?? "—" : "—";
 
+  const lastActionText = useMemo(
+    () => resolveLastAction(commands, moduleDone, MODULE_LABEL),
+    [commands, moduleDone],
+  );
+
   const isDone = (id: ModuleId) =>
     completedIds.includes(id) || !!moduleDone[id];
 
