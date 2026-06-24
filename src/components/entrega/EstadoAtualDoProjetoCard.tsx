@@ -42,6 +42,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { active, moduleDone } = useUserProgress();
   const auth = useAuthState();
   const [copying, setCopying] = useState(false);
+  const [copiedHint, setCopiedHint] = useState(false);
 
   const isAdmin = auth.status === "authed" && auth.isAdmin;
   const adminOnSelf =
