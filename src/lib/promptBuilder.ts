@@ -20,6 +20,23 @@ export const resolveAppName = (c: Pick<ProjectContext, "appName">): string => {
 };
 
 /**
+ * Identifica quando o "Projeto em foco" é a própria Fábrica de Apps com IA
+ * (o admin/criador melhorando o produto principal) versus um app de
+ * cliente/aluno. Usado para injetar a orientação conceitual correta no topo
+ * do prompt copiado para o Lovable.
+ */
+export const isFabricaSelfProject = (c: Pick<ProjectContext, "appName">): boolean => {
+  const n = (c.appName ?? "").trim().toLowerCase();
+  if (!n) return false;
+  return /\bf[aá]brica de apps\b/.test(n);
+};
+
+const conceptualScopeNote = (c: ProjectContext): string =>
+  isFabricaSelfProject(c)
+    ? "Aplique esta tarefa ao app atual Fábrica de Apps com IA, que é o produto principal em construção/produção. Preserve o que já funciona e não trate este pedido como app genérico de aluno."
+    : "Aplique esta tarefa ao Projeto em Foco selecionado pelo usuário. A Fábrica de Apps com IA é o programa que gera este comando, não o app final do usuário.";
+
+/**
  * Render only filled context fields. Always includes the app name (with a
  * friendly fallback when missing). Appends a single friendly note if any
  * field is empty — never lists "[não preenchido]" multiple times.
@@ -482,6 +499,8 @@ export const buildLovablePrompt = ({
   const appName = resolveAppName(context);
 
   return `${intent.actionTitle}
+
+${conceptualScopeNote(context)}
 
 Use este prompt no projeto Lovable do app: ${appName}.
 

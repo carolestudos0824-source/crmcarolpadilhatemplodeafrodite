@@ -163,7 +163,7 @@ export const CommandCard = ({
               <Info size={14} className="text-amber-300 shrink-0 mt-0.5" />
               <div className="flex-1">
                 <p className="text-foreground/90">
-                  Preencha o <strong>Contexto do meu app</strong> para os comandos ficarem mais precisos.
+                  Preencha o <strong>Contexto do projeto em foco</strong> para os comandos ficarem mais precisos.
                 </p>
                 <button
                   type="button"
@@ -292,7 +292,7 @@ export const CommandCard = ({
               <Info size={14} className="text-amber-300 shrink-0 mt-0.5" />
               <div className="flex-1">
                 <p className="text-foreground/90">
-                  Preencha o <strong>Contexto do meu app</strong> para os comandos ficarem mais precisos.
+                  Preencha o <strong>Contexto do projeto em foco</strong> para os comandos ficarem mais precisos.
                 </p>
                 <button
                   type="button"

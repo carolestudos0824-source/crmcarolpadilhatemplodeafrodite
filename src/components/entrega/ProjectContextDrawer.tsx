@@ -256,7 +256,7 @@ export const ProjectContextDrawer = () => {
       >
         <div className="sticky top-0 z-10 flex items-center justify-between p-5 border-b border-white/10 bg-background/95 backdrop-blur">
           <div className="min-w-0">
-            <h2 className="font-heading font-bold text-lg">Contexto do meu app</h2>
+            <h2 className="font-heading font-bold text-lg">Contexto do projeto em foco</h2>
             <p className="text-xs text-muted-foreground">
               Preencha uma vez. Os prompts copiados ficam mais precisos para o
               app que você está criando.
