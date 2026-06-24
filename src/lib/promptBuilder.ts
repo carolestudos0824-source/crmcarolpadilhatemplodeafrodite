@@ -354,7 +354,7 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
       "Separar melhorias urgentes, importantes e futuras.",
       "Evitar adicionar funcionalidades grandes demais sem validação.",
       "Manter o MVP simples e funcional.",
-      "Preservar login, banco, área paga, admin, checkout, layout aprovado e dados do usuário.",
+      "Preservar login, banco, RLS, policies, RPCs, área paga, admin, checkout, layout aprovado e dados do usuário.",
       "Sugerir uma próxima versão realista.",
       "Informar o que testar depois de cada melhoria.",
     ],
