@@ -11,6 +11,8 @@ import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 import { AgentClipboardFallback } from "@/components/entrega/AgentClipboardFallback";
+import { useAgentChat } from "@/components/entrega/AgentChatProvider";
+import { useAppProjects } from "@/hooks/useAppProjects";
 
 
 type Props = {
@@ -57,11 +59,27 @@ export const CommandCard = ({
   const [tab, setTab] = useState<"lovable" | "agent" | "fix" | "advance">("lovable");
   const [reviewOpen, setReviewOpen] = useState(false);
   const [agentFallback, setAgentFallback] = useState<string | null>(null);
+  const agentChat = useAgentChat();
+  const { activeProject } = useAppProjects();
 
   const handleRevisarComAgente = (key: string) => {
-    const prompt = enrichedAgent();
     setCopiedKey(key);
-    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1800);
+    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1200);
+    // Caminho preferido: abrir chat contextual nativo se houver projeto ativo.
+    if (activeProject) {
+      const draft = `Revise a etapa "${title}" do módulo atual considerando o que já está salvo no projeto. ${
+        objective ? `Objetivo: ${objective}.` : ""
+      } ${advanceCriteria ? `Critério de avanço: ${advanceCriteria}.` : ""}`.trim();
+      agentChat.open({
+        moduleKey: moduleId ?? null,
+        stepKey: completedKey,
+        stepTitle: title,
+        initialDraft: draft,
+      });
+      return;
+    }
+    // Fallback: copiar prompt e abrir Agente externo (comportamento anterior).
+    const prompt = enrichedAgent();
     void copyPromptAndOpenAgent({
       prompt,
       successMessage:
