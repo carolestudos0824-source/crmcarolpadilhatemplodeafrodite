@@ -28,7 +28,7 @@ const valueCards = [
   { title: "Agente Arquiteto", desc: "Ajuda você a pensar, corrigir e decidir antes de construir." },
 ];
 
-const journey: [string, string][] = [
+const journeySteps: [string, string][] = [
   ["Comece com clareza", "Entenda o Lovable, escolha sua ideia e decida o que o app precisa fazer."],
   ["Planeje antes de construir", "Defina público, dor, promessa, MVP, telas e fluxo principal."],
   ["Construa a base no Lovable", "Copie um comando por vez, cole no Lovable e crie o app uma etapa por vez."],
@@ -288,7 +288,7 @@ export function ComeceAquiModule({ goTo }: Props) {
       </header>
 
       <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-6">
-        {journey.map(([t], i) => (
+        {journeySteps.map(([t], i) => (
           <li
             key={t}
             className="flex items-start gap-2.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2"
