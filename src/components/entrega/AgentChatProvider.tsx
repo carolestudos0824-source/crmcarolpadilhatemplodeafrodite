@@ -86,6 +86,9 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
     setMessagesProjectId(activeProjectId);
     setSending(false);
     setSavingMessageId(null);
+    setApplyingMessageId(null);
+    setAppliedMessageIds([]);
+
 
     if (projectChanged) {
       setArgs({});
