@@ -82,6 +82,7 @@ import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer"
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
 import { ProjectStatusBanner } from "@/components/entrega/ProjectStatusBanner";
+import { EstadoAtualDoProjetoCard } from "@/components/entrega/EstadoAtualDoProjetoCard";
 import { ComeceAquiModule } from "@/components/entrega/ComeceAquiModule";
 import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
