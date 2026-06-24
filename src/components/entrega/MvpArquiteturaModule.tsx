@@ -202,6 +202,15 @@ function etapaDescription(e: Etapa) {
 export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
+  const [appStage, setAppStage] = useState<AppStage>(() => readStoredStage());
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(APP_STAGE_STORAGE_KEY, appStage);
+    } catch {
+      /* noop */
+    }
+  }, [appStage]);
 
   const copyAgentHelp = async () => {
     try {
@@ -216,6 +225,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
     const key = `${CHECKLIST_PREFIX}${item}`;
     setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
 
   return (
     <section>
