@@ -456,7 +456,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               Plano inicial do app
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Este é o resumo que deve guiar a construção do MVP. Copie para o Lovable apenas depois de revisar os 5 pontos acima.
+              Resumo da primeira versão funcional. Próximas versões serão priorizadas em Melhorias e Versões. Copie para o Lovable apenas depois de revisar os 5 pontos acima.
             </p>
           </div>
         </div>
