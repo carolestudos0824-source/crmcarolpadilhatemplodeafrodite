@@ -95,8 +95,8 @@ describe("MvpArquiteturaModule", () => {
     expect(screen.getByRole("heading", { level: 3, name: /Definir dados e banco/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: /Arquitetura pronta para o Lovable/i })).toBeInTheDocument();
     // Three-path rule visible on main cards
-    expect(screen.getAllByRole("button", { name: /Copiar auditoria para o Lovable/i }).length).toBeGreaterThanOrEqual(5);
-    expect(screen.getAllByText(/Somente auditoria\./i).length).toBeGreaterThanOrEqual(5);
+    expect(screen.getAllByRole("button", { name: /Copiar auditoria/i }).length).toBeGreaterThanOrEqual(5);
+    expect(screen.getAllByText(/Lovable só analisa, não altera/i).length).toBeGreaterThanOrEqual(5);
     expect(screen.getByText(/Não entendi uma palavra/i)).toBeInTheDocument();
     expect(screen.getByText(/Banco de dados/i)).toBeInTheDocument();
   });
