@@ -60,6 +60,8 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [sending, setSending] = useState(false);
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
+  const [applyingMessageId, setApplyingMessageId] = useState<string | null>(null);
+  const [appliedMessageIds, setAppliedMessageIds] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const loadVersionRef = useRef(0);
   const activeProjectIdRef = useRef<string | null>(activeProjectId);
