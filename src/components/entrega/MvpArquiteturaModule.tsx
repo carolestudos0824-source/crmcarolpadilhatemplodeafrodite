@@ -451,13 +451,24 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           <CheckCircle2 size={16} className="text-emerald-300" />
           <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
         </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Só avance quando o MVP estiver pequeno, claro e construível.
+        </p>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
             const key = `${CHECKLIST_PREFIX}${item}`;
             const done = !!checklist[key];
+            const highlight = item === "Cortei funcionalidades extras";
             return (
               <li key={item}>
-                <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
+                <label
+                  className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition ${
+                    highlight
+                      ? "border-amber-400/30 bg-amber-400/[0.06] hover:bg-amber-400/[0.1]"
+                      : "border-white/10 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
+
                   <input
                     type="checkbox"
                     checked={done}
