@@ -137,7 +137,7 @@ const cmd = (
 export const COMMANDS_CONSTRUIR: Command[] = [
   {
     n: 1,
-    title: "Criar primeira versão do app",
+    title: "Criar base inicial do app (estrutura e telas vazias)",
     purpose: "Pede ao Lovable que construa a base funcional do app ativo.",
     when: "Use como primeiro comando do módulo Construir app.",
     where: "Cole no Lovable, no projeto do seu app ativo.",
@@ -203,7 +203,7 @@ Não adicione pagamento, domínio ou recursos avançados agora.`,
   },
   {
     n: 2,
-    title: "Construir primeira versão",
+    title: "Implementar funcionalidade principal",
     purpose: "Pede ao Lovable que comece a construir o app.",
     when: "Depois que o plano do Comando 1 estiver pronto.",
     where: "Cole no mesmo projeto do Lovable.",
