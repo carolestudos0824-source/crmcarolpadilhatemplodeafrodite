@@ -499,6 +499,14 @@ export const buildLovablePrompt = ({
   const task = applyContextPlaceholders(command.trim(), context);
   const appName = resolveAppName(context);
 
+  const mainActionCheck = value(context.mainAction);
+  const mandatoryChecks = mainActionCheck
+    ? [
+        ...intent.mandatoryChecks,
+        `Garantir que a ação principal '${mainActionCheck}' continue funcionando após a mudança.`,
+      ]
+    : intent.mandatoryChecks;
+
   return `${intent.actionTitle}
 
 ${conceptualScopeNote(context)}
@@ -521,7 +529,7 @@ Tarefa específica:
 ${task}
 
 Faça obrigatoriamente:
-${bullets(intent.mandatoryChecks)}
+${bullets(mandatoryChecks)}
 
 Regras de preservação:
 ${bullets(preserve)}
