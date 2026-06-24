@@ -198,8 +198,9 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
         </div>
         <div className="min-w-0">
           <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
-            {isResultStep ? "Resultado desta etapa" : `Etapa ${etapa.n}`}
+            {isResultStep ? `Etapa ${etapa.n} · Resultado desta etapa` : `Etapa ${etapa.n}`}
           </div>
+
           <h3 className="text-lg md:text-xl font-heading font-bold leading-tight">
             {isResultStep ? "Arquitetura pronta para o Lovable" : etapa.title}
           </h3>
