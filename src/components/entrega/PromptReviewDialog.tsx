@@ -287,6 +287,11 @@ export const PromptReviewDialog = ({
               ? "Use este prompt quando quiser aplicar mudanças diretamente no projeto."
               : "Use este prompt quando quiser conversar, revisar e decidir antes de mexer no app."}
           </p>
+          {mode === "agent" && (
+            <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1.5">
+              Depois que o Lovable responder, cole aqui o resultado ou erro para o Agente ajudar você a decidir o próximo passo.
+            </p>
+          )}
         </div>
 
         {/* Body */}
