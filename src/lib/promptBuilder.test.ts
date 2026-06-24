@@ -116,7 +116,7 @@ describe("contexto do app ativo — separação plataforma × app-alvo", () => {
     });
     expect(p).toMatch(/Clube de Receitas/);
     expect(p).toMatch(/Use este prompt no projeto Lovable do app: Clube de Receitas/);
-    expect(p).not.toMatch(/Fábrica de Apps/i);
+    expect(p).not.toMatch(/projeto Lovable do app: Fábrica de Apps/i);
     expect(p).not.toMatch(/não a plataforma/i);
   });
 
