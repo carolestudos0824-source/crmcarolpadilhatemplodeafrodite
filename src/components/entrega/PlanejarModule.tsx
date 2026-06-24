@@ -278,6 +278,8 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 
 export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
+  const { activeProject, openDrawer } = useAppProjects();
+
 
   const copyAgentHelp = async () => {
     try {
