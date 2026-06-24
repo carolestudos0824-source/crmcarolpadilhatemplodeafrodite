@@ -1,10 +1,15 @@
-import { ArrowRight, Compass, FolderKanban, ListChecks, Sparkles, UserCog } from "lucide-react";
-import { useMemo } from "react";
+import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Sparkles, UserCog } from "lucide-react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { useAppProjects, hasUsefulProjectContext } from "@/hooks/useAppProjects";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAuthState } from "@/hooks/useAuthState";
-import { isFabricaSelfProject } from "@/lib/promptBuilder";
+import {
+  buildLovablePrompt,
+  isFabricaSelfProject,
+  MODULE_PROMPT_INTENTS,
+} from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
 
 /**
