@@ -35,12 +35,15 @@ type Ctx = {
   loadingHistory: boolean;
   sending: boolean;
   savingMessageId: string | null;
+  applyingMessageId: string | null;
+  appliedMessageIds: string[];
   input: string;
   setInput: (value: string) => void;
   open: (a?: AgentChatOpenArgs) => void;
   close: () => void;
   send: (text: string) => Promise<void>;
   saveDecision: (message: AgentMessage, title?: string | null) => Promise<void>;
+  applySuggestion: (message: AgentMessage) => Promise<void>;
 };
 
 const AgentChatCtx = createContext<Ctx | null>(null);
