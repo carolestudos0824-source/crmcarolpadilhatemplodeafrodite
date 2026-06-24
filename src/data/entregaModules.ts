@@ -203,7 +203,7 @@ Não adicione pagamento, domínio ou recursos avançados agora.`,
   },
   {
     n: 2,
-    title: "Construir primeira versão",
+    title: "Implementar funcionalidade principal",
     purpose: "Pede ao Lovable que comece a construir o app.",
     when: "Depois que o plano do Comando 1 estiver pronto.",
     where: "Cole no mesmo projeto do Lovable.",
