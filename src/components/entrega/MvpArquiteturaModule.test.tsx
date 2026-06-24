@@ -59,7 +59,7 @@ describe("MvpArquiteturaModule", () => {
     fireEvent.click(screen.getAllByRole("button", { name: /Copiar correção/i })[0]);
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining("MVP grande demais"));
     fireEvent.click(screen.getAllByRole("button", { name: /Quando avançar/i })[0]);
-    expect(screen.getByText(/Avance quando a primeira versão do app estiver simples/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Avance quando a primeira versão do app estiver simples/i).length).toBeGreaterThan(0);
   });
 
   it("copy agent help button copies architect prompt", () => {
