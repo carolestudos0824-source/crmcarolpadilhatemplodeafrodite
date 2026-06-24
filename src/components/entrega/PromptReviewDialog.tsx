@@ -255,6 +255,9 @@ export const PromptReviewDialog = ({
 
         {/* Tabs */}
         <div className="px-5 pt-4 space-y-2">
+          <p className="text-[11px] text-muted-foreground/90">
+            Em dúvida? Comece pelo Agente para pensar. Já sabe o que fazer? Vá direto pelo Lovable para executar.
+          </p>
           <div className="flex gap-2 flex-wrap">
             <button
               type="button"
