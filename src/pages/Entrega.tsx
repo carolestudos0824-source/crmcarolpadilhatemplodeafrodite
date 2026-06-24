@@ -549,7 +549,7 @@ function EntregaInner() {
                 <ExternalLink size={12} className="shrink-0 opacity-70" />
               </button>
               <p className="text-[10px] text-muted-foreground mt-1.5 px-1 leading-snug">
-                Use o Agente para revisar ideias, tirar dúvidas e decidir o próximo passo.
+                Use o Agente para pensar, revisar erros e decidir o próximo passo antes de mexer no Lovable.
               </p>
             </div>
 
