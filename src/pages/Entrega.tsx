@@ -820,36 +820,42 @@ function EntregaInner() {
             </button>
             {(() => {
               const isIdeias = active === "ideias";
+              const isPlanejar = active === "planejar";
               const hasChosenIdea = !!appProjects.activeProject;
               const blockIdeias = isIdeias && !hasChosenIdea;
-              const ideiasLabel = isIdeias
+              const blockPlanejar = isPlanejar && !hasChosenIdea;
+              const blocked = blockIdeias || blockPlanejar;
+              const customLabel = isIdeias
                 ? hasChosenIdea
                   ? "Próximo passo: Planejar o App"
                   : "Escolha uma ideia para avançar"
+                : isPlanejar && !hasChosenIdea
+                ? "Escolha um app para avançar"
                 : null;
               const handleClick = () => {
-                if (blockIdeias) return;
+                if (blocked) return;
                 if (isIdeias && hasChosenIdea) {
                   goTo("planejar");
                   return;
                 }
                 if (nextModule) goTo(nextModule);
               };
-              const disabled = blockIdeias || (!isIdeias && !nextModule);
+              const disabled = blocked || (!isIdeias && !nextModule);
               return (
                 <button
                   onClick={handleClick}
                   disabled={disabled}
                   className={
-                    blockIdeias
+                    blocked
                       ? "px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-muted-foreground text-sm cursor-not-allowed inline-flex items-center gap-2"
                       : "btn-primary text-sm disabled:opacity-30"
                   }
                 >
-                  {ideiasLabel ?? "Próximo passo"} {!blockIdeias && <ArrowRight size={14} />}
+                  {customLabel ?? "Próximo passo"} {!blocked && <ArrowRight size={14} />}
                 </button>
               );
             })()}
+
           </div>
         </main>
 
