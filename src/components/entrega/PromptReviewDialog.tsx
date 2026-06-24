@@ -110,10 +110,15 @@ export const PromptReviewDialog = ({
   command,
   moduleId,
   customPrompts,
+  initialMode = "lovable",
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
   const { activeProject } = useAppProjects();
-  const [mode, setMode] = useState<Mode>("lovable");
+  const [mode, setMode] = useState<Mode>(initialMode);
+
+  useEffect(() => {
+    if (open) setMode(initialMode);
+  }, [open, initialMode]);
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
