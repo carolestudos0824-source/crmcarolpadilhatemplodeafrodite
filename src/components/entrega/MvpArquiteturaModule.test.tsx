@@ -70,7 +70,9 @@ describe("MvpArquiteturaModule", () => {
 
   it("checklist toggles with mvp_step__ prefix", () => {
     render(<MvpArquiteturaModule />);
-    const cb = screen.getAllByRole("checkbox")[0];
+    // Use the module review checklist label (CommandCard also renders its own
+    // command-done checkboxes — target the module checklist explicitly).
+    const cb = screen.getByLabelText(/Defini o MVP do meu app/i);
     fireEvent.click(cb);
     expect(setChecklist).toHaveBeenCalled();
     const keys = Object.keys(checklistStore);
