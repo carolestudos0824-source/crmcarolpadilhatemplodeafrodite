@@ -258,10 +258,9 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
             Ir para próximo passo <ArrowRight size={14} />
           </button>
         </div>
-        </div>
         {copiedHint && canCopyPrompt && (
           <p
-            className="mt-2 text-[11px] text-muted-foreground/80 md:text-right"
+            className="basis-full mt-1 text-[11px] text-muted-foreground/80 md:text-right"
             role="status"
             aria-live="polite"
           >
