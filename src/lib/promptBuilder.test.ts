@@ -158,13 +158,15 @@ describe("contexto do app ativo — separação plataforma × app-alvo", () => {
     expect(p).not.toMatch(/Fábrica de Apps/i);
   });
 
-  it("nenhum prompt menciona 'plataforma Fábrica de Apps' como app-alvo", () => {
+  it("nenhum prompt confunde a Fábrica de Apps com o app-alvo do usuário", () => {
     const pL = buildLovablePrompt({ context: ctx, stepName: "X", command: "Y", moduleId: "telas" });
     const pA = buildAgentPrompt({ context: ctx, stepName: "X", command: "Y", moduleId: "telas" });
     expect(pL).not.toMatch(/não a plataforma Fábrica de Apps/i);
     expect(pA).not.toMatch(/não a plataforma Fábrica de Apps/i);
-    expect(pL).not.toMatch(/Fábrica de Apps/i);
-    expect(pA).not.toMatch(/Fábrica de Apps/i);
+    // O app-alvo do prompt deve ser o do usuário, não a Fábrica.
+    expect(pL).toMatch(/projeto Lovable do app: Agenda Terapêutica/);
+    expect(pL).not.toMatch(/projeto Lovable do app: Fábrica de Apps/i);
+    expect(pA).not.toMatch(/projeto Lovable do app: Fábrica de Apps/i);
   });
 });
 
