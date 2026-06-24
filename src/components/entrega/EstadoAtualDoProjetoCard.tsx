@@ -1,10 +1,15 @@
-import { ArrowRight, Compass, FolderKanban, ListChecks, Sparkles, UserCog } from "lucide-react";
-import { useMemo } from "react";
+import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Sparkles, UserCog } from "lucide-react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { useAppProjects, hasUsefulProjectContext } from "@/hooks/useAppProjects";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAuthState } from "@/hooks/useAuthState";
-import { isFabricaSelfProject } from "@/lib/promptBuilder";
+import {
+  buildLovablePrompt,
+  isFabricaSelfProject,
+  MODULE_PROMPT_INTENTS,
+} from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
 
 /**
@@ -33,9 +38,10 @@ type Props = {
 
 export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
-  const { openEditor } = useProjectContext();
+  const { openEditor, context: liveContext } = useProjectContext();
   const { active, moduleDone } = useUserProgress();
   const auth = useAuthState();
+  const [copying, setCopying] = useState(false);
 
   const isAdmin = auth.status === "authed" && auth.isAdmin;
   const adminOnSelf =
@@ -135,6 +141,42 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     if (nextStep.moduleId) return onGoToModule(nextStep.moduleId);
   };
 
+  // Só copia prompt quando o próximo passo é um módulo real com intent segura
+  // no promptBuilder. Para ações de UI (fill-context / open-drawer) ou módulos
+  // sem intent definida, o botão não aparece — evita prompt genérico.
+  const recommendedModuleId =
+    nextStep.kind === "go-module" ? nextStep.moduleId ?? null : null;
+  const recommendedIntent = recommendedModuleId
+    ? MODULE_PROMPT_INTENTS[recommendedModuleId] ?? null
+    : null;
+  const canCopyPrompt =
+    !!activeProject &&
+    !!recommendedModuleId &&
+    !!recommendedIntent &&
+    hasUsefulProjectContext(liveContext);
+
+  const handleCopyPrompt = async () => {
+    if (!canCopyPrompt || !recommendedModuleId || !recommendedIntent) return;
+    try {
+      setCopying(true);
+      const prompt = buildLovablePrompt({
+        context: liveContext,
+        stepName: MODULE_LABEL[recommendedModuleId],
+        stepObjective: recommendedIntent.directRequest,
+        command: recommendedIntent.directRequest,
+        moduleId: recommendedModuleId,
+      });
+      await navigator.clipboard.writeText(prompt);
+      toast.success("Prompt recomendado copiado", {
+        description: `Módulo: ${MODULE_LABEL[recommendedModuleId]}`,
+      });
+    } catch {
+      toast.error("Não foi possível copiar o prompt. Tente novamente.");
+    } finally {
+      setCopying(false);
+    }
+  };
+
   return (
     <section
       aria-label="Estado atual do projeto"
@@ -194,13 +236,26 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
             {nextStep.helper}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={handleAction}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:opacity-90 transition shrink-0"
-        >
-          Ir para próximo passo <ArrowRight size={14} />
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+          {canCopyPrompt && (
+            <button
+              type="button"
+              onClick={handleCopyPrompt}
+              disabled={copying}
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent text-xs font-medium hover:bg-accent/15 transition disabled:opacity-60"
+              title="Copia um prompt seguro para colar no Lovable, usando o contexto do projeto em foco"
+            >
+              <ClipboardCopy size={14} /> {copying ? "Copiando..." : "Copiar prompt recomendado"}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={handleAction}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:opacity-90 transition"
+          >
+            Ir para próximo passo <ArrowRight size={14} />
+          </button>
+        </div>
       </div>
     </section>
   );
