@@ -122,6 +122,7 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
       "Fluxo do usuário e telas mínimas.",
       "Banco mínimo necessário.",
       "Riscos técnicos.",
+      "Considerar o que já existe no projeto em foco; não replanejar do zero o que já funciona.",
     ],
   },
   mvp: {
