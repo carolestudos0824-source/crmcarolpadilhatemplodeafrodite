@@ -12,16 +12,22 @@ export type AgentMessage = {
 /** Carrega (ou cria implicitamente ao primeiro envio) as mensagens de uma conversa
  *  associada ao projeto. Retorna [] se ainda não existe nenhuma. */
 export async function loadProjectMessages(projectId: string): Promise<AgentMessage[]> {
+  const { data: userRes } = await supabase.auth.getUser();
+  const userId = userRes?.user?.id;
+  if (!userId) return [];
   const { data: conv } = await supabase
     .from("agent_conversations")
     .select("id")
     .eq("project_id", projectId)
+    .eq("user_id", userId)
     .maybeSingle();
   if (!conv?.id) return [];
   const { data, error } = await supabase
     .from("agent_messages")
     .select("id, role, content, created_at, module_key, step_key")
     .eq("conversation_id", conv.id)
+    .eq("project_id", projectId)
+    .eq("user_id", userId)
     .order("created_at", { ascending: true });
   if (error) throw error;
   return (data ?? []) as AgentMessage[];
@@ -76,6 +82,7 @@ export async function saveAsProjectDecision(args: SaveDecisionArgs) {
     .from("project_contexts")
     .select("id, summary, context_json")
     .eq("project_id", args.projectId)
+    .eq("user_id", userId)
     .maybeSingle();
 
   const titleLine = args.title ? `• ${args.title}` : `• Decisão em ${args.moduleKey}`;
