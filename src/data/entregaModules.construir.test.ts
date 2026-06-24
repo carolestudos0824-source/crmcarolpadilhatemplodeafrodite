@@ -6,7 +6,7 @@ describe("COMMANDS_CONSTRUIR Etapa 1 — construção (não plano)", () => {
   const content = etapa1.content;
 
   it("título é executivo de construção", () => {
-    expect(etapa1.title).toMatch(/Criar primeira versão do app/i);
+    expect(etapa1.title).toMatch(/Criar base inicial do app/i);
   });
 
   it("contém token [nome do app ativo] para injeção", () => {
