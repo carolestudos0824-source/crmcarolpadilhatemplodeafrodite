@@ -661,7 +661,7 @@ function EntregaInner() {
               <AgentArchitectCard
                 eyebrow="Não sabe por onde começar?"
                 title="O Agente Arquiteto é seu guia"
-                subtitle="Use ele para revisar ideias, entender os prompts, simplificar o MVP e decidir o próximo passo dentro da Fábrica de Apps com IA."
+                subtitle="Use ele para revisar ideias, entender os prompts, simplificar a primeira versão funcional ou auditar um app já existente dentro da Fábrica de Apps com IA."
                 description="Recomendado para iniciantes antes de copiar qualquer prompt para o Lovable. Tire dúvidas, valide sua ideia e só então construa."
                 benefits={[
                   "Entenda o que construir primeiro",
