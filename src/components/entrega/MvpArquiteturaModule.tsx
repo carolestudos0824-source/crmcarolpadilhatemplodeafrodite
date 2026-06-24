@@ -314,8 +314,9 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           Em cada etapa, você pode copiar o comando direto ou revisar o prompt antes de colar no chat do seu projeto no Lovable.
         </p>
         <p className="text-xs text-amber-200/90 max-w-3xl mt-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] px-3 py-2">
-          <strong className="text-amber-200">Regra do MVP:</strong> no máximo 5 funcionalidades principais.
+          <strong className="text-amber-200">Regra da primeira versão:</strong> até 5 funcionalidades principais agora. As demais entram nas próximas versões, no módulo Melhorias e Versões.
         </p>
+
       </header>
 
       {!activeProject && (
