@@ -64,7 +64,6 @@ export const AgentChatDrawer = () => {
 
   const moduleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
   const moduleLabel = moduleKey ? MODULE_LABELS[moduleKey] ?? moduleKey : "—";
-  const stepKey = args.stepKey ?? null;
   const stepTitle = args.stepTitle ?? null;
 
   // Pré-preencher draft quando abrir
