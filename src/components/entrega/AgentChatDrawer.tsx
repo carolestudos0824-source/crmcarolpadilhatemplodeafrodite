@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare } from "lucide-react";
+import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare, CheckCircle2, Wand2 } from "lucide-react";
 import { useAgentChat } from "@/components/entrega/AgentChatProvider";
 import { useAppProjects } from "@/hooks/useAppProjects";
 
