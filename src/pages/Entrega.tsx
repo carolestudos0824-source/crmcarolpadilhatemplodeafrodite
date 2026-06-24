@@ -735,16 +735,19 @@ function EntregaInner() {
             moduleId={active}
           />
 
-          {active === "planejar" && (
+          {(active === "planejar" || active === "mvp") && (
             <div className="mt-8 mb-3">
               <h3 className="text-sm font-heading font-semibold text-muted-foreground uppercase tracking-wider">
                 Ferramentas extras
               </h3>
               <p className="text-xs text-muted-foreground/80 mt-1">
-                Use apenas se estiver travado ou quiser revisar melhor sua ideia antes de continuar.
+                {active === "mvp"
+                  ? "Use apenas se estiver travado ou quiser revisar melhor sua arquitetura antes de continuar."
+                  : "Use apenas se estiver travado ou quiser revisar melhor sua ideia antes de continuar."}
               </p>
             </div>
           )}
+
 
 
           {active === "ideias" && (
