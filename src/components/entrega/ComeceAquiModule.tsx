@@ -1,9 +1,10 @@
+import { useState } from "react";
 import {
   Sparkles,
   ExternalLink,
   Lightbulb,
   AlertTriangle,
-  
+  ArrowRight,
   Compass,
   Search,
   FolderPlus,
@@ -62,10 +63,46 @@ const scrollToId = (id: string) => {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
+type JourneyId = "comecando_do_zero" | "app_completo_por_versoes" | "ja_tenho_um_app";
+
+const JOURNEYS: Record<
+  JourneyId,
+  { title: string; next: ModuleId; nextLabel: string; helper: string }
+> = {
+  comecando_do_zero: {
+    title: "Começando do zero",
+    next: "mvp",
+    nextLabel: "Definir o MVP",
+    helper:
+      "Vamos clarear ideia, público, dor e a primeira versão funcional do seu app antes de gastar créditos no Lovable.",
+  },
+  app_completo_por_versoes: {
+    title: "Quero um app completo",
+    next: "planejar",
+    nextLabel: "Planejar por versões",
+    helper:
+      "Construa por versões: MVP, V2, V3 — login, banco, monetização, checkout e escala entram aos poucos, sem jogar tudo de uma vez no Lovable.",
+  },
+  ja_tenho_um_app: {
+    title: "Já tenho um app",
+    next: "melhorias",
+    nextLabel: "Auditar e melhorar meu app",
+    helper:
+      "Vamos auditar telas, login, banco, segurança, monetização e checkout — depois aplicar correções cirúrgicas e um plano de melhorias sem quebrar o que já funciona.",
+  },
+};
+
 export function ComeceAquiModule({ goTo }: Props) {
   const { openDrawer, activeProject } = useAppProjects();
   const moduleLabel = (id: ModuleId) => MODULES.find((m) => m.id === id)?.label ?? id;
   const hasApp = !!activeProject;
+  const [journey, setJourney] = useState<JourneyId | null>(null);
+
+  const pickJourney = (id: JourneyId) => {
+    setJourney(id);
+    // feedback visual antes da navegação
+    setTimeout(() => goTo(JOURNEYS[id].next), 220);
+  };
 
   return (
     <section>
