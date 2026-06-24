@@ -42,6 +42,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { active, moduleDone } = useUserProgress();
   const auth = useAuthState();
   const [copying, setCopying] = useState(false);
+  const [copiedHint, setCopiedHint] = useState(false);
 
   const isAdmin = auth.status === "authed" && auth.isAdmin;
   const adminOnSelf =
@@ -167,6 +168,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         moduleId: recommendedModuleId,
       });
       await navigator.clipboard.writeText(prompt);
+      setCopiedHint(true);
       toast.success("Prompt recomendado copiado", {
         description: `Módulo: ${MODULE_LABEL[recommendedModuleId]}`,
       });
@@ -256,6 +258,15 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
             Ir para próximo passo <ArrowRight size={14} />
           </button>
         </div>
+        {copiedHint && canCopyPrompt && (
+          <p
+            className="basis-full mt-1 text-[11px] text-muted-foreground/80 md:text-right"
+            role="status"
+            aria-live="polite"
+          >
+            Copiado. Agora cole no chat do Lovable como nova mensagem.
+          </p>
+        )}
       </div>
     </section>
   );
