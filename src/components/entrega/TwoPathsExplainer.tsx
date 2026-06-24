@@ -55,8 +55,7 @@ export const TwoPathsExplainer = () => {
         </div>
       </div>
       <p className="text-[11px] text-muted-foreground/80 mt-3">
-        Use o Lovable para aplicar o comando no app. Use o Agente quando quiser
-        revisar, melhorar ou adaptar o prompt antes.
+        O iniciante pode alternar entre Agente e Lovable quantas vezes precisar. O Programa organiza a jornada e mostra quando avançar.
       </p>
     </section>
   );

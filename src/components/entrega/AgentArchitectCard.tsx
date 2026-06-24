@@ -157,6 +157,10 @@ export const AgentArchitectCard = ({
           <Bot size={18} /> {finalCta}
         </button>
 
+        <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1.5 leading-snug">
+          Use o Agente antes e depois do Lovable. Ele ajuda você a pensar o próximo comando, analisar o que o Lovable respondeu e decidir se já pode avançar.
+        </p>
+
         {hasPrompt && (
           <p className="text-[11px] text-foreground/55 text-center">
             O prompt é copiado automaticamente. É só colar na conversa do Agente.

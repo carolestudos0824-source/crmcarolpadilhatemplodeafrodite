@@ -216,6 +216,9 @@ export const CommandCard = ({
                 <strong className="font-semibold text-cyan-200">Dica para iniciantes:</strong>{" "}
                 revise este prompt com o Agente Arquiteto antes de colar no Lovable.
               </p>
+              <p className="w-full text-[11px] text-muted-foreground/85 text-left sm:text-right leading-snug">
+                Fluxo para iniciantes: pense com o Agente, execute no Lovable, volte com o resultado para o Agente analisar e só então marque como concluído.
+              </p>
               <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                 <button
                   type="button"
@@ -376,6 +379,9 @@ export const CommandCard = ({
                 <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
                   <p className="w-full text-[11px] text-muted-foreground/90 text-left sm:text-right">
                     Em dúvida? Comece pelo Agente para pensar. Já sabe o que fazer? Vá direto pelo Lovable para executar.
+                  </p>
+                  <p className="w-full text-[11px] text-muted-foreground/85 text-left sm:text-right leading-snug">
+                    Fluxo para iniciantes: pense com o Agente, execute no Lovable, volte com o resultado para o Agente analisar e só então marque como concluído.
                   </p>
                   <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                     <button
