@@ -29,7 +29,15 @@ describe("MvpArquiteturaModule", () => {
     expect(screen.getByText(/transformar o plano do app em uma estrutura simples/i)).toBeInTheDocument();
     expect(screen.getByText(/Um MVP não é o app dos sonhos/i)).toBeInTheDocument();
     expect(screen.getByText(/O que você vai fazer nesta etapa/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Etapa \d/i)).toHaveLength(5);
+    // 5 etapa cards via CommandCard (title visible for each)
+    expect(screen.getByRole("heading", { level: 3, name: /Definir o MVP/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Listar funcionalidades essenciais/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Mapear telas necessárias/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Definir dados e banco/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: /Arquitetura pronta para o Lovable/i })).toBeInTheDocument();
+    // Three-path rule visible on main cards
+    expect(screen.getAllByRole("button", { name: /Copiar auditoria para o Lovable/i }).length).toBeGreaterThanOrEqual(5);
+    expect(screen.getAllByText(/Somente auditoria\./i).length).toBeGreaterThanOrEqual(5);
     expect(screen.getByText(/Não entendi uma palavra/i)).toBeInTheDocument();
     expect(screen.getByText(/Banco de dados/i)).toBeInTheDocument();
   });
