@@ -53,10 +53,13 @@ export const AgentChatDrawer = () => {
     loadingHistory,
     sending,
     savingMessageId,
+    applyingMessageId,
+    appliedMessageIds,
     input,
     setInput,
     send,
     saveDecision,
+    applySuggestion,
   } = useAgentChat();
   const { activeProject, openDrawer: openMyApps } = useAppProjects();
   const scrollRef = useRef<HTMLDivElement>(null);
