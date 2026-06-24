@@ -18,6 +18,44 @@ import {
 } from "@/hooks/useProjectContext";
 
 /**
+ * Verifica se um ProjectContext contém dados úteis nos campos principais
+ * que alimentam os prompts. Usado para evitar que um projeto vazio
+ * sobrescreva em memória o contexto preenchido do Projeto em Foco.
+ */
+export const hasUsefulProjectContext = (c: ProjectContext): boolean => {
+  const keys: (keyof ProjectContext)[] = [
+    "appDoes",
+    "audience",
+    "problem",
+    "promise",
+    "mainAction",
+  ];
+  return keys.some((k) => {
+    const v = c[k];
+    return typeof v === "string" && v.trim().length > 0;
+  });
+};
+
+/**
+ * Mescla preservando campos preenchidos: valores não-vazios de `incoming`
+ * substituem `current`; valores vazios de `incoming` NÃO apagam campos
+ * preenchidos em `current`. Não cria dados fictícios.
+ */
+const mergePreservingFilled = (
+  current: ProjectContext,
+  incoming: ProjectContext,
+): ProjectContext => {
+  const out: ProjectContext = { ...current };
+  (Object.keys(incoming) as (keyof ProjectContext)[]).forEach((k) => {
+    const v = incoming[k];
+    if (typeof v === "string" && v.trim().length > 0) {
+      (out as Record<string, string>)[k] = v;
+    }
+  });
+  return out;
+};
+
+/**
  * "Meus Apps em Construção" — fonte real agora é Supabase (RLS por auth.uid()).
  * localStorage só é usado para:
  *  - cache do id do app ativo: `fabrica_apps_active_project_id`
