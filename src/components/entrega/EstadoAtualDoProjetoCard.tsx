@@ -141,6 +141,42 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     if (nextStep.moduleId) return onGoToModule(nextStep.moduleId);
   };
 
+  // Só copia prompt quando o próximo passo é um módulo real com intent segura
+  // no promptBuilder. Para ações de UI (fill-context / open-drawer) ou módulos
+  // sem intent definida, o botão não aparece — evita prompt genérico.
+  const recommendedModuleId =
+    nextStep.kind === "go-module" ? nextStep.moduleId ?? null : null;
+  const recommendedIntent = recommendedModuleId
+    ? MODULE_PROMPT_INTENTS[recommendedModuleId] ?? null
+    : null;
+  const canCopyPrompt =
+    !!activeProject &&
+    !!recommendedModuleId &&
+    !!recommendedIntent &&
+    hasUsefulProjectContext(liveContext);
+
+  const handleCopyPrompt = async () => {
+    if (!canCopyPrompt || !recommendedModuleId || !recommendedIntent) return;
+    try {
+      setCopying(true);
+      const prompt = buildLovablePrompt({
+        context: liveContext,
+        stepName: MODULE_LABEL[recommendedModuleId],
+        stepObjective: recommendedIntent.directRequest,
+        command: recommendedIntent.directRequest,
+        moduleId: recommendedModuleId,
+      });
+      await navigator.clipboard.writeText(prompt);
+      toast.success("Prompt recomendado copiado", {
+        description: `Módulo: ${MODULE_LABEL[recommendedModuleId]}`,
+      });
+    } catch {
+      toast.error("Não foi possível copiar o prompt. Tente novamente.");
+    } finally {
+      setCopying(false);
+    }
+  };
+
   return (
     <section
       aria-label="Estado atual do projeto"
