@@ -167,7 +167,7 @@ export const AgentChatDrawer = () => {
             </div>
           )}
 
-          {messages.map((m, i) => {
+          {messages.map((m) => {
             const isUser = m.role === "user";
             return (
               <div key={m.id} className={isUser ? "flex justify-end" : ""}>

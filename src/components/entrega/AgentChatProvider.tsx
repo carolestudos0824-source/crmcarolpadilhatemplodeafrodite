@@ -50,6 +50,7 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const activeProjectId = activeProject?.id ?? null;
   const [isOpen, setOpen] = useState(false);
   const [args, setArgs] = useState<AgentChatOpenArgs>({});
+  const [argsProjectId, setArgsProjectId] = useState<string | null>(null);
   const [messages, setMessages] = useState<AgentMessage[]>([]);
   const [messagesProjectId, setMessagesProjectId] = useState<string | null>(null);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
@@ -64,6 +65,7 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
 
   const open = useCallback((a?: AgentChatOpenArgs) => {
     setArgs(a ?? {});
+    setArgsProjectId(activeProjectIdRef.current);
     setOpen(true);
   }, []);
   const close = useCallback(() => setOpen(false), []);
@@ -82,6 +84,7 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
 
     if (projectChanged) {
       setArgs({});
+      setArgsProjectId(activeProjectId);
       setInput("");
     }
 
@@ -226,19 +229,21 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const scopedMessages = messagesProjectId === activeProjectId ? messages : [];
+  const scopedArgs = argsProjectId === activeProjectId ? args : {};
+  const scopedInput = messagesProjectId === activeProjectId ? input : "";
   const scopedLoadingHistory = Boolean(isOpen && activeProjectId && (loadingHistory || messagesProjectId !== activeProjectId));
 
   const value = useMemo<Ctx>(
     () => ({
       isOpen,
-      args,
+      args: scopedArgs,
       activeProjectId,
       selectedConversationId: messagesProjectId === activeProjectId ? selectedConversationId : null,
       messages: scopedMessages,
       loadingHistory: scopedLoadingHistory,
       sending,
       savingMessageId,
-      input,
+      input: scopedInput,
       setInput,
       open,
       close,
@@ -248,10 +253,13 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
     [
       isOpen,
       args,
+      argsProjectId,
       activeProjectId,
       messagesProjectId,
       selectedConversationId,
       scopedMessages,
+      scopedArgs,
+      scopedInput,
       scopedLoadingHistory,
       sending,
       savingMessageId,
