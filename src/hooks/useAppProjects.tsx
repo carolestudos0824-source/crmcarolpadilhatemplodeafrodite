@@ -358,7 +358,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const aid = readActiveId();
       const valid = aid ? list.find((p) => p.id === aid) : null;
       if (valid) {
-        setRuntimeContext(valid.context);
+        applyProjectContextSafely(valid.context);
       } else if (aid) {
         setActiveId(null);
         restoreTemporaryContext();
@@ -435,7 +435,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = rowToProject(data);
       upsertLocal(proj);
       setActiveId(proj.id);
-      setRuntimeContext(proj.context);
+      applyProjectContextSafely(proj.context);
       return proj;
     },
     [userId, upsertLocal, setActiveId, setRuntimeContext],
@@ -451,7 +451,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       const proj = projects.find((p) => p.id === id);
       if (!proj) return;
       setActiveId(id);
-      setRuntimeContext(proj.context);
+      applyProjectContextSafely(proj.context);
       // bump last_opened_at (fire and forget)
       if (userId) {
         void supabase
@@ -487,7 +487,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      if (id === activeId && patch.context !== undefined) setRuntimeContext(proj.context);
+      if (id === activeId && patch.context !== undefined) applyProjectContextSafely(proj.context);
     },
     [userId, projects, activeId, upsertLocal, setRuntimeContext],
   );
@@ -508,7 +508,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       }
       const proj = rowToProject(data);
       upsertLocal(proj);
-      setRuntimeContext(proj.context);
+      applyProjectContextSafely(proj.context);
       return true;
     },
     [activeId, userId, upsertLocal, setRuntimeContext],
@@ -569,7 +569,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         const next = pickAutoActive(remaining);
         if (next) {
           setActiveId(next.id);
-          setRuntimeContext(next.context);
+          applyProjectContextSafely(next.context);
         } else {
           setActiveId(null);
           restoreTemporaryContext();
@@ -767,7 +767,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       legacy.findIndex((r) => (r as { id?: string })?.id === oldActiveId) ?? -1;
     if (match >= 0 && projs[match]) {
       setActiveId(projs[match].id);
-      setRuntimeContext(projs[match].context);
+      applyProjectContextSafely(projs[match].context);
     }
     setHasLocalProjectsToImport(false);
     return projs.length;
