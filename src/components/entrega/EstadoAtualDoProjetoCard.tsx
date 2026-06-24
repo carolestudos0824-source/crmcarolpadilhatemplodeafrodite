@@ -236,13 +236,26 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
             {nextStep.helper}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={handleAction}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:opacity-90 transition shrink-0"
-        >
-          Ir para próximo passo <ArrowRight size={14} />
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+          {canCopyPrompt && (
+            <button
+              type="button"
+              onClick={handleCopyPrompt}
+              disabled={copying}
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent text-xs font-medium hover:bg-accent/15 transition disabled:opacity-60"
+              title="Copia um prompt seguro para colar no Lovable, usando o contexto do projeto em foco"
+            >
+              <ClipboardCopy size={14} /> {copying ? "Copiando..." : "Copiar prompt recomendado"}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={handleAction}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:opacity-90 transition"
+          >
+            Ir para próximo passo <ArrowRight size={14} />
+          </button>
+        </div>
       </div>
     </section>
   );
