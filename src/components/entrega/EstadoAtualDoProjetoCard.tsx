@@ -167,6 +167,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         moduleId: recommendedModuleId,
       });
       await navigator.clipboard.writeText(prompt);
+      setCopiedHint(true);
       toast.success("Prompt recomendado copiado", {
         description: `Módulo: ${MODULE_LABEL[recommendedModuleId]}`,
       });
