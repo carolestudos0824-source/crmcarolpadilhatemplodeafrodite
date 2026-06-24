@@ -143,8 +143,8 @@ describe("contexto do app ativo — separação plataforma × app-alvo", () => {
     // Não deve repetir "[não preenchido]" dezenas de vezes
     const matches = p.match(/\[não preenchido\]/g) ?? [];
     expect(matches.length).toBe(0);
-    // Mas deve incluir a nota amigável
-    expect(p).toMatch(/Alguns dados do app ainda não foram preenchidos/);
+    // Mas deve incluir a nota amigável (contexto parcial — só 1 campo essencial preenchido)
+    expect(p).toMatch(/Contexto parcial/);
   });
 
   it("fallback de nome do app quando appName está vazio", () => {
