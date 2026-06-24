@@ -714,7 +714,7 @@ function EntregaInner() {
                 <span>
                   Dicas e busca inteligente
                   <span className="ml-2 text-muted-foreground/60">
-                    (oculto para você focar em Copiar Etapa 1)
+                    (oculto para você focar na Etapa 1)
                   </span>
                 </span>
                 <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">
