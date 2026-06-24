@@ -298,6 +298,35 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
 
   const lastModuleSavedRef = useRef<{ id: string; mod: string } | null>(null);
 
+  // Mantém sempre o último contexto vivo do useProjectContext para que a
+  // mesclagem segura saiba quais campos já estão preenchidos antes de
+  // aplicar um contexto vindo de um projeto.
+  const liveContextRef = useRef<ProjectContext>(context);
+  useEffect(() => {
+    liveContextRef.current = context;
+  }, [context]);
+
+  /**
+   * Aplica o contexto de um projeto preservando dados já preenchidos.
+   * - Se o contexto do projeto tiver dados úteis, ele é aplicado integralmente
+   *   (o projeto "dono" do contexto manda).
+   * - Se vier praticamente vazio, mesclamos: campos preenchidos do projeto
+   *   substituem; campos vazios NÃO apagam o que já estava em memória.
+   * Isso evita que abrir/trocar para um projeto sem contexto faça os prompts
+   * voltarem ao modo genérico.
+   */
+  const applyProjectContextSafely = useCallback(
+    (incoming: ProjectContext) => {
+      if (hasUsefulProjectContext(incoming)) {
+        setRuntimeContext(incoming);
+        return;
+      }
+      const merged = mergePreservingFilled(liveContextRef.current, incoming);
+      setRuntimeContext(merged);
+    },
+    [setRuntimeContext],
+  );
+
   // Auth bootstrap
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
