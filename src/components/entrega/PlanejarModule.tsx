@@ -305,8 +305,9 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           Planeje seu app antes de construir
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Antes de abrir o Lovable, defina problema, público, promessa, ação principal e o que fica fora do MVP.
+          Antes de construir, evoluir ou auditar um app, defina problema, público, promessa, ação principal e o que entra na primeira versão funcional.
         </p>
+
         <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
           Copie um comando por vez e avance só quando a etapa estiver clara.
         </p>
