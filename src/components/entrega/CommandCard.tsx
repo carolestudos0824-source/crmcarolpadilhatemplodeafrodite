@@ -380,6 +380,9 @@ export const CommandCard = ({
                   <p className="w-full text-[11px] text-muted-foreground/90 text-left sm:text-right">
                     Em dúvida? Comece pelo Agente para pensar. Já sabe o que fazer? Vá direto pelo Lovable para executar.
                   </p>
+                  <p className="w-full text-[11px] text-muted-foreground/85 text-left sm:text-right leading-snug">
+                    Fluxo para iniciantes: pense com o Agente, execute no Lovable, volte com o resultado para o Agente analisar e só então marque como concluído.
+                  </p>
                   <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                     <button
                       type="button"
