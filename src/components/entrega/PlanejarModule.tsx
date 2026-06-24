@@ -323,8 +323,12 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               </h2>
               <p className="text-sm text-muted-foreground mt-1.5">
                 Para gerar um plano útil, primeiro selecione uma ideia ou crie um app em foco.
-                Depois esta etapa vai ajudar você a definir problema, público, promessa, ação principal e escopo do MVP.
+                Depois esta etapa vai ajudar você a definir problema, público, promessa, ação principal e escopo da primeira versão funcional.
               </p>
+              <p className="text-xs text-muted-foreground/90 mt-2">
+                Já tem um app? Use esta etapa como auditoria do plano atual antes de evoluir.
+              </p>
+
             </div>
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
