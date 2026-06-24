@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   Workflow,
@@ -7,6 +8,10 @@ import {
   CheckCircle2,
   Circle,
   AlertTriangle,
+  Lightbulb,
+  Hammer,
+  Rocket,
+  Check,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -17,6 +22,61 @@ import { CommandCard } from "@/components/entrega/CommandCard";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
+
+export type AppStage = "idea" | "building" | "ready";
+
+const APP_STAGE_STORAGE_KEY = "fabrica_apps_mvp_stage";
+
+const STAGE_OPTIONS: {
+  id: AppStage;
+  label: string;
+  description: string;
+  icon: typeof Lightbulb;
+}[] = [
+  {
+    id: "idea",
+    label: "Tenho só uma ideia",
+    description: "Crie o MVP do zero com arquitetura simples e validável.",
+    icon: Lightbulb,
+  },
+  {
+    id: "building",
+    label: "Já estou construindo",
+    description:
+      "Audite o que já existe, corrija falhas e organize os próximos passos sem recomeçar.",
+    icon: Hammer,
+  },
+  {
+    id: "ready",
+    label: "Já tenho app pronto",
+    description:
+      "Otimize UX, monetização, onboarding, retenção e lançamento sem recriar o produto.",
+    icon: Rocket,
+  },
+];
+
+const STAGE_PREFIX: Record<AppStage, string> = {
+  idea: "",
+  building:
+    "O usuário já está construindo este app. Não recrie tudo do zero. Audite a estrutura atual, preserve o que funciona e proponha correções práticas para arquitetura, fluxo, banco de dados, UX e priorização.",
+  ready:
+    "O usuário já tem um app pronto. Não recrie o MVP. Audite o produto existente e proponha melhorias de UX, monetização, onboarding, retenção, performance, clareza e escala.",
+};
+
+const withStage = (stage: AppStage, prompt: string): string =>
+  stage === "idea" ? prompt : `${STAGE_PREFIX[stage]}\n\n${prompt}`;
+
+const readStoredStage = (): AppStage => {
+  if (typeof window === "undefined") return "idea";
+  try {
+    const v = window.localStorage.getItem(APP_STAGE_STORAGE_KEY);
+    if (v === "idea" || v === "building" || v === "ready") return v;
+  } catch {
+    /* noop */
+  }
+  return "idea";
+};
+
 
 type Etapa = {
   n: number;
