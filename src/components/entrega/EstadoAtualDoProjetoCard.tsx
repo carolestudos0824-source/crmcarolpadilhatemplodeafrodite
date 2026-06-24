@@ -264,7 +264,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
             role="status"
             aria-live="polite"
           >
-            Copiado. Agora cole no chat do Lovable como nova mensagem.
+            Copiado. Agora cole no chat do Lovable como nova mensagem. Quando o Lovable terminar, volte aqui, teste o resultado e marque o módulo como concluído.
           </p>
         )}
       </div>
