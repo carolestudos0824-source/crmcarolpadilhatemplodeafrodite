@@ -740,6 +740,7 @@ function EntregaInner() {
 
 
           <div id="modules-list">
+            <RecommendedModuleHint active={active} goTo={goTo} />
             <ModuleContent
               active={active}
               checklist={checklist}
@@ -747,6 +748,7 @@ function EntregaInner() {
               goTo={goTo}
             />
           </div>
+
 
           <ModuleReviewCard
             moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
