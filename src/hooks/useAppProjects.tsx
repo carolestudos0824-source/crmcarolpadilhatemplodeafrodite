@@ -373,7 +373,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  }, [setRuntimeContext, restoreTemporaryContext, setActiveId]);
+  }, [applyProjectContextSafely, restoreTemporaryContext, setActiveId]);
 
   useEffect(() => {
     if (!userId) {
@@ -438,7 +438,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       applyProjectContextSafely(proj.context);
       return proj;
     },
-    [userId, upsertLocal, setActiveId, setRuntimeContext],
+    [userId, upsertLocal, setActiveId, applyProjectContextSafely],
   );
 
   const createProjectFromContext = useCallback<Ctx["createProjectFromContext"]>(
@@ -461,7 +461,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
           .eq("user_id", userId);
       }
     },
-    [projects, setActiveId, setRuntimeContext, userId],
+    [projects, setActiveId, applyProjectContextSafely, userId],
   );
 
   const updateProject = useCallback<Ctx["updateProject"]>(
@@ -489,7 +489,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       upsertLocal(proj);
       if (id === activeId && patch.context !== undefined) applyProjectContextSafely(proj.context);
     },
-    [userId, projects, activeId, upsertLocal, setRuntimeContext],
+    [userId, projects, activeId, upsertLocal, applyProjectContextSafely],
   );
 
   const saveContextToActiveProject = useCallback<Ctx["saveContextToActiveProject"]>(
@@ -511,7 +511,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
       applyProjectContextSafely(proj.context);
       return true;
     },
-    [activeId, userId, upsertLocal, setRuntimeContext],
+    [activeId, userId, upsertLocal, applyProjectContextSafely],
   );
 
   // Legacy alias kept for compat (uses currently loaded context from provider).
@@ -576,7 +576,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [userId, activeId, projects, removeLocal, setActiveId, setRuntimeContext, restoreTemporaryContext],
+    [userId, activeId, projects, removeLocal, setActiveId, applyProjectContextSafely, restoreTemporaryContext],
   );
 
   const archiveProject = useCallback<Ctx["archiveProject"]>(
@@ -771,7 +771,7 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
     }
     setHasLocalProjectsToImport(false);
     return projs.length;
-  }, [userId, setActiveId, setRuntimeContext]);
+  }, [userId, setActiveId, applyProjectContextSafely]);
 
   const createProjectFromLocalContext = useCallback<Ctx["createProjectFromLocalContext"]>(async () => {
     const ctx = readLocalContext();
