@@ -83,6 +83,7 @@ import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
 // ProjectStatusBanner desativado em /entrega para evitar duplicidade com o EstadoAtualDoProjetoCard.
 import { EstadoAtualDoProjetoCard } from "@/components/entrega/EstadoAtualDoProjetoCard";
+import { RecommendedModuleHint } from "@/components/entrega/RecommendedModuleHint";
 import { ComeceAquiModule } from "@/components/entrega/ComeceAquiModule";
 import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
