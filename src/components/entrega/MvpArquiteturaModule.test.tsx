@@ -29,7 +29,58 @@ describe("MvpArquiteturaModule", () => {
     writeText.mockClear();
     setChecklist.mockClear();
     for (const k of Object.keys(checklistStore)) delete checklistStore[k];
+    try {
+      window.localStorage.removeItem("fabrica_apps_mvp_stage");
+    } catch {
+      /* noop */
+    }
   });
+
+  it("stage selector: shows 3 options, defaults to 'idea', persists choice and rewrites copied prompts", () => {
+    const { unmount } = render(<MvpArquiteturaModule />);
+    // 3 options visible
+    const idea = screen.getByRole("radio", { name: /Tenho só uma ideia/i });
+    const building = screen.getByRole("radio", { name: /Já estou construindo/i });
+    const ready = screen.getByRole("radio", { name: /Já tenho app pronto/i });
+    expect(idea).toBeInTheDocument();
+    expect(building).toBeInTheDocument();
+    expect(ready).toBeInTheDocument();
+    // default = idea
+    expect(idea.getAttribute("aria-checked")).toBe("true");
+    expect(building.getAttribute("aria-checked")).toBe("false");
+
+    // With 'idea', copied prompt has no stage prefix
+    fireEvent.click(screen.getAllByRole("button", { name: /Copiar para implementar no Lovable/i })[0]);
+    const ideaCall = writeText.mock.calls.at(-1)?.[0] as string;
+    expect(ideaCall).toContain("estrutura de MVP");
+    expect(ideaCall).not.toContain("Não recrie tudo do zero");
+    expect(ideaCall).not.toContain("Não recrie o MVP");
+
+    // Switch to 'building' → prompt gains the building prefix
+    writeText.mockClear();
+    fireEvent.click(building);
+    expect(building.getAttribute("aria-checked")).toBe("true");
+    fireEvent.click(screen.getAllByRole("button", { name: /Copiar para implementar no Lovable/i })[0]);
+    const buildCall = writeText.mock.calls.at(-1)?.[0] as string;
+    expect(buildCall).toContain("Não recrie tudo do zero");
+    expect(buildCall).toContain("estrutura de MVP");
+
+    // Switch to 'ready' → prompt gains the ready prefix
+    writeText.mockClear();
+    fireEvent.click(ready);
+    fireEvent.click(screen.getAllByRole("button", { name: /Copiar para implementar no Lovable/i })[0]);
+    const readyCall = writeText.mock.calls.at(-1)?.[0] as string;
+    expect(readyCall).toContain("Não recrie o MVP");
+
+    // Persistence: choice saved to localStorage and restored on remount
+    expect(window.localStorage.getItem("fabrica_apps_mvp_stage")).toBe("ready");
+    unmount();
+    render(<MvpArquiteturaModule />);
+    expect(
+      screen.getByRole("radio", { name: /Já tenho app pronto/i }).getAttribute("aria-checked"),
+    ).toBe("true");
+  });
+
 
   it("renders title, subtitle, highlight, tutorial, 5 etapas and glossary", () => {
     render(<MvpArquiteturaModule />);
