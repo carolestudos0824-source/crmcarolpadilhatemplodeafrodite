@@ -279,7 +279,7 @@ export const CommandCard = ({
                 onChange={toggleDone}
                 className="accent-accent w-4 h-4"
               />
-              Já colei este texto no Lovable
+              Já testei o resultado no Lovable e quero marcar como concluído
             </label>
           </div>
         </div>
@@ -547,7 +547,7 @@ export const CommandCard = ({
                   onChange={toggleDone}
                   className="accent-accent w-4 h-4"
                 />
-                Já colei este texto no Lovable
+                Já testei o resultado no Lovable e quero marcar como concluído
               </label>
             </div>
           )}
@@ -561,7 +561,7 @@ export const CommandCard = ({
                   onChange={toggleDone}
                   className="accent-accent w-4 h-4"
                 />
-                Já colei este texto no Lovable
+                Já testei o resultado no Lovable e quero marcar como concluído
               </label>
               <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70">
                 Etapa guiada
