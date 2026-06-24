@@ -13,6 +13,38 @@ import {
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
 
 /**
+ * Deriva uma "última ação registrada" a partir do progresso já existente.
+ * Não cria timestamp, não inventa horário, não muda estrutura de dados.
+ * Estratégia: percorre commands_done e modules_done na ordem de inserção
+ * do objeto (ordem natural do JS) e devolve a última entrada truthy,
+ * mapeando o prefixo do key para um módulo conhecido quando possível.
+ */
+const resolveLastAction = (
+  commandsDone: Record<string, boolean>,
+  modulesDone: Record<string, boolean>,
+  moduleLabel: Record<ModuleId, string>,
+): string | null => {
+  const cmdKeys = Object.keys(commandsDone).filter((k) => commandsDone[k]);
+  if (cmdKeys.length > 0) {
+    const lastKey = cmdKeys[cmdKeys.length - 1];
+    const moduleId = MODULE_ORDER.find(
+      (id) => lastKey === id || lastKey.startsWith(`${id}_`),
+    );
+    if (moduleId) {
+      return `Você marcou uma etapa de ${moduleLabel[moduleId]} como concluída.`;
+    }
+    return "Você marcou uma etapa como concluída.";
+  }
+  const modKeys = Object.keys(modulesDone).filter((k) => modulesDone[k]);
+  if (modKeys.length > 0) {
+    const lastKey = modKeys[modKeys.length - 1] as ModuleId;
+    const label = moduleLabel[lastKey];
+    if (label) return `Você concluiu o módulo ${label}.`;
+  }
+  return null;
+};
+
+/**
  * Card de leitura "Estado Atual do Projeto" — consolida, sem alterar dados:
  * - Produto principal (sempre Fábrica de Apps com IA)
  * - Modo atual (Admin/Usuário)
@@ -39,7 +71,7 @@ type Props = {
 export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
   const { openEditor, context: liveContext } = useProjectContext();
-  const { active, moduleDone } = useUserProgress();
+  const { active, moduleDone, commands } = useUserProgress();
   const auth = useAuthState();
   const [copying, setCopying] = useState(false);
   const [copiedHint, setCopiedHint] = useState(false);
@@ -67,6 +99,11 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
 
   const activeModuleId = (activeProject?.currentModuleId ?? active) as ModuleId | null;
   const activeModuleLabel = activeModuleId ? MODULE_LABEL[activeModuleId] ?? "—" : "—";
+
+  const lastActionText = useMemo(
+    () => resolveLastAction(commands, moduleDone, MODULE_LABEL),
+    [commands, moduleDone],
+  );
 
   const isDone = (id: ModuleId) =>
     completedIds.includes(id) || !!moduleDone[id];
@@ -223,6 +260,17 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
           value={activeModuleLabel}
         />
       </div>
+
+      <p
+        className="mt-2 text-[11px] text-muted-foreground/80"
+        aria-live="polite"
+      >
+        <span className="text-muted-foreground/60">Última ação registrada: </span>
+        {lastActionText ??
+          "Nenhuma ação concluída ainda. Comece pelo próximo passo recomendado."}
+      </p>
+
+
 
       <div className="mt-3 h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
         <div
