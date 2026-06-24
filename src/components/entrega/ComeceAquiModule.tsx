@@ -1,9 +1,10 @@
+import { useState } from "react";
 import {
   Sparkles,
   ExternalLink,
   Lightbulb,
   AlertTriangle,
-  
+  ArrowRight,
   Compass,
   Search,
   FolderPlus,
@@ -27,7 +28,7 @@ const valueCards = [
   { title: "Agente Arquiteto", desc: "Ajuda você a pensar, corrigir e decidir antes de construir." },
 ];
 
-const journey: [string, string][] = [
+const journeySteps: [string, string][] = [
   ["Comece com clareza", "Entenda o Lovable, escolha sua ideia e decida o que o app precisa fazer."],
   ["Planeje antes de construir", "Defina público, dor, promessa, MVP, telas e fluxo principal."],
   ["Construa a base no Lovable", "Copie um comando por vez, cole no Lovable e crie o app uma etapa por vez."],
@@ -62,10 +63,46 @@ const scrollToId = (id: string) => {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
+type JourneyId = "comecando_do_zero" | "app_completo_por_versoes" | "ja_tenho_um_app";
+
+const JOURNEYS: Record<
+  JourneyId,
+  { title: string; next: ModuleId; nextLabel: string; helper: string }
+> = {
+  comecando_do_zero: {
+    title: "Começando do zero",
+    next: "mvp",
+    nextLabel: "Definir o MVP",
+    helper:
+      "Vamos clarear ideia, público, dor e a primeira versão funcional do seu app antes de gastar créditos no Lovable.",
+  },
+  app_completo_por_versoes: {
+    title: "Quero um app completo",
+    next: "planejar",
+    nextLabel: "Planejar por versões",
+    helper:
+      "Construa por versões: MVP, V2, V3 — login, banco, monetização, checkout e escala entram aos poucos, sem jogar tudo de uma vez no Lovable.",
+  },
+  ja_tenho_um_app: {
+    title: "Já tenho um app",
+    next: "melhorias",
+    nextLabel: "Auditar e melhorar meu app",
+    helper:
+      "Vamos auditar telas, login, banco, segurança, monetização e checkout — depois aplicar correções cirúrgicas e um plano de melhorias sem quebrar o que já funciona.",
+  },
+};
+
 export function ComeceAquiModule({ goTo }: Props) {
   const { openDrawer, activeProject } = useAppProjects();
   const moduleLabel = (id: ModuleId) => MODULES.find((m) => m.id === id)?.label ?? id;
   const hasApp = !!activeProject;
+  const [journey, setJourney] = useState<JourneyId | null>(null);
+
+  const pickJourney = (id: JourneyId) => {
+    setJourney(id);
+    // feedback visual antes da navegação
+    setTimeout(() => goTo(JOURNEYS[id].next), 220);
+  };
 
   return (
     <section>
@@ -141,20 +178,55 @@ export function ComeceAquiModule({ goTo }: Props) {
         <p className="text-sm text-foreground/90 mb-3">
           Você pode começar um app do zero, evoluir um app completo por versões ou auditar um app que já existe. A Fábrica cria qualquer app, construído por versões.
         </p>
-        <div className="grid sm:grid-cols-3 gap-2.5">
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="text-xs font-semibold text-accent mb-1">Começando do zero</div>
-            <div className="text-xs text-muted-foreground">Crie a primeira versão funcional.</div>
-          </div>
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="text-xs font-semibold text-accent mb-1">Quero um app completo</div>
-            <div className="text-xs text-muted-foreground">Construa por versões, sem jogar tudo de uma vez no Lovable.</div>
-          </div>
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="text-xs font-semibold text-accent mb-1">Já tenho um app</div>
-            <div className="text-xs text-muted-foreground">Use os módulos para auditar, corrigir, melhorar e escalar.</div>
-          </div>
+        <div className="grid sm:grid-cols-3 gap-2.5" role="radiogroup" aria-label="Escolha sua jornada">
+          {(Object.keys(JOURNEYS) as JourneyId[]).map((id) => {
+            const j = JOURNEYS[id];
+            const selected = journey === id;
+            const desc =
+              id === "comecando_do_zero"
+                ? "Crie a primeira versão funcional."
+                : id === "app_completo_por_versoes"
+                ? "Construa por versões, sem jogar tudo de uma vez no Lovable."
+                : "Use os módulos para auditar, corrigir, melhorar e escalar.";
+            return (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                onClick={() => pickJourney(id)}
+                className={`text-left rounded-lg border p-3 min-h-[88px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
+                  selected
+                    ? "border-accent bg-accent/15 shadow-[0_0_24px_-12px_rgba(34,211,238,0.7)]"
+                    : "border-white/10 bg-white/5 hover:bg-white/10 hover:border-accent/40"
+                }`}
+              >
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-accent mb-1">
+                  {j.title}
+                  {selected && <Sparkles size={11} />}
+                </div>
+                <div className="text-xs text-muted-foreground">{desc}</div>
+                <div className="mt-2 text-[11px] inline-flex items-center gap-1 text-foreground/80">
+                  <ArrowRight size={11} />
+                  <span>{j.nextLabel}</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
+        {journey && (
+          <div className="mt-3 rounded-lg border border-accent/30 bg-accent/10 p-3 text-xs text-foreground/90 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <span className="flex-1">{JOURNEYS[journey].helper}</span>
+            <button
+              type="button"
+              onClick={() => goTo(JOURNEYS[journey].next)}
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-accent/50 bg-accent/15 text-accent hover:bg-accent/25 font-medium min-h-[36px]"
+            >
+              {JOURNEYS[journey].nextLabel}
+              <ArrowRight size={12} />
+            </button>
+          </div>
+        )}
       </GlassCard>
 
 
@@ -251,7 +323,7 @@ export function ComeceAquiModule({ goTo }: Props) {
       </header>
 
       <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-6">
-        {journey.map(([t], i) => (
+        {journeySteps.map(([t], i) => (
           <li
             key={t}
             className="flex items-start gap-2.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2"
