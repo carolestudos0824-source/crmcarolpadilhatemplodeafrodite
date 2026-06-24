@@ -183,21 +183,36 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [editOpen, setEditOpen] = useState(false);
   const Icon = etapa.icon;
   const currentPrompt = etapa.tabs[tab];
-  const promptForCopy = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
   const promptForEditor = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
+  const isResultStep = etapa.n === 5;
+  const isFeaturesStep = etapa.n === 2;
   return (
-    <GlassCard className="p-5 md:p-6">
+    <GlassCard
+      className={`p-5 md:p-6 ${
+        isResultStep ? "border-accent/40 bg-accent/[0.07]" : ""
+      }`}
+    >
       <div className="flex items-start gap-4 mb-4">
         <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
           <Icon size={20} />
         </div>
         <div className="min-w-0">
           <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
-            Etapa {etapa.n}
+            {isResultStep ? "Resultado desta etapa" : `Etapa ${etapa.n}`}
           </div>
           <h3 className="text-lg md:text-xl font-heading font-bold leading-tight">
-            {etapa.title}
+            {isResultStep ? "Arquitetura pronta para o Lovable" : etapa.title}
           </h3>
+          {isResultStep && (
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Este é o comando consolidado para construir a primeira versão do app com base no MVP, telas, dados e regras definidos acima.
+            </p>
+          )}
+          {isFeaturesStep && (
+            <p className="text-xs text-amber-200/90 mt-1.5">
+              Escolha no máximo 5 funcionalidades principais.
+            </p>
+          )}
         </div>
       </div>
 
@@ -240,9 +255,10 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar para o Agente"
               : tab === "corrigir"
               ? "Copiar correção"
+              : isResultStep
+              ? "Copiar arquitetura para implementar no Lovable"
               : "Copiar para implementar no Lovable"
           }
-          
         />
       )}
 
@@ -259,8 +275,10 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 
 
 
-export function MvpArquiteturaModule() {
+export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
+  const { activeProject, openDrawer } = useAppProjects();
+
 
   const copyAgentHelp = async () => {
     try {
