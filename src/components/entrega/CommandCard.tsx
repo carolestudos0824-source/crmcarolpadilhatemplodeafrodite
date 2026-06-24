@@ -584,6 +584,7 @@ export const CommandCard = ({
       stepObjective={objective ?? description}
       command={commandText}
       moduleId={moduleId}
+      initialMode="agent"
     />
     <AgentClipboardFallback prompt={agentFallback} onClose={() => setAgentFallback(null)} />
     </>
