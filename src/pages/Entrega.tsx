@@ -448,6 +448,19 @@ function EntregaInner() {
                 {email}
               </span>
             )}
+            <button
+              type="button"
+              onClick={() => {
+                openAgenteArquiteto();
+                toast.success("Agente Arquiteto aberto. Use ele para pensar antes de mexer no Lovable.");
+              }}
+              className="lg:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/15"
+              aria-label="Falar com o Agente"
+              title="Falar com o Agente"
+            >
+              <Bot size={12} />
+              <span className="hidden sm:inline">Falar com o Agente</span>
+            </button>
             <MyAppsHeaderButton />
             <ContextHeaderButton />
             <FontSizeControl />
@@ -549,7 +562,7 @@ function EntregaInner() {
                 <ExternalLink size={12} className="shrink-0 opacity-70" />
               </button>
               <p className="text-[10px] text-muted-foreground mt-1.5 px-1 leading-snug">
-                Use o Agente para revisar ideias, tirar dúvidas e decidir o próximo passo.
+                Use o Agente para pensar, revisar erros e decidir o próximo passo antes de mexer no Lovable.
               </p>
             </div>
 
