@@ -460,7 +460,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
-          Só avance quando o MVP estiver pequeno, claro e construível.
+          Só avance quando a primeira versão funcional estiver clara e construível. Extras devem estar listados para próximas versões.
         </p>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
