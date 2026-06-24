@@ -36,8 +36,9 @@ describe("PlanejarModule", () => {
       screen.getByRole("heading", { level: 1, name: /Planeje seu app antes de construir/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Antes de abrir o Lovable, você precisa saber qual problema/i),
+      screen.getByText(/Antes de construir, evoluir ou auditar um app/i),
     ).toBeInTheDocument();
+
     expect(
       screen.getByText(/Um app começa antes do código/i),
     ).toBeInTheDocument();

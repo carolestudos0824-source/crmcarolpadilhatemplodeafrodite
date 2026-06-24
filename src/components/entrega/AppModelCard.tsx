@@ -535,7 +535,7 @@ Regras:
                     <div className="text-[10px] uppercase tracking-wider text-accent font-semibold mb-1">Etapa 2 · Lovable</div>
                     <div className="font-heading font-semibold text-sm text-foreground">Lovable constrói</div>
                     <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
-                      Copie o prompt de construção e cole no Lovable para gerar a primeira versão do app.
+                      Copie o prompt de construção e cole no Lovable para gerar a primeira versão funcional do app. Próximas versões serão previstas em Melhorias e Versões.
                     </p>
                   </div>
                   <ArrowRight size={16} className="hidden lg:block self-center text-muted-foreground" />
@@ -896,7 +896,7 @@ Regras:
                 </ul>
                 {model.cutFromFirst?.length ? (
                   <div className="rounded-lg border border-rose-500/20 bg-rose-500/[0.06] p-3 text-xs text-rose-100/90">
-                    <div className="font-semibold mb-1">Fica fora da primeira versão</div>
+                    <div className="font-semibold mb-1">Fica para próximas versões</div>
                     <ul className="space-y-0.5">
                       {model.cutFromFirst.map((c) => (
                         <li key={c}>— {c}</li>

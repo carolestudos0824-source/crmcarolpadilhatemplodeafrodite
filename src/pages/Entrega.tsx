@@ -661,7 +661,7 @@ function EntregaInner() {
               <AgentArchitectCard
                 eyebrow="Não sabe por onde começar?"
                 title="O Agente Arquiteto é seu guia"
-                subtitle="Use ele para revisar ideias, entender os prompts, simplificar o MVP e decidir o próximo passo dentro da Fábrica de Apps com IA."
+                subtitle="Use ele para revisar ideias, entender os prompts, simplificar a primeira versão funcional ou auditar um app já existente dentro da Fábrica de Apps com IA."
                 description="Recomendado para iniciantes antes de copiar qualquer prompt para o Lovable. Tire dúvidas, valide sua ideia e só então construa."
                 benefits={[
                   "Entenda o que construir primeiro",
@@ -2383,7 +2383,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "checklist") {
     const overviewCards = [
       { title: "Ideia clara", desc: "Público, dor e promessa definidos." },
-      { title: "MVP funcional", desc: "Primeira versão criada e testada no celular." },
+      { title: "Primeira versão funcional", desc: "Primeira versão criada e testada no celular. Próximas versões entram em Melhorias." },
       { title: "Venda preparada", desc: "Página, preço, checkout e entrega organizados." },
       { title: "Validação real", desc: "Pessoas reais testaram e deram sinais concretos." },
     ];
@@ -2422,7 +2422,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           <ol className="list-decimal list-inside space-y-1.5 text-sm text-muted-foreground">
             <li>Marque apenas o que realmente foi feito.</li>
             <li>Volte ao módulo correspondente quando uma fase estiver incompleta.</li>
-            <li>Não pule para venda se o MVP ainda não funciona.</li>
+            <li>Não pule para venda se a primeira versão funcional ainda não entrega o resultado principal.</li>
             <li>Não pule para campanha se a oferta ainda não está clara.</li>
             <li>Não escale antes de validar com pessoas reais.</li>
           </ol>

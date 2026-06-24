@@ -305,8 +305,9 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           Planeje seu app antes de construir
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Antes de abrir o Lovable, defina problema, público, promessa, ação principal e o que fica fora do MVP.
+          Antes de construir, evoluir ou auditar um app, defina problema, público, promessa, ação principal e o que entra na primeira versão funcional.
         </p>
+
         <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
           Copie um comando por vez e avance só quando a etapa estiver clara.
         </p>
@@ -322,8 +323,12 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               </h2>
               <p className="text-sm text-muted-foreground mt-1.5">
                 Para gerar um plano útil, primeiro selecione uma ideia ou crie um app em foco.
-                Depois esta etapa vai ajudar você a definir problema, público, promessa, ação principal e escopo do MVP.
+                Depois esta etapa vai ajudar você a definir problema, público, promessa, ação principal e escopo da primeira versão funcional.
               </p>
+              <p className="text-xs text-muted-foreground/90 mt-2">
+                Já tem um app? Use esta etapa como auditoria do plano atual antes de evoluir.
+              </p>
+
             </div>
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
@@ -451,7 +456,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               Plano inicial do app
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Este é o resumo que deve guiar a construção do MVP. Copie para o Lovable apenas depois de revisar os 5 pontos acima.
+              Resumo da primeira versão funcional. Próximas versões serão priorizadas em Melhorias e Versões. Copie para o Lovable apenas depois de revisar os 5 pontos acima.
             </p>
           </div>
         </div>

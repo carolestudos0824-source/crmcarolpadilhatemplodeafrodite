@@ -133,6 +133,32 @@ export function ComeceAquiModule({ goTo }: Props) {
         </div>
       </header>
 
+      {/* Três formas de usar a Fábrica */}
+      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/[0.08] via-white/[0.02] to-transparent">
+        <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
+          Três formas de usar a Fábrica
+        </div>
+        <p className="text-sm text-foreground/90 mb-3">
+          Você pode começar um app do zero, evoluir um app completo por versões ou auditar um app que já existe. A Fábrica cria qualquer app, construído por versões.
+        </p>
+        <div className="grid sm:grid-cols-3 gap-2.5">
+          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div className="text-xs font-semibold text-accent mb-1">Começando do zero</div>
+            <div className="text-xs text-muted-foreground">Crie a primeira versão funcional.</div>
+          </div>
+          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div className="text-xs font-semibold text-accent mb-1">Quero um app completo</div>
+            <div className="text-xs text-muted-foreground">Construa por versões, sem jogar tudo de uma vez no Lovable.</div>
+          </div>
+          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div className="text-xs font-semibold text-accent mb-1">Já tenho um app</div>
+            <div className="text-xs text-muted-foreground">Use os módulos para auditar, corrigir, melhorar e escalar.</div>
+          </div>
+        </div>
+      </GlassCard>
+
+
+
       {/* Comece seu primeiro app em 3 passos */}
       <section
         aria-label="Comece seu primeiro app em 3 passos"
