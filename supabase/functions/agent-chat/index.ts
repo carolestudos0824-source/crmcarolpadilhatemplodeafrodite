@@ -142,11 +142,11 @@ Deno.serve(async (req) => {
     const userId = userData.user.id;
 
     const body = await req.json().catch(() => ({}));
-    const projectId: string | undefined = body.projectId;
-    const userMessage: string = (body.userMessage ?? "").toString().trim();
-    const moduleKey: string | null = body.moduleKey ?? null;
-    const stepKey: string | null = body.stepKey ?? null;
-    if (!projectId) return json({ error: "missing_projectId" }, 400);
+    const projectId = typeof body.project_id === "string" ? body.project_id.trim() : "";
+    const userMessage: string = (body.user_message ?? "").toString().trim();
+    const moduleKey: string | null = typeof body.module_key === "string" ? body.module_key : null;
+    const stepKey: string | null = typeof body.step_key === "string" ? body.step_key : null;
+    if (!projectId) return json({ error: "missing_project_id" }, 400);
     if (!userMessage) return json({ error: "missing_userMessage" }, 400);
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE, { auth: { persistSession: false } });
@@ -158,7 +158,7 @@ Deno.serve(async (req) => {
       .eq("id", projectId)
       .eq("user_id", userId)
       .maybeSingle();
-    if (projErr || !project) return json({ error: "project_not_found" }, 404);
+    if (projErr || !project) return json({ error: "project_forbidden" }, 403);
 
     // 2) Garantir conversation
     let convId: string | undefined;
@@ -231,7 +231,7 @@ Deno.serve(async (req) => {
     const history = (historyDesc ?? []).reverse();
 
     // 6) Inserir mensagem do usuário
-    await admin.from("agent_messages").insert({
+    const { error: userMessageErr } = await admin.from("agent_messages").insert({
       conversation_id: convId,
       project_id: projectId,
       user_id: userId,
@@ -240,6 +240,7 @@ Deno.serve(async (req) => {
       module_key: moduleKey,
       step_key: stepKey,
     });
+    if (userMessageErr) return json({ error: "message_persist_failed", detail: userMessageErr.message }, 500);
 
     // 7) Montar mensagens para o LLM
     const contextBlock = buildContextBlock({ project, ctx, moduleKey, stepKey, outputs });
@@ -271,7 +272,7 @@ Deno.serve(async (req) => {
       aiJson?.choices?.[0]?.message?.content?.toString() ?? "(sem resposta)";
 
     // 9) Persistir resposta do assistant
-    const { data: savedAssistant } = await admin
+    const { data: savedAssistant, error: assistantErr } = await admin
       .from("agent_messages")
       .insert({
         conversation_id: convId,
@@ -285,12 +286,17 @@ Deno.serve(async (req) => {
       })
       .select("id, created_at")
       .single();
+    if (assistantErr || !savedAssistant) {
+      return json({ error: "assistant_persist_failed", detail: assistantErr?.message }, 500);
+    }
 
     // 10) Bump updated_at na conversa
     await admin
       .from("agent_conversations")
       .update({ updated_at: new Date().toISOString() })
-      .eq("id", convId!);
+      .eq("id", convId!)
+      .eq("project_id", projectId)
+      .eq("user_id", userId);
 
     return json({
       conversationId: convId,

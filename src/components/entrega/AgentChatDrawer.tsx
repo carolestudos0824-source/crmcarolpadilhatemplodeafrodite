@@ -1,14 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare } from "lucide-react";
-import { toast } from "sonner";
 import { useAgentChat } from "@/components/entrega/AgentChatProvider";
 import { useAppProjects } from "@/hooks/useAppProjects";
-import {
-  loadProjectMessages,
-  sendAgentMessage,
-  saveAsProjectDecision,
-  type AgentMessage,
-} from "@/lib/agentChat";
 
 const MODULE_LABELS: Record<string, string> = {
   comece: "Comece aqui",
@@ -52,48 +45,31 @@ const QUICK_ACTIONS: { label: string; text: (ctx: { stepTitle?: string | null; m
 ];
 
 export const AgentChatDrawer = () => {
-  const { isOpen, args, close } = useAgentChat();
+  const {
+    isOpen,
+    args,
+    close,
+    messages,
+    loadingHistory,
+    sending,
+    savingMessageId,
+    input,
+    setInput,
+    send,
+    saveDecision,
+  } = useAgentChat();
   const { activeProject, openDrawer: openMyApps } = useAppProjects();
-  const [messages, setMessages] = useState<AgentMessage[]>([]);
-  const [loadingHistory, setLoadingHistory] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [input, setInput] = useState("");
-  const [savingIdx, setSavingIdx] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const moduleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
   const moduleLabel = moduleKey ? MODULE_LABELS[moduleKey] ?? moduleKey : "—";
-  const stepKey = args.stepKey ?? null;
   const stepTitle = args.stepTitle ?? null;
-
-  // Carregar histórico ao abrir / trocar de projeto
-  useEffect(() => {
-    if (!isOpen || !activeProject?.id) {
-      setMessages([]);
-      return;
-    }
-    let cancelled = false;
-    setLoadingHistory(true);
-    loadProjectMessages(activeProject.id)
-      .then((msgs) => {
-        if (!cancelled) setMessages(msgs);
-      })
-      .catch(() => {
-        if (!cancelled) setMessages([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoadingHistory(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [isOpen, activeProject?.id]);
 
   // Pré-preencher draft quando abrir
   useEffect(() => {
     if (isOpen && args.initialDraft) setInput(args.initialDraft);
-  }, [isOpen, args.initialDraft]);
+  }, [isOpen, args.initialDraft, setInput]);
 
   // Foco no textarea ao abrir
   useEffect(() => {
@@ -105,84 +81,9 @@ export const AgentChatDrawer = () => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages.length, sending]);
 
-  const send = async (text: string) => {
-    const msg = text.trim();
-    if (!msg || !activeProject?.id || sending) return;
-    setSending(true);
-    const optimisticUser: AgentMessage = {
-      id: `optimistic-${Date.now()}`,
-      role: "user",
-      content: msg,
-      created_at: new Date().toISOString(),
-      module_key: moduleKey,
-      step_key: stepKey,
-    };
-    setMessages((prev) => [...prev, optimisticUser]);
-    setInput("");
-    try {
-      const res = await sendAgentMessage({
-        projectId: activeProject.id,
-        userMessage: msg,
-        moduleKey,
-        stepKey,
-      });
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: res.assistant.id,
-          role: "assistant",
-          content: res.assistant.content,
-          created_at: res.assistant.created_at,
-          module_key: moduleKey,
-          step_key: stepKey,
-        },
-      ]);
-    } catch (e) {
-      const detail = e instanceof Error ? e.message : "Erro desconhecido";
-      if (/credits_exhausted|402/i.test(detail)) {
-        toast.error("Créditos da Lovable AI esgotados.", {
-          description: "Adicione créditos em Configurações → Plano e créditos.",
-        });
-      } else if (/rate_limited|429/i.test(detail)) {
-        toast.error("Muitas requisições. Aguarde alguns segundos e tente novamente.");
-      } else {
-        toast.error("Falha ao consultar o Agente", { description: detail });
-      }
-      // remove a mensagem otimista do usuário em caso de erro
-      setMessages((prev) => prev.filter((m) => m.id !== optimisticUser.id));
-    } finally {
-      setSending(false);
-      setTimeout(() => textareaRef.current?.focus(), 30);
-    }
-  };
-
-  const saveDecision = async (msg: AgentMessage, idx: number) => {
-    if (!activeProject?.id || !moduleKey) {
-      toast.error("Precisa de projeto e módulo ativos para salvar como decisão.");
-      return;
-    }
-    setSavingIdx(idx);
-    try {
-      await saveAsProjectDecision({
-        projectId: activeProject.id,
-        moduleKey,
-        stepKey,
-        title: stepTitle ?? `Decisão em ${moduleLabel}`,
-        content: msg.content,
-      });
-      toast.success("Salvo como decisão do projeto.", {
-        description: "O Agente vai lembrar disso nos próximos módulos.",
-      });
-    } catch (e) {
-      toast.error("Não foi possível salvar a decisão", {
-        description: e instanceof Error ? e.message : "Erro desconhecido",
-      });
-    } finally {
-      setSavingIdx(null);
-    }
-  };
-
   if (!isOpen) return null;
+
+  const chatBusy = sending || loadingHistory;
 
   return (
     <div className="fixed inset-0 z-[80] flex" role="dialog" aria-modal="true" aria-label="Chat com o Agente Arquiteto">
@@ -245,7 +146,7 @@ export const AgentChatDrawer = () => {
 
           {activeProject && loadingHistory && (
             <div className="text-xs text-muted-foreground flex items-center gap-2">
-              <Loader2 size={14} className="animate-spin" /> Carregando histórico...
+              <Loader2 size={14} className="animate-spin" /> Carregando contexto deste projeto...
             </div>
           )}
 
@@ -265,7 +166,7 @@ export const AgentChatDrawer = () => {
             </div>
           )}
 
-          {messages.map((m, i) => {
+          {messages.map((m) => {
             const isUser = m.role === "user";
             return (
               <div key={m.id} className={isUser ? "flex justify-end" : ""}>
@@ -281,11 +182,11 @@ export const AgentChatDrawer = () => {
                     <div className="mt-2 flex flex-wrap gap-2">
                       <button
                         type="button"
-                        onClick={() => saveDecision(m, i)}
-                        disabled={savingIdx === i}
+                        onClick={() => saveDecision(m, stepTitle ?? `Decisão em ${moduleLabel}`)}
+                        disabled={savingMessageId === m.id || loadingHistory}
                         className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 rounded-md border border-emerald-400/30 bg-emerald-400/10 text-emerald-200 hover:bg-emerald-400/20 disabled:opacity-50"
                       >
-                        {savingIdx === i ? <Loader2 size={11} className="animate-spin" /> : <BookmarkPlus size={11} />}
+                        {savingMessageId === m.id ? <Loader2 size={11} className="animate-spin" /> : <BookmarkPlus size={11} />}
                         Salvar como decisão do projeto
                       </button>
                     </div>
@@ -309,7 +210,7 @@ export const AgentChatDrawer = () => {
               <button
                 key={qa.label}
                 type="button"
-                disabled={sending}
+                disabled={chatBusy}
                 onClick={() => send(qa.text({ stepTitle, moduleLabel }))}
                 className="text-[11px] px-2.5 py-1.5 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/80 disabled:opacity-50 inline-flex items-center gap-1"
               >
@@ -333,7 +234,7 @@ export const AgentChatDrawer = () => {
                 }
               }}
               rows={2}
-              disabled={!activeProject || sending}
+              disabled={!activeProject || chatBusy}
               placeholder={
                 activeProject ? "Pergunte ao Agente sobre este projeto..." : "Escolha um projeto para conversar."
               }
@@ -342,11 +243,11 @@ export const AgentChatDrawer = () => {
             <button
               type="button"
               onClick={() => void send(input)}
-              disabled={!activeProject || sending || !input.trim()}
+              disabled={!activeProject || chatBusy || !input.trim()}
               className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-40"
               aria-label="Enviar"
             >
-              {sending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+              {chatBusy ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
             </button>
           </div>
           <p className="text-[10px] text-muted-foreground/70 mt-1.5">
