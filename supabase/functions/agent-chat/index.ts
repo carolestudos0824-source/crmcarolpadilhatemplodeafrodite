@@ -182,11 +182,12 @@ Deno.serve(async (req) => {
       }
     }
 
-    // 3) Contexto salvo
+    // 3) Contexto salvo (escopo project_id + user_id)
     const { data: ctx } = await admin
       .from("project_contexts")
       .select("summary, context_json")
       .eq("project_id", projectId)
+      .eq("user_id", userId)
       .maybeSingle();
 
     // 4) Outputs relevantes — módulo atual + módulo anterior na ordem
@@ -202,6 +203,7 @@ Deno.serve(async (req) => {
         .from("project_outputs")
         .select("module_key, step_key, title, content, created_at")
         .eq("project_id", projectId)
+        .eq("user_id", userId)
         .in("module_key", moduleScope)
         .order("created_at", { ascending: false })
         .limit(8);
@@ -211,6 +213,7 @@ Deno.serve(async (req) => {
         .from("project_outputs")
         .select("module_key, step_key, title, content, created_at")
         .eq("project_id", projectId)
+        .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(5);
       outputs = data ?? [];
@@ -221,6 +224,8 @@ Deno.serve(async (req) => {
       .from("agent_messages")
       .select("role, content")
       .eq("conversation_id", convId!)
+      .eq("project_id", projectId)
+      .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(10);
     const history = (historyDesc ?? []).reverse();
