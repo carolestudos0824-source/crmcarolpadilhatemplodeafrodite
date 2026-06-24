@@ -17,9 +17,11 @@ import {
   Circle,
   Sparkles,
   Pencil,
+  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import { useAppProjects } from "@/hooks/useAppProjects";
 import {
   CopyCommandWarning,
   wrapLovable,
@@ -27,6 +29,7 @@ import {
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { PromptEditDialog } from "@/components/entrega/PromptEditDialog";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
@@ -180,21 +183,37 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [editOpen, setEditOpen] = useState(false);
   const Icon = etapa.icon;
   const currentPrompt = etapa.tabs[tab];
-  const promptForCopy = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
   const promptForEditor = tab === "agente" ? currentPrompt : wrapLovable(currentPrompt);
+  const isResultStep = etapa.n === 5;
+  const isFeaturesStep = etapa.n === 2;
   return (
-    <GlassCard className="p-5 md:p-6">
+    <GlassCard
+      className={`p-5 md:p-6 ${
+        isResultStep ? "border-accent/40 bg-accent/[0.07]" : ""
+      }`}
+    >
       <div className="flex items-start gap-4 mb-4">
         <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
           <Icon size={20} />
         </div>
         <div className="min-w-0">
           <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
-            Etapa {etapa.n}
+            {isResultStep ? `Etapa ${etapa.n} · Resultado desta etapa` : `Etapa ${etapa.n}`}
           </div>
+
           <h3 className="text-lg md:text-xl font-heading font-bold leading-tight">
-            {etapa.title}
+            {isResultStep ? "Arquitetura pronta para o Lovable" : etapa.title}
           </h3>
+          {isResultStep && (
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Este é o comando consolidado para construir a primeira versão do app com base no MVP, telas, dados e regras definidos acima.
+            </p>
+          )}
+          {isFeaturesStep && (
+            <p className="text-xs text-amber-200/90 mt-1.5">
+              Escolha no máximo 5 funcionalidades principais.
+            </p>
+          )}
         </div>
       </div>
 
@@ -237,9 +256,10 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               ? "Copiar para o Agente"
               : tab === "corrigir"
               ? "Copiar correção"
+              : isResultStep
+              ? "Copiar arquitetura para implementar no Lovable"
               : "Copiar para implementar no Lovable"
           }
-          
         />
       )}
 
@@ -256,8 +276,10 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 
 
 
-export function MvpArquiteturaModule() {
+export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
+  const { activeProject, openDrawer } = useAppProjects();
+
 
   const copyAgentHelp = async () => {
     try {
@@ -289,24 +311,71 @@ export function MvpArquiteturaModule() {
         <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
           Em cada etapa, você pode copiar o comando direto ou revisar o prompt antes de colar no chat do seu projeto no Lovable.
         </p>
+        <p className="text-xs text-amber-200/90 max-w-3xl mt-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] px-3 py-2">
+          <strong className="text-amber-200">Regra do MVP:</strong> no máximo 5 funcionalidades principais.
+        </p>
       </header>
+
+      {!activeProject && (
+        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent">
+          <div className="flex items-start gap-3 mb-4">
+            <AlertTriangle size={20} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
+                Escolha um app antes de desenhar o MVP
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1.5">
+                Para definir MVP, telas, funcionalidades e dados com precisão, primeiro selecione ou crie o app em foco.
+                Assim os comandos ficam conectados ao problema, público e promessa do seu projeto.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+            <button
+              onClick={openDrawer}
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold shadow-[0_0_0_1px_rgba(0,194,255,0.25)] transition"
+            >
+              <Sparkles size={14} /> Criar ou selecionar app
+            </button>
+            {goTo && (
+              <button
+                onClick={() => goTo("planejar")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+              >
+                Voltar para Planejar
+              </button>
+            )}
+            {goTo && (
+              <button
+                onClick={() => goTo("ideias")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-sm font-medium transition"
+              >
+                Ver ideias prontas
+              </button>
+            )}
+          </div>
+        </GlassCard>
+      )}
 
       <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
           <div className="space-y-2">
             <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-              Um MVP não é o app dos sonhos. É a primeira versão simples, clara e testável.
-              Aqui você vai decidir o que entra agora, como o app se organiza e o que deve
-              ficar para depois.
+              Um MVP é a primeira versão simples, clara e testável do app. Aqui você vai
+              decidir o que entra agora, como o app se organiza e o que deve ficar para depois.
             </p>
             <p className="text-sm text-foreground/80 leading-relaxed">
               O MVP é o <strong className="text-foreground/95">quê</strong>: quais funcionalidades entram na primeira versão.
               A arquitetura é o <strong className="text-foreground/95">como</strong>: as telas, os dados e as regras que sustentam essas funcionalidades.
             </p>
+            <p className="text-xs text-amber-200/90 leading-relaxed rounded-md border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 mt-2">
+              <strong>MVP com mais de 5 funcionalidades principais não é MVP.</strong> Um MVP não é o app dos sonhos.
+            </p>
           </div>
         </div>
       </GlassCard>
+
 
       <GlassCard className="p-5 mb-6">
         <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
@@ -383,13 +452,24 @@ export function MvpArquiteturaModule() {
           <CheckCircle2 size={16} className="text-emerald-300" />
           <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
         </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Só avance quando o MVP estiver pequeno, claro e construível.
+        </p>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
             const key = `${CHECKLIST_PREFIX}${item}`;
             const done = !!checklist[key];
+            const highlight = item === "Cortei funcionalidades extras";
             return (
               <li key={item}>
-                <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
+                <label
+                  className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition ${
+                    highlight
+                      ? "border-amber-400/30 bg-amber-400/[0.06] hover:bg-amber-400/[0.1]"
+                      : "border-white/10 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
+
                   <input
                     type="checkbox"
                     checked={done}

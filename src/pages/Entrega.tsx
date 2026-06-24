@@ -735,16 +735,19 @@ function EntregaInner() {
             moduleId={active}
           />
 
-          {active === "planejar" && (
+          {(active === "planejar" || active === "mvp") && (
             <div className="mt-8 mb-3">
               <h3 className="text-sm font-heading font-semibold text-muted-foreground uppercase tracking-wider">
                 Ferramentas extras
               </h3>
               <p className="text-xs text-muted-foreground/80 mt-1">
-                Use apenas se estiver travado ou quiser revisar melhor sua ideia antes de continuar.
+                {active === "mvp"
+                  ? "Use apenas se estiver travado ou quiser revisar melhor sua arquitetura antes de continuar."
+                  : "Use apenas se estiver travado ou quiser revisar melhor sua ideia antes de continuar."}
               </p>
             </div>
           )}
+
 
 
           {active === "ideias" && (
@@ -821,17 +824,20 @@ function EntregaInner() {
             {(() => {
               const isIdeias = active === "ideias";
               const isPlanejar = active === "planejar";
+              const isMvp = active === "mvp";
               const hasChosenIdea = !!appProjects.activeProject;
               const blockIdeias = isIdeias && !hasChosenIdea;
               const blockPlanejar = isPlanejar && !hasChosenIdea;
-              const blocked = blockIdeias || blockPlanejar;
+              const blockMvp = isMvp && !hasChosenIdea;
+              const blocked = blockIdeias || blockPlanejar || blockMvp;
               const customLabel = isIdeias
                 ? hasChosenIdea
                   ? "Próximo passo: Planejar o App"
                   : "Escolha uma ideia para avançar"
-                : isPlanejar && !hasChosenIdea
+                : (isPlanejar || isMvp) && !hasChosenIdea
                 ? "Escolha um app para avançar"
                 : null;
+
               const handleClick = () => {
                 if (blocked) return;
                 if (isIdeias && hasChosenIdea) {
@@ -2132,8 +2138,9 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return <PlanejarModule goTo={goTo} />;
   }
   if (active === "mvp") {
-    return <MvpArquiteturaModule />;
+    return <MvpArquiteturaModule goTo={goTo} />;
   }
+
   if (active === "telas") {
     return <TelasFluxoModule />;
   }
