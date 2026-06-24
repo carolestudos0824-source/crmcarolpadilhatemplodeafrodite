@@ -331,6 +331,10 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
                 Para definir MVP, telas, funcionalidades e dados com precisão, primeiro selecione ou crie o app em foco.
                 Assim os comandos ficam conectados ao problema, público e promessa do seu projeto.
               </p>
+              <p className="text-xs text-muted-foreground/90 mt-2">
+                Já tem um app? Use esta etapa como auditoria da estrutura atual antes de evoluir.
+              </p>
+
             </div>
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
