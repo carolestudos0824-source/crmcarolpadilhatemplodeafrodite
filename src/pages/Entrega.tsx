@@ -1043,9 +1043,27 @@ const ConstruirIntro = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyFirst} className="btn-primary text-sm min-h-[44px]" type="button">
-            <Copy size={14} /> Copiar Etapa 1
+          <button
+            onClick={() => setShowZero((v) => !v)}
+            className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
+            type="button"
+          >
+            <Sparkles size={14} /> Estou começando do zero
           </button>
+        </div>
+        <p className="mt-3 text-[11px] text-muted-foreground/80 max-w-2xl">
+          Comece pelo CommandCard da Etapa 1 abaixo — o caminho recomendado é{" "}
+          <span className="text-amber-200">Revisar com o Agente primeiro</span>.{" "}
+          <button
+            type="button"
+            onClick={copyFirst}
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            Atalho avançado: copiar Etapa 1 direto
+          </button>
+          . Use este atalho apenas se você já sabe que quer enviar a Etapa 1 direto ao Lovable.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-3">
           <button
             onClick={() => setShowZero((v) => !v)}
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
