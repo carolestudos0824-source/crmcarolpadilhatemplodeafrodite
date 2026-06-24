@@ -33,6 +33,8 @@ type Props = {
    * instead of generating from `command`. Useful for ModuleReviewCard.
    */
   customPrompts?: { lovable: string; agent: string };
+  /** Aba inicial. Use "agent" quando o usuário entrar pelo caminho de revisão. */
+  initialMode?: Mode;
 };
 
 type Mode = "lovable" | "agent";
@@ -108,10 +110,15 @@ export const PromptReviewDialog = ({
   command,
   moduleId,
   customPrompts,
+  initialMode = "lovable",
 }: Props) => {
   const { context, isFilled, openEditor } = useProjectContext();
   const { activeProject } = useAppProjects();
-  const [mode, setMode] = useState<Mode>("lovable");
+  const [mode, setMode] = useState<Mode>(initialMode);
+
+  useEffect(() => {
+    if (open) setMode(initialMode);
+  }, [open, initialMode]);
   const [copied, setCopied] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -248,6 +255,9 @@ export const PromptReviewDialog = ({
 
         {/* Tabs */}
         <div className="px-5 pt-4 space-y-2">
+          <p className="text-[11px] text-muted-foreground/90">
+            Em dúvida? Comece pelo Agente para pensar. Já sabe o que fazer? Vá direto pelo Lovable para executar.
+          </p>
           <div className="flex gap-2 flex-wrap">
             <button
               type="button"
