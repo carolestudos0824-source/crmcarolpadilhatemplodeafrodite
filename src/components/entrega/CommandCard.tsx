@@ -374,6 +374,9 @@ export const CommandCard = ({
                 />
 
                 <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
+                  <p className="w-full text-[11px] text-muted-foreground/90 text-left sm:text-right">
+                    Em dúvida? Comece pelo Agente para pensar. Já sabe o que fazer? Vá direto pelo Lovable para executar.
+                  </p>
                   <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                     <button
                       type="button"
