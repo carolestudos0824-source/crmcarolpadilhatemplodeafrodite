@@ -59,10 +59,8 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState("");
   const loadVersionRef = useRef(0);
   const activeProjectIdRef = useRef<string | null>(activeProjectId);
-
-  useEffect(() => {
-    activeProjectIdRef.current = activeProjectId;
-  }, [activeProjectId]);
+  const previousProjectIdRef = useRef<string | null>(activeProjectId);
+  activeProjectIdRef.current = activeProjectId;
 
   const open = useCallback((a?: AgentChatOpenArgs) => {
     setArgs(a ?? {});
@@ -73,16 +71,18 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     loadVersionRef.current += 1;
     const version = loadVersionRef.current;
+    const projectChanged = previousProjectIdRef.current !== activeProjectId;
+    previousProjectIdRef.current = activeProjectId;
 
     setMessages([]);
     setSelectedConversationId(null);
     setMessagesProjectId(activeProjectId);
     setSending(false);
     setSavingMessageId(null);
-    setInput("");
 
-    if (isOpen) {
+    if (projectChanged) {
       setArgs({});
+      setInput("");
     }
 
     if (!isOpen || !activeProjectId) {

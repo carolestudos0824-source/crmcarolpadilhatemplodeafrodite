@@ -104,16 +104,33 @@ export async function saveAsProjectDecision(args: SaveDecisionArgs, guard?: Proj
   if (!project?.id) throw new Error("project_not_found");
 
   assertStillCurrent(guard);
-  const { error: outErr } = await supabase.from("project_outputs").insert({
-    project_id: args.projectId,
-    user_id: userId,
-    module_key: args.moduleKey,
-    step_key: args.stepKey ?? null,
-    title: args.title ?? null,
-    content: args.content,
-    approved: true,
-  });
+  const { data: insertedOutput, error: outErr } = await supabase
+    .from("project_outputs")
+    .insert({
+      project_id: args.projectId,
+      user_id: userId,
+      module_key: args.moduleKey,
+      step_key: args.stepKey ?? null,
+      title: args.title ?? null,
+      content: args.content,
+      approved: true,
+    })
+    .select("id")
+    .single();
   if (outErr) throw outErr;
+  try {
+    assertStillCurrent(guard);
+  } catch (e) {
+    if (insertedOutput?.id) {
+      await supabase
+        .from("project_outputs")
+        .delete()
+        .eq("id", insertedOutput.id)
+        .eq("project_id", args.projectId)
+        .eq("user_id", userId);
+    }
+    throw e;
+  }
 
   // Upsert contexto: append do título no summary + merge no context_json
   assertStillCurrent(guard);
