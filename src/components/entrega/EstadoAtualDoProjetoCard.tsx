@@ -38,9 +38,10 @@ type Props = {
 
 export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
-  const { openEditor } = useProjectContext();
+  const { openEditor, context: liveContext } = useProjectContext();
   const { active, moduleDone } = useUserProgress();
   const auth = useAuthState();
+  const [copying, setCopying] = useState(false);
 
   const isAdmin = auth.status === "authed" && auth.isAdmin;
   const adminOnSelf =
