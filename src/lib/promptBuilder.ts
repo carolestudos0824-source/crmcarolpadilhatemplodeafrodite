@@ -61,12 +61,26 @@ const renderContextBlock = (c: ProjectContext): string => {
   push("Estilo visual", value(c.visualStyle));
   push("Observações", value(c.notes));
 
-  const totalFields = 14; // sem contar o nome
-  const filled = lines.length - 1;
-  if (filled < totalFields) {
+  const ESSENTIAL_CONTEXT_FIELDS: (keyof ProjectContext)[] = [
+    "appDoes",
+    "audience",
+    "problem",
+    "promise",
+    "mainAction",
+  ];
+  const essentialFilled = ESSENTIAL_CONTEXT_FIELDS.filter(
+    (k) => value((c[k] as string | undefined) ?? ""),
+  ).length;
+
+  if (essentialFilled === 0) {
     lines.push(
       "",
-      "Alguns dados do app ainda não foram preenchidos. Assuma hipóteses razoáveis e recomende o melhor caminho.",
+      "Contexto ainda não preenchido. Faça apenas o que a tarefa pede e peça confirmação ao usuário antes de inventar regras de negócio.",
+    );
+  } else if (essentialFilled < 3) {
+    lines.push(
+      "",
+      "Contexto parcial. Use apenas os dados preenchidos acima; não invente público, problema ou ação principal.",
     );
   }
   return lines.join("\n");

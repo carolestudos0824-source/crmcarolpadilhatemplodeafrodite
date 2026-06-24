@@ -951,13 +951,12 @@ const ConstruirIntro = () => {
     const raw = COMMANDS_CONSTRUIR[0]?.content ?? "";
     const appName = activeProject?.name?.trim() || "seu app";
     const ctx = activeProject?.context;
-    const missingKey =
-      !ctx?.audience?.trim() ||
-      !ctx?.problem?.trim() ||
-      !ctx?.promise?.trim();
-    const hint = missingKey
-      ? "\n\nAlguns dados do app ainda não foram preenchidos. Assuma hipóteses razoáveis e construa uma primeira versão simples."
-      : "";
+    const essentials = [ctx?.appDoes, ctx?.audience, ctx?.problem, ctx?.promise, ctx?.mainAction];
+    const essentialFilled = essentials.filter((v) => typeof v === "string" && v.trim().length > 0).length;
+    const hint =
+      essentialFilled < 3
+        ? "\n\nContexto parcial. Use apenas os dados preenchidos acima; não invente público, problema ou ação principal."
+        : "";
     const text = raw.split("[nome do app ativo]").join(appName) + hint;
     try {
       await navigator.clipboard.writeText(text);
