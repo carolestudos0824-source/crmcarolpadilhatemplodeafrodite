@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare } from "lucide-react";
+import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare, CheckCircle2, Wand2 } from "lucide-react";
 import { useAgentChat } from "@/components/entrega/AgentChatProvider";
 import { useAppProjects } from "@/hooks/useAppProjects";
 
@@ -53,10 +53,13 @@ export const AgentChatDrawer = () => {
     loadingHistory,
     sending,
     savingMessageId,
+    applyingMessageId,
+    appliedMessageIds,
     input,
     setInput,
     send,
     saveDecision,
+    applySuggestion,
   } = useAgentChat();
   const { activeProject, openDrawer: openMyApps } = useAppProjects();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -180,6 +183,21 @@ export const AgentChatDrawer = () => {
                   {m.content}
                   {!isUser && (
                     <div className="mt-2 flex flex-wrap gap-2">
+                      {(() => {
+                        const isApplied = appliedMessageIds.includes(m.id);
+                        const isApplying = applyingMessageId === m.id;
+                        return (
+                          <button
+                            type="button"
+                            onClick={() => applySuggestion(m)}
+                            disabled={isApplying || isApplied || Boolean(applyingMessageId) || loadingHistory}
+                            className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 rounded-md border border-accent/40 bg-accent/15 text-accent hover:bg-accent/25 disabled:opacity-50"
+                          >
+                            {isApplying ? <Loader2 size={11} className="animate-spin" /> : isApplied ? <CheckCircle2 size={11} /> : <Wand2 size={11} />}
+                            {isApplied ? "Sugestão aplicada nesta etapa" : isApplying ? "Aplicando..." : "Aplicar sugestão nesta etapa"}
+                          </button>
+                        );
+                      })()}
                       <button
                         type="button"
                         onClick={() => saveDecision(m, stepTitle ?? `Decisão em ${moduleLabel}`)}

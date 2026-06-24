@@ -35,12 +35,15 @@ type Ctx = {
   loadingHistory: boolean;
   sending: boolean;
   savingMessageId: string | null;
+  applyingMessageId: string | null;
+  appliedMessageIds: string[];
   input: string;
   setInput: (value: string) => void;
   open: (a?: AgentChatOpenArgs) => void;
   close: () => void;
   send: (text: string) => Promise<void>;
   saveDecision: (message: AgentMessage, title?: string | null) => Promise<void>;
+  applySuggestion: (message: AgentMessage) => Promise<void>;
 };
 
 const AgentChatCtx = createContext<Ctx | null>(null);
@@ -57,6 +60,8 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [sending, setSending] = useState(false);
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
+  const [applyingMessageId, setApplyingMessageId] = useState<string | null>(null);
+  const [appliedMessageIds, setAppliedMessageIds] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const loadVersionRef = useRef(0);
   const activeProjectIdRef = useRef<string | null>(activeProjectId);
@@ -81,6 +86,9 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
     setMessagesProjectId(activeProjectId);
     setSending(false);
     setSavingMessageId(null);
+    setApplyingMessageId(null);
+    setAppliedMessageIds([]);
+
 
     if (projectChanged) {
       setArgs({});
@@ -228,6 +236,63 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
     [activeProject?.currentModuleId, args.moduleKey, args.stepKey, assertCurrentProject, loadingHistory, messagesProjectId],
   );
 
+  const applySuggestion = useCallback(
+    async (message: AgentMessage) => {
+      const projectIdAtStart = activeProjectIdRef.current;
+      const versionAtStart = loadVersionRef.current;
+      const moduleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
+      const stepKey = args.stepKey ?? null;
+      const stepTitle = args.stepTitle ?? null;
+      if (!projectIdAtStart || !moduleKey || loadingHistory || messagesProjectId !== projectIdAtStart) {
+        toast.error("Projeto ativo mudou. Reabra o chat e tente novamente.");
+        return;
+      }
+      if (applyingMessageId || appliedMessageIds.includes(message.id)) return;
+
+      setApplyingMessageId(message.id);
+      try {
+        await saveAsProjectDecision(
+          {
+            projectId: projectIdAtStart,
+            moduleKey,
+            stepKey,
+            title: stepTitle ? `Aplicado em: ${stepTitle}` : `Aplicado em ${moduleKey}`,
+            content: message.content,
+          },
+          { assertCurrentProject: () => assertCurrentProject(projectIdAtStart, versionAtStart) },
+        );
+        assertCurrentProject(projectIdAtStart, versionAtStart);
+        setAppliedMessageIds((prev) => (prev.includes(message.id) ? prev : [...prev, message.id]));
+        toast.success("Sugestão aplicada nesta etapa", {
+          description: "O Agente vai considerar isso nos próximos módulos.",
+        });
+      } catch (e) {
+        if (activeProjectIdRef.current !== projectIdAtStart || loadVersionRef.current !== versionAtStart) {
+          toast.error("Projeto ativo mudou durante a ação. Tente novamente.");
+          return;
+        }
+        toast.error("Não foi possível aplicar a sugestão", {
+          description: e instanceof Error ? e.message : "Erro desconhecido",
+        });
+      } finally {
+        if (activeProjectIdRef.current === projectIdAtStart && loadVersionRef.current === versionAtStart) {
+          setApplyingMessageId(null);
+        }
+      }
+    },
+    [
+      activeProject?.currentModuleId,
+      appliedMessageIds,
+      applyingMessageId,
+      args.moduleKey,
+      args.stepKey,
+      args.stepTitle,
+      assertCurrentProject,
+      loadingHistory,
+      messagesProjectId,
+    ],
+  );
+
   const scopedMessages = messagesProjectId === activeProjectId ? messages : [];
   const scopedArgs = argsProjectId === activeProjectId ? args : {};
   const scopedInput = messagesProjectId === activeProjectId ? input : "";
@@ -243,12 +308,15 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
       loadingHistory: scopedLoadingHistory,
       sending,
       savingMessageId,
+      applyingMessageId,
+      appliedMessageIds,
       input: scopedInput,
       setInput,
       open,
       close,
       send,
       saveDecision,
+      applySuggestion,
     }),
     [
       isOpen,
@@ -263,11 +331,14 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
       scopedLoadingHistory,
       sending,
       savingMessageId,
+      applyingMessageId,
+      appliedMessageIds,
       input,
       open,
       close,
       send,
       saveDecision,
+      applySuggestion,
     ],
   );
   return <AgentChatCtx.Provider value={value}>{children}</AgentChatCtx.Provider>;
