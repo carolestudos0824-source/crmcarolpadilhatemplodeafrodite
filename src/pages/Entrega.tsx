@@ -824,17 +824,20 @@ function EntregaInner() {
             {(() => {
               const isIdeias = active === "ideias";
               const isPlanejar = active === "planejar";
+              const isMvp = active === "mvp";
               const hasChosenIdea = !!appProjects.activeProject;
               const blockIdeias = isIdeias && !hasChosenIdea;
               const blockPlanejar = isPlanejar && !hasChosenIdea;
-              const blocked = blockIdeias || blockPlanejar;
+              const blockMvp = isMvp && !hasChosenIdea;
+              const blocked = blockIdeias || blockPlanejar || blockMvp;
               const customLabel = isIdeias
                 ? hasChosenIdea
                   ? "Próximo passo: Planejar o App"
                   : "Escolha uma ideia para avançar"
-                : isPlanejar && !hasChosenIdea
+                : (isPlanejar || isMvp) && !hasChosenIdea
                 ? "Escolha um app para avançar"
                 : null;
+
               const handleClick = () => {
                 if (blocked) return;
                 if (isIdeias && hasChosenIdea) {
