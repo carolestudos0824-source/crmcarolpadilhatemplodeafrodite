@@ -658,6 +658,7 @@ function EntregaInner() {
         {/* MAIN */}
         <main className="flex-1 min-w-0 p-4 md:p-8">
           <ProjectStatusBanner />
+          <EstadoAtualDoProjetoCard onGoToModule={(id) => setActive(id)} />
 
           {/* Boas-vindas: Agente Arquiteto como guia central */}
           {active === "comece" && (
