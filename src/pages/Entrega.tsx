@@ -2383,7 +2383,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   if (active === "checklist") {
     const overviewCards = [
       { title: "Ideia clara", desc: "Público, dor e promessa definidos." },
-      { title: "MVP funcional", desc: "Primeira versão criada e testada no celular." },
+      { title: "Primeira versão funcional", desc: "Primeira versão criada e testada no celular. Próximas versões entram em Melhorias." },
       { title: "Venda preparada", desc: "Página, preço, checkout e entrega organizados." },
       { title: "Validação real", desc: "Pessoas reais testaram e deram sinais concretos." },
     ];
