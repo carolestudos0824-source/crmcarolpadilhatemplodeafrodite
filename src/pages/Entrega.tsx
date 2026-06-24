@@ -183,10 +183,10 @@ const ContextHeaderButton = () => {
           ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-200"
           : "border-amber-400/30 bg-amber-400/10 text-amber-200"
       }`}
-      title="Contexto do meu app"
+      title="Contexto do projeto em foco"
     >
       <ClipboardList size={12} />
-      <span className="hidden sm:inline">Contexto do meu app</span>
+      <span className="hidden sm:inline">Contexto do projeto em foco</span>
       <span className="sm:hidden">Contexto</span>
     </button>
   );
@@ -194,13 +194,13 @@ const ContextHeaderButton = () => {
 
 const MyAppsHeaderButton = () => {
   const { openDrawer, activeProject, projects } = useAppProjects();
-  const label = activeProject ? `App: ${activeProject.name}` : "Meus Apps";
+  const label = activeProject ? `Projeto: ${activeProject.name}` : "Projetos em construção";
   return (
     <button
       type="button"
       onClick={openDrawer}
-      className="px-3 py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[200px]"
-      title="Meus Apps em Construção"
+      className="px-3 py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[220px]"
+      title="Projetos em construção"
     >
       <span className="truncate">{label}</span>
       {projects.length > 0 && (
@@ -479,7 +479,7 @@ function EntregaInner() {
             {/* App ativo + atalhos */}
             <div className="mb-4 rounded-xl border border-accent/25 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent p-3">
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
-                App em foco
+                Projeto em foco
               </div>
               {appProjects.activeProject ? (
                 <>
@@ -563,7 +563,7 @@ function EntregaInner() {
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
                 >
                   <FolderKanban size={16} className="shrink-0" />
-                  <span className="flex-1 leading-tight">Meus Apps em Construção</span>
+                  <span className="flex-1 leading-tight">Projetos em construção</span>
                 </button>
                 <button
                   type="button"
@@ -571,7 +571,7 @@ function EntregaInner() {
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
                 >
                   <ClipboardList size={16} className="shrink-0" />
-                  <span className="flex-1 leading-tight">Contexto do meu app</span>
+                  <span className="flex-1 leading-tight">Contexto do projeto em foco</span>
                 </button>
                 <button
                   type="button"
