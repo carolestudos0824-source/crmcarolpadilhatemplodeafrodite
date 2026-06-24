@@ -737,14 +737,15 @@ function EntregaInner() {
 
           {active === "planejar" && (
             <div className="mt-8 mb-3">
-              <h3 className="text-base font-heading font-bold text-foreground/95">
+              <h3 className="text-sm font-heading font-semibold text-muted-foreground uppercase tracking-wider">
                 Ferramentas extras
               </h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                Use estas ferramentas se quiser revisar estratégia, contexto ou melhorias do seu app.
+              <p className="text-xs text-muted-foreground/80 mt-1">
+                Use apenas se estiver travado ou quiser revisar melhor sua ideia antes de continuar.
               </p>
             </div>
           )}
+
 
           {active === "ideias" && (
             <div className="mt-10 mb-3">
