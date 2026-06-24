@@ -81,7 +81,7 @@ import { wrapErrorCorrection } from "@/lib/promptBuilder";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
-import { ProjectStatusBanner } from "@/components/entrega/ProjectStatusBanner";
+// ProjectStatusBanner desativado em /entrega para evitar duplicidade com o EstadoAtualDoProjetoCard.
 import { EstadoAtualDoProjetoCard } from "@/components/entrega/EstadoAtualDoProjetoCard";
 import { ComeceAquiModule } from "@/components/entrega/ComeceAquiModule";
 import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
