@@ -12,8 +12,16 @@ const setChecklist = vi.fn((updater) => {
   const next = typeof updater === "function" ? updater(checklistStore) : updater;
   Object.assign(checklistStore, next);
 });
+const commandStore: Record<string, boolean> = {};
 vi.mock("@/hooks/useUserProgress", () => ({
-  useUserProgress: () => ({ checklist: checklistStore, setChecklist }),
+  useUserProgress: () => ({
+    checklist: checklistStore,
+    setChecklist,
+    isCommandDone: (k: string) => !!commandStore[k],
+    toggleCommand: (k: string) => {
+      commandStore[k] = !commandStore[k];
+    },
+  }),
 }));
 
 describe("MvpArquiteturaModule", () => {
