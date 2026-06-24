@@ -177,7 +177,7 @@ export function ViabilityAnalysisCard() {
               Análise de Viabilidade da Ideia
             </h3>
             <p className="text-xs md:text-sm text-muted-foreground mt-1">
-              Este prompt não constrói o app. Ele ajuda você a decidir se vale construir, o que cortar e qual MVP mandar depois para o Lovable.
+              Este prompt não constrói o app. Ele ajuda você a decidir se vale construir, o que cortar e qual primeira versão funcional mandar depois para o Lovable, com próximas versões previstas em Melhorias e Versões.
             </p>
             <p className="text-[11px] text-muted-foreground mt-2">
               <strong className="text-foreground/80">Quando usar:</strong> antes de investir tempo e créditos no Lovable, principalmente se você ainda não sabe se a ideia é forte. Este prompt é feito para o <strong className="text-foreground/80">Agente Arquiteto</strong>, não para colar direto no Lovable.
