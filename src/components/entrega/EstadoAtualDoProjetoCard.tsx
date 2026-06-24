@@ -196,6 +196,11 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         </span>
       </header>
 
+      <p className="mb-3 text-[11px] text-muted-foreground/70">
+        Você está usando a Fábrica de Apps com IA para guiar este projeto.
+      </p>
+
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
         <InfoField
           icon={<FolderKanban size={12} />}

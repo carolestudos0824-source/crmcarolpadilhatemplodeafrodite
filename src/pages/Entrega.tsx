@@ -657,7 +657,9 @@ function EntregaInner() {
 
         {/* MAIN */}
         <main className="flex-1 min-w-0 p-4 md:p-8">
-          <ProjectStatusBanner />
+          {/* ProjectStatusBanner removido para evitar duplicidade com o EstadoAtualDoProjetoCard.
+              A informação conceitual "Produto principal: Fábrica de Apps com IA" agora aparece
+              de forma discreta dentro do EstadoAtualDoProjetoCard. */}
           <EstadoAtualDoProjetoCard onGoToModule={(id) => setActive(id)} />
 
           {/* Boas-vindas: Agente Arquiteto como guia central */}
