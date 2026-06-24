@@ -81,6 +81,7 @@ import { wrapErrorCorrection } from "@/lib/promptBuilder";
 import { ProjectContextDrawer } from "@/components/entrega/ProjectContextDrawer";
 import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
+import { ProjectStatusBanner } from "@/components/entrega/ProjectStatusBanner";
 import { ComeceAquiModule } from "@/components/entrega/ComeceAquiModule";
 import { SavedPromptsDrawer } from "@/components/entrega/SavedPromptsDrawer";
 import { TwoPathsExplainer } from "@/components/entrega/TwoPathsExplainer";
@@ -655,6 +656,8 @@ function EntregaInner() {
 
         {/* MAIN */}
         <main className="flex-1 min-w-0 p-4 md:p-8">
+          <ProjectStatusBanner />
+
           {/* Boas-vindas: Agente Arquiteto como guia central */}
           {active === "comece" && (
             <div className="mb-6">

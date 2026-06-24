@@ -97,7 +97,7 @@ export const MyAppsDrawer = () => {
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <FolderKanban size={16} className="text-accent" />
-              <h2 className="font-heading font-bold text-lg">Meus Apps em Construção</h2>
+              <h2 className="font-heading font-bold text-lg">Projetos em construção</h2>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5 leading-snug">
               Organize os apps que você está criando. Cada app mantém seu
@@ -159,7 +159,7 @@ export const MyAppsDrawer = () => {
                 />
               </label>
               <p className="text-[11px] text-muted-foreground">
-                Depois de criar, abrimos o "Contexto do meu app" para você
+                Depois de criar, abrimos o "Contexto do projeto em foco" para você
                 preencher os outros campos.
               </p>
               <div className="flex gap-2 justify-end">
@@ -337,7 +337,7 @@ export const MyAppsDrawer = () => {
             <Settings2 size={12} className="mt-0.5 shrink-0" />
             <span>
               Para alterar público, problema, promessa, checkout e outros
-              dados do app, abra o Contexto do meu app.
+              dados do projeto em foco, abra o Contexto do projeto em foco.
             </span>
           </div>
         </div>
