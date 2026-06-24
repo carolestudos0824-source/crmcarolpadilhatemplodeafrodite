@@ -535,7 +535,7 @@ Regras:
                     <div className="text-[10px] uppercase tracking-wider text-accent font-semibold mb-1">Etapa 2 · Lovable</div>
                     <div className="font-heading font-semibold text-sm text-foreground">Lovable constrói</div>
                     <p className="text-[11.5px] text-foreground/70 mt-1 leading-snug">
-                      Copie o prompt de construção e cole no Lovable para gerar a primeira versão do app.
+                      Copie o prompt de construção e cole no Lovable para gerar a primeira versão funcional do app. Próximas versões serão previstas em Melhorias e Versões.
                     </p>
                   </div>
                   <ArrowRight size={16} className="hidden lg:block self-center text-muted-foreground" />
