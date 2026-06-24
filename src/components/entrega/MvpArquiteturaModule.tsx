@@ -353,27 +353,95 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         Cada card abaixo oferece os três caminhos do padrão da Fábrica: <strong className="text-foreground/90">Implementar no Lovable</strong>, <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> e <strong className="text-foreground/90">Copiar auditoria para o Lovable</strong> (somente análise, não implementa).
       </p>
 
+      <GlassCard
+        className="p-5 mb-6"
+        aria-labelledby="mvp-stage-selector-title"
+      >
+        <h2
+          id="mvp-stage-selector-title"
+          className="font-heading font-semibold text-base md:text-lg mb-1"
+        >
+          Qual é o momento do seu app?
+        </h2>
+        <p className="text-xs text-muted-foreground mb-4">
+          Escolha onde você está agora. Os comandos das próximas etapas se adaptam ao seu momento.
+        </p>
+        <div
+          role="radiogroup"
+          aria-labelledby="mvp-stage-selector-title"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+        >
+          {STAGE_OPTIONS.map((opt) => {
+            const Icon = opt.icon;
+            const active = appStage === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => setAppStage(opt.id)}
+                className={`text-left rounded-xl border p-4 min-h-[120px] transition flex flex-col gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 ${
+                  active
+                    ? "border-accent/60 bg-accent/10 shadow-[0_0_0_1px_rgba(0,194,255,0.25)]"
+                    : "border-white/10 bg-white/5 hover:bg-white/10"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span
+                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg border ${
+                      active
+                        ? "bg-accent/15 border-accent/40 text-accent"
+                        : "bg-white/5 border-white/10 text-muted-foreground"
+                    }`}
+                  >
+                    <Icon size={16} />
+                  </span>
+                  {active && (
+                    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-accent">
+                      <Check size={12} /> Selecionado
+                    </span>
+                  )}
+                </div>
+                <div className={`font-semibold text-sm ${active ? "text-accent" : "text-foreground/90"}`}>
+                  {opt.label}
+                </div>
+                <p className="text-xs text-muted-foreground leading-snug">
+                  {opt.description}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+        {appStage !== "idea" && (
+          <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-3 py-2 mt-3">
+            Os prompts copiados receberão uma instrução extra para que o Lovable e o Agente <strong className="text-cyan-100">auditem o app existente</strong> em vez de recriar tudo do zero.
+          </p>
+        )}
+      </GlassCard>
+
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
           <CommandCard
-            key={e.n}
+            key={`${e.n}-${appStage}`}
             number={e.n}
             title={etapaTitle(e)}
             description={etapaDescription(e)}
             whenToUse={`Use nesta etapa: ${e.title}.`}
             whereToPaste="Cole no chat do seu projeto no Lovable."
             expectedResult={e.tabs.avancar}
-            commandText={e.tabs.lovable}
-            completedKey={`mvp_cmd__${e.n}`}
+            commandText={withStage(appStage, e.tabs.lovable)}
+            completedKey={`mvp_cmd__${e.n}__${appStage}`}
             moduleId="mvp"
             objective={e.title}
-            agentPrompt={e.tabs.agente}
-            correctionPrompt={e.tabs.corrigir}
+            agentPrompt={withStage(appStage, e.tabs.agente)}
+            correctionPrompt={withStage(appStage, e.tabs.corrigir)}
             advanceCriteria={e.tabs.avancar}
             defaultOpen
           />
         ))}
       </div>
+
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
