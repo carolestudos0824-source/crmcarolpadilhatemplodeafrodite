@@ -489,6 +489,10 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           <CheckCircle2 size={16} className="text-emerald-300" />
           <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
         </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Só avance quando todos os itens críticos estiverem claros.
+        </p>
+
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
             const key = `${CHECKLIST_PREFIX}${item}`;
