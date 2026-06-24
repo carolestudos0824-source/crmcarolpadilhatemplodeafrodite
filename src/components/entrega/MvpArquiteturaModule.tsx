@@ -369,19 +369,19 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
           <div className="space-y-2">
             <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-              Um MVP é a primeira versão simples, clara e testável do app. Aqui você vai
-              decidir o que entra agora, como o app se organiza e o que deve ficar para depois.
+              Você não está criando um app limitado. Está criando a primeira versão funcional e publicável do seu app completo, que continua evoluindo nas próximas versões.
             </p>
             <p className="text-sm text-foreground/80 leading-relaxed">
-              O MVP é o <strong className="text-foreground/95">quê</strong>: quais funcionalidades entram na primeira versão.
+              O MVP é o <strong className="text-foreground/95">quê</strong>: as funcionalidades essenciais da primeira versão funcional.
               A arquitetura é o <strong className="text-foreground/95">como</strong>: as telas, os dados e as regras que sustentam essas funcionalidades.
             </p>
             <p className="text-xs text-amber-200/90 leading-relaxed rounded-md border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 mt-2">
-              <strong>MVP com mais de 5 funcionalidades principais não é MVP.</strong> Um MVP não é o app dos sonhos.
+              <strong>Comece com até 5 funcionalidades principais.</strong> As demais não são descartadas — entram nas próximas versões. Um MVP não é o app dos sonhos: é a primeira versão funcional e publicável.
             </p>
           </div>
         </div>
       </GlassCard>
+
 
 
       <GlassCard className="p-5 mb-6">
