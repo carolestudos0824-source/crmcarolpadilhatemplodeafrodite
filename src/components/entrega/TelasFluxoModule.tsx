@@ -278,6 +278,15 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               originalPrompt={etapa.tabs[tab]}
               storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
               copyLabel="Copiar para implementar no Lovable"
+              transformOnCopy={(text) =>
+                buildLovablePrompt({
+                  context,
+                  stepName: `Telas e Fluxo — ${etapa.title}`,
+                  stepObjective: `Trabalhar a etapa "${etapa.title}" de telas e fluxo do app preservando navegação, telas já aprovadas, CTAs principais e áreas restritas. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
+                  command: text,
+                  moduleId: "telas",
+                })
+              }
             />
           </div>
 
