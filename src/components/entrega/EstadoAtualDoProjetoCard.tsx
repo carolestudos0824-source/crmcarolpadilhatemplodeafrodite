@@ -11,6 +11,7 @@ import {
   MODULE_PROMPT_INTENTS,
 } from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
+import { ProjectLogoPicker } from "./ProjectLogoPicker";
 
 /**
  * Deriva uma "última ação registrada" a partir do progresso já existente.
