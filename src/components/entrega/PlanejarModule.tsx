@@ -389,23 +389,30 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
       </header>
 
       {!activeProject && (
-        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent">
+        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/50 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent shadow-[0_0_30px_-18px_rgba(251,191,36,0.5)]">
           <div className="flex items-start gap-3 mb-4">
             <AlertTriangle size={20} className="text-amber-300 shrink-0 mt-0.5" />
             <div className="min-w-0">
+              <div className="text-[11px] uppercase tracking-wider text-amber-300/90 mb-1">
+                Pré-requisito obrigatório
+              </div>
               <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
-                Escolha um app antes de planejar
+                Antes de planejar, escolha o app que será planejado
               </h2>
-              <p className="text-sm text-muted-foreground mt-1.5">
-                Para gerar um plano útil, primeiro selecione uma ideia ou crie um app em foco.
-                Depois esta etapa vai ajudar você a definir problema, público, promessa, ação principal e escopo da primeira versão funcional.
+              <p className="text-sm text-foreground/90 mt-1.5 leading-relaxed">
+                A Fábrica precisa saber qual é o Projeto em foco para gerar prompts úteis, usar sua jornada e orientar o próximo passo.
+              </p>
+              <p className="text-xs text-muted-foreground/90 mt-2">
+                Isto não é um erro — é uma etapa obrigatória. O conteúdo abaixo só faz sentido depois que você escolher o projeto.
               </p>
               <p className="text-xs text-muted-foreground/90 mt-2">
                 Já tem um app? Use esta etapa como auditoria do plano atual antes de evoluir.
               </p>
-
             </div>
           </div>
+          <p className="text-xs font-semibold text-amber-200/90 mb-2">
+            Escolha uma das opções abaixo para liberar o planejamento:
+          </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
             <button
               onClick={openDrawer}
@@ -416,7 +423,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             {goTo && (
               <button
                 onClick={() => goTo("ideias")}
-                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-xs font-medium transition"
               >
                 Ver ideias prontas
               </button>
@@ -424,7 +431,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             {goTo && (
               <button
                 onClick={() => goTo("construir")}
-                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-sm font-medium transition"
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-xs font-medium transition"
               >
                 <Search size={14} /> Usar Busca Inteligente
               </button>
