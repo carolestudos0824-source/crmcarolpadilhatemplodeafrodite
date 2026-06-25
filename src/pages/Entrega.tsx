@@ -680,11 +680,53 @@ function EntregaInner() {
               A informação conceitual "Produto principal: Fábrica de Apps com IA" agora aparece
               de forma discreta dentro do EstadoAtualDoProjetoCard. */}
           <EstadoAtualDoProjetoCard onGoToModule={(id) => setActive(id)} />
-          <ProjectJourneySelector onGoToModule={(id) => setActive(id)} />
+
+          {/* Sem Projeto em foco: bloco prioritário acima de jornada/Agente */}
+          {!appProjects.activeProject && (
+            <section
+              aria-label="Primeiro passo — escolher app"
+              className="mb-4 rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/[0.14] via-accent/[0.05] to-transparent p-4 md:p-5"
+            >
+              <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent mb-2">
+                <FolderKanban size={12} /> Comece por aqui
+              </div>
+              <h2 className="text-lg md:text-xl font-heading font-bold text-foreground leading-tight">
+                Primeiro, escolha o app que a Fábrica vai guiar
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
+                O Projeto em foco é o app que receberá contexto, jornada, prompts, progresso, GPS e orientação do Agente.
+              </p>
+              <div className="mt-4 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={appProjects.openDrawer}
+                  className="btn-primary min-h-[44px]"
+                >
+                  <FolderKanban size={16} /> Criar ou selecionar app
+                </button>
+                <span className="text-[11px] text-muted-foreground">
+                  Jornada, contexto e prompts ficam disponíveis depois que houver um projeto ativo.
+                </span>
+              </div>
+            </section>
+          )}
+
+          {/* Seletor global da jornada — rebaixado quando não há projeto */}
+          <div className={!appProjects.activeProject ? "opacity-75" : undefined}>
+            <ProjectJourneySelector onGoToModule={(id) => setActive(id)} />
+          </div>
 
           {/* Boas-vindas: Agente Arquiteto como guia central */}
           {active === "comece" && (
-            <div className="mb-6">
+            <div className="mb-6 space-y-3">
+              {!appProjects.activeProject && (
+                <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 text-[12px] text-amber-100 flex items-start gap-2">
+                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+                  <span>
+                    Antes de usar o Agente com contexto, crie ou selecione um Projeto em foco. Sem projeto, o Agente é apoio — não a primeira ação.
+                  </span>
+                </div>
+              )}
               <AgentArchitectCard
                 eyebrow="Não sabe por onde começar?"
                 title="O Agente Arquiteto é seu guia"
@@ -699,6 +741,7 @@ function EntregaInner() {
               />
             </div>
           )}
+
 
           {/* O que você vai fazer nesta etapa */}
           {active !== "comece" && (
