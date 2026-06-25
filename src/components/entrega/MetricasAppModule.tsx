@@ -225,7 +225,18 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Métricas do App — ${etapa.title}`,
+                    stepObjective: `Trabalhar a etapa "${etapa.title}" de métricas preservando scripts de analytics, eventos, funis, pixels e tags já configurados. Não instalar ferramenta externa nova sem pedido explícito e não alterar scripts/tags existentes sem explicar risco.`,
+                    command: text,
+                    moduleId: "metricas",
+                  })
+          }
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
