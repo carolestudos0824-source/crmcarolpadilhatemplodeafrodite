@@ -292,39 +292,47 @@ export function ComeceAquiModule({ goTo }: Props) {
         ))}
       </ol>
 
-      {/* Mapa da jornada */}
-      <GlassCard className="p-4 sm:p-5 mb-6">
-        <h3 className="font-heading font-semibold text-base md:text-lg mb-1">
-          Mapa da jornada
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {phaseMap.map((phase) => {
-            const mods = phase.mods.filter((m) => (MODULE_ORDER as string[]).includes(m));
-            if (mods.length === 0) return null;
-            return (
-              <div key={phase.title} className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <h4 className="font-heading font-semibold text-sm text-accent mb-2">{phase.title}</h4>
-                <ul className="flex flex-wrap gap-1.5">
-                  {mods.map((m) => (
-                    <li key={m}>
-                      <button
-                        type="button"
-                        onClick={() => goTo(m)}
-                        className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85 min-h-[32px]"
-                      >
-                        {moduleLabel(m)}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+      {/* Mapa da jornada — recolhível para evitar repetição com o caminho acima */}
+      <details className="mb-6 rounded-2xl border border-white/10 bg-white/[0.03] group">
+        <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-3 text-sm text-foreground/90 hover:text-foreground transition">
+          <span className="inline-flex items-center gap-2 font-heading font-semibold">
+            <Compass size={14} className="text-accent" />
+            Mapa completo da jornada (opcional)
+          </span>
+          <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">Mostrar</span>
+          <span className="text-[10px] uppercase tracking-wider text-accent hidden group-open:inline">Ocultar</span>
+        </summary>
+        <div className="p-4 border-t border-white/10">
+          <p className="text-sm text-muted-foreground mb-4">
+            Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {phaseMap.map((phase) => {
+              const mods = phase.mods.filter((m) => (MODULE_ORDER as string[]).includes(m));
+              if (mods.length === 0) return null;
+              return (
+                <div key={phase.title} className="rounded-xl border border-white/10 bg-white/5 p-3">
+                  <h4 className="font-heading font-semibold text-sm text-accent mb-2">{phase.title}</h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {mods.map((m) => (
+                      <li key={m}>
+                        <button
+                          type="button"
+                          onClick={() => goTo(m)}
+                          className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85 min-h-[32px]"
+                        >
+                          {moduleLabel(m)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </GlassCard>
+      </details>
+
 
       {/* Regras para avançar sem se perder */}
       <GlassCard className="p-4 sm:p-5 mb-6 border-accent/25 bg-accent/[0.04]">
