@@ -11,29 +11,20 @@ export const openAgenteArquiteto = () => {
 };
 
 export type CopyPromptAndOpenAgentOptions = {
-  /** Prompt contextual que deve ser copiado antes de abrir o Agente. */
+  /** Prompt contextual a ser copiado para o clipboard. */
   prompt?: string;
   /** Toast exibido após copiar com sucesso. */
   successMessage?: string;
-  /** Toast exibido quando não há prompt (apenas abre o Agente). */
+  /** Toast exibido quando não há prompt para copiar. */
   emptyMessage?: string;
   /**
-   * Quando passado e a cópia falhar, o Agente NÃO é aberto e este callback
-   * recebe o prompt para mostrar um fallback (modal de cópia manual).
-   * Se ausente, mostramos um toast de erro e abrimos o Agente mesmo assim.
+   * Quando passado e a cópia falhar, este callback recebe o prompt para
+   * mostrar um fallback (ex.: modal com cópia manual). Se ausente,
+   * mostramos um toast de erro pedindo cópia manual.
    */
   onClipboardFail?: (prompt: string) => void;
 };
 
-/**
- * Copia o prompt contextual e só então abre o Agente Arquiteto.
- *
- * Regras:
- * - Se houver prompt: copia → abre Agente → toast de sucesso.
- * - Se NÃO houver prompt: apenas abre o Agente com toast informativo.
- * - Se a cópia falhar e existir `onClipboardFail`: NÃO abre o Agente;
- *   delega para o fallback (geralmente um modal com cópia manual).
- */
 /**
  * Fallback síncrono de cópia para ambientes onde `navigator.clipboard`
  * está indisponível ou bloqueado (ex.: iframe de preview sem permissão,
@@ -62,26 +53,39 @@ function copyTextSync(text: string): boolean {
   }
 }
 
+/**
+ * Fluxo em 2 passos: APENAS copia o prompt para o clipboard e mostra
+ * feedback. NÃO abre o Agente automaticamente — o usuário decide quando
+ * abrir, usando o botão/link "Abrir Agente Arquiteto" ao lado.
+ *
+ * Motivo: no teste real, o `window.open` após `await` da Clipboard API
+ * disparava o popup sem o texto chegar no clipboard de forma confiável.
+ *
+ * O nome `copyPromptAndOpenAgent` foi mantido para não quebrar imports
+ * existentes, mas o comportamento agora é copy-only. Quando não há
+ * prompt, mostra um toast pedindo para abrir o Agente manualmente.
+ *
+ * Retorna `true` se a cópia teve sucesso, `false` caso contrário.
+ */
 export async function copyPromptAndOpenAgent(
   opts: CopyPromptAndOpenAgentOptions = {},
-): Promise<void> {
+): Promise<boolean> {
   const { prompt, successMessage, emptyMessage, onClipboardFail } = opts;
   const trimmed = prompt?.trim();
 
   if (!trimmed) {
-    openAgenteArquiteto();
-    toast.success(
+    toast.info(
       emptyMessage ??
-        "Agente Arquiteto aberto. Use ele para tirar dúvidas e decidir o próximo passo.",
+        "Sem prompt para copiar. Abra o Agente Arquiteto pelo botão ao lado.",
     );
-    return;
+    return false;
   }
 
-  // 1) Tenta cópia SÍNCRONA primeiro (preserva user gesture e funciona em
+  // 1) Cópia SÍNCRONA primeiro (preserva user gesture e funciona em
   //    iframes/preview onde a Clipboard API assíncrona é bloqueada).
   const syncCopied = copyTextSync(prompt!);
 
-  // 2) Tenta também a Clipboard API assíncrona como reforço/atualização.
+  // 2) Reforço via Clipboard API assíncrona.
   let asyncCopied = false;
   try {
     if (navigator?.clipboard?.writeText) {
@@ -93,20 +97,21 @@ export async function copyPromptAndOpenAgent(
   }
 
   if (syncCopied || asyncCopied) {
-    openAgenteArquiteto();
     toast.success(
       successMessage ??
-        "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole lá para revisar sua ideia antes de construir.",
+        "Prompt copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V (ou Cmd+V).",
     );
-    return;
+    return true;
   }
 
-  // 3) Cópia falhou nos dois caminhos.
+  // 3) Cópia falhou.
   if (onClipboardFail) {
     onClipboardFail(prompt!);
-    return;
+    return false;
   }
   toast.error(
-    "Não consegui copiar automaticamente. Copie o texto manualmente antes de abrir o Agente.",
+    "Não consegui copiar automaticamente. Selecione o texto e copie manualmente antes de abrir o Agente.",
   );
+  return false;
 }
+

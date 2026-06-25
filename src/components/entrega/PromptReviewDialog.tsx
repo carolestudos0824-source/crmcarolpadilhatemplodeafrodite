@@ -20,7 +20,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { useAppProjects } from "@/hooks/useAppProjects";
-import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 
 type Props = {
   open: boolean;
@@ -178,14 +178,17 @@ export const PromptReviewDialog = ({
   };
 
   const copyAgent = async () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-    await copyPromptAndOpenAgent({
+    const ok = await copyPromptAndOpenAgent({
       prompt: text,
       successMessage:
-        "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
+        "Prompt copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.",
     });
+    if (ok) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
   };
+
 
 
 
@@ -418,9 +421,20 @@ export const PromptReviewDialog = ({
             className="btn-primary text-sm"
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
-            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar e abrir Agente Arquiteto"}
+            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar prompt para o Agente"}
           </button>
+          {mode === "agent" ? (
+            <a
+              href={AGENTE_ARQUITETO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-transparent text-amber-200 hover:bg-amber-400/10 text-sm"
+            >
+              Abrir Agente Arquiteto
+            </a>
+          ) : null}
         </div>
+
 
       </div>
     </div>

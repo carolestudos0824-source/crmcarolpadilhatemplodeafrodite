@@ -475,33 +475,36 @@ export const CommandCard = ({
                       <button
                         onClick={async () => {
                           const text = editedAgent || agentPrompt;
-                          setCopiedKey("agent");
-                          setTimeout(() => setCopiedKey(null), 1500);
-                          await copyPromptAndOpenAgent({
+                          const ok = await copyPromptAndOpenAgent({
                             prompt: text,
                             successMessage:
-                              "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
+                              "Prompt copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.",
                           });
+                          if (ok) {
+                            setCopiedKey("agent");
+                            setTimeout(() => setCopiedKey(null), 2500);
+                          }
                         }}
                         type="button"
                         className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                       >
                         {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                        {copiedKey === "agent" ? "Copiado" : "Copiar e abrir Agente Arquiteto"}
+                        {copiedKey === "agent" ? "Copiado" : "Copiar prompt para o Agente"}
                       </button>
+                      <a
+                        href={APP_CONFIG.GPT_AGENT_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/30 bg-transparent text-amber-200 hover:bg-amber-400/10"
+                      >
+                        Abrir Agente Arquiteto
+                      </a>
                     </div>
                     <span className="text-[11px] text-muted-foreground/80 max-w-[420px] text-right">
-                      Use o Agente Arquiteto quando estiver em dúvida, travado ou quiser revisar antes de mexer no Lovable.
+                      Copie o prompt primeiro. Depois abra o Agente e cole com Ctrl+V (Cmd+V no Mac).
                     </span>
-                    <a
-                      href={APP_CONFIG.GPT_AGENT_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] text-amber-300/80 hover:text-amber-200 underline underline-offset-2"
-                    >
-                      Ir para o Agente Arquiteto
-                    </a>
                   </div>
+
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground">Sem prompt do Agente para esta etapa.</p>
