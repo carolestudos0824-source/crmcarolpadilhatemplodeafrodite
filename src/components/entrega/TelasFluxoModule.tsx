@@ -203,6 +203,7 @@ function CopyBtn({
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
   const [auditCopied, setAuditCopied] = useState(false);
+  const { context } = useProjectContext();
   const Icon = etapa.icon;
 
   const handleCopyAudit = async () => {
