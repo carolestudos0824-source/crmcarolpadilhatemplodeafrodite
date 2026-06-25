@@ -1,15 +1,13 @@
-import { useState } from "react";
-import { useProjectJourney, type JourneyId as PersistedJourneyId } from "@/lib/journey";
-import { toast } from "sonner";
+import { useProjectJourney } from "@/lib/journey";
 import {
   Sparkles,
   ExternalLink,
   Lightbulb,
   AlertTriangle,
-  ArrowRight,
   Compass,
   Search,
   FolderPlus,
+  ArrowUp,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
