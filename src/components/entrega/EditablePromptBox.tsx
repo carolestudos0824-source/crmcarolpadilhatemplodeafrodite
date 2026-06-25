@@ -29,6 +29,12 @@ type Props = {
   hideSaveButton?: boolean;
   /** When true, the prompt textarea is collapsed by default; user clicks "Ver prompt completo" to expand. */
   collapsible?: boolean;
+  /**
+   * Optional substring expected in any saved value. If the persisted value does
+   * not contain this signature, it is treated as contaminated (e.g. saved from a
+   * different module) and discarded in favor of the freshly built originalPrompt.
+   */
+  expectedSignature?: string;
 };
 
 
@@ -50,6 +56,7 @@ export function EditablePromptBox({
   saveSourceModule,
   hideSaveButton,
   collapsible = false,
+  expectedSignature,
 }: Props) {
   const { openPromptStudio } = usePromptStudio();
   const auth = useAuthState();
@@ -61,7 +68,20 @@ export function EditablePromptBox({
   const [value, setValue] = useState<string>(() => {
     if (storageKey && typeof window !== "undefined") {
       const saved = window.localStorage.getItem(storageKey);
-      if (saved !== null) return saved;
+      if (saved !== null) {
+        // Discard contaminated values that don't belong to the current context
+        // (e.g. prompts saved before a module switch or with the wrong module
+        // title baked in). The next persistence effect will clean the key.
+        if (expectedSignature && !saved.includes(expectedSignature)) {
+          try {
+            window.localStorage.removeItem(storageKey);
+          } catch {
+            /* noop */
+          }
+          return originalPrompt;
+        }
+        return saved;
+      }
     }
     return originalPrompt;
   });

@@ -159,6 +159,8 @@ export function GpsDoAppCard({
   const storageKey = moduleId
     ? `gps_do_app_prompt__${moduleId}`
     : "gps_do_app_prompt";
+  const resolvedTitle = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+  const expectedSignature = `Módulo atual: ${resolvedTitle}`;
 
   return (
     <GlassCard className="mt-6 p-4 sm:p-5">
@@ -185,6 +187,7 @@ export function GpsDoAppCard({
             saveSourceModule="gps-do-app"
             originalPrompt={prompt}
             storageKey={storageKey}
+            expectedSignature={expectedSignature}
             copyLabel="Copiar diagnóstico do app"
             helperText="Cole no Lovable apenas para diagnóstico. O Lovable deve analisar e não implementar nada."
           />
