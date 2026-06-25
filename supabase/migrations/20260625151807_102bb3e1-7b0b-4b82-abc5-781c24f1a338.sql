@@ -1,0 +1,1 @@
+ALTER TABLE public.user_app_projects ADD COLUMN IF NOT EXISTS logo_path TEXT;
