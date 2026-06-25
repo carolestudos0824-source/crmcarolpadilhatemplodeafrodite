@@ -406,23 +406,14 @@ export const PromptReviewDialog = ({
             >
               <Sparkles size={14} /> Refinar com Agente
             </button>
-          ) : (
-            <a
-              href={APP_CONFIG.GPT_AGENT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm"
-            >
-              <ExternalLink size={14} /> Enviar para o Agente
-            </a>
-          )}
+          ) : null}
           <button
             type="button"
             onClick={mode === "lovable" ? copy : copyAgent}
             className="btn-primary text-sm"
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
-            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar para o Agente"}
+            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar e abrir Agente Arquiteto"}
           </button>
         </div>
 
