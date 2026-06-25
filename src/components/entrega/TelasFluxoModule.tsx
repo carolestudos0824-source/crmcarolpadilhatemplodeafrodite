@@ -20,8 +20,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import { wrapLovable, LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
+import { LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { useProjectContext } from "@/hooks/useProjectContext";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { FolderKanban } from "lucide-react";
 
@@ -43,9 +45,8 @@ const ETAPAS: Etapa[] = [
     icon: PanelTop,
     title: "Mapear as telas principais",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.`,
-      ),
       agente:
         "Me ajude a mapear as telas essenciais do meu app. Quero saber quais telas preciso para o usuário entrar, entender a proposta, realizar a ação principal e receber o resultado.",
       corrigir:
@@ -59,9 +60,8 @@ const ETAPAS: Etapa[] = [
     icon: Route,
     title: "Definir o fluxo do usuário",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.`,
-      ),
       agente:
         "Me ajude a desenhar o caminho do usuário dentro do app. Quero um fluxo simples, sem etapas desnecessárias, com início, ação principal e resultado claro.",
       corrigir:
@@ -75,9 +75,8 @@ const ETAPAS: Etapa[] = [
     icon: ShieldCheck,
     title: "Organizar telas públicas e restritas",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.`,
-      ),
       agente:
         "Me ajude a decidir quais telas do meu app devem ser públicas e quais devem ser restritas. Considere venda, entrega, login, pagamento, privacidade e experiência do usuário.",
       corrigir:
@@ -91,8 +90,7 @@ const ETAPAS: Etapa[] = [
     icon: MousePointerClick,
     title: "Definir CTA e próximo passo",
     tabs: {
-      lovable: wrapLovable(
-        `Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
+      lovable: `Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
 
 Para cada tela, entregue:
 
@@ -108,7 +106,6 @@ Não crie CTAs genéricos.
 Não coloque muitos botões competindo entre si.
 Não prometa resultado garantido.
 Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`,
-      ),
       agente:
         "Me ajude a definir o CTA principal de cada tela do meu app. Quero evitar botões demais e deixar o próximo passo óbvio para o usuário.",
       corrigir:
@@ -121,9 +118,8 @@ Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidad
     icon: LayoutTemplate,
     title: "Criar mapa final de fluxo",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.`,
-      ),
       agente:
         "Organize meu app em um mapa final de fluxo. Quero uma visão clara das telas, ordem de navegação, CTAs, áreas restritas e pontos críticos antes de construir no Lovable.",
       corrigir:
@@ -207,6 +203,7 @@ function CopyBtn({
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
   const [auditCopied, setAuditCopied] = useState(false);
+  const { context } = useProjectContext();
   const Icon = etapa.icon;
 
   const handleCopyAudit = async () => {
@@ -281,6 +278,15 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
               originalPrompt={etapa.tabs[tab]}
               storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
               copyLabel="Copiar para implementar no Lovable"
+              transformOnCopy={(text) =>
+                buildLovablePrompt({
+                  context,
+                  stepName: `Telas e Fluxo — ${etapa.title}`,
+                  stepObjective: `Trabalhar a etapa "${etapa.title}" de telas e fluxo do app preservando navegação, telas já aprovadas, CTAs principais e áreas restritas. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
+                  command: text,
+                  moduleId: "telas",
+                })
+              }
             />
           </div>
 

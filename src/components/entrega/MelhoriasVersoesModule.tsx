@@ -19,11 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { useProjectContext } from "@/hooks/useProjectContext";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e já tenho métricas, testes ou feedbacks. Me ajude a decidir o que melhorar primeiro. Quero separar bugs, melhorias, ideias futuras, ajustes de venda, ajustes de mobile, ajustes de checkout e mudanças de experiência do usuário. Quero melhorar sem quebrar o que já funciona.`;
 
@@ -176,6 +175,7 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const { context } = useProjectContext();
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
@@ -226,7 +226,18 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Melhorias e Versões — ${etapa.title}`,
+                    stepObjective: `Trabalhar a etapa "${etapa.title}" de melhorias do app sem quebrar funcionalidades existentes. Priorizar correções e ajustes pedidos. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
+                    command: text,
+                    moduleId: "melhorias",
+                  })
+          }
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
