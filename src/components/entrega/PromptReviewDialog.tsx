@@ -20,7 +20,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { useAppProjects } from "@/hooks/useAppProjects";
-import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 
 type Props = {
   open: boolean;
