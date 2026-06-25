@@ -29,6 +29,12 @@ type Props = {
   hideSaveButton?: boolean;
   /** When true, the prompt textarea is collapsed by default; user clicks "Ver prompt completo" to expand. */
   collapsible?: boolean;
+  /**
+   * Optional substring expected in any saved value. If the persisted value does
+   * not contain this signature, it is treated as contaminated (e.g. saved from a
+   * different module) and discarded in favor of the freshly built originalPrompt.
+   */
+  expectedSignature?: string;
 };
 
 
