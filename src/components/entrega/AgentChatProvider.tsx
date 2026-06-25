@@ -39,6 +39,9 @@ type Ctx = {
   savingMessageId: string | null;
   applyingMessageId: string | null;
   appliedMessageIds: string[];
+  appliedDecisions: AppliedDecision[];
+  isLoadingAppliedDecisions: boolean;
+  appliedDecisionsError: string | null;
   input: string;
   setInput: (value: string) => void;
   open: (a?: AgentChatOpenArgs) => void;
