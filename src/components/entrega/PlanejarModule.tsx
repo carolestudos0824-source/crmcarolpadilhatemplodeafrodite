@@ -196,21 +196,17 @@ const GLOSSARIO: { termo: string; def: string }[] = [
 ];
 
 const CHECKLIST_ITEMS = [
-  "Sei qual problema meu app resolve",
-  "Sei para quem ele foi feito",
-  "Escrevi uma promessa clara",
-  "Defini a ação principal do usuário",
-  "Separei o essencial do extra",
-  "Tenho um plano inicial do app",
+  "Problema definido",
+  "Público definido",
+  "Promessa definida",
+  "Ação principal definida",
+  "MVP definido",
+  "Telas principais definidas",
+  "Primeira versão clara",
+  "Próximo comando Lovable pronto",
 ];
 
-const CRITICAL_ITEMS = new Set([
-  "Sei qual problema meu app resolve",
-  "Sei para quem ele foi feito",
-  "Defini a ação principal do usuário",
-  "Separei o essencial do extra",
-  "Tenho um plano inicial do app",
-]);
+const CRITICAL_ITEMS = new Set(CHECKLIST_ITEMS);
 
 const PLANO_TEMPLATE = `Plano inicial do app
 
