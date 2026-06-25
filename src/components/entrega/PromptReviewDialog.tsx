@@ -177,18 +177,13 @@ export const PromptReviewDialog = ({
   };
 
   const copyAgent = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      if (contextComplete) {
-        toast.success("Prompt copiado para enviar ao Agente.");
-      } else {
-        toast("Prompt copiado. Contexto incompleto: revise antes de enviar ao Agente.");
-      }
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
-    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+    await copyPromptAndOpenAgent({
+      prompt: text,
+      successMessage:
+        "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
+    });
   };
 
 
