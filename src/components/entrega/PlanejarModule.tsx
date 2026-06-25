@@ -577,7 +577,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               Antes de pedir qualquer coisa ao Lovable, use o Agente Arquiteto para transformar sua ideia em um plano claro: público, problema, promessa, ação principal, MVP, telas, banco e próxima versão.
             </p>
             <p className="text-[11px] text-muted-foreground mt-2 italic">
-              Planejar não é construir. Planejar é decidir o que pedir ao Lovable para evitar retrabalho.
+              Use o Agente para pensar. Use o Lovable para executar apenas depois que o plano estiver claro.
             </p>
           </div>
         </div>
