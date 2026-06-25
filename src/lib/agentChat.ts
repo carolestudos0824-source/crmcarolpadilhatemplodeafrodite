@@ -173,3 +173,40 @@ export async function saveAsProjectDecision(args: SaveDecisionArgs, guard?: Proj
     if (insErr) throw insErr;
   }
 }
+
+export type AppliedDecision = {
+  id: string;
+  title: string | null;
+  content: string;
+  created_at: string;
+  module_key: string | null;
+  step_key: string | null;
+};
+
+/**
+ * Lista decisões já aplicadas (approved=true) na etapa atual do projeto ativo.
+ * Filtros obrigatórios: user_id + project_id + module_key + step_key.
+ */
+export async function getAppliedDecisionsForStep(
+  projectId: string,
+  moduleKey: string,
+  stepKey: string | null,
+): Promise<AppliedDecision[]> {
+  assertProjectId(projectId);
+  if (!moduleKey) return [];
+  const { data: userRes } = await supabase.auth.getUser();
+  const userId = userRes?.user?.id;
+  if (!userId) return [];
+  let q = supabase
+    .from("project_outputs")
+    .select("id, title, content, created_at, module_key, step_key")
+    .eq("user_id", userId)
+    .eq("project_id", projectId)
+    .eq("module_key", moduleKey)
+    .eq("approved", true)
+    .order("created_at", { ascending: false });
+  q = stepKey === null ? q.is("step_key", null) : q.eq("step_key", stepKey);
+  const { data, error } = await q;
+  if (error) throw error;
+  return (data ?? []) as AppliedDecision[];
+}

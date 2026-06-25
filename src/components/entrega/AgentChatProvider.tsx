@@ -11,10 +11,12 @@ import {
 import { toast } from "sonner";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import {
+  getAppliedDecisionsForStep,
   loadProjectMessages,
   saveAsProjectDecision,
   sendAgentMessage,
   type AgentMessage,
+  type AppliedDecision,
 } from "@/lib/agentChat";
 
 export type AgentChatOpenArgs = {
@@ -37,6 +39,9 @@ type Ctx = {
   savingMessageId: string | null;
   applyingMessageId: string | null;
   appliedMessageIds: string[];
+  appliedDecisions: AppliedDecision[];
+  isLoadingAppliedDecisions: boolean;
+  appliedDecisionsError: string | null;
   input: string;
   setInput: (value: string) => void;
   open: (a?: AgentChatOpenArgs) => void;
@@ -62,6 +67,11 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
   const [applyingMessageId, setApplyingMessageId] = useState<string | null>(null);
   const [appliedMessageIds, setAppliedMessageIds] = useState<string[]>([]);
+  const [appliedDecisions, setAppliedDecisions] = useState<AppliedDecision[]>([]);
+  const [appliedDecisionsProjectId, setAppliedDecisionsProjectId] = useState<string | null>(null);
+  const [isLoadingAppliedDecisions, setIsLoadingAppliedDecisions] = useState(false);
+  const [appliedDecisionsError, setAppliedDecisionsError] = useState<string | null>(null);
+  const appliedVersionRef = useRef(0);
   const [input, setInput] = useState("");
   const loadVersionRef = useRef(0);
   const activeProjectIdRef = useRef<string | null>(activeProjectId);
@@ -298,6 +308,65 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const scopedInput = messagesProjectId === activeProjectId ? input : "";
   const scopedLoadingHistory = Boolean(isOpen && activeProjectId && (loadingHistory || messagesProjectId !== activeProjectId));
 
+  const currentModuleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
+  const currentStepKey = args.stepKey ?? null;
+
+  const loadAppliedDecisions = useCallback(
+    async (
+      projectId: string | null,
+      moduleKey: string | null,
+      stepKey: string | null,
+    ) => {
+      appliedVersionRef.current += 1;
+      const version = appliedVersionRef.current;
+      setAppliedDecisionsError(null);
+      if (!projectId || !moduleKey) {
+        setAppliedDecisions([]);
+        setAppliedDecisionsProjectId(projectId);
+        setIsLoadingAppliedDecisions(false);
+        return;
+      }
+      setIsLoadingAppliedDecisions(true);
+      try {
+        const list = await getAppliedDecisionsForStep(projectId, moduleKey, stepKey);
+        if (appliedVersionRef.current !== version || activeProjectIdRef.current !== projectId) return;
+        setAppliedDecisions(list);
+        setAppliedDecisionsProjectId(projectId);
+      } catch (e) {
+        if (appliedVersionRef.current !== version || activeProjectIdRef.current !== projectId) return;
+        setAppliedDecisions([]);
+        setAppliedDecisionsError(e instanceof Error ? e.message : "Erro ao carregar decisões");
+      } finally {
+        if (appliedVersionRef.current === version && activeProjectIdRef.current === projectId) {
+          setIsLoadingAppliedDecisions(false);
+        }
+      }
+    },
+    [],
+  );
+
+  // Limpa imediatamente ao trocar projeto e (re)carrega quando project/module/step mudam.
+  useEffect(() => {
+    setAppliedDecisions([]);
+    setAppliedDecisionsProjectId(activeProjectId);
+    void loadAppliedDecisions(activeProjectId, currentModuleKey, currentStepKey);
+  }, [activeProjectId, currentModuleKey, currentStepKey, loadAppliedDecisions]);
+
+  const refreshAppliedDecisionsIfStepMatches = useCallback(
+    (moduleKey: string | null, stepKey: string | null) => {
+      if (
+        activeProjectIdRef.current &&
+        moduleKey === currentModuleKey &&
+        stepKey === currentStepKey
+      ) {
+        void loadAppliedDecisions(activeProjectIdRef.current, currentModuleKey, currentStepKey);
+      }
+    },
+    [currentModuleKey, currentStepKey, loadAppliedDecisions],
+  );
+
+  const scopedAppliedDecisions = appliedDecisionsProjectId === activeProjectId ? appliedDecisions : [];
+
   const value = useMemo<Ctx>(
     () => ({
       isOpen,
@@ -310,35 +379,49 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
       savingMessageId,
       applyingMessageId,
       appliedMessageIds,
+      appliedDecisions: scopedAppliedDecisions,
+      isLoadingAppliedDecisions:
+        Boolean(activeProjectId) && (isLoadingAppliedDecisions || appliedDecisionsProjectId !== activeProjectId),
+      appliedDecisionsError,
       input: scopedInput,
       setInput,
       open,
       close,
       send,
-      saveDecision,
-      applySuggestion,
+      saveDecision: async (m, t) => {
+        await saveDecision(m, t);
+        refreshAppliedDecisionsIfStepMatches(currentModuleKey, currentStepKey);
+      },
+      applySuggestion: async (m) => {
+        await applySuggestion(m);
+        refreshAppliedDecisionsIfStepMatches(currentModuleKey, currentStepKey);
+      },
     }),
     [
       isOpen,
-      args,
-      argsProjectId,
+      scopedArgs,
       activeProjectId,
       messagesProjectId,
       selectedConversationId,
       scopedMessages,
-      scopedArgs,
-      scopedInput,
       scopedLoadingHistory,
       sending,
       savingMessageId,
       applyingMessageId,
       appliedMessageIds,
-      input,
+      scopedAppliedDecisions,
+      isLoadingAppliedDecisions,
+      appliedDecisionsProjectId,
+      appliedDecisionsError,
+      scopedInput,
       open,
       close,
       send,
       saveDecision,
       applySuggestion,
+      refreshAppliedDecisionsIfStepMatches,
+      currentModuleKey,
+      currentStepKey,
     ],
   );
   return <AgentChatCtx.Provider value={value}>{children}</AgentChatCtx.Provider>;

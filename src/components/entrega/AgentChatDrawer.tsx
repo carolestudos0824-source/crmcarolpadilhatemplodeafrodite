@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
-import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare, CheckCircle2, Wand2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Bot, X, Send, Sparkles, BookmarkPlus, ArrowRight, Loader2, MessagesSquare, CheckCircle2, Wand2, ClipboardCheck, ChevronDown, ChevronUp, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
 import { useAgentChat } from "@/components/entrega/AgentChatProvider";
 import { useAppProjects } from "@/hooks/useAppProjects";
 
@@ -55,6 +56,9 @@ export const AgentChatDrawer = () => {
     savingMessageId,
     applyingMessageId,
     appliedMessageIds,
+    appliedDecisions,
+    isLoadingAppliedDecisions,
+    appliedDecisionsError,
     input,
     setInput,
     send,
@@ -64,6 +68,8 @@ export const AgentChatDrawer = () => {
   const { activeProject, openDrawer: openMyApps } = useAppProjects();
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [expandedDecisionId, setExpandedDecisionId] = useState<string | null>(null);
+  const [copiedDecisionId, setCopiedDecisionId] = useState<string | null>(null);
 
   const moduleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
   const moduleLabel = moduleKey ? MODULE_LABELS[moduleKey] ?? moduleKey : "—";
@@ -145,6 +151,107 @@ export const AgentChatDrawer = () => {
                 <Sparkles size={14} /> Escolher ou criar projeto
               </button>
             </div>
+          )}
+
+          {activeProject && (
+            <section
+              aria-label="Decisões aplicadas nesta etapa"
+              className="rounded-xl border border-emerald-400/20 bg-emerald-400/[0.04] p-3 space-y-2"
+            >
+              <div className="flex items-center gap-2 text-emerald-200/90">
+                <ClipboardCheck size={13} />
+                <span className="text-[11px] uppercase tracking-wider font-medium">
+                  Decisões aplicadas nesta etapa
+                </span>
+                {!isLoadingAppliedDecisions && appliedDecisions.length > 0 && (
+                  <span className="text-[10px] text-emerald-200/70">({appliedDecisions.length})</span>
+                )}
+              </div>
+
+              {isLoadingAppliedDecisions ? (
+                <div className="text-[11px] text-muted-foreground flex items-center gap-2">
+                  <Loader2 size={12} className="animate-spin" /> Carregando decisões desta etapa...
+                </div>
+              ) : appliedDecisionsError ? (
+                <p className="text-[11px] text-amber-300/90">
+                  Não foi possível carregar as decisões agora.
+                </p>
+              ) : appliedDecisions.length === 0 ? (
+                <p className="text-[11px] text-muted-foreground/85 leading-relaxed">
+                  Nenhuma decisão aplicada nesta etapa ainda. Quando o Agente sugerir algo útil, clique em
+                  {" "}<strong className="text-emerald-200/90">Aplicar sugestão nesta etapa</strong>.
+                </p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {appliedDecisions.map((d) => {
+                    const isExpanded = expandedDecisionId === d.id;
+                    const summary = d.content.length > 160 ? `${d.content.slice(0, 160).trim()}…` : d.content;
+                    const formattedDate = new Date(d.created_at).toLocaleString("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    });
+                    return (
+                      <li
+                        key={d.id}
+                        className="rounded-lg border border-white/5 bg-white/[0.02] p-2.5"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[12px] text-foreground/95 font-medium truncate">
+                              {d.title || "Decisão aplicada"}
+                            </p>
+                            <p className="text-[10px] text-muted-foreground/80 mt-0.5">{formattedDate}</p>
+                            {!isExpanded && (
+                              <p className="text-[11px] text-foreground/75 mt-1 whitespace-pre-wrap leading-snug">
+                                {summary}
+                              </p>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedDecisionId(isExpanded ? null : d.id)}
+                            className="shrink-0 inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/80"
+                            aria-expanded={isExpanded}
+                          >
+                            {isExpanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+                            {isExpanded ? "Ocultar" : "Ver decisão"}
+                          </button>
+                        </div>
+                        {isExpanded && (
+                          <div className="mt-2 pt-2 border-t border-white/5 space-y-2">
+                            <p className="text-[12px] text-foreground/90 whitespace-pre-wrap leading-relaxed">
+                              {d.content}
+                            </p>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  await navigator.clipboard.writeText(d.content);
+                                  setCopiedDecisionId(d.id);
+                                  toast.success("Conteúdo copiado.");
+                                  setTimeout(() => {
+                                    setCopiedDecisionId((cur) => (cur === d.id ? null : cur));
+                                  }, 1500);
+                                } catch {
+                                  toast.error("Não foi possível copiar agora.");
+                                }
+                              }}
+                              className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/80"
+                            >
+                              {copiedDecisionId === d.id ? <Check size={11} /> : <Copy size={11} />}
+                              {copiedDecisionId === d.id ? "Copiado" : "Copiar conteúdo"}
+                            </button>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
           )}
 
           {activeProject && loadingHistory && (
