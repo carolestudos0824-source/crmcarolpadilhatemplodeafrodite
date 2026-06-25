@@ -830,7 +830,7 @@ function EntregaInner() {
           </div>
 
 
-          {!(active === "ideias" && !appProjects.activeProject) && (
+          {!((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
             <ModuleReviewCard
               moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
               isSecurity={active === "seguranca"}
@@ -839,9 +839,11 @@ function EntregaInner() {
             />
           )}
 
-          {active === "ideias" && !appProjects.activeProject && (
+          {(active === "ideias" || active === "planejar") && !appProjects.activeProject && (
             <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
-              Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente.
+              {active === "planejar"
+                ? "Escolha ou crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não planejar um app inexistente."
+                : "Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente."}
             </div>
           )}
 
@@ -871,7 +873,7 @@ function EntregaInner() {
             </div>
           )}
 
-          {active !== "fundamentos" && !(active === "ideias" && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
             <GpsDoAppCard
               defaultCollapsed
               moduleId={active}
@@ -886,7 +888,7 @@ function EntregaInner() {
           )}
 
 
-          {active !== "fundamentos" && !(active === "ideias" && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               moduleId={active}
@@ -933,19 +935,28 @@ function EntregaInner() {
               <span />
             )}
             {(() => {
-              const blockConclude = active === "ideias" && !appProjects.activeProject;
+              const blockConclude =
+                (active === "ideias" || active === "planejar") && !appProjects.activeProject;
+              const blockLabel =
+                active === "planejar"
+                  ? "Escolha um app para concluir"
+                  : "Escolha uma ideia para concluir";
+              const blockTitle =
+                active === "planejar"
+                  ? "Escolha ou crie um Projeto em foco antes de concluir esta etapa."
+                  : "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa.";
               return (
                 <button
                   onClick={markModuleDone}
                   disabled={blockConclude}
-                  title={blockConclude ? "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa." : undefined}
+                  title={blockConclude ? blockTitle : undefined}
                   className={
                     blockConclude
                       ? "px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-muted-foreground inline-flex items-center gap-2 text-sm cursor-not-allowed"
                       : "px-4 py-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/15 inline-flex items-center gap-2 text-sm"
                   }
                 >
-                  <CheckCircle2 size={14} /> {blockConclude ? "Escolha uma ideia para concluir" : "Marcar módulo como concluído"}
+                  <CheckCircle2 size={14} /> {blockConclude ? blockLabel : "Marcar módulo como concluído"}
                 </button>
               );
             })()}

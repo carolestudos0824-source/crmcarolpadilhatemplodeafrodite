@@ -232,11 +232,74 @@ Primeira versão:
 [O que precisa existir para testar com usuários reais]`;
 
 const TAB_META: { id: TabId; label: string; icon: typeof Target }[] = [
-  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
-  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
+  { id: "agente", label: "Planejar esta etapa com o Agente", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
+  { id: "lovable", label: "Implementar no Lovable (avançado)", icon: Wrench },
 ];
+
+const ETAPA_OBJETIVOS: Record<number, { objetivo: string; saida: string; cortar: string; criterio: string }> = {
+  1: {
+    objetivo: "Definir com clareza para quem é o app e qual dor ele resolve.",
+    saida: "público ideal; dor principal; situação de uso; frase simples do problema; dúvidas a validar.",
+    cortar: "Não defina personas amplas demais. Não invente público se ainda não validou.",
+    criterio: "Saber dizer em 1 frase quem é o usuário e qual problema ele tem.",
+  },
+  2: {
+    objetivo: "Escrever uma promessa clara, curta e honesta.",
+    saida: "promessa segura; promessa curta; promessa sem exagero; o que NÃO prometer.",
+    cortar: "Sem promessa de venda garantida, sem 'sucesso 100%', sem segurança absoluta.",
+    criterio: "A promessa cabe em uma frase e é realista.",
+  },
+  3: {
+    objetivo: "Decidir qual é a ação principal e única do usuário.",
+    saida: "ação principal única; fluxo principal do usuário; começo, meio e fim da experiência.",
+    cortar: "Não liste 5 ações principais — escolha 1.",
+    criterio: "Existe uma ação dominante que define o app.",
+  },
+  4: {
+    objetivo: "Separar o essencial do MVP do que fica para depois.",
+    saida: "até 5 funcionalidades essenciais; lista do que fica para depois; riscos de escopo.",
+    cortar: "Sem mais de 5 funcionalidades no MVP. Sem extras 'só porque seria legal'.",
+    criterio: "Lista enxuta cabe em uma tela e atende a ação principal.",
+  },
+  5: {
+    objetivo: "Transformar tudo num plano executável + primeiro prompt para o Lovable.",
+    saida: "telas principais; dados que precisam ser salvos; decisão sobre login, banco, admin e checkout; primeiro prompt para o Lovable.",
+    cortar: "Sem inventar login/banco/checkout que não foram pedidos. Sem ampliar escopo.",
+    criterio: "Plano + primeiro prompt prontos para colar no Lovable.",
+  },
+};
+
+const buildAgentStepPrompt = (
+  etapa: Etapa,
+  ctx: ProjectContext,
+  journey: JourneyId | null,
+  projectName: string | null,
+): string => {
+  const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
+  const name = orPlaceholder(projectName || ctx.appName);
+  const meta = ETAPA_OBJETIVOS[etapa.n];
+  return `Quero planejar a etapa "${etapa.title}" do meu app antes de pedir qualquer coisa ao Lovable.
+
+Contexto do projeto:
+- App: ${name}
+- O que faz: ${orPlaceholder(ctx.appDoes)}
+- Público: ${orPlaceholder(ctx.audience)}
+- Problema: ${orPlaceholder(ctx.problem)}
+- Promessa atual: ${orPlaceholder(ctx.promise)}
+- Ação principal: ${orPlaceholder(ctx.mainAction)}
+- Jornada escolhida: ${journeyLabel}
+
+Etapa atual: ${etapa.n} — ${etapa.title}
+Objetivo da etapa: ${meta.objetivo}
+Saída esperada: ${meta.saida}
+O que cortar: ${meta.cortar}
+Critério para avançar: ${meta.criterio}
+
+Me ajude a concluir esta etapa. Faça perguntas curtas se faltar dado e responda com a saída esperada acima, organizada em tópicos. Não amplie o escopo, não invente funcionalidades, não prometa venda garantida nem segurança 100%.`;
+};
+
 
 
 const CHECKLIST_PREFIX = "planejar_step__";
@@ -244,17 +307,36 @@ const CHECKLIST_PREFIX = "planejar_step__";
 
 
 
-function EtapaCard({ etapa }: { etapa: Etapa }) {
+function EtapaCard({
+  etapa,
+  defaultOpen,
+  enrichedAgentPrompt,
+  hasProject,
+}: {
+  etapa: Etapa;
+  defaultOpen: boolean;
+  enrichedAgentPrompt: string;
+  hasProject: boolean;
+}) {
   const { context } = useProjectContext();
   const [tab, setTab] = useState<TabId>("agente");
+  const [open, setOpen] = useState(defaultOpen);
   const Icon = etapa.icon;
+  const isLovableTab = tab === "lovable";
+  const lovableAllowed = etapa.n === 5;
+
   return (
     <GlassCard className="p-5 md:p-6">
-      <div className="flex items-start gap-4 mb-4">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-start gap-4 text-left"
+        aria-expanded={open}
+      >
         <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
           <Icon size={20} />
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
             Etapa {etapa.n}
           </div>
@@ -262,81 +344,99 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
             {etapa.title}
           </h3>
         </div>
-      </div>
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0 mt-2">
+          {open ? "Recolher" : "Abrir"}
+        </span>
+      </button>
 
-      <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 mb-4">
-        <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
-          Resultado esperado
+      {open && (
+        <div className="mt-4">
+          <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 mb-4">
+            <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
+              Resultado esperado
+            </div>
+            <p className="text-sm text-foreground/90">{etapa.resultado}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {TAB_META.map((t) => {
+              const TIcon = t.icon;
+              const active = tab === t.id;
+              const isLov = t.id === "lovable";
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
+                    active
+                      ? "bg-accent/15 border-accent/40 text-accent"
+                      : isLov
+                      ? "border-white/10 bg-white/[0.02] text-foreground/50 hover:bg-white/10"
+                      : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
+                  }`}
+                >
+                  <TIcon size={12} />
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {isLovableTab && !lovableAllowed && (
+            <div className="mb-3 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 text-[12px] text-amber-100 flex items-start gap-2">
+              <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+              <span>
+                Use o Lovable apenas quando já tiver um plano aprovado pelo Agente. Nas etapas 1 a 4 o objetivo é pensar, não construir.
+              </span>
+            </div>
+          )}
+
+          {tab === "avancar" ? (
+            <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+              <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
+                {etapa.tabs[tab]}
+              </pre>
+            </div>
+          ) : (
+            <EditablePromptBox
+              key={`${tab}-${hasProject ? "p" : "np"}`}
+              saveSourceModule="planejar"
+              originalPrompt={tab === "agente" ? enrichedAgentPrompt : etapa.tabs[tab]}
+              storageKey={`planejar_prompt__${etapa.n}__${tab}`}
+              transformOnCopy={
+                tab === "agente"
+                  ? undefined
+                  : (text) =>
+                      buildLovablePrompt({
+                        context,
+                        stepName: `Planejar o App — ${etapa.title}`,
+                        stepObjective: `Trabalhar a etapa "${etapa.title}" do planejamento do app preservando decisões já tomadas sobre problema, público, promessa, ação principal e funcionalidades da primeira versão. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
+                        command: text,
+                        moduleId: "planejar",
+                      })
+              }
+              copyLabel={
+                tab === "agente"
+                  ? "Copiar para o Agente Arquiteto"
+                  : tab === "corrigir"
+                  ? "Copiar correção"
+                  : "Copiar para implementar no Lovable"
+              }
+              helperText={
+                tab === "agente"
+                  ? "Cole no Agente Arquiteto. Use o Lovable só depois que o plano estiver claro."
+                  : tab === "corrigir"
+                  ? "Use quando o Lovable não entregar o resultado esperado."
+                  : undefined
+              }
+            />
+          )}
         </div>
-        <p className="text-sm text-foreground/90">{etapa.resultado}</p>
-      </div>
-
-
-      <div className="flex flex-wrap gap-2 mb-4">
-        {TAB_META.map((t) => {
-          const TIcon = t.icon;
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-                active
-                  ? "bg-accent/15 border-accent/40 text-accent"
-                  : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
-              }`}
-            >
-              <TIcon size={12} />
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {tab === "avancar" ? (
-        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
-          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-            {etapa.tabs[tab]}
-          </pre>
-        </div>
-      ) : (
-        <EditablePromptBox
-          key={tab}
-          saveSourceModule="planejar"
-          originalPrompt={etapa.tabs[tab]}
-          storageKey={`planejar_prompt__${etapa.n}__${tab}`}
-          transformOnCopy={
-            tab === "agente"
-              ? undefined
-              : (text) =>
-                  buildLovablePrompt({
-                    context,
-                    stepName: `Planejar o App — ${etapa.title}`,
-                    stepObjective: `Trabalhar a etapa "${etapa.title}" do planejamento do app preservando decisões já tomadas sobre problema, público, promessa, ação principal e funcionalidades da primeira versão. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
-                    command: text,
-                    moduleId: "planejar",
-                  })
-          }
-          copyLabel={
-            tab === "agente"
-              ? "Copiar para o Agente"
-              : tab === "corrigir"
-              ? "Copiar correção"
-              : "Copiar para implementar no Lovable"
-          }
-          helperText={
-            tab === "agente"
-              ? "Use para pensar antes de aplicar."
-              : tab === "corrigir"
-              ? "Use quando o Lovable não entregar o resultado esperado."
-              : undefined
-          }
-        />
       )}
-
     </GlassCard>
   );
 }
+
 
 export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
@@ -477,7 +577,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               Antes de pedir qualquer coisa ao Lovable, use o Agente Arquiteto para transformar sua ideia em um plano claro: público, problema, promessa, ação principal, MVP, telas, banco e próxima versão.
             </p>
             <p className="text-[11px] text-muted-foreground mt-2 italic">
-              Planejar não é construir. Planejar é decidir o que pedir ao Lovable para evitar retrabalho.
+              Use o Agente para pensar. Use o Lovable para executar apenas depois que o plano estiver claro.
             </p>
           </div>
         </div>
@@ -517,68 +617,64 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </details>
       </GlassCard>
 
-      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
-        <div className="flex items-start gap-3">
-          <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
-          <div className="min-w-0">
-            <h3 className="text-base md:text-lg font-heading font-bold leading-tight mb-1">
-              Um app começa antes do código
-            </h3>
-            <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-              Primeiro defina o problema, o público, a promessa e a ação principal. Depois copie os comandos para o Lovable.
-            </p>
-            <p className="text-[11px] text-muted-foreground/90 mt-2 italic">
-              Use o Agente para pensar. Use o Lovable para executar.
-            </p>
-          </div>
-        </div>
-      </GlassCard>
-
-      <GlassCard className="p-5 mb-6">
+      <GlassCard className="p-4 mb-6 border-white/10 bg-white/[0.03]">
         <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
-          O que você vai fazer nesta etapa
+          Como esta etapa funciona
         </div>
-        <p className="text-sm text-foreground/90 mb-4">
-          Nesta etapa, você vai transformar uma ideia solta em um plano claro para
-          construir no Lovable sem pedir funcionalidades demais e sem criar um app confuso.
-        </p>
-        <ol className="space-y-2 text-sm text-foreground/85">
+        <ol className="space-y-1.5 text-sm text-foreground/85">
           {[
-            "Defina o problema que o app resolve.",
-            "Escolha para quem o app será feito.",
-            "Escreva a promessa principal.",
-            "Defina a ação principal do usuário.",
-            "Separe o essencial do que pode ficar para depois.",
+            "Defina o problema e o público.",
+            "Escreva a promessa.",
+            "Defina a ação principal.",
+            "Separe essencial de extra.",
+            "Monte o plano e o primeiro prompt para o Lovable.",
           ].map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-accent/15 border border-accent/30 text-accent text-[10px] font-bold flex items-center justify-center">
                 {i + 1}
               </span>
-              <span className="pt-0.5">{step}</span>
+              <span>{step}</span>
             </li>
           ))}
         </ol>
-        <p className="mt-5 text-xs text-muted-foreground border-l-2 border-amber-400/30 pl-3 italic">
-          Em dúvida? Comece pelo botão acima: <strong className="text-foreground/90 not-italic">Planejar com o Agente Arquiteto</strong>. Ele ajuda você a transformar sua ideia em plano antes de usar o Lovable.
+        <p className="mt-3 text-[11px] text-muted-foreground italic">
+          Use o Agente para pensar. Use o Lovable para executar apenas depois que o plano estiver claro.
         </p>
-
       </GlassCard>
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-2">
-        Use a aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>{" "}
-        para pensar e decidir. Use a aba{" "}
-        <strong className="text-foreground/90">Implementar no Lovable</strong> só depois de ter clareza.
+        Em cada etapa, comece pela aba <strong className="text-foreground/90">Planejar esta etapa com o Agente</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada e só faz sentido na Etapa 5.
       </p>
       <p className="text-[11px] text-amber-200/90 mb-4 italic">
         Copiar prompt não conclui a etapa. Só marque como concluído quando tiver um plano claro.
       </p>
 
-      <div className="space-y-5 mb-8">
+      <div
+        className={`space-y-5 mb-8 ${!activeProject ? "opacity-50 pointer-events-none select-none" : ""}`}
+        aria-disabled={!activeProject}
+      >
+        {!activeProject && (
+          <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 text-[12px] text-amber-100">
+            Prévia bloqueada. Crie ou selecione um Projeto em foco acima para destravar as etapas, prompts contextualizados e marcar como concluído.
+          </div>
+        )}
         {ETAPAS.map((e) => (
-          <EtapaCard key={e.n} etapa={e} />
+          <EtapaCard
+            key={e.n}
+            etapa={e}
+            defaultOpen={e.n === 1}
+            hasProject={!!activeProject}
+            enrichedAgentPrompt={buildAgentStepPrompt(
+              e,
+              context,
+              journey,
+              activeProject?.name ?? null,
+            )}
+          />
         ))}
       </div>
+
 
       {/* Resultado desta etapa: Plano inicial do app */}
       <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-accent/[0.07]">
