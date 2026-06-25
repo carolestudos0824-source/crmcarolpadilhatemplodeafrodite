@@ -254,7 +254,18 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           saveSourceModule="planejar"
           originalPrompt={etapa.tabs[tab]}
           storageKey={`planejar_prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Planejar o App — ${etapa.title}`,
+                    stepObjective: `Trabalhar a etapa "${etapa.title}" do planejamento do app preservando decisões já tomadas sobre problema, público, promessa, ação principal e funcionalidades da primeira versão. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
+                    command: text,
+                    moduleId: "planejar",
+                  })
+          }
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
