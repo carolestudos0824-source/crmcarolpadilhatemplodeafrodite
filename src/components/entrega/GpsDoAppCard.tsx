@@ -187,6 +187,7 @@ export function GpsDoAppCard({
             saveSourceModule="gps-do-app"
             originalPrompt={prompt}
             storageKey={storageKey}
+            expectedSignature={expectedSignature}
             copyLabel="Copiar diagnóstico do app"
             helperText="Cole no Lovable apenas para diagnóstico. O Lovable deve analisar e não implementar nada."
           />
