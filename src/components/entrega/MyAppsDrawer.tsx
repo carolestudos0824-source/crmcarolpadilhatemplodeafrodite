@@ -115,7 +115,7 @@ export const MyAppsDrawer = () => {
 
         <div className="p-5 space-y-4">
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3 text-[12px] text-muted-foreground">
-            Os projetos ficam salvos na sua conta.
+            Cada projeto fica salvo na sua conta com seu próprio contexto, jornada, etapa e progresso.
           </div>
 
           {loading && (
