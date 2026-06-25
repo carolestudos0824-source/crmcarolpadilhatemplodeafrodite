@@ -973,6 +973,7 @@ export type Database = {
           id: string
           last_opened_at: string | null
           logo_path: string | null
+          logo_updated_at: string | null
           main_promise: string | null
           main_user_action: string | null
           needs_admin: boolean
@@ -1000,6 +1001,7 @@ export type Database = {
           id?: string
           last_opened_at?: string | null
           logo_path?: string | null
+          logo_updated_at?: string | null
           main_promise?: string | null
           main_user_action?: string | null
           needs_admin?: boolean
@@ -1027,6 +1029,7 @@ export type Database = {
           id?: string
           last_opened_at?: string | null
           logo_path?: string | null
+          logo_updated_at?: string | null
           main_promise?: string | null
           main_user_action?: string | null
           needs_admin?: boolean
