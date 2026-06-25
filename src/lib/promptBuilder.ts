@@ -251,6 +251,13 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
       "Verificar área de entrega protegida.",
       "Testar como comprador real.",
     ],
+    preserveExtras: [
+      "preserve configuração atual de pagamento",
+      "preserve Stripe, links de checkout, produtos, preços e webhooks já configurados",
+      "preserve edge functions relacionadas a pagamento",
+      "não altere checkout, preço, gateway ou liberação de acesso sem pedido explícito",
+    ],
+
   },
   legal: {
     actionTitle: "REVISÃO LEGAL E DE CONFIANÇA DO APP",
