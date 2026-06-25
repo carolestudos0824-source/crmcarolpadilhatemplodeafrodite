@@ -393,8 +393,8 @@ export const CommandCard = ({
                   Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
                 </div>
                 <EditablePromptBox
-                  originalPrompt={commandText}
-                  storageKey={`cmdcard__${completedKey}__guided`}
+                  originalPrompt={displayCommand}
+                  storageKey={`cmdcard__${completedKey}__${projectScope}__guided`}
                   onChange={setEditedCommand}
                   hideCopyButton
                   saveTitle={title}
