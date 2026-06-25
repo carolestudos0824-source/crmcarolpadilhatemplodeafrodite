@@ -830,7 +830,7 @@ function EntregaInner() {
           </div>
 
 
-          {!(active === "ideias" && !appProjects.activeProject) && (
+          {!((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
             <ModuleReviewCard
               moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
               isSecurity={active === "seguranca"}
@@ -839,9 +839,11 @@ function EntregaInner() {
             />
           )}
 
-          {active === "ideias" && !appProjects.activeProject && (
+          {(active === "ideias" || active === "planejar") && !appProjects.activeProject && (
             <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
-              Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente.
+              {active === "planejar"
+                ? "Escolha ou crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não planejar um app inexistente."
+                : "Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente."}
             </div>
           )}
 
