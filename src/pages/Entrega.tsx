@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useProjectJourney } from "@/lib/journey";
 import {
   Sparkles,
   Lightbulb,
