@@ -423,7 +423,7 @@ export const PromptReviewDialog = ({
             {copied ? <Check size={14} /> : <Copy size={14} />}
             {mode === "lovable" ? "Copiar para o Lovable" : "Copiar prompt para o Agente"}
           </button>
-          {mode === "agente" ? (
+          {mode === "agent" ? (
             <a
               href={AGENTE_ARQUITETO_URL}
               target="_blank"
