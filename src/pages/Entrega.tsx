@@ -843,6 +843,8 @@ function EntregaInner() {
             <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
               {active === "planejar"
                 ? "Escolha ou crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não planejar um app inexistente."
+                : active === "mvp"
+                ? "Escolha ou crie seu Projeto em foco antes de desenhar o Blueprint do MVP. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não estruturar um app inexistente."
                 : "Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente."}
             </div>
           )}
