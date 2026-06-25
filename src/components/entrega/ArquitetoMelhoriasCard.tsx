@@ -2,6 +2,7 @@ import { Ruler, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import type { ModuleId } from "@/data/entregaModules";
+import { JOURNEY_LABELS, JOURNEY_ARQUITETO_HINTS, type JourneyId } from "@/lib/journey";
 
 // ---------- Escopo contextual por módulo (foco de decisão de melhoria) ----------
 
