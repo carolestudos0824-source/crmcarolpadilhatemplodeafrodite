@@ -513,6 +513,23 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         Copiar prompt não conclui a etapa. Só marque como concluído quando o Mapa estiver completo.
       </p>
 
+      {/* Aviso: jornada não escolhida */}
+      {activeProject && !journey && (
+        <GlassCard className="p-4 mb-6 border-amber-400/40 bg-amber-400/[0.06]">
+          <div className="flex items-start gap-3">
+            <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <h3 className="text-sm font-heading font-semibold text-amber-100">
+                Escolha uma jornada antes de desenhar o fluxo, para a Fábrica adaptar o mapa de telas ao seu momento.
+              </h3>
+              <p className="text-xs text-foreground/85 mt-1 leading-relaxed">
+                As 3 jornadas (Começando do zero, Quero um app completo, Já tenho um app) mudam quais telas entram agora, quais ficam para depois e o que o Lovable pode mexer. Sem jornada, os prompts ficam menos precisos.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+      )}
+
       {/* Etapas — prévia bloqueada se não houver projeto */}
       <div
         className={`space-y-5 mb-8 ${!activeProject ? "opacity-50 pointer-events-none select-none" : ""}`}
@@ -525,13 +542,24 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         )}
         {ETAPAS.map((e) => {
           const isFinal = e.n === 5;
+          const journeyGuide = journey ? JOURNEY_TELAS_GUIDE[journey] : null;
           return (
             <div key={e.n}>
               {!isFinal && activeProject && (
                 <div className="mb-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
                   <AlertTriangle size={13} className="shrink-0 mt-0.5" />
                   <span>
-                    Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nesta etapa, comece pelo Agente.
+                    {journeyGuide
+                      ? journeyGuide.preservationNote
+                      : "Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nesta etapa, comece pelo Agente."}
+                  </span>
+                </div>
+              )}
+              {isFinal && activeProject && journeyGuide && (
+                <div className="mb-2 rounded-lg border border-cyan-400/30 bg-cyan-400/[0.06] p-2.5 text-[12px] text-cyan-100 flex items-start gap-2">
+                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+                  <span>
+                    Regra de implementação no Lovable para esta jornada: {journeyGuide.lovableDirective}
                   </span>
                 </div>
               )}
