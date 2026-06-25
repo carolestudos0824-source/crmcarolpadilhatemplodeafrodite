@@ -800,12 +800,20 @@ function EntregaInner() {
           </div>
 
 
-          <ModuleReviewCard
-            moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
-            isSecurity={active === "seguranca"}
-            objective={MODULE_HINTS[active]?.doNow}
-            moduleId={active}
-          />
+          {!(active === "ideias" && !appProjects.activeProject) && (
+            <ModuleReviewCard
+              moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
+              isSecurity={active === "seguranca"}
+              objective={MODULE_HINTS[active]?.doNow}
+              moduleId={active}
+            />
+          )}
+
+          {active === "ideias" && !appProjects.activeProject && (
+            <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
+              Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente.
+            </div>
+          )}
 
           {(active === "planejar" || active === "mvp") && (
             <div className="mt-8 mb-3">
@@ -822,7 +830,7 @@ function EntregaInner() {
 
 
 
-          {active === "ideias" && (
+          {active === "ideias" && appProjects.activeProject && (
             <div className="mt-10 mb-3">
               <h3 className="text-base font-heading font-bold text-foreground/95">
                 Depois de escolher uma ideia
@@ -833,7 +841,7 @@ function EntregaInner() {
             </div>
           )}
 
-          {active !== "fundamentos" && (
+          {active !== "fundamentos" && !(active === "ideias" && !appProjects.activeProject) && (
             <GpsDoAppCard
               defaultCollapsed
               moduleId={active}
@@ -848,7 +856,7 @@ function EntregaInner() {
           )}
 
 
-          {active !== "fundamentos" && (
+          {active !== "fundamentos" && !(active === "ideias" && !appProjects.activeProject) && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               moduleId={active}
