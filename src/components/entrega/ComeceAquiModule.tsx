@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useProjectJourney, type JourneyId as PersistedJourneyId } from "@/lib/journey";
+import { toast } from "sonner";
 import {
   Sparkles,
   ExternalLink,
@@ -96,10 +98,20 @@ export function ComeceAquiModule({ goTo }: Props) {
   const { openDrawer, activeProject } = useAppProjects();
   const moduleLabel = (id: ModuleId) => MODULES.find((m) => m.id === id)?.label ?? id;
   const hasApp = !!activeProject;
-  const [journey, setJourney] = useState<JourneyId | null>(null);
+  const [persistedJourney, persistJourney] = useProjectJourney(activeProject?.id ?? null);
+  const [journey, setJourney] = useState<JourneyId | null>(
+    (persistedJourney as JourneyId | null) ?? null,
+  );
 
   const pickJourney = (id: JourneyId) => {
     setJourney(id);
+    if (activeProject?.id) {
+      persistJourney(id as PersistedJourneyId);
+    } else {
+      toast("Selecione um Projeto em foco para salvar sua jornada.", {
+        description: "A navegação continua, mas a escolha não fica salva sem um projeto ativo.",
+      });
+    }
     // feedback visual antes da navegação
     setTimeout(() => goTo(JOURNEYS[id].next), 220);
   };

@@ -2,6 +2,7 @@ import { Compass, Crown } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import type { ModuleId } from "@/data/entregaModules";
+import { JOURNEY_LABELS, JOURNEY_GPS_HINTS, type JourneyId } from "@/lib/journey";
 
 // ---------- Escopo contextual por módulo ----------
 
@@ -58,14 +59,18 @@ const buildGpsPrompt = (params: {
   moduleId?: ModuleId;
   moduleTitle?: string;
   moduleObjective?: string;
+  journey?: JourneyId | null;
 }): string => {
-  const { moduleId, moduleTitle, moduleObjective } = params;
+  const { moduleId, moduleTitle, moduleObjective, journey } = params;
   const scope = (moduleId && MODULE_SCOPES[moduleId]) ?? DEFAULT_SCOPE;
   const objective =
     moduleObjective?.trim() ||
     (moduleId ? MODULE_OBJECTIVES[moduleId] : undefined) ||
     "[não informado]";
   const title = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+  const journeyBlock = journey
+    ? `\n- Jornada escolhida: ${JOURNEY_LABELS[journey]}\n- Orientação da jornada: ${JOURNEY_GPS_HINTS[journey]}`
+    : "";
 
   return `AUDITORIA READ-ONLY — NÃO ALTERE CÓDIGO, NÃO EDITE ARQUIVOS, NÃO CRIE TABELAS E NÃO MUDE CONFIGURAÇÕES.
 
@@ -75,7 +80,7 @@ Foco atual do diagnóstico:
 - Módulo atual: ${title}
 - Objetivo do módulo: ${objective}
 - Escopo da análise: ${scope}
-- A próxima ação obrigatória deve ficar limitada a este módulo.
+- A próxima ação obrigatória deve ficar limitada a este módulo.${journeyBlock}
 
 Atue como GPS de Construção de App, dentro do foco atual acima.
 
@@ -143,6 +148,7 @@ type GpsDoAppCardProps = {
   moduleId?: ModuleId;
   moduleTitle?: string;
   moduleObjective?: string;
+  journey?: JourneyId | null;
 };
 
 const GPS_DEFAULT_DESCRIPTION =
@@ -154,10 +160,11 @@ export function GpsDoAppCard({
   moduleId,
   moduleTitle,
   moduleObjective,
+  journey,
 }: GpsDoAppCardProps = {}) {
-  const prompt = buildGpsPrompt({ moduleId, moduleTitle, moduleObjective });
+  const prompt = buildGpsPrompt({ moduleId, moduleTitle, moduleObjective, journey });
   const storageKey = moduleId
-    ? `gps_do_app_prompt__${moduleId}`
+    ? `gps_do_app_prompt__${moduleId}${journey ? `__${journey}` : ""}`
     : "gps_do_app_prompt";
   const resolvedTitle = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
   const expectedSignature = `Módulo atual: ${resolvedTitle}`;

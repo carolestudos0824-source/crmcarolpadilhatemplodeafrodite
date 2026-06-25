@@ -1,4 +1,4 @@
-import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Sparkles, UserCog } from "lucide-react";
+import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Route, Sparkles, UserCog } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useAppProjects, hasUsefulProjectContext } from "@/hooks/useAppProjects";
@@ -11,6 +11,7 @@ import {
   MODULE_PROMPT_INTENTS,
 } from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
+import { useProjectJourney, JOURNEY_LABELS } from "@/lib/journey";
 import { ProjectLogoPicker } from "./ProjectLogoPicker";
 
 /**
@@ -71,6 +72,7 @@ type Props = {
 
 export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
   const { openEditor, context: liveContext } = useProjectContext();
   const { active, moduleDone, commands } = useUserProgress();
   const auth = useAuthState();
@@ -239,6 +241,23 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
       </p>
 
       {activeProject && <ProjectLogoPicker />}
+
+      <div className="mt-3 mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[11px]">
+        <Route size={12} className="text-accent shrink-0" />
+        <span className="text-muted-foreground">Jornada escolhida:</span>
+        <span className="font-medium text-foreground">
+          {journey ? JOURNEY_LABELS[journey] : "Nenhuma — escolha em Comece Aqui"}
+        </span>
+        <button
+          type="button"
+          onClick={() => onGoToModule("comece")}
+          className="ml-auto inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-foreground/80 hover:bg-white/10 transition"
+          title="Trocar a jornada do projeto sem apagar progresso"
+        >
+          {journey ? "Trocar jornada" : "Escolher jornada"}
+          <ArrowRight size={10} />
+        </button>
+      </div>
 
 
 
