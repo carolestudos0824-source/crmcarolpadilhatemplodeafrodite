@@ -2400,16 +2400,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
 
 
   if (active === "construir") {
-    return (
-      <section>
-        <ConstruirIntro />
-        <ModuleHeader
-          title="Siga as etapas de construção"
-          subtitle="Comece pela Etapa 1. Só avance quando o Lovable entregar o resultado esperado."
-        />
-        <CommandList commands={COMMANDS_CONSTRUIR} moduleKey="construir" />
-      </section>
-    );
+    return <ConstruirAppSection />;
   }
 
   if (active === "login") {
