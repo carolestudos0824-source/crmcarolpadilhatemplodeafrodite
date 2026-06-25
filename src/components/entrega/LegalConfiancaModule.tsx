@@ -174,6 +174,7 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const { context } = useProjectContext();
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
