@@ -225,7 +225,18 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Legal e Confiança — ${etapa.title}`,
+                    stepObjective: `Trabalhar a etapa "${etapa.title}" de legal/confiança preservando textos legais, termos, política de privacidade, páginas de confiança e dados de empresa já configurados. Não prometer conformidade jurídica perfeita.`,
+                    command: text,
+                    moduleId: "legal",
+                  })
+          }
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
