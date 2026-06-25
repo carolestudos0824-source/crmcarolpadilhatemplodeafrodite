@@ -468,7 +468,9 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
               Mapear telas com o Agente Arquiteto
             </h2>
             <p className="text-sm md:text-base text-foreground/90 mt-1.5 leading-relaxed">
-              Use o Agente para pensar telas, fluxo, CTAs e dados antes de pedir qualquer coisa ao Lovable. O Lovable entra só na Etapa 5, depois que o Mapa estiver claro.
+              {journey
+                ? JOURNEY_TELAS_GUIDE[journey].heroSubtitle
+                : "Use o Agente para pensar telas, fluxo, CTAs e dados antes de pedir qualquer coisa ao Lovable. O Lovable entra só na Etapa 5, depois que o Mapa estiver claro."}
             </p>
           </div>
         </div>
@@ -585,7 +587,7 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
                     : e.tabs.agente
                 }
                 correctionPrompt={e.tabs.corrigir}
-                advanceCriteria={e.criterio}
+                advanceCriteria={journey ? `${e.criterio} ${JOURNEY_TELAS_GUIDE[journey].advanceHint}` : e.criterio}
                 defaultOpen={e.n === firstPendingEtapa}
               />
             </div>
@@ -638,6 +640,12 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         </div>
         <p className="text-xs text-muted-foreground mb-3">
           Marque cada item só depois que estiver claro de verdade no seu Mapa. Copiar prompt não conta.
+          {journey && (
+            <>
+              <br />
+              <span className="text-amber-200/90">{JOURNEY_TELAS_GUIDE[journey].checklistNote}</span>
+            </>
+          )}
         </p>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
