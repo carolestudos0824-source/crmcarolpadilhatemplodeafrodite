@@ -830,7 +830,7 @@ function EntregaInner() {
           </div>
 
 
-          {!((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
+          {!((active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject) && (
             <ModuleReviewCard
               moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
               isSecurity={active === "seguranca"}
@@ -839,17 +839,19 @@ function EntregaInner() {
             />
           )}
 
-          {(active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject && (
+          {(active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject && (
             <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
               {active === "planejar"
                 ? "Escolha ou crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não planejar um app inexistente."
                 : active === "mvp"
                 ? "Escolha ou crie seu Projeto em foco antes de desenhar o Blueprint do MVP. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não estruturar um app inexistente."
+                : active === "telas"
+                ? "Escolha ou crie seu Projeto em foco antes de desenhar o Mapa de Telas e Fluxo. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não desenhar telas de um app inexistente."
                 : "Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente."}
             </div>
           )}
 
-          {(active === "planejar" || active === "mvp") && (
+          {(active === "planejar" || active === "mvp" || active === "telas") && (
             <div className="mt-8 mb-3">
               <h3 className="text-sm font-heading font-semibold text-muted-foreground uppercase tracking-wider">
                 Ferramentas extras
@@ -857,6 +859,8 @@ function EntregaInner() {
               <p className="text-xs text-muted-foreground/80 mt-1">
                 {active === "mvp"
                   ? "Use apenas se estiver travado ou quiser revisar melhor sua arquitetura antes de continuar."
+                  : active === "telas"
+                  ? "Use apenas se estiver travado ou quiser revisar melhor seu Mapa de Telas e Fluxo antes de continuar."
                   : "Use apenas se estiver travado ou quiser revisar melhor sua ideia antes de continuar."}
               </p>
             </div>
@@ -875,7 +879,7 @@ function EntregaInner() {
             </div>
           )}
 
-          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject) && (
             <GpsDoAppCard
               defaultCollapsed
               moduleId={active}
@@ -890,7 +894,7 @@ function EntregaInner() {
           )}
 
 
-          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject) && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               moduleId={active}
@@ -938,7 +942,7 @@ function EntregaInner() {
             )}
             {(() => {
               const noProject =
-                (active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject;
+                (active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject;
 
               const PLANEJAR_CRITICAL = [
                 "Problema definido",
@@ -974,25 +978,45 @@ function EntregaInner() {
               const blockMvpChecklist =
                 active === "mvp" && !!appProjects.activeProject && !mvpChecklistDone;
 
-              const blockConclude = noProject || blockPlanejarChecklist || blockMvpChecklist;
+              const TELAS_CRITICAL = [
+                "Lista de telas principais definida",
+                "Fluxo do usuário definido",
+                "Telas públicas e restritas definidas",
+                "CTA principal por tela definido",
+                "Dados por tela definidos",
+                "Estados de sucesso/erro/vazio definidos",
+                "Tela final ou entrega definida",
+                "Prompt de implementação pronto",
+              ];
+              const telasChecklistDone =
+                active === "telas" &&
+                TELAS_CRITICAL.every((it) => !!checklist[`telas_step__${it}`]);
+              const blockTelasChecklist =
+                active === "telas" && !!appProjects.activeProject && !telasChecklistDone;
+
+              const blockConclude = noProject || blockPlanejarChecklist || blockMvpChecklist || blockTelasChecklist;
 
               const label = noProject
                 ? active === "planejar"
                   ? "Escolha um app para concluir"
                   : active === "mvp"
                   ? "Escolha um app para concluir"
+                  : active === "telas"
+                  ? "Escolha um app para concluir"
                   : "Escolha uma ideia para concluir"
-                : blockPlanejarChecklist || blockMvpChecklist
+                : blockPlanejarChecklist || blockMvpChecklist || blockTelasChecklist
                 ? "Conclua o checklist para marcar esta etapa"
                 : "Marcar módulo como concluído";
               const tip = noProject
-                ? active === "planejar" || active === "mvp"
+                ? active === "planejar" || active === "mvp" || active === "telas"
                   ? "Escolha ou crie um Projeto em foco antes de concluir esta etapa."
                   : "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa."
                 : blockPlanejarChecklist
                 ? "Marque os itens críticos do checklist 'Resultado esperado deste planejamento' antes de concluir."
                 : blockMvpChecklist
                 ? "Marque os itens críticos do checklist 'Blueprint do MVP' antes de concluir."
+                : blockTelasChecklist
+                ? "Marque os itens críticos do checklist 'Mapa de Telas e Fluxo' antes de concluir."
                 : undefined;
               return (
                 <button
@@ -2348,7 +2372,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
   }
 
   if (active === "telas") {
-    return <TelasFluxoModule />;
+    return <TelasFluxoModule goTo={goTo} />;
   }
   if (active === "publicar") {
     return <PublicarDominioModule />;
