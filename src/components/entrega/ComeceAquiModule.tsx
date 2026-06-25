@@ -377,10 +377,12 @@ export function ComeceAquiModule({ goTo }: Props) {
           href={LOVABLE_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
+          className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4 inline-flex items-center gap-1.5"
+          title="Use apenas depois de ter um prompt pronto"
         >
-          <ExternalLink size={16} /> Abrir Lovable
+          <ExternalLink size={12} /> Abrir Lovable — use apenas depois de ter um prompt pronto
         </a>
+
       </div>
 
       {/* Como este programa funciona — recolhível */}
