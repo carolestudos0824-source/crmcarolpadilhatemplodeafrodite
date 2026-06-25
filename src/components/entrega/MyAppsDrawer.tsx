@@ -346,8 +346,9 @@ export const MyAppsDrawer = () => {
           <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3 text-[11px] text-muted-foreground flex items-start gap-2">
             <Settings2 size={12} className="mt-0.5 shrink-0" />
             <span>
-              Para alterar público, problema, promessa, checkout e outros
-              dados do projeto em foco, abra o Contexto do projeto em foco.
+              {projects.length === 0
+                ? "Depois de criar ou selecionar um projeto, você poderá editar público, problema, promessa, checkout e outros dados no Contexto do projeto em foco."
+                : "Para alterar público, problema, promessa, checkout e outros dados do projeto em foco, abra o Contexto do projeto em foco."}
             </span>
           </div>
         </div>
