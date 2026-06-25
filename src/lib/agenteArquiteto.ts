@@ -34,6 +34,34 @@ export type CopyPromptAndOpenAgentOptions = {
  * - Se a cópia falhar e existir `onClipboardFail`: NÃO abre o Agente;
  *   delega para o fallback (geralmente um modal com cópia manual).
  */
+/**
+ * Fallback síncrono de cópia para ambientes onde `navigator.clipboard`
+ * está indisponível ou bloqueado (ex.: iframe de preview sem permissão,
+ * Safari sem foco, contexto não-seguro). Mantém o gesto do usuário.
+ */
+function copyTextSync(text: string): boolean {
+  if (typeof document === "undefined") return false;
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "0";
+    ta.style.left = "0";
+    ta.style.opacity = "0";
+    ta.style.pointerEvents = "none";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function copyPromptAndOpenAgent(
   opts: CopyPromptAndOpenAgentOptions = {},
 ): Promise<void> {
@@ -49,21 +77,36 @@ export async function copyPromptAndOpenAgent(
     return;
   }
 
+  // 1) Tenta cópia SÍNCRONA primeiro (preserva user gesture e funciona em
+  //    iframes/preview onde a Clipboard API assíncrona é bloqueada).
+  const syncCopied = copyTextSync(prompt!);
+
+  // 2) Tenta também a Clipboard API assíncrona como reforço/atualização.
+  let asyncCopied = false;
   try {
-    await navigator.clipboard.writeText(prompt!);
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(prompt!);
+      asyncCopied = true;
+    }
+  } catch {
+    asyncCopied = false;
+  }
+
+  if (syncCopied || asyncCopied) {
     openAgenteArquiteto();
     toast.success(
       successMessage ??
         "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole lá para revisar sua ideia antes de construir.",
     );
-  } catch {
-    if (onClipboardFail) {
-      onClipboardFail(prompt!);
-      return;
-    }
-    openAgenteArquiteto();
-    toast.error(
-      "Não foi possível copiar automaticamente. Copie o prompt manualmente.",
-    );
+    return;
   }
+
+  // 3) Cópia falhou nos dois caminhos.
+  if (onClipboardFail) {
+    onClipboardFail(prompt!);
+    return;
+  }
+  toast.error(
+    "Não consegui copiar automaticamente. Copie o texto manualmente antes de abrir o Agente.",
+  );
 }
