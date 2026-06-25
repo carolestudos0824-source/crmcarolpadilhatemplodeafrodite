@@ -43,7 +43,14 @@ const MODULE_OBJECTIVES: Partial<Record<ModuleId, string>> = {
   melhorias: "Decidir o que entra na próxima versão sem quebrar o que já funciona.",
   checklist: "Conferir o painel de prontidão antes de ativar o acesso.",
   ativar: "Liberar acesso à área paga sem expor dados ou quebrar permissões.",
+  comece: "Orientar o usuário a escolher o caminho correto e entender como usar a Fábrica antes de avançar.",
+  ideias: "Ajudar o usuário a escolher ou adaptar uma ideia de app simples, viável e adequada ao MVP.",
+  planejar: "Definir estratégia, público, problema, promessa, ação principal e escopo antes de construir.",
+  mvp: "Transformar a ideia em um MVP enxuto com no máximo 5 funcionalidades essenciais.",
+  telas: "Mapear telas, fluxo de navegação e ações principais antes de implementar no Lovable.",
+  erros: "Diagnosticar erros comuns, entender a causa provável e orientar correção cirúrgica sem quebrar o app.",
 };
+
 
 const RESOLVED_TITLE_FALLBACK = "Módulo atual";
 
