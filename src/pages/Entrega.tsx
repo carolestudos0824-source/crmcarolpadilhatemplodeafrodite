@@ -935,28 +935,53 @@ function EntregaInner() {
               <span />
             )}
             {(() => {
-              const blockConclude =
+              const noProject =
                 (active === "ideias" || active === "planejar") && !appProjects.activeProject;
-              const blockLabel =
-                active === "planejar"
+
+              const PLANEJAR_CRITICAL = [
+                "Problema definido",
+                "Público definido",
+                "Promessa definida",
+                "Ação principal definida",
+                "MVP definido",
+                "Telas principais definidas",
+                "Primeira versão clara",
+                "Próximo comando Lovable pronto",
+              ];
+              const planejarChecklistDone =
+                active === "planejar" &&
+                PLANEJAR_CRITICAL.every((it) => !!checklist[`planejar_step__${it}`]);
+              const blockPlanejarChecklist =
+                active === "planejar" && !!appProjects.activeProject && !planejarChecklistDone;
+
+              const blockConclude = noProject || blockPlanejarChecklist;
+
+              const label = noProject
+                ? active === "planejar"
                   ? "Escolha um app para concluir"
-                  : "Escolha uma ideia para concluir";
-              const blockTitle =
-                active === "planejar"
+                  : "Escolha uma ideia para concluir"
+                : blockPlanejarChecklist
+                ? "Conclua o checklist para marcar esta etapa"
+                : "Marcar módulo como concluído";
+              const tip = noProject
+                ? active === "planejar"
                   ? "Escolha ou crie um Projeto em foco antes de concluir esta etapa."
-                  : "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa.";
+                  : "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa."
+                : blockPlanejarChecklist
+                ? "Marque os itens críticos do checklist 'Resultado esperado deste planejamento' antes de concluir."
+                : undefined;
               return (
                 <button
                   onClick={markModuleDone}
                   disabled={blockConclude}
-                  title={blockConclude ? blockTitle : undefined}
+                  title={tip}
                   className={
                     blockConclude
                       ? "px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-muted-foreground inline-flex items-center gap-2 text-sm cursor-not-allowed"
                       : "px-4 py-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/15 inline-flex items-center gap-2 text-sm"
                   }
                 >
-                  <CheckCircle2 size={14} /> {blockConclude ? blockLabel : "Marcar módulo como concluído"}
+                  <CheckCircle2 size={14} /> {label}
                 </button>
               );
             })()}
