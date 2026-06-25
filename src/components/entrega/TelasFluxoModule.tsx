@@ -45,9 +45,8 @@ const ETAPAS: Etapa[] = [
     icon: PanelTop,
     title: "Mapear as telas principais",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.`,
-      ),
       agente:
         "Me ajude a mapear as telas essenciais do meu app. Quero saber quais telas preciso para o usuário entrar, entender a proposta, realizar a ação principal e receber o resultado.",
       corrigir:
