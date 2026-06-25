@@ -251,6 +251,13 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
       "Verificar área de entrega protegida.",
       "Testar como comprador real.",
     ],
+    preserveExtras: [
+      "preserve configuração atual de pagamento",
+      "preserve Stripe, links de checkout, produtos, preços e webhooks já configurados",
+      "preserve edge functions relacionadas a pagamento",
+      "não altere checkout, preço, gateway ou liberação de acesso sem pedido explícito",
+    ],
+
   },
   legal: {
     actionTitle: "REVISÃO LEGAL E DE CONFIANÇA DO APP",
@@ -280,7 +287,14 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
       "Conferir links principais (home, checkout, login, suporte).",
       "Fazer teste pós-publicação em aba anônima.",
     ],
+    preserveExtras: [
+      "preserve domínio já conectado",
+      "preserve configurações de deploy",
+      "preserve metatags, OG image, favicon e SEO básico já configurados",
+      "não altere domínio, redirects ou configurações de publicação sem pedido explícito",
+    ],
   },
+
   teste: {
     actionTitle: "TESTE FINAL DO APP ANTES DE PUBLICAR",
     directRequest:
@@ -843,7 +857,7 @@ ${isSecurity ? securityAnalysisBlock : standardAnalysisBlock}
 Regras de preservação:
 ${bullets(PRESERVE_BASE)}
 
-Não altere nada automaticamente sem explicar antes.
+Não altere nada. Não implemente, não edite arquivos, não crie componentes, não altere banco, não altere layout, não altere rotas, não altere checkout, não altere autenticação e não mude permissões. Esta é uma auditoria read-only.
 
 Entregue:
 - o que está correto
