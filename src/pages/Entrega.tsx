@@ -789,6 +789,8 @@ function EntregaInner() {
           {active !== "fundamentos" && (
             <GpsDoAppCard
               defaultCollapsed
+              moduleId={active}
+              moduleTitle={MODULES.find((m) => m.id === active)?.label}
               descriptionOverride={
                 active === "telas"
                   ? "Use o GPS para confirmar em que ponto da construção você está e o que falta antes de seguir para o próximo módulo."
@@ -796,6 +798,7 @@ function EntregaInner() {
               }
             />
           )}
+
 
           {active !== "fundamentos" && (
             <ArquitetoMelhoriasCard
