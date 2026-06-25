@@ -593,21 +593,24 @@ Regras:
                 <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
-                    onClick={handleCopyAgentDump}
+                    onClick={handleOpenAgentWithDump}
                     className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:from-cyan-400 hover:to-blue-500 transition shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)]"
                   >
-                    <Copy size={16} /> Copiar prompt para o Agente
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleOpenAgentWithDump}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-cyan-400/30 bg-cyan-500/[0.06] text-cyan-200 hover:bg-cyan-500/15 text-sm font-semibold"
-                  >
-                    <ExternalLink size={14} /> Abrir Agente
+                    <Copy size={16} /> Copiar e abrir Agente Arquiteto
                   </button>
                 </div>
-                <p className="relative text-[11.5px] text-foreground/60 leading-snug -mt-1">
-                  O ChatGPT não cola o texto automaticamente. Primeiro copie o prompt, depois cole no Agente com Ctrl+V. Ao clicar em <span className="text-cyan-300">“Abrir Agente”</span>, o prompt é copiado antes de abrir.
+                <p className="relative text-[11.5px] text-foreground/70 leading-snug -mt-1">
+                  Use o Agente Arquiteto quando estiver em dúvida, travado ou quiser revisar antes de mexer no Lovable.
+                </p>
+                <p className="relative text-[11px] text-foreground/55 leading-snug">
+                  O ChatGPT não cola o texto automaticamente. Após abrir, cole no Agente com Ctrl+V.{" "}
+                  <button
+                    type="button"
+                    onClick={handleCopyAgentDump}
+                    className="underline underline-offset-2 text-cyan-300 hover:text-cyan-200"
+                  >
+                    Apenas copiar (não abrir)
+                  </button>
                 </p>
 
 
