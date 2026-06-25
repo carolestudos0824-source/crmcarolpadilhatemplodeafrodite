@@ -72,6 +72,7 @@ type Props = {
 
 export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
   const { openEditor, context: liveContext } = useProjectContext();
   const { active, moduleDone, commands } = useUserProgress();
   const auth = useAuthState();
