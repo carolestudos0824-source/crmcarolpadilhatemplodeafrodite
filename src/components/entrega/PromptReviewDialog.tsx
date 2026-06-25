@@ -20,6 +20,7 @@ import { APP_CONFIG } from "@/config/appConfig";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { useAppProjects } from "@/hooks/useAppProjects";
+import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 
 type Props = {
   open: boolean;
@@ -177,18 +178,13 @@ export const PromptReviewDialog = ({
   };
 
   const copyAgent = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      if (contextComplete) {
-        toast.success("Prompt copiado para enviar ao Agente.");
-      } else {
-        toast("Prompt copiado. Contexto incompleto: revise antes de enviar ao Agente.");
-      }
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      toast.error("Não foi possível copiar agora. Selecione o texto manualmente.");
-    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+    await copyPromptAndOpenAgent({
+      prompt: text,
+      successMessage:
+        "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
+    });
   };
 
 
@@ -288,9 +284,14 @@ export const PromptReviewDialog = ({
               : "Use este prompt quando quiser conversar, revisar e decidir antes de mexer no app."}
           </p>
           {mode === "agent" && (
-            <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1.5">
-              Depois que o Lovable responder, cole aqui o resultado ou erro para o Agente ajudar você a decidir o próximo passo.
-            </p>
+            <>
+              <p className="text-[11px] text-cyan-200/90 bg-cyan-500/[0.06] border border-cyan-400/25 rounded-md px-2 py-1.5">
+                Depois que o Lovable responder, cole aqui o resultado ou erro para o Agente ajudar você a decidir o próximo passo.
+              </p>
+              <p className="text-[11px] text-amber-200/85 mt-1.5">
+                Use o Agente Arquiteto quando estiver em dúvida, travado ou quiser revisar antes de mexer no Lovable.
+              </p>
+            </>
           )}
         </div>
 
@@ -410,23 +411,14 @@ export const PromptReviewDialog = ({
             >
               <Sparkles size={14} /> Refinar com Agente
             </button>
-          ) : (
-            <a
-              href={APP_CONFIG.GPT_AGENT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm"
-            >
-              <ExternalLink size={14} /> Enviar para o Agente
-            </a>
-          )}
+          ) : null}
           <button
             type="button"
             onClick={mode === "lovable" ? copy : copyAgent}
             className="btn-primary text-sm"
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
-            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar para o Agente"}
+            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar e abrir Agente Arquiteto"}
           </button>
         </div>
 
