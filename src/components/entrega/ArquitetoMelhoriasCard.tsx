@@ -189,6 +189,8 @@ export function ArquitetoMelhoriasCard({
   const storageKey = moduleId
     ? `arquiteto_melhorias_prompt__${moduleId}`
     : "arquiteto_melhorias_prompt";
+  const resolvedTitle = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+  const expectedSignature = `Módulo atual: ${resolvedTitle}`;
 
   return (
     <GlassCard className="mt-4 p-4 sm:p-5">
@@ -214,6 +216,7 @@ export function ArquitetoMelhoriasCard({
             saveSourceModule="arquiteto-melhorias"
             originalPrompt={prompt}
             storageKey={storageKey}
+            expectedSignature={expectedSignature}
             copyLabel="Analisar melhoria do meu app"
             helperText="Cole no chat da IA do seu projeto para decidir se a melhoria entra agora, depois ou é cortada."
           />
