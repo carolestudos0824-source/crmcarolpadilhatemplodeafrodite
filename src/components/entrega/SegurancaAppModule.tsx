@@ -233,7 +233,19 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Segurança do App — ${etapa.title}`,
+                    stepObjective: `Auditar/ajustar a etapa "${etapa.title}" da segurança do app, sem alterar auth, RLS, policies, RPCs, permissões, admin ou área paga sem pedido explícito.`,
+                    command: text,
+                    moduleId: "seguranca",
+                  })
+          }
+
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
