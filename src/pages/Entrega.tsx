@@ -873,7 +873,7 @@ function EntregaInner() {
             </div>
           )}
 
-          {active !== "fundamentos" && !(active === "ideias" && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
             <GpsDoAppCard
               defaultCollapsed
               moduleId={active}
@@ -888,7 +888,7 @@ function EntregaInner() {
           )}
 
 
-          {active !== "fundamentos" && !(active === "ideias" && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               moduleId={active}
