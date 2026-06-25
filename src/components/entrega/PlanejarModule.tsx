@@ -194,6 +194,7 @@ const CHECKLIST_PREFIX = "planejar_step__";
 
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
+  const { context } = useProjectContext();
   const [tab, setTab] = useState<TabId>("lovable");
   const Icon = etapa.icon;
   return (
