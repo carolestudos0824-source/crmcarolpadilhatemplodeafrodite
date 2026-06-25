@@ -956,21 +956,43 @@ function EntregaInner() {
               const blockPlanejarChecklist =
                 active === "planejar" && !!appProjects.activeProject && !planejarChecklistDone;
 
-              const blockConclude = noProject || blockPlanejarChecklist;
+              const MVP_CRITICAL = [
+                "MVP definido",
+                "Até 5 funcionalidades escolhidas",
+                "Telas principais definidas",
+                "Dados principais definidos",
+                "Decisão sobre login",
+                "Decisão sobre banco",
+                "Decisão sobre admin",
+                "Decisão sobre checkout/área paga",
+                "Itens da versão 2 separados",
+                "Primeiro prompt Lovable pronto",
+              ];
+              const mvpChecklistDone =
+                active === "mvp" &&
+                MVP_CRITICAL.every((it) => !!checklist[`mvp_step__${it}`]);
+              const blockMvpChecklist =
+                active === "mvp" && !!appProjects.activeProject && !mvpChecklistDone;
+
+              const blockConclude = noProject || blockPlanejarChecklist || blockMvpChecklist;
 
               const label = noProject
                 ? active === "planejar"
                   ? "Escolha um app para concluir"
+                  : active === "mvp"
+                  ? "Escolha um app para concluir"
                   : "Escolha uma ideia para concluir"
-                : blockPlanejarChecklist
+                : blockPlanejarChecklist || blockMvpChecklist
                 ? "Conclua o checklist para marcar esta etapa"
                 : "Marcar módulo como concluído";
               const tip = noProject
-                ? active === "planejar"
+                ? active === "planejar" || active === "mvp"
                   ? "Escolha ou crie um Projeto em foco antes de concluir esta etapa."
                   : "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa."
                 : blockPlanejarChecklist
                 ? "Marque os itens críticos do checklist 'Resultado esperado deste planejamento' antes de concluir."
+                : blockMvpChecklist
+                ? "Marque os itens críticos do checklist 'Blueprint do MVP' antes de concluir."
                 : undefined;
               return (
                 <button
