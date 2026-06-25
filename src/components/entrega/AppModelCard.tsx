@@ -433,12 +433,21 @@ Regras:
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setContext(modelToContext(model, model.name));
               setEditedName(model.name);
-              setOpen(true);
-              toast.success("Ideia selecionada. Abra o plano para revisar com o Agente Arquiteto.");
+              if (activeProject) {
+                // Pede confirmação antes de sobrescrever o Projeto em foco
+                setConflictOpen(true);
+              } else {
+                // Cria diretamente um novo Projeto em foco a partir da ideia
+                void saveAsNewApp();
+              }
             }}
             className="w-full sm:flex-1 min-h-[44px] px-4 py-2.5 rounded-lg border border-accent/60 bg-accent text-background hover:bg-accent/90 inline-flex items-center justify-center gap-2 text-sm font-semibold shadow-[0_0_0_1px_rgba(0,194,255,0.25)]"
+            title={
+              activeProject
+                ? "Você já tem um Projeto em foco. Escolha aplicar ou salvar como novo app."
+                : "Esta ideia será criada como seu Projeto em foco."
+            }
           >
             <Sparkles size={14} /> Usar esta ideia
           </button>
