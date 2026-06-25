@@ -1,8 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MvpArquiteturaModule } from "./MvpArquiteturaModule";
+import { AgentChatProvider } from "./AgentChatProvider";
 
 vi.mock("sonner", () => ({ toast: Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn() }) }));
+
+const renderModule = () =>
+  render(
+    <AgentChatProvider>
+      <MvpArquiteturaModule />
+    </AgentChatProvider>,
+  );
 
 const writeText = vi.fn().mockResolvedValue(undefined);
 Object.assign(navigator, { clipboard: { writeText } });
