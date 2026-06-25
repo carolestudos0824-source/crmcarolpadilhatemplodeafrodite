@@ -307,17 +307,36 @@ const CHECKLIST_PREFIX = "planejar_step__";
 
 
 
-function EtapaCard({ etapa }: { etapa: Etapa }) {
+function EtapaCard({
+  etapa,
+  defaultOpen,
+  enrichedAgentPrompt,
+  hasProject,
+}: {
+  etapa: Etapa;
+  defaultOpen: boolean;
+  enrichedAgentPrompt: string;
+  hasProject: boolean;
+}) {
   const { context } = useProjectContext();
   const [tab, setTab] = useState<TabId>("agente");
+  const [open, setOpen] = useState(defaultOpen);
   const Icon = etapa.icon;
+  const isLovableTab = tab === "lovable";
+  const lovableAllowed = etapa.n === 5;
+
   return (
     <GlassCard className="p-5 md:p-6">
-      <div className="flex items-start gap-4 mb-4">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-start gap-4 text-left"
+        aria-expanded={open}
+      >
         <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
           <Icon size={20} />
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
             Etapa {etapa.n}
           </div>
@@ -325,81 +344,99 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
             {etapa.title}
           </h3>
         </div>
-      </div>
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0 mt-2">
+          {open ? "Recolher" : "Abrir"}
+        </span>
+      </button>
 
-      <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 mb-4">
-        <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
-          Resultado esperado
+      {open && (
+        <div className="mt-4">
+          <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/[0.06] p-3 mb-4">
+            <div className="text-[10px] uppercase tracking-wider text-emerald-200/90 mb-1">
+              Resultado esperado
+            </div>
+            <p className="text-sm text-foreground/90">{etapa.resultado}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {TAB_META.map((t) => {
+              const TIcon = t.icon;
+              const active = tab === t.id;
+              const isLov = t.id === "lovable";
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
+                    active
+                      ? "bg-accent/15 border-accent/40 text-accent"
+                      : isLov
+                      ? "border-white/10 bg-white/[0.02] text-foreground/50 hover:bg-white/10"
+                      : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
+                  }`}
+                >
+                  <TIcon size={12} />
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {isLovableTab && !lovableAllowed && (
+            <div className="mb-3 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 text-[12px] text-amber-100 flex items-start gap-2">
+              <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+              <span>
+                Use o Lovable apenas quando já tiver um plano aprovado pelo Agente. Nas etapas 1 a 4 o objetivo é pensar, não construir.
+              </span>
+            </div>
+          )}
+
+          {tab === "avancar" ? (
+            <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+              <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
+                {etapa.tabs[tab]}
+              </pre>
+            </div>
+          ) : (
+            <EditablePromptBox
+              key={`${tab}-${hasProject ? "p" : "np"}`}
+              saveSourceModule="planejar"
+              originalPrompt={tab === "agente" ? enrichedAgentPrompt : etapa.tabs[tab]}
+              storageKey={`planejar_prompt__${etapa.n}__${tab}`}
+              transformOnCopy={
+                tab === "agente"
+                  ? undefined
+                  : (text) =>
+                      buildLovablePrompt({
+                        context,
+                        stepName: `Planejar o App — ${etapa.title}`,
+                        stepObjective: `Trabalhar a etapa "${etapa.title}" do planejamento do app preservando decisões já tomadas sobre problema, público, promessa, ação principal e funcionalidades da primeira versão. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
+                        command: text,
+                        moduleId: "planejar",
+                      })
+              }
+              copyLabel={
+                tab === "agente"
+                  ? "Copiar para o Agente Arquiteto"
+                  : tab === "corrigir"
+                  ? "Copiar correção"
+                  : "Copiar para implementar no Lovable"
+              }
+              helperText={
+                tab === "agente"
+                  ? "Cole no Agente Arquiteto. Use o Lovable só depois que o plano estiver claro."
+                  : tab === "corrigir"
+                  ? "Use quando o Lovable não entregar o resultado esperado."
+                  : undefined
+              }
+            />
+          )}
         </div>
-        <p className="text-sm text-foreground/90">{etapa.resultado}</p>
-      </div>
-
-
-      <div className="flex flex-wrap gap-2 mb-4">
-        {TAB_META.map((t) => {
-          const TIcon = t.icon;
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition ${
-                active
-                  ? "bg-accent/15 border-accent/40 text-accent"
-                  : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
-              }`}
-            >
-              <TIcon size={12} />
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {tab === "avancar" ? (
-        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
-          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-            {etapa.tabs[tab]}
-          </pre>
-        </div>
-      ) : (
-        <EditablePromptBox
-          key={tab}
-          saveSourceModule="planejar"
-          originalPrompt={etapa.tabs[tab]}
-          storageKey={`planejar_prompt__${etapa.n}__${tab}`}
-          transformOnCopy={
-            tab === "agente"
-              ? undefined
-              : (text) =>
-                  buildLovablePrompt({
-                    context,
-                    stepName: `Planejar o App — ${etapa.title}`,
-                    stepObjective: `Trabalhar a etapa "${etapa.title}" do planejamento do app preservando decisões já tomadas sobre problema, público, promessa, ação principal e funcionalidades da primeira versão. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
-                    command: text,
-                    moduleId: "planejar",
-                  })
-          }
-          copyLabel={
-            tab === "agente"
-              ? "Copiar para o Agente"
-              : tab === "corrigir"
-              ? "Copiar correção"
-              : "Copiar para implementar no Lovable"
-          }
-          helperText={
-            tab === "agente"
-              ? "Use para pensar antes de aplicar."
-              : tab === "corrigir"
-              ? "Use quando o Lovable não entregar o resultado esperado."
-              : undefined
-          }
-        />
       )}
-
     </GlassCard>
   );
 }
+
 
 export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
