@@ -178,14 +178,17 @@ export const PromptReviewDialog = ({
   };
 
   const copyAgent = async () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-    await copyPromptAndOpenAgent({
+    const ok = await copyPromptAndOpenAgent({
       prompt: text,
       successMessage:
-        "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
+        "Prompt copiado. Agora abra o Agente Arquiteto e cole com Ctrl+V.",
     });
+    if (ok) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
   };
+
 
 
 
