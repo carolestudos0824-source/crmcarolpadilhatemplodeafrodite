@@ -211,17 +211,27 @@ export const MyAppsDrawer = () => {
           )}
 
           {projects.length === 0 && !creating && !hasLocalContextToImport && (
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6 text-center space-y-3">
-              <p className="text-sm text-muted-foreground">
-                Você ainda não criou nenhum app. Comece criando seu primeiro
-                projeto.
-              </p>
+            <div className="rounded-xl border border-accent/30 bg-accent/[0.05] p-6 text-center space-y-3">
+              <div>
+                <h3 className="font-heading font-bold text-base text-foreground">
+                  Você ainda não criou nenhum Projeto em foco
+                </h3>
+                <p className="text-[12px] text-muted-foreground mt-2 leading-relaxed">
+                  O Projeto em foco é o app que a Fábrica vai guiar. A partir dele, a plataforma salva contexto, jornada, prompts, progresso e próximo passo.
+                </p>
+              </div>
               <button
                 onClick={() => setCreating(true)}
                 className="btn-primary text-sm"
               >
                 <Plus size={14} /> Criar meu primeiro app
               </button>
+              <p className="text-[11px] text-muted-foreground italic">
+                Pode ser só uma ideia inicial. Você não precisa ter o app pronto.
+              </p>
+              <p className="text-[11px] text-muted-foreground/90 leading-snug">
+                Depois de criar, você poderá preencher o contexto do projeto e escolher uma das três jornadas: começar do zero, construir por versões ou auditar um app existente.
+              </p>
             </div>
           )}
 
