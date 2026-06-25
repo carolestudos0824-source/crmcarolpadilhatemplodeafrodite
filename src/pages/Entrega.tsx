@@ -830,7 +830,7 @@ function EntregaInner() {
           </div>
 
 
-          {!((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
+          {!((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
             <ModuleReviewCard
               moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
               isSecurity={active === "seguranca"}
@@ -839,7 +839,7 @@ function EntregaInner() {
             />
           )}
 
-          {(active === "ideias" || active === "planejar") && !appProjects.activeProject && (
+          {(active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject && (
             <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
               {active === "planejar"
                 ? "Escolha ou crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não planejar um app inexistente."
@@ -873,7 +873,7 @@ function EntregaInner() {
             </div>
           )}
 
-          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
             <GpsDoAppCard
               defaultCollapsed
               moduleId={active}
@@ -888,7 +888,7 @@ function EntregaInner() {
           )}
 
 
-          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               moduleId={active}
@@ -936,7 +936,7 @@ function EntregaInner() {
             )}
             {(() => {
               const noProject =
-                (active === "ideias" || active === "planejar") && !appProjects.activeProject;
+                (active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject;
 
               const PLANEJAR_CRITICAL = [
                 "Problema definido",
