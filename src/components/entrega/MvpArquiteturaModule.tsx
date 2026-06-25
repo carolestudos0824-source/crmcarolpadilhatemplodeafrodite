@@ -12,6 +12,8 @@ import {
   Hammer,
   Rocket,
   Check,
+  FileText,
+  Search,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -19,9 +21,9 @@ import { useAppProjects } from "@/hooks/useAppProjects";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { CommandCard } from "@/components/entrega/CommandCard";
-
-
-const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA. Já tenho uma ideia inicial e preciso transformar isso em um MVP simples. Me ajude a definir: quais funcionalidades entram na primeira versão, quais telas o app precisa ter, quais dados precisam ser salvos, quais regras o app deve seguir e o que deve ficar para uma versão futura.`;
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
+import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
 
 export type AppStage = "idea" | "building" | "ready";
 
@@ -77,10 +79,18 @@ const readStoredStage = (): AppStage => {
   return "idea";
 };
 
+const orPlaceholder = (s: string | undefined | null) =>
+  s && s.trim() ? s.trim() : "[a definir]";
+const yn = (v: ProjectContext["needsLogin"]) =>
+  v === "sim" ? "Sim" : v === "nao" ? "Não" : "[a definir]";
 
 type Etapa = {
   n: number;
   title: string;
+  objetivo: string;
+  saida: string;
+  cortar: string;
+  criterio: string;
   tabs: {
     lovable: string;
     agente: string;
@@ -93,115 +103,188 @@ const ETAPAS: Etapa[] = [
   {
     n: 1,
     title: "Definir o MVP",
+    objetivo: "Decidir o objetivo da primeira versão funcional e o que entra.",
+    saida: "objetivo do MVP; até 5 funcionalidades essenciais; o que cortar agora.",
+    cortar: "Sem mais de 5 funcionalidades. Sem 'seria legal'. Sem promessas de venda garantida.",
+    criterio: "Você sabe descrever a primeira versão funcional em 1 parágrafo.",
     tabs: {
       lovable:
-        "Crie uma estrutura de MVP para meu app. Liste apenas o essencial da primeira versão: objetivo do app, público, problema resolvido, ação principal e funcionalidades indispensáveis. Não inclua funcionalidades extras agora.",
+        "Crie a estrutura de MVP do meu app. Liste apenas o essencial da primeira versão funcional: objetivo, ação principal, até 5 funcionalidades. Não inclua extras.",
       agente:
-        "Me ajude a transformar minha ideia em um MVP simples. Quero saber o que é indispensável para a primeira versão e o que deve ficar para depois.",
+        "Me ajude a definir o MVP do meu app. Quero objetivo da primeira versão, até 5 funcionalidades essenciais e o que cortar agora.",
       corrigir:
         "O Lovable deixou meu MVP grande demais. Reduza para uma primeira versão simples, com no máximo 5 funcionalidades principais.",
       avancar:
-        "Avance quando a primeira versão do app estiver simples, clara e possível de construir sem excesso.",
+        "Avance quando a primeira versão estiver simples, clara e construível sem excesso.",
     },
   },
   {
     n: 2,
-    title: "Listar funcionalidades essenciais",
+    title: "Definir telas principais",
+    objetivo: "Mapear as telas mínimas para o usuário entrar, agir e receber resultado.",
+    saida: "lista de telas; ordem do fluxo; tela inicial; tela de resultado/entrega.",
+    cortar: "Sem telas administrativas se não houver admin. Sem telas extras de configuração agora.",
+    criterio: "O fluxo principal cabe em poucas telas e está claro do começo ao fim.",
     tabs: {
       lovable:
-        "Crie uma lista de funcionalidades essenciais para a primeira versão do meu app. Separe em: obrigatório agora, importante depois e extra para versão futura.",
+        "Liste as telas necessárias para o MVP do meu app. Para cada tela explique: nome, função, o que o usuário faz e para onde vai depois.",
       agente:
-        "Analise minha ideia de app e me ajude a escolher no máximo 5 funcionalidades essenciais para o MVP. Quero cortar o que não for necessário agora.",
+        "Me ajude a mapear as telas do MVP. Quais são as mínimas para entrar, fazer a ação principal e receber o resultado?",
       corrigir:
-        "O Lovable colocou funcionalidades demais. Reorganize a lista e mantenha somente o que é necessário para testar o app com usuários reais.",
-      avancar:
-        "Avance quando você tiver no máximo 5 funcionalidades principais para a primeira versão.",
-    },
-  },
-  {
-    n: 3,
-    title: "Mapear telas necessárias",
-    tabs: {
-      lovable:
-        "Liste as telas necessárias para o MVP do meu app. Para cada tela, explique: nome da tela, função, o que o usuário faz nela e para onde ele vai depois.",
-      agente:
-        "Me ajude a mapear as telas do meu app. Quero saber quais telas são realmente necessárias para o usuário entrar, realizar a ação principal e receber o resultado.",
-      corrigir:
-        "O Lovable criou telas demais. Simplifique o fluxo para as telas indispensáveis da primeira versão.",
+        "O Lovable criou telas demais. Simplifique para as telas indispensáveis da primeira versão.",
       avancar:
         "Avance quando as telas principais estiverem claras e o fluxo do usuário estiver simples.",
     },
   },
   {
-    n: 4,
+    n: 3,
     title: "Definir dados e banco",
+    objetivo: "Decidir o que precisa ser salvo e como organizar o banco mínimo.",
+    saida: "dados a salvar; tabelas mínimas; dados por usuário; dados públicos x privados.",
+    cortar: "Sem tabelas que ninguém vai usar agora. Sem campos 'só por garantia'.",
+    criterio: "Cada dado salvo tem um motivo claro ligado a uma tela ou ação.",
     tabs: {
       lovable:
-        "Defina quais dados meu app precisa salvar no banco. Organize em tabelas ou coleções simples, explicando o que cada uma guarda e quais campos são necessários.",
+        "Defina quais dados meu app precisa salvar. Organize em tabelas/coleções simples explicando o que cada uma guarda e quais campos são necessários.",
       agente:
-        "Me ajude a pensar quais dados meu app precisa salvar. Quero entender se preciso guardar usuários, respostas, pagamentos, resultados, histórico, status de acesso ou outras informações.",
+        "Me ajude a pensar quais dados meu app precisa salvar: usuários, respostas, pagamentos, histórico, status? O que é público e o que é privado?",
       corrigir:
-        "O Lovable criou dados demais ou tabelas confusas. Simplifique o banco para o mínimo necessário da primeira versão.",
+        "O Lovable criou dados/tabelas demais. Simplifique o banco para o mínimo da primeira versão.",
       avancar:
         "Avance quando estiver claro quais dados o app precisa salvar e por quê.",
     },
   },
   {
-    n: 5,
-    title: "Criar prompt de arquitetura para o Lovable",
+    n: 4,
+    title: "Decidir login, admin, checkout e área paga",
+    objetivo: "Decidir o que entra de infraestrutura sensível agora e o que fica para depois.",
+    saida: "precisa de login agora?; admin agora?; checkout agora?; área paga agora?; o que fica para depois.",
+    cortar: "Sem ativar login/admin/checkout 'só por garantia'. Cada decisão precisa de motivo prático.",
+    criterio: "Cada uma das 4 decisões está respondida com Sim/Não e justificativa curta.",
     tabs: {
       lovable:
-        "Crie a arquitetura inicial do meu app com base neste planejamento: objetivo, público, problema, promessa, ação principal, funcionalidades essenciais, telas necessárias, dados que precisam ser salvos e regras principais. Estruture tudo de forma clara para começar a construção no Lovable.",
+        "Defina se meu MVP precisa AGORA de login, admin, checkout e área paga. Justifique cada decisão com base no problema, público e ação principal do app.",
       agente:
-        "Organize meu app em uma arquitetura simples para eu colar no Lovable. Quero um prompt claro com telas, funcionalidades, banco de dados, regras, fluxo do usuário e o que deve ficar para depois.",
+        "Me ajude a decidir, com base no meu projeto, se preciso de login, admin, checkout e área paga AGORA ou se posso deixar para a versão 2.",
       corrigir:
-        "O Lovable misturou planejamento, telas e funcionalidades de forma confusa. Reorganize a arquitetura em tópicos claros: objetivo, público, telas, funcionalidades, dados, regras e próximos passos.",
+        "O Lovable adicionou login/admin/checkout sem necessidade. Reveja cada decisão e remova o que não for indispensável para o MVP.",
       avancar:
-        "Avance quando você tiver um prompt de arquitetura claro para iniciar a construção do app.",
+        "Avance quando as 4 decisões estiverem respondidas com motivo curto.",
+    },
+  },
+  {
+    n: 5,
+    title: "Gerar primeiro prompt para o Lovable",
+    objetivo: "Consolidar o Blueprint num comando seguro para o Lovable criar a base do app.",
+    saida: "comando único, enxuto, baseado no Blueprint, sem ampliar escopo.",
+    cortar: "Sem refazer o app inteiro. Sem mexer em login/banco/checkout que foram marcados como 'depois'.",
+    criterio: "Existe um prompt pronto para colar no Lovable que reflete o Blueprint aprovado.",
+    tabs: {
+      lovable:
+        "Crie a base do app a partir deste Blueprint do MVP: objetivo, ação principal, funcionalidades, telas, dados, decisões sobre login/admin/checkout/área paga. Mantenha o escopo enxuto. Não adicione nada fora do Blueprint.",
+      agente:
+        "Organize meu app num primeiro prompt seguro para o Lovable, baseado no Blueprint do MVP que já construímos. O prompt deve refletir exatamente as decisões — sem ampliar.",
+      corrigir:
+        "O Lovable ampliou o escopo além do Blueprint. Reorganize o prompt para refletir apenas o MVP definido e o que foi decidido sobre login/admin/checkout.",
+      avancar:
+        "Avance quando você tiver um prompt pronto para colar no Lovable que cabe no Blueprint.",
     },
   },
 ];
 
+const buildAgentMvpStepPrompt = (
+  etapa: Etapa,
+  ctx: ProjectContext,
+  journey: JourneyId | null,
+  projectName: string | null,
+): string => {
+  const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
+  const name = orPlaceholder(projectName || ctx.appName);
+  return `Quero desenhar a etapa "${etapa.title}" do Blueprint do MVP do meu app antes de pedir qualquer coisa ao Lovable.
+
+Contexto do projeto:
+- App: ${name}
+- O que faz: ${orPlaceholder(ctx.appDoes)}
+- Público: ${orPlaceholder(ctx.audience)}
+- Problema: ${orPlaceholder(ctx.problem)}
+- Promessa: ${orPlaceholder(ctx.promise)}
+- Ação principal: ${orPlaceholder(ctx.mainAction)}
+- Login: ${yn(ctx.needsLogin)} | Banco: ${yn(ctx.needsDatabase)} | Admin: ${yn(ctx.needsAdmin)} | Checkout: ${yn(ctx.needsCheckout)} | Área paga: ${yn(ctx.needsPaidArea)}
+- Jornada escolhida: ${journeyLabel}
+
+Etapa atual: ${etapa.n} — ${etapa.title}
+Objetivo: ${etapa.objetivo}
+Saída esperada: ${etapa.saida}
+O que cortar: ${etapa.cortar}
+Critério para avançar: ${etapa.criterio}
+
+Me ajude a concluir esta etapa do Blueprint. Faça perguntas curtas se faltar dado e responda com a saída esperada organizada em tópicos. Não amplie o escopo, não invente funcionalidades, não prometa venda garantida nem segurança 100%. Termine com um "Próximo passo único".`;
+};
+
 const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "MVP", def: "A primeira versão simples do app, com apenas o essencial para testar." },
+  { termo: "Blueprint", def: "O desenho do MVP: objetivo, funcionalidades, telas, dados e decisões." },
   { termo: "Arquitetura", def: "A estrutura do app: telas, funcionalidades, dados e regras." },
-  { termo: "Funcionalidade", def: "Um recurso ou ação que o app oferece." },
   { termo: "Tela", def: "Uma página ou área visual dentro do app." },
   { termo: "Banco de dados", def: "O lugar onde o app guarda informações." },
-  { termo: "Regra de negócio", def: "Uma regra que define como o app deve funcionar." },
   { termo: "Escopo", def: "O limite do que entra ou não entra na primeira versão." },
-  { termo: "Versão futura", def: "Algo que pode ser feito depois, quando o MVP já estiver validado." },
+  { termo: "Versão 2", def: "O que fica para depois, quando o MVP já estiver validado." },
 ];
 
+// Itens críticos do Blueprint do MVP — devem casar com MVP_CRITICAL em Entrega.tsx.
 const CHECKLIST_ITEMS = [
-  "Defini o MVP do meu app",
-  "Cortei funcionalidades extras",
-  "Tenho no máximo 5 funcionalidades principais",
-  "Listei as telas necessárias",
-  "Defini quais dados precisam ser salvos",
-  "Escrevi as regras principais",
-  "Tenho um prompt de arquitetura claro",
+  "MVP definido",
+  "Até 5 funcionalidades escolhidas",
+  "Telas principais definidas",
+  "Dados principais definidos",
+  "Decisão sobre login",
+  "Decisão sobre banco",
+  "Decisão sobre admin",
+  "Decisão sobre checkout/área paga",
+  "Itens da versão 2 separados",
+  "Primeiro prompt Lovable pronto",
 ];
 
 const CHECKLIST_PREFIX = "mvp_step__";
 
-function etapaTitle(e: Etapa) {
-  return e.n === 5 ? "Arquitetura pronta para o Lovable" : e.title;
-}
+const BLUEPRINT_TEMPLATE = `Blueprint do MVP
 
-function etapaDescription(e: Etapa) {
-  if (e.n === 5) {
-    return "Comando consolidado para construir a primeira versão funcional do app com base em MVP, telas, dados e regras definidos acima.";
-  }
-  if (e.n === 2) {
-    return "Escolha até 5 funcionalidades principais agora. As demais ficam nas próximas versões.";
-  }
-  return `Etapa ${e.n} do desenho de MVP e arquitetura.`;
-}
+Objetivo do MVP:
+[Para que serve a primeira versão]
+
+Ação principal do usuário:
+[O que o usuário faz primeiro]
+
+Até 5 funcionalidades essenciais:
+1.
+2.
+3.
+4.
+5.
+
+Telas da primeira versão:
+[Lista das telas]
+
+Dados que precisam ser salvos:
+[Tabelas/coleções mínimas]
+
+Decisão sobre login: [Sim/Não — motivo curto]
+Decisão sobre banco: [Sim/Não — motivo curto]
+Decisão sobre admin: [Sim/Não — motivo curto]
+Decisão sobre checkout: [Sim/Não — motivo curto]
+Decisão sobre área paga: [Sim/Não — motivo curto]
+
+O que fica para a versão 2:
+[Lista do que NÃO entra agora]
+
+Primeiro prompt seguro para o Lovable:
+[Comando enxuto que cabe no Blueprint acima]`;
 
 export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
+  const { context } = useProjectContext();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
   const [appStage, setAppStage] = useState<AppStage>(() => readStoredStage());
 
   useEffect(() => {
@@ -212,10 +295,23 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
     }
   }, [appStage]);
 
-  const copyAgentHelp = async () => {
+  const heroAgentPrompt = buildAgentMvpStepPrompt(
+    ETAPAS[0],
+    context,
+    journey,
+    activeProject?.name ?? null,
+  );
+
+  const copyHeroAgent = async () => {
+    if (!activeProject) {
+      toast("Selecione um Projeto em foco antes de desenhar o MVP.", {
+        description: "Sem projeto, o Blueprint sai genérico.",
+      });
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(AGENT_HELP_PROMPT);
-      toast.success("Prompt copiado! Cole no Agente Arquiteto.");
+      await navigator.clipboard.writeText(heroAgentPrompt);
+      toast.success("Prompt do Blueprint copiado! Cole no Agente Arquiteto.");
     } catch {
       toast.error("Não foi possível copiar.");
     }
@@ -226,6 +322,25 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
     setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // Encontra a primeira etapa pendente: usamos como heurística o primeiro item
+  // crítico do checklist ainda não marcado, mapeado para a etapa correspondente.
+  const firstPendingEtapa = (() => {
+    if (!checklist[`${CHECKLIST_PREFIX}MVP definido`]) return 1;
+    if (
+      !checklist[`${CHECKLIST_PREFIX}Até 5 funcionalidades escolhidas`] ||
+      !checklist[`${CHECKLIST_PREFIX}Telas principais definidas`]
+    )
+      return 2;
+    if (!checklist[`${CHECKLIST_PREFIX}Dados principais definidos`]) return 3;
+    if (
+      !checklist[`${CHECKLIST_PREFIX}Decisão sobre login`] ||
+      !checklist[`${CHECKLIST_PREFIX}Decisão sobre banco`] ||
+      !checklist[`${CHECKLIST_PREFIX}Decisão sobre admin`] ||
+      !checklist[`${CHECKLIST_PREFIX}Decisão sobre checkout/área paga`]
+    )
+      return 4;
+    return 5;
+  })();
 
   return (
     <section>
@@ -234,143 +349,125 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           <Workflow size={12} /> MVP e Arquitetura
         </span>
         <h1 className="text-2xl md:text-4xl font-heading font-bold leading-tight mb-2">
-          Desenhe o MVP e a arquitetura do app
+          Desenhe o Blueprint do MVP antes de construir
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Agora você vai transformar o plano do app em uma estrutura simples, com telas,
-          funcionalidades, dados e regras essenciais.
+          Transforme o planejamento numa primeira versão funcional clara: objetivo, telas, dados e decisões sobre login, banco, admin e checkout — antes de pedir ao Lovable.
         </p>
-        <p className="text-xs text-muted-foreground/90 max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-          Em cada etapa, use os três caminhos do card: implementar direto no Lovable, revisar com o Agente primeiro, ou copiar uma auditoria para o Lovable analisar sem alterar nada.
-        </p>
-        <p className="text-xs text-amber-200/90 max-w-3xl mt-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] px-3 py-2">
-          <strong className="text-amber-200">Regra da primeira versão:</strong> até 5 funcionalidades principais agora. As demais entram nas próximas versões, no módulo Melhorias e Versões.
+        <p className="text-xs text-amber-200/90 max-w-3xl mt-3 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] px-3 py-2">
+          <strong className="text-amber-200">Regra da primeira versão:</strong> até 5 funcionalidades principais. As demais entram nas próximas versões, no módulo Melhorias e Versões.
         </p>
       </header>
 
       {!activeProject && (
-        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/40 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent">
+        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/50 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent shadow-[0_0_30px_-18px_rgba(251,191,36,0.5)]">
           <div className="flex items-start gap-3 mb-4">
             <AlertTriangle size={20} className="text-amber-300 shrink-0 mt-0.5" />
             <div className="min-w-0">
+              <div className="text-[11px] uppercase tracking-wider text-amber-300/90 mb-1">
+                Pré-requisito obrigatório
+              </div>
               <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
-                Escolha um app antes de desenhar o MVP
+                Antes de desenhar o MVP, escolha o app que será estruturado
               </h2>
-              <p className="text-sm text-muted-foreground mt-1.5">
-                Para definir MVP, telas, funcionalidades e dados com precisão, primeiro selecione ou crie o app em foco.
-                Assim os comandos ficam conectados ao problema, público e promessa do seu projeto.
+              <p className="text-sm text-foreground/90 mt-1.5 leading-relaxed">
+                A Fábrica precisa de um Projeto em foco para usar contexto, jornada, GPS, Agente e prompts inteligentes.
               </p>
               <p className="text-xs text-muted-foreground/90 mt-2">
                 Já tem um app? Use esta etapa como auditoria da estrutura atual antes de evoluir.
               </p>
             </div>
           </div>
+          <p className="text-xs font-semibold text-amber-200/90 mb-2">
+            Escolha uma das opções abaixo para liberar o desenho do MVP:
+          </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
             <button
               onClick={openDrawer}
-              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold shadow-[0_0_0_1px_rgba(0,194,255,0.25)] transition"
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold transition"
             >
               <Sparkles size={14} /> Criar ou selecionar app
             </button>
             {goTo && (
               <button
-                onClick={() => goTo("planejar")}
-                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+                onClick={() => goTo("ideias")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-xs font-medium transition"
               >
-                Voltar para Planejar
+                Ver ideias prontas
               </button>
             )}
             {goTo && (
               <button
-                onClick={() => goTo("ideias")}
-                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-sm font-medium transition"
+                onClick={() => goTo("construir")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-xs font-medium transition"
               >
-                Ver ideias prontas
+                <Search size={14} /> Usar Busca Inteligente
               </button>
             )}
           </div>
         </GlassCard>
       )}
 
-      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
-        <div className="flex items-start gap-3">
-          <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
-          <div className="space-y-2">
-            <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-              Você não está criando um app limitado. Está criando a primeira versão funcional e publicável do seu app completo, que continua evoluindo nas próximas versões.
-            </p>
-            <p className="text-sm text-foreground/80 leading-relaxed">
-              O MVP é o <strong className="text-foreground/95">quê</strong>: as funcionalidades essenciais da primeira versão funcional.
-              A arquitetura é o <strong className="text-foreground/95">como</strong>: as telas, os dados e as regras que sustentam essas funcionalidades.
-            </p>
-            <p className="text-xs text-amber-200/90 leading-relaxed rounded-md border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 mt-2">
-              <strong>Comece com até 5 funcionalidades principais.</strong> As demais não são descartadas — entram nas próximas versões. Um MVP não é o app dos sonhos: é a primeira versão funcional e publicável.
+      {/* Hero do Agente — ação principal com Projeto em foco */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-gradient-to-br from-accent/[0.12] via-accent/[0.04] to-transparent shadow-[0_0_30px_-18px_rgba(0,194,255,0.6)]">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
+            <Bot size={18} />
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider text-accent/90 mb-1">
+              Comece por aqui
+            </div>
+            <h2 className="text-lg md:text-2xl font-heading font-bold leading-tight">
+              Desenhe o MVP com o Agente antes de construir
+            </h2>
+            <p className="text-sm md:text-base text-foreground/90 mt-1.5 leading-relaxed">
+              Antes de pedir telas, banco, login ou checkout ao Lovable, defina a menor versão funcional do seu app. Use o Agente para pensar. Use o Lovable apenas depois que o Blueprint estiver claro.
             </p>
           </div>
         </div>
-      </GlassCard>
-
-      <GlassCard className="p-5 mb-6">
-        <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
-          O que você vai fazer nesta etapa
-        </div>
-        <p className="text-sm text-foreground/90 mb-4">
-          Nesta etapa, você vai sair do planejamento e criar a arquitetura inicial do app:
-          quais telas existirão, quais funcionalidades são essenciais, quais dados precisam
-          ser salvos e quais regras o Lovable deve seguir.
-        </p>
-        <ol className="space-y-2 text-sm text-foreground/85">
-          {[
-            "Defina o MVP.",
-            "Escolha no máximo 5 funcionalidades principais.",
-            "Liste as telas necessárias.",
-            "Defina os dados que o app precisa guardar.",
-            "Escreva as regras principais do app.",
-          ].map((step, i) => (
-            <li key={i} className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
-                {i + 1}
-              </span>
-              <span className="pt-0.5">{step}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-5">
+        <div className="flex flex-col sm:flex-row gap-2 mt-4">
           <button
-            onClick={copyAgentHelp}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold transition"
+            onClick={copyHeroAgent}
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold transition"
           >
-            <Bot size={14} /> Não sei desenhar meu MVP
+            <Bot size={14} /> Desenhar MVP com o Agente Arquiteto
           </button>
-          <p className="text-[11px] text-muted-foreground mt-2">
-            Copia um prompt pronto para você colar no Agente Arquiteto.
-          </p>
+          {!activeProject && (
+            <button
+              onClick={openDrawer}
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+            >
+              <Sparkles size={14} /> Criar ou selecionar app primeiro
+            </button>
+          )}
         </div>
+        <details className="mt-4 rounded-lg border border-white/10 bg-black/30">
+          <summary className="cursor-pointer select-none px-3 py-2 text-xs text-foreground/80 hover:text-foreground">
+            Ver e editar o prompt do Blueprint antes de copiar
+          </summary>
+          <div className="p-3 pt-0">
+            <EditablePromptBox
+              key={`mvp-hero-${activeProject?.id ?? "no-project"}-${journey ?? "no-journey"}`}
+              saveSourceModule="mvp"
+              originalPrompt={heroAgentPrompt}
+              storageKey={`mvp_agent_hero__${activeProject?.id ?? "no-project"}`}
+              copyLabel="Copiar prompt para o Agente"
+              helperText="Cole no Agente Arquiteto, não no Lovable."
+            />
+          </div>
+        </details>
       </GlassCard>
 
-      <CopyCommandWarning />
-      <p className="text-xs text-muted-foreground mb-4">
-        Cada card abaixo oferece os três caminhos do padrão da Fábrica: <strong className="text-foreground/90">Implementar no Lovable</strong>, <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> e <strong className="text-foreground/90">Copiar auditoria para o Lovable</strong> (somente análise, não implementa).
-      </p>
-
-      <GlassCard
-        className="p-5 mb-6"
-        aria-labelledby="mvp-stage-selector-title"
-      >
-        <h2
-          id="mvp-stage-selector-title"
-          className="font-heading font-semibold text-base md:text-lg mb-1"
-        >
+      {/* Seletor de momento — preservado */}
+      <GlassCard className="p-5 mb-6" aria-labelledby="mvp-stage-selector-title">
+        <h2 id="mvp-stage-selector-title" className="font-heading font-semibold text-base md:text-lg mb-1">
           Qual é o momento do seu app?
         </h2>
         <p className="text-xs text-muted-foreground mb-4">
           Escolha onde você está agora. Os comandos das próximas etapas se adaptam ao seu momento.
         </p>
-        <div
-          role="radiogroup"
-          aria-labelledby="mvp-stage-selector-title"
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
-        >
+        <div role="radiogroup" aria-labelledby="mvp-stage-selector-title" className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {STAGE_OPTIONS.map((opt) => {
             const Icon = opt.icon;
             const active = appStage === opt.id;
@@ -388,13 +485,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={`inline-flex items-center justify-center w-8 h-8 rounded-lg border ${
-                      active
-                        ? "bg-accent/15 border-accent/40 text-accent"
-                        : "bg-white/5 border-white/10 text-muted-foreground"
-                    }`}
-                  >
+                  <span className={`inline-flex items-center justify-center w-8 h-8 rounded-lg border ${active ? "bg-accent/15 border-accent/40 text-accent" : "bg-white/5 border-white/10 text-muted-foreground"}`}>
                     <Icon size={16} />
                   </span>
                   {active && (
@@ -406,9 +497,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
                 <div className={`font-semibold text-sm ${active ? "text-accent" : "text-foreground/90"}`}>
                   {opt.label}
                 </div>
-                <p className="text-xs text-muted-foreground leading-snug">
-                  {opt.description}
-                </p>
+                <p className="text-xs text-muted-foreground leading-snug">{opt.description}</p>
               </button>
             );
           })}
@@ -420,28 +509,83 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         )}
       </GlassCard>
 
-      <div className="space-y-5 mb-8">
-        {ETAPAS.map((e) => (
-          <CommandCard
-            key={`${e.n}-${appStage}`}
-            number={e.n}
-            title={etapaTitle(e)}
-            description={etapaDescription(e)}
-            whenToUse={`Use nesta etapa: ${e.title}.`}
-            whereToPaste="Cole no chat do seu projeto no Lovable."
-            expectedResult={e.tabs.avancar}
-            commandText={withStage(appStage, e.tabs.lovable)}
-            completedKey={`mvp_cmd__${e.n}__${appStage}`}
-            moduleId="mvp"
-            objective={e.title}
-            agentPrompt={withStage(appStage, e.tabs.agente)}
-            correctionPrompt={withStage(appStage, e.tabs.corrigir)}
-            advanceCriteria={e.tabs.avancar}
-            defaultOpen
-          />
-        ))}
+      <CopyCommandWarning />
+      <p className="text-xs text-muted-foreground mb-2">
+        Em cada etapa, comece pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada — só faz sentido na Etapa 5.
+      </p>
+      <p className="text-[11px] text-amber-200/90 mb-4 italic">
+        Copiar prompt não conclui a etapa. Só marque como concluído quando o Blueprint estiver completo.
+      </p>
+
+      {/* Etapas com prévia bloqueada se não houver projeto */}
+      <div
+        className={`space-y-5 mb-8 ${!activeProject ? "opacity-50 pointer-events-none select-none" : ""}`}
+        aria-disabled={!activeProject}
+      >
+        {!activeProject && (
+          <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 text-[12px] text-amber-100">
+            Prévia bloqueada. Crie ou selecione um Projeto em foco acima para destravar as etapas, prompts contextualizados e a marcação de conclusão.
+          </div>
+        )}
+        {ETAPAS.map((e) => {
+          const isFinal = e.n === 5;
+          return (
+            <div key={e.n}>
+              {!isFinal && activeProject && (
+                <div className="mb-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
+                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+                  <span>
+                    Use o Lovable apenas depois que o Blueprint do MVP estiver claro. Nesta etapa, comece pelo Agente.
+                  </span>
+                </div>
+              )}
+              <CommandCard
+                key={`${e.n}-${appStage}`}
+                number={e.n}
+                title={e.title}
+                description={e.objetivo}
+                whenToUse={`Use nesta etapa: ${e.title}.`}
+                whereToPaste={isFinal ? "Cole no chat do seu projeto no Lovable." : "Primeiro cole no Agente. No Lovable só na Etapa 5."}
+                expectedResult={e.saida}
+                commandText={withStage(appStage, e.tabs.lovable)}
+                completedKey={`mvp_cmd__${e.n}__${appStage}`}
+                moduleId="mvp"
+                objective={e.title}
+                agentPrompt={
+                  activeProject
+                    ? buildAgentMvpStepPrompt(e, context, journey, activeProject.name)
+                    : withStage(appStage, e.tabs.agente)
+                }
+                correctionPrompt={withStage(appStage, e.tabs.corrigir)}
+                advanceCriteria={e.criterio}
+                defaultOpen={e.n === firstPendingEtapa}
+              />
+            </div>
+          );
+        })}
       </div>
 
+      {/* Blueprint do MVP — entrega central */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-accent/[0.07]">
+        <div className="flex items-start gap-3 mb-3">
+          <FileText size={18} className="text-accent shrink-0 mt-0.5" />
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider text-accent mb-1">
+              Entrega desta etapa
+            </div>
+            <h3 className="text-lg font-heading font-bold leading-tight">Blueprint do MVP</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Documento único com objetivo, ação principal, funcionalidades, telas, dados e decisões. Quando estiver preenchido, vire o primeiro prompt seguro para o Lovable na Etapa 5.
+            </p>
+          </div>
+        </div>
+        <EditablePromptBox
+          saveSourceModule="mvp"
+          originalPrompt={BLUEPRINT_TEMPLATE}
+          storageKey="mvp_blueprint"
+          copyLabel="Copiar Blueprint do MVP"
+        />
+      </GlassCard>
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
@@ -450,10 +594,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         </div>
         <dl className="grid sm:grid-cols-2 gap-3">
           {GLOSSARIO.map((g) => (
-            <div
-              key={g.termo}
-              className="rounded-lg border border-white/10 bg-white/5 p-3"
-            >
+            <div key={g.termo} className="rounded-lg border border-white/10 bg-white/5 p-3">
               <dt className="text-sm font-semibold text-accent">{g.termo}</dt>
               <dd className="text-xs text-muted-foreground mt-1">{g.def}</dd>
             </div>
@@ -461,68 +602,73 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         </dl>
       </GlassCard>
 
-      <GlassCard className="p-5">
+      {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
+      <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
+          <h3 className="font-heading font-semibold text-base">Blueprint do MVP — checklist final</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
-          Só avance quando a primeira versão funcional estiver clara e construível. Extras devem estar listados para próximas versões.
+          Marque cada item só depois que estiver claro de verdade no seu Blueprint. Copiar prompt não conta.
         </p>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
             const key = `${CHECKLIST_PREFIX}${item}`;
             const done = !!checklist[key];
-            const highlight = item === "Cortei funcionalidades extras";
             return (
               <li key={item}>
                 <label
-                  className={`flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition ${
-                    highlight
-                      ? "border-amber-400/30 bg-amber-400/[0.06] hover:bg-amber-400/[0.1]"
-                      : "border-white/10 bg-white/5 hover:bg-white/10"
-                  }`}
+                  className="flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition border-accent/30 bg-accent/[0.06] hover:bg-accent/10"
                 >
                   <input
                     type="checkbox"
                     checked={done}
                     onChange={() => toggleItem(item)}
-                    className="accent-accent w-4 h-4"
+                    className="accent-accent w-5 h-5 shrink-0"
                   />
-                  <span
-                    className={`text-sm ${
-                      done ? "line-through text-muted-foreground" : ""
-                    }`}
-                  >
+                  <span className={`text-sm ${done ? "line-through text-muted-foreground" : ""}`}>
                     {item}
                   </span>
-                  {done ? (
-                    <CheckCircle2
-                      size={14}
-                      className="text-emerald-400 shrink-0 ml-auto"
-                    />
-                  ) : (
-                    <Circle
-                      size={14}
-                      className="text-muted-foreground/40 shrink-0 ml-auto"
-                    />
+                  {!done && (
+                    <span className="ml-auto text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-accent/40 bg-accent/10 text-accent shrink-0">
+                      Crítico
+                    </span>
+                  )}
+                  {done && (
+                    <CheckCircle2 size={14} className="text-emerald-400 shrink-0 ml-auto" />
+                  )}
+                  {!done && (
+                    <Circle size={14} className="text-muted-foreground/40 shrink-0" />
                   )}
                 </label>
               </li>
             );
           })}
         </ul>
-        <p className="text-[11px] text-muted-foreground mt-3">
-          Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
-        </p>
+        {(() => {
+          const allDone = CHECKLIST_ITEMS.every((it) => !!checklist[`${CHECKLIST_PREFIX}${it}`]);
+          return allDone ? (
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-100">
+              <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
+              <span>Blueprint do MVP concluído. Agora você pode marcar o módulo como concluído.</span>
+            </div>
+          ) : (
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-100">
+              <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+              <span>
+                Ainda não conclua. Faltam itens críticos do Blueprint do MVP.
+              </span>
+            </div>
+          );
+        })()}
       </GlassCard>
 
       <div className="mt-6">
         <AgentArchitectCard
           variant="compact"
           title="Quer revisar antes de seguir?"
-          subtitle="Use o Agente Arquiteto para validar se seu MVP está simples, vendável e pronto para construir."
-          ctaLabel="Revisar checklist com o Agente Arquiteto"
+          subtitle="Use o Agente Arquiteto para validar se seu Blueprint está simples, vendável e pronto para construir."
+          ctaLabel="Revisar Blueprint com o Agente Arquiteto"
         />
       </div>
     </section>

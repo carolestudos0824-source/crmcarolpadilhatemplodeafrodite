@@ -830,7 +830,7 @@ function EntregaInner() {
           </div>
 
 
-          {!((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
+          {!((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
             <ModuleReviewCard
               moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
               isSecurity={active === "seguranca"}
@@ -839,10 +839,12 @@ function EntregaInner() {
             />
           )}
 
-          {(active === "ideias" || active === "planejar") && !appProjects.activeProject && (
+          {(active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject && (
             <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
               {active === "planejar"
                 ? "Escolha ou crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não planejar um app inexistente."
+                : active === "mvp"
+                ? "Escolha ou crie seu Projeto em foco antes de desenhar o Blueprint do MVP. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não estruturar um app inexistente."
                 : "Escolha uma ideia e crie seu Projeto em foco antes de revisar esta etapa. Sem app escolhido, a revisão, o GPS e o Arquiteto ficam ocultos para não analisar um app inexistente."}
             </div>
           )}
@@ -873,7 +875,7 @@ function EntregaInner() {
             </div>
           )}
 
-          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
             <GpsDoAppCard
               defaultCollapsed
               moduleId={active}
@@ -888,7 +890,7 @@ function EntregaInner() {
           )}
 
 
-          {active !== "fundamentos" && !((active === "ideias" || active === "planejar") && !appProjects.activeProject) && (
+          {active !== "fundamentos" && !((active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject) && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
               moduleId={active}
@@ -936,7 +938,7 @@ function EntregaInner() {
             )}
             {(() => {
               const noProject =
-                (active === "ideias" || active === "planejar") && !appProjects.activeProject;
+                (active === "ideias" || active === "planejar" || active === "mvp") && !appProjects.activeProject;
 
               const PLANEJAR_CRITICAL = [
                 "Problema definido",
@@ -954,21 +956,43 @@ function EntregaInner() {
               const blockPlanejarChecklist =
                 active === "planejar" && !!appProjects.activeProject && !planejarChecklistDone;
 
-              const blockConclude = noProject || blockPlanejarChecklist;
+              const MVP_CRITICAL = [
+                "MVP definido",
+                "Até 5 funcionalidades escolhidas",
+                "Telas principais definidas",
+                "Dados principais definidos",
+                "Decisão sobre login",
+                "Decisão sobre banco",
+                "Decisão sobre admin",
+                "Decisão sobre checkout/área paga",
+                "Itens da versão 2 separados",
+                "Primeiro prompt Lovable pronto",
+              ];
+              const mvpChecklistDone =
+                active === "mvp" &&
+                MVP_CRITICAL.every((it) => !!checklist[`mvp_step__${it}`]);
+              const blockMvpChecklist =
+                active === "mvp" && !!appProjects.activeProject && !mvpChecklistDone;
+
+              const blockConclude = noProject || blockPlanejarChecklist || blockMvpChecklist;
 
               const label = noProject
                 ? active === "planejar"
                   ? "Escolha um app para concluir"
+                  : active === "mvp"
+                  ? "Escolha um app para concluir"
                   : "Escolha uma ideia para concluir"
-                : blockPlanejarChecklist
+                : blockPlanejarChecklist || blockMvpChecklist
                 ? "Conclua o checklist para marcar esta etapa"
                 : "Marcar módulo como concluído";
               const tip = noProject
-                ? active === "planejar"
+                ? active === "planejar" || active === "mvp"
                   ? "Escolha ou crie um Projeto em foco antes de concluir esta etapa."
                   : "Escolha uma ideia e crie um Projeto em foco antes de concluir esta etapa."
                 : blockPlanejarChecklist
                 ? "Marque os itens críticos do checklist 'Resultado esperado deste planejamento' antes de concluir."
+                : blockMvpChecklist
+                ? "Marque os itens críticos do checklist 'Blueprint do MVP' antes de concluir."
                 : undefined;
               return (
                 <button
