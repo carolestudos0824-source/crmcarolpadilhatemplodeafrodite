@@ -534,8 +534,8 @@ export const CommandCard = ({
                     <Wrench size={12} /> Se o Lovable errar, cole este texto
                   </div>
                   <EditablePromptBox
-                    originalPrompt={correctionPrompt}
-                    storageKey={`cmdcard__${completedKey}__fix`}
+                    originalPrompt={displayCorrection}
+                    storageKey={`cmdcard__${completedKey}__${projectScope}__fix`}
                     onChange={setEditedCorrection}
                     hideCopyButton
                     saveTitle={`${title} — Correção`}
