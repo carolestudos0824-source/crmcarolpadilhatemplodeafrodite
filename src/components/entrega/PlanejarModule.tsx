@@ -246,7 +246,7 @@ const CHECKLIST_PREFIX = "planejar_step__";
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const { context } = useProjectContext();
-  const [tab, setTab] = useState<TabId>("lovable");
+  const [tab, setTab] = useState<TabId>("agente");
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
