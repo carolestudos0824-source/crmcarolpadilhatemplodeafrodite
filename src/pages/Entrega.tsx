@@ -222,6 +222,7 @@ function EntregaInner() {
   const progress = useUserProgress();
   const appProjects = useAppProjects();
   const projectCtx = useProjectContext();
+  const [journey] = useProjectJourney(appProjects.activeProject?.id ?? null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL slug ↔ internal module id
