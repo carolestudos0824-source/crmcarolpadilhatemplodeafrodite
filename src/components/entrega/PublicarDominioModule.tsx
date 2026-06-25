@@ -229,7 +229,19 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Publicar e Domínio — ${etapa.title}`,
+                    stepObjective: `Preparar/validar a etapa "${etapa.title}" de publicação e domínio, sem alterar configurações já feitas.`,
+                    command: text,
+                    moduleId: "publicar",
+                  })
+          }
+
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
