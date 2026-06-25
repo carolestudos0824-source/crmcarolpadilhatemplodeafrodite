@@ -180,6 +180,7 @@ export function GpsDoAppCard({
             {descriptionOverride ?? GPS_DEFAULT_DESCRIPTION}
           </p>
           <EditablePromptBox
+            key={storageKey}
             collapsible={defaultCollapsed}
             saveSourceModule="gps-do-app"
             originalPrompt={prompt}
@@ -187,6 +188,7 @@ export function GpsDoAppCard({
             copyLabel="Copiar diagnóstico do app"
             helperText="Cole no Lovable apenas para diagnóstico. O Lovable deve analisar e não implementar nada."
           />
+
         </div>
       </div>
     </GlassCard>
