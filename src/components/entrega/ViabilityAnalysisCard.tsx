@@ -241,7 +241,7 @@ ${promptText}`,
         onClose={() => setStudioOpen(false)}
         stepName="Análise de Viabilidade da Ideia"
         stepObjective="Avaliar mercado, concorrência, riscos, SWOT, MVP e validação antes de construir no Lovable."
-        customPrompts={{ lovable: promptText, agent: promptText }}
+        customPrompts={{ lovable: lovablePrompt, agent: agentPrompt }}
       />
     </>
   );
