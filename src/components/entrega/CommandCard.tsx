@@ -476,8 +476,8 @@ export const CommandCard = ({
                     <Bot size={12} /> Texto pronto para conversar com o Agente
                   </div>
                   <EditablePromptBox
-                    originalPrompt={agentPrompt}
-                    storageKey={`cmdcard__${completedKey}__agent`}
+                    originalPrompt={displayAgent}
+                    storageKey={`cmdcard__${completedKey}__${projectScope}__agent`}
                     onChange={setEditedAgent}
                     hideCopyButton
                     saveTitle={`${title} — Agente`}
