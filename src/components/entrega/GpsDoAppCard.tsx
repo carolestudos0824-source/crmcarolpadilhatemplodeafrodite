@@ -59,14 +59,18 @@ const buildGpsPrompt = (params: {
   moduleId?: ModuleId;
   moduleTitle?: string;
   moduleObjective?: string;
+  journey?: JourneyId | null;
 }): string => {
-  const { moduleId, moduleTitle, moduleObjective } = params;
+  const { moduleId, moduleTitle, moduleObjective, journey } = params;
   const scope = (moduleId && MODULE_SCOPES[moduleId]) ?? DEFAULT_SCOPE;
   const objective =
     moduleObjective?.trim() ||
     (moduleId ? MODULE_OBJECTIVES[moduleId] : undefined) ||
     "[não informado]";
   const title = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+  const journeyBlock = journey
+    ? `\n- Jornada escolhida: ${JOURNEY_LABELS[journey]}\n- Orientação da jornada: ${JOURNEY_GPS_HINTS[journey]}`
+    : "";
 
   return `AUDITORIA READ-ONLY — NÃO ALTERE CÓDIGO, NÃO EDITE ARQUIVOS, NÃO CRIE TABELAS E NÃO MUDE CONFIGURAÇÕES.
 
