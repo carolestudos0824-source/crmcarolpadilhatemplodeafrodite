@@ -75,9 +75,8 @@ const ETAPAS: Etapa[] = [
     icon: ShieldCheck,
     title: "Organizar telas públicas e restritas",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.`,
-      ),
       agente:
         "Me ajude a decidir quais telas do meu app devem ser públicas e quais devem ser restritas. Considere venda, entrega, login, pagamento, privacidade e experiência do usuário.",
       corrigir:
