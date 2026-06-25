@@ -45,7 +45,7 @@ describe("MvpArquiteturaModule (Blueprint do MVP)", () => {
   });
 
   it("renders new Blueprint-oriented header, hero do Agente and 5 etapas", () => {
-    render(<MvpArquiteturaModule />);
+    renderModule();
     expect(
       screen.getByRole("heading", { level: 1, name: /Desenhe o Blueprint do MVP antes de construir/i }),
     ).toBeInTheDocument();
@@ -65,7 +65,7 @@ describe("MvpArquiteturaModule (Blueprint do MVP)", () => {
   });
 
   it("stage selector persists and rewrites copied prompts", () => {
-    const { unmount } = render(<MvpArquiteturaModule />);
+    const { unmount } = renderModule();
     const idea = screen.getByRole("radio", { name: /Tenho só uma ideia/i });
     const building = screen.getByRole("radio", { name: /Já estou construindo/i });
     expect(idea.getAttribute("aria-checked")).toBe("true");
@@ -83,14 +83,14 @@ describe("MvpArquiteturaModule (Blueprint do MVP)", () => {
 
     expect(window.localStorage.getItem("fabrica_apps_mvp_stage")).toBe("building");
     unmount();
-    render(<MvpArquiteturaModule />);
+    renderModule();
     expect(
       screen.getByRole("radio", { name: /Já estou construindo/i }).getAttribute("aria-checked"),
     ).toBe("true");
   });
 
   it("checklist toggles with mvp_step__ prefix for Blueprint items", () => {
-    render(<MvpArquiteturaModule />);
+    renderModule();
     const cb = screen.getByLabelText(/^MVP definido$/i);
     fireEvent.click(cb);
     expect(setChecklist).toHaveBeenCalled();
