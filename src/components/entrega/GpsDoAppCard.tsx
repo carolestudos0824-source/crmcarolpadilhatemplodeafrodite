@@ -1,19 +1,96 @@
 import { Compass, Crown } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import type { ModuleId } from "@/data/entregaModules";
 
+// ---------- Escopo contextual por módulo ----------
 
-const GPS_PROMPT = `AUDITORIA READ-ONLY — NÃO ALTERE NADA
+const MODULE_SCOPES: Partial<Record<ModuleId, string>> = {
+  seo: "Neste módulo SEO e GEO, analise apenas: SEO técnico, títulos e descrições, metadados, Open Graph, canonical, sitemap, robots, estrutura de páginas públicas, conteúdo pesquisável, indexação, GEO/AI search, clareza para mecanismos de busca, bloqueadores antes de tráfego orgânico e próxima ação única para melhorar SEO/GEO.",
+};
+
+const DEFAULT_SCOPE =
+  "Analise o estado deste módulo, o que já parece concluído, o que falta concluir neste módulo, o que bloqueia avanço e qual é a próxima ação única dentro deste módulo.";
+
+const MODULE_OBJECTIVES: Partial<Record<ModuleId, string>> = {
+  seo: "Tornar o app encontrável em buscadores e em mecanismos de IA (GEO) antes de investir em tráfego.",
+  construir: "Construir as funcionalidades principais do app no Lovable, sem quebrar o que já existe.",
+  checkout: "Configurar e validar o fluxo de checkout e a liberação de acesso após compra.",
+  publicar: "Publicar o app em domínio próprio com metadados e abertura correta em todos os dispositivos.",
+  login: "Configurar login, banco e permissões de forma segura.",
+  seguranca: "Validar segurança do app antes de abrir para usuários reais.",
+  teste: "Fazer o teste final ponta a ponta antes de publicar.",
+  venda: "Construir a página de venda do app com clareza e sem promessa exagerada.",
+  monetizacao: "Definir o plano de monetização do app.",
+  legal: "Revisar termos, privacidade e confiança antes de vender.",
+  metricas: "Instalar e validar métricas básicas do app.",
+  campanhas: "Planejar campanhas iniciais sem promessa de resultado garantido.",
+  criativos: "Gerar criativos coerentes com a promessa do app.",
+  validacao: "Validar o app com usuários reais antes de escalar.",
+  melhorias: "Decidir o que entra na próxima versão sem quebrar o que já funciona.",
+  checklist: "Conferir o painel de prontidão antes de ativar o acesso.",
+  ativar: "Liberar acesso à área paga sem expor dados ou quebrar permissões.",
+};
+
+const RESOLVED_TITLE_FALLBACK = "Módulo atual";
+
+const buildGpsPrompt = (params: {
+  moduleId?: ModuleId;
+  moduleTitle?: string;
+  moduleObjective?: string;
+}): string => {
+  const { moduleId, moduleTitle, moduleObjective } = params;
+  const scope = (moduleId && MODULE_SCOPES[moduleId]) ?? DEFAULT_SCOPE;
+  const objective =
+    moduleObjective?.trim() ||
+    (moduleId ? MODULE_OBJECTIVES[moduleId] : undefined) ||
+    "[não informado]";
+  const title = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+
+  return `AUDITORIA READ-ONLY — NÃO ALTERE CÓDIGO, NÃO EDITE ARQUIVOS, NÃO CRIE TABELAS E NÃO MUDE CONFIGURAÇÕES.
 
 Este prompt é apenas para diagnóstico. Não implemente, não edite arquivos, não crie componentes, não altere banco, não altere rotas, não altere layout, não altere checkout, não altere autenticação e não mexa em permissões. Apenas analise o projeto atual e responda onde estou, o que falta, quais são os bloqueadores e qual é a única próxima ação obrigatória.
 
-Atue como GPS de Construção de App.
+Foco atual do diagnóstico:
+- Módulo atual: ${title}
+- Objetivo do módulo: ${objective}
+- Escopo da análise: ${scope}
+- A próxima ação obrigatória deve ficar limitada a este módulo.
 
+Atue como GPS de Construção de App, dentro do foco atual acima.
 
-Objetivo:
-Me ajudar a saber exatamente em que etapa estou na construção deste aplicativo, o que já foi feito, o que falta fazer, o que bloqueia publicação, domínio, venda e escala, e proteger o projeto contra perda de conteúdo ou regressão.
+Objetivo geral:
+Me ajudar a saber exatamente em que ponto estou dentro deste módulo, o que já foi feito neste módulo, o que falta concluir aqui, o que bloqueia o avanço deste módulo e proteger o projeto contra perda de conteúdo ou regressão.
 
-Etapas padrão de um app:
+Para cada interação comigo, responda nesta ordem, sempre dentro do foco atual:
+
+1. Onde estou agora neste módulo?
+- Resumo do que já parece concluído neste módulo.
+- O que falta concluir neste módulo.
+- O que bloqueia o avanço deste módulo.
+- Próximo passo obrigatório (apenas UM), dentro deste módulo.
+- O que eu NÃO devo mexer agora para não perder foco.
+
+2. Posso avançar para o próximo módulo?
+- Se sim, qual seria.
+- Se não, liste apenas os bloqueadores deste módulo. Não adicione ideias novas.
+
+3. Checkpoint antes de mudar algo importante:
+- Nome da alteração.
+- Área impactada.
+- Estado atual.
+- O que NÃO pode ser removido.
+- Risco da alteração.
+- Como validar depois que nada quebrou.
+
+Regras invioláveis:
+- Nunca sugira melhorias fora do módulo atual.
+- Nunca devolva lista infinita de tarefas.
+- Sempre destaque UMA única próxima ação obrigatória.
+- Seja direto, mobile first, pouco texto por vez.
+- Eu sempre devo saber: onde estou neste módulo, o que falta aqui, o que fazer agora, o que não mexer.
+
+Contexto secundário — etapas padrão de um app (use apenas para se situar, não para responder fora do foco):
 1. Ideia validada
 2. MVP definido
 3. Telas principais criadas
@@ -33,77 +110,19 @@ Etapas padrão de um app:
 17. Ajustes por feedback
 18. Escala
 
-Para cada interação comigo, responda nesta ordem:
-
-1. Onde estou agora?
-- Etapa atual.
-- Resumo do que já foi concluído.
-- O que falta concluir nesta etapa.
-- O que bloqueia publicação, domínio ou venda.
-- Próximo passo obrigatório (apenas UM).
-- O que eu NÃO devo mexer agora para não perder foco.
-
-2. Posso avançar?
-- Se sim, qual a próxima etapa.
-- Se não, liste apenas os itens bloqueadores. Não adicione ideias novas.
-
-3. Checkpoint antes de mudar algo importante:
-Antes de qualquer alteração relevante, registre:
-- Nome da alteração.
-- Área impactada.
-- Estado atual.
-- O que NÃO pode ser removido.
-- Risco da alteração.
-- Como validar depois que nada quebrou.
-
-4. Auditoria de segurança (quando eu pedir):
-- O que está correto.
-- O que está vulnerável.
-- O que bloqueia publicação.
-- Próxima ação obrigatória.
-- Checklist de correção.
-
-5. Auditoria visual (quando eu pedir):
-- O que está bom.
-- O que prejudica confiança.
-- O que precisa corrigir antes de vender.
-- Próxima ação obrigatória.
-
-6. Auditoria do admin (quando eu pedir):
-- Dados visíveis ao admin.
-- Ações disponíveis.
-- Gestão de usuários.
-- Gestão de conteúdo.
-- Permissões.
-- O que falta antes da venda.
-
-7. Pronto para domínio? (quando eu pedir)
-- Pronto ou não pronto.
-- Bloqueadores.
-- Próxima ação.
-
-8. Pronto para tráfego? (quando eu pedir)
-- Pronto ou não pronto.
-- Bloqueadores.
-- Próxima ação para vender.
-
-Regras invioláveis:
-- Nunca sugira melhorias fora da etapa atual.
-- Nunca devolva lista infinita de tarefas.
-- Sempre destaque UMA única próxima ação obrigatória.
-- Seja direto, mobile first, pouco texto por vez.
-- Eu sempre devo saber: onde estou, o que falta, o que fazer agora, o que não mexer.
-
 Dados do meu app (preencha antes de me responder a primeira vez):
 - Nome do app:
 - O que ele faz em 1 frase:
-- Etapa em que acho que estou:
-- Última coisa que fiz:
-- O que está me travando:`;
+- Última coisa que fiz dentro do módulo "${title}":
+- O que está me travando neste módulo:`;
+};
 
 type GpsDoAppCardProps = {
   defaultCollapsed?: boolean;
   descriptionOverride?: string;
+  moduleId?: ModuleId;
+  moduleTitle?: string;
+  moduleObjective?: string;
 };
 
 const GPS_DEFAULT_DESCRIPTION =
@@ -112,7 +131,15 @@ const GPS_DEFAULT_DESCRIPTION =
 export function GpsDoAppCard({
   defaultCollapsed = false,
   descriptionOverride,
+  moduleId,
+  moduleTitle,
+  moduleObjective,
 }: GpsDoAppCardProps = {}) {
+  const prompt = buildGpsPrompt({ moduleId, moduleTitle, moduleObjective });
+  const storageKey = moduleId
+    ? `gps_do_app_prompt__${moduleId}`
+    : "gps_do_app_prompt";
+
   return (
     <GlassCard className="mt-6 p-4 sm:p-5">
       <div className="flex items-start gap-3">
@@ -135,15 +162,13 @@ export function GpsDoAppCard({
           <EditablePromptBox
             collapsible={defaultCollapsed}
             saveSourceModule="gps-do-app"
-            originalPrompt={GPS_PROMPT}
-            storageKey="gps_do_app_prompt"
+            originalPrompt={prompt}
+            storageKey={storageKey}
             copyLabel="Copiar diagnóstico do app"
             helperText="Cole no Lovable apenas para diagnóstico. O Lovable deve analisar e não implementar nada."
-
           />
         </div>
       </div>
     </GlassCard>
   );
 }
-
