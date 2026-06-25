@@ -285,7 +285,7 @@ export const MyAppsDrawer = () => {
                           </select>
                         </div>
                         <p className="text-[11px] text-muted-foreground mt-1">
-                          Módulo atual: {p.currentModuleId ?? "—"} · Última
+                          Módulo atual: {p.currentModuleId ?? "Ainda não iniciado"} · Última
                           edição: {fmtDate(p.updatedAt)}
                         </p>
                       </div>
