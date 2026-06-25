@@ -23,11 +23,66 @@ import { useAppProjects } from "@/hooks/useAppProjects";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { buildLovablePrompt } from "@/lib/promptBuilder";
-import { useProjectContext } from "@/hooks/useProjectContext";
+import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
+import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
 
+const yn = (v: ProjectContext["needsLogin"]) =>
+  v === "sim" ? "Sim" : v === "nao" ? "Não" : "[a definir]";
+const orPlaceholder = (s: string | undefined | null) =>
+  s && s.trim() ? s.trim() : "[a definir]";
 
+const buildAgentPlanPrompt = (
+  ctx: ProjectContext,
+  journey: JourneyId | null,
+  projectName: string | null,
+): string => {
+  const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
+  const name = orPlaceholder(projectName || ctx.appName);
+  return `Quero planejar meu app antes de construir no Lovable.
 
-const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso planejar antes de construir. Me ajude a definir: qual problema meu app resolve, para quem ele é feito, qual é a promessa principal, qual é a ação principal do usuário e quais funcionalidades devem entrar somente na primeira versão.`;
+Contexto:
+- Nome do app: ${name}
+- O que o app faz: ${orPlaceholder(ctx.appDoes)}
+- Público-alvo: ${orPlaceholder(ctx.audience)}
+- Problema que resolve: ${orPlaceholder(ctx.problem)}
+- Promessa principal: ${orPlaceholder(ctx.promise)}
+- Ação principal do usuário: ${orPlaceholder(ctx.mainAction)}
+- Produto ou serviço vendido: ${orPlaceholder(ctx.productSold)}
+- Modelo de cobrança: ${orPlaceholder(ctx.pricingModel)}
+- Login: ${yn(ctx.needsLogin)}
+- Banco de dados: ${yn(ctx.needsDatabase)}
+- Área paga: ${yn(ctx.needsPaidArea)}
+- Admin: ${yn(ctx.needsAdmin)}
+- Checkout: ${yn(ctx.needsCheckout)}
+- Jornada escolhida na Fábrica: ${journeyLabel}
+
+Me ajude a transformar isso em um plano claro e enxuto.
+
+Responda obrigatoriamente com:
+
+1. Diagnóstico rápido da ideia
+2. Público ideal
+3. Dor principal
+4. Promessa principal
+5. Ação principal do usuário
+6. MVP recomendado com no máximo 5 funcionalidades
+7. Telas essenciais
+8. Dados que precisam ser salvos
+9. Se precisa de login, banco, área paga ou admin agora
+10. Monetização inicial, se fizer sentido
+11. O que cortar agora
+12. Riscos de escopo
+13. Primeiro prompt recomendado para o Lovable
+14. Próxima ação única
+
+Regras:
+- Não proponha um app grande demais.
+- Não coloque mais de 5 funcionalidades no MVP.
+- Não prometa venda garantida.
+- Não prometa segurança 100%.
+- Não invente checkout, banco ou área paga se não forem necessários.
+- Se faltar informação, assuma hipóteses razoáveis e diga o que precisa validar depois.`;
+};
 
 type TabId = "lovable" | "agente" | "corrigir" | "avancar";
 
