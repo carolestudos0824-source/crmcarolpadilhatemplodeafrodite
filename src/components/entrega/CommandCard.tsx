@@ -232,8 +232,8 @@ export const CommandCard = ({
               <Sparkles size={12} /> Texto pronto para colar no Lovable
             </div>
             <EditablePromptBox
-              originalPrompt={commandText}
-              storageKey={`cmdcard__${completedKey}__main`}
+              originalPrompt={displayCommand}
+              storageKey={`cmdcard__${completedKey}__${projectScope}__main`}
               onChange={setEditedCommand}
               hideCopyButton
               saveTitle={title}
