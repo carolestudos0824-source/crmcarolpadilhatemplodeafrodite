@@ -1,54 +1,63 @@
-import { useState } from "react";
 import { toast } from "sonner";
 import {
-  Map as MapIcon,
-  PanelTop,
-  Route,
-  LayoutTemplate,
-  MousePointerClick,
-  ShieldCheck,
   Workflow,
   HelpCircle,
   Bot,
-  Wrench,
-  ArrowRight,
-  Copy,
-  Check,
+  Sparkles,
   CheckCircle2,
   Circle,
-  Sparkles,
+  AlertTriangle,
+  FileText,
+  Search,
+  Map as MapIcon,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import { LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
-import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
-import { buildLovablePrompt } from "@/lib/promptBuilder";
-import { useProjectContext } from "@/hooks/useProjectContext";
 import { useAppProjects } from "@/hooks/useAppProjects";
-import { FolderKanban } from "lucide-react";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { CommandCard } from "@/components/entrega/CommandCard";
+import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
+import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
 
-const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso organizar as telas e o fluxo do usuário. Me ajude a definir: primeira tela, telas públicas, telas restritas, ação principal, formulários, resultado, pagamento, entrega e caminho ideal para o usuário não se perder.`;
-
-type TabId = "lovable" | "agente" | "corrigir" | "avancar";
+const orPlaceholder = (s: string | undefined | null) =>
+  s && s.trim() ? s.trim() : "[a definir]";
+const yn = (v: ProjectContext["needsLogin"]) =>
+  v === "sim" ? "Sim" : v === "nao" ? "Não" : "[a definir]";
 
 type Etapa = {
   n: number;
-  icon: typeof MapIcon;
   title: string;
-  tabs: Record<TabId, string>;
+  objetivo: string;
+  saida: string;
+  cortar: string;
+  criterio: string;
+  tabs: {
+    lovable: string;
+    agente: string;
+    corrigir: string;
+    avancar: string;
+  };
 };
-
 
 const ETAPAS: Etapa[] = [
   {
     n: 1,
-    icon: PanelTop,
-    title: "Mapear as telas principais",
+    title: "Listar telas essenciais",
+    objetivo:
+      "Decidir quais telas o app precisa para o usuário entrar, agir e receber o resultado.",
+    saida:
+      "tela inicial; telas obrigatórias da primeira versão; telas que ficam para depois.",
+    cortar:
+      "Sem telas decorativas, sem páginas administrativas se não houver admin, sem telas 'só por garantia'.",
+    criterio:
+      "Você consegue listar as telas indispensáveis e justificar cada uma em 1 frase.",
     tabs: {
       lovable:
-        `Liste as telas principais do meu app. Para cada tela, explique: nome da tela, objetivo, o que o usuário vê, qual ação ele realiza e para onde ele vai depois. Mantenha apenas as telas necessárias para a primeira versão.`,
+        "Liste as telas indispensáveis do meu app. Para cada tela explique: nome, objetivo, o que o usuário vê, qual ação realiza e para onde vai depois. Mantenha apenas o essencial da primeira versão.",
       agente:
-        "Me ajude a mapear as telas essenciais do meu app. Quero saber quais telas preciso para o usuário entrar, entender a proposta, realizar a ação principal e receber o resultado.",
+        "Me ajude a listar as telas essenciais do meu app: quais são as mínimas para o usuário entrar, entender a proposta, realizar a ação principal e receber o resultado?",
       corrigir:
         "O Lovable criou telas demais. Reduza para as telas indispensáveis da primeira versão e explique a função de cada uma.",
       avancar:
@@ -57,26 +66,40 @@ const ETAPAS: Etapa[] = [
   },
   {
     n: 2,
-    icon: Route,
-    title: "Definir o fluxo do usuário",
+    title: "Definir fluxo do usuário",
+    objetivo:
+      "Desenhar o caminho do usuário do início ao resultado, sem desvios desnecessários.",
+    saida:
+      "começo, meio e fim da jornada; ordem das telas; caminhos alternativos; ponto de conversão ou entrega.",
+    cortar:
+      "Sem passos extras, sem onboarding longo, sem etapas que não levam à ação principal.",
+    criterio:
+      "O caminho do usuário cabe num parágrafo curto e termina num resultado claro.",
     tabs: {
       lovable:
-        `Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.`,
+        "Crie um fluxo simples do usuário no meu app. Mostre o caminho passo a passo da primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.",
       agente:
-        "Me ajude a desenhar o caminho do usuário dentro do app. Quero um fluxo simples, sem etapas desnecessárias, com início, ação principal e resultado claro.",
+        "Me ajude a desenhar o caminho do usuário dentro do app: começo, meio, fim, ponto de conversão e caminhos alternativos. Quero um fluxo curto e direto.",
       corrigir:
-        "O Lovable criou um fluxo confuso. Reorganize o caminho do usuário em uma sequência simples e direta.",
+        "O Lovable criou um fluxo confuso. Reorganize o caminho do usuário em uma sequência simples e direta, sem etapas desnecessárias.",
       avancar:
         "Avance quando o caminho do usuário estiver claro do início ao fim.",
     },
   },
   {
     n: 3,
-    icon: ShieldCheck,
-    title: "Organizar telas públicas e restritas",
+    title: "Classificar telas públicas e restritas",
+    objetivo:
+      "Separar o que qualquer visitante pode ver do que exige login, pagamento ou acesso liberado.",
+    saida:
+      "telas abertas; telas com login; telas de admin; telas de checkout/área paga, se existirem.",
+    cortar:
+      "Sem expor conteúdo pago em tela pública. Sem proteger telas que precisam ser públicas para gerar conversão.",
+    criterio:
+      "Cada tela está marcada como pública ou restrita, com motivo curto.",
     tabs: {
       lovable:
-        `Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.`,
+        "Separe as telas do meu app em públicas e restritas. Telas públicas podem ser vistas por visitantes. Telas restritas exigem login, compra, código ou acesso liberado. Explique o motivo de cada separação.",
       agente:
         "Me ajude a decidir quais telas do meu app devem ser públicas e quais devem ser restritas. Considere venda, entrega, login, pagamento, privacidade e experiência do usuário.",
       corrigir:
@@ -87,48 +110,78 @@ const ETAPAS: Etapa[] = [
   },
   {
     n: 4,
-    icon: MousePointerClick,
-    title: "Definir CTA e próximo passo",
+    title: "Definir CTA e dados por tela",
+    objetivo:
+      "Para cada tela, decidir o botão principal, o que acontece ao clicar, quais dados são usados ou salvos e os estados de sucesso, erro e vazio.",
+    saida:
+      "CTA principal por tela; o que acontece após o clique; dados preenchidos; dados salvos; estados de sucesso/erro/vazio.",
+    cortar:
+      "Sem botões competindo entre si, sem CTAs genéricos, sem promessas de resultado garantido.",
+    criterio:
+      "Cada tela tem um próximo passo óbvio, dados claros e mensagens definidas.",
     tabs: {
-      lovable: `Revise cada tela do meu app e defina um CTA principal para cada uma. O usuário deve saber exatamente qual botão clicar e o que acontece depois.
-
-Para cada tela, entregue:
-
-1. Nome da tela.
-2. Objetivo da tela.
-3. CTA principal recomendado.
-4. Texto do botão.
-5. O que acontece depois do clique.
-6. Se existem botões demais, simplifique.
-
-Importante:
-Não crie CTAs genéricos.
-Não coloque muitos botões competindo entre si.
-Não prometa resultado garantido.
-Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidade.`,
+      lovable:
+        "Revise cada tela do meu app e defina: CTA principal, texto do botão, o que acontece ao clicar, dados usados, dados salvos e mensagens de sucesso, erro e vazio. Mantenha apenas um CTA principal por tela.",
       agente:
-        "Me ajude a definir o CTA principal de cada tela do meu app. Quero evitar botões demais e deixar o próximo passo óbvio para o usuário.",
+        "Me ajude a definir, para cada tela do meu app, o CTA principal, o que acontece ao clicar, os dados usados ou salvos e os estados de sucesso, erro e vazio.",
       corrigir:
-        "O Lovable criou botões demais ou CTAs confusos. Simplifique cada tela para ter um próximo passo principal.",
-      avancar: "Avance quando cada tela tiver um próximo passo claro.",
+        "O Lovable criou botões demais, dados confusos ou esqueceu estados de erro/vazio. Simplifique cada tela para um próximo passo claro e cubra os estados que faltam.",
+      avancar:
+        "Avance quando cada tela tiver CTA principal, dados claros e estados definidos.",
     },
   },
   {
     n: 5,
-    icon: LayoutTemplate,
-    title: "Criar mapa final de fluxo",
+    title: "Gerar prompt de implementação para o Lovable",
+    objetivo:
+      "Consolidar o Mapa de Telas e Fluxo num comando seguro para o Lovable criar ou ajustar as telas sem quebrar o que já existe.",
+    saida:
+      "comando único, enxuto, baseado no Mapa, preservando layout, login, banco, admin, checkout e área paga.",
+    cortar:
+      "Sem refazer o app inteiro. Sem inventar telas fora do Mapa. Sem mexer em login/banco/checkout que não foram pedidos.",
+    criterio:
+      "Existe um prompt pronto para colar no Lovable que reflete o Mapa aprovado.",
     tabs: {
       lovable:
-        `Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.`,
+        "Crie ou ajuste as telas do meu app a partir deste Mapa de Telas e Fluxo: telas, ordem, CTAs, dados, telas públicas/restritas e estados. Preserve layout aprovado, login, banco, admin, checkout e área paga. Faça alteração cirúrgica. Não invente telas fora do Mapa. No final, diga o que foi feito e o que testar.",
       agente:
-        "Organize meu app em um mapa final de fluxo. Quero uma visão clara das telas, ordem de navegação, CTAs, áreas restritas e pontos críticos antes de construir no Lovable.",
+        "Organize meu app num primeiro prompt seguro para o Lovable baseado no Mapa de Telas e Fluxo que já construímos. O prompt deve refletir exatamente as decisões — sem ampliar.",
       corrigir:
-        "O Lovable misturou telas, fluxo e funcionalidades. Reorganize em tópicos claros: telas públicas, telas restritas, caminho do usuário, CTAs e resultado final.",
+        "O Lovable ampliou o escopo além do Mapa. Reorganize o prompt para refletir apenas as telas, CTAs e dados aprovados, preservando login, banco, admin, checkout e área paga.",
       avancar:
-        "Avance quando você tiver um mapa claro das telas e do caminho do usuário.",
+        "Avance quando você tiver um prompt pronto para colar no Lovable que cabe no Mapa.",
     },
   },
 ];
+
+const buildAgentTelasStepPrompt = (
+  etapa: Etapa,
+  ctx: ProjectContext,
+  journey: JourneyId | null,
+  projectName: string | null,
+): string => {
+  const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
+  const name = orPlaceholder(projectName || ctx.appName);
+  return `Quero desenhar a etapa "${etapa.title}" do Mapa de Telas e Fluxo do meu app antes de pedir qualquer coisa ao Lovable.
+
+Contexto do projeto:
+- App: ${name}
+- O que faz: ${orPlaceholder(ctx.appDoes)}
+- Público: ${orPlaceholder(ctx.audience)}
+- Problema: ${orPlaceholder(ctx.problem)}
+- Promessa: ${orPlaceholder(ctx.promise)}
+- Ação principal: ${orPlaceholder(ctx.mainAction)}
+- Login: ${yn(ctx.needsLogin)} | Banco: ${yn(ctx.needsDatabase)} | Admin: ${yn(ctx.needsAdmin)} | Checkout: ${yn(ctx.needsCheckout)} | Área paga: ${yn(ctx.needsPaidArea)}
+- Jornada escolhida: ${journeyLabel}
+
+Etapa atual: ${etapa.n} — ${etapa.title}
+Objetivo: ${etapa.objetivo}
+Saída esperada: ${etapa.saida}
+O que cortar: ${etapa.cortar}
+Critério para avançar: ${etapa.criterio}
+
+Me ajude a concluir esta etapa do Mapa de Telas e Fluxo. Faça perguntas curtas se faltar dado e responda com a saída esperada organizada em tópicos. Não amplie o escopo, não invente telas fora do necessário, não prometa venda garantida nem segurança 100%. Termine com um "Próximo passo único".`;
+};
 
 const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "Tela", def: "Uma página ou área visual dentro do app." },
@@ -137,220 +190,98 @@ const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "Tela inicial", def: "A primeira tela que a pessoa vê ao entrar no app." },
   { termo: "CTA", def: "O botão ou chamada que indica o próximo passo." },
   { termo: "Área restrita", def: "Parte do app que só pode ser vista por quem tem login ou acesso liberado." },
-  { termo: "Onboarding", def: "Uma introdução rápida para orientar o usuário no primeiro uso." },
-  { termo: "Tela de resultado", def: "Onde o usuário recebe a resposta, análise, entrega ou conclusão da ação principal." },
+  { termo: "Estado vazio", def: "Como a tela aparece quando ainda não há dados a mostrar." },
+  { termo: "Estado de erro", def: "Como a tela reage quando algo falha (ex: campo inválido, sem internet)." },
 ];
 
+// Itens críticos do Mapa de Telas e Fluxo — devem casar com TELAS_CRITICAL em Entrega.tsx.
 const CHECKLIST_ITEMS = [
-  "Listei as telas principais do app",
-  "Sei qual é a função de cada tela",
-  "Defini o caminho do usuário",
-  "Separei telas públicas e restritas",
-  "Defini o CTA principal de cada tela",
-  "Cortei telas desnecessárias",
-  "Tenho um mapa final do fluxo",
-];
-
-const TAB_META: { id: TabId; label: string; icon: typeof MapIcon }[] = [
-  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
-  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
-  { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
-  { id: "avancar", label: "Quando avançar", icon: ArrowRight },
+  "Lista de telas principais definida",
+  "Fluxo do usuário definido",
+  "Telas públicas e restritas definidas",
+  "CTA principal por tela definido",
+  "Dados por tela definidos",
+  "Estados de sucesso/erro/vazio definidos",
+  "Tela final ou entrega definida",
+  "Prompt de implementação pronto",
 ];
 
 const CHECKLIST_PREFIX = "telas_step__";
 
-function CopyBtn({
-  text,
-  label = "Copiar para implementar no Lovable",
-  hint,
-}: {
-  text: string;
-  label?: string;
-  hint?: string;
-}) {
-  const [ok, setOk] = useState(false);
-  const handle = async () => {
-    try {
-      await navigator.clipboard.writeText(text.trim());
-      setOk(true);
-      toast.success("Copiado!");
-      setTimeout(() => setOk(false), 1600);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-  return (
-    <div className="flex flex-col gap-1">
-      <button
-        onClick={handle}
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-fit ${
-          ok
-            ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-            : "border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
-        }`}
-      >
-        {ok ? <Check size={14} /> : <Copy size={14} />}
-        {ok ? "Copiado!" : label}
-      </button>
-      {hint && (
-        <span className="text-[10px] text-muted-foreground/80">{hint}</span>
-      )}
-    </div>
-  );
-}
+const MAPA_TEMPLATE = `Mapa de Telas e Fluxo
 
-function EtapaCard({ etapa }: { etapa: Etapa }) {
-  const [tab, setTab] = useState<TabId>("lovable");
-  const [auditCopied, setAuditCopied] = useState(false);
-  const { context } = useProjectContext();
-  const Icon = etapa.icon;
+Telas essenciais (primeira versão):
+1.
+2.
+3.
 
-  const handleCopyAudit = async () => {
-    try {
-      await navigator.clipboard.writeText(LOVABLE_AUDIT_PROMPT(etapa.tabs.lovable).trim());
-      setAuditCopied(true);
-      toast.success("Auditoria copiada.", {
-        description: "Cole no Lovable. Ele só vai analisar, não vai implementar.",
-      });
-      setTimeout(() => setAuditCopied(false), 1800);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
+Tela inicial:
+[Qual tela o usuário vê primeiro]
 
-  return (
-    <GlassCard className="p-5 md:p-6">
-      <div className="flex items-start gap-4 mb-4">
-        <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
-          <Icon size={20} />
-        </div>
-        <div className="min-w-0">
-          <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
-            Etapa {etapa.n}
-          </div>
-          <h3 className="text-lg md:text-xl font-heading font-bold leading-tight">
-            {etapa.title}
-          </h3>
-        </div>
-      </div>
+Tela da ação principal:
+[Onde acontece a ação central do app]
 
-      <div className="flex flex-wrap gap-2 mb-4">
-        {TAB_META.map((t) => {
-          const TIcon = t.icon;
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition min-h-[36px] ${
-                active
-                  ? "bg-accent/15 border-accent/40 text-accent"
-                  : "border-white/10 bg-white/5 text-foreground/70 hover:bg-white/10"
-              }`}
-            >
-              <TIcon size={12} />
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
+Tela de resultado / entrega:
+[Onde o usuário recebe o que veio buscar]
 
-      {tab === "avancar" ? (
-        <div className="rounded-xl border border-white/10 bg-black/40 p-4">
-          <pre className="text-[13px] whitespace-pre-wrap font-mono text-foreground/90 leading-relaxed">
-            {etapa.tabs[tab]}
-          </pre>
-        </div>
-      ) : tab === "lovable" ? (
-        <div className="space-y-4">
-          {/* Grupo 1: Antes de implementar */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3 sm:p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] uppercase tracking-wider text-accent font-semibold">
-                1. Antes de implementar
-              </span>
-            </div>
-            <EditablePromptBox
-              collapsible
-              saveSourceModule="telas"
-              key={`${etapa.n}-${tab}`}
-              originalPrompt={etapa.tabs[tab]}
-              storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-              copyLabel="Copiar para implementar no Lovable"
-              transformOnCopy={(text) =>
-                buildLovablePrompt({
-                  context,
-                  stepName: `Telas e Fluxo — ${etapa.title}`,
-                  stepObjective: `Trabalhar a etapa "${etapa.title}" de telas e fluxo do app preservando navegação, telas já aprovadas, CTAs principais e áreas restritas. Não refazer o app inteiro nem alterar login, banco, checkout, área paga ou admin sem pedido explícito.`,
-                  command: text,
-                  moduleId: "telas",
-                })
-              }
-            />
-          </div>
+Ordem de navegação:
+[Tela A → Tela B → Tela C ...]
 
-          {/* Grupo 2: Depois de implementar */}
-          <div className="rounded-xl border border-cyan-400/25 bg-cyan-400/[0.04] p-3 sm:p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] uppercase tracking-wider text-cyan-200 font-semibold">
-                2. Depois de implementar
-              </span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={handleCopyAudit}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition w-full sm:w-fit justify-center min-h-[44px] ${
-                  auditCopied
-                    ? "border-emerald-400/50 bg-emerald-400/15 text-emerald-300"
-                    : "border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/15"
-                }`}
-              >
-                {auditCopied ? <Check size={14} /> : <ShieldCheck size={14} />}
-                {auditCopied ? "Auditoria copiada!" : "Copiar auditoria para o Lovable"}
-              </button>
-              <div className="inline-flex items-start gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[11px] text-cyan-100/90 leading-snug">
-                <ShieldCheck size={12} className="mt-0.5 shrink-0" />
-                <span>
-                  <strong className="text-cyan-50">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <EditablePromptBox
-          collapsible
-          saveSourceModule="telas"
-          key={`${etapa.n}-${tab}`}
-          originalPrompt={etapa.tabs[tab]}
-          storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          copyLabel={
-            tab === "agente"
-              ? "Copiar para revisar com o Agente"
-              : "Copiar correção"
-          }
-          helperText={
-            tab === "agente"
-              ? "Use para revisar com o Agente antes de aplicar."
-              : "Use quando o Lovable não entregar o resultado esperado."
-          }
-        />
-      )}
+Telas públicas:
+[Quem não está logado pode ver]
 
-    </GlassCard>
-  );
-}
+Telas restritas:
+[Exigem login, pagamento ou acesso liberado]
 
-export function TelasFluxoModule() {
+CTA principal por tela:
+- Tela X: botão "..." → leva para ...
+- Tela Y: botão "..." → leva para ...
+
+Dados usados ou salvos por tela:
+- Tela X: usa ... | salva ...
+- Tela Y: usa ... | salva ...
+
+Estados de sucesso, erro e vazio:
+- Sucesso: ...
+- Erro: ...
+- Vazio: ...
+
+O que fica fora da primeira versão:
+[Telas e funcionalidades que entram depois]
+
+Primeiro prompt seguro para o Lovable:
+[Comando enxuto que cabe no Mapa acima, preservando layout, login, banco, admin, checkout e área paga]`;
+
+const isContextEssentialMissing = (ctx: ProjectContext): boolean => {
+  const need = [ctx.problem, ctx.audience, ctx.promise, ctx.mainAction];
+  return need.some((v) => !v || !v.trim());
+};
+
+export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
+  const { context } = useProjectContext();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
 
-  const copyAgentHelp = async () => {
+  const contextIncomplete = !!activeProject && isContextEssentialMissing(context);
+
+  const heroAgentPrompt = buildAgentTelasStepPrompt(
+    ETAPAS[0],
+    context,
+    journey,
+    activeProject?.name ?? null,
+  );
+
+  const copyHeroAgent = async () => {
+    if (!activeProject) {
+      toast("Selecione um Projeto em foco antes de mapear as telas.", {
+        description: "Sem projeto, o Mapa sai genérico.",
+      });
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(AGENT_HELP_PROMPT);
-      toast.success("Prompt copiado! Cole no Agente Arquiteto.");
+      await navigator.clipboard.writeText(heroAgentPrompt);
+      toast.success("Prompt do Mapa copiado! Cole no Agente Arquiteto.");
     } catch {
       toast.error("Não foi possível copiar.");
     }
@@ -361,6 +292,21 @@ export function TelasFluxoModule() {
     setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // Primeira etapa pendente — abertura progressiva.
+  const firstPendingEtapa = (() => {
+    if (!checklist[`${CHECKLIST_PREFIX}Lista de telas principais definida`]) return 1;
+    if (!checklist[`${CHECKLIST_PREFIX}Fluxo do usuário definido`]) return 2;
+    if (!checklist[`${CHECKLIST_PREFIX}Telas públicas e restritas definidas`]) return 3;
+    if (
+      !checklist[`${CHECKLIST_PREFIX}CTA principal por tela definido`] ||
+      !checklist[`${CHECKLIST_PREFIX}Dados por tela definidos`] ||
+      !checklist[`${CHECKLIST_PREFIX}Estados de sucesso/erro/vazio definidos`] ||
+      !checklist[`${CHECKLIST_PREFIX}Tela final ou entrega definida`]
+    )
+      return 4;
+    return 5;
+  })();
+
   return (
     <section>
       <header className="mb-6">
@@ -368,103 +314,217 @@ export function TelasFluxoModule() {
           <Workflow size={12} /> Telas e Fluxo
         </span>
         <h1 className="text-2xl md:text-4xl font-heading font-bold leading-tight mb-2">
-          Organize as telas e o caminho do usuário
+          Mapeie as telas e o fluxo com o Agente antes de construir
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Um app bom conduz a pessoa sem confusão. Aqui você vai definir quais telas
-          existem, o que cada uma faz e qual caminho o usuário deve seguir.
+          Antes de pedir telas ao Lovable, defina quais telas existem, em que ordem aparecem, qual CTA cada uma tem e o que acontece depois de cada ação.
         </p>
-        <div className="max-w-3xl mt-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
-          <p className="text-xs text-muted-foreground/90">
-            Em cada etapa, você copia o comando e cola no chat do seu projeto no Lovable. Os comandos já orientam o Lovable a preservar o que está funcionando antes de aplicar novas mudanças.
-          </p>
-        </div>
       </header>
 
-      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
-        <div className="flex items-start gap-3">
-          <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
-          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            Não basta ter funcionalidades. O usuário precisa entender onde começa, qual
-            botão clicar, o que acontece depois e onde recebe o resultado. Telas soltas
-            criam confusão. Fluxo claro cria confiança.
-          </p>
-        </div>
-      </GlassCard>
-
-      <GlassCard className="p-5 mb-6">
-        <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
-          O que você vai fazer nesta etapa
-        </div>
-        <p className="text-sm text-foreground/90 mb-4">
-          Nesta etapa, você vai transformar a arquitetura do app em uma jornada clara:
-          tela inicial, ação principal, login quando necessário, formulário, resultado,
-          pagamento, entrega e próximos passos.
-        </p>
-        <ol className="space-y-2 text-sm text-foreground/85">
-          {[
-            "Defina a primeira tela do app.",
-            "Organize o caminho do usuário.",
-            "Separe telas públicas e telas restritas.",
-            "Confirme onde ficam formulário, resultado, pagamento e entrega.",
-            "Corte telas desnecessárias.",
-          ].map((step, i) => (
-            <li key={i} className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
-                {i + 1}
-              </span>
-              <span className="pt-0.5">{step}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-5">
-          <button
-            onClick={copyAgentHelp}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold transition"
-          >
-            <Bot size={14} /> Não sei organizar as telas
-          </button>
-          <p className="text-[11px] text-muted-foreground mt-2">
-            Copia um prompt pronto para você colar no Agente Arquiteto.
-          </p>
-          <p className="text-[11px] text-muted-foreground mt-1">
-            Use este botão para pensar com o Agente. Use os comandos das etapas para colar no Lovable do seu app.
-          </p>
-        </div>
-      </GlassCard>
-
-
-
+      {/* Gate sem Projeto em foco */}
       {!activeProject && (
-        <GlassCard className="p-4 sm:p-5 mb-5 border-amber-400/50 bg-gradient-to-br from-amber-400/[0.08] via-amber-400/[0.04] to-transparent shadow-[0_0_24px_-16px_rgba(251,191,36,0.5)]">
-          <div className="flex items-start gap-3">
-            <div className="shrink-0 w-10 h-10 rounded-lg bg-amber-400/15 border border-amber-400/40 flex items-center justify-center text-amber-300">
-              <FolderKanban size={20} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="text-sm md:text-base font-heading font-semibold text-amber-100 mb-1.5">
-                Escolha seu app para começar
-              </h3>
-              <p className="text-xs md:text-sm text-foreground/80 leading-relaxed mb-3">
-                Antes de copiar comandos ou avançar na jornada, selecione ou crie o app que você quer construir. Isso permite personalizar os prompts, salvar progresso e revisar a entrega com mais precisão.
+        <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/50 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent shadow-[0_0_30px_-18px_rgba(251,191,36,0.5)]">
+          <div className="flex items-start gap-3 mb-4">
+            <AlertTriangle size={20} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <div className="text-[11px] uppercase tracking-wider text-amber-300/90 mb-1">
+                Pré-requisito obrigatório
+              </div>
+              <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
+                Antes de desenhar as telas, escolha o app que será organizado
+              </h2>
+              <p className="text-sm text-foreground/90 mt-1.5 leading-relaxed">
+                A Fábrica precisa de um Projeto em foco para usar contexto, jornada, MVP, GPS, Agente e prompts inteligentes.
               </p>
+            </div>
+          </div>
+          <p className="text-xs font-semibold text-amber-200/90 mb-2">
+            Escolha uma das opções abaixo para liberar o desenho do Mapa:
+          </p>
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+            <button
+              onClick={openDrawer}
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold transition"
+            >
+              <Sparkles size={14} /> Criar ou selecionar app
+            </button>
+            {goTo && (
               <button
-                type="button"
-                onClick={openDrawer}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-amber-400/50 bg-gradient-to-r from-amber-400/20 to-amber-400/10 text-amber-100 hover:from-amber-400/25 hover:to-amber-400/15 text-sm font-semibold transition min-h-[44px]"
+                onClick={() => goTo("ideias")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-xs font-medium transition"
               >
-                <FolderKanban size={14} /> Criar ou selecionar app
+                Ver ideias prontas
               </button>
+            )}
+            {goTo && (
+              <button
+                onClick={() => goTo("planejar")}
+                className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-white/10 bg-white/5 text-foreground/80 hover:bg-white/10 text-xs font-medium transition"
+              >
+                <Search size={14} /> Ir para Planejar o App
+              </button>
+            )}
+          </div>
+        </GlassCard>
+      )}
+
+      {/* Aviso de contexto incompleto */}
+      {contextIncomplete && (
+        <GlassCard className="p-4 mb-6 border-amber-400/40 bg-amber-400/[0.06]">
+          <div className="flex items-start gap-3">
+            <AlertTriangle size={18} className="text-amber-300 shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <h3 className="text-sm font-heading font-semibold text-amber-100">
+                Antes de desenhar telas, preencha pelo menos problema, público, promessa e ação principal.
+              </h3>
+              <p className="text-xs text-foreground/85 mt-1 leading-relaxed">
+                Sem esses dados, os prompts ficam fracos e o Mapa de Telas e Fluxo sai genérico. Você pode continuar mesmo assim, mas o resultado será melhor com contexto preenchido.
+              </p>
+              {goTo && (
+                <button
+                  onClick={() => goTo("planejar")}
+                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/50 bg-amber-400/15 text-amber-100 hover:bg-amber-400/20 text-xs font-semibold transition"
+                >
+                  Voltar para Planejar o App
+                </button>
+              )}
             </div>
           </div>
         </GlassCard>
       )}
 
-      <div className="space-y-5 mb-8">
-        {ETAPAS.map((e) => (
-          <EtapaCard key={e.n} etapa={e} />
-        ))}
+      {/* Hero do Agente — ação principal */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-gradient-to-br from-accent/[0.12] via-accent/[0.04] to-transparent shadow-[0_0_30px_-18px_rgba(0,194,255,0.6)]">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
+            <Bot size={18} />
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider text-accent/90 mb-1">
+              Comece por aqui
+            </div>
+            <h2 className="text-lg md:text-2xl font-heading font-bold leading-tight">
+              Mapear telas com o Agente Arquiteto
+            </h2>
+            <p className="text-sm md:text-base text-foreground/90 mt-1.5 leading-relaxed">
+              Use o Agente para pensar telas, fluxo, CTAs e dados antes de pedir qualquer coisa ao Lovable. O Lovable entra só na Etapa 5, depois que o Mapa estiver claro.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2 mt-4">
+          <button
+            onClick={copyHeroAgent}
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold transition"
+          >
+            <Bot size={14} /> Mapear telas com o Agente Arquiteto
+          </button>
+          {!activeProject && (
+            <button
+              onClick={openDrawer}
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+            >
+              <Sparkles size={14} /> Criar ou selecionar app primeiro
+            </button>
+          )}
+        </div>
+        <details className="mt-4 rounded-lg border border-white/10 bg-black/30">
+          <summary className="cursor-pointer select-none px-3 py-2 text-xs text-foreground/80 hover:text-foreground">
+            Ver e editar o prompt do Mapa antes de copiar
+          </summary>
+          <div className="p-3 pt-0">
+            <EditablePromptBox
+              key={`telas-hero-${activeProject?.id ?? "no-project"}-${journey ?? "no-journey"}`}
+              saveSourceModule="telas"
+              originalPrompt={heroAgentPrompt}
+              storageKey={`telas_agent_hero__${activeProject?.id ?? "no-project"}`}
+              copyLabel="Copiar prompt para o Agente"
+              helperText="Cole no Agente Arquiteto, não no Lovable."
+            />
+          </div>
+        </details>
+      </GlassCard>
+
+      <CopyCommandWarning />
+      <p className="text-xs text-muted-foreground mb-2">
+        Em cada etapa, comece pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada — só faz sentido na Etapa 5.
+      </p>
+      <p className="text-[11px] text-amber-200/90 mb-4 italic">
+        Copiar prompt não conclui a etapa. Só marque como concluído quando o Mapa estiver completo.
+      </p>
+
+      {/* Etapas — prévia bloqueada se não houver projeto */}
+      <div
+        className={`space-y-5 mb-8 ${!activeProject ? "opacity-50 pointer-events-none select-none" : ""}`}
+        aria-disabled={!activeProject}
+      >
+        {!activeProject && (
+          <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 text-[12px] text-amber-100">
+            Prévia bloqueada. Crie ou selecione um Projeto em foco acima para destravar as etapas, prompts contextualizados e a marcação de conclusão.
+          </div>
+        )}
+        {ETAPAS.map((e) => {
+          const isFinal = e.n === 5;
+          return (
+            <div key={e.n}>
+              {!isFinal && activeProject && (
+                <div className="mb-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
+                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+                  <span>
+                    Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nesta etapa, comece pelo Agente.
+                  </span>
+                </div>
+              )}
+              <CommandCard
+                key={`telas-${e.n}`}
+                number={e.n}
+                title={e.title}
+                description={e.objetivo}
+                whenToUse={`Use nesta etapa: ${e.title}.`}
+                whereToPaste={
+                  isFinal
+                    ? "Cole no chat do seu projeto no Lovable."
+                    : "Primeiro cole no Agente. No Lovable só na Etapa 5."
+                }
+                expectedResult={e.saida}
+                commandText={e.tabs.lovable}
+                completedKey={`telas_cmd__${e.n}`}
+                moduleId="telas"
+                objective={e.title}
+                agentPrompt={
+                  activeProject
+                    ? buildAgentTelasStepPrompt(e, context, journey, activeProject.name)
+                    : e.tabs.agente
+                }
+                correctionPrompt={e.tabs.corrigir}
+                advanceCriteria={e.criterio}
+                defaultOpen={e.n === firstPendingEtapa}
+              />
+            </div>
+          );
+        })}
       </div>
+
+      {/* Mapa de Telas e Fluxo — entrega central */}
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-accent/[0.07]">
+        <div className="flex items-start gap-3 mb-3">
+          <MapIcon size={18} className="text-accent shrink-0 mt-0.5" />
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider text-accent mb-1">
+              Entrega desta etapa
+            </div>
+            <h3 className="text-lg font-heading font-bold leading-tight">Mapa de Telas e Fluxo</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Documento único com telas, ordem, CTAs, dados, telas públicas/restritas e estados. Quando estiver preenchido, vire o primeiro prompt seguro para o Lovable na Etapa 5.
+            </p>
+          </div>
+        </div>
+        <EditablePromptBox
+          saveSourceModule="telas"
+          originalPrompt={MAPA_TEMPLATE}
+          storageKey="telas_mapa"
+          copyLabel="Copiar Mapa de Telas e Fluxo"
+        />
+      </GlassCard>
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
@@ -473,10 +533,7 @@ export function TelasFluxoModule() {
         </div>
         <dl className="grid sm:grid-cols-2 gap-3">
           {GLOSSARIO.map((g) => (
-            <div
-              key={g.termo}
-              className="rounded-lg border border-white/10 bg-white/5 p-3"
-            >
+            <div key={g.termo} className="rounded-lg border border-white/10 bg-white/5 p-3">
               <dt className="text-sm font-semibold text-accent">{g.termo}</dt>
               <dd className="text-xs text-muted-foreground mt-1">{g.def}</dd>
             </div>
@@ -484,51 +541,73 @@ export function TelasFluxoModule() {
         </dl>
       </GlassCard>
 
-      <GlassCard className="p-5">
+      {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
+      <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
+          <h3 className="font-heading font-semibold text-base">Mapa de Telas e Fluxo — checklist final</h3>
         </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          Marque cada item só depois que estiver claro de verdade no seu Mapa. Copiar prompt não conta.
+        </p>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item) => {
             const key = `${CHECKLIST_PREFIX}${item}`;
             const done = !!checklist[key];
             return (
               <li key={item}>
-                <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
+                <label className="flex items-center gap-3 p-2.5 rounded-lg border cursor-pointer transition border-accent/30 bg-accent/[0.06] hover:bg-accent/10">
                   <input
                     type="checkbox"
                     checked={done}
                     onChange={() => toggleItem(item)}
-                    className="accent-accent w-4 h-4"
+                    className="accent-accent w-5 h-5 shrink-0"
                   />
-                  <span
-                    className={`text-sm ${
-                      done ? "line-through text-muted-foreground" : ""
-                    }`}
-                  >
+                  <span className={`text-sm ${done ? "line-through text-muted-foreground" : ""}`}>
                     {item}
                   </span>
-                  {done ? (
-                    <CheckCircle2
-                      size={14}
-                      className="text-emerald-400 shrink-0 ml-auto"
-                    />
-                  ) : (
-                    <Circle
-                      size={14}
-                      className="text-muted-foreground/40 shrink-0 ml-auto"
-                    />
+                  {!done && (
+                    <span className="ml-auto text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-accent/40 bg-accent/10 text-accent shrink-0">
+                      Crítico
+                    </span>
+                  )}
+                  {done && (
+                    <CheckCircle2 size={14} className="text-emerald-400 shrink-0 ml-auto" />
+                  )}
+                  {!done && (
+                    <Circle size={14} className="text-muted-foreground/40 shrink-0" />
                   )}
                 </label>
               </li>
             );
           })}
         </ul>
-        <p className="text-[11px] text-muted-foreground mt-3">
-          Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
-        </p>
+        {(() => {
+          const allDone = CHECKLIST_ITEMS.every((it) => !!checklist[`${CHECKLIST_PREFIX}${it}`]);
+          return allDone ? (
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-100">
+              <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
+              <span>Mapa de Telas e Fluxo concluído. Agora você pode marcar o módulo como concluído.</span>
+            </div>
+          ) : (
+            <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-100">
+              <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+              <span>
+                Ainda não conclua. Faltam itens críticos do Mapa de Telas e Fluxo.
+              </span>
+            </div>
+          );
+        })()}
       </GlassCard>
+
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu Mapa de Telas e Fluxo está simples, claro e pronto para virar prompt do Lovable."
+          ctaLabel="Revisar Mapa com o Agente Arquiteto"
+        />
+      </div>
     </section>
   );
 }
