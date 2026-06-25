@@ -589,29 +589,28 @@ Regras:
                   </span>
                 </div>
 
-                {/* Sticky action bar */}
+                {/* Sticky action bar — fluxo em 2 passos */}
                 <div className="relative flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={handleOpenAgentWithDump}
                     className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold hover:from-cyan-400 hover:to-blue-500 transition shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)]"
                   >
-                    <Copy size={16} /> Copiar e abrir Agente Arquiteto
+                    <Copy size={16} /> Copiar prompt para o Agente
                   </button>
+                  <a
+                    href={AGENTE_ARQUITETO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-cyan-400/40 bg-transparent text-cyan-200 text-sm font-semibold hover:bg-cyan-400/10 transition"
+                  >
+                    Abrir Agente Arquiteto
+                  </a>
                 </div>
                 <p className="relative text-[11.5px] text-foreground/70 leading-snug -mt-1">
-                  Use o Agente Arquiteto quando estiver em dúvida, travado ou quiser revisar antes de mexer no Lovable.
+                  Copie o prompt primeiro. Depois abra o Agente e cole com Ctrl+V (Cmd+V no Mac).
                 </p>
-                <p className="relative text-[11px] text-foreground/55 leading-snug">
-                  O ChatGPT não cola o texto automaticamente. Após abrir, cole no Agente com Ctrl+V.{" "}
-                  <button
-                    type="button"
-                    onClick={handleCopyAgentDump}
-                    className="underline underline-offset-2 text-cyan-300 hover:text-cyan-200"
-                  >
-                    Apenas copiar (não abrir)
-                  </button>
-                </p>
+
 
 
                 {/* Prompt body */}
