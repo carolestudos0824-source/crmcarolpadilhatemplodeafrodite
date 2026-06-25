@@ -255,7 +255,19 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Teste Final — ${etapa.title}`,
+                    stepObjective: `Auditar e testar a etapa "${etapa.title}" do teste final, sem alterar áreas sensíveis.`,
+                    command: text,
+                    moduleId: "teste",
+                  })
+          }
+
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
