@@ -472,26 +472,35 @@ export const CommandCard = ({
 
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <div className="flex flex-wrap justify-end gap-2">
-                      <a
-                        href={APP_CONFIG.GPT_AGENT_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-white/15 hover:bg-white/5"
-                      >
-                        <ExternalLink size={14} /> Abrir Agente Arquiteto
-                      </a>
                       <button
-                        onClick={() => copyText(editedAgent || agentPrompt, "agent", "Prompt do Agente copiado.")}
+                        onClick={async () => {
+                          const text = editedAgent || agentPrompt;
+                          setCopiedKey("agent");
+                          setTimeout(() => setCopiedKey(null), 1500);
+                          await copyPromptAndOpenAgent({
+                            prompt: text,
+                            successMessage:
+                              "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
+                          });
+                        }}
                         type="button"
                         className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                       >
                         {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                        {copiedKey === "agent" ? "Copiado" : "Copiar para o Agente"}
+                        {copiedKey === "agent" ? "Copiado" : "Copiar e abrir Agente Arquiteto"}
                       </button>
                     </div>
-                    <span className="text-[10px] text-muted-foreground/80">
-                      Use para pensar antes de aplicar.
+                    <span className="text-[11px] text-muted-foreground/80 max-w-[420px] text-right">
+                      Use o Agente Arquiteto quando estiver em dúvida, travado ou quiser revisar antes de mexer no Lovable.
                     </span>
+                    <a
+                      href={APP_CONFIG.GPT_AGENT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-amber-300/80 hover:text-amber-200 underline underline-offset-2"
+                    >
+                      Ir para o Agente Arquiteto
+                    </a>
                   </div>
                 </div>
               ) : (
