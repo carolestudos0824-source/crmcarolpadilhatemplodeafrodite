@@ -421,9 +421,20 @@ export const PromptReviewDialog = ({
             className="btn-primary text-sm"
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
-            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar e abrir Agente Arquiteto"}
+            {mode === "lovable" ? "Copiar para o Lovable" : "Copiar prompt para o Agente"}
           </button>
+          {mode === "agente" ? (
+            <a
+              href={AGENTE_ARQUITETO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-400/40 bg-transparent text-amber-200 hover:bg-amber-400/10 text-sm"
+            >
+              Abrir Agente Arquiteto
+            </a>
+          ) : null}
         </div>
+
 
       </div>
     </div>
