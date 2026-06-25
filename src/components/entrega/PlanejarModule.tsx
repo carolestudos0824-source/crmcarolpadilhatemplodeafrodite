@@ -625,13 +625,13 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </dl>
       </GlassCard>
 
-      <GlassCard className="p-5">
+      <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
+          <h3 className="font-heading font-semibold text-base">Resultado esperado deste planejamento</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
-          Só avance quando todos os itens críticos estiverem claros.
+          Marque cada item só depois que estiver claro de verdade no seu plano. Copiar prompt não conta.
         </p>
 
         <ul className="space-y-2">
