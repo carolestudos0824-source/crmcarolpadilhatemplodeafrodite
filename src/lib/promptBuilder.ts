@@ -287,7 +287,14 @@ export const MODULE_PROMPT_INTENTS: Record<string, ModuleIntent> = {
       "Conferir links principais (home, checkout, login, suporte).",
       "Fazer teste pós-publicação em aba anônima.",
     ],
+    preserveExtras: [
+      "preserve domínio já conectado",
+      "preserve configurações de deploy",
+      "preserve metatags, OG image, favicon e SEO básico já configurados",
+      "não altere domínio, redirects ou configurações de publicação sem pedido explícito",
+    ],
   },
+
   teste: {
     actionTitle: "TESTE FINAL DO APP ANTES DE PUBLICAR",
     directRequest:
