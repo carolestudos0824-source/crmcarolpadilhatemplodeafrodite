@@ -23,11 +23,66 @@ import { useAppProjects } from "@/hooks/useAppProjects";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { buildLovablePrompt } from "@/lib/promptBuilder";
-import { useProjectContext } from "@/hooks/useProjectContext";
+import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
+import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
 
+const yn = (v: ProjectContext["needsLogin"]) =>
+  v === "sim" ? "Sim" : v === "nao" ? "Não" : "[a definir]";
+const orPlaceholder = (s: string | undefined | null) =>
+  s && s.trim() ? s.trim() : "[a definir]";
 
+const buildAgentPlanPrompt = (
+  ctx: ProjectContext,
+  journey: JourneyId | null,
+  projectName: string | null,
+): string => {
+  const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
+  const name = orPlaceholder(projectName || ctx.appName);
+  return `Quero planejar meu app antes de construir no Lovable.
 
-const AGENT_HELP_PROMPT = `Estou criando um aplicativo do zero com IA e preciso planejar antes de construir. Me ajude a definir: qual problema meu app resolve, para quem ele é feito, qual é a promessa principal, qual é a ação principal do usuário e quais funcionalidades devem entrar somente na primeira versão.`;
+Contexto:
+- Nome do app: ${name}
+- O que o app faz: ${orPlaceholder(ctx.appDoes)}
+- Público-alvo: ${orPlaceholder(ctx.audience)}
+- Problema que resolve: ${orPlaceholder(ctx.problem)}
+- Promessa principal: ${orPlaceholder(ctx.promise)}
+- Ação principal do usuário: ${orPlaceholder(ctx.mainAction)}
+- Produto ou serviço vendido: ${orPlaceholder(ctx.productSold)}
+- Modelo de cobrança: ${orPlaceholder(ctx.pricingModel)}
+- Login: ${yn(ctx.needsLogin)}
+- Banco de dados: ${yn(ctx.needsDatabase)}
+- Área paga: ${yn(ctx.needsPaidArea)}
+- Admin: ${yn(ctx.needsAdmin)}
+- Checkout: ${yn(ctx.needsCheckout)}
+- Jornada escolhida na Fábrica: ${journeyLabel}
+
+Me ajude a transformar isso em um plano claro e enxuto.
+
+Responda obrigatoriamente com:
+
+1. Diagnóstico rápido da ideia
+2. Público ideal
+3. Dor principal
+4. Promessa principal
+5. Ação principal do usuário
+6. MVP recomendado com no máximo 5 funcionalidades
+7. Telas essenciais
+8. Dados que precisam ser salvos
+9. Se precisa de login, banco, área paga ou admin agora
+10. Monetização inicial, se fizer sentido
+11. O que cortar agora
+12. Riscos de escopo
+13. Primeiro prompt recomendado para o Lovable
+14. Próxima ação única
+
+Regras:
+- Não proponha um app grande demais.
+- Não coloque mais de 5 funcionalidades no MVP.
+- Não prometa venda garantida.
+- Não prometa segurança 100%.
+- Não invente checkout, banco ou área paga se não forem necessários.
+- Se faltar informação, assuma hipóteses razoáveis e diga o que precisa validar depois.`;
+};
 
 type TabId = "lovable" | "agente" | "corrigir" | "avancar";
 
@@ -141,21 +196,17 @@ const GLOSSARIO: { termo: string; def: string }[] = [
 ];
 
 const CHECKLIST_ITEMS = [
-  "Sei qual problema meu app resolve",
-  "Sei para quem ele foi feito",
-  "Escrevi uma promessa clara",
-  "Defini a ação principal do usuário",
-  "Separei o essencial do extra",
-  "Tenho um plano inicial do app",
+  "Problema definido",
+  "Público definido",
+  "Promessa definida",
+  "Ação principal definida",
+  "MVP definido",
+  "Telas principais definidas",
+  "Primeira versão clara",
+  "Próximo comando Lovable pronto",
 ];
 
-const CRITICAL_ITEMS = new Set([
-  "Sei qual problema meu app resolve",
-  "Sei para quem ele foi feito",
-  "Defini a ação principal do usuário",
-  "Separei o essencial do extra",
-  "Tenho um plano inicial do app",
-]);
+const CRITICAL_ITEMS = new Set(CHECKLIST_ITEMS);
 
 const PLANO_TEMPLATE = `Plano inicial do app
 
@@ -195,7 +246,7 @@ const CHECKLIST_PREFIX = "planejar_step__";
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const { context } = useProjectContext();
-  const [tab, setTab] = useState<TabId>("lovable");
+  const [tab, setTab] = useState<TabId>("agente");
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
@@ -290,12 +341,25 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
+  const { context } = useProjectContext();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
 
+  const agentPlanPrompt = buildAgentPlanPrompt(
+    context,
+    journey,
+    activeProject?.name ?? null,
+  );
 
   const copyAgentHelp = async () => {
+    if (!activeProject) {
+      toast("Selecione um Projeto em foco antes de planejar.", {
+        description: "Sem projeto, o plano sai genérico.",
+      });
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(AGENT_HELP_PROMPT);
-      toast.success("Prompt copiado! Cole no Agente Arquiteto.");
+      await navigator.clipboard.writeText(agentPlanPrompt);
+      toast.success("Prompt estratégico copiado! Cole no Agente Arquiteto.");
     } catch {
       toast.error("Não foi possível copiar.");
     }
@@ -390,6 +454,62 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </GlassCard>
       )}
 
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-gradient-to-br from-accent/[0.12] via-accent/[0.04] to-transparent shadow-[0_0_30px_-18px_rgba(0,194,255,0.6)]">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
+            <Bot size={18} />
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] uppercase tracking-wider text-accent/90 mb-1">
+              Comece por aqui
+            </div>
+            <h2 className="text-lg md:text-2xl font-heading font-bold leading-tight">
+              Planeje com o Agente antes de construir
+            </h2>
+            <p className="text-sm md:text-base text-foreground/90 mt-1.5 leading-relaxed">
+              Antes de pedir qualquer coisa ao Lovable, use o Agente Arquiteto para transformar sua ideia em um plano claro: público, problema, promessa, ação principal, MVP, telas, banco e próxima versão.
+            </p>
+            <p className="text-[11px] text-muted-foreground mt-2 italic">
+              Planejar não é construir. Planejar é decidir o que pedir ao Lovable para evitar retrabalho.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2 mt-4">
+          <button
+            onClick={copyAgentHelp}
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold transition"
+          >
+            <Bot size={14} /> Planejar com o Agente Arquiteto
+          </button>
+          {!activeProject && (
+            <button
+              onClick={openDrawer}
+              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
+            >
+              <Sparkles size={14} /> Criar ou selecionar app primeiro
+            </button>
+          )}
+        </div>
+        <p className="text-[11px] text-muted-foreground mt-2">
+          Copia um prompt estratégico — com seu contexto e jornada — para colar no Agente Arquiteto. Não envia para o Lovable.
+        </p>
+        <details className="mt-4 rounded-lg border border-white/10 bg-black/30">
+          <summary className="cursor-pointer select-none px-3 py-2 text-xs text-foreground/80 hover:text-foreground">
+            Ver e editar o prompt estratégico antes de copiar
+          </summary>
+          <div className="p-3 pt-0">
+            <EditablePromptBox
+              key={`agente-plan-${activeProject?.id ?? "no-project"}-${journey ?? "no-journey"}`}
+              saveSourceModule="planejar"
+              originalPrompt={agentPlanPrompt}
+              storageKey={`planejar_agent_plan__${activeProject?.id ?? "no-project"}__${journey ?? "no-journey"}`}
+              copyLabel="Copiar prompt para o Agente"
+              helperText="Cole no Agente Arquiteto, não no Lovable."
+            />
+          </div>
+        </details>
+      </GlassCard>
+
       <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
@@ -399,6 +519,9 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             </h3>
             <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
               Primeiro defina o problema, o público, a promessa e a ação principal. Depois copie os comandos para o Lovable.
+            </p>
+            <p className="text-[11px] text-muted-foreground/90 mt-2 italic">
+              Use o Agente para pensar. Use o Lovable para executar.
             </p>
           </div>
         </div>
@@ -442,11 +565,13 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
       </GlassCard>
 
       <CopyCommandWarning />
-      <p className="text-xs text-muted-foreground mb-4">
-        Use a aba <strong className="text-foreground/90">Implementar no Lovable</strong>{" "}
-        quando quiser aplicar no app. Use a aba{" "}
-        <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> quando quiser
-        ajuda para decidir antes de construir.
+      <p className="text-xs text-muted-foreground mb-2">
+        Use a aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>{" "}
+        para pensar e decidir. Use a aba{" "}
+        <strong className="text-foreground/90">Implementar no Lovable</strong> só depois de ter clareza.
+      </p>
+      <p className="text-[11px] text-amber-200/90 mb-4 italic">
+        Copiar prompt não conclui a etapa. Só marque como concluído quando tiver um plano claro.
       </p>
 
       <div className="space-y-5 mb-8">
@@ -500,13 +625,13 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </dl>
       </GlassCard>
 
-      <GlassCard className="p-5">
+      <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Revisão da etapa</h3>
+          <h3 className="font-heading font-semibold text-base">Resultado esperado deste planejamento</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
-          Só avance quando todos os itens críticos estiverem claros.
+          Marque cada item só depois que estiver claro de verdade no seu plano. Copiar prompt não conta.
         </p>
 
         <ul className="space-y-2">
