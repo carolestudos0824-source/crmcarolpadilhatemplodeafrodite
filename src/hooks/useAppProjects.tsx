@@ -87,6 +87,8 @@ export const APP_PROJECT_STATUSES: AppProjectStatus[] = [
 ];
 
 export type AppProject = {
+  logoPath: string | null;
+  logoUpdatedAt: string | null;
   id: string;
   name: string;
   status: AppProjectStatus;
