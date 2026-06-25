@@ -20,11 +20,10 @@ import {
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAppProjects } from "@/hooks/useAppProjects";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { useProjectContext } from "@/hooks/useProjectContext";
 
 
 
