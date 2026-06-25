@@ -238,6 +238,9 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         Você está usando a Fábrica de Apps com IA para guiar este projeto.
       </p>
 
+      {activeProject && <ProjectLogoPicker />}
+
+
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
         <InfoField
