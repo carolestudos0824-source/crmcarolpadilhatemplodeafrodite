@@ -303,6 +303,11 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
     ],
   );
 
+  const scopedMessages = messagesProjectId === activeProjectId ? messages : [];
+  const scopedArgs = argsProjectId === activeProjectId ? args : {};
+  const scopedInput = messagesProjectId === activeProjectId ? input : "";
+  const scopedLoadingHistory = Boolean(isOpen && activeProjectId && (loadingHistory || messagesProjectId !== activeProjectId));
+
   const currentModuleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
   const currentStepKey = args.stepKey ?? null;
 
