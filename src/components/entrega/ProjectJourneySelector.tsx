@@ -116,7 +116,7 @@ export const ProjectJourneySelector = ({ onGoToModule }: Props) => {
         </p>
         {!activeProject && (
           <p className="mt-2 text-[11px] text-amber-300/90">
-            Crie ou selecione um Projeto em foco antes de salvar sua jornada.
+            Você poderá salvar a jornada depois de criar ou selecionar um Projeto em foco.
           </p>
         )}
       </header>
