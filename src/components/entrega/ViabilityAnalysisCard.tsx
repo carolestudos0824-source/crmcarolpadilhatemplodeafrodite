@@ -154,6 +154,25 @@ export function ViabilityAnalysisCard() {
     [context],
   );
 
+  const lovablePrompt = useMemo(
+    () =>
+      `AUDITORIA DE VIABILIDADE — NÃO ALTERE NADA
+
+Analise a viabilidade desta ideia/app. Não implemente, não edite arquivos, não crie telas, não altere banco, não altere layout, não altere checkout e não mude permissões. Apenas entregue diagnóstico, riscos, pontos fortes, pontos fracos, próximos passos e uma única recomendação.
+
+${promptText}`,
+    [promptText],
+  );
+
+  const agentPrompt = useMemo(
+    () =>
+      `Atue como Agente Arquiteto. Ajude o usuário a pensar sobre a viabilidade da ideia, reduzir escopo, identificar riscos, definir MVP e decidir o próximo passo. Não responda apenas com perguntas. Entregue diagnóstico, recomendação clara, justificativa, próximo passo prático e no máximo 3 perguntas finais.
+
+${promptText}`,
+    [promptText],
+  );
+
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(promptText);
