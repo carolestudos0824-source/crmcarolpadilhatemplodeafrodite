@@ -232,11 +232,74 @@ Primeira versão:
 [O que precisa existir para testar com usuários reais]`;
 
 const TAB_META: { id: TabId; label: string; icon: typeof Target }[] = [
-  { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
-  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
+  { id: "agente", label: "Planejar esta etapa com o Agente", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
+  { id: "lovable", label: "Implementar no Lovable (avançado)", icon: Wrench },
 ];
+
+const ETAPA_OBJETIVOS: Record<number, { objetivo: string; saida: string; cortar: string; criterio: string }> = {
+  1: {
+    objetivo: "Definir com clareza para quem é o app e qual dor ele resolve.",
+    saida: "público ideal; dor principal; situação de uso; frase simples do problema; dúvidas a validar.",
+    cortar: "Não defina personas amplas demais. Não invente público se ainda não validou.",
+    criterio: "Saber dizer em 1 frase quem é o usuário e qual problema ele tem.",
+  },
+  2: {
+    objetivo: "Escrever uma promessa clara, curta e honesta.",
+    saida: "promessa segura; promessa curta; promessa sem exagero; o que NÃO prometer.",
+    cortar: "Sem promessa de venda garantida, sem 'sucesso 100%', sem segurança absoluta.",
+    criterio: "A promessa cabe em uma frase e é realista.",
+  },
+  3: {
+    objetivo: "Decidir qual é a ação principal e única do usuário.",
+    saida: "ação principal única; fluxo principal do usuário; começo, meio e fim da experiência.",
+    cortar: "Não liste 5 ações principais — escolha 1.",
+    criterio: "Existe uma ação dominante que define o app.",
+  },
+  4: {
+    objetivo: "Separar o essencial do MVP do que fica para depois.",
+    saida: "até 5 funcionalidades essenciais; lista do que fica para depois; riscos de escopo.",
+    cortar: "Sem mais de 5 funcionalidades no MVP. Sem extras 'só porque seria legal'.",
+    criterio: "Lista enxuta cabe em uma tela e atende a ação principal.",
+  },
+  5: {
+    objetivo: "Transformar tudo num plano executável + primeiro prompt para o Lovable.",
+    saida: "telas principais; dados que precisam ser salvos; decisão sobre login, banco, admin e checkout; primeiro prompt para o Lovable.",
+    cortar: "Sem inventar login/banco/checkout que não foram pedidos. Sem ampliar escopo.",
+    criterio: "Plano + primeiro prompt prontos para colar no Lovable.",
+  },
+};
+
+const buildAgentStepPrompt = (
+  etapa: Etapa,
+  ctx: ProjectContext,
+  journey: JourneyId | null,
+  projectName: string | null,
+): string => {
+  const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
+  const name = orPlaceholder(projectName || ctx.appName);
+  const meta = ETAPA_OBJETIVOS[etapa.n];
+  return `Quero planejar a etapa "${etapa.title}" do meu app antes de pedir qualquer coisa ao Lovable.
+
+Contexto do projeto:
+- App: ${name}
+- O que faz: ${orPlaceholder(ctx.appDoes)}
+- Público: ${orPlaceholder(ctx.audience)}
+- Problema: ${orPlaceholder(ctx.problem)}
+- Promessa atual: ${orPlaceholder(ctx.promise)}
+- Ação principal: ${orPlaceholder(ctx.mainAction)}
+- Jornada escolhida: ${journeyLabel}
+
+Etapa atual: ${etapa.n} — ${etapa.title}
+Objetivo da etapa: ${meta.objetivo}
+Saída esperada: ${meta.saida}
+O que cortar: ${meta.cortar}
+Critério para avançar: ${meta.criterio}
+
+Me ajude a concluir esta etapa. Faça perguntas curtas se faltar dado e responda com a saída esperada acima, organizada em tópicos. Não amplie o escopo, não invente funcionalidades, não prometa venda garantida nem segurança 100%.`;
+};
+
 
 
 const CHECKLIST_PREFIX = "planejar_step__";
