@@ -56,6 +56,9 @@ export const AgentChatDrawer = () => {
     savingMessageId,
     applyingMessageId,
     appliedMessageIds,
+    appliedDecisions,
+    isLoadingAppliedDecisions,
+    appliedDecisionsError,
     input,
     setInput,
     send,
@@ -65,6 +68,8 @@ export const AgentChatDrawer = () => {
   const { activeProject, openDrawer: openMyApps } = useAppProjects();
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [expandedDecisionId, setExpandedDecisionId] = useState<string | null>(null);
+  const [copiedDecisionId, setCopiedDecisionId] = useState<string | null>(null);
 
   const moduleKey = args.moduleKey ?? activeProject?.currentModuleId ?? null;
   const moduleLabel = moduleKey ? MODULE_LABELS[moduleKey] ?? moduleKey : "—";
