@@ -148,6 +148,7 @@ type GpsDoAppCardProps = {
   moduleId?: ModuleId;
   moduleTitle?: string;
   moduleObjective?: string;
+  journey?: JourneyId | null;
 };
 
 const GPS_DEFAULT_DESCRIPTION =
@@ -159,10 +160,11 @@ export function GpsDoAppCard({
   moduleId,
   moduleTitle,
   moduleObjective,
+  journey,
 }: GpsDoAppCardProps = {}) {
-  const prompt = buildGpsPrompt({ moduleId, moduleTitle, moduleObjective });
+  const prompt = buildGpsPrompt({ moduleId, moduleTitle, moduleObjective, journey });
   const storageKey = moduleId
-    ? `gps_do_app_prompt__${moduleId}`
+    ? `gps_do_app_prompt__${moduleId}${journey ? `__${journey}` : ""}`
     : "gps_do_app_prompt";
   const resolvedTitle = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
   const expectedSignature = `Módulo atual: ${resolvedTitle}`;
