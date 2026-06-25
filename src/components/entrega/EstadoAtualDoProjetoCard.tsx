@@ -1,4 +1,4 @@
-import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Sparkles, UserCog } from "lucide-react";
+import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Route, Sparkles, UserCog } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useAppProjects, hasUsefulProjectContext } from "@/hooks/useAppProjects";
@@ -11,6 +11,7 @@ import {
   MODULE_PROMPT_INTENTS,
 } from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
+import { useProjectJourney, JOURNEY_LABELS } from "@/lib/journey";
 import { ProjectLogoPicker } from "./ProjectLogoPicker";
 
 /**
