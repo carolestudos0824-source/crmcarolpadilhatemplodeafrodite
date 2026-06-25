@@ -60,9 +60,8 @@ const ETAPAS: Etapa[] = [
     icon: Route,
     title: "Definir o fluxo do usuário",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Crie um fluxo simples do usuário dentro do meu app. Mostre o caminho passo a passo desde a primeira tela até o resultado final, incluindo login, formulário, pagamento ou entrega apenas se forem necessários.`,
-      ),
       agente:
         "Me ajude a desenhar o caminho do usuário dentro do app. Quero um fluxo simples, sem etapas desnecessárias, com início, ação principal e resultado claro.",
       corrigir:
