@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
 import { LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
 import { useProjectContext } from "@/hooks/useProjectContext";
-import { buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
+import { applyContextPlaceholders, buildAgentPrompt, buildLovablePrompt } from "@/lib/promptBuilder";
 import { PromptReviewDialog } from "@/components/entrega/PromptReviewDialog";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
