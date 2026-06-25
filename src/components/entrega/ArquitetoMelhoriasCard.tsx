@@ -74,14 +74,18 @@ const buildArquitetoPrompt = (params: {
   moduleId?: ModuleId;
   moduleTitle?: string;
   moduleObjective?: string;
+  journey?: JourneyId | null;
 }): string => {
-  const { moduleId, moduleTitle, moduleObjective } = params;
+  const { moduleId, moduleTitle, moduleObjective, journey } = params;
   const scope = (moduleId && MODULE_SCOPES[moduleId]) ?? DEFAULT_SCOPE;
   const objective =
     moduleObjective?.trim() ||
     (moduleId ? MODULE_OBJECTIVES[moduleId] : undefined) ||
     "[não informado]";
   const title = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+  const journeyBlock = journey
+    ? `\n- Jornada escolhida: ${JOURNEY_LABELS[journey]}\n- Orientação da jornada: ${JOURNEY_ARQUITETO_HINTS[journey]}`
+    : "";
 
   return `ANÁLISE DE MELHORIA — NÃO IMPLEMENTE NADA AINDA.
 
@@ -93,7 +97,7 @@ Foco atual da análise:
 - Módulo atual: ${title}
 - Objetivo do módulo: ${objective}
 - Escopo permitido: ${scope}
-- A decisão deve considerar apenas melhorias relacionadas a este módulo.
+- A decisão deve considerar apenas melhorias relacionadas a este módulo.${journeyBlock}
 
 Sempre que eu enviar uma ideia, print, prompt, funcionalidade, checklist ou sugestão, analise como arquiteto de produto do meu app, dentro do foco atual acima. Não trate como conteúdo solto.
 
