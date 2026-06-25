@@ -803,6 +803,8 @@ function EntregaInner() {
           {active !== "fundamentos" && (
             <ArquitetoMelhoriasCard
               defaultCollapsed
+              moduleId={active}
+              moduleTitle={MODULES.find((m) => m.id === active)?.label}
               descriptionOverride={
                 active === "telas"
                   ? "Use o Arquiteto para decidir se uma ideia nova de tela ou fluxo vale entrar agora ou ficar para depois no seu app."
