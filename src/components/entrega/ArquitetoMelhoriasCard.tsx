@@ -209,6 +209,7 @@ export function ArquitetoMelhoriasCard({
             {descriptionOverride ?? ARQUITETO_DEFAULT_DESCRIPTION}
           </p>
           <EditablePromptBox
+            key={storageKey}
             collapsible={defaultCollapsed}
             saveSourceModule="arquiteto-melhorias"
             originalPrompt={prompt}
