@@ -1,15 +1,13 @@
-import { useState } from "react";
-import { useProjectJourney, type JourneyId as PersistedJourneyId } from "@/lib/journey";
-import { toast } from "sonner";
+import { useProjectJourney } from "@/lib/journey";
 import {
   Sparkles,
   ExternalLink,
   Lightbulb,
   AlertTriangle,
-  ArrowRight,
   Compass,
   Search,
   FolderPlus,
+  ArrowUp,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -98,22 +96,13 @@ export function ComeceAquiModule({ goTo }: Props) {
   const { openDrawer, activeProject } = useAppProjects();
   const moduleLabel = (id: ModuleId) => MODULES.find((m) => m.id === id)?.label ?? id;
   const hasApp = !!activeProject;
-  const [persistedJourney, persistJourney] = useProjectJourney(activeProject?.id ?? null);
-  const [journey, setJourney] = useState<JourneyId | null>(
-    (persistedJourney as JourneyId | null) ?? null,
-  );
+  const [persistedJourney] = useProjectJourney(activeProject?.id ?? null);
+  const journey = persistedJourney;
 
-  const pickJourney = (id: JourneyId) => {
-    setJourney(id);
-    if (activeProject?.id) {
-      persistJourney(id as PersistedJourneyId);
-    } else {
-      toast("Selecione um Projeto em foco para salvar sua jornada.", {
-        description: "A navegação continua, mas a escolha não fica salva sem um projeto ativo.",
-      });
+  const scrollToTop = () => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // feedback visual antes da navegação
-    setTimeout(() => goTo(JOURNEYS[id].next), 220);
   };
 
   return (
@@ -145,14 +134,6 @@ export function ComeceAquiModule({ goTo }: Props) {
               >
                 <Search size={16} /> Usar Busca Inteligente
               </button>
-              <a
-                href={LOVABLE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 inline-flex items-center gap-1.5"
-              >
-                <ExternalLink size={13} /> Abrir Lovable
-              </a>
             </>
           ) : (
             <>
@@ -182,64 +163,27 @@ export function ComeceAquiModule({ goTo }: Props) {
         </div>
       </header>
 
-      {/* Três formas de usar a Fábrica */}
-      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/[0.08] via-white/[0.02] to-transparent">
-        <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
-          Três formas de usar a Fábrica
-        </div>
-        <p className="text-sm text-foreground/90 mb-3">
-          Você pode começar um app do zero, evoluir um app completo por versões ou auditar um app que já existe. A Fábrica cria qualquer app, construído por versões.
+      {/* Nota compacta sobre o seletor global de jornada */}
+      <div className="mb-6 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+        <Compass size={14} className="text-accent shrink-0" />
+        <p className="text-xs sm:text-sm text-foreground/85 leading-snug flex-1">
+          Você já escolhe sua jornada no topo da página.{" "}
+          <span className="text-muted-foreground">
+            A Fábrica usa essa escolha para orientar próximos passos, GPS, Arquiteto e prompts.
+          </span>
+          {journey && (
+            <span className="ml-1 text-accent font-medium">Jornada ativa salva.</span>
+          )}
         </p>
-        <div className="grid sm:grid-cols-3 gap-2.5" role="radiogroup" aria-label="Escolha sua jornada">
-          {(Object.keys(JOURNEYS) as JourneyId[]).map((id) => {
-            const j = JOURNEYS[id];
-            const selected = journey === id;
-            const desc =
-              id === "comecando_do_zero"
-                ? "Crie a primeira versão funcional."
-                : id === "app_completo_por_versoes"
-                ? "Construa por versões, sem jogar tudo de uma vez no Lovable."
-                : "Use os módulos para auditar, corrigir, melhorar e escalar.";
-            return (
-              <button
-                key={id}
-                type="button"
-                role="radio"
-                aria-checked={selected}
-                onClick={() => pickJourney(id)}
-                className={`text-left rounded-lg border p-3 min-h-[88px] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
-                  selected
-                    ? "border-accent bg-accent/15 shadow-[0_0_24px_-12px_rgba(34,211,238,0.7)]"
-                    : "border-white/10 bg-white/5 hover:bg-white/10 hover:border-accent/40"
-                }`}
-              >
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-accent mb-1">
-                  {j.title}
-                  {selected && <Sparkles size={11} />}
-                </div>
-                <div className="text-xs text-muted-foreground">{desc}</div>
-                <div className="mt-2 text-[11px] inline-flex items-center gap-1 text-foreground/80">
-                  <ArrowRight size={11} />
-                  <span>{j.nextLabel}</span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-        {journey && (
-          <div className="mt-3 rounded-lg border border-accent/30 bg-accent/10 p-3 text-xs text-foreground/90 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-            <span className="flex-1">{JOURNEYS[journey].helper}</span>
-            <button
-              type="button"
-              onClick={() => goTo(JOURNEYS[journey].next)}
-              className="shrink-0 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-accent/50 bg-accent/15 text-accent hover:bg-accent/25 font-medium min-h-[36px]"
-            >
-              {JOURNEYS[journey].nextLabel}
-              <ArrowRight size={12} />
-            </button>
-          </div>
-        )}
-      </GlassCard>
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-white/15 bg-white/5 hover:bg-white/10 text-[11px] text-foreground/85"
+        >
+          <ArrowUp size={11} /> {journey ? "Trocar jornada no topo" : "Escolher no topo"}
+        </button>
+      </div>
+
 
 
 
@@ -348,39 +292,47 @@ export function ComeceAquiModule({ goTo }: Props) {
         ))}
       </ol>
 
-      {/* Mapa da jornada */}
-      <GlassCard className="p-4 sm:p-5 mb-6">
-        <h3 className="font-heading font-semibold text-base md:text-lg mb-1">
-          Mapa da jornada
-        </h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {phaseMap.map((phase) => {
-            const mods = phase.mods.filter((m) => (MODULE_ORDER as string[]).includes(m));
-            if (mods.length === 0) return null;
-            return (
-              <div key={phase.title} className="rounded-xl border border-white/10 bg-white/5 p-3">
-                <h4 className="font-heading font-semibold text-sm text-accent mb-2">{phase.title}</h4>
-                <ul className="flex flex-wrap gap-1.5">
-                  {mods.map((m) => (
-                    <li key={m}>
-                      <button
-                        type="button"
-                        onClick={() => goTo(m)}
-                        className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85 min-h-[32px]"
-                      >
-                        {moduleLabel(m)}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+      {/* Mapa da jornada — recolhível para evitar repetição com o caminho acima */}
+      <details className="mb-6 rounded-2xl border border-white/10 bg-white/[0.03] group">
+        <summary className="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-3 text-sm text-foreground/90 hover:text-foreground transition">
+          <span className="inline-flex items-center gap-2 font-heading font-semibold">
+            <Compass size={14} className="text-accent" />
+            Mapa completo da jornada (opcional)
+          </span>
+          <span className="text-[10px] uppercase tracking-wider text-accent group-open:hidden">Mostrar</span>
+          <span className="text-[10px] uppercase tracking-wider text-accent hidden group-open:inline">Ocultar</span>
+        </summary>
+        <div className="p-4 border-t border-white/10">
+          <p className="text-sm text-muted-foreground mb-4">
+            Você não precisa fazer tudo de uma vez. Siga a ordem para não se perder.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {phaseMap.map((phase) => {
+              const mods = phase.mods.filter((m) => (MODULE_ORDER as string[]).includes(m));
+              if (mods.length === 0) return null;
+              return (
+                <div key={phase.title} className="rounded-xl border border-white/10 bg-white/5 p-3">
+                  <h4 className="font-heading font-semibold text-sm text-accent mb-2">{phase.title}</h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {mods.map((m) => (
+                      <li key={m}>
+                        <button
+                          type="button"
+                          onClick={() => goTo(m)}
+                          className="text-[11px] px-2 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-foreground/85 min-h-[32px]"
+                        >
+                          {moduleLabel(m)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </GlassCard>
+      </details>
+
 
       {/* Regras para avançar sem se perder */}
       <GlassCard className="p-4 sm:p-5 mb-6 border-accent/25 bg-accent/[0.04]">
@@ -425,10 +377,12 @@ export function ComeceAquiModule({ goTo }: Props) {
           href={LOVABLE_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-5 py-3 rounded-xl border border-white/15 hover:bg-white/5 inline-flex items-center gap-2 text-sm"
+          className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4 inline-flex items-center gap-1.5"
+          title="Use apenas depois de ter um prompt pronto"
         >
-          <ExternalLink size={16} /> Abrir Lovable
+          <ExternalLink size={12} /> Abrir Lovable — use apenas depois de ter um prompt pronto
         </a>
+
       </div>
 
       {/* Como este programa funciona — recolhível */}
