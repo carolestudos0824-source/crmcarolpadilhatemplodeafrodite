@@ -341,12 +341,25 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
 export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
   const { checklist, setChecklist } = useUserProgress();
   const { activeProject, openDrawer } = useAppProjects();
+  const { context } = useProjectContext();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
 
+  const agentPlanPrompt = buildAgentPlanPrompt(
+    context,
+    journey,
+    activeProject?.name ?? null,
+  );
 
   const copyAgentHelp = async () => {
+    if (!activeProject) {
+      toast("Selecione um Projeto em foco antes de planejar.", {
+        description: "Sem projeto, o plano sai genérico.",
+      });
+      return;
+    }
     try {
-      await navigator.clipboard.writeText(AGENT_HELP_PROMPT);
-      toast.success("Prompt copiado! Cole no Agente Arquiteto.");
+      await navigator.clipboard.writeText(agentPlanPrompt);
+      toast.success("Prompt estratégico copiado! Cole no Agente Arquiteto.");
     } catch {
       toast.error("Não foi possível copiar.");
     }
