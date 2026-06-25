@@ -80,7 +80,7 @@ Foco atual do diagnóstico:
 - Módulo atual: ${title}
 - Objetivo do módulo: ${objective}
 - Escopo da análise: ${scope}
-- A próxima ação obrigatória deve ficar limitada a este módulo.
+- A próxima ação obrigatória deve ficar limitada a este módulo.${journeyBlock}
 
 Atue como GPS de Construção de App, dentro do foco atual acima.
 
