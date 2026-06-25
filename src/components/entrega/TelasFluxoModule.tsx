@@ -20,8 +20,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import { wrapLovable, LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
+import { LOVABLE_AUDIT_PROMPT } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { useProjectContext } from "@/hooks/useProjectContext";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { FolderKanban } from "lucide-react";
 
