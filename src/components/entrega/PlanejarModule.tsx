@@ -551,17 +551,10 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
             </li>
           ))}
         </ol>
-        <div className="mt-5">
-          <button
-            onClick={copyAgentHelp}
-            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold transition"
-          >
-            <Bot size={14} /> Não sei planejar meu app
-          </button>
-          <p className="text-[11px] text-muted-foreground mt-2">
-            Copia um prompt pronto para você colar no Agente Arquiteto.
-          </p>
-        </div>
+        <p className="mt-5 text-xs text-muted-foreground border-l-2 border-amber-400/30 pl-3 italic">
+          Em dúvida? Comece pelo botão acima: <strong className="text-foreground/90 not-italic">Planejar com o Agente Arquiteto</strong>. Ele ajuda você a transformar sua ideia em plano antes de usar o Lovable.
+        </p>
+
       </GlassCard>
 
       <CopyCommandWarning />
@@ -592,7 +585,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
               Plano inicial do app
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Resumo da primeira versão funcional. Próximas versões serão priorizadas em Melhorias e Versões. Copie para o Lovable apenas depois de revisar os 5 pontos acima.
+              Resumo da primeira versão funcional. Próximas versões serão priorizadas em Melhorias e Versões. Copie para o Lovable apenas depois de revisar os 8 itens do planejamento.
             </p>
           </div>
         </div>
