@@ -61,6 +61,21 @@ export const CommandCard = ({
   const [agentFallback, setAgentFallback] = useState<string | null>(null);
   const agentChat = useAgentChat();
   const { activeProject } = useAppProjects();
+  const { context, isFilled, openEditor } = useProjectContext();
+
+  // Substituição de placeholders aplicada ao texto exibido na textarea,
+  // garantindo que o usuário VEJA o mesmo texto que será copiado (sem
+  // marcadores como "[nome do app ativo]" quando há projeto ativo).
+  const displayCommand = applyContextPlaceholders(commandText, context);
+  const displayAgent = agentPrompt ? applyContextPlaceholders(agentPrompt, context) : "";
+  const displayCorrection = correctionPrompt
+    ? applyContextPlaceholders(correctionPrompt, context)
+    : "";
+
+  // Sufixo no storageKey por projeto ativo: ao trocar de projeto, a
+  // EditablePromptBox monta com novo originalPrompt sem reaproveitar
+  // edição de outro projeto.
+  const projectScope = activeProject?.id ?? "no-project";
 
   const handleRevisarComAgente = (key: string) => {
     setCopiedKey(key);
@@ -87,11 +102,10 @@ export const CommandCard = ({
       onClipboardFail: (p) => setAgentFallback(p),
     });
   };
-  const [editedCommand, setEditedCommand] = useState(commandText);
-  const [editedAgent, setEditedAgent] = useState(agentPrompt ?? "");
-  const [editedCorrection, setEditedCorrection] = useState(correctionPrompt ?? "");
+  const [editedCommand, setEditedCommand] = useState(displayCommand);
+  const [editedAgent, setEditedAgent] = useState(displayAgent);
+  const [editedCorrection, setEditedCorrection] = useState(displayCorrection);
   const { isCommandDone, toggleCommand } = useUserProgress();
-  const { context, isFilled, openEditor } = useProjectContext();
   const done = isCommandDone(completedKey);
 
   const enrichedLovable = () =>
