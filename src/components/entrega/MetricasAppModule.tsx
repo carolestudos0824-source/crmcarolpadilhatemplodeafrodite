@@ -19,11 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso definir as métricas principais do meu app. Me ajude a escolher quais números acompanhar: visitas, cliques, cadastro, login, checkout, compra, entrega, abandono, erros e comportamento do usuário. Quero métricas simples para tomar decisões reais sem me perder em números inúteis.`;
 
