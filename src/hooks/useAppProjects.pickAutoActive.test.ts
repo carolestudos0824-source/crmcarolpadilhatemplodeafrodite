@@ -9,6 +9,8 @@ const mk = (over: Partial<AppProject>): AppProject => ({
   completedModuleIds: [],
   context: {} as AppProject["context"],
   archivedAt: null,
+  logoPath: null,
+  logoUpdatedAt: null,
   createdAt: "2025-01-01T00:00:00.000Z",
   updatedAt: "2025-01-01T00:00:00.000Z",
   ...over,

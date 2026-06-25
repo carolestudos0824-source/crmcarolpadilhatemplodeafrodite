@@ -11,6 +11,7 @@ import {
   MODULE_PROMPT_INTENTS,
 } from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
+import { ProjectLogoPicker } from "./ProjectLogoPicker";
 
 /**
  * Deriva uma "última ação registrada" a partir do progresso já existente.
@@ -236,6 +237,9 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
       <p className="mb-3 text-[11px] text-muted-foreground/70">
         Você está usando a Fábrica de Apps com IA para guiar este projeto.
       </p>
+
+      {activeProject && <ProjectLogoPicker />}
+
 
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">

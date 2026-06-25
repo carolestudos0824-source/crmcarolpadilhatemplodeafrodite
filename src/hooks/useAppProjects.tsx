@@ -87,6 +87,8 @@ export const APP_PROJECT_STATUSES: AppProjectStatus[] = [
 ];
 
 export type AppProject = {
+  logoPath: string | null;
+  logoUpdatedAt: string | null;
   id: string;
   name: string;
   status: AppProjectStatus;
@@ -125,6 +127,8 @@ const ynToBool = (v: YesNo) => v === "sim";
 const boolToYn = (v: boolean): YesNo => (v ? "sim" : "nao");
 
 const rowToProject = (r: DbRow): AppProject => ({
+  logoPath: r.logo_path ?? null,
+  logoUpdatedAt: r.logo_updated_at ?? null,
   id: r.id,
   name: r.app_name,
   status: (APP_PROJECT_STATUSES.includes(r.status as AppProjectStatus)
