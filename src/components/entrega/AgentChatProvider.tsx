@@ -11,10 +11,12 @@ import {
 import { toast } from "sonner";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import {
+  getAppliedDecisionsForStep,
   loadProjectMessages,
   saveAsProjectDecision,
   sendAgentMessage,
   type AgentMessage,
+  type AppliedDecision,
 } from "@/lib/agentChat";
 
 export type AgentChatOpenArgs = {
