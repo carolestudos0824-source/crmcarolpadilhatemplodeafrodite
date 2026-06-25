@@ -84,6 +84,7 @@ import { AppProjectsProvider, useAppProjects } from "@/hooks/useAppProjects";
 import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
 // ProjectStatusBanner desativado em /entrega para evitar duplicidade com o EstadoAtualDoProjetoCard.
 import { EstadoAtualDoProjetoCard } from "@/components/entrega/EstadoAtualDoProjetoCard";
+import { ProjectJourneySelector } from "@/components/entrega/ProjectJourneySelector";
 import { RecommendedModuleHint } from "@/components/entrega/RecommendedModuleHint";
 import { AgentChatProvider } from "@/components/entrega/AgentChatProvider";
 import { AgentChatDrawer } from "@/components/entrega/AgentChatDrawer";
@@ -679,6 +680,7 @@ function EntregaInner() {
               A informação conceitual "Produto principal: Fábrica de Apps com IA" agora aparece
               de forma discreta dentro do EstadoAtualDoProjetoCard. */}
           <EstadoAtualDoProjetoCard onGoToModule={(id) => setActive(id)} />
+          <ProjectJourneySelector onGoToModule={(id) => setActive(id)} />
 
           {/* Boas-vindas: Agente Arquiteto como guia central */}
           {active === "comece" && (
