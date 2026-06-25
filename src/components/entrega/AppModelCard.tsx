@@ -275,7 +275,7 @@ Regras:
     await copyPromptAndOpenAgent({
       prompt: agentPrompt,
       successMessage:
-        "Prompt copiado. O Agente Arquiteto abriu em outra aba. Cole com Ctrl+V para revisar sua ideia.",
+        "Prompt copiado. Agora cole no Agente Arquiteto para revisar antes de aplicar no Lovable.",
       onClipboardFail: (p) => setAgentFallback(p),
     });
   };
