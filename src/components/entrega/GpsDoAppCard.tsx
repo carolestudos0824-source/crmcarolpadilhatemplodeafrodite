@@ -138,7 +138,8 @@ export function GpsDoAppCard({
             originalPrompt={GPS_PROMPT}
             storageKey="gps_do_app_prompt"
             copyLabel="Copiar diagnóstico do app"
-            helperText="Cole no Lovable, Cursor ou Claude Code dentro do projeto do aplicativo."
+            helperText="Cole no Lovable apenas para diagnóstico. O Lovable deve analisar e não implementar nada."
+
           />
         </div>
       </div>
