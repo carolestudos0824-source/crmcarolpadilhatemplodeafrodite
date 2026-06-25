@@ -154,6 +154,60 @@ const ETAPAS: Etapa[] = [
   },
 ];
 
+type JourneyGuide = {
+  heroSubtitle: string;
+  agentDirective: string;
+  lovableDirective: string;
+  preservationNote: string;
+  advanceHint: string;
+  checklistNote: string;
+};
+
+const JOURNEY_TELAS_GUIDE: Record<JourneyId, JourneyGuide> = {
+  comecando_do_zero: {
+    heroSubtitle:
+      "Você está começando do zero. Vamos mapear só as telas mínimas da V1 — tela inicial, ação principal e resultado/entrega. Extras ficam para depois.",
+    agentDirective:
+      "Você está começando do zero. Desenhe apenas o fluxo mínimo da primeira versão. Corte telas que não sejam necessárias para validar a ação principal. Não invente área avançada, admin ou checkout cedo demais. Separe o que é extra para uma próxima versão.",
+    lovableDirective:
+      "Implemente APENAS a V1 mínima descrita no Mapa: tela inicial, tela da ação principal e tela de resultado/entrega, mais as telas mínimas de apoio. Não crie telas extras, não crie admin, não crie checkout nem área paga se não estiverem no Mapa.",
+    preservationNote:
+      "Foco V1: comece pelo essencial. Sem telas decorativas, sem admin, sem checkout — a menos que estejam no Mapa.",
+    advanceHint:
+      "Avance quando a primeira versão tiver tela inicial, ação principal e resultado/entrega claros.",
+    checklistNote:
+      "Você escolheu começar do zero — marque um item só quando ele estiver claro para a V1, não para um app inteiro.",
+  },
+  app_completo_por_versoes: {
+    heroSubtitle:
+      "Você quer um app completo, mas a Fábrica constrói por versões. Vamos separar telas em V1, V2 e V3 — só a V1 vira prompt para o Lovable agora.",
+    agentDirective:
+      "Você quer um app completo, mas a Fábrica constrói por versões. Separe as telas em V1, V2 e V3. A V1 deve ser funcional, simples e testável. Para cada tela, diga em qual versão ela entra e por quê. Não jogue todas as telas como se fossem da V1.",
+    lovableDirective:
+      "Implemente APENAS as telas marcadas como V1 no Mapa. NÃO crie agora telas de V2 ou V3 mesmo que estejam listadas. Liste no final o que foi entregue (V1) e o que ficou planejado para V2/V3.",
+    preservationNote:
+      "Construção por versões: V1 agora, V2 e V3 depois. Não mande o Lovable construir o app inteiro de uma vez.",
+    advanceHint:
+      "Avance quando você souber claramente o que é V1, V2 e V3 — e a V1 estiver pronta para virar prompt.",
+    checklistNote:
+      "Você escolheu construir por versões — só marque quando a definição valer para a V1 atual. V2/V3 ficam fora desta marcação.",
+  },
+  ja_tenho_um_app: {
+    heroSubtitle:
+      "Você já tem um app. Antes de mudar qualquer coisa, vamos auditar as telas existentes e só recomendar ajustes cirúrgicos onde fizer diferença.",
+    agentDirective:
+      "Você já tem um app. Primeiro audite as telas existentes, preserve o que funciona e só recomende mudanças necessárias para melhorar clareza, fluxo, conversão ou entrega. Identifique telas quebradas, ausentes, confusas ou fora do fluxo. Não assuma que precisa criar tudo do zero. Saída esperada: diagnóstico das telas atuais + mapa corrigido + prioridades de ajuste.",
+    lovableDirective:
+      "Faça APENAS ajustes cirúrgicos nas telas existentes deste app. PRESERVE layout, rotas, dados, login, banco, checkout, admin e área paga já existentes. Não apague telas. Não recrie do zero. Liste o que foi alterado tela por tela e o que testar.",
+    preservationNote:
+      "App existente: preservar layout, rotas, dados, login, banco, checkout, admin e área paga. Só mudar o que estiver claramente quebrado ou confuso.",
+    advanceHint:
+      "Avance quando tiver diagnóstico das telas atuais, mapa corrigido e prioridades de ajuste claras.",
+    checklistNote:
+      "Você já tem um app — marque cada item quando estiver claro como auditoria/ajuste, não como criação do zero.",
+  },
+};
+
 const buildAgentTelasStepPrompt = (
   etapa: Etapa,
   ctx: ProjectContext,
@@ -162,6 +216,13 @@ const buildAgentTelasStepPrompt = (
 ): string => {
   const journeyLabel = journey ? JOURNEY_LABELS[journey] : "[não escolhida]";
   const name = orPlaceholder(projectName || ctx.appName);
+  const journeyDirective = journey
+    ? `\n\nOrientação da jornada (${journeyLabel}):\n${JOURNEY_TELAS_GUIDE[journey].agentDirective}`
+    : `\n\nObservação: o usuário ainda NÃO escolheu uma das 3 jornadas da Fábrica (Começando do zero, Quero um app completo, Já tenho um app). Pergunte qual é a jornada antes de propor telas — a resposta muda completamente o escopo. Não assuma criação do zero.`;
+  const lovableDirective =
+    etapa.n === 5 && journey
+      ? `\n\nQuando você gerar o prompt final para o Lovable, inclua explicitamente esta restrição da jornada:\n"${JOURNEY_TELAS_GUIDE[journey].lovableDirective}"`
+      : "";
   return `Quero desenhar a etapa "${etapa.title}" do Mapa de Telas e Fluxo do meu app antes de pedir qualquer coisa ao Lovable.
 
 Contexto do projeto:
@@ -172,7 +233,7 @@ Contexto do projeto:
 - Promessa: ${orPlaceholder(ctx.promise)}
 - Ação principal: ${orPlaceholder(ctx.mainAction)}
 - Login: ${yn(ctx.needsLogin)} | Banco: ${yn(ctx.needsDatabase)} | Admin: ${yn(ctx.needsAdmin)} | Checkout: ${yn(ctx.needsCheckout)} | Área paga: ${yn(ctx.needsPaidArea)}
-- Jornada escolhida: ${journeyLabel}
+- Jornada escolhida: ${journeyLabel}${journeyDirective}${lovableDirective}
 
 Etapa atual: ${etapa.n} — ${etapa.title}
 Objetivo: ${etapa.objetivo}
