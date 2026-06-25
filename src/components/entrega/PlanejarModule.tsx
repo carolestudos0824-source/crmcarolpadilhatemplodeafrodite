@@ -617,68 +617,64 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </details>
       </GlassCard>
 
-      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
-        <div className="flex items-start gap-3">
-          <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
-          <div className="min-w-0">
-            <h3 className="text-base md:text-lg font-heading font-bold leading-tight mb-1">
-              Um app começa antes do código
-            </h3>
-            <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-              Primeiro defina o problema, o público, a promessa e a ação principal. Depois copie os comandos para o Lovable.
-            </p>
-            <p className="text-[11px] text-muted-foreground/90 mt-2 italic">
-              Use o Agente para pensar. Use o Lovable para executar.
-            </p>
-          </div>
-        </div>
-      </GlassCard>
-
-      <GlassCard className="p-5 mb-6">
+      <GlassCard className="p-4 mb-6 border-white/10 bg-white/[0.03]">
         <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
-          O que você vai fazer nesta etapa
+          Como esta etapa funciona
         </div>
-        <p className="text-sm text-foreground/90 mb-4">
-          Nesta etapa, você vai transformar uma ideia solta em um plano claro para
-          construir no Lovable sem pedir funcionalidades demais e sem criar um app confuso.
-        </p>
-        <ol className="space-y-2 text-sm text-foreground/85">
+        <ol className="space-y-1.5 text-sm text-foreground/85">
           {[
-            "Defina o problema que o app resolve.",
-            "Escolha para quem o app será feito.",
-            "Escreva a promessa principal.",
-            "Defina a ação principal do usuário.",
-            "Separe o essencial do que pode ficar para depois.",
+            "Defina o problema e o público.",
+            "Escreva a promessa.",
+            "Defina a ação principal.",
+            "Separe essencial de extra.",
+            "Monte o plano e o primeiro prompt para o Lovable.",
           ].map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-accent/15 border border-accent/30 text-accent text-[10px] font-bold flex items-center justify-center">
                 {i + 1}
               </span>
-              <span className="pt-0.5">{step}</span>
+              <span>{step}</span>
             </li>
           ))}
         </ol>
-        <p className="mt-5 text-xs text-muted-foreground border-l-2 border-amber-400/30 pl-3 italic">
-          Em dúvida? Comece pelo botão acima: <strong className="text-foreground/90 not-italic">Planejar com o Agente Arquiteto</strong>. Ele ajuda você a transformar sua ideia em plano antes de usar o Lovable.
+        <p className="mt-3 text-[11px] text-muted-foreground italic">
+          Use o Agente para pensar. Use o Lovable para executar apenas depois que o plano estiver claro.
         </p>
-
       </GlassCard>
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-2">
-        Use a aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>{" "}
-        para pensar e decidir. Use a aba{" "}
-        <strong className="text-foreground/90">Implementar no Lovable</strong> só depois de ter clareza.
+        Em cada etapa, comece pela aba <strong className="text-foreground/90">Planejar esta etapa com o Agente</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada e só faz sentido na Etapa 5.
       </p>
       <p className="text-[11px] text-amber-200/90 mb-4 italic">
         Copiar prompt não conclui a etapa. Só marque como concluído quando tiver um plano claro.
       </p>
 
-      <div className="space-y-5 mb-8">
+      <div
+        className={`space-y-5 mb-8 ${!activeProject ? "opacity-50 pointer-events-none select-none" : ""}`}
+        aria-disabled={!activeProject}
+      >
+        {!activeProject && (
+          <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 text-[12px] text-amber-100">
+            Prévia bloqueada. Crie ou selecione um Projeto em foco acima para destravar as etapas, prompts contextualizados e marcar como concluído.
+          </div>
+        )}
         {ETAPAS.map((e) => (
-          <EtapaCard key={e.n} etapa={e} />
+          <EtapaCard
+            key={e.n}
+            etapa={e}
+            defaultOpen={e.n === 1}
+            hasProject={!!activeProject}
+            enrichedAgentPrompt={buildAgentStepPrompt(
+              e,
+              context,
+              journey,
+              activeProject?.name ?? null,
+            )}
+          />
         ))}
       </div>
+
 
       {/* Resultado desta etapa: Plano inicial do app */}
       <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-accent/[0.07]">
