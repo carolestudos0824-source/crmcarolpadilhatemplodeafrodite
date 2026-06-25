@@ -3,7 +3,12 @@ import { GlassCard } from "@/components/GlassCard";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 
 
-const GPS_PROMPT = `Atue como GPS de Construção de App.
+const GPS_PROMPT = `AUDITORIA READ-ONLY — NÃO ALTERE NADA
+
+Este prompt é apenas para diagnóstico. Não implemente, não edite arquivos, não crie componentes, não altere banco, não altere rotas, não altere layout, não altere checkout, não altere autenticação e não mexa em permissões. Apenas analise o projeto atual e responda onde estou, o que falta, quais são os bloqueadores e qual é a única próxima ação obrigatória.
+
+Atue como GPS de Construção de App.
+
 
 Objetivo:
 Me ajudar a saber exatamente em que etapa estou na construção deste aplicativo, o que já foi feito, o que falta fazer, o que bloqueia publicação, domínio, venda e escala, e proteger o projeto contra perda de conteúdo ou regressão.
