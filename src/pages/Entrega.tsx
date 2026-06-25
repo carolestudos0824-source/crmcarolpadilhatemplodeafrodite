@@ -682,7 +682,7 @@ function EntregaInner() {
           <EstadoAtualDoProjetoCard onGoToModule={(id) => setActive(id)} />
 
           {/* Sem Projeto em foco: bloco prioritário acima de jornada/Agente */}
-          {!appProjects.activeProject && (
+          {!appProjects.activeProject && active !== "ideias" && (
             <section
               aria-label="Primeiro passo — escolher app"
               className="mb-4 rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/[0.14] via-accent/[0.05] to-transparent p-4 md:p-5"
@@ -711,10 +711,40 @@ function EntregaInner() {
             </section>
           )}
 
-          {/* Seletor global da jornada — rebaixado quando não há projeto */}
-          <div className={!appProjects.activeProject ? "opacity-75" : undefined}>
-            <ProjectJourneySelector onGoToModule={(id) => setActive(id)} />
-          </div>
+          {/* Variante compacta no módulo Ideias prontas — não empurra os cards para baixo */}
+          {!appProjects.activeProject && active === "ideias" && (
+            <section
+              aria-label="Como criar seu Projeto em foco a partir de uma ideia"
+              className="mb-3 rounded-xl border border-accent/30 bg-accent/[0.06] p-3 md:p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between"
+            >
+              <div className="min-w-0">
+                <h2 className="text-sm md:text-base font-heading font-bold text-foreground leading-tight">
+                  Escolha uma ideia para criar seu Projeto em foco
+                </h2>
+                <p className="text-xs text-muted-foreground mt-1 max-w-2xl">
+                  Ao clicar em <span className="text-foreground/90 font-semibold">Usar esta ideia</span>, a Fábrica cria um Projeto em foco com contexto inicial para você planejar.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={appProjects.openDrawer}
+                className="shrink-0 inline-flex items-center justify-center gap-2 min-h-[40px] px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-xs text-foreground/90"
+              >
+                <FolderKanban size={13} /> Criar ou selecionar app manualmente
+              </button>
+            </section>
+          )}
+
+          {/* Seletor global da jornada — compactado no módulo ideias sem projeto */}
+          {active === "ideias" && !appProjects.activeProject ? (
+            <p className="mb-4 text-[11px] text-muted-foreground">
+              Depois de escolher uma ideia, você poderá confirmar a jornada do projeto.
+            </p>
+          ) : (
+            <div className={!appProjects.activeProject ? "opacity-75" : undefined}>
+              <ProjectJourneySelector onGoToModule={(id) => setActive(id)} />
+            </div>
+          )}
 
           {/* Boas-vindas: Agente Arquiteto como guia central */}
           {active === "comece" && (
@@ -743,8 +773,8 @@ function EntregaInner() {
           )}
 
 
-          {/* O que você vai fazer nesta etapa */}
-          {active !== "comece" && (
+          {/* O que você vai fazer nesta etapa — oculto em ideias para subir os cards */}
+          {active !== "comece" && active !== "ideias" && (
             <div className="mb-6 rounded-xl border border-accent/30 bg-accent/10 p-4 flex items-start gap-3">
               <Sparkles size={16} className="text-accent shrink-0 mt-0.5" />
               <div>
