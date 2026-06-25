@@ -178,6 +178,7 @@ type ArquitetoMelhoriasCardProps = {
   moduleId?: ModuleId;
   moduleTitle?: string;
   moduleObjective?: string;
+  journey?: JourneyId | null;
 };
 
 const ARQUITETO_DEFAULT_DESCRIPTION =
@@ -189,10 +190,11 @@ export function ArquitetoMelhoriasCard({
   moduleId,
   moduleTitle,
   moduleObjective,
+  journey,
 }: ArquitetoMelhoriasCardProps = {}) {
-  const prompt = buildArquitetoPrompt({ moduleId, moduleTitle, moduleObjective });
+  const prompt = buildArquitetoPrompt({ moduleId, moduleTitle, moduleObjective, journey });
   const storageKey = moduleId
-    ? `arquiteto_melhorias_prompt__${moduleId}`
+    ? `arquiteto_melhorias_prompt__${moduleId}${journey ? `__${journey}` : ""}`
     : "arquiteto_melhorias_prompt";
   const resolvedTitle = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
   const expectedSignature = `Módulo atual: ${resolvedTitle}`;
