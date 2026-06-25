@@ -1375,6 +1375,79 @@ const ConstruirIntro = () => {
   );
 };
 
+// Adapta a lista de comandos para refletir a jornada escolhida do Projeto em foco.
+// Não muda o array fonte — apenas injeta blocos textuais em agentPrompt e content
+// (Lovable). Sem jornada, devolve os comandos originais inalterados.
+const adaptConstruirCommandsForJourney = (
+  commands: Command[],
+  journey: JourneyId | null,
+): Command[] => {
+  if (!journey) return commands;
+  const agentBlock = getJourneyPromptInstruction(journey, "construir", "agent");
+  const lovableBlock = getJourneyPromptInstruction(journey, "construir", "lovable");
+  const preservationRule = getJourneyPreservationRule(journey);
+  const lovableFooter = `\n\n${lovableBlock}\n\nRegras invioláveis para esta jornada:\n- ${preservationRule}\n- Não refaça o app inteiro.\n- Não invente funcionalidades extras fora do escopo desta etapa.\n- Não altere banco, login, checkout, admin ou área paga sem pedido explícito.\nAo final, descreva o que foi feito, o que NÃO foi feito (e por quê) e o que testar.`;
+  return commands.map((c) => ({
+    ...c,
+    content: `${c.content}${lovableFooter}`,
+    agentPrompt: c.agentPrompt
+      ? `${c.agentPrompt}${agentBlock}\n\nLembrete: encerre com um "Próximo passo único" coerente com a jornada.`
+      : c.agentPrompt,
+  }));
+};
+
+const ConstruirAppSection = () => {
+  const { activeProject } = useAppProjects();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
+  const guidance = journey ? getJourneyGuidance(journey, "construir") : null;
+  const nextStep = getJourneyNextStepHint(journey, "construir");
+  const adapted = adaptConstruirCommandsForJourney(COMMANDS_CONSTRUIR, journey);
+
+  return (
+    <section>
+      <ConstruirIntro />
+
+      {/* Faixa de jornada — adapta orientação por jornada */}
+      {activeProject && journey && guidance && (
+        <GlassCard className="p-4 mb-4 border-accent/30 bg-accent/[0.05]">
+          <div className="flex items-start gap-3">
+            <Sparkles size={16} className="text-accent shrink-0 mt-0.5" />
+            <div className="min-w-0">
+              <div className="text-[11px] uppercase tracking-wider text-accent/90 mb-1">
+                Jornada: {JOURNEY_LABELS[journey]}
+              </div>
+              <p className="text-sm text-foreground/90 leading-relaxed">
+                {guidance.heroSubtitle}
+              </p>
+              <p className="text-xs text-foreground/75 mt-1.5 leading-relaxed">
+                Construa uma etapa por vez, sem jogar tudo no Lovable. {guidance.preservationNote}
+              </p>
+              {nextStep && (
+                <p className="text-[11px] text-accent/80 mt-1.5">{nextStep}</p>
+              )}
+            </div>
+          </div>
+        </GlassCard>
+      )}
+
+      {activeProject && !journey && (
+        <GlassCard className="p-3 mb-4 border-amber-400/30 bg-amber-400/[0.05]">
+          <p className="text-xs text-amber-100">
+            Escolha uma jornada para a Fábrica adaptar os comandos de construção ao seu momento. Sem jornada, os prompts ficam menos precisos.
+          </p>
+        </GlassCard>
+      )}
+
+      <ModuleHeader
+        title="Siga as etapas de construção"
+        subtitle="Comece pela Etapa 1. Só avance quando o Lovable entregar o resultado esperado."
+      />
+      <CommandList commands={adapted} moduleKey="construir" />
+    </section>
+  );
+};
+
+
 const LoginIntro = () => {
   const [showZero, setShowZero] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
