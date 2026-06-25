@@ -19,11 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso definir as métricas principais do meu app. Me ajude a escolher quais números acompanhar: visitas, cliques, cadastro, login, checkout, compra, entrega, abandono, erros e comportamento do usuário. Quero métricas simples para tomar decisões reais sem me perder em números inúteis.`;
 
@@ -175,6 +174,7 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const { context } = useProjectContext();
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
@@ -225,7 +225,18 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Métricas do App — ${etapa.title}`,
+                    stepObjective: `Trabalhar a etapa "${etapa.title}" de métricas preservando scripts de analytics, eventos, funis, pixels e tags já configurados. Não instalar ferramenta externa nova sem pedido explícito e não alterar scripts/tags existentes sem explicar risco.`,
+                    command: text,
+                    moduleId: "metricas",
+                  })
+          }
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"

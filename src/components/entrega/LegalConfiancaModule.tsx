@@ -19,11 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso preparar páginas de confiança antes de divulgar. Me ajude a organizar: termos de uso, política de privacidade, suporte, segurança, entrega, pagamento, acesso, limites da promessa e mensagens claras para reduzir dúvidas dos usuários. Não quero texto jurídico complexo, quero uma estrutura simples, clara e responsável.`;
 
@@ -175,6 +174,7 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const { context } = useProjectContext();
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
@@ -225,7 +225,18 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Legal e Confiança — ${etapa.title}`,
+                    stepObjective: `Trabalhar a etapa "${etapa.title}" de legal/confiança preservando textos legais, termos, política de privacidade, páginas de confiança e dados de empresa já configurados. Não prometer conformidade jurídica perfeita.`,
+                    command: text,
+                    moduleId: "legal",
+                  })
+          }
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
