@@ -857,7 +857,7 @@ ${isSecurity ? securityAnalysisBlock : standardAnalysisBlock}
 Regras de preservação:
 ${bullets(PRESERVE_BASE)}
 
-Não altere nada automaticamente sem explicar antes.
+Não altere nada. Não implemente, não edite arquivos, não crie componentes, não altere banco, não altere layout, não altere rotas, não altere checkout, não altere autenticação e não mude permissões. Esta é uma auditoria read-only.
 
 Entregue:
 - o que está correto
