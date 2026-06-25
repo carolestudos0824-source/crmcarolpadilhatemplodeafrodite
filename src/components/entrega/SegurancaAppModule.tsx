@@ -20,11 +20,11 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso revisar a segurança contra invasão. Me ajude a proteger rotas públicas, área restrita, área paga, painel admin, dados dos usuários, banco de dados, RLS, RPCs, chaves secretas, APIs, checkout e permissões. Quero saber o que pode ficar público, o que deve ficar privado e como testar se alguém consegue acessar o que não deveria.`;
 
@@ -181,6 +181,8 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const { context } = useProjectContext();
+
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
@@ -231,7 +233,19 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Segurança do App — ${etapa.title}`,
+                    stepObjective: `Auditar/ajustar a etapa "${etapa.title}" da segurança do app, sem alterar auth, RLS, policies, RPCs, permissões, admin ou área paga sem pedido explícito.`,
+                    command: text,
+                    moduleId: "seguranca",
+                  })
+          }
+
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"

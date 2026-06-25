@@ -19,12 +19,12 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso publicar do jeito certo. Me ajude a entender a diferença entre preview e produção, como testar o link público, o que revisar antes de divulgar, como pensar domínio, favicon, imagem social e como fazer um checklist final de publicação.`;
 
@@ -177,6 +177,8 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
 
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
+  const { context } = useProjectContext();
+
   const Icon = etapa.icon;
   return (
     <GlassCard className="p-5 md:p-6">
@@ -227,7 +229,19 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           key={`${etapa.n}-${tab}`}
           originalPrompt={etapa.tabs[tab]}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
-          transformOnCopy={tab === "agente" ? undefined : wrapLovable}
+          transformOnCopy={
+            tab === "agente"
+              ? undefined
+              : (text) =>
+                  buildLovablePrompt({
+                    context,
+                    stepName: `Publicar e Domínio — ${etapa.title}`,
+                    stepObjective: `Preparar/validar a etapa "${etapa.title}" de publicação e domínio, sem alterar configurações já feitas.`,
+                    command: text,
+                    moduleId: "publicar",
+                  })
+          }
+
           copyLabel={
             tab === "agente"
               ? "Copiar para o Agente"
