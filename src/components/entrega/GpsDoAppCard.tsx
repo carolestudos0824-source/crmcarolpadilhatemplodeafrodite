@@ -7,7 +7,20 @@ import type { ModuleId } from "@/data/entregaModules";
 
 const MODULE_SCOPES: Partial<Record<ModuleId, string>> = {
   seo: "Neste módulo SEO e GEO, analise apenas: SEO técnico, títulos e descrições, metadados, Open Graph, canonical, sitemap, robots, estrutura de páginas públicas, conteúdo pesquisável, indexação, GEO/AI search, clareza para mecanismos de busca, bloqueadores antes de tráfego orgânico e próxima ação única para melhorar SEO/GEO.",
+  checkout:
+    "Neste módulo Checkout e entrega, analise apenas: link/gateway de pagamento, confirmação de pagamento, página de obrigado, liberação de acesso, área protegida, entrega do produto, e-mail ou instrução pós-compra, riscos de fluxo quebrado, riscos de promessa não cumprida e próxima ação única para validar checkout e entrega.",
+  publicar:
+    "Neste módulo Publicar e Domínio, analise apenas: deploy, ambiente publicado, domínio, DNS, redirects, links públicos, favicon, Open Graph, robots/sitemap quando aplicável, teste em aba anônima, validação pós-publicação, riscos de página fora do ar e próxima ação única para publicar ou conectar domínio.",
+  seguranca:
+    "Neste módulo Segurança do App, analise apenas: rotas públicas e privadas, autenticação, permissões, RLS, policies, RPCs, dados sensíveis, isolamento por usuário, área paga, admin, chaves expostas, riscos de burlar acesso e próxima ação única para reduzir risco antes de publicar.",
+  login:
+    "Neste módulo Login e Banco, analise apenas: cadastro, login, logout, recuperação de acesso, redirecionamentos, tabelas principais, user_id, dados por usuário, permissões básicas, RLS quando aplicável, perfil do usuário, persistência e próxima ação única para estabilizar login e dados.",
+  venda:
+    "Neste módulo Página de venda, analise apenas: promessa, público, dor, oferta, benefícios, prova, objeções, CTA, preço exibido, confiança, clareza da entrega, riscos de promessa exagerada, riscos de conversão e próxima ação única para melhorar a página antes de tráfego.",
+  metricas:
+    "Neste módulo Métricas do App, analise apenas: eventos essenciais, funil, conversão, ativação, retenção, uso da ação principal, origem de tráfego, métricas mínimas antes de campanha, privacidade dos dados, riscos de medir demais e próxima ação única para instalar ou validar métricas.",
 };
+
 
 const DEFAULT_SCOPE =
   "Analise o estado deste módulo, o que já parece concluído, o que falta concluir neste módulo, o que bloqueia avanço e qual é a próxima ação única dentro deste módulo.";
