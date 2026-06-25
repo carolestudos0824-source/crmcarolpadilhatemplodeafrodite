@@ -118,9 +118,8 @@ Não altere autenticação, pagamento, banco ou regras sensíveis sem necessidad
     icon: LayoutTemplate,
     title: "Criar mapa final de fluxo",
     tabs: {
-      lovable: wrapLovable(
+      lovable:
         `Crie um mapa final do fluxo do meu app com: telas públicas, telas restritas, ordem de navegação, CTA principal de cada tela, dados coletados e resultado esperado em cada etapa.`,
-      ),
       agente:
         "Organize meu app em um mapa final de fluxo. Quero uma visão clara das telas, ordem de navegação, CTAs, áreas restritas e pontos críticos antes de construir no Lovable.",
       corrigir:
