@@ -159,6 +159,8 @@ export function GpsDoAppCard({
   const storageKey = moduleId
     ? `gps_do_app_prompt__${moduleId}`
     : "gps_do_app_prompt";
+  const resolvedTitle = moduleTitle?.trim() || RESOLVED_TITLE_FALLBACK;
+  const expectedSignature = `Módulo atual: ${resolvedTitle}`;
 
   return (
     <GlassCard className="mt-6 p-4 sm:p-5">
