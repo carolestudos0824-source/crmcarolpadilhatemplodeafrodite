@@ -19,11 +19,10 @@ import {
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
-import {
-  CopyCommandWarning,
-  wrapLovable,
-} from "@/components/entrega/CopyCommandWarning";
+import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
+import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { useProjectContext } from "@/hooks/useProjectContext";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e já tenho métricas, testes ou feedbacks. Me ajude a decidir o que melhorar primeiro. Quero separar bugs, melhorias, ideias futuras, ajustes de venda, ajustes de mobile, ajustes de checkout e mudanças de experiência do usuário. Quero melhorar sem quebrar o que já funciona.`;
 
