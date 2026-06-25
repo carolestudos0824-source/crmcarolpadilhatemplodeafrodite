@@ -92,11 +92,21 @@ export const ProjectLogoPicker = () => {
     }
     const startProject = projectId;
     const startUser = userId;
+    const previousPath = logoPath;
     setBusy(true);
     try {
       const { path } = await uploadProjectLogo(startUser, startProject, file);
       const ok = await writeLogoPath(path, startProject, startUser);
       if (!ok) throw new Error("write failed");
+      // Cleanup previous file if path actually changed (e.g. logo.png -> logo.webp).
+      // Failure here must not break the new upload — log safely and continue.
+      if (previousPath && previousPath !== path) {
+        try {
+          await removeProjectLogo(previousPath);
+        } catch (cleanupErr) {
+          console.warn("[ProjectLogoPicker] orphan cleanup failed", cleanupErr);
+        }
+      }
       await refreshProjects();
       void qc.invalidateQueries({ queryKey: ["project-logo", startProject] });
       toast.success("Logotipo atualizado com sucesso.");
