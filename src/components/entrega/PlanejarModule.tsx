@@ -565,11 +565,13 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
       </GlassCard>
 
       <CopyCommandWarning />
-      <p className="text-xs text-muted-foreground mb-4">
-        Use a aba <strong className="text-foreground/90">Implementar no Lovable</strong>{" "}
-        quando quiser aplicar no app. Use a aba{" "}
-        <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> quando quiser
-        ajuda para decidir antes de construir.
+      <p className="text-xs text-muted-foreground mb-2">
+        Use a aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>{" "}
+        para pensar e decidir. Use a aba{" "}
+        <strong className="text-foreground/90">Implementar no Lovable</strong> só depois de ter clareza.
+      </p>
+      <p className="text-[11px] text-amber-200/90 mb-4 italic">
+        Copiar prompt não conclui a etapa. Só marque como concluído quando tiver um plano claro.
       </p>
 
       <div className="space-y-5 mb-8">
