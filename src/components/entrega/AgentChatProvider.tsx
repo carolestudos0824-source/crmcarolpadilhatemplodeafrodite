@@ -67,6 +67,11 @@ export const AgentChatProvider = ({ children }: { children: ReactNode }) => {
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
   const [applyingMessageId, setApplyingMessageId] = useState<string | null>(null);
   const [appliedMessageIds, setAppliedMessageIds] = useState<string[]>([]);
+  const [appliedDecisions, setAppliedDecisions] = useState<AppliedDecision[]>([]);
+  const [appliedDecisionsProjectId, setAppliedDecisionsProjectId] = useState<string | null>(null);
+  const [isLoadingAppliedDecisions, setIsLoadingAppliedDecisions] = useState(false);
+  const [appliedDecisionsError, setAppliedDecisionsError] = useState<string | null>(null);
+  const appliedVersionRef = useRef(0);
   const [input, setInput] = useState("");
   const loadVersionRef = useRef(0);
   const activeProjectIdRef = useRef<string | null>(activeProjectId);
