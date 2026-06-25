@@ -526,7 +526,20 @@ export const CommandCard = ({
                   />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
-                      onClick={() => copyText(wrapLovable(editedCorrection || correctionPrompt), "fix", "Correção copiada.")}
+                      onClick={() =>
+                        copyText(
+                          buildLovablePrompt({
+                            context,
+                            stepName: `${title} — Correção`,
+                            stepObjective:
+                              "Correção cirúrgica do erro do Lovable. Diagnostique a causa, aplique o menor ajuste possível e preserve tudo que já funciona.",
+                            command: editedCorrection || correctionPrompt,
+                            moduleId,
+                          }),
+                          "fix",
+                          "Correção copiada.",
+                        )
+                      }
                       type="button"
                       className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-rose-400/40 bg-rose-400/10 text-rose-200 hover:bg-rose-400/15"
                     >
