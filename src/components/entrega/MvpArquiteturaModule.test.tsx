@@ -91,8 +91,8 @@ describe("MvpArquiteturaModule (Blueprint do MVP)", () => {
 
   it("checklist toggles with mvp_step__ prefix for Blueprint items", () => {
     renderModule();
-    const cb = screen.getByLabelText(/^MVP definido$/i);
-    fireEvent.click(cb);
+    const span = screen.getByText(/^MVP definido$/);
+    fireEvent.click(span);
     expect(setChecklist).toHaveBeenCalled();
     const keys = Object.keys(checklistStore);
     expect(keys.length).toBeGreaterThan(0);
