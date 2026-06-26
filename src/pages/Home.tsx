@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Sparkles, Layers, Database, Rocket, Brain, Target, ChevronRight,
   Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
-  Lightbulb, Check, ShieldCheck, PlayCircle,
+  Lightbulb, Check, ShieldCheck, PlayCircle, Bot,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { GlassCard } from "@/components/GlassCard";
