@@ -1276,6 +1276,8 @@ export type Database = {
       admin_list_manual_sales: {
         Args: {
           _access_status?: string
+          _before_created_at?: string
+          _before_id?: string
           _limit?: number
           _payment_status?: string
           _search?: string
