@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import type { User } from "@supabase/supabase-js";
 import {
   Loader2,
   Search,
@@ -51,6 +52,9 @@ const PENDENCIAS_ITEMS = [
 
 const LOGIN_URL = "/login";
 const ENTREGA_URL = "/entrega";
+const ADMIN_SESSION_TIMEOUT_MS = 20000;
+const ADMIN_PERMISSION_TIMEOUT_MS = 15000;
+const ADMIN_ACCESS_METADATA_TIMEOUT_MS = 8000;
 
 const SUPPORT_MESSAGES = [
   {
@@ -109,6 +113,59 @@ type Status =
   | { kind: "not_found" }
   | { kind: "error"; message: string }
   | { kind: "success"; message: string; row: LookupRow; action: "grant" | "revoke" };
+
+type AdminPermissionResult = {
+  data: boolean | null;
+  error: { message?: string } | null;
+};
+
+type SelfAccessResult = {
+  data: { has_access?: boolean } | null;
+  error: { message?: string } | null;
+};
+
+function loadAdminSessionUser(timeoutMs = ADMIN_SESSION_TIMEOUT_MS): Promise<User | null> {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    let unsubscribe: (() => void) | null = null;
+
+    const finish = (user: User | null) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      unsubscribe?.();
+      resolve(user);
+    };
+
+    const fail = (error: unknown) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      unsubscribe?.();
+      reject(error instanceof Error ? error : new Error("Não foi possível carregar a sessão admin."));
+    };
+
+    const timer = setTimeout(() => {
+      fail(new Error("Tempo esgotado ao carregar sessão admin."));
+    }, timeoutMs);
+
+    const listener = supabase.auth.onAuthStateChange((_event, session) => {
+      finish(session?.user ?? null);
+    });
+    unsubscribe = () => listener.data.subscription.unsubscribe();
+    if (settled) unsubscribe();
+
+    supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (error) {
+          fail(error);
+          return;
+        }
+        finish(data.session?.user ?? null);
+      })
+      .catch(fail);
+  });
+}
 
 function isValidUrl(u: string) {
   const t = (u || "").trim();
