@@ -259,26 +259,18 @@ export function PainelProntidaoModule({ goTo }: Props) {
         </p>
       </GlassCard>
 
-      {/* Aviso checkout neutro/condicional */}
-      <GlassCard
-        className={`p-4 mb-5 ${
-          checkoutPendente ? "border-red-400/40 bg-red-500/10" : "border-white/10"
-        }`}
-      >
+      {/* Aviso checkout — orientação neutra sobre o app do aluno.
+          Esta página avalia a prontidão do app do aluno, não o checkout da Fábrica,
+          então não usamos CHECKOUT_FABRICA_URL para acionar alerta forte aqui. */}
+      <GlassCard className="p-4 mb-5 border-white/10">
         <div className="flex items-start gap-3">
-          <AlertTriangle
-            size={18}
-            className={`shrink-0 mt-0.5 ${
-              checkoutPendente ? "text-red-300" : "text-muted-foreground"
-            }`}
-          />
+          <AlertTriangle size={18} className="shrink-0 mt-0.5 text-muted-foreground" />
           <p className="text-xs leading-relaxed text-foreground/90">
-            {checkoutPendente
-              ? "Checkout real ainda pendente: este programa não está pronto para venda pública enquanto o link real de pagamento não for configurado."
-              : "Antes de vender, confirme se o checkout real e a entrega estão funcionando."}
+            Antes de vender, confirme se o checkout real e a entrega estão funcionando.
           </p>
         </div>
       </GlassCard>
+
 
       {/* Próxima ação recomendada */}
       <GlassCard className="p-5 mb-6 border-sky-400/30 bg-sky-400/5">
