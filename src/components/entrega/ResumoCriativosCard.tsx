@@ -72,13 +72,15 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
       angulo:
         "curiosidade, reflexão, diversão, autoconhecimento e experiência simbólica",
       formatos:
-        "Story, Reels curto, post carrossel, card estático, direct/WhatsApp e anúncio simples",
+        "Story, Reels curto, post carrossel, card estático e direct/WhatsApp",
+      formatosPagos:
+        "criativo estático para Meta Ads, vídeo curto para anúncio, variação de headline, variação de CTA e criativo para teste A/B",
       cta: '"Começar o jogo", "Ver meu resultado completo" ou "Fazer o teste agora"',
       preco: "R$ 17 a R$ 47 para teste inicial, quando fizer sentido",
       gatilho:
         "depois que a pessoa responde parte do jogo e quer ver o resultado completo",
       metrica:
-        "clique no CTA, resposta no direct, início do jogo, lead ou compra",
+        "clique no CTA, resposta no direct, início do jogo, lead, compra, CTR ou custo por resultado",
       naoProm: [
         "amor garantido ou salvar relacionamento",
         "prever futuro",
