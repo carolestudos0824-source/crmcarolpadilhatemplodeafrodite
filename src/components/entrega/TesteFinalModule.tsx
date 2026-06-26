@@ -46,13 +46,33 @@ const ETAPAS: Etapa[] = [
     title: "Testar como visitante",
     tabs: {
       lovable:
-        "Crie um checklist para testar meu app como visitante sem login. Verifique se a página inicial abre, se a promessa está clara, se os botões principais funcionam, se não há links falsos, textos provisórios ou páginas quebradas.",
+        `Gere um plano de teste do app [nome do app ativo] como visitante (sem login).
+
+App: [descreva o app]
+Público: [descreva o público]
+Ação principal: [ação principal]
+
+Cubra, em linguagem simples:
+
+1. Abrir o link público em janela anônima.
+2. Abrir o link no celular (não só no computador).
+3. Navegar pela home e entender a proposta em até 10 segundos.
+4. Clicar no CTA principal e confirmar para onde ele leva.
+5. Testar o início do fluxo principal sem precisar fazer login.
+6. Confirmar que o visitante NÃO vê área protegida (entrega, área paga, admin).
+7. Confirmar que nenhuma informação paga aparece exposta publicamente.
+
+Liste o que está claro, o que está confuso e o que está quebrado por tela.`,
       agente:
-        "Me ajude a testar meu app como visitante. Quero saber se uma pessoa nova entende o que o app faz, para quem é, qual botão clicar e qual próximo passo seguir.",
+        `Me ajude a testar o app [nome do app ativo] como visitante. Quero saber se uma pessoa nova entende o que o app faz, para quem é, qual botão clicar e qual o próximo passo, sem precisar de explicação.
+
+App: [descreva o app]
+Público: [descreva o público]
+Promessa: [promessa]`,
       corrigir:
-        "O visitante não entende o que fazer no app. Revise a página inicial, CTA principal, explicação da oferta e caminho até a ação principal.",
+        `O visitante não entende o que fazer no app [nome do app ativo]. Revise home, CTA principal, explicação da oferta e caminho até a ação principal, sem alterar layout aprovado nem áreas sensíveis.`,
       avancar:
-        "Avance quando uma pessoa nova conseguir abrir o app e entender o próximo passo sem explicação.",
+        "Avance quando uma pessoa nova conseguir abrir o app, entender a proposta e iniciar o fluxo principal sem explicação, em aba anônima e no celular.",
     },
   },
   {
@@ -61,13 +81,33 @@ const ETAPAS: Etapa[] = [
     title: "Testar login e área restrita",
     tabs: {
       lovable:
-        "Crie um checklist para testar login, cadastro, logout, recuperação de acesso e área restrita do meu app. Verifique se usuário sem acesso não vê conteúdo protegido e se usuário autorizado entra corretamente.",
+        `Gere um plano de teste de login e área restrita do app [nome do app ativo].
+
+App: [descreva o app]
+Produto: [produto]
+
+Cubra, em linguagem simples:
+
+1. Login com usuário autorizado (deve entrar e ver a área correta).
+2. Login com usuário sem acesso (NÃO deve ver conteúdo protegido).
+3. Logout (deve sair da sessão e bloquear áreas privadas).
+4. Tentar acessar rota protegida por URL direta sem estar logado (deve bloquear/redirecionar).
+5. Redirecionamento correto após login (não cair em página vazia).
+6. Recuperação de acesso, se existir (link, e-mail, suporte).
+7. Admin só acessa admin (se houver perfil admin no app).
+
+NÃO altere autenticação, banco, RLS ou regras de acesso. Apenas teste e descreva o resultado.`,
       agente:
-        "Me ajude a testar a parte de login e acesso do meu app. Quero saber o que verificar para não deixar conteúdo privado visível e não bloquear quem deveria entrar.",
+        `Me ajude a testar login e acesso do app [nome do app ativo].
+
+App: [descreva o app]
+Produto: [produto]
+
+Quero saber o que verificar para não deixar conteúdo privado visível e não bloquear quem deveria entrar, cobrindo: usuário autorizado, usuário sem acesso, logout, URL direta, redirect, recuperação e admin.`,
       corrigir:
-        "O login ou área restrita não está funcionando corretamente. Diagnostique o fluxo de acesso sem alterar regras sensíveis, banco ou autenticação sem necessidade.",
+        `O login ou a área restrita do app [nome do app ativo] não está funcionando como deveria. Diagnostique o fluxo de acesso sem alterar autenticação, banco ou regras sensíveis sem necessidade. Liste o que falha por perfil (visitante, autorizado, sem acesso, admin).`,
       avancar:
-        "Avance quando login, logout e área restrita funcionarem como esperado.",
+        "Avance quando login, logout, recuperação e bloqueio de URL direta funcionarem corretamente para cada perfil.",
     },
   },
   {
@@ -76,13 +116,34 @@ const ETAPAS: Etapa[] = [
     title: "Testar botões, formulários e links",
     tabs: {
       lovable:
-        "Revise todos os botões, formulários e links do meu app. Liste quais funcionam, quais estão sem ação, quais levam para o lugar errado e quais precisam de correção.",
+        `Revise botões, formulários e links do app [nome do app ativo].
+
+App: [descreva o app]
+Ação principal: [ação principal]
+
+Liste por tela:
+
+1. Botão principal (CTA da ação principal).
+2. Botões secundários (menu, voltar, fechar, copiar etc).
+3. Formulários (envio, sucesso, erro).
+4. Validação de campos obrigatórios.
+5. Mensagens de erro claras e em linguagem simples.
+6. Links internos (vão para a página certa).
+7. Links externos (abrem corretamente, sem 404).
+8. Páginas de Termos de Uso e Política de Privacidade acessíveis.
+9. Página inexistente / rota 404 com tela amigável.
+
+Para cada item, marque: ✅ funciona, ⚠️ funciona com ressalva, ❌ quebrado. Não altere o que já funciona.`,
       agente:
-        "Me ajude a testar botões e formulários do meu app como usuário real. Quero saber quais ações são críticas e como identificar falhas antes de divulgar.",
+        `Me ajude a testar botões e formulários do app [nome do app ativo] como usuário real.
+
+App: [descreva o app]
+
+Quero saber quais ações são críticas, como identificar falhas antes de divulgar e o que pode estar quebrado sem eu perceber (links errados, formulário sem envio, mensagens de erro confusas, 404 sem tratamento).`,
       corrigir:
-        "Existem botões sem ação, formulários que não enviam ou links errados. Corrija preservando o layout e sem mexer no que já funciona.",
+        `Existem botões sem ação, formulários que não enviam, validações ausentes ou links errados no app [nome do app ativo]. Corrija preservando layout e sem mexer no que já funciona. Liste cada correção feita.`,
       avancar:
-        "Avance quando todos os botões principais, links e formulários importantes estiverem funcionando.",
+        "Avance quando botões principais, formulários críticos, links internos/externos, termos/privacidade e rota 404 estiverem todos funcionando.",
     },
   },
   {
@@ -91,13 +152,36 @@ const ETAPAS: Etapa[] = [
     title: "Testar checkout e entrega",
     tabs: {
       lovable:
-        "Crie um checklist para testar checkout, página de obrigado, liberação de acesso e área de entrega do meu app. Verifique se o comprador entende o que acontece após pagar e como acessar o conteúdo.",
+        `Gere um plano de teste do fluxo de compra e entrega do app [nome do app ativo].
+
+Produto: [produto]
+Modelo de cobrança: [modelo de cobrança]
+Promessa: [promessa]
+
+Cubra, em linguagem simples:
+
+1. Link de pagamento / checkout abre corretamente.
+2. Preço exibido bate com a oferta da página de venda.
+3. Página de obrigado aparece após pagamento.
+4. Compra pendente é tratada (mensagem clara, sem prometer acesso imediato).
+5. Compra aprovada libera acesso conforme descrito.
+6. Entrega/material pago protegido exige login (NÃO abre por URL direta).
+7. Resultado completo ou material pago só visível para autorizado.
+8. Recuperação de acesso funciona (e-mail, link mágico, suporte).
+9. Visitante NÃO consegue burlar acesso por link direto ou parâmetro.
+
+NÃO altere integrações de pagamento, banco, RLS ou checkout real. Apenas teste e descreva o que viu.`,
       agente:
-        "Me ajude a testar o fluxo de compra e entrega do meu app. Quero saber se o comprador entende o pagamento, o próximo passo, a entrega e o suporte.",
+        `Me ajude a testar o fluxo de compra e entrega do app [nome do app ativo].
+
+Produto: [produto]
+Modelo de cobrança: [modelo de cobrança]
+
+Quero saber se o comprador entende preço, momento da liberação, pendência, recuperação de acesso e se nenhum visitante consegue ver o material pago por link direto.`,
       corrigir:
-        "O fluxo de checkout ou entrega está confuso. Revise a página de pagamento, obrigado, acesso, entrega e instruções para o comprador sem alterar integrações sensíveis sem necessidade.",
+        `O fluxo de checkout ou entrega do app [nome do app ativo] está confuso ou exposto. Revise página de pagamento, obrigado, acesso, entrega e instruções para o comprador. Não altere integrações sensíveis nem regras de acesso sem necessidade.`,
       avancar:
-        "Avance quando o fluxo de compra e entrega estiver claro do começo ao fim.",
+        "Avance quando o fluxo de compra e entrega estiver claro do começo ao fim e visitante não conseguir abrir a área paga por link direto.",
     },
   },
   {
@@ -106,59 +190,124 @@ const ETAPAS: Etapa[] = [
     title: "Testar mobile e revisão final",
     tabs: {
       lovable:
-        "Revise meu app no mobile. Verifique se há scroll horizontal, botões pequenos, textos cortados, cards quebrados, imagens desproporcionais, menus difíceis de usar ou páginas que ficam ruins no celular.",
+        `Faça a revisão final mobile e de produção do app [nome do app ativo] antes da divulgação.
+
+App: [descreva o app]
+Promessa: [promessa]
+Ação principal: [ação principal]
+
+Confirme, item a item:
+
+1. Layout no celular (sem scroll horizontal, sem corte de texto).
+2. Leitura confortável dos textos no celular.
+3. Botões tocáveis (área grande o suficiente, sem sobreposição).
+4. Formulários utilizáveis no celular (teclado correto, sem zoom forçado).
+5. Imagem social aparece bem em WhatsApp e redes.
+6. Favicon presente e correto.
+7. Título e descrição da aba/produto coerentes.
+8. Velocidade percebida razoável (sem espera longa em branco).
+9. NENHUM placeholder visível ([descreva], [informe], Lorem ipsum etc).
+10. NENHUM dado de teste visível (e-mails fictícios, "teste 123", usuários fake).
+11. Promessa responsável (sem garantir resultado impossível).
+
+Liste o que está OK, o que precisa ajuste e o que precisa correção antes de divulgar.`,
       agente:
-        "Me ajude a fazer uma revisão final mobile do meu app. Quero uma lista do que observar antes de divulgar para pessoas reais.",
+        `Me ajude a fazer a revisão final mobile e de produção do app [nome do app ativo].
+
+Promessa: [promessa]
+Público: [descreva o público]
+
+Quero uma lista do que observar no celular e em produção antes de divulgar: layout, leitura, botões, formulários, imagem social, favicon, título/descrição, velocidade percebida, placeholders e promessa responsável.`,
       corrigir:
-        "O app está ruim no celular. Corrija responsividade, espaçamento, largura de cards, botões, menus e textos sem alterar a lógica do app.",
+        `O app [nome do app ativo] está ruim no celular ou tem texto provisório/dado de teste visível. Corrija responsividade, espaçamento, botões, menus, textos, placeholders e dados de teste. Não altere a lógica do app nem layout aprovado.`,
       avancar:
-        "Avance quando o app estiver legível, clicável e sem scroll horizontal no celular.",
+        "Avance quando o app estiver legível e clicável no celular, sem scroll horizontal, sem placeholders, sem dados de teste e com identidade de compartilhamento (favicon, título, descrição, imagem) revisada.",
     },
   },
 ];
 
 const GLOSSARIO: { termo: string; def: string }[] = [
-  { termo: "QA", def: "Teste de qualidade para verificar se o app funciona antes de publicar ou divulgar." },
-  { termo: "Bug", def: "Erro visual, funcional ou técnico dentro do app." },
-  { termo: "Fluxo crítico", def: "O caminho mais importante que o usuário precisa completar dentro do app." },
-  { termo: "Responsivo", def: "Quando o app funciona bem em computador e celular." },
-  { termo: "Scroll horizontal", def: "Quando a tela cria uma barra lateral indesejada, geralmente por layout quebrado no mobile." },
-  { termo: "Teste como usuário", def: "Entrar no app como se fosse uma pessoa real usando pela primeira vez." },
-  { termo: "Página branca", def: "Quando a tela carrega vazia por erro de código, rota ou carregamento." },
+  { termo: "Fluxo crítico", def: "O caminho mais importante que o usuário precisa completar dentro do app (ex.: abrir → CTA → resultado/compra)." },
+  { termo: "Visitante", def: "Pessoa que abre o app sem login. Só pode ver áreas públicas." },
+  { termo: "Usuário logado", def: "Pessoa que entrou no app com a própria conta e tem acesso às áreas internas conforme a permissão." },
+  { termo: "Comprador", def: "Usuário que já pagou e por isso tem acesso à entrega, à área paga ou ao material protegido." },
+  { termo: "Admin", def: "Perfil interno com permissões avançadas (gestão, dados, configurações). Só você ou pessoas autorizadas devem ter." },
+  { termo: "Rota pública", def: "Endereço do app que qualquer pessoa pode abrir sem login." },
+  { termo: "Rota protegida", def: "Endereço do app que só abre para quem está logado e autorizado." },
+  { termo: "Rota 404", def: "Página que não existe ou foi removida. O app deve mostrar uma tela amigável de \"página não encontrada\"." },
+  { termo: "Checkout", def: "Tela ou link onde a pessoa paga pelo produto/serviço." },
+  { termo: "Página de obrigado", def: "Tela exibida logo após o pagamento, explicando o próximo passo (acesso, e-mail, suporte)." },
+  { termo: "Entrega protegida", def: "Área onde o material pago fica disponível só para quem está logado e autorizado." },
+  { termo: "Responsivo", def: "Quando o app funciona bem em computador, tablet e celular." },
+  { termo: "Mobile first", def: "Pensar e testar primeiro no celular, porque a maioria dos usuários abre por ali." },
+  { termo: "Dados de teste", def: "Informações fictícias (usuário teste, e-mail fake, valor R$0,01) usadas durante a construção. NÃO devem ficar visíveis em produção." },
+  { termo: "Placeholder", def: "Texto provisório entre colchetes ([descreva], [informe]) que precisa ser substituído antes de divulgar." },
+  { termo: "Bug bloqueador", def: "Erro que impede o usuário de concluir o fluxo principal (login, CTA, checkout, entrega, mobile). Antes da divulgação, deve ser corrigido." },
 ];
 
 const CHECKLIST_GROUPS: { title: string; items: string[] }[] = [
   {
-    title: "Acesso",
+    title: "Geral",
     items: [
       "Testei como visitante",
-      "Testei login e logout",
-      "Testei como usuário logado",
+      "Testei em aba anônima",
+      "Testei no celular",
     ],
   },
   {
-    title: "Navegação",
+    title: "Visitante",
     items: [
-      "Testei botões principais",
-      "Testei links",
-      "Não encontrei página branca",
-      "Não encontrei scroll horizontal",
+      "Testei o CTA principal",
+      "Testei links internos e externos",
     ],
   },
   {
-    title: "Conversão",
+    title: "Login e acesso",
+    items: [
+      "Testei login autorizado",
+      "Testei usuário sem acesso",
+      "Testei logout",
+      "Testei rota protegida por link direto",
+    ],
+  },
+  {
+    title: "Botões e formulários",
     items: [
       "Testei formulários",
-      "Testei checkout",
-      "Testei página de obrigado",
+      "Testei validações e mensagens de erro",
+      "Testei rota 404",
     ],
   },
   {
-    title: "Entrega e mobile",
+    title: "Checkout e entrega",
     items: [
-      "Testei área de entrega",
-      "Testei no celular",
-      "Corrigi erros críticos antes de divulgar",
+      "Testei checkout ou link de pagamento",
+      "Testei página de obrigado",
+      "Testei entrega protegida",
+      "Confirmei que material pago não está público",
+    ],
+  },
+  {
+    title: "Mobile",
+    items: [
+      "Layout sem scroll horizontal no celular",
+      "Botões tocáveis e formulários utilizáveis no celular",
+    ],
+  },
+  {
+    title: "Conteúdo e confiança",
+    items: [
+      "Revisei termos e privacidade",
+      "Removi placeholders",
+      "Removi dados de teste",
+      "Revisei promessa responsável",
+    ],
+  },
+  {
+    title: "Pronto para divulgar",
+    items: [
+      "Corrigi bugs bloqueadores",
+      "Estou pronto para divulgar",
     ],
   },
 ];
