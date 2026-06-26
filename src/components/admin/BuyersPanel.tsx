@@ -418,7 +418,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
             <Loader2 size={16} className="animate-spin" /> Carregando compradores...
           </div>
         ) : error ? (
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm px-4 py-3 space-y-2">
+          <div className="admin-alert admin-alert-warning space-y-2">
             <div>{error}</div>
             <div className="flex gap-2">
               <button onClick={() => load("reset")} className="px-3 py-1.5 rounded-lg border border-amber-400/40 text-xs">

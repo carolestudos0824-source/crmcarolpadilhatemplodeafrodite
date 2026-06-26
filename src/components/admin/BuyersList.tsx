@@ -151,7 +151,7 @@ export function BuyersList({
             <Loader2 size={16} className="animate-spin" /> Carregando compradores...
           </div>
         ) : error ? (
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm px-4 py-3">
+          <div className="admin-alert admin-alert-warning">
             {error.msg}
           </div>
         ) : filtered.length === 0 ? (

@@ -622,7 +622,7 @@ function SaleDetailDrawer({
       </div>
 
       {isAwaitingFirstLogin(sale) && (
-        <div className="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 space-y-2">
+        <div className="mt-5 admin-alert admin-alert-warning space-y-2">
           <div className="flex items-start gap-2">
             <AlertTriangle size={16} className="shrink-0 mt-0.5" />
             <div>

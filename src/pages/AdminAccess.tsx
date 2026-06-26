@@ -769,7 +769,7 @@ function AcessosSection({
         />
       </div>
 
-      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
+      <div className="admin-alert admin-alert-warning flex items-start gap-2">
         <AlertTriangle size={16} className="shrink-0 mt-0.5" />
         <span>
           Libere acesso apenas após confirmar o pagamento. Esta tela é exclusiva para administradores.
@@ -838,7 +838,7 @@ function AcessosSection({
       )}
 
       {status.kind === "error" && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+        <div className="admin-alert admin-alert-danger">
           Não foi possível concluir a ação. Verifique sua permissão de admin.
           <div className="text-[11px] text-red-200/70 mt-1">Detalhe: {status.message}</div>
         </div>
@@ -846,7 +846,7 @@ function AcessosSection({
 
       {status.kind === "success" && (
         <div className="space-y-3">
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+          <div className="admin-alert admin-alert-success">
             {status.message}
           </div>
           {status.action === "grant" && (
@@ -1013,7 +1013,7 @@ function CompradoresSection({
           </div>
         </form>
         {status.kind === "found" && (
-          <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+          <div className="mt-4 admin-alert admin-alert-success flex items-center justify-between gap-3 flex-wrap">
             <span>Comprador localizado: {status.row.email}</span>
             <button onClick={onGoToAcessos} className="text-xs underline">
               Abrir em Acessos →
