@@ -95,32 +95,65 @@ async function copyText(text: string, label = "Copiado") {
   }
 }
 
+const PAGE_SIZE = 50;
+
+type Cursor = { created_at: string; id: string } | null;
+
 export function SalesPanel() {
   const [sales, setSales] = useState<ManualSale[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
   const [accessFilter, setAccessFilter] = useState<string>("all");
   const [showCreate, setShowCreate] = useState(false);
   const [selected, setSelected] = useState<ManualSale | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [cursor, setCursor] = useState<Cursor>(null);
 
+  // Debounce do campo de busca
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  // Primeira página: dispara em mudanças de filtros/busca/reload
   useEffect(() => {
     let mounted = true;
     (async () => {
       setLoading(true);
       setError(null);
+      setCursor(null);
+      setHasMore(false);
       try {
         const res = (await withTimeout(
-          (supabase as any).rpc("admin_list_manual_sales", { _limit: 200 }),
+          (supabase as any).rpc("admin_list_manual_sales", {
+            _limit: PAGE_SIZE + 1,
+            _search: debouncedSearch || null,
+            _payment_status: paymentFilter === "all" ? null : paymentFilter,
+            _access_status: accessFilter === "all" ? null : accessFilter,
+            _before_created_at: null,
+            _before_id: null,
+          }),
           10000,
           "lista de vendas",
         )) as { data: ManualSale[] | null; error: { message: string } | null };
         if (!mounted) return;
         if (res.error) throw new Error(res.error.message);
-        const data = res.data;
-        setSales((data as ManualSale[]) ?? []);
+        const data = (res.data ?? []) as ManualSale[];
+        const more = data.length > PAGE_SIZE;
+        const page = more ? data.slice(0, PAGE_SIZE) : data;
+        setSales(page);
+        setHasMore(more);
+        if (page.length > 0) {
+          const last = page[page.length - 1];
+          setCursor({ created_at: last.created_at, id: last.id });
+        } else {
+          setCursor(null);
+        }
       } catch (e) {
         if (!mounted) return;
         setError(e instanceof Error ? e.message : "Erro desconhecido.");
@@ -129,23 +162,48 @@ export function SalesPanel() {
       }
     })();
     return () => { mounted = false; };
-  }, [reloadKey]);
+  }, [reloadKey, debouncedSearch, paymentFilter, accessFilter]);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return sales.filter((s) => {
-      if (q) {
-        const inEmail = s.buyer_email.toLowerCase().includes(q);
-        const inName = (s.buyer_name ?? "").toLowerCase().includes(q);
-        if (!inEmail && !inName) return false;
+  const loadMore = async () => {
+    if (!cursor || loadingMore) return;
+    setLoadingMore(true);
+    try {
+      const res = (await withTimeout(
+        (supabase as any).rpc("admin_list_manual_sales", {
+          _limit: PAGE_SIZE + 1,
+          _search: debouncedSearch || null,
+          _payment_status: paymentFilter === "all" ? null : paymentFilter,
+          _access_status: accessFilter === "all" ? null : accessFilter,
+          _before_created_at: cursor.created_at,
+          _before_id: cursor.id,
+        }),
+        10000,
+        "mais vendas",
+      )) as { data: ManualSale[] | null; error: { message: string } | null };
+      if (res.error) throw new Error(res.error.message);
+      const data = (res.data ?? []) as ManualSale[];
+      const more = data.length > PAGE_SIZE;
+      const page = more ? data.slice(0, PAGE_SIZE) : data;
+      setSales((prev) => [...prev, ...page]);
+      setHasMore(more);
+      if (page.length > 0) {
+        const last = page[page.length - 1];
+        setCursor({ created_at: last.created_at, id: last.id });
+      } else {
+        setHasMore(false);
       }
-      if (paymentFilter !== "all" && s.payment_status !== paymentFilter) return false;
-      if (accessFilter !== "all" && s.access_status !== accessFilter) return false;
-      return true;
-    });
-  }, [sales, search, paymentFilter, accessFilter]);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Não foi possível carregar mais vendas.");
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  // Lista exibida já vem filtrada pelo servidor
+  const filtered = sales;
 
   const reload = () => setReloadKey((k) => k + 1);
+
 
   const grantAccess = async (sale: ManualSale) => {
     if (!confirm(`Tem certeza que deseja liberar o acesso desta venda (${sale.buyer_email})? O comprador poderá entrar na área do aluno.`)) return;
