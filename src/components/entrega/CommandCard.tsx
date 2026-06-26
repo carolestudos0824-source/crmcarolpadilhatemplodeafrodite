@@ -403,6 +403,7 @@ export const CommandCard = ({
                   hideCopyButton
                   saveTitle={title}
                   saveSourceModule={moduleId}
+                  collapsible={collapsiblePrompts}
                 />
 
                 <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
