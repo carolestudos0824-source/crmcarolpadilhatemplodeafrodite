@@ -171,6 +171,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAIXA FINANCEIRA — economia de créditos */}
+      <section className="pb-12">
+        <div className="container">
+          <div className="max-w-4xl mx-auto glass-strong p-6 md:p-8 border-accent/30 neon-shadow">
+            <p className="text-base md:text-lg text-foreground/90 leading-relaxed text-center">
+              Antes de gastar <span className="text-accent font-semibold">de R$100 a R$500 em créditos</span>, testes e prompts no escuro, entre na Fábrica e siga um método que mostra <span className="text-accent">o que pedir, em qual ordem e o que revisar</span> antes de avançar no Lovable.
+            </p>
+            <p className="text-xs text-muted-foreground/80 text-center mt-3">
+              Sem promessa de economia garantida — o programa ajuda a usar seus créditos com mais intenção e reduzir tentativa e erro.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ARQUITETO vs PEDREIRO */}
       <Section
         eyebrow="Por que a Fábrica existe"
