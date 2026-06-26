@@ -1,12 +1,12 @@
 const labels = ["MVP", "Stack", "Banco de Dados", "Design", "Monetização", "Prompt Lovable", "Lançamento"];
 const positions = [
-  "top-2 left-2",
-  "top-6 right-0",
-  "top-1/3 -left-4",
-  "top-1/2 -right-6",
-  "bottom-1/4 left-0",
-  "bottom-6 right-4",
-  "bottom-2 left-1/3",
+  "top-0 -left-2",
+  "top-2 -right-4",
+  "top-1/3 -left-16",
+  "top-1/2 -right-20",
+  "bottom-1/4 -left-12",
+  "bottom-2 -right-2",
+  "-bottom-2 left-1/3",
 ];
 
 export const HeroVisual = () => (
@@ -21,7 +21,7 @@ export const HeroVisual = () => (
     {labels.map((label, i) => (
       <span
         key={label}
-        className={`absolute ${positions[i]} hidden sm:inline-flex glass px-3 py-1.5 text-[11px] font-medium text-foreground/90 border-accent/20 shadow-[0_0_20px_rgba(30,136,255,0.15)] animate-fade-up`}
+        className={`absolute ${positions[i]} hidden lg:inline-flex glass px-3 py-1.5 text-[11px] font-medium text-foreground/90 border-accent/20 shadow-[0_0_20px_rgba(30,136,255,0.15)] animate-fade-up whitespace-nowrap`}
         style={{ animationDelay: `${0.2 + i * 0.1}s` }}
       >
         {label}
