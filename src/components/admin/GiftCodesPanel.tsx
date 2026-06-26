@@ -201,7 +201,7 @@ export function GiftCodesPanel() {
 
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3 flex items-start gap-2">
+        <div className="admin-card border-[hsl(var(--admin-destructive)/0.4)] bg-[hsl(var(--admin-destructive)/0.08)] text-red-200 text-sm flex items-start gap-2">
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <div>
             Não foi possível carregar os códigos. Verifique se você tem papel admin em user_roles.
@@ -219,7 +219,7 @@ export function GiftCodesPanel() {
       </div>
 
       {/* Create form */}
-      <form onSubmit={createCode} className="glass-strong p-5 space-y-4">
+      <form onSubmit={createCode} className="admin-card space-y-4">
         <div>
           <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
             <Plus size={14} className="text-accent" /> Novo código
