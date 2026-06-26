@@ -1232,30 +1232,27 @@ Regras:
     whenLovableDirect: "Quando o produto exige área exclusiva.",
     whenAgentFirst:
       "Quando você não sabe se a entrega deve ser por área restrita, link, e-mail ou código.",
-    content: `Crie uma área de entrega protegida para este produto.
+    content: `Crie a área de entrega protegida do app [nome do app ativo].
 
-Produto:
-[descreva]
-
-Materiais entregues:
-[descreva]
+Produto: [produto]
+Promessa de entrega: [promessa]
 
 A área deve conter:
 
-1. Boas-vindas.
-2. Lista do que foi comprado.
-3. Instruções de uso.
-4. Materiais ou links protegidos.
-5. Checklist de progresso, se fizer sentido.
-6. Botão de suporte.
-7. Bloqueio para visitantes sem acesso.
+1. Boas-vindas com nome do comprador, se houver login.
+2. Lista clara do que foi comprado.
+3. Instruções de uso passo a passo.
+4. Materiais ou links protegidos (visíveis somente para quem tem acesso).
+5. Botão de suporte sempre visível.
+6. Bloqueio para visitantes sem acesso.
 
-Regras:
+Regras de proteção (invioláveis):
 
-- Visitante sem acesso não pode ver materiais.
-- Usuário sem compra não pode ver materiais.
-- Não mostrar links protegidos no código público.
-- Não expor dados sensíveis.`,
+- Conteúdo pago NÃO pode ficar público em nenhuma rota.
+- A entrega deve exigir uma destas condições: login válido, código de acesso, e-mail autorizado, status de compra confirmado ou liberação manual pelo admin.
+- Links diretos para material pago NÃO podem permitir acesso sem compra (validar acesso no carregamento da rota).
+- Dados sensíveis (chaves de API, service role, e-mails de outros compradores) NÃO podem ficar expostos no frontend.
+- Não usar storage público para arquivos pagos.`,
     agentPrompt: `Preciso definir a melhor forma de entregar meu produto.
 
 Produto:
