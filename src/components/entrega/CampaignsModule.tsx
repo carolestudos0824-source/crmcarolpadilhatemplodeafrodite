@@ -71,6 +71,7 @@ const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "Métrica", def: "Número usado para medir resultado." },
   { termo: "Tráfego", def: "Pessoas chegando até sua página ou app." },
   { termo: "Validação", def: "Teste para saber se existe interesse real antes de investir mais." },
+  { termo: "Objeção", def: "Dúvida, medo ou motivo que faz a pessoa hesitar antes de clicar, responder ou comprar." },
 ];
 
 // ===== utils =====
