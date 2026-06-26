@@ -1765,53 +1765,54 @@ Corrija:
     whenLovableDirect: "Quando o app atende vários nichos.",
     whenAgentFirst:
       "Quando você não sabe se deve segmentar ou manter uma página única.",
-    content: `Crie páginas específicas por nicho.
+    content: `Crie páginas para nichos específicos do app [nome do app ativo], apenas quando houver intenção real de busca.
 
-App:
-[descreva]
+Contexto:
+- App: [descreva o app]
+- Público amplo: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Ação principal: [ação principal]
 
-Nichos:
-[liste]
+Nichos candidatos:
+[liste 2-4 nichos com intenção real de busca]
 
-Para cada nicho, criar:
+Para cada nicho que realmente faça sentido, entregue:
 
-1. Headline específica.
-2. Dor principal do nicho.
-3. Como o app ajuda.
-4. Benefícios.
-5. Caso de uso.
-6. FAQ.
-7. CTA.
+1. Headline específica do nicho.
+2. Dor real desse nicho (sem inventar).
+3. Como o app ajuda esse nicho.
+4. Caso de uso curto e plausível.
+5. Mini-FAQ adaptado.
+6. CTA alinhado a [ação principal].
 
 Regras:
 
-- Não duplicar texto.
-- Não inventar dores.
-- Não criar páginas para nichos irrelevantes.
-- Cada página precisa parecer feita para aquele público.`,
-    agentPrompt: `Meu app pode atender vários nichos.
+- Não duplicar texto entre páginas (não basta trocar 2 palavras).
+- Não criar páginas para nichos sem intenção real de busca.
+- Não inventar dores ou casos de uso.
+- Manter promessa responsável (sem garantir resultado).`,
+    agentPrompt: `O app [nome do app ativo] pode atender vários nichos.
 
-App:
-[descreva]
-
-Nichos possíveis:
-[liste]
+App: [descreva o app]
+Público amplo: [descreva o público]
 
 Analise:
 
 1. Quais nichos realmente fazem sentido.
-2. Quais não valem página própria.
-3. Qual mensagem usar para cada nicho.
-4. Qual página criar primeiro.`,
-    correctionPrompt: `As páginas por nicho ficaram repetitivas. Refaça com diferenciação real.
+2. Quais NÃO valem página própria.
+3. Qual mensagem usar em cada nicho.
+4. Qual página criar primeiro.
+5. Como evitar duplicação artificial.`,
+    correctionPrompt: `As páginas de nicho do app [nome do app ativo] ficaram artificiais ou duplicadas. Corrija.
 
 Cada página deve ter:
 
-1. Dor específica.
+1. Dor específica e real do nicho.
 2. Linguagem do nicho.
-3. Exemplo de uso.
-4. Benefícios próprios.
-5. CTA adequado.`,
+3. Caso de uso plausível.
+4. Conteúdo diferente das demais páginas.
+5. CTA adequado, sem promessa garantida.`,
     advanceCriteria:
       "Avance quando cada página de nicho tiver motivo claro para existir.",
   },
