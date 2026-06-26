@@ -65,6 +65,7 @@ const beneficios = [
   "Prompts por etapa para o Lovable",
   "Checklists de avanço em cada módulo",
   "30 ideias de aplicativos",
+  "Acesso ao Agente Arquiteto via ChatGPT",
   "Área interna organizada",
   "Próximo passo recomendado",
   "Jornada para começar do zero",
