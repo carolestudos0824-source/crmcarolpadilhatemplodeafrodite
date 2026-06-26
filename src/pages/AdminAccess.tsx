@@ -1207,7 +1207,7 @@ function ConfigSection() {
         Somente leitura. Valores vêm de <code className="text-foreground/80">APP_CONFIG</code>. Para alterar, edite <code className="text-foreground/80">src/config/appConfig.ts</code>.
       </p>
 
-      <div className="glass-strong p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="admin-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="text-accent mt-0.5"><KeyRound size={16} /></div>
           <div>
@@ -1222,19 +1222,13 @@ function ConfigSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {items.map((it) => (
-          <div key={it.title} className="glass-strong p-4">
+          <div key={it.title} className="admin-card">
             <div className="flex items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2 text-accent">
                 {it.icon}
                 <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground">{it.title}</h4>
               </div>
-              <span
-                className={`text-[10px] px-2 py-0.5 rounded-full border ${
-                  it.ok
-                    ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
-                    : "bg-amber-500/15 text-amber-200 border-amber-500/30"
-                }`}
-              >
+              <span className={it.ok ? "admin-badge admin-badge-success" : "admin-badge admin-badge-warning"}>
                 {it.ok ? "Configurado" : "Pendente"}
               </span>
             </div>
