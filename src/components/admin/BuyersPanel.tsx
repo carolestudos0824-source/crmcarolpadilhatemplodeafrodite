@@ -464,6 +464,9 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                           {c.sales_count} venda{c.sales_count === 1 ? "" : "s"}
                         </span>
                       </td>
+                      <td className="px-2 py-2 text-right whitespace-nowrap tabular-nums">
+                        {c.total_paid_confirmed > 0 ? fmtMoney(c.total_paid_confirmed, c.currency) : "—"}
+                      </td>
                       <td className="px-2 py-2">{c.payment_status_label}</td>
                       <td className="px-2 py-2">{c.access_status_label}</td>
                       <td className="px-2 py-2">{c.source_label}</td>
