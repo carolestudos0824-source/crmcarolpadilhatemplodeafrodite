@@ -53,6 +53,7 @@ import {
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
 import { FabricaLegalReminder } from "@/components/FabricaLegalReminder";
+import { PainelProntidaoModule } from "@/components/entrega/PainelProntidaoModule";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
@@ -2767,160 +2768,18 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
 
 
   if (active === "checklist") {
-    const overviewCards = [
-      { title: "Ideia clara", desc: "Público, dor e promessa definidos." },
-      { title: "Primeira versão funcional", desc: "Primeira versão criada e testada no celular. Próximas versões entram em Melhorias." },
-      { title: "Venda preparada", desc: "Página, preço, checkout e entrega organizados." },
-      { title: "Validação real", desc: "Pessoas reais testaram e deram sinais concretos." },
-    ];
     return (
       <section>
         <ModuleHeader
           title="Painel de Prontidão do App"
-          subtitle="Acompanhe se sua ideia já virou um app claro, funcional, vendável e pronto para ser testado com pessoas reais."
+          subtitle="Decida com clareza se você pode testar, vender ou divulgar — ou se precisa voltar e corrigir um bloqueador antes de seguir."
         />
-        <FabricaLegalReminder text="Antes de divulgar seu app, confirme abaixo os itens legais básicos do SEU produto. A Fábrica de Apps com IA já tem seus próprios documentos:" />
-
-        <GlassCard className="p-5 mb-5">
-          <h3 className="font-heading font-semibold mb-3">Prontidão legal do seu app</h3>
-          <ul className="space-y-2 text-sm text-foreground/90">
-            <li>• Termos de Uso do seu app publicados</li>
-            <li>• Política de Privacidade do seu app publicada</li>
-            <li>• Reembolso explicado de forma clara</li>
-            <li>• Suporte explicado (canal, horário, prazo)</li>
-            <li>• Promessas revisadas, sem garantia de resultado</li>
-            <li>• Dados sensíveis evitados nos formulários</li>
-            <li>• Área paga protegida (visitante não vê material pago)</li>
-          </ul>
-          <p className="text-[11px] text-muted-foreground mt-3">
-            Estes itens são do app criado pela aluna, não dos documentos oficiais da Fábrica.
-          </p>
-        </GlassCard>
-
-
-        {APP_CONFIG.CHECKOUT_FABRICA_URL === "COLE_AQUI_A_URL_REAL" && (
-          <GlassCard className="p-4 mb-5 border-red-400/40 bg-red-500/10">
-            <div className="flex items-start gap-3">
-              <AlertTriangle size={18} className="text-red-300 shrink-0 mt-0.5" />
-              <div>
-                <h3 className="text-sm font-heading font-bold text-red-100">
-                  Checkout real pendente
-                </h3>
-                <p className="text-xs text-red-100/90 mt-1 leading-relaxed">
-                  Este programa ainda não está pronto para venda pública enquanto o link real
-                  de pagamento não for configurado.
-                </p>
-              </div>
-            </div>
-          </GlassCard>
-        )}
-
-        <GlassCard className="p-4 mb-5 border-accent/30">
-          <p className="text-sm text-foreground/90">
-            Você não precisa estar com tudo perfeito para validar. Mas precisa ter o básico funcionando antes de divulgar.
-          </p>
-        </GlassCard>
-
-        <GlassCard className="p-5 mb-5">
-          <h3 className="font-heading font-semibold mb-3">Como usar este painel</h3>
-          <ol className="list-decimal list-inside space-y-1.5 text-sm text-muted-foreground">
-            <li>Marque apenas o que realmente foi feito.</li>
-            <li>Volte ao módulo correspondente quando uma fase estiver incompleta.</li>
-            <li>Não pule para venda se a primeira versão funcional ainda não entrega o resultado principal.</li>
-            <li>Não pule para campanha se a oferta ainda não está clara.</li>
-            <li>Não escale antes de validar com pessoas reais.</li>
-          </ol>
-        </GlassCard>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          {overviewCards.map((c) => (
-            <GlassCard key={c.title} className="p-4">
-              <h4 className="font-heading font-semibold text-sm mb-1 text-accent">{c.title}</h4>
-              <p className="text-xs text-muted-foreground">{c.desc}</p>
-            </GlassCard>
-          ))}
-        </div>
-
-        <div className="space-y-5">
-          {CHECKLIST_PHASES.map((p) => {
-            const doneCount = p.items.filter((item) => !!checklist[`${p.phase}__${item}`]).length;
-            const total = p.items.length;
-            let status: { label: string; cls: string };
-            if (doneCount === 0) status = { label: "Pendente", cls: "bg-white/10 text-muted-foreground border-white/15" };
-            else if (doneCount < total) status = { label: "Em andamento", cls: "bg-accent/15 text-accent border-accent/30" };
-            else status = { label: "Concluída", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" };
-
-            return (
-              <GlassCard key={p.phase} className="p-5">
-                <div className="flex items-start justify-between gap-3 mb-3 flex-wrap">
-                  <h3 className="font-heading font-semibold">{p.phase}</h3>
-                  <span className={`text-xs px-2.5 py-1 rounded-full border ${status.cls}`}>
-                    {status.label} · {doneCount}/{total}
-                  </span>
-                </div>
-                <ul className="space-y-2">
-                  {p.items.map((item) => {
-                    const key = `${p.phase}__${item}`;
-                    const done = !!checklist[key];
-                    return (
-                      <li key={item}>
-                        <label className="flex items-center gap-3 p-2.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition">
-                          <input
-                            type="checkbox"
-                            checked={done}
-                            onChange={() =>
-                              setChecklist((prev) => ({ ...prev, [key]: !prev[key] }))
-                            }
-                            className="accent-accent w-4 h-4"
-                          />
-                          <span
-                            className={`text-sm ${
-                              done ? "line-through text-muted-foreground" : ""
-                            }`}
-                          >
-                            {item}
-                          </span>
-                        </label>
-                      </li>
-                    );
-                  })}
-                </ul>
-                {p.moduleId && p.moduleLabel && (
-                  <div className="mt-4">
-                    <button
-                      onClick={() => goTo(p.moduleId as ModuleId)}
-                      className="text-xs px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-foreground/90 transition"
-                    >
-                      {p.moduleLabel} →
-                    </button>
-                  </div>
-                )}
-              </GlassCard>
-            );
-          })}
-        </div>
-
-        <GlassCard className="p-5 mt-6">
-          <h3 className="font-heading font-semibold mb-2">Quando posso avançar?</h3>
-          <p className="text-sm text-muted-foreground">
-            Use 70% como sinal de prontidão para testar, não como perfeição. Avance quando o app estiver claro, funcional e pronto para receber pessoas reais. Se uma fase crítica estiver incompleta, volte ao módulo correspondente antes de divulgar.
-          </p>
-        </GlassCard>
-
-        <GlassCard className="p-5 mt-4 border-amber-500/30">
-          <h3 className="font-heading font-semibold mb-2 text-amber-300">Antes de vender ou divulgar, confira</h3>
-          <ul className="space-y-1.5 text-sm text-muted-foreground list-disc list-inside">
-            <li>O usuário entende o que o app faz?</li>
-            <li>O botão principal funciona?</li>
-            <li>A página de venda explica a oferta?</li>
-            <li>A entrega está protegida?</li>
-            <li>Você testou no celular?</li>
-            <li>Pelo menos uma pessoa real conseguiu usar?</li>
-          </ul>
-        </GlassCard>
+        <FabricaLegalReminder text="Os itens deste painel são do app criado pela aluna. A Fábrica de Apps com IA tem seus próprios documentos:" />
+        <PainelProntidaoModule goTo={goTo} />
       </section>
     );
   }
+
 
 
   if (active === "erros") {
