@@ -109,7 +109,7 @@ export function AccessLogs({ refreshKey = 0 }: { refreshKey?: number }) {
   }, [rows, filter, query, myId]);
 
   return (
-    <div className="glass-strong p-5">
+    <div className="admin-card p-5">
       <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
         <div>
           <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
