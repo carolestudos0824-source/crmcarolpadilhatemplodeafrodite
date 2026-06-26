@@ -10,7 +10,15 @@ import type { ModuleId } from "@/data/entregaModules";
 
 type Props = {
   onGoToModule: (id: ModuleId) => void;
+  /**
+   * "full" (default): mostra o bloco grande de escolha quando jornada vazia.
+   *   Use apenas em "Comece Aqui" ou tela inicial.
+   * "compact": em páginas avançadas — se já houver jornada, mostra a pílula;
+   *   se vazia, mostra apenas aviso discreto com botão "Escolher jornada".
+   */
+  variant?: "full" | "compact";
 };
+
 
 type JourneyCard = {
   id: JourneyId;
