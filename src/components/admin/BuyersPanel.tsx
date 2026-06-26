@@ -62,6 +62,7 @@ export type ConsolidatedBuyer = {
   is_admin: boolean;
   sales_count: number;
   origin: string;
+  total_paid_confirmed: number;
 };
 
 const PAYMENT_LABELS: Record<string, string> = {
