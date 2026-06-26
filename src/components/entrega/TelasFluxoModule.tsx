@@ -570,6 +570,7 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
           originalPrompt={MAPA_TEMPLATE}
           storageKey="telas_mapa"
           copyLabel="Copiar Mapa de Telas e Fluxo"
+          collapsible
         />
       </GlassCard>
 
