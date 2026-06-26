@@ -157,6 +157,7 @@ function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
     is_admin: false,
     sales_count: r.sales_count,
     origin: r.origin,
+    total_paid_confirmed: Number(r.total_paid_confirmed ?? 0),
   };
 }
 
