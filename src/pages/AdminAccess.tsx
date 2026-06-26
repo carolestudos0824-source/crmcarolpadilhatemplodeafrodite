@@ -549,7 +549,7 @@ function OverviewSection({
   if (metrics.error && metrics.salesConfirmed === 0 && !metrics.loading) {
     return (
       <div className="space-y-4">
-        <div className="glass-strong p-6 text-center">
+        <div className="admin-card p-6 text-center">
           <AlertTriangle className="mx-auto text-amber-300 mb-2" size={24} />
           <h3 className="font-heading font-semibold text-sm mb-1">Não foi possível carregar esta área</h3>
           <p className="text-xs text-muted-foreground mb-4">{metrics.error}</p>
