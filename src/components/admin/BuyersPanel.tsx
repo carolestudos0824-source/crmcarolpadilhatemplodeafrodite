@@ -161,9 +161,6 @@ function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
   };
 }
 
-const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
-
 async function copy(text: string, label = "Copiado.") {
   try {
     await navigator.clipboard.writeText(text);
@@ -378,14 +375,14 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
               onChange={(e) => setQ(e.target.value)}
             />
           </div>
-          <select className={inputCls} value={fPay} onChange={(e) => setFPay(e.target.value)}>
+          <select className="admin-input" value={fPay} onChange={(e) => setFPay(e.target.value)}>
             <option value="all">Pagamento: todos</option>
             <option value="paid_confirmed">Pago</option>
             <option value="pending_confirmation">Aguardando</option>
             <option value="refunded">Reembolsado</option>
             <option value="cancelled">Cancelado</option>
           </select>
-          <select className={inputCls} value={fAccess} onChange={(e) => setFAccess(e.target.value)}>
+          <select className="admin-input" value={fAccess} onChange={(e) => setFAccess(e.target.value)}>
             <option value="all">Acesso: todos</option>
             <option value="granted">Liberado</option>
             <option value="awaiting_login">Aguardando 1º login</option>
@@ -393,13 +390,13 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
             <option value="revoked">Revogado</option>
             <option value="none">Sem acesso</option>
           </select>
-          <select className={inputCls} value={fSource} onChange={(e) => setFSource(e.target.value)}>
+          <select className="admin-input" value={fSource} onChange={(e) => setFSource(e.target.value)}>
             <option value="all">Origem: todas</option>
             {sourceOptions.map((s) => (
               <option key={s} value={s}>{labelSource(s)}</option>
             ))}
           </select>
-          <select className={inputCls} value={fPeriod} onChange={(e) => setFPeriod(e.target.value)}>
+          <select className="admin-input" value={fPeriod} onChange={(e) => setFPeriod(e.target.value)}>
             <option value="all">Período: tudo</option>
             <option value="7d">Últimos 7 dias</option>
             <option value="30d">Últimos 30 dias</option>

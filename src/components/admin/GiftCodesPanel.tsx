@@ -32,9 +32,6 @@ type Redemption = {
   redeemed_at: string;
 };
 
-const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
-
 function maskCode(code: string) {
   if (!code) return "—";
   if (code.length <= 4) return "•".repeat(code.length);
@@ -232,7 +229,7 @@ export function GiftCodesPanel() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Código">
             <input
-              className={inputCls}
+              className="admin-input"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="ex: bemvindo30"
@@ -242,7 +239,7 @@ export function GiftCodesPanel() {
           </Field>
           <Field label="Dias de acesso">
             <input
-              className={inputCls}
+              className="admin-input"
               type="number"
               min={1}
               max={3650}
@@ -253,7 +250,7 @@ export function GiftCodesPanel() {
           </Field>
           <Field label="Limite de usos">
             <input
-              className={inputCls}
+              className="admin-input"
               type="number"
               min={1}
               max={10000}
@@ -264,7 +261,7 @@ export function GiftCodesPanel() {
           </Field>
           <Field label="Expiração (opcional)">
             <input
-              className={inputCls}
+              className="admin-input"
               type="datetime-local"
               value={expiresAt}
               onChange={(e) => setExpiresAt(e.target.value)}

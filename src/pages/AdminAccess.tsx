@@ -38,9 +38,6 @@ import { SupportInbox } from "@/components/admin/SupportInbox";
 import { SalesPanel } from "@/components/admin/SalesPanel";
 import { withTimeout } from "@/lib/promiseTimeout";
 
-const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
-
 const PENDENCIAS_KEY = "fabrica_admin_prelaunch_checklist_v1";
 
 const PENDENCIAS_ITEMS = [
@@ -814,7 +811,7 @@ function AcessosSection({
           <label className="text-xs text-muted-foreground block font-semibold">E-mail do comprador</label>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
-              className={inputCls}
+              className="admin-input"
               type="email"
               placeholder="comprador@email.com"
               value={email}
@@ -1003,7 +1000,7 @@ function CompradoresSection({
           <label className="text-xs text-muted-foreground block font-semibold">E-mail do comprador</label>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
-              className={inputCls}
+              className="admin-input"
               type="email"
               placeholder="comprador@email.com"
               value={email}

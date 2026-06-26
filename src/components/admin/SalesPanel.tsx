@@ -67,9 +67,6 @@ function isAwaitingFirstLogin(sale: { payment_status: string; access_status: str
   return sale.payment_status === "paid_confirmed" && sale.access_status === "pending_access";
 }
 
-const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
-
 function fmtMoney(amount: number, currency = "BRL") {
   try {
     return new Intl.NumberFormat("pt-BR", { style: "currency", currency }).format(Number(amount) || 0);
@@ -552,17 +549,17 @@ function CreateSaleDrawer({
     <DrawerShell title="Registrar venda manual" onClose={onClose}>
       <div className="space-y-3">
         <Field label="E-mail do comprador *">
-          <input type="email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)} className={inputCls} placeholder="comprador@exemplo.com" autoFocus />
+          <input type="email" value={buyerEmail} onChange={(e) => setBuyerEmail(e.target.value)} className="admin-input" placeholder="comprador@exemplo.com" autoFocus />
         </Field>
         <Field label="Nome do comprador">
-          <input value={buyerName} onChange={(e) => setBuyerName(e.target.value)} className={inputCls} placeholder="Opcional" />
+          <input value={buyerName} onChange={(e) => setBuyerName(e.target.value)} className="admin-input" placeholder="Opcional" />
         </Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Valor (BRL) *">
-            <input type="number" min="0" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} />
+            <input type="number" min="0" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className="admin-input" />
           </Field>
           <Field label="Status do pagamento *">
-            <select value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)} className={inputCls}>
+            <select value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value)} className="admin-input">
               <option value="paid_confirmed" className="bg-[#0B1020]">Pago / confirmado</option>
               <option value="pending_confirmation" className="bg-[#0B1020]">Aguardando confirmação</option>
               <option value="refunded" className="bg-[#0B1020]">Reembolsado</option>
@@ -571,10 +568,10 @@ function CreateSaleDrawer({
           </Field>
         </div>
         <Field label="Método de pagamento">
-          <input value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className={inputCls} placeholder="Pix, transferência, cartão…" />
+          <input value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="admin-input" placeholder="Pix, transferência, cartão…" />
         </Field>
         <Field label="Referência / comprovante">
-          <input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} className={inputCls} placeholder="ID da transação, código do comprovante…" />
+          <input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} className="admin-input" placeholder="ID da transação, código do comprovante…" />
         </Field>
         <Field label="Observação interna">
           <textarea value={adminNotes} onChange={(e) => setAdminNotes(e.target.value)} className={inputCls + " min-h-[80px]"} placeholder="Notas internas (não visíveis ao comprador)" />
