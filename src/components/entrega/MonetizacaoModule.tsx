@@ -314,10 +314,55 @@ const copyToClipboard = async (text: string, successMsg: string) => {
 export const MonetizacaoIntro = () => {
   const [showGlossary, setShowGlossary] = useState(false);
   const [calc, setCalc] = useState<CalcState>(INITIAL_CALC);
+  const { context: projectCtx, isFilled: hasProjectContext } = useProjectContext();
+  const suggestion = useMemo(() => suggestFromContext(projectCtx), [projectCtx]);
+  const autoFilledRef = useRef(false);
+  const [autoFilledNotice, setAutoFilledNotice] = useState(false);
   const reco = useMemo(() => recommend(calc), [calc]);
 
   const setField = <K extends keyof CalcState>(k: K, v: CalcState[K]) =>
     setCalc((p) => ({ ...p, [k]: v }));
+
+  // Preenche automaticamente apenas campos vazios na primeira renderização
+  useEffect(() => {
+    if (autoFilledRef.current) return;
+    if (!hasProjectContext) return;
+    if (Object.keys(suggestion).length === 0) return;
+    autoFilledRef.current = true;
+    setCalc((prev) => {
+      const { next, changed } = applySuggestion(prev, suggestion, "fill-empty");
+      if (changed > 0) setAutoFilledNotice(true);
+      return next;
+    });
+  }, [hasProjectContext, suggestion]);
+
+  const handleApplyContext = () => {
+    const hasAnyFilled = Object.values(calc).some((v) => !isEmpty(v));
+    const wouldOverwrite = (Object.keys(suggestion) as (keyof CalcState)[]).some(
+      (k) => suggestion[k] && !isEmpty(calc[k] as string) && calc[k] !== suggestion[k],
+    );
+
+    if (!hasProjectContext || Object.keys(suggestion).length === 0) {
+      toast.info("Preencha o Contexto do seu app para gerar sugestões.");
+      return;
+    }
+
+    let mode: "fill-empty" | "overwrite" = "fill-empty";
+    if (hasAnyFilled && wouldOverwrite) {
+      const ok = window.confirm(
+        "Alguns campos já foram preenchidos por você. Deseja substituir pelos dados do contexto do projeto?",
+      );
+      mode = ok ? "overwrite" : "fill-empty";
+    }
+
+    setCalc((prev) => {
+      const { next, changed } = applySuggestion(prev, suggestion, mode);
+      if (changed === 0) toast.info("Nada novo para preencher.");
+      else toast.success(`Atualizamos ${changed} campo${changed > 1 ? "s" : ""} com base no contexto do projeto.`);
+      return next;
+    });
+  };
+
 
   return (
     <section className="mb-8 space-y-6">
