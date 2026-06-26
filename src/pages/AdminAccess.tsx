@@ -129,6 +129,7 @@ function AdminAccessInner() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [authChecked, setAuthChecked] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [authAttempt, setAuthAttempt] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminEmail, setAdminEmail] = useState<string | null>(null);
   const [selfHasAccess, setSelfHasAccess] = useState<boolean | null>(null);
@@ -163,34 +164,51 @@ function AdminAccessInner() {
 
   useEffect(() => {
     let mounted = true;
+    setAuthChecked(false);
+    setAuthError(null);
     (async () => {
       try {
-        const { data: userData } = await withTimeout(
-          supabase.auth.getUser(),
-          10000,
+        // Use getSession (reads from local storage, no network round-trip)
+        // instead of getUser to avoid hangs when the auth network call stalls.
+        const { data: sessionData } = await withTimeout(
+          supabase.auth.getSession(),
+          15000,
           "sessão admin",
         );
-        if (!userData?.user) {
+        const sessionUser = sessionData?.session?.user ?? null;
+        if (!sessionUser) {
+          if (!mounted) return;
           navigate("/login", { replace: true });
           return;
         }
-        const uid = userData.user.id;
-        const [adminRes, accessRes] = await withTimeout(Promise.all([
-          supabase.rpc("is_admin").then(
-            (r) => r,
-            (e) => ({ data: false, error: e }),
+        const uid = sessionUser.id;
+        // Run checks independently so a slow user_access query does not
+        // block the admin guard. is_admin() is the only one that gates UI.
+        const adminPromise = supabase.rpc("is_admin").then(
+          (r) => r,
+          (e) => ({ data: false, error: e }),
+        );
+        const accessPromise = supabase
+          .from("user_access")
+          .select("has_access")
+          .eq("user_id", uid)
+          .maybeSingle()
+          .then((r) => r, (e) => ({ data: null, error: e }));
+
+        const adminRes = await withTimeout(adminPromise, 15000, "permissão admin");
+        // user_access is non-blocking metadata; tolerate slowness/failures.
+        const accessRes = await Promise.race([
+          accessPromise,
+          new Promise<{ data: null; error: Error }>((resolve) =>
+            setTimeout(() => resolve({ data: null, error: new Error("slow") }), 8000),
           ),
-          supabase
-            .from("user_access")
-            .select("has_access")
-            .eq("user_id", uid)
-            .maybeSingle()
-            .then((r) => r, (e) => ({ data: null, error: e })),
-        ]), 10000, "permissão admin");
+        ]);
         if (!mounted) return;
-        setIsAdmin(Boolean(adminRes.data));
-        setAdminEmail(userData.user.email ?? null);
-        setSelfHasAccess(accessRes.data?.has_access ?? false);
+        setIsAdmin(Boolean((adminRes as { data?: unknown }).data));
+        setAdminEmail(sessionUser.email ?? null);
+        setSelfHasAccess(
+          (accessRes as { data?: { has_access?: boolean } | null }).data?.has_access ?? false,
+        );
         setAuthChecked(true);
       } catch (e) {
         if (!mounted) return;
@@ -202,7 +220,8 @@ function AdminAccessInner() {
     return () => {
       mounted = false;
     };
-  }, [navigate]);
+  }, [navigate, authAttempt]);
+
 
   const onSearch = async (e: React.FormEvent) => {
     e.preventDefault();
