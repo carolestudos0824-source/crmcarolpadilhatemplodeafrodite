@@ -1097,33 +1097,32 @@ export const COMMANDS_CHECKOUT: Command[] = [
     whenLovableDirect: "Quando a oferta e o preço já estão definidos.",
     whenAgentFirst:
       "Quando você ainda não sabe se deve usar WhatsApp, checkout externo, gateway ou assinatura.",
-    content: `Crie o fluxo de pagamento para este app.
+    content: `Crie o fluxo de pagamento para o app [nome do app ativo].
 
-Produto:
-[descreva]
+App: [descreva o app]
+Produto vendido: [produto]
+Modelo de cobrança: [modelo de cobrança]
+Ação principal do comprador: [ação principal]
 
-Valor:
-[informe]
-
-Forma de pagamento:
-[WhatsApp, checkout externo, Kiwify, Hotmart, Kirvano, Stripe, Mercado Pago ou outro]
+Forma recomendada para MVP: checkout externo (Kiwify, Hotmart, Kirvano) ou link de pagamento (Mercado Pago, Stripe Payment Link). NÃO construir checkout próprio agora.
 
 Requisitos:
 
-1. Botão de compra claro.
-2. Página ou seção de checkout.
-3. Resumo do que a pessoa está comprando.
-4. Informação sobre liberação de acesso.
-5. Botão alternativo de suporte.
-6. Aviso de que o acesso será liberado após confirmação do pagamento, se o fluxo for manual.
-7. Não mostrar materiais protegidos antes da confirmação.
+1. Botão de compra claro, mostrando preço e o que está incluso.
+2. Resumo curto do que a pessoa está comprando logo antes do botão.
+3. O botão abre o checkout externo / link de pagamento em nova aba.
+4. Após a compra, o gateway redireciona para a página de obrigado deste app.
+5. Aviso honesto: "Seu acesso será liberado após confirmação do pagamento" quando a liberação for manual.
+6. Botão alternativo de suporte visível.
 
-Regras:
+Regras invioláveis:
 
-- Não inventar gateway.
-- Não criar promessa de acesso automático se ainda não existe webhook.
-- Não deixar botão quebrado.
-- Se a URL de pagamento ainda não existir, deixar campo configurável.`,
+- Não liberar material pago antes da confirmação.
+- Não criar integração automática (webhook) nesta etapa do MVP.
+- Não inventar gateway nem credenciais.
+- Não prometer acesso imediato se a liberação ainda for manual.
+- Se a URL de pagamento ainda não existir, deixar campo configurável e botão desativado com aviso.
+- Não vendas garantidas. Não promessa de resultado garantido.`,
     agentPrompt: `Preciso decidir como receber pagamento no meu app.
 
 App:
@@ -1170,22 +1169,29 @@ Verifique:
     whenLovableDirect: "Depois de criar o caminho de pagamento.",
     whenAgentFirst:
       "Quando você não sabe o que o comprador deve ver depois de pagar.",
-    content: `Crie uma página de obrigado para este app.
+    content: `Crie a página de obrigado do app [nome do app ativo].
 
-A página deve conter:
+Produto comprado: [produto]
+Ação esperada após a compra: [ação principal]
 
-1. Confirmação da compra.
-2. Resumo do que a pessoa comprou.
-3. Próximo passo claro.
-4. Informação sobre liberação de acesso.
-5. Botão para login ou área de entrega, se aplicável.
-6. Botão de suporte.
-7. Mensagem honesta se a liberação for manual.
+A página deve conter, nesta ordem:
 
-Texto obrigatório se o acesso ainda for manual:
+1. Confirmação clara da compra ("Compra recebida").
+2. Nome do produto comprado em destaque: [produto].
+3. Próximo passo claro: o que fazer agora.
+4. Prazo / orientação de liberação (ex.: "Liberação em até X horas após confirmação do pagamento" quando manual).
+5. Link de acesso direto para a área de entrega, quando aplicável.
+6. Contato de suporte visível (e-mail ou WhatsApp).
+7. Mensagem específica para pagamento pendente ou falha, com instrução de o que fazer.
+
+Texto obrigatório se a liberação ainda for manual:
 "Seu acesso será liberado após confirmação do pagamento."
 
-Não prometa acesso automático se ainda não existe integração com gateway.`,
+Regras:
+
+- Não prometer acesso automático se ainda não existe webhook.
+- Não expor links de material pago para quem ainda não comprou.
+- Não usar copy enganosa nem prometer resultado garantido.`,
     agentPrompt: `Quero criar a página de obrigado do meu app.
 
 Produto:
@@ -1226,30 +1232,27 @@ Regras:
     whenLovableDirect: "Quando o produto exige área exclusiva.",
     whenAgentFirst:
       "Quando você não sabe se a entrega deve ser por área restrita, link, e-mail ou código.",
-    content: `Crie uma área de entrega protegida para este produto.
+    content: `Crie a área de entrega protegida do app [nome do app ativo].
 
-Produto:
-[descreva]
-
-Materiais entregues:
-[descreva]
+Produto: [produto]
+Promessa de entrega: [promessa]
 
 A área deve conter:
 
-1. Boas-vindas.
-2. Lista do que foi comprado.
-3. Instruções de uso.
-4. Materiais ou links protegidos.
-5. Checklist de progresso, se fizer sentido.
-6. Botão de suporte.
-7. Bloqueio para visitantes sem acesso.
+1. Boas-vindas com nome do comprador, se houver login.
+2. Lista clara do que foi comprado.
+3. Instruções de uso passo a passo.
+4. Materiais ou links protegidos (visíveis somente para quem tem acesso).
+5. Botão de suporte sempre visível.
+6. Bloqueio para visitantes sem acesso.
 
-Regras:
+Regras de proteção (invioláveis):
 
-- Visitante sem acesso não pode ver materiais.
-- Usuário sem compra não pode ver materiais.
-- Não mostrar links protegidos no código público.
-- Não expor dados sensíveis.`,
+- Conteúdo pago NÃO pode ficar público em nenhuma rota.
+- A entrega deve exigir uma destas condições: login válido, código de acesso, e-mail autorizado, status de compra confirmado ou liberação manual pelo admin.
+- Links diretos para material pago NÃO podem permitir acesso sem compra (validar acesso no carregamento da rota).
+- Dados sensíveis (chaves de API, service role, e-mails de outros compradores) NÃO podem ficar expostos no frontend.
+- Não usar storage público para arquivos pagos.`,
     agentPrompt: `Preciso definir a melhor forma de entregar meu produto.
 
 Produto:
@@ -1290,16 +1293,24 @@ Verifique:
       "Garantir que só compradores confirmados entrem na área de entrega.",
     whenLovableDirect: "Depois que a área de entrega existe.",
     whenAgentFirst: "Quando você não sabe como controlar quem pode entrar.",
-    content: `Implemente o fluxo de acesso restrito para compradores.
+    content: `Implemente o fluxo de acesso restrito para compradores no app [nome do app ativo].
 
-Regras:
+Regras de acesso:
 
-1. Visitante sem login não acessa a entrega.
-2. Usuário logado sem acesso vê mensagem clara.
-3. Usuário com acesso liberado entra na área de entrega.
-4. Admin pode liberar ou revogar acesso, se existir painel.
-5. Comprador recebe orientação de como entrar.
-6. Não expor materiais protegidos para visitantes.
+1. Visitante sem login NÃO acessa a entrega.
+2. Usuário logado sem compra confirmada vê mensagem clara, sem ver material pago.
+3. Usuário com acesso liberado entra normalmente na área de entrega.
+4. Admin pode liberar ou revogar acesso manualmente.
+5. Comprador recebe orientação clara de como entrar (e-mail, link, código).
+6. Materiais protegidos NUNCA aparecem para visitantes.
+
+Testes obrigatórios (todos devem passar antes de avançar):
+
+- Visitante sem compra é bloqueado.
+- Comprador confirmado acessa normalmente.
+- Compra pendente NÃO libera acesso automaticamente.
+- Admin consegue liberar manualmente um comprador.
+- Visitante NÃO consegue burlar por URL direta da entrega.
 
 Se ainda não houver webhook, usar liberação manual.`,
     agentPrompt: `Preciso definir o fluxo de acesso do comprador.
@@ -1346,18 +1357,23 @@ Problemas possíveis:
     whenLovableDirect: "Quando existe login ou área restrita.",
     whenAgentFirst:
       "Quando você não sabe qual recuperação faz sentido para seu produto.",
-    content: `Crie o fluxo de recuperação de acesso.
+    content: `Crie o fluxo de recuperação de acesso do app [nome do app ativo].
 
 Requisitos:
 
-1. Recuperação por e-mail, se houver login.
-2. Mensagem clara para quem esqueceu senha.
-3. Botão de suporte.
-4. Página de ajuda com instruções.
-5. Redirecionamento correto após recuperar acesso.
-6. Evitar expor materiais protegidos durante recuperação.
+1. Busca por e-mail do comprador.
+2. Reenvio de link ou instrução de acesso para o e-mail cadastrado.
+3. Mensagem clara de suporte (com contato) se a busca não encontrar o e-mail.
+4. Recuperação de senha por e-mail quando houver login.
+5. Página de ajuda curta com instruções passo a passo.
+6. Redirecionamento correto após o comprador voltar a entrar.
 
-Não crie fluxo complexo se o MVP só precisa de suporte manual.`,
+Regras de privacidade:
+
+- NÃO revelar dados de outros compradores em nenhuma mensagem.
+- NÃO informar se um e-mail "existe" ou "não existe" de forma que facilite enumeração — usar mensagem neutra.
+- NÃO expor materiais protegidos durante o fluxo de recuperação.
+- Não criar fluxo complexo se o MVP só precisa de suporte manual.`,
     agentPrompt: `Meu comprador pode perder o acesso ao produto.
 
 Produto:
@@ -1399,24 +1415,27 @@ Verifique:
     whenLovableDirect: "Quando o fluxo ainda não tem webhook automático.",
     whenAgentFirst:
       "Quando você não sabe se precisa de painel admin, código de acesso ou webhook.",
-    content: `Crie um painel simples de liberação manual de compradores.
+    content: `Crie um painel simples de liberação manual de compradores para o app [nome do app ativo].
 
-Funções:
+Acesso: apenas admin (verificado via role no banco, nunca via flag do frontend).
 
-1. Buscar usuário por e-mail.
-2. Ver status de acesso.
-3. Liberar acesso.
-4. Revogar acesso.
-5. Ver data de liberação.
-6. Mostrar mensagens claras de sucesso e erro.
+Funções obrigatórias:
 
-Regras:
+1. Buscar comprador por e-mail.
+2. Ver status atual (sem acesso / liberado / revogado / pendente).
+3. Liberar acesso a um comprador.
+4. Revogar acesso de um comprador.
+5. Ver data da liberação.
+6. Registrar uma observação curta sobre o comprador (ex.: "pagou via Pix em 10/01").
+7. Mostrar mensagens claras de sucesso e erro.
 
-- Apenas admin pode acessar.
-- Não expor chave service role no frontend.
-- Não permitir que usuário comum libere acesso.
-- Não mostrar dados sensíveis desnecessários.
-- Manter logs simples, se possível.`,
+Regras de segurança (invioláveis):
+
+- Apenas admin pode acessar a rota e as ações.
+- NUNCA expor service role key no frontend.
+- Usuário comum NUNCA pode liberar ou revogar acesso, nem por chamada direta.
+- NÃO expor dados sensíveis de outros compradores (telefone, endereço, etc.) sem necessidade clara.
+- Manter um log simples de quem liberou / revogou e quando.`,
     agentPrompt: `Preciso controlar acesso de compradores.
 
 Produto:

@@ -70,6 +70,7 @@ import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule"
 import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { ModuleReviewCard } from "@/components/entrega/ModuleReviewCard";
 import { OfertaResumoCard } from "@/components/entrega/OfertaResumoCard";
+import { EntregaResumoCard } from "@/components/entrega/EntregaResumoCard";
 import { GpsDoAppCard } from "@/components/entrega/GpsDoAppCard";
 import { ArquitetoMelhoriasCard } from "@/components/entrega/ArquitetoMelhoriasCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
@@ -2565,24 +2566,27 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <CheckoutIntro />
+        <EntregaResumoCard />
         <ModuleHeader
           title="Siga as etapas de checkout e entrega"
-          subtitle="Comece pela Etapa 1. Só avance quando o comprador conseguir pagar, receber orientação e entrar na entrega."
+          subtitle="Crie um fluxo simples para receber pagamento, confirmar a compra, orientar o comprador e liberar o acesso certo sem expor material pago."
         />
         <CommandList commands={COMMANDS_CHECKOUT} moduleKey="checkout" />
         <ChecklistBlock
-          title="Revisão da etapa"
+          title="Checklist final de checkout e entrega"
           items={[
-            "Comprador entende o que recebeu",
-            "Comprador sabe onde entrar",
-            "Comprador não fica perdido depois da compra",
-            "Área protegida não aparece para visitantes",
-            "Botão de compra abre o caminho correto",
-            "Página de obrigado explica o próximo passo",
-            "Visitante sem acesso não vê material pago",
-            "Comprador liberado entra na entrega",
-            "Admin consegue liberar e revogar acesso",
-            "Existe caminho de suporte ou recuperação",
+            "Sei qual checkout será usado",
+            "Comprador entende o que recebe",
+            "Tenho página de obrigado clara",
+            "Tenho área paga protegida",
+            "Visitante sem compra não vê material pago",
+            "Comprador confirmado recebe acesso",
+            "Compra pendente não libera automaticamente",
+            "Admin consegue liberar manualmente",
+            "Existe recuperação de acesso",
+            "Testei compra aprovada",
+            "Testei compra recusada ou pendente",
+            "Não deixei material pago público",
           ]}
           checklist={checklist}
           setChecklist={setChecklist}
