@@ -269,11 +269,55 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* PLANO EXECUTÁVEL */}
+      {/* DIFERENCIAÇÃO — não é PDF, não é curso */}
       <Section
-        eyebrow="Mais do que um PDF"
-        title="Você não recebe só um PDF. Você acessa um programa completo."
-        subtitle="Área interna organizada, método passo a passo, prompts por etapa, checklists, próximos comandos, orientação de MVP e preparação para venda e validação — tudo em um único acesso."
+        eyebrow="O que a Fábrica é (e o que não é)"
+        title="Não é um PDF. Não é um curso gigante. É uma Fábrica guiada."
+        subtitle="Você não precisa de mais conteúdo parado. Você precisa de um caminho claro para saber o que pedir ao Lovable, em qual ordem construir e como revisar antes de avançar."
+      >
+        <div className="max-w-5xl mx-auto space-y-6">
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { t: "Prompt solto", d: "Te dá uma frase. Sem ordem, sem contexto, sem próximo passo. É fácil gastar créditos testando no escuro.", neg: true },
+              { t: "Curso longo", d: "Te dá horas de vídeo para assistir passivamente. Quando termina, ainda falta saber por onde começar de verdade.", neg: true },
+              { t: "Fábrica de Apps com IA", d: "Te dá uma sequência de construção: método, prompts por etapa, checklists, 30 ideias, área interna e Agente Arquiteto.", neg: false },
+            ].map((c) => (
+              <div
+                key={c.t}
+                className={`glass-strong p-5 md:p-6 space-y-2 ${c.neg ? "opacity-80" : "border-accent/40 neon-shadow"}`}
+              >
+                <div className="flex items-center gap-2">
+                  {c.neg ? (
+                    <span className="text-destructive/80 text-lg leading-none">✕</span>
+                  ) : (
+                    <Check size={18} className="text-accent" />
+                  )}
+                  <p className="font-heading font-bold text-base md:text-lg">{c.t}</p>
+                </div>
+                <p className="text-sm md:text-base text-foreground/90 leading-relaxed">{c.d}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="glass-strong p-6 md:p-8 space-y-4">
+            <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+              Dentro da Fábrica, o programa te ajuda a <span className="text-accent">escolher uma ideia, definir o MVP, montar telas, criar prompts melhores, revisar erros e pensar login, banco, Admin, área paga e checkout</span> — além de preparar venda e validação.
+            </p>
+            <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+              E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> ajuda a transformar sua dúvida em um comando mais claro antes de mandar para o Lovable.
+            </p>
+            <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+              Por <span className="font-semibold">R$197</span>, você acessa o programa completo: método, prompts por etapa, checklists, 30 ideias de aplicativos, área interna e Agente Arquiteto.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* PLANO EXECUTÁVEL — pilares rápidos */}
+      <Section
+        eyebrow="O que você acessa por dentro"
+        title="Tudo organizado em um único acesso"
+        subtitle="Área interna, método passo a passo, prompts por etapa, checklists, próximos comandos, orientação de MVP e preparação para venda e validação."
       >
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {planoExecutavel.map((p) => (
@@ -284,6 +328,7 @@ export default function Home() {
           ))}
         </div>
       </Section>
+
 
       {/* 30 IDEIAS */}
       <Section
