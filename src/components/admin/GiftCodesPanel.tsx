@@ -193,15 +193,12 @@ export function GiftCodesPanel() {
   const totalRedemptions = codes.reduce((sum, c) => sum + (c.current_uses || 0), 0);
 
   return (
-    <section className="mb-8 space-y-4" aria-labelledby="codigos-premium">
-      <header>
-        <h2 id="codigos-premium" className="text-lg md:text-xl font-heading font-bold mb-1 flex items-center gap-2">
-          <KeyRound size={18} className="text-accent" /> Códigos premium
-        </h2>
-        <p className="text-xs text-muted-foreground">
-          Crie, consulte e acompanhe códigos usados para liberar ou estender acesso.
-        </p>
-      </header>
+    <section className="mb-8 space-y-5" aria-labelledby="codigos-premium">
+      <p id="codigos-premium" className="text-xs text-muted-foreground -mt-2">
+        Cada código libera ou estende o acesso de quem resgatar. Defina dias de acesso, limite de usos e, se quiser, uma data de expiração.
+      </p>
+
+
 
       {error && (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3 flex items-start gap-2">
@@ -222,10 +219,16 @@ export function GiftCodesPanel() {
       </div>
 
       {/* Create form */}
-      <form onSubmit={createCode} className="glass-strong p-5 space-y-3">
-        <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
-          <Plus size={14} className="text-accent" /> Novo código
-        </h3>
+      <form onSubmit={createCode} className="glass-strong p-5 space-y-4">
+        <div>
+          <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
+            <Plus size={14} className="text-accent" /> Novo código
+          </h3>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            O código será normalizado em minúsculas. Compartilhe apenas com compradores autorizados.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Código">
             <input
@@ -277,16 +280,19 @@ export function GiftCodesPanel() {
             Ativo no momento da criação
           </label>
         </div>
-        <button type="submit" disabled={creating} className="btn-primary">
+        <button type="submit" disabled={creating} className="btn-primary w-full sm:w-auto px-5 shadow-lg shadow-accent/10">
           {creating ? <Loader2 size={16} className="animate-spin" /> : <><Plus size={16} /> Criar código</>}
         </button>
       </form>
 
       {/* List */}
       <div className="glass-strong p-5">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-heading font-semibold text-sm">Códigos cadastrados</h3>
-          <button onClick={load} className="text-[11px] text-muted-foreground hover:text-foreground">
+        <div className="flex items-center justify-between mb-3 gap-3">
+          <div className="min-w-0">
+            <h3 className="font-heading font-semibold text-sm">Códigos cadastrados</h3>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Mostra os 200 códigos mais recentes.</p>
+          </div>
+          <button onClick={load} className="text-[11px] text-muted-foreground hover:text-foreground shrink-0">
             Atualizar
           </button>
         </div>
@@ -295,7 +301,13 @@ export function GiftCodesPanel() {
             <Loader2 size={14} className="animate-spin" /> Carregando…
           </div>
         ) : codes.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhum código cadastrado ainda.</p>
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
+            <KeyRound size={18} className="mx-auto text-muted-foreground/60 mb-2" />
+            <p className="text-sm text-foreground/80">Nenhum código cadastrado ainda.</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Crie um código acima para liberar ou estender o acesso de um comprador.
+            </p>
+          </div>
         ) : (
           <ul className="space-y-2">
             {codes.map((c) => {
@@ -365,11 +377,22 @@ export function GiftCodesPanel() {
 
       {/* Redemptions */}
       <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm flex items-center gap-2 mb-3">
-          <History size={14} className="text-accent" /> Últimos resgates
-        </h3>
+        <div className="mb-3">
+          <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
+            <History size={14} className="text-accent" /> Últimos resgates
+          </h3>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            Mostra os 20 resgates mais recentes. Apenas user_id é exibido por segurança.
+          </p>
+        </div>
         {redemptions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhum resgate registrado ainda.</p>
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
+            <History size={18} className="mx-auto text-muted-foreground/60 mb-2" />
+            <p className="text-sm text-foreground/80">Nenhum resgate registrado ainda.</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Os resgates aparecem aqui quando um comprador utilizar um código. Para identificar o comprador, use a busca por e-mail na seção Acessos.
+            </p>
+          </div>
         ) : (
           <ul className="space-y-1.5 text-xs">
             {redemptions.map((r) => {
@@ -396,9 +419,6 @@ export function GiftCodesPanel() {
             })}
           </ul>
         )}
-        <p className="text-[11px] text-muted-foreground mt-3">
-          O histórico mostra user_id por motivo de segurança. Para identificar o comprador, use o painel de busca por e-mail acima.
-        </p>
       </div>
     </section>
   );
