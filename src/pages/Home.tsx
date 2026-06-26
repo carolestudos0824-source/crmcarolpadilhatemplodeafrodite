@@ -74,8 +74,8 @@ const beneficios = [
 ];
 
 const naoIncluso = [
-  "Créditos do Lovable não inclusos",
-  "Conta ou plano pago do Lovable não inclusos",
+  "Conta, plano e créditos do Lovable não inclusos",
+  "Conta, plano e limites do ChatGPT não inclusos",
   "Domínio próprio não incluso",
   "Hospedagem e ferramentas externas não inclusas",
   "App feito por mim ou desenvolvimento personalizado não incluso",
