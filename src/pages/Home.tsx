@@ -227,7 +227,7 @@ export default function Home() {
       <Section
         eyebrow="Inspiração inclusa"
         title="30 ideias de aplicativos para você não começar do zero"
-        subtitle="O programa inclui 30 modelos de apps simples para inspirar seu projeto — vários tipos de MVPs prontos para adaptar ao seu serviço, método, conteúdo ou produto digital."
+        subtitle="Você não começa do zero olhando para uma tela em branco. O programa traz 30 ideias de aplicativos simples para inspirar e adaptar ao seu serviço, método, conteúdo ou produto digital — sem prometer que qualquer app complexo será criado facilmente."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
           <ul className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
