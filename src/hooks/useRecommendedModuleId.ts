@@ -33,11 +33,29 @@ export const useRecommendedModuleId = (): ModuleId | null => {
     else if (["comece", "ideias", "validacao"].includes(mod)) phase = "scratch";
     else phase = "versioning";
 
-    if (phase === "ready" && !isDone("melhorias")) return "melhorias";
-    if (phase === "scratch" && !isDone("mvp")) return "mvp";
-    if (phase === "versioning" && !isDone("planejar")) return "planejar";
-
     const activeModuleId = (activeProject.currentModuleId ?? active) as ModuleId | null;
+    const activeIdx = activeModuleId ? MODULE_ORDER.indexOf(activeModuleId) : -1;
+    const idxOf = (id: ModuleId) => MODULE_ORDER.indexOf(id);
+
+    // Só recomenda um passo "anterior" da jornada se a pessoa ainda não
+    // avançou além dele. Evita mostrar "Planejar o App" quando a usuária
+    // está em módulos posteriores como Página de venda.
+    const suggestIfNotPast = (id: ModuleId) =>
+      !isDone(id) && (activeIdx === -1 || activeIdx <= idxOf(id)) ? id : null;
+
+    if (phase === "ready") {
+      const s1 = suggestIfNotPast("melhorias");
+      if (s1) return s1;
+    }
+    if (phase === "scratch") {
+      const s2 = suggestIfNotPast("mvp");
+      if (s2) return s2;
+    }
+    if (phase === "versioning") {
+      const s3 = suggestIfNotPast("planejar");
+      if (s3) return s3;
+    }
+
     if (activeModuleId && !isDone(activeModuleId)) return activeModuleId;
 
     const nextPending = MODULE_ORDER.find((id) => !isDone(id));

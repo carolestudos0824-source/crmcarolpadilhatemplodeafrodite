@@ -707,55 +707,52 @@ Avalie:
 export const COMMANDS_VENDA: Command[] = [
   {
     n: 1,
-    title: "Definir oferta e criar landing page",
-    purpose: "Criar a primeira página que explica e vende o app.",
+    title: "Definir a oferta e criar a landing page (sem checkout)",
+    purpose:
+      "Definir a oferta antes de pedir a landing, e gerar uma página clara que explica e vende o app — sem configurar pagamento ainda.",
     when: "Quando você já sabe público, dor, promessa e entrega.",
     where: "Cole no Lovable.",
     result:
-      "Landing page clara, mobile first, com promessa, benefícios, CTA e FAQ.",
-    objective: "Criar a primeira página que explica e vende o app.",
+      "Landing page clara, mobile first, com hero, promessa, para quem é, problema, como funciona, o que recebe, FAQ, confiança, aviso de não garantia e CTA final. Sem checkout.",
+    objective:
+      "Definir a oferta e criar a primeira página que explica e vende o app, sem checkout.",
     whenLovableDirect:
       "Quando você já sabe público, dor, promessa e entrega.",
     whenAgentFirst:
       "Quando você ainda não sabe explicar por que alguém compraria seu app.",
-    content: `Crie uma landing page para vender este app.
+    content: `Primeiro confirme a oferta antes de criar a landing.
 
-App:
-[descreva]
+Oferta:
+- Público: [descreva]
+- Dor: [descreva]
+- Promessa segura (sem garantia absoluta): [descreva]
+- Oferta principal: [descreva o que a pessoa recebe]
+- Preço ou faixa de teste: [informe]
+- CTA principal: [ex.: "Começar agora", "Ver meu resultado"]
 
-Público:
-[descreva]
+Depois, crie a landing page com as seções obrigatórias, nesta ordem:
 
-Dor:
-[descreva]
-
-Promessa:
-[descreva]
-
-Entrega:
-[descreva o que a pessoa recebe]
-
-Crie uma página com:
-
-1. Hero forte.
-2. Subtítulo claro.
-3. Botão principal.
-4. Problema que o app resolve.
-5. Como funciona.
-6. Benefícios.
-7. O que está incluso.
-8. O que não está incluso, se fizer sentido.
-9. Prova ou elementos de confiança sem inventar depoimentos.
-10. FAQ.
+1. Hero claro (título + subtítulo + CTA principal).
+2. Promessa principal, honesta, sem garantia absoluta.
+3. Para quem é.
+4. Problema que resolve.
+5. Como funciona em poucos passos.
+6. O que a pessoa recebe ao usar/comprar.
+7. Preço ou chamada para o próximo passo (não criar checkout aqui).
+8. FAQ com pelo menos 6 perguntas reais.
+9. Seção de confiança (sem inventar depoimentos, números ou marcas).
+10. Aviso de não garantia, quando o nicho exigir (relacionamento, saúde, dinheiro, carreira, espiritualidade).
 11. CTA final.
 
 Regras:
 
 - Mobile first.
-- Texto claro.
+- Texto claro, sem hype.
 - Sem promessas exageradas.
 - Sem lorem ipsum.
-- Não inventar resultados garantidos.`,
+- Não inventar resultados garantidos, depoimentos ou prêmios.
+- Não criar checkout, pagamento ou integração de gateway nesta etapa.
+- Não alterar login, banco, área paga, admin ou navegação geral.`,
     agentPrompt: `Quero transformar meu app em uma oferta vendável.
 
 App:
