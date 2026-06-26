@@ -162,6 +162,17 @@ const CHECKLIST_PREFIX = "melhorias_step__";
 const RAW_MELHORIAS_PLACEHOLDER =
   /\[(?:nome do app(?:\s+ativo|\s+selecionado|\s+atual)?|descreva(?:\s+o\s+app|\s+o\s+público|\s+a\s+dor)?|promessa|produto(?:\s+ou\s+serviço)?|modelo de cobrança|ação principal|informe|preencha|público|problema)\]|Aplicativo X/i;
 
+// Frases das versões antigas (v1) deste módulo. Quando o contexto está
+// preenchido, prompts salvos com essas frases são considerados obsoletos
+// e substituídos pela versão contextualizada nova.
+const LEGACY_MELHORIAS_PHRASES: RegExp[] = [
+  /Crie uma estrutura simples para organizar feedbacks e métricas/i,
+  /Analise a lista de problemas do app/i,
+  /Crie um plano da próxima versão/i,
+  /Aplique a melhoria priorizada/i,
+  /Crie um pequeno registro de uma versão do app/i,
+];
+
 function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text: string; label?: string }) {
   const [ok, setOk] = useState(false);
   const handle = async () => {
@@ -195,7 +206,9 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
   const Icon = etapa.icon;
   const resolvedPrompt = applyContextPlaceholders(etapa.tabs[tab], context);
   const invalidateSavedPrompt = isFilled
-    ? (saved: string) => RAW_MELHORIAS_PLACEHOLDER.test(saved)
+    ? (saved: string) =>
+        RAW_MELHORIAS_PLACEHOLDER.test(saved) ||
+        LEGACY_MELHORIAS_PHRASES.some((re) => re.test(saved))
     : undefined;
   return (
     <GlassCard className="p-5 md:p-6">
