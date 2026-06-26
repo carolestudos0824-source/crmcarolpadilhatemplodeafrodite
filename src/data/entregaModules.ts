@@ -1169,22 +1169,29 @@ Verifique:
     whenLovableDirect: "Depois de criar o caminho de pagamento.",
     whenAgentFirst:
       "Quando você não sabe o que o comprador deve ver depois de pagar.",
-    content: `Crie uma página de obrigado para este app.
+    content: `Crie a página de obrigado do app [nome do app ativo].
 
-A página deve conter:
+Produto comprado: [produto]
+Ação esperada após a compra: [ação principal]
 
-1. Confirmação da compra.
-2. Resumo do que a pessoa comprou.
-3. Próximo passo claro.
-4. Informação sobre liberação de acesso.
-5. Botão para login ou área de entrega, se aplicável.
-6. Botão de suporte.
-7. Mensagem honesta se a liberação for manual.
+A página deve conter, nesta ordem:
 
-Texto obrigatório se o acesso ainda for manual:
+1. Confirmação clara da compra ("Compra recebida").
+2. Nome do produto comprado em destaque: [produto].
+3. Próximo passo claro: o que fazer agora.
+4. Prazo / orientação de liberação (ex.: "Liberação em até X horas após confirmação do pagamento" quando manual).
+5. Link de acesso direto para a área de entrega, quando aplicável.
+6. Contato de suporte visível (e-mail ou WhatsApp).
+7. Mensagem específica para pagamento pendente ou falha, com instrução de o que fazer.
+
+Texto obrigatório se a liberação ainda for manual:
 "Seu acesso será liberado após confirmação do pagamento."
 
-Não prometa acesso automático se ainda não existe integração com gateway.`,
+Regras:
+
+- Não prometer acesso automático se ainda não existe webhook.
+- Não expor links de material pago para quem ainda não comprou.
+- Não usar copy enganosa nem prometer resultado garantido.`,
     agentPrompt: `Quero criar a página de obrigado do meu app.
 
 Produto:
