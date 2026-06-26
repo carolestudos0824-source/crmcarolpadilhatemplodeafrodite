@@ -355,7 +355,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
 
   return (
     <div className="space-y-4">
-      <div className="glass-strong p-5">
+      <div className="admin-card p-5">
         <div className="flex items-start justify-between gap-3 mb-3 flex-wrap">
           <div>
             <h3 className="font-heading font-semibold text-sm">Compradores</h3>
@@ -430,106 +430,124 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
             </div>
           </div>
         ) : consolidated.length === 0 ? (
-          <div className="text-sm text-muted-foreground py-8 text-center">
-            Nenhum comprador encontrado com esses filtros.
+          <div className="admin-empty">
+            <Search className="text-muted-foreground" size={24} />
+            <p className="admin-empty-title">Nenhum comprador encontrado</p>
+            <p className="admin-empty-hint">Ajuste a busca ou os filtros acima para ver outros compradores.</p>
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto -mx-2">
-              <table className="w-full text-xs min-w-[760px]">
-                <thead className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                  <tr className="border-b border-white/10">
-                    <th className="text-left px-2 py-2">E-mail / Nome</th>
-                    <th className="text-left px-2 py-2">Vendas</th>
-                    <th className="text-right px-2 py-2">Total pago</th>
-                    <th className="text-left px-2 py-2">Última venda</th>
-                    <th className="text-left px-2 py-2">Acesso</th>
-                    <th className="text-left px-2 py-2">Origem</th>
-                    <th className="text-left px-2 py-2">Data</th>
-                    <th className="text-left px-2 py-2">Próximo passo</th>
-                    <th className="text-right px-2 py-2">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {consolidated.map((c) => (
-                    <tr key={c.key} className="border-b border-white/5 hover:bg-white/[0.02]">
-                      <td className="px-2 py-2">
-                        <div className="font-medium text-foreground truncate max-w-[200px]">{c.email ?? "—"}</div>
-                        <div className="text-[10px] text-muted-foreground truncate max-w-[200px]">
-                          {c.buyer_name ?? "Sem nome"}
-                        </div>
-                      </td>
-                      <td className="px-2 py-2">
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px]">
-                          {c.sales_count} venda{c.sales_count === 1 ? "" : "s"}
-                        </span>
-                      </td>
-                      <td className="px-2 py-2 text-right whitespace-nowrap tabular-nums">
-                        {c.total_paid_confirmed > 0 ? fmtMoney(c.total_paid_confirmed, c.currency) : "—"}
-                      </td>
-                      <td className="px-2 py-2">{c.payment_status_label}</td>
-                      <td className="px-2 py-2">{c.access_status_label}</td>
-                      <td className="px-2 py-2">{c.source_label}</td>
-                      <td className="px-2 py-2 whitespace-nowrap">{fmtDate(c.sale_created_at ?? c.user_created_at)}</td>
-                      <td className="px-2 py-2 text-[11px]">{c.next_step}</td>
-                      <td className="px-2 py-2">
-                        <div className="flex gap-1 justify-end flex-wrap">
-                          <button
-                            onClick={() => setSelected(c)}
-                            className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5"
-                            title="Ver detalhes"
-                          >
-                            <Eye size={12} />
-                          </button>
-                          <button
-                            onClick={() => c.email && copy(c.email, "E-mail copiado.")}
-                            className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5"
-                            title="Copiar e-mail"
-                          >
-                            <Copy size={12} />
-                          </button>
-                          <button
-                            onClick={() => copy(MSG_FIRST_LOGIN, "Instrução copiada.")}
-                            className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5"
-                            title="Copiar instrução de acesso"
-                          >
-                            <Copy size={12} />
-                          </button>
-                          {c.user_id && !c.has_access && (
-                            <button
-                              onClick={() => grant(c)}
-                              disabled={acting}
-                              className="p-1.5 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10"
-                              title="Liberar acesso"
-                            >
-                              <UserCheck size={12} />
-                            </button>
-                          )}
-                          {c.user_id && c.has_access && (
-                            <button
-                              onClick={() => revoke(c)}
-                              disabled={acting}
-                              className="p-1.5 rounded-lg border border-rose-500/30 text-rose-200 hover:bg-rose-500/10"
-                              title="Revogar acesso geral"
-                            >
-                              <UserX size={12} />
-                            </button>
-                          )}
-                          {c.sale_id && onGoToSales && (
-                            <button
-                              onClick={() => onGoToSales(c.sale_id!)}
-                              className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5"
-                              title="Ver venda"
-                            >
-                              <ShoppingCart size={12} />
-                            </button>
-                          )}
-                        </div>
-                      </td>
+            <div className="admin-table-wrapper">
+              <div className="overflow-x-auto">
+                <table className="admin-table min-w-[760px]">
+                  <thead>
+                    <tr>
+                      <th>E-mail / Nome</th>
+                      <th>Vendas</th>
+                      <th className="text-right">Total pago</th>
+                      <th>Última venda</th>
+                      <th>Acesso</th>
+                      <th>Origem</th>
+                      <th>Data</th>
+                      <th>Próximo passo</th>
+                      <th className="text-right">Ações</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {consolidated.map((c) => (
+                      <tr key={c.key}>
+                        <td>
+                          <div className="font-medium text-foreground truncate max-w-[220px]">{c.email ?? "—"}</div>
+                          <div className="text-[11px] text-muted-foreground truncate max-w-[220px]">
+                            {c.buyer_name ?? "Sem nome"}
+                          </div>
+                        </td>
+                        <td>
+                          <span className="admin-badge admin-badge-muted">
+                            {c.sales_count} venda{c.sales_count === 1 ? "" : "s"}
+                          </span>
+                        </td>
+                        <td className="text-right whitespace-nowrap tabular-nums">
+                          {c.total_paid_confirmed > 0 ? fmtMoney(c.total_paid_confirmed, c.currency) : "—"}
+                        </td>
+                        <td>
+                          <span className={`admin-badge ${
+                            c.payment_status === "paid_confirmed" ? "admin-badge-success"
+                            : c.payment_status === "pending_confirmation" ? "admin-badge-warning"
+                            : c.payment_status === "cancelled" ? "admin-badge-danger"
+                            : "admin-badge-muted"
+                          }`}>{c.payment_status_label}</span>
+                        </td>
+                        <td>
+                          <span className={`admin-badge ${
+                            c.has_access ? "admin-badge-success"
+                            : c.access_status_label === "Acesso revogado" ? "admin-badge-danger"
+                            : c.access_status_label.startsWith("Aguardando") ? "admin-badge-warning"
+                            : "admin-badge-muted"
+                          }`}>{c.access_status_label}</span>
+                        </td>
+                        <td><span className="admin-badge admin-badge-info">{c.source_label}</span></td>
+                        <td className="whitespace-nowrap text-xs text-muted-foreground">{fmtDate(c.sale_created_at ?? c.user_created_at)}</td>
+                        <td className="text-[11px]">{c.next_step}</td>
+                        <td>
+                          <div className="flex gap-1 justify-end flex-wrap">
+                            <button
+                              onClick={() => setSelected(c)}
+                              className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition"
+                              title="Ver detalhes"
+                            >
+                              <Eye size={12} />
+                            </button>
+                            <button
+                              onClick={() => c.email && copy(c.email, "E-mail copiado.")}
+                              className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition"
+                              title="Copiar e-mail"
+                            >
+                              <Copy size={12} />
+                            </button>
+                            <button
+                              onClick={() => copy(MSG_FIRST_LOGIN, "Instrução copiada.")}
+                              className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition"
+                              title="Copiar instrução de acesso"
+                            >
+                              <Copy size={12} />
+                            </button>
+                            {c.user_id && !c.has_access && (
+                              <button
+                                onClick={() => grant(c)}
+                                disabled={acting}
+                                className="p-1.5 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition"
+                                title="Liberar acesso"
+                              >
+                                <UserCheck size={12} />
+                              </button>
+                            )}
+                            {c.user_id && c.has_access && (
+                              <button
+                                onClick={() => revoke(c)}
+                                disabled={acting}
+                                className="p-1.5 rounded-lg border border-rose-500/30 text-rose-200 hover:bg-rose-500/10 transition"
+                                title="Revogar acesso geral"
+                              >
+                                <UserX size={12} />
+                              </button>
+                            )}
+                            {c.sale_id && onGoToSales && (
+                              <button
+                                onClick={() => onGoToSales(c.sale_id!)}
+                                className="p-1.5 rounded-lg border border-white/10 hover:bg-white/5 transition"
+                                title="Ver venda"
+                              >
+                                <ShoppingCart size={12} />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             {hasMore && (
@@ -538,7 +556,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                   type="button"
                   onClick={() => load("more")}
                   disabled={loadingMore}
-                  className="px-4 py-2 rounded-lg border border-white/15 text-xs hover:bg-white/5 inline-flex items-center gap-2 disabled:opacity-50"
+                  className="px-4 py-2 rounded-lg border border-white/15 text-xs hover:bg-white/5 inline-flex items-center gap-2 disabled:opacity-50 transition"
                 >
                   {loadingMore && <Loader2 size={12} className="animate-spin" />}
                   Carregar mais
