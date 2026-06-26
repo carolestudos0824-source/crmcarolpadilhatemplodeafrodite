@@ -692,7 +692,7 @@ function DrawerShell({ title, onClose, children }: { title: string; onClose: () 
   return (
     <>
       <div className="fixed inset-0 z-40 bg-black/70" onClick={onClose} aria-hidden />
-      <aside className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#0B1020] border-l border-white/10 flex flex-col">
+      <aside className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[hsl(var(--admin-surface-1))] border-l border-[hsl(var(--admin-border-subtle))] flex flex-col">
         <header className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <h2 className="font-heading font-semibold">{title}</h2>
           <button type="button" onClick={onClose} aria-label="Fechar" className="p-1.5 rounded-lg hover:bg-white/5">
