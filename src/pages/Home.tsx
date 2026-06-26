@@ -131,7 +131,7 @@ export default function Home() {
               Da ideia ao app no Lovable: um programa completo para construir com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, 30 ideias de aplicativos, prompts por etapa, checklists e um Agente Arquiteto via ChatGPT para te ajudar quando você travar.
+              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, 30 ideias de aplicativos, prompts por etapa e checklists. E quando você travar, conta com um Agente Arquiteto via ChatGPT para ajudar a pensar o próximo comando antes de usar no Lovable.
             </p>
             <p className="text-sm text-accent/90 italic max-w-xl">
               A própria Fábrica de Apps com IA foi construída no Lovable seguindo a lógica que o programa ensina: planejar, pedir, revisar, corrigir e avançar por etapas.
