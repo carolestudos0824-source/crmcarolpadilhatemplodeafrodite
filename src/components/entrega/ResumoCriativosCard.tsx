@@ -105,6 +105,8 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
     angulo:
       "curiosidade, clareza, dor real e prova honesta (sem promessa exagerada)",
     formatos: "Story, Reels curto, post carrossel, card estático e direct/WhatsApp",
+    formatosPagos:
+      "criativo estático para Meta Ads, vídeo curto para anúncio, variação de headline, variação de CTA e criativo para teste A/B",
     cta: ctx.mainAction?.trim()
       ? `"${ctx.mainAction.trim()}"`
       : '"Testar agora" ou "Quero saber mais"',
@@ -114,7 +116,7 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
     gatilho:
       "quando a pessoa entende a oferta e percebe valor — não force compra antes disso",
     metrica:
-      "cliques no CTA, respostas, leads, dúvidas repetidas, compras ou pedidos de acesso",
+      "cliques no CTA, respostas, leads, dúvidas repetidas, compras, CTR ou custo por resultado",
     naoProm: GENERIC_NAO_PROM,
     angulosSugeridos: [
       ["Curiosidade", "Use uma pergunta forte sobre a dor do público."],
