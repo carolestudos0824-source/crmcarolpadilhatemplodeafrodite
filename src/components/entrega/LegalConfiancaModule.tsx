@@ -22,7 +22,8 @@ import { useUserProgress } from "@/hooks/useUserProgress";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext } from "@/hooks/useProjectContext";
-import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
+import { ResumoLegalCard } from "./ResumoLegalCard";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso preparar páginas de confiança antes de divulgar. Me ajude a organizar: termos de uso, política de privacidade, suporte, segurança, entrega, pagamento, acesso, limites da promessa e mensagens claras para reduzir dúvidas dos usuários. Não quero texto jurídico complexo, quero uma estrutura simples, clara e responsável.`;
 
