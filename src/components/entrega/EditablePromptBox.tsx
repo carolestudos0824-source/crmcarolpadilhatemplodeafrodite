@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Copy, Check, RotateCcw, Settings2, Bookmark } from "lucide-react";
+import { Copy, Check, RotateCcw, Settings2, Bookmark, ChevronDown } from "lucide-react";
 import { usePromptStudio, type PromptStudioOptions } from "./PromptStudioProvider";
 import { useAuthState } from "@/hooks/useAuthState";
 import { savePromptForUser } from "@/lib/savePrompt";
