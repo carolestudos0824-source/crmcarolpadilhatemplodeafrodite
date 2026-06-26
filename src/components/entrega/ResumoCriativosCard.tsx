@@ -16,6 +16,7 @@ type Suggestion = {
   publico: string;
   angulo: string;
   formatos: string;
+  formatosPagos: string;
   cta: string;
   preco: string;
   gatilho: string;
@@ -23,6 +24,18 @@ type Suggestion = {
   naoProm: string[];
   angulosSugeridos: [string, string][];
 };
+
+const ANTES_ANUNCIO_PAGO = [
+  "oferta clara",
+  "página funcionando",
+  "checkout ou próximo passo testado",
+  "entrega protegida",
+  "promessa segura",
+  "pelo menos 3 variações de criativo",
+  "métrica principal definida",
+  "verba inicial controlada",
+  "critério de pausa definido",
+];
 
 const GENERIC_NAO_PROM = [
   "vendas garantidas",
@@ -59,13 +72,15 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
       angulo:
         "curiosidade, reflexão, diversão, autoconhecimento e experiência simbólica",
       formatos:
-        "Story, Reels curto, post carrossel, card estático, direct/WhatsApp e anúncio simples",
+        "Story, Reels curto, post carrossel, card estático e direct/WhatsApp",
+      formatosPagos:
+        "criativo estático para Meta Ads, vídeo curto para anúncio, variação de headline, variação de CTA e criativo para teste A/B",
       cta: '"Começar o jogo", "Ver meu resultado completo" ou "Fazer o teste agora"',
       preco: "R$ 17 a R$ 47 para teste inicial, quando fizer sentido",
       gatilho:
         "depois que a pessoa responde parte do jogo e quer ver o resultado completo",
       metrica:
-        "clique no CTA, resposta no direct, início do jogo, lead ou compra",
+        "clique no CTA, resposta no direct, início do jogo, lead, compra, CTR ou custo por resultado",
       naoProm: [
         "amor garantido ou salvar relacionamento",
         "prever futuro",
@@ -90,6 +105,8 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
     angulo:
       "curiosidade, clareza, dor real e prova honesta (sem promessa exagerada)",
     formatos: "Story, Reels curto, post carrossel, card estático e direct/WhatsApp",
+    formatosPagos:
+      "criativo estático para Meta Ads, vídeo curto para anúncio, variação de headline, variação de CTA e criativo para teste A/B",
     cta: ctx.mainAction?.trim()
       ? `"${ctx.mainAction.trim()}"`
       : '"Testar agora" ou "Quero saber mais"',
@@ -99,7 +116,7 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
     gatilho:
       "quando a pessoa entende a oferta e percebe valor — não force compra antes disso",
     metrica:
-      "cliques no CTA, respostas, leads, dúvidas repetidas, compras ou pedidos de acesso",
+      "cliques no CTA, respostas, leads, dúvidas repetidas, compras, CTR ou custo por resultado",
     naoProm: GENERIC_NAO_PROM,
     angulosSugeridos: [
       ["Curiosidade", "Use uma pergunta forte sobre a dor do público."],
@@ -148,7 +165,8 @@ export function ResumoCriativosCard() {
           ["Oferta principal", s.oferta],
           ["Público inicial", s.publico],
           ["Ângulo criativo seguro", s.angulo],
-          ["Formatos recomendados", s.formatos],
+          ["Formatos orgânicos recomendados", s.formatos],
+          ["Formatos pagos recomendados", s.formatosPagos],
           ["CTA sugerido", s.cta],
           ["Preço sugerido", s.preco],
           ["Gatilho de compra", s.gatilho],
@@ -196,7 +214,21 @@ export function ResumoCriativosCard() {
           <li><b>Teste A/B:</b> comparação entre duas versões.</li>
           <li><b>Peça orgânica:</b> publicada sem pagar mídia.</li>
           <li><b>Peça paga:</b> impulsionada via anúncio.</li>
+          <li><b>CTR:</b> taxa de clique (cliques ÷ impressões).</li>
+          <li><b>Custo por resultado:</b> quanto custou cada ação medida (clique, lead, compra).</li>
         </ul>
+      </div>
+
+      <div className="mt-3 rounded-lg border border-sky-400/30 bg-sky-400/10 p-3 text-[13px] text-sky-100 flex items-start gap-2">
+        <ShieldCheck size={14} className="shrink-0 mt-0.5" />
+        <div>
+          <div className="font-semibold mb-1">Antes de usar em anúncio pago:</div>
+          <ul className="list-disc list-inside space-y-0.5">
+            {ANTES_ANUNCIO_PAGO.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div className="mt-3 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-[13px] text-amber-100 flex items-start gap-2">
