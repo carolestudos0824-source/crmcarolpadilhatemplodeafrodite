@@ -171,7 +171,6 @@ export function PainelProntidaoModule({ goTo }: Props) {
     ? PHASE_TO_NEXT_ACTION[firstIncompletePhase.idx]
     : null;
 
-  const checkoutPendente = APP_CONFIG.CHECKOUT_FABRICA_URL === "COLE_AQUI_A_URL_REAL";
 
   const toggle = (key: string) =>
     setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
