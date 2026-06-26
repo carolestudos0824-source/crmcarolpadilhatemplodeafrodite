@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Sparkles, Layers, Database, Rocket, Brain, Target, ChevronRight,
   Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
-  Lightbulb, Check, ShieldCheck, PlayCircle,
+  Lightbulb, Check, ShieldCheck, PlayCircle, Bot,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { GlassCard } from "@/components/GlassCard";
@@ -65,6 +65,7 @@ const beneficios = [
   "Prompts por etapa para o Lovable",
   "Checklists de avanço em cada módulo",
   "30 ideias de aplicativos",
+  "Acesso ao Agente Arquiteto via ChatGPT",
   "Área interna organizada",
   "Próximo passo recomendado",
   "Jornada para começar do zero",
@@ -114,6 +115,9 @@ const naoEParaQuem = [
 
 const faqs = [
   { q: "Preciso saber programar?", a: "Não. A Fábrica foi criada para pessoas não técnicas organizarem a construção e gerarem comandos melhores para o Lovable." },
+  { q: "O que é o Agente Arquiteto?", a: "É um agente treinado, acessado por um botão dentro da área interna, que abre no ChatGPT. Ele ajuda você a planejar o app, definir MVP, organizar telas, melhorar prompts, corrigir erros, revisar segurança básica e decidir os próximos passos antes de pedir ao Lovable." },
+  { q: "Ele cria o app por mim?", a: "Não. O Agente Arquiteto orienta, organiza e revisa. A construção do app continua sendo feita por você dentro do Lovable. Ele não substitui o Lovable nem garante app perfeito ou segurança 100%." },
+  { q: "Preciso ter conta no ChatGPT?", a: "Sim. O Agente Arquiteto abre dentro do ChatGPT, então você precisa ter sua própria conta. O uso do ChatGPT e do Lovable pode depender da sua própria conta, plano ou limites dessas plataformas externas." },
   { q: "Preciso ter conta no Lovable?", a: "Sim. O programa orienta a criação no Lovable, então você precisa ter sua própria conta na plataforma." },
   { q: "O Lovable está incluso no preço?", a: "Não. O Lovable é uma plataforma externa, com plano e regras próprias. Você usa sua conta separadamente." },
   { q: "Os créditos do Lovable estão inclusos?", a: "Não. Créditos do Lovable são contratados diretamente com o Lovable. A Fábrica ajuda a usar melhor o que você tem, mas não fornece créditos." },
@@ -242,6 +246,46 @@ export default function Home() {
           </ul>
           <p className="text-xs text-muted-foreground/80 mt-6 text-center">
             E mais ideias prontas para servir de ponto de partida — focadas em vários tipos de MVPs e aplicativos simples.
+          </p>
+        </div>
+      </Section>
+
+      {/* AGENTE ARQUITETO */}
+      <Section
+        eyebrow="Diferencial do programa"
+        title="Agente Arquiteto: seu copiloto antes de pedir ao Lovable"
+        subtitle="Dentro da área interna você encontra um botão que abre o Agente Arquiteto direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar o que você vai pedir — antes de gastar prompt no Lovable."
+      >
+        <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
+              <Bot size={24} className="text-accent" />
+            </div>
+            <div>
+              <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+                Ele não substitui o Lovable e não constrói o app sozinho. Ele organiza sua cabeça e melhora o que sai do seu teclado.
+              </p>
+            </div>
+          </div>
+          <ul className="grid sm:grid-cols-2 gap-3">
+            {[
+              "Planejar o app com ideia, público e dor",
+              "Definir o MVP enxuto",
+              "Organizar telas e fluxo do usuário",
+              "Melhorar os prompts antes de colar no Lovable",
+              "Apoiar na correção de erros e quebras",
+              "Revisar pontos básicos de segurança",
+              "Decidir os próximos passos no Lovable",
+              "Evitar pedidos vagos que gastam crédito à toa",
+            ].map((i) => (
+              <li key={i} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
+                <Check size={16} className="text-accent shrink-0 mt-1" />
+                <span>{i}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted-foreground/80 mt-6">
+            O Agente Arquiteto abre no ChatGPT. O uso do ChatGPT e do Lovable pode depender da sua própria conta, plano ou limites dessas plataformas externas.
           </p>
         </div>
       </Section>
