@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Sparkles,
   DollarSign,
@@ -13,10 +13,12 @@ import {
   Briefcase,
   Calculator,
   Coins,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
 import { APP_CONFIG } from "@/config/appConfig";
+import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
 
 const AGENT_PROMPT = `Estou criando um app e preciso definir como monetizar. Me ajude a escolher o melhor modelo de cobrança. Faça perguntas sobre: público, dor resolvida, entrega principal, frequência de uso, valor percebido, concorrentes, formato de acesso e se faz mais sentido venda única, assinatura, freemium, plano beta ou licença.`;
 
