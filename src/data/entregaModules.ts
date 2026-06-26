@@ -1293,16 +1293,24 @@ Verifique:
       "Garantir que só compradores confirmados entrem na área de entrega.",
     whenLovableDirect: "Depois que a área de entrega existe.",
     whenAgentFirst: "Quando você não sabe como controlar quem pode entrar.",
-    content: `Implemente o fluxo de acesso restrito para compradores.
+    content: `Implemente o fluxo de acesso restrito para compradores no app [nome do app ativo].
 
-Regras:
+Regras de acesso:
 
-1. Visitante sem login não acessa a entrega.
-2. Usuário logado sem acesso vê mensagem clara.
-3. Usuário com acesso liberado entra na área de entrega.
-4. Admin pode liberar ou revogar acesso, se existir painel.
-5. Comprador recebe orientação de como entrar.
-6. Não expor materiais protegidos para visitantes.
+1. Visitante sem login NÃO acessa a entrega.
+2. Usuário logado sem compra confirmada vê mensagem clara, sem ver material pago.
+3. Usuário com acesso liberado entra normalmente na área de entrega.
+4. Admin pode liberar ou revogar acesso manualmente.
+5. Comprador recebe orientação clara de como entrar (e-mail, link, código).
+6. Materiais protegidos NUNCA aparecem para visitantes.
+
+Testes obrigatórios (todos devem passar antes de avançar):
+
+- Visitante sem compra é bloqueado.
+- Comprador confirmado acessa normalmente.
+- Compra pendente NÃO libera acesso automaticamente.
+- Admin consegue liberar manualmente um comprador.
+- Visitante NÃO consegue burlar por URL direta da entrega.
 
 Se ainda não houver webhook, usar liberação manual.`,
     agentPrompt: `Preciso definir o fluxo de acesso do comprador.
