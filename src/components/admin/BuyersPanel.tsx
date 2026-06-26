@@ -5,6 +5,14 @@ import { toast } from "sonner";
 import { withTimeout } from "@/lib/promiseTimeout";
 import { BuyerDetailsDrawer, MSG_FIRST_LOGIN } from "./BuyerDetailsDrawer";
 import type { Buyer } from "./BuyersList";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type ManualSale = {
   id: string;
@@ -127,6 +135,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
   const [fAccess, setFAccess] = useState<string>("all");
   const [fSource, setFSource] = useState<string>("all");
   const [fPeriod, setFPeriod] = useState<string>("all");
+  const [confirmRevoke, setConfirmRevoke] = useState<ConsolidatedBuyer | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -320,7 +329,12 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
     }
   };
 
-  const revoke = async (b: ConsolidatedBuyer) => {
+  const revoke = (b: ConsolidatedBuyer) => {
+    if (!b.user_id) return;
+    setConfirmRevoke(b);
+  };
+
+  const performRevoke = async (b: ConsolidatedBuyer) => {
     if (!b.user_id) return;
     setActing(true);
     try {
@@ -338,6 +352,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
       toast.error(e instanceof Error ? e.message : "Falha.");
     } finally {
       setActing(false);
+      setConfirmRevoke(null);
     }
   };
 
@@ -539,6 +554,48 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
         onViewSale={onGoToSales ? (id) => onGoToSales(id) : undefined}
         acting={acting}
       />
+
+      <Dialog open={!!confirmRevoke} onOpenChange={(open) => { if (!open && !acting) setConfirmRevoke(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Revogar acesso geral deste comprador?</DialogTitle>
+            <DialogDescription asChild>
+              <div className="space-y-2 text-sm">
+                <p>
+                  Esta ação remove o acesso geral de{" "}
+                  <span className="font-semibold text-foreground">{confirmRevoke?.email ?? "—"}</span>{" "}
+                  à área paga.
+                </p>
+                <p>Mesmo que existam outras vendas ativas para este comprador, o acesso será removido.</p>
+                <p>
+                  Para revogar apenas uma venda específica preservando o acesso quando houver outra venda ativa,
+                  use a seção <span className="font-semibold text-foreground">Vendas</span>.
+                </p>
+                <p>Deseja continuar?</p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmRevoke(null)}
+              disabled={acting}
+              className="px-4 py-2 rounded-lg border border-white/15 text-sm hover:bg-white/5 disabled:opacity-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              onClick={() => confirmRevoke && performRevoke(confirmRevoke)}
+              disabled={acting}
+              className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-sm font-medium inline-flex items-center gap-2 disabled:opacity-50"
+            >
+              {acting && <Loader2 size={14} className="animate-spin" />}
+              Revogar acesso geral
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
