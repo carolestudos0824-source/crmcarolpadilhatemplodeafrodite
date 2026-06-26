@@ -313,21 +313,20 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* PLANO EXECUTÁVEL — pilares rápidos */}
-      <Section
-        eyebrow="O que você acessa por dentro"
-        title="Tudo organizado em um único acesso"
-        subtitle="Área interna, método passo a passo, prompts por etapa, checklists, próximos comandos, orientação de MVP e preparação para venda e validação."
-      >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {planoExecutavel.map((p) => (
-            <GlassCard key={p.t} className="flex items-start gap-3">
-              <div className="text-accent shrink-0 mt-1">{p.icon}</div>
-              <p className="text-base text-foreground/90">{p.t}</p>
-            </GlassCard>
-          ))}
+      {/* CTA INTERMEDIÁRIO — antes das 30 ideias */}
+      <section className="pb-12">
+        <div className="container-x">
+          <div className="max-w-3xl mx-auto glass-strong p-6 md:p-8 text-center neon-shadow">
+            <button className="btn-primary mx-auto" onClick={goCheckout}>
+              Quero acessar o programa por R$197 <ChevronRight size={18} />
+            </button>
+            <p className="text-sm text-foreground/80 leading-relaxed mt-4">
+              Pagamento único. Método, 30 ideias, prompts, checklists, área interna e Agente Arquiteto via ChatGPT.
+            </p>
+          </div>
         </div>
-      </Section>
+      </section>
+
 
 
       {/* 30 IDEIAS */}
