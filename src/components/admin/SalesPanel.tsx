@@ -421,16 +421,12 @@ function accessTone(s: string): BadgeVariant {
 type BadgeVariant = "ok" | "warn" | "danger" | "muted";
 function Badge({ children, variant = "muted" }: { children: React.ReactNode; variant?: BadgeVariant }) {
   const map: Record<BadgeVariant, string> = {
-    ok: "bg-emerald-500/15 text-emerald-200 border-emerald-500/30",
-    warn: "bg-amber-500/15 text-amber-200 border-amber-500/30",
-    danger: "bg-red-500/15 text-red-200 border-red-500/30",
-    muted: "bg-white/5 text-muted-foreground border-white/10",
+    ok: "admin-badge admin-badge-success",
+    warn: "admin-badge admin-badge-warning",
+    danger: "admin-badge admin-badge-danger",
+    muted: "admin-badge admin-badge-muted",
   };
-  return (
-    <span className={`inline-flex items-center text-[11px] px-2 py-0.5 rounded-md border ${map[variant]}`}>
-      {children}
-    </span>
-  );
+  return <span className={map[variant]}>{children}</span>;
 }
 
 function IconBtn({
@@ -443,7 +439,7 @@ function IconBtn({
       ? "border-red-500/30 text-red-200 hover:bg-red-500/10"
       : "border-white/10 text-foreground/80 hover:bg-white/5";
   return (
-    <button type="button" onClick={onClick} title={title} aria-label={title} className={`p-1.5 rounded-md border ${cls}`}>
+    <button type="button" onClick={onClick} title={title} aria-label={title} className={`p-1.5 rounded-md border transition ${cls}`}>
       {children}
     </button>
   );
@@ -453,7 +449,7 @@ function FilterSelect({
   label, value, onChange, options,
 }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
   return (
-    <label className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-2 py-1">
+    <label className="inline-flex items-center gap-2 bg-[hsl(var(--admin-surface-3))] border border-[hsl(var(--admin-border-subtle))] rounded-lg px-2.5 py-1.5">
       <span className="text-muted-foreground">{label}:</span>
       <select
         value={value}
@@ -470,18 +466,18 @@ function FilterSelect({
 
 function EmptyState({ hasAny, onCreate }: { hasAny: boolean; onCreate: () => void }) {
   return (
-    <div className="glass-strong p-10 text-center">
-      <ShoppingCart className="mx-auto text-muted-foreground mb-3" size={28} />
-      <h3 className="font-heading font-semibold mb-1">
+    <div className="admin-empty py-10">
+      <ShoppingCart className="text-muted-foreground" size={28} />
+      <h3 className="admin-empty-title font-heading">
         {hasAny ? "Nenhuma venda corresponde aos filtros" : "Nenhuma venda manual registrada ainda"}
       </h3>
-      <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
+      <p className="admin-empty-hint">
         {hasAny
           ? "Ajuste a busca ou os filtros acima para ver outras vendas."
           : "Quando confirmar um pagamento, registre a venda aqui para liberar o acesso do comprador."}
       </p>
       {!hasAny && (
-        <button type="button" onClick={onCreate} className="btn-primary inline-flex">
+        <button type="button" onClick={onCreate} className="btn-primary inline-flex mt-2">
           <Plus size={14} /> Registrar primeira venda
         </button>
       )}
