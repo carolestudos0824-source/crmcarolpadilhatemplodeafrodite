@@ -727,6 +727,7 @@ function AcessosSection({
   logsRefresh: number;
 }) {
   const row = status.kind === "found" || status.kind === "success" ? status.row : null;
+  const [confirmRevoke, setConfirmRevoke] = useState<{ userId: string; email: string } | null>(null);
   return (
     <div className="space-y-5">
       {/* Overview chips */}
