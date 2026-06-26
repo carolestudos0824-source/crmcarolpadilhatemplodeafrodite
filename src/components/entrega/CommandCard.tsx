@@ -85,7 +85,6 @@ export const CommandCard = ({
   // EditablePromptBox monta com novo originalPrompt sem reaproveitar
   // edição de outro projeto.
   const projectScope = activeProject?.id ?? "no-project";
-  const storageVersion = moduleId === "criativos" ? "__criativos_v2" : "";
   const invalidateSavedPrompt =
     moduleId === "criativos" ? hasRawCriativosPlaceholder : undefined;
 
@@ -258,7 +257,7 @@ export const CommandCard = ({
             </div>
             <EditablePromptBox
               originalPrompt={displayCommand}
-              storageKey={`cmdcard__${completedKey}__${projectScope}${storageVersion}__main`}
+              storageKey={`cmdcard__${completedKey}__${projectScope}__main`}
               onChange={setEditedCommand}
               shouldInvalidateSavedValue={invalidateSavedPrompt}
               hideCopyButton
@@ -423,7 +422,7 @@ export const CommandCard = ({
                 </div>
                 <EditablePromptBox
                   originalPrompt={displayCommand}
-                  storageKey={`cmdcard__${completedKey}__${projectScope}${storageVersion}__guided`}
+                  storageKey={`cmdcard__${completedKey}__${projectScope}__guided`}
                   onChange={setEditedCommand}
                   shouldInvalidateSavedValue={invalidateSavedPrompt}
                   hideCopyButton
@@ -508,7 +507,7 @@ export const CommandCard = ({
                   </div>
                   <EditablePromptBox
                     originalPrompt={displayAgent}
-                    storageKey={`cmdcard__${completedKey}__${projectScope}${storageVersion}__agent`}
+                    storageKey={`cmdcard__${completedKey}__${projectScope}__agent`}
                     onChange={setEditedAgent}
                     shouldInvalidateSavedValue={invalidateSavedPrompt}
                     hideCopyButton
@@ -568,7 +567,7 @@ export const CommandCard = ({
                   </div>
                   <EditablePromptBox
                     originalPrompt={displayCorrection}
-                    storageKey={`cmdcard__${completedKey}__${projectScope}${storageVersion}__fix`}
+                    storageKey={`cmdcard__${completedKey}__${projectScope}__fix`}
                     onChange={setEditedCorrection}
                     shouldInvalidateSavedValue={invalidateSavedPrompt}
                     hideCopyButton
