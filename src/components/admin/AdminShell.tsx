@@ -15,6 +15,7 @@ import {
   X,
   ShieldAlert,
   ShoppingCart,
+  Activity,
 } from "lucide-react";
 
 export type AdminSectionKey =
