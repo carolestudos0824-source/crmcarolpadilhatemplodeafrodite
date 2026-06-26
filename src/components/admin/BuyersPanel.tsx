@@ -609,7 +609,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
               type="button"
               onClick={() => confirmRevoke && performRevoke(confirmRevoke)}
               disabled={acting}
-              className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-sm font-medium inline-flex items-center gap-2 disabled:opacity-50"
+              className="admin-danger-action text-sm disabled:opacity-50"
             >
               {acting && <Loader2 size={14} className="animate-spin" />}
               Revogar acesso geral
