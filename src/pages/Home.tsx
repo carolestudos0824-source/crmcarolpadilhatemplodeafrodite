@@ -315,7 +315,7 @@ export default function Home() {
 
       {/* CTA INTERMEDIÁRIO — antes das 30 ideias */}
       <section className="pb-12">
-        <div className="container-x">
+        <div className="container">
           <div className="max-w-3xl mx-auto glass-strong p-6 md:p-8 text-center neon-shadow">
             <button className="btn-primary mx-auto" onClick={goCheckout}>
               Quero acessar o programa por R$197 <ChevronRight size={18} />
