@@ -28,7 +28,7 @@ const queryClient = new QueryClient();
 
 
 const CHROMELESS_ROUTES = ["/entrega", "/admin"];
-const HIDE_FOOTER_ROUTES = ["/admin/acessos"];
+const HIDE_FOOTER_ROUTES = ["/admin"];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useLocation();
@@ -72,6 +72,7 @@ const App = () => (
           <Route path="/entrega" element={<Entrega />} />
           <Route path="/painel" element={<Navigate to="/entrega" replace />} />
           <Route path="/dashboard" element={<Navigate to="/entrega" replace />} />
+          <Route path="/admin" element={<AdminAccess />} />
           <Route path="/admin/acessos" element={<AdminAccess />} />
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
