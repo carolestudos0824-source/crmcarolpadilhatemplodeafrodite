@@ -466,11 +466,8 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
       </GlassCard>
 
       <CopyCommandWarning />
-      <p className="text-xs text-muted-foreground mb-2">
-        Em cada etapa, comece pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada — só faz sentido na Etapa 5.
-      </p>
-      <p className="text-[11px] text-amber-200/90 mb-4 italic">
-        Copiar prompt não conclui a etapa. Só marque como concluído quando o Mapa estiver completo.
+      <p className="text-xs text-muted-foreground mb-4">
+        Comece sempre pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. O Lovable entra só na Etapa 5. Copiar prompt não conclui a etapa.
       </p>
 
       {/* Aviso: jornada não escolhida */}
