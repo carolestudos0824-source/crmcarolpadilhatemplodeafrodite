@@ -1829,37 +1829,38 @@ Cada página deve ter:
     whenLovableDirect: "Depois de criar FAQs reais na página.",
     whenAgentFirst:
       "Quando você não sabe se suas FAQs estão boas o suficiente para schema.",
-    content: `Adicione schema FAQPage nas páginas que possuem FAQ.
+    content: `Adicione schema FAQPage nas páginas do app [nome do app ativo] que realmente possuem perguntas e respostas visíveis.
+
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
 
 Regras:
 
-1. Usar apenas perguntas e respostas já publicadas na página.
-2. Não inventar perguntas ocultas.
-3. Não colocar conteúdo diferente no schema.
-4. Usar JSON-LD no head da página.
-5. Validar se o JSON está correto.
-6. Manter o texto visível para o usuário.
+1. Aplicar FAQPage SOMENTE onde o FAQ está visível para o usuário na própria página.
+2. Usar exatamente as mesmas perguntas e respostas exibidas (sem conteúdo oculto).
+3. Não inventar perguntas para inflar a marcação.
+4. Não usar respostas enganosas ou que prometam resultado garantido.
+5. Manter o JSON-LD válido no head da página.
+6. Listar ao final quais páginas receberam o schema e quais foram deixadas sem schema (e por quê).`,
+    agentPrompt: `Tenho o FAQ do app [nome do app ativo]:
+[cole o FAQ visível na página]
 
-Explique ao final quais páginas receberam schema.`,
-    agentPrompt: `Tenho este FAQ:
-[cole]
+Analise antes de aplicar FAQPage:
 
-Analise:
-
-1. Ele está bom para schema FAQPage?
+1. As perguntas estão coerentes com o conteúdo da página?
 2. Alguma pergunta está vaga?
 3. Alguma resposta promete demais?
-4. O que devo corrigir antes de mandar ao Lovable?`,
-    correctionPrompt: `O schema FAQPage está incorreto. Corrija.
+4. O que devo corrigir antes de marcar com FAQPage?`,
+    correctionPrompt: `O schema FAQPage do app [nome do app ativo] está incorreto. Corrija.
 
 Verifique:
 
 1. JSON-LD válido.
-2. Perguntas iguais às exibidas na página.
-3. Respostas iguais às exibidas na página.
-4. Nenhum conteúdo oculto.
-5. Sem promessas exageradas.
-6. Sem erro de sintaxe.`,
+2. Perguntas e respostas iguais às exibidas na página.
+3. Nenhum conteúdo oculto na marcação.
+4. Nenhuma promessa exagerada.
+5. Remoção de FAQPage em páginas que não exibem FAQ.`,
     advanceCriteria:
       "Avance quando o FAQ estiver visível na página e o schema corresponder ao conteúdo real.",
   },
