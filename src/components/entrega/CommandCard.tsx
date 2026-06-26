@@ -546,6 +546,7 @@ export const CommandCard = ({
                     hideCopyButton
                     saveTitle={`${title} — Correção`}
                     saveSourceModule={moduleId}
+                    collapsible={collapsiblePrompts}
                   />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
