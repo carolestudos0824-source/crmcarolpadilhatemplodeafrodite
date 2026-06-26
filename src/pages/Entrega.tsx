@@ -2690,6 +2690,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <CriativosIntro />
+        <ResumoCriativosCard />
         <CreativeGenerator />
         <ModuleHeader
           title="Siga as etapas de Criativos"
@@ -2699,18 +2700,21 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <ChecklistBlock
           title="Revisão da etapa"
           items={[
-            "Defini a dor principal",
+            "Defini o tom principal",
             "Defini o público",
             "Criei pelo menos 3 ângulos",
             "Criei criativo estático",
             "Criei roteiro de vídeo curto",
             "Criei sequência de stories",
-            "Criei CTA claro",
+            "Criei mensagem de WhatsApp/direct",
+            "Criei variações de CTA",
             "Criei teste A/B",
-            "Anotei métrica principal",
+            "Defini métrica principal",
             "Organizei biblioteca de criativos",
-            "Não usei promessa exagerada",
-            "Testei antes de escalar",
+            "Removi promessa exagerada",
+            "Removi depoimento ou prova inventada",
+            "Testei clareza com uma pessoa real",
+            "Escolhi os criativos para testar primeiro",
           ]}
           checklist={checklist}
           setChecklist={setChecklist}
