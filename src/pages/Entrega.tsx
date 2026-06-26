@@ -2779,6 +2779,24 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           title="Painel de Prontidão do App"
           subtitle="Acompanhe se sua ideia já virou um app claro, funcional, vendável e pronto para ser testado com pessoas reais."
         />
+        <FabricaLegalReminder text="Antes de divulgar seu app, confirme abaixo os itens legais básicos do SEU produto. A Fábrica de Apps com IA já tem seus próprios documentos:" />
+
+        <GlassCard className="p-5 mb-5">
+          <h3 className="font-heading font-semibold mb-3">Prontidão legal do seu app</h3>
+          <ul className="space-y-2 text-sm text-foreground/90">
+            <li>• Termos de Uso do seu app publicados</li>
+            <li>• Política de Privacidade do seu app publicada</li>
+            <li>• Reembolso explicado de forma clara</li>
+            <li>• Suporte explicado (canal, horário, prazo)</li>
+            <li>• Promessas revisadas, sem garantia de resultado</li>
+            <li>• Dados sensíveis evitados nos formulários</li>
+            <li>• Área paga protegida (visitante não vê material pago)</li>
+          </ul>
+          <p className="text-[11px] text-muted-foreground mt-3">
+            Estes itens são do app criado pela aluna, não dos documentos oficiais da Fábrica.
+          </p>
+        </GlassCard>
+
 
         {APP_CONFIG.CHECKOUT_FABRICA_URL === "COLE_AQUI_A_URL_REAL" && (
           <GlassCard className="p-4 mb-5 border-red-400/40 bg-red-500/10">
