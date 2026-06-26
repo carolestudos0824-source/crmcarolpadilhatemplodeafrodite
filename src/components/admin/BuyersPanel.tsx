@@ -329,7 +329,12 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
     }
   };
 
-  const revoke = async (b: ConsolidatedBuyer) => {
+  const revoke = (b: ConsolidatedBuyer) => {
+    if (!b.user_id) return;
+    setConfirmRevoke(b);
+  };
+
+  const performRevoke = async (b: ConsolidatedBuyer) => {
     if (!b.user_id) return;
     setActing(true);
     try {
@@ -347,6 +352,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
       toast.error(e instanceof Error ? e.message : "Falha.");
     } finally {
       setActing(false);
+      setConfirmRevoke(null);
     }
   };
 
