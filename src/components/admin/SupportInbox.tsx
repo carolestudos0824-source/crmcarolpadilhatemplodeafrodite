@@ -68,7 +68,7 @@ export function SupportInbox() {
 
   if (loading) {
     return (
-      <div className="glass-strong p-8 text-center text-muted-foreground text-sm inline-flex items-center justify-center gap-2 w-full">
+      <div className="admin-card text-center text-muted-foreground text-sm inline-flex items-center justify-center gap-2 w-full">
         <Loader2 size={16} className="animate-spin" /> Carregando mensagens recebidas...
       </div>
     );
@@ -76,9 +76,9 @@ export function SupportInbox() {
 
   if (error) {
     return (
-      <div className="glass-strong p-6 text-sm">
+      <div className="admin-card text-sm">
         <p className="text-red-300 mb-3">Erro ao carregar: {error}</p>
-        <button type="button" onClick={() => void load()} className="btn-ghost border border-white/15 inline-flex items-center gap-2">
+        <button type="button" onClick={() => void load()} className="btn-ghost border border-[hsl(var(--admin-border-strong))] inline-flex items-center gap-2">
           <RefreshCw size={14} /> Tentar novamente
         </button>
       </div>
@@ -87,10 +87,10 @@ export function SupportInbox() {
 
   if (messages.length === 0) {
     return (
-      <div className="glass-strong p-10 text-center">
-        <InboxIcon className="mx-auto mb-3 text-muted-foreground" size={28} />
-        <h3 className="font-heading font-semibold mb-1">Nenhuma mensagem recebida ainda</h3>
-        <p className="text-sm text-muted-foreground">
+      <div className="admin-empty">
+        <InboxIcon className="text-muted-foreground/70" size={24} />
+        <h3 className="admin-empty-title">Nenhuma mensagem recebida ainda</h3>
+        <p className="admin-empty-hint">
           Quando alguém enviar uma mensagem pelo formulário em /suporte, ela aparece aqui.
         </p>
       </div>
