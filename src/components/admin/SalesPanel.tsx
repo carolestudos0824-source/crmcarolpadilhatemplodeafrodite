@@ -168,9 +168,13 @@ export function SalesPanel() {
     if (!confirm(`Revogar acesso de ${sale.buyer_email}?`)) return;
     const { data, error } = await (supabase as any).rpc("admin_revoke_access_from_sale", { _sale_id: sale.id });
     if (error) return toast.error(error.message);
-    const res = data as { success?: boolean; error?: string } | null;
+    const res = data as { success?: boolean; error?: string; access_kept?: boolean; reason?: string } | null;
     if (!res?.success) return toast.error(res?.error ?? "Não foi possível revogar acesso.");
-    toast.success(`Acesso revogado para ${sale.buyer_email}.`);
+    if (res.access_kept) {
+      toast.success(`Venda revogada, mas o acesso de ${sale.buyer_email} foi mantido porque existe outra venda ativa.`);
+    } else {
+      toast.success(`Acesso revogado para ${sale.buyer_email}.`);
+    }
     reload();
     if (selected?.id === sale.id) setSelected(null);
   };
