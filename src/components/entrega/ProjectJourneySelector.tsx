@@ -58,9 +58,10 @@ const CARDS: JourneyCard[] = [
  * validada em `@/lib/journey` (persistência por projectId). Não toca em
  * progresso, MODULE_ORDER, GPS, Arquiteto ou promptBuilder.
  */
-export const ProjectJourneySelector = ({ onGoToModule }: Props) => {
+export const ProjectJourneySelector = ({ onGoToModule, variant = "full" }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
   const [journey, setJourneyValue] = useProjectJourney(activeProject?.id ?? null);
+
 
   const handlePick = (card: JourneyCard) => {
     if (!activeProject?.id) {
