@@ -382,21 +382,22 @@ export default function Home() {
 
       {/* VÍDEO DEMONSTRATIVO — placeholder */}
       <Section
-        eyebrow="Demonstração"
-        title="Veja a Fábrica funcionando dentro do Lovable"
+        eyebrow="Prova de realidade"
+        title="A própria Fábrica foi construída no Lovable"
       >
         <div className="max-w-3xl mx-auto glass-strong p-8 md:p-12 text-center">
           <div className="mx-auto w-16 h-16 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-4">
             <PlayCircle size={32} className="text-accent" />
           </div>
           <p className="text-base text-foreground/90 leading-relaxed mb-2">
-            Em breve, você verá em poucos minutos como a Fábrica transforma contexto, projeto em foco e próximo passo em um prompt pronto para colar no Lovable.
+            Esta página, a área interna e o painel administrativo foram construídos no Lovable seguindo a mesma lógica que o programa ensina: <span className="text-accent">planejar, pedir, revisar, corrigir e avançar por etapas</span>. Não é promessa de que todo aluno terá o mesmo resultado — é a prova de que o método é executável na prática.
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70 mt-4">
             Vídeo demonstrativo em breve
           </p>
         </div>
       </Section>
+
 
       {/* PREÇO */}
       <Section
