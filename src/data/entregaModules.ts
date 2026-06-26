@@ -1486,64 +1486,64 @@ export const COMMANDS_SEO: Command[] = [
       "Quando o app já tem público, dor e promessa definidos.",
     whenAgentFirst:
       "Quando você não sabe quais palavras seu público usaria para encontrar seu app.",
-    content: `Crie um plano de SEO para este app.
+    content: `Crie um plano de SEO e GEO para o app [nome do app ativo].
 
-App:
-[descreva]
-
-Público:
-[descreva]
-
-Problema que resolve:
-[descreva]
-
-Oferta ou ação principal:
-[descreva]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor que resolve: [descreva a dor]
+- Promessa: [promessa]
+- Produto vendido: [produto]
+- Modelo de cobrança: [modelo de cobrança]
+- Ação principal do usuário: [ação principal]
 
 Entregue:
 
-1. 20 palavras-chave principais.
-2. 10 perguntas que o público pesquisaria.
-3. Intenção de busca de cada grupo.
-4. Páginas que precisam ser criadas.
-5. Prioridade de criação das páginas.
-6. Títulos sugeridos.
-7. Meta descriptions sugeridas.
+1. Público buscador (quem realmente pesquisa esse tipo de app).
+2. Intenção de busca por grupo (saber, comparar, decidir, comprar, resolver).
+3. 15 palavras principais.
+4. 15 palavras secundárias / cauda longa.
+5. 10 perguntas reais que o público faria.
+6. Dores pesquisadas no Google.
+7. Termos proibidos ou arriscados (ex.: promessas de cura, garantia, salvar relacionamento, prever futuro, diagnóstico clínico).
+8. Lista de páginas a criar com prioridade (1 = essencial, 2 = importante, 3 = opcional).
+9. Para cada página: título sugerido e meta description sugerida.
 
 Regras:
 
 - Não usar keyword stuffing.
 - Não criar páginas vazias.
-- Priorizar clareza e utilidade.
-- Não prometer resultado garantido no Google.`,
-    agentPrompt: `Preciso criar SEO para meu app.
+- Não prometer ranqueamento, tráfego ou vendas garantidas.
+- Usar apenas o que o app realmente faz.
+- Respeitar a promessa segura do app.`,
+    agentPrompt: `Preciso de um mapa de palavras e buscas para o app [nome do app ativo].
 
-App:
-[descreva]
-
-Público:
-[descreva]
-
-Problema:
-[descreva]
+App: [descreva o app]
+Público: [descreva o público]
+Dor: [descreva a dor]
+Promessa: [promessa]
+Ação principal: [ação principal]
 
 Me ajude a definir:
 
-1. Quais palavras meu público pesquisaria.
-2. Quais perguntas ele faria.
-3. Quais páginas preciso criar.
-4. Qual prioridade seguir.
-5. O que evitar para não parecer conteúdo genérico.`,
-    correctionPrompt: `O plano de SEO ficou genérico. Refaça com foco em intenção de busca real.
+1. Público buscador real.
+2. Intenção de busca.
+3. Palavras principais e secundárias.
+4. Perguntas reais.
+5. Dores pesquisadas.
+6. Termos a evitar por risco de promessa exagerada.
+7. Quais páginas merecem prioridade.`,
+    correctionPrompt: `O plano de SEO/GEO de [nome do app ativo] ficou genérico. Refaça com foco em intenção real.
 
 Corrija:
 
-1. Palavras vagas.
-2. Páginas sem objetivo.
-3. Títulos genéricos.
-4. Repetição excessiva de palavras.
-5. Falta de perguntas reais.
-6. Falta de prioridade.`,
+1. Palavras vagas ou amplas demais.
+2. Páginas sem objetivo claro.
+3. Títulos e descriptions genéricos.
+4. Repetição artificial de palavras.
+5. Falta de perguntas reais do público.
+6. Falta de prioridade entre páginas.
+7. Qualquer termo que prometa resultado garantido.`,
     advanceCriteria:
       "Avance quando você souber quais páginas criar e por que cada uma existe.",
   },
@@ -1557,49 +1557,62 @@ Corrija:
     objective: "Criar páginas úteis para temas e palavras-chave importantes.",
     whenLovableDirect: "Depois de ter o plano de SEO.",
     whenAgentFirst: "Quando você não sabe quais páginas devem ser criadas primeiro.",
-    content: `Crie páginas otimizadas para as palavras-chave abaixo.
+    content: `Crie páginas públicas para o Google a partir do plano de SEO do app [nome do app ativo].
 
-Palavras-chave:
-[cole a lista]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Produto: [produto]
+- Ação principal: [ação principal]
 
-Para cada página, crie:
+Palavras-chave por página:
+[cole a lista do plano da Etapa 1]
+
+Para cada página, entregue:
 
 1. URL amigável.
-2. Title.
+2. Título da página (meta title).
 3. Meta description.
-4. H1.
-5. Introdução clara.
-6. Seções H2.
-7. FAQ curto.
-8. CTA.
-9. Texto útil, sem repetição artificial.
+4. H1 claro (um por página).
+5. Introdução curta explicando o app de forma simples.
+6. Seções H2 com conteúdo útil.
+7. Mini-FAQ com perguntas reais.
+8. CTA claro alinhado a [ação principal].
+9. Links para Termos e Privacidade.
 
 Regras:
 
-- Cada página deve responder uma intenção real.
-- Não criar conteúdo vazio.
-- Não repetir a mesma página com palavras diferentes.
-- Não usar keyword stuffing.`,
-    agentPrompt: `Tenho estas palavras-chave:
-[cole]
+- Cada página responde uma intenção real.
+- Não duplicar conteúdo entre páginas (sem trocar só palavras).
+- Não usar keyword stuffing.
+- Não prometer resultado garantido.
+- Não expor área paga, admin, entrega ou checkout interno em páginas públicas.`,
+    agentPrompt: `Tenho o plano de SEO do app [nome do app ativo].
+
+App: [descreva o app]
+Público: [descreva o público]
+Ação principal: [ação principal]
 
 Me ajude a decidir:
 
-1. Quais merecem página própria.
-2. Quais podem ficar juntas.
+1. Quais palavras merecem página própria.
+2. Quais podem ser agrupadas.
 3. Qual ordem criar.
-4. Que título usar.
-5. Que CTA colocar.`,
-    correctionPrompt: `As páginas SEO ficaram repetitivas ou artificiais. Corrija.
+4. Que título e meta description usar.
+5. Que CTA colocar (sem prometer resultado garantido).`,
+    correctionPrompt: `As páginas para Google do app [nome do app ativo] ficaram repetitivas ou artificiais. Corrija.
 
 Regras:
 
 1. Cada página deve ter objetivo próprio.
-2. Evite repetir o mesmo texto.
-3. Melhore títulos e subtítulos.
-4. Inclua FAQ útil.
-5. Mantenha CTA claro.
-6. Remova keyword stuffing.`,
+2. Sem texto duplicado.
+3. Melhore meta title, description e H1.
+4. Inclua FAQ real e visível.
+5. CTA claro e responsável.
+6. Sem keyword stuffing.
+7. Sem promessa de resultado garantido.`,
     advanceCriteria:
       "Avance quando cada página tiver título, descrição, conteúdo útil, FAQ e CTA.",
   },
@@ -1613,58 +1626,60 @@ Regras:
     objective: "Responder dúvidas reais que podem aparecer no Google e na landing.",
     whenLovableDirect: "Depois das páginas principais.",
     whenAgentFirst: "Quando você não sabe quais perguntas o público faria.",
-    content: `Crie uma seção de FAQ otimizada para busca.
+    content: `Crie um FAQ de busca para o app [nome do app ativo].
 
-Tema:
-[descreva o produto ou app]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Produto: [produto]
+- Modelo de cobrança: [modelo de cobrança]
+- Ação principal: [ação principal]
 
-Liste 12 perguntas reais que pessoas pesquisariam no Google sobre esse tema.
+Liste 12 perguntas reais que esse público pesquisaria no Google, distribuídas entre:
+
+- Dúvidas antes da compra.
+- Dúvidas sobre funcionamento.
+- Dúvidas sobre pagamento e [modelo de cobrança].
+- Dúvidas sobre entrega/acesso.
+- Dúvidas sobre privacidade e dados.
+- Dúvidas sobre limites da promessa.
 
 Para cada pergunta:
 
-1. Escreva uma resposta curta.
-2. Seja direto.
-3. Não use hype.
-4. Não prometa resultado garantido.
-5. Inclua CTA suave quando fizer sentido.
+1. Resposta curta, clara e responsável.
+2. Sem hype.
+3. Sem prometer resultado garantido.
+4. Deixar claro o que o app NÃO faz quando fizer sentido.
+5. CTA suave para [ação principal] apenas quando ajudar a pessoa.`,
+    agentPrompt: `Preciso criar FAQs reais para o app [nome do app ativo].
 
-As perguntas devem cobrir:
-
-- O que é.
-- Para quem é.
-- Como funciona.
-- Investimento.
-- Segurança.
-- Acesso.
-- Limitações.
-- Suporte.`,
-    agentPrompt: `Preciso criar FAQs para busca.
-
-Produto:
-[descreva]
-
-Público:
-[descreva]
+App: [descreva o app]
+Público: [descreva o público]
+Dor: [descreva a dor]
+Promessa: [promessa]
 
 Me ajude a listar:
 
-1. Perguntas que as pessoas pesquisam.
+1. Perguntas que essas pessoas realmente pesquisam.
 2. Objeções antes da compra.
 3. Dúvidas de uso.
-4. Perguntas que aumentam confiança.
-5. Respostas curtas e honestas.`,
-    correctionPrompt: `O FAQ ficou genérico. Refaça com perguntas reais e respostas úteis.
+4. Dúvidas sobre privacidade.
+5. Dúvidas sobre limites da promessa.
+6. Respostas curtas, claras e honestas.`,
+    correctionPrompt: `O FAQ do app [nome do app ativo] ficou genérico. Refaça com perguntas reais.
 
 Inclua dúvidas sobre:
 
 1. Como funciona.
 2. Para quem é.
-3. Preço ou investimento.
-4. Acesso.
-5. Segurança.
-6. Limitações.
-7. Suporte.
-8. Próximo passo.`,
+3. Pagamento e [modelo de cobrança].
+4. Entrega/acesso.
+5. Privacidade.
+6. Limites da promessa.
+7. O que o app NÃO faz.
+8. Próximo passo seguro.`,
     advanceCriteria:
       "Avance quando o FAQ responder dúvidas reais do usuário antes de comprar ou usar.",
   },
@@ -1680,57 +1695,62 @@ Inclua dúvidas sobre:
     whenLovableDirect: "Depois das páginas SEO principais.",
     whenAgentFirst:
       "Quando você não sabe como explicar seu app para buscadores inteligentes.",
-    content: `Crie páginas GEO para que ferramentas de IA entendam melhor este app.
+    content: `Crie páginas GEO para que ferramentas de IA entendam, resumam e citem corretamente o app [nome do app ativo].
 
-App:
-[descreva]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Produto: [produto]
+- Ação principal: [ação principal]
 
-A página deve explicar:
+A página deve conter, de forma factual e fácil de resumir:
 
-1. O que é o app.
-2. Para quem serve.
-3. Qual problema resolve.
-4. Como funciona.
-5. Principais recursos.
-6. Diferenciais reais.
-7. Limitações.
-8. Comparação honesta com alternativas.
-9. Perguntas frequentes.
-10. CTA.
+1. Resumo claro do app em 2 a 3 frases.
+2. Para quem é.
+3. O que faz.
+4. O que NÃO faz (limites explícitos da promessa).
+5. Como funciona (passos simples).
+6. Principais recursos.
+7. Limitações conhecidas.
+8. Comparação honesta com alternativas (sem desmerecer concorrentes).
+9. Perguntas e respostas úteis.
+10. CTA alinhado a [ação principal].
 
 Regras:
 
-- Texto claro e factual.
-- Não inventar autoridade.
-- Não exagerar promessa.
-- Não repetir palavras artificialmente.
-- Explicar contexto de forma objetiva.`,
-    agentPrompt: `Quero que ferramentas de IA entendam melhor meu app.
+- Texto claro e factual, fácil de uma IA resumir sem distorcer.
+- Não inventar autoridade, prêmios ou parcerias.
+- Não exagerar a promessa.
+- Sem keyword stuffing.
+- Sem expor área paga, admin ou dados de usuário.`,
+    agentPrompt: `Quero que ferramentas de IA entendam o app [nome do app ativo] sem distorcer.
 
-App:
-[descreva]
-
-Público:
-[descreva]
+App: [descreva o app]
+Público: [descreva o público]
+Promessa: [promessa]
+Ação principal: [ação principal]
 
 Me ajude a criar:
 
-1. Uma explicação objetiva do app.
-2. Principais recursos.
-3. Diferenciais reais.
-4. Limitações.
-5. Comparação honesta.
+1. Resumo objetivo do app.
+2. Para quem é / para quem NÃO é.
+3. O que faz / o que NÃO faz.
+4. Principais recursos.
+5. Limitações reais.
 6. FAQs úteis para IA e buscadores.`,
-    correctionPrompt: `A página GEO ficou vaga ou exagerada. Refaça com linguagem factual.
+    correctionPrompt: `A página GEO do app [nome do app ativo] ficou vaga ou exagerada. Refaça com linguagem factual.
 
 Corrija:
 
-1. Explique o que é.
+1. Explique o que é em 2 frases.
 2. Explique para quem é.
-3. Explique o que resolve.
+3. Explique o que NÃO faz.
 4. Remova promessas exageradas.
-5. Inclua limitações.
-6. Use comparação honesta.`,
+5. Inclua limitações reais.
+6. Use comparação honesta.
+7. Garanta que uma IA possa resumir sem inventar.`,
     advanceCriteria:
       "Avance quando uma pessoa e uma IA conseguirem entender o app sem contexto externo.",
   },
@@ -1745,53 +1765,54 @@ Corrija:
     whenLovableDirect: "Quando o app atende vários nichos.",
     whenAgentFirst:
       "Quando você não sabe se deve segmentar ou manter uma página única.",
-    content: `Crie páginas específicas por nicho.
+    content: `Crie páginas para nichos específicos do app [nome do app ativo], apenas quando houver intenção real de busca.
 
-App:
-[descreva]
+Contexto:
+- App: [descreva o app]
+- Público amplo: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Ação principal: [ação principal]
 
-Nichos:
-[liste]
+Nichos candidatos:
+[liste 2-4 nichos com intenção real de busca]
 
-Para cada nicho, criar:
+Para cada nicho que realmente faça sentido, entregue:
 
-1. Headline específica.
-2. Dor principal do nicho.
-3. Como o app ajuda.
-4. Benefícios.
-5. Caso de uso.
-6. FAQ.
-7. CTA.
+1. Headline específica do nicho.
+2. Dor real desse nicho (sem inventar).
+3. Como o app ajuda esse nicho.
+4. Caso de uso curto e plausível.
+5. Mini-FAQ adaptado.
+6. CTA alinhado a [ação principal].
 
 Regras:
 
-- Não duplicar texto.
-- Não inventar dores.
-- Não criar páginas para nichos irrelevantes.
-- Cada página precisa parecer feita para aquele público.`,
-    agentPrompt: `Meu app pode atender vários nichos.
+- Não duplicar texto entre páginas (não basta trocar 2 palavras).
+- Não criar páginas para nichos sem intenção real de busca.
+- Não inventar dores ou casos de uso.
+- Manter promessa responsável (sem garantir resultado).`,
+    agentPrompt: `O app [nome do app ativo] pode atender vários nichos.
 
-App:
-[descreva]
-
-Nichos possíveis:
-[liste]
+App: [descreva o app]
+Público amplo: [descreva o público]
 
 Analise:
 
 1. Quais nichos realmente fazem sentido.
-2. Quais não valem página própria.
-3. Qual mensagem usar para cada nicho.
-4. Qual página criar primeiro.`,
-    correctionPrompt: `As páginas por nicho ficaram repetitivas. Refaça com diferenciação real.
+2. Quais NÃO valem página própria.
+3. Qual mensagem usar em cada nicho.
+4. Qual página criar primeiro.
+5. Como evitar duplicação artificial.`,
+    correctionPrompt: `As páginas de nicho do app [nome do app ativo] ficaram artificiais ou duplicadas. Corrija.
 
 Cada página deve ter:
 
-1. Dor específica.
+1. Dor específica e real do nicho.
 2. Linguagem do nicho.
-3. Exemplo de uso.
-4. Benefícios próprios.
-5. CTA adequado.`,
+3. Caso de uso plausível.
+4. Conteúdo diferente das demais páginas.
+5. CTA adequado, sem promessa garantida.`,
     advanceCriteria:
       "Avance quando cada página de nicho tiver motivo claro para existir.",
   },
@@ -1808,37 +1829,38 @@ Cada página deve ter:
     whenLovableDirect: "Depois de criar FAQs reais na página.",
     whenAgentFirst:
       "Quando você não sabe se suas FAQs estão boas o suficiente para schema.",
-    content: `Adicione schema FAQPage nas páginas que possuem FAQ.
+    content: `Adicione schema FAQPage nas páginas do app [nome do app ativo] que realmente possuem perguntas e respostas visíveis.
+
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
 
 Regras:
 
-1. Usar apenas perguntas e respostas já publicadas na página.
-2. Não inventar perguntas ocultas.
-3. Não colocar conteúdo diferente no schema.
-4. Usar JSON-LD no head da página.
-5. Validar se o JSON está correto.
-6. Manter o texto visível para o usuário.
+1. Aplicar FAQPage SOMENTE onde o FAQ está visível para o usuário na própria página.
+2. Usar exatamente as mesmas perguntas e respostas exibidas (sem conteúdo oculto).
+3. Não inventar perguntas para inflar a marcação.
+4. Não usar respostas enganosas ou que prometam resultado garantido.
+5. Manter o JSON-LD válido no head da página.
+6. Listar ao final quais páginas receberam o schema e quais foram deixadas sem schema (e por quê).`,
+    agentPrompt: `Tenho o FAQ do app [nome do app ativo]:
+[cole o FAQ visível na página]
 
-Explique ao final quais páginas receberam schema.`,
-    agentPrompt: `Tenho este FAQ:
-[cole]
+Analise antes de aplicar FAQPage:
 
-Analise:
-
-1. Ele está bom para schema FAQPage?
+1. As perguntas estão coerentes com o conteúdo da página?
 2. Alguma pergunta está vaga?
 3. Alguma resposta promete demais?
-4. O que devo corrigir antes de mandar ao Lovable?`,
-    correctionPrompt: `O schema FAQPage está incorreto. Corrija.
+4. O que devo corrigir antes de marcar com FAQPage?`,
+    correctionPrompt: `O schema FAQPage do app [nome do app ativo] está incorreto. Corrija.
 
 Verifique:
 
 1. JSON-LD válido.
-2. Perguntas iguais às exibidas na página.
-3. Respostas iguais às exibidas na página.
-4. Nenhum conteúdo oculto.
-5. Sem promessas exageradas.
-6. Sem erro de sintaxe.`,
+2. Perguntas e respostas iguais às exibidas na página.
+3. Nenhum conteúdo oculto na marcação.
+4. Nenhuma promessa exagerada.
+5. Remoção de FAQPage em páginas que não exibem FAQ.`,
     advanceCriteria:
       "Avance quando o FAQ estiver visível na página e o schema corresponder ao conteúdo real.",
   },
@@ -1855,57 +1877,50 @@ Verifique:
     whenLovableDirect: "Na home ou landing principal do app.",
     whenAgentFirst:
       "Quando você não sabe quais dados reais do app pode informar.",
-    content: `Adicione schema SoftwareApplication na home e na landing principal.
+    content: `Adicione schema SoftwareApplication (ou estrutura equivalente) na home e na landing principal do app [nome do app ativo].
 
-Inclua apenas dados reais:
+Use APENAS dados reais:
 
-1. Nome do app.
-2. Descrição.
-3. Categoria.
-4. Sistema operacional, se aplicável.
-5. URL.
-6. Preço, se estiver definido.
-7. Autor ou organização, se existir.
-8. Política ou termos, se existirem.
+- name: [nome do app ativo]
+- description: [descreva o app]
+- applicationCategory: defina a categoria real (ex.: GameApplication, BusinessApplication, HealthApplication) com base em [descreva o app]
+- audience: [descreva o público]
+- url: a URL real da landing principal
+- offers / price: usar somente se [modelo de cobrança] estiver definido (ex.: preço, "free", assinatura). Se não estiver, omitir o campo.
+- image / logo: incluir apenas se existir um arquivo real publicado.
+- author / publisher: incluir apenas se houver autor/organização real.
 
 Regras:
 
-- Não inventar avaliações.
-- Não inventar reviews.
-- Não inventar preço se não estiver definido.
-- Não inventar empresa.
-- Usar JSON-LD válido.
-- Inserir no head da página.`,
-    agentPrompt: `Quero adicionar schema SoftwareApplication no meu app.
+- NÃO inventar avaliações (aggregateRating), reviews, número de downloads ou prêmios.
+- NÃO inventar preço, empresa ou parceria inexistente.
+- Usar JSON-LD válido no head da página.
+- Não expor área paga, admin ou dados de usuário no schema.`,
+    agentPrompt: `Quero adicionar schema SoftwareApplication no app [nome do app ativo].
 
-Dados atuais:
-Nome:
-[preencha]
-
-Descrição:
-[preencha]
-
-Preço:
-[preencha ou não definido]
-
-Empresa ou responsável:
-[preencha ou não definido]
+Dados disponíveis:
+- Nome: [nome do app ativo]
+- Descrição: [descreva o app]
+- Público: [descreva o público]
+- Produto: [produto]
+- Modelo de cobrança: [modelo de cobrança]
 
 Me ajude a decidir:
 
-1. Quais campos posso usar.
-2. Quais campos não devo inventar.
-3. O que falta antes de publicar.`,
-    correctionPrompt: `O schema SoftwareApplication está usando dados inventados ou incorretos. Corrija.
+1. Quais campos posso preencher com dado real.
+2. Quais campos NÃO devo preencher (para não inventar).
+3. Que applicationCategory usar.
+4. O que falta antes de publicar a marcação.`,
+    correctionPrompt: `O schema SoftwareApplication do app [nome do app ativo] está usando dados inventados ou incorretos. Corrija.
 
 Regras:
 
-1. Remova avaliações falsas.
-2. Remova reviews inventados.
-3. Remova empresa inexistente.
-4. Use apenas dados reais.
-5. Valide JSON-LD.
-6. Insira apenas nas páginas corretas.`,
+1. Remova aggregateRating, reviews e contagens inventadas.
+2. Remova empresa, prêmios ou parcerias inexistentes.
+3. Remova preço se [modelo de cobrança] não estiver definido.
+4. Use apenas dados reais e verificáveis.
+5. Valide o JSON-LD.
+6. Aplicar somente nas páginas corretas (home/landing), nunca em área paga, admin ou checkout interno.`,
     advanceCriteria:
       "Avance quando a marcação usar apenas dados reais e estiver tecnicamente válida.",
   },
