@@ -441,6 +441,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                   <tr className="border-b border-white/10">
                     <th className="text-left px-2 py-2">E-mail / Nome</th>
                     <th className="text-left px-2 py-2">Vendas</th>
+                    <th className="text-right px-2 py-2">Total pago</th>
                     <th className="text-left px-2 py-2">Última venda</th>
                     <th className="text-left px-2 py-2">Acesso</th>
                     <th className="text-left px-2 py-2">Origem</th>
