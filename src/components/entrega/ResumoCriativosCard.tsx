@@ -16,6 +16,7 @@ type Suggestion = {
   publico: string;
   angulo: string;
   formatos: string;
+  formatosPagos: string;
   cta: string;
   preco: string;
   gatilho: string;
@@ -23,6 +24,18 @@ type Suggestion = {
   naoProm: string[];
   angulosSugeridos: [string, string][];
 };
+
+const ANTES_ANUNCIO_PAGO = [
+  "oferta clara",
+  "página funcionando",
+  "checkout ou próximo passo testado",
+  "entrega protegida",
+  "promessa segura",
+  "pelo menos 3 variações de criativo",
+  "métrica principal definida",
+  "verba inicial controlada",
+  "critério de pausa definido",
+];
 
 const GENERIC_NAO_PROM = [
   "vendas garantidas",
