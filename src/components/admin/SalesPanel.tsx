@@ -357,6 +357,24 @@ export function SalesPanel() {
         </div>
       )}
 
+      {!loading && !error && hasMore && (
+        <div className="flex justify-center pt-1">
+          <button
+            type="button"
+            onClick={loadMore}
+            disabled={loadingMore}
+            className="btn-ghost border border-white/15 disabled:opacity-60"
+          >
+            {loadingMore ? (
+              <><Loader2 size={14} className="animate-spin" /> Carregando…</>
+            ) : (
+              <>Carregar mais</>
+            )}
+          </button>
+        </div>
+      )}
+
+
       {showCreate && (
         <CreateSaleDrawer
           existingEmails={sales.map((s) => s.buyer_email.toLowerCase())}
