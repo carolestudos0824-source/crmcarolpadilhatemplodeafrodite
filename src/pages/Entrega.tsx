@@ -77,6 +77,7 @@ import { GpsDoAppCard } from "@/components/entrega/GpsDoAppCard";
 import { ArquitetoMelhoriasCard } from "@/components/entrega/ArquitetoMelhoriasCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
+import { ValidacaoModule } from "@/components/entrega/ValidacaoModule";
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
@@ -2746,32 +2747,11 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       <section>
         <ValidacaoIntro />
         <ViabilityAnalysisCard />
-        <ModuleHeader
-          title="Siga as etapas de Validação"
-          subtitle="Comece pela Etapa 1. Cada etapa abre na aba Implementar no Lovable, com texto pronto para copiar."
-        />
-        <CommandList commands={COMMANDS_VALIDACAO} moduleKey="validacao" />
-        <ChecklistBlock
-          title="Revisão da etapa"
-          items={[
-            "Convidei 10 pessoas reais",
-            "Pelo menos 5 testaram",
-            "Pelo menos 3 entenderam sem ajuda",
-            "Pelo menos 1 demonstrou interesse real",
-            "Anotei dúvidas repetidas",
-            "Separei elogio de sinal real",
-            "Identifiquei o maior bloqueio",
-            "Melhorei o app sem inflar o escopo",
-            "Preparei novo teste",
-            "Não mudei tudo por causa de uma opinião isolada",
-          ]}
-          checklist={checklist}
-          setChecklist={setChecklist}
-          phase="validacao"
-        />
+        <ValidacaoModule />
       </section>
     );
   }
+
 
 
   if (active === "checklist") {
