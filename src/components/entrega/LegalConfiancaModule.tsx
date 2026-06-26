@@ -341,8 +341,8 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
       ) : (
         <EditablePromptBox
           saveSourceModule="legal"
-          key={`${etapa.n}-${tab}`}
-          originalPrompt={etapa.tabs[tab]}
+          key={`${etapa.n}-${tab}-${context.appName}`}
+          originalPrompt={applyContextPlaceholders(etapa.tabs[tab], context)}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
           transformOnCopy={
             tab === "agente"
