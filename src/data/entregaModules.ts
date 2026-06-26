@@ -1486,64 +1486,64 @@ export const COMMANDS_SEO: Command[] = [
       "Quando o app já tem público, dor e promessa definidos.",
     whenAgentFirst:
       "Quando você não sabe quais palavras seu público usaria para encontrar seu app.",
-    content: `Crie um plano de SEO para este app.
+    content: `Crie um plano de SEO e GEO para o app [nome do app ativo].
 
-App:
-[descreva]
-
-Público:
-[descreva]
-
-Problema que resolve:
-[descreva]
-
-Oferta ou ação principal:
-[descreva]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor que resolve: [descreva a dor]
+- Promessa: [promessa]
+- Produto vendido: [produto]
+- Modelo de cobrança: [modelo de cobrança]
+- Ação principal do usuário: [ação principal]
 
 Entregue:
 
-1. 20 palavras-chave principais.
-2. 10 perguntas que o público pesquisaria.
-3. Intenção de busca de cada grupo.
-4. Páginas que precisam ser criadas.
-5. Prioridade de criação das páginas.
-6. Títulos sugeridos.
-7. Meta descriptions sugeridas.
+1. Público buscador (quem realmente pesquisa esse tipo de app).
+2. Intenção de busca por grupo (saber, comparar, decidir, comprar, resolver).
+3. 15 palavras principais.
+4. 15 palavras secundárias / cauda longa.
+5. 10 perguntas reais que o público faria.
+6. Dores pesquisadas no Google.
+7. Termos proibidos ou arriscados (ex.: promessas de cura, garantia, salvar relacionamento, prever futuro, diagnóstico clínico).
+8. Lista de páginas a criar com prioridade (1 = essencial, 2 = importante, 3 = opcional).
+9. Para cada página: título sugerido e meta description sugerida.
 
 Regras:
 
 - Não usar keyword stuffing.
 - Não criar páginas vazias.
-- Priorizar clareza e utilidade.
-- Não prometer resultado garantido no Google.`,
-    agentPrompt: `Preciso criar SEO para meu app.
+- Não prometer ranqueamento, tráfego ou vendas garantidas.
+- Usar apenas o que o app realmente faz.
+- Respeitar a promessa segura do app.`,
+    agentPrompt: `Preciso de um mapa de palavras e buscas para o app [nome do app ativo].
 
-App:
-[descreva]
-
-Público:
-[descreva]
-
-Problema:
-[descreva]
+App: [descreva o app]
+Público: [descreva o público]
+Dor: [descreva a dor]
+Promessa: [promessa]
+Ação principal: [ação principal]
 
 Me ajude a definir:
 
-1. Quais palavras meu público pesquisaria.
-2. Quais perguntas ele faria.
-3. Quais páginas preciso criar.
-4. Qual prioridade seguir.
-5. O que evitar para não parecer conteúdo genérico.`,
-    correctionPrompt: `O plano de SEO ficou genérico. Refaça com foco em intenção de busca real.
+1. Público buscador real.
+2. Intenção de busca.
+3. Palavras principais e secundárias.
+4. Perguntas reais.
+5. Dores pesquisadas.
+6. Termos a evitar por risco de promessa exagerada.
+7. Quais páginas merecem prioridade.`,
+    correctionPrompt: `O plano de SEO/GEO de [nome do app ativo] ficou genérico. Refaça com foco em intenção real.
 
 Corrija:
 
-1. Palavras vagas.
-2. Páginas sem objetivo.
-3. Títulos genéricos.
-4. Repetição excessiva de palavras.
-5. Falta de perguntas reais.
-6. Falta de prioridade.`,
+1. Palavras vagas ou amplas demais.
+2. Páginas sem objetivo claro.
+3. Títulos e descriptions genéricos.
+4. Repetição artificial de palavras.
+5. Falta de perguntas reais do público.
+6. Falta de prioridade entre páginas.
+7. Qualquer termo que prometa resultado garantido.`,
     advanceCriteria:
       "Avance quando você souber quais páginas criar e por que cada uma existe.",
   },
