@@ -535,6 +535,8 @@ export function TesteFinalModule() {
         ajuda para decidir antes de construir.
       </p>
 
+      <ResumoTesteFinalCard />
+
       <div className="space-y-5 mb-8">
         {ETAPAS.map((e) => (
           <EtapaCard key={e.n} etapa={e} />
