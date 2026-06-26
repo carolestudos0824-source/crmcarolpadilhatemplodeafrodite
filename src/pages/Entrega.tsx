@@ -3503,7 +3503,7 @@ Regras:
       </div>
       <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={generate} className="btn-primary text-sm">
-          <Sparkles size={14} /> Gerar comando de criativo
+          <Sparkles size={14} /> Gerar comando de criativo para tráfego
         </button>
         <button
           type="button"
