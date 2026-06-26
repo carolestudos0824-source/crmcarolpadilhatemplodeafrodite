@@ -16,7 +16,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { CHECKLIST_PHASES, type ModuleId } from "@/data/entregaModules";
-import { APP_CONFIG } from "@/config/appConfig";
+
 
 type Props = {
   goTo: (id: ModuleId) => void;
