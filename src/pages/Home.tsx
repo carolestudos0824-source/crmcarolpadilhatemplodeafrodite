@@ -261,7 +261,7 @@ export default function Home() {
       <Section
         eyebrow="Diferencial do programa"
         title="Um Agente Arquiteto treinado para te ajudar quando você travar"
-        subtitle="Dentro da área interna você encontra um botão que abre o Agente Arquiteto direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar o que você vai pedir — antes de gastar prompt no Lovable."
+        subtitle="O Agente Arquiteto é acessado dentro da área interna da Fábrica, por um botão que abre direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar comandos — antes de gastar prompt no Lovable. Ele não substitui o Lovable e não cria o app sozinho."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
           <div className="flex items-start gap-4 mb-6">
