@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import {
-  Sparkles, Layers, Database, Rocket, Brain, Target, ChevronRight,
+  Sparkles, Layers, Database, Brain, Target, ChevronRight,
   Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
   Lightbulb, Check, ShieldCheck, PlayCircle, Bot,
 } from "lucide-react";
