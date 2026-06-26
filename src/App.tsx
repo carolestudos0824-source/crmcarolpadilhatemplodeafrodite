@@ -23,6 +23,12 @@ import NotFound from "@/pages/NotFound";
 
 import ScrollToTop from "@/components/ScrollToTop";
 import { PromptStudioProvider } from "@/components/entrega/PromptStudioProvider";
+import { usePresenceHeartbeat } from "@/hooks/usePresenceHeartbeat";
+
+const PresenceTracker = () => {
+  usePresenceHeartbeat();
+  return null;
+};
 
 const queryClient = new QueryClient();
 
