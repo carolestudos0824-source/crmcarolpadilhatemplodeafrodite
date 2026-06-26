@@ -377,7 +377,7 @@ export default function Login() {
     console.info({ auth_flow: "google_oauth_requested", tab: authTab });
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/entrega",
+        redirect_uri: window.location.origin + "/auth/callback",
         extraParams: { prompt: "select_account" },
       });
       if (result.error) {
