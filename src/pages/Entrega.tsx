@@ -445,8 +445,11 @@ function EntregaInner() {
   const prevModule = currentIdx > 0 ? MODULE_ORDER[currentIdx - 1] : null;
   // Exceções pontuais de navegação para manter coerência com o menu lateral
   // sem alterar a ordem global de MODULE_ORDER (preserva páginas aprovadas).
+  // "ativar" saiu do fluxo pedagógico (pertence ao admin / resgate de código),
+  // então o Painel de Prontidão é o último passo do guia da aluna e o
+  // "Próximo passo" volta ao início do guia.
   const NEXT_OVERRIDE: Partial<Record<ModuleId, ModuleId>> = {
-    checklist: "ativar",
+    checklist: "comece",
   };
   const nextModule =
     NEXT_OVERRIDE[active] ??
