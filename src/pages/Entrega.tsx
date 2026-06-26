@@ -52,6 +52,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
+import { FabricaLegalReminder } from "@/components/FabricaLegalReminder";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
@@ -2476,13 +2477,23 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return <TelasFluxoModule goTo={goTo} />;
   }
   if (active === "publicar") {
-    return <PublicarDominioModule />;
+    return (
+      <section>
+        <FabricaLegalReminder text="Antes de publicar, confirme que seu app possui Termos de Uso, Política de Privacidade e contato visível. A Fábrica de Apps com IA tem documentos próprios:" />
+        <PublicarDominioModule />
+      </section>
+    );
   }
   if (active === "teste") {
     return <TesteFinalModule />;
   }
   if (active === "legal") {
-    return <LegalConfiancaModule />;
+    return (
+      <section>
+        <FabricaLegalReminder text="Esta etapa ajuda você a criar documentos legais para o SEU app. Para ver os documentos oficiais da Fábrica de Apps com IA, acesse:" />
+        <LegalConfiancaModule />
+      </section>
+    );
   }
   if (active === "comece") {
     return <ComeceAquiModule goTo={goTo} />;
