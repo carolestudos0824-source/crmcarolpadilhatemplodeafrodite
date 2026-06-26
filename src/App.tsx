@@ -18,6 +18,7 @@ import Termos from "@/pages/Termos";
 import Privacidade from "@/pages/Privacidade";
 import Confianca from "@/pages/Confianca";
 import Seguranca from "@/pages/Seguranca";
+import Legal from "@/pages/Legal";
 import NotFound from "@/pages/NotFound";
 
 import ScrollToTop from "@/components/ScrollToTop";
@@ -74,7 +75,10 @@ const App = () => (
           <Route path="/admin/acessos" element={<AdminAccess />} />
           <Route path="/suporte" element={<Suporte />} />
           <Route path="/termos" element={<Termos />} />
+          <Route path="/termos-de-uso" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
+          <Route path="/politica-de-privacidade" element={<Privacidade />} />
+          <Route path="/legal" element={<Legal />} />
           <Route path="/confianca" element={<Confianca />} />
           <Route path="/seguranca" element={<Seguranca />} />
           <Route path="/confira" element={<Navigate to="/confianca" replace />} />

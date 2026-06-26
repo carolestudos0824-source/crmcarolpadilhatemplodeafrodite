@@ -27,6 +27,13 @@ export default function Checkout() {
           <div className="text-xs text-accent/90 bg-accent/5 border border-accent/20 rounded-xl p-3 leading-relaxed">
             Após a confirmação do pagamento, seu acesso é liberado conforme o fluxo atual da Fábrica. Para usar o Agente Arquiteto, é necessário estar logado no ChatGPT.
           </div>
+          <div className="text-[11px] text-muted-foreground/90 bg-white/5 border border-white/10 rounded-xl p-3 leading-relaxed">
+            Ao concluir a compra, você declara que leu e aceita os{" "}
+            <a href="/termos-de-uso" className="text-accent hover:underline">Termos de Uso</a>{" "}
+            e a{" "}
+            <a href="/politica-de-privacidade" className="text-accent hover:underline">Política de Privacidade</a>{" "}
+            da Fábrica de Apps com IA.
+          </div>
           <button
             className="btn-primary w-full"
             onClick={() => {
