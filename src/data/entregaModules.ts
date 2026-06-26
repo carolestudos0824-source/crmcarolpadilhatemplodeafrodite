@@ -1415,24 +1415,27 @@ Verifique:
     whenLovableDirect: "Quando o fluxo ainda não tem webhook automático.",
     whenAgentFirst:
       "Quando você não sabe se precisa de painel admin, código de acesso ou webhook.",
-    content: `Crie um painel simples de liberação manual de compradores.
+    content: `Crie um painel simples de liberação manual de compradores para o app [nome do app ativo].
 
-Funções:
+Acesso: apenas admin (verificado via role no banco, nunca via flag do frontend).
 
-1. Buscar usuário por e-mail.
-2. Ver status de acesso.
-3. Liberar acesso.
-4. Revogar acesso.
-5. Ver data de liberação.
-6. Mostrar mensagens claras de sucesso e erro.
+Funções obrigatórias:
 
-Regras:
+1. Buscar comprador por e-mail.
+2. Ver status atual (sem acesso / liberado / revogado / pendente).
+3. Liberar acesso a um comprador.
+4. Revogar acesso de um comprador.
+5. Ver data da liberação.
+6. Registrar uma observação curta sobre o comprador (ex.: "pagou via Pix em 10/01").
+7. Mostrar mensagens claras de sucesso e erro.
 
-- Apenas admin pode acessar.
-- Não expor chave service role no frontend.
-- Não permitir que usuário comum libere acesso.
-- Não mostrar dados sensíveis desnecessários.
-- Manter logs simples, se possível.`,
+Regras de segurança (invioláveis):
+
+- Apenas admin pode acessar a rota e as ações.
+- NUNCA expor service role key no frontend.
+- Usuário comum NUNCA pode liberar ou revogar acesso, nem por chamada direta.
+- NÃO expor dados sensíveis de outros compradores (telefone, endereço, etc.) sem necessidade clara.
+- Manter um log simples de quem liberou / revogou e quando.`,
     agentPrompt: `Preciso controlar acesso de compradores.
 
 Produto:
