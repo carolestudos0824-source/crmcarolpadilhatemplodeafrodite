@@ -528,10 +528,25 @@ export const MonetizacaoIntro = () => {
           </h3>
         </div>
         <GlassCard className="p-5 space-y-4">
-          <p className="text-[12px] text-muted-foreground">
-            Preencha o que souber. A recomendação é um ponto de partida, não uma
-            regra. Sempre teste com pessoas reais.
-          </p>
+          {hasProjectContext && autoFilledNotice && (
+            <div className="rounded-lg border border-accent/25 bg-accent/5 px-3 py-2 text-[12px] text-accent/90">
+              Preenchemos sugestões com base no contexto do seu projeto. Revise antes de usar.
+            </div>
+          )}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-[12px] text-muted-foreground">
+              Preencha o que souber. A recomendação é um ponto de partida, não uma
+              regra. Sempre teste com pessoas reais.
+            </p>
+            <button
+              type="button"
+              onClick={handleApplyContext}
+              className="inline-flex items-center gap-2 text-[12px] px-3 py-1.5 min-h-[36px] rounded-lg border border-accent/30 bg-accent/5 text-accent hover:bg-accent/10"
+            >
+              <Wand2 size={12} /> Atualizar com contexto do projeto
+            </button>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-3">
             <CalcInput
               label="Tipo de app"
