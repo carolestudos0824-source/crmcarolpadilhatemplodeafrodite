@@ -193,15 +193,12 @@ export function GiftCodesPanel() {
   const totalRedemptions = codes.reduce((sum, c) => sum + (c.current_uses || 0), 0);
 
   return (
-    <section className="mb-8 space-y-4" aria-labelledby="codigos-premium">
-      <header>
-        <h2 id="codigos-premium" className="text-lg md:text-xl font-heading font-bold mb-1 flex items-center gap-2">
-          <KeyRound size={18} className="text-accent" /> Códigos premium
-        </h2>
-        <p className="text-xs text-muted-foreground">
-          Crie, consulte e acompanhe códigos usados para liberar ou estender acesso.
-        </p>
-      </header>
+    <section className="mb-8 space-y-5" aria-labelledby="codigos-premium">
+      <p id="codigos-premium" className="text-xs text-muted-foreground -mt-2">
+        Cada código libera ou estende o acesso de quem resgatar. Defina dias de acesso, limite de usos e, se quiser, uma data de expiração.
+      </p>
+
+
 
       {error && (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3 flex items-start gap-2">
