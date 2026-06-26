@@ -1557,49 +1557,62 @@ Corrija:
     objective: "Criar páginas úteis para temas e palavras-chave importantes.",
     whenLovableDirect: "Depois de ter o plano de SEO.",
     whenAgentFirst: "Quando você não sabe quais páginas devem ser criadas primeiro.",
-    content: `Crie páginas otimizadas para as palavras-chave abaixo.
+    content: `Crie páginas públicas para o Google a partir do plano de SEO do app [nome do app ativo].
 
-Palavras-chave:
-[cole a lista]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Produto: [produto]
+- Ação principal: [ação principal]
 
-Para cada página, crie:
+Palavras-chave por página:
+[cole a lista do plano da Etapa 1]
+
+Para cada página, entregue:
 
 1. URL amigável.
-2. Title.
+2. Título da página (meta title).
 3. Meta description.
-4. H1.
-5. Introdução clara.
-6. Seções H2.
-7. FAQ curto.
-8. CTA.
-9. Texto útil, sem repetição artificial.
+4. H1 claro (um por página).
+5. Introdução curta explicando o app de forma simples.
+6. Seções H2 com conteúdo útil.
+7. Mini-FAQ com perguntas reais.
+8. CTA claro alinhado a [ação principal].
+9. Links para Termos e Privacidade.
 
 Regras:
 
-- Cada página deve responder uma intenção real.
-- Não criar conteúdo vazio.
-- Não repetir a mesma página com palavras diferentes.
-- Não usar keyword stuffing.`,
-    agentPrompt: `Tenho estas palavras-chave:
-[cole]
+- Cada página responde uma intenção real.
+- Não duplicar conteúdo entre páginas (sem trocar só palavras).
+- Não usar keyword stuffing.
+- Não prometer resultado garantido.
+- Não expor área paga, admin, entrega ou checkout interno em páginas públicas.`,
+    agentPrompt: `Tenho o plano de SEO do app [nome do app ativo].
+
+App: [descreva o app]
+Público: [descreva o público]
+Ação principal: [ação principal]
 
 Me ajude a decidir:
 
-1. Quais merecem página própria.
-2. Quais podem ficar juntas.
+1. Quais palavras merecem página própria.
+2. Quais podem ser agrupadas.
 3. Qual ordem criar.
-4. Que título usar.
-5. Que CTA colocar.`,
-    correctionPrompt: `As páginas SEO ficaram repetitivas ou artificiais. Corrija.
+4. Que título e meta description usar.
+5. Que CTA colocar (sem prometer resultado garantido).`,
+    correctionPrompt: `As páginas para Google do app [nome do app ativo] ficaram repetitivas ou artificiais. Corrija.
 
 Regras:
 
 1. Cada página deve ter objetivo próprio.
-2. Evite repetir o mesmo texto.
-3. Melhore títulos e subtítulos.
-4. Inclua FAQ útil.
-5. Mantenha CTA claro.
-6. Remova keyword stuffing.`,
+2. Sem texto duplicado.
+3. Melhore meta title, description e H1.
+4. Inclua FAQ real e visível.
+5. CTA claro e responsável.
+6. Sem keyword stuffing.
+7. Sem promessa de resultado garantido.`,
     advanceCriteria:
       "Avance quando cada página tiver título, descrição, conteúdo útil, FAQ e CTA.",
   },
