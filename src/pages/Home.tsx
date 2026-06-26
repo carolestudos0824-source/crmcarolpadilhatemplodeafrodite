@@ -346,38 +346,53 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* MÓDULOS */}
+      {/* MÓDULOS — 4 blocos agrupados */}
       <Section
         eyebrow="Por dentro do programa"
-        title="Veja o que você encontra por dentro"
-        subtitle="Módulos práticos por etapa, com contexto do projeto em foco e próximo passo recomendado."
+        title="Tudo organizado em 4 blocos práticos"
+        subtitle="Cada bloco reúne os módulos da etapa, com contexto do projeto em foco e próximo passo recomendado."
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockups.map((m) => (
-            <GlassCard key={m.t} className="space-y-4">
-              <div className="rounded-lg border border-border/60 bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4 h-36 flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="text-accent">{m.icon}</div>
-                  <div className="h-2 w-24 rounded bg-foreground/20" />
-                </div>
-                <div className="space-y-1.5 mt-1">
-                  <div className="h-1.5 w-full rounded bg-foreground/15" />
-                  <div className="h-1.5 w-5/6 rounded bg-foreground/15" />
-                  <div className="h-1.5 w-4/6 rounded bg-foreground/10" />
-                </div>
-                <div className="mt-auto flex gap-1.5">
-                  <div className="h-5 w-16 rounded bg-primary/40" />
-                  <div className="h-5 w-12 rounded bg-accent/30" />
-                </div>
+        <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          {[
+            {
+              icon: <Brain size={22} />,
+              t: "1. Planejamento do app",
+              items: ["Ideia, público e dor", "MVP enxuto", "Telas principais", "Fluxo do usuário", "30 ideias de aplicativos para inspirar"],
+            },
+            {
+              icon: <Database size={22} />,
+              t: "2. Construção no Lovable",
+              items: ["Prompts por etapa", "Login e autenticação", "Banco de dados", "Área paga e Admin", "Checkout e entrega"],
+            },
+            {
+              icon: <ShieldCheck size={22} />,
+              t: "3. Correção e segurança",
+              items: ["Correção de erros e quebras", "Revisão por versões", "Noções de RLS", "Rotas e dados sensíveis", "Riscos comuns antes de publicar"],
+            },
+            {
+              icon: <Megaphone size={22} />,
+              t: "4. Venda e validação",
+              items: ["Estrutura de oferta", "Página de venda", "Preço e checkout", "Comunicação de valor", "Próximos passos para publicar"],
+            },
+          ].map((b) => (
+            <GlassCard key={b.t} className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0">{b.icon}</span>
+                <p className="font-heading font-bold text-lg text-foreground">{b.t}</p>
               </div>
-              <div>
-                <p className="font-semibold text-base mb-1">{m.t}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{m.d}</p>
-              </div>
+              <ul className="space-y-2">
+                {b.items.map((i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
+                    <Check size={16} className="text-accent shrink-0 mt-1" />
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
             </GlassCard>
           ))}
         </div>
       </Section>
+
 
       {/* VÍDEO DEMONSTRATIVO — placeholder */}
       <Section
