@@ -207,6 +207,51 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* 5 MOTIVOS PARA ENTRAR */}
+      <Section
+        eyebrow="Por que vale R$197"
+        title="5 motivos para entrar na Fábrica de Apps com IA"
+        subtitle="O que torna o programa diferente de prompt pack, PDF avulso ou curso longo para assistir passivamente."
+      >
+        <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          {[
+            {
+              icon: <Target size={22} />,
+              t: "1. Método arquiteto",
+              d: "O Lovable é o pedreiro: ele executa. A Fábrica é o arquiteto: organiza o que pedir, em qual ordem construir e o que evitar. Resultado: construção mais organizada, com menos retrabalho e mais clareza.",
+            },
+            {
+              icon: <Wand2 size={22} />,
+              t: "2. Menos tentativa e erro com seus créditos",
+              d: "Muita gente perde créditos do Lovable testando prompts soltos sem ordem. O programa ajuda você a usar seus créditos com mais intenção, evitando pedidos vagos que custam caro e quebram telas.",
+            },
+            {
+              icon: <ListChecks size={22} />,
+              t: "3. Plataforma guiada, não curso passivo",
+              d: "Não é PDF solto, não é prompt pack jogado, não é curso enorme para assistir. É uma área interna por etapas, com método, prompts por etapa, checklists e próximo passo para você construir um MVP com direção.",
+            },
+            {
+              icon: <ShieldCheck size={22} />,
+              t: "4. Prova viva: foi construída no Lovable",
+              d: "A própria Fábrica de Apps com IA foi construída no Lovable seguindo a lógica que o programa ensina: planejar, pedir, revisar, corrigir e avançar por etapas. Não é promessa de resultado igual para todo aluno — é prova de que o método é executável.",
+            },
+            {
+              icon: <Bot size={22} />,
+              t: "5. Agente Arquiteto via ChatGPT",
+              d: "Acessado pela área interna, abre direto no ChatGPT e ajuda a planejar, revisar, corrigir e melhorar comandos antes de usar no Lovable. Não substitui o Lovable, não cria o app sozinho e pode depender da sua conta, plano e limites do ChatGPT.",
+            },
+          ].map((m) => (
+            <GlassCard key={m.t} className="space-y-3">
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0">{m.icon}</span>
+                <p className="font-heading font-bold text-lg text-foreground">{m.t}</p>
+              </div>
+              <p className="text-sm md:text-base text-foreground/90 leading-relaxed">{m.d}</p>
+            </GlassCard>
+          ))}
+        </div>
+      </Section>
+
       {/* PLANO EXECUTÁVEL */}
       <Section
         eyebrow="Mais do que um PDF"
