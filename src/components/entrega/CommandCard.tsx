@@ -33,6 +33,8 @@ type Props = {
   agentPrompt?: string;
   correctionPrompt?: string;
   advanceCriteria?: string;
+  /** Quando true, todas as EditablePromptBox iniciam recolhidas (apenas prévia + "Ver prompt completo"). */
+  collapsiblePrompts?: boolean;
 };
 
 
