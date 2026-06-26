@@ -1097,33 +1097,32 @@ export const COMMANDS_CHECKOUT: Command[] = [
     whenLovableDirect: "Quando a oferta e o preço já estão definidos.",
     whenAgentFirst:
       "Quando você ainda não sabe se deve usar WhatsApp, checkout externo, gateway ou assinatura.",
-    content: `Crie o fluxo de pagamento para este app.
+    content: `Crie o fluxo de pagamento para o app [nome do app ativo].
 
-Produto:
-[descreva]
+App: [descreva o app]
+Produto vendido: [produto]
+Modelo de cobrança: [modelo de cobrança]
+Ação principal do comprador: [ação principal]
 
-Valor:
-[informe]
-
-Forma de pagamento:
-[WhatsApp, checkout externo, Kiwify, Hotmart, Kirvano, Stripe, Mercado Pago ou outro]
+Forma recomendada para MVP: checkout externo (Kiwify, Hotmart, Kirvano) ou link de pagamento (Mercado Pago, Stripe Payment Link). NÃO construir checkout próprio agora.
 
 Requisitos:
 
-1. Botão de compra claro.
-2. Página ou seção de checkout.
-3. Resumo do que a pessoa está comprando.
-4. Informação sobre liberação de acesso.
-5. Botão alternativo de suporte.
-6. Aviso de que o acesso será liberado após confirmação do pagamento, se o fluxo for manual.
-7. Não mostrar materiais protegidos antes da confirmação.
+1. Botão de compra claro, mostrando preço e o que está incluso.
+2. Resumo curto do que a pessoa está comprando logo antes do botão.
+3. O botão abre o checkout externo / link de pagamento em nova aba.
+4. Após a compra, o gateway redireciona para a página de obrigado deste app.
+5. Aviso honesto: "Seu acesso será liberado após confirmação do pagamento" quando a liberação for manual.
+6. Botão alternativo de suporte visível.
 
-Regras:
+Regras invioláveis:
 
-- Não inventar gateway.
-- Não criar promessa de acesso automático se ainda não existe webhook.
-- Não deixar botão quebrado.
-- Se a URL de pagamento ainda não existir, deixar campo configurável.`,
+- Não liberar material pago antes da confirmação.
+- Não criar integração automática (webhook) nesta etapa do MVP.
+- Não inventar gateway nem credenciais.
+- Não prometer acesso imediato se a liberação ainda for manual.
+- Se a URL de pagamento ainda não existir, deixar campo configurável e botão desativado com aviso.
+- Não vendas garantidas. Não promessa de resultado garantido.`,
     agentPrompt: `Preciso decidir como receber pagamento no meu app.
 
 App:
