@@ -1273,6 +1273,39 @@ export type Database = {
           user_id: string
         }[]
       }
+      admin_list_buyers_overview: {
+        Args: {
+          _access_filter?: string
+          _before_email?: string
+          _before_sort_at?: string
+          _limit?: number
+          _payment_status?: string
+          _period_days?: number
+          _search?: string
+          _source?: string
+        }
+        Returns: {
+          access_source: string
+          access_updated_at: string
+          buyer_name: string
+          cancelled_count: number
+          email: string
+          has_access: boolean
+          last_access_status: string
+          last_payment_status: string
+          last_sale_at: string
+          last_sale_id: string
+          origin: string
+          paid_confirmed_count: number
+          pending_count: number
+          refunded_count: number
+          sales_count: number
+          sort_at: string
+          total_paid_confirmed: number
+          user_created_at: string
+          user_id: string
+        }[]
+      }
       admin_list_manual_sales: {
         Args: {
           _access_status?: string
