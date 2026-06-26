@@ -126,7 +126,15 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         helper: "Sem contexto, os prompts saem genéricos. Preencha para personalizar.",
       };
     }
-    if (phase === "Já tenho um app" && !isDone("melhorias")) {
+    // Hotfix: nunca recomendar um módulo anterior ao módulo ativo atual.
+    // Compara índice na MODULE_ORDER e só sugere o candidato se ele NÃO
+    // estiver antes do ponto onde a pessoa já chegou. Mesma proteção usada
+    // em useRecommendedModuleId (suggestIfNotPast).
+    const activeIdx = activeModuleId ? MODULE_ORDER.indexOf(activeModuleId) : -1;
+    const suggestIfNotPast = (id: ModuleId) =>
+      !isDone(id) && (activeIdx === -1 || activeIdx <= MODULE_ORDER.indexOf(id));
+
+    if (phase === "Já tenho um app" && suggestIfNotPast("melhorias")) {
       return {
         kind: "go-module",
         moduleId: "melhorias",
@@ -134,7 +142,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         helper: "Auditar, corrigir e evoluir o app existente sem quebrar o que já funciona.",
       };
     }
-    if (phase === "Começando do zero" && !isDone("mvp")) {
+    if (phase === "Começando do zero" && suggestIfNotPast("mvp")) {
       return {
         kind: "go-module",
         moduleId: "mvp",
@@ -142,7 +150,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         helper: "Antes de construir, defina a versão mínima funcional.",
       };
     }
-    if (phase === "Construindo por versões" && !isDone("planejar")) {
+    if (phase === "Construindo por versões" && suggestIfNotPast("planejar")) {
       return {
         kind: "go-module",
         moduleId: "planejar",
