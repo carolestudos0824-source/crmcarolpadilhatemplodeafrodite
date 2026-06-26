@@ -463,6 +463,8 @@ export function LegalConfiancaModule() {
         </div>
       </GlassCard>
 
+      <ResumoLegalCard />
+
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-4">
         Use a aba <strong className="text-foreground/90">Implementar no Lovable</strong> quando
