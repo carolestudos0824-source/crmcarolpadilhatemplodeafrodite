@@ -190,11 +190,17 @@ function CopyBtn({ text, label = "Copiar para implementar no Lovable" }: { text:
   );
 }
 
+const RAW_METRICAS_PLACEHOLDER =
+  /\[(?:nome do app(?:\s+ativo|\s+selecionado|\s+atual)?|descreva(?:\s+o\s+app|\s+o\s+público|\s+a\s+dor)?|promessa|produto(?:\s+ou\s+serviço)?|modelo de cobrança|ação principal|informe|preencha|público|problema)\]|Aplicativo X/i;
+
 function EtapaCard({ etapa }: { etapa: Etapa }) {
   const [tab, setTab] = useState<TabId>("lovable");
-  const { context } = useProjectContext();
+  const { context, isFilled } = useProjectContext();
   const Icon = etapa.icon;
   const resolvedPrompt = applyContextPlaceholders(etapa.tabs[tab], context);
+  const invalidateSavedPrompt = isFilled
+    ? (saved: string) => RAW_METRICAS_PLACEHOLDER.test(saved)
+    : undefined;
   return (
     <GlassCard className="p-5 md:p-6">
       <div className="flex items-start gap-4 mb-4">
@@ -243,6 +249,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           saveSourceModule="metricas"
           key={`${etapa.n}-${tab}`}
           originalPrompt={resolvedPrompt}
+          shouldInvalidateSavedValue={invalidateSavedPrompt}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
           transformOnCopy={
             tab === "agente"
