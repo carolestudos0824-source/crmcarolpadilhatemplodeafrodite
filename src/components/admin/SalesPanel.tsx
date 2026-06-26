@@ -248,7 +248,7 @@ export function SalesPanel() {
       </div>
 
       {/* Toolbar */}
-      <div className="glass-strong p-3 sm:p-4 space-y-3">
+      <div className="admin-card p-3 sm:p-4 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="relative flex-1">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -294,11 +294,11 @@ export function SalesPanel() {
 
       {/* Content */}
       {loading ? (
-        <div className="glass-strong p-8 text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
+        <div className="admin-card p-8 text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
           <Loader2 size={14} className="animate-spin" /> Carregando vendas…
         </div>
       ) : error ? (
-        <div className="glass-strong p-6 border border-red-500/30">
+        <div className="admin-card p-6 border-red-500/30">
           <h3 className="font-heading font-semibold text-red-300 mb-1">Não foi possível carregar vendas</h3>
           <p className="text-xs text-muted-foreground mb-3">{error}</p>
           <button type="button" onClick={reload} className="btn-ghost border border-white/15">
@@ -311,33 +311,33 @@ export function SalesPanel() {
           onCreate={() => setShowCreate(true)}
         />
       ) : (
-        <div className="glass-strong overflow-hidden">
+        <div className="admin-table-wrapper">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-white/5 text-[11px] uppercase tracking-wider text-muted-foreground">
+            <table className="admin-table">
+              <thead>
                 <tr>
-                  <th className="text-left px-4 py-3 font-medium">Comprador</th>
-                  <th className="text-left px-4 py-3 font-medium">Valor</th>
-                  <th className="text-left px-4 py-3 font-medium">Pagamento</th>
-                  <th className="text-left px-4 py-3 font-medium">Acesso</th>
-                  <th className="text-left px-4 py-3 font-medium">Data</th>
-                  <th className="text-right px-4 py-3 font-medium">Ações</th>
+                  <th>Comprador</th>
+                  <th>Valor</th>
+                  <th>Pagamento</th>
+                  <th>Acesso</th>
+                  <th>Data</th>
+                  <th className="text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody>
                 {filtered.map((s) => (
-                  <tr key={s.id} className="hover:bg-white/[0.03]">
-                    <td className="px-4 py-3">
+                  <tr key={s.id}>
+                    <td>
                       <div className="font-medium text-foreground/90">{s.buyer_email}</div>
                       {s.buyer_name && (
                         <div className="text-xs text-muted-foreground">{s.buyer_name}</div>
                       )}
                     </td>
-                    <td className="px-4 py-3">{fmtMoney(s.amount, s.currency)}</td>
-                    <td className="px-4 py-3"><Badge variant={paymentTone(s.payment_status)}>{PAYMENT_STATUS_LABEL[s.payment_status] ?? s.payment_status}</Badge></td>
-                    <td className="px-4 py-3"><Badge variant={accessTone(s.access_status)}>{isAwaitingFirstLogin(s) ? "Aguardando primeiro login" : (ACCESS_STATUS_LABEL[s.access_status] ?? s.access_status)}</Badge></td>
-                    <td className="px-4 py-3 text-xs text-muted-foreground">{fmtDate(s.created_at)}</td>
-                    <td className="px-4 py-3">
+                    <td className="tabular-nums">{fmtMoney(s.amount, s.currency)}</td>
+                    <td><Badge variant={paymentTone(s.payment_status)}>{PAYMENT_STATUS_LABEL[s.payment_status] ?? s.payment_status}</Badge></td>
+                    <td><Badge variant={accessTone(s.access_status)}>{isAwaitingFirstLogin(s) ? "Aguardando primeiro login" : (ACCESS_STATUS_LABEL[s.access_status] ?? s.access_status)}</Badge></td>
+                    <td className="text-xs text-muted-foreground whitespace-nowrap">{fmtDate(s.created_at)}</td>
+                    <td>
                       <div className="flex items-center justify-end gap-1">
                         <IconBtn title="Ver detalhes" onClick={() => setSelected(s)}><Eye size={14} /></IconBtn>
                         <IconBtn title="Copiar e-mail" onClick={() => copyText(s.buyer_email, "E-mail copiado")}><Copy size={14} /></IconBtn>
@@ -421,16 +421,12 @@ function accessTone(s: string): BadgeVariant {
 type BadgeVariant = "ok" | "warn" | "danger" | "muted";
 function Badge({ children, variant = "muted" }: { children: React.ReactNode; variant?: BadgeVariant }) {
   const map: Record<BadgeVariant, string> = {
-    ok: "bg-emerald-500/15 text-emerald-200 border-emerald-500/30",
-    warn: "bg-amber-500/15 text-amber-200 border-amber-500/30",
-    danger: "bg-red-500/15 text-red-200 border-red-500/30",
-    muted: "bg-white/5 text-muted-foreground border-white/10",
+    ok: "admin-badge admin-badge-success",
+    warn: "admin-badge admin-badge-warning",
+    danger: "admin-badge admin-badge-danger",
+    muted: "admin-badge admin-badge-muted",
   };
-  return (
-    <span className={`inline-flex items-center text-[11px] px-2 py-0.5 rounded-md border ${map[variant]}`}>
-      {children}
-    </span>
-  );
+  return <span className={map[variant]}>{children}</span>;
 }
 
 function IconBtn({
@@ -443,7 +439,7 @@ function IconBtn({
       ? "border-red-500/30 text-red-200 hover:bg-red-500/10"
       : "border-white/10 text-foreground/80 hover:bg-white/5";
   return (
-    <button type="button" onClick={onClick} title={title} aria-label={title} className={`p-1.5 rounded-md border ${cls}`}>
+    <button type="button" onClick={onClick} title={title} aria-label={title} className={`p-1.5 rounded-md border transition ${cls}`}>
       {children}
     </button>
   );
@@ -453,7 +449,7 @@ function FilterSelect({
   label, value, onChange, options,
 }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
   return (
-    <label className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-2 py-1">
+    <label className="inline-flex items-center gap-2 bg-[hsl(var(--admin-surface-3))] border border-[hsl(var(--admin-border-subtle))] rounded-lg px-2.5 py-1.5">
       <span className="text-muted-foreground">{label}:</span>
       <select
         value={value}
@@ -470,18 +466,18 @@ function FilterSelect({
 
 function EmptyState({ hasAny, onCreate }: { hasAny: boolean; onCreate: () => void }) {
   return (
-    <div className="glass-strong p-10 text-center">
-      <ShoppingCart className="mx-auto text-muted-foreground mb-3" size={28} />
-      <h3 className="font-heading font-semibold mb-1">
+    <div className="admin-empty py-10">
+      <ShoppingCart className="text-muted-foreground" size={28} />
+      <h3 className="admin-empty-title font-heading">
         {hasAny ? "Nenhuma venda corresponde aos filtros" : "Nenhuma venda manual registrada ainda"}
       </h3>
-      <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
+      <p className="admin-empty-hint">
         {hasAny
           ? "Ajuste a busca ou os filtros acima para ver outras vendas."
           : "Quando confirmar um pagamento, registre a venda aqui para liberar o acesso do comprador."}
       </p>
       {!hasAny && (
-        <button type="button" onClick={onCreate} className="btn-primary inline-flex">
+        <button type="button" onClick={onCreate} className="btn-primary inline-flex mt-2">
           <Plus size={14} /> Registrar primeira venda
         </button>
       )}
