@@ -2000,7 +2000,7 @@ Promessa:
 [promessa]
 
 Canal:
-[Instagram, WhatsApp, Meta Ads, LinkedIn ou outro]
+Instagram, WhatsApp, Meta Ads, LinkedIn ou outro canal escolhido.
 
 Para cada criativo, entregue:
 
@@ -2078,7 +2078,7 @@ Promessa:
 [promessa]
 
 Canal:
-[Reels, TikTok, Shorts, Stories ou outro]
+Reels, TikTok, Shorts, Stories ou outro canal escolhido.
 
 Para cada roteiro, entregue:
 
@@ -2188,7 +2188,7 @@ Público:
 [descreva o público]
 
 Resultados orgânicos:
-[descreva ou escreva "ainda não testei"]
+Use os sinais orgânicos já observados; se ainda não testou, indique que a oferta ainda precisa de validação orgânica.
 
 Analise:
 
@@ -2399,7 +2399,7 @@ Público:
 [descreva o público]
 
 Canal:
-[Reels, TikTok, Shorts]
+Reels, TikTok ou Shorts.
 
 Me ajude a decidir:
 
@@ -2433,10 +2433,10 @@ Use:
     content: `Crie um plano de teste A/B de criativos.
 
 Criativos disponíveis:
-[liste]
+Use os criativos já criados para [nome do app ativo]. Se ainda houver poucos criativos, comece pelos conceitos aprovados nas etapas anteriores.
 
 Objetivo:
-[clique, cadastro, compra, resposta, visualização ou outro]
+[ação principal]
 
 Crie:
 
@@ -2458,10 +2458,10 @@ Regras:
     agentPrompt: `Quero testar criativos, mas não sei o que comparar.
 
 Criativos:
-[cole ou descreva]
+Use os criativos já criados para [nome do app ativo] ou descreva as duas melhores variações disponíveis.
 
 Objetivo:
-[descreva]
+[ação principal]
 
 Me ajude a criar:
 
@@ -2514,10 +2514,10 @@ Sugira também uma tabela simples para Notion, Airtable, Google Sheets ou banco 
     agentPrompt: `Quero organizar meus criativos e testes.
 
 Canais:
-[descreva]
+Instagram, WhatsApp, Reels, Stories, Meta Ads ou canais em teste para [nome do app ativo].
 
 Quantidade de criativos:
-[descreva]
+Liste os criativos já criados; se ainda não houver histórico, comece com os conceitos aprovados na etapa Criativos.
 
 Me ajude a criar:
 
