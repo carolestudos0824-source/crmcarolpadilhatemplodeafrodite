@@ -567,7 +567,7 @@ function OverviewSection({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 text-sky-100 text-sm px-4 py-3 flex items-start gap-2">
         <CreditCard size={16} className="shrink-0 mt-0.5" />
         <span>
@@ -577,56 +577,56 @@ function OverviewSection({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatusCard
-          icon={<CreditCard size={16} />}
+          icon={<CreditCard size={14} />}
           title="Receita manual confirmada"
           badge={metrics.loading ? "…" : fmtBRL(metrics.revenueConfirmed)}
           tone={metrics.revenueConfirmed > 0 ? "ok" : "muted"}
           text="Soma de vendas manuais com pagamento confirmado."
         />
         <StatusCard
-          icon={<UserCheck size={16} />}
+          icon={<UserCheck size={14} />}
           title="Vendas confirmadas"
           badge={dash(metrics.salesConfirmed)}
           tone={metrics.salesConfirmed > 0 ? "ok" : "muted"}
           text="Vendas com pagamento confirmado em manual_sales."
         />
         <StatusCard
-          icon={<AlertTriangle size={16} />}
+          icon={<AlertTriangle size={14} />}
           title="Aguardando liberação"
           badge={dash(metrics.pendingAccess)}
           tone={metrics.pendingAccess > 0 ? "warn" : "muted"}
           text="Aguardando primeiro login/liberação do comprador."
         />
         <StatusCard
-          icon={<ShieldCheck size={16} />}
+          icon={<ShieldCheck size={14} />}
           title="Acessos liberados"
           badge={dash(metrics.accessGranted)}
           tone={metrics.accessGranted > 0 ? "ok" : "muted"}
           text="Vendas marcadas como acesso liberado."
         />
         <StatusCard
-          icon={<ShieldOff size={16} />}
+          icon={<ShieldOff size={14} />}
           title="Acessos revogados"
           badge={dash(metrics.accessRevoked)}
           tone={metrics.accessRevoked > 0 ? "warn" : "muted"}
           text="Vendas marcadas como acesso revogado."
         />
         <StatusCard
-          icon={<Bot size={16} />}
+          icon={<Bot size={14} />}
           title="Códigos premium usados"
           badge={dash(metrics.giftRedemptions)}
           tone="muted"
           text="Total de resgates registrados."
         />
         <StatusCard
-          icon={<Mail size={16} />}
+          icon={<Mail size={14} />}
           title="Mensagens recebidas"
           badge={dash(metrics.supportMessages)}
           tone="muted"
           text="Suporte recebido pela área interna."
         />
         <StatusCard
-          icon={<CreditCard size={16} />}
+          icon={<CreditCard size={14} />}
           title="Status do checkout"
           badge={checkoutPending ? "Manual" : "Configurado"}
           tone={checkoutPending ? "muted" : "ok"}
@@ -638,8 +638,9 @@ function OverviewSection({
         />
       </div>
 
-      <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-3">Próximas ações</h3>
+      <div className="admin-card p-5">
+        <h3 className="font-heading font-semibold text-sm mb-1">Próximas ações</h3>
+        <p className="text-xs text-muted-foreground mb-3">Atalhos para as tarefas mais frequentes do admin.</p>
         <div className="flex flex-wrap gap-2">
           <button onClick={() => onGoTo("vendas")} className="btn-primary text-xs">
             <ShoppingCartIcon /> Registrar venda manual
@@ -659,25 +660,35 @@ function OverviewSection({
         </div>
       </div>
 
-      <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-1">Automação de pagamento</h3>
-        <p className="text-xs text-muted-foreground">
-          Webhook: não configurado. Webhook de pagamento é uma etapa futura — por enquanto todos os acessos são confirmados manualmente.
-        </p>
-      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="admin-card p-5">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-heading font-semibold text-sm">Automação de pagamento</h3>
+            <span className="admin-badge admin-badge-muted">Pendente</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Webhook não configurado. Esta é uma etapa futura — por enquanto todos os acessos são confirmados manualmente.
+          </p>
+        </div>
 
-      <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-1">Admin logado</h3>
-        <p className="text-xs text-muted-foreground mb-3">
-          {adminEmail ?? "Sessão admin não detectada."} · Acesso interno: {selfHasAccess ? "ativo" : "inativo"}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => onGoTo("acessos")} className="btn-primary">
-            <ShieldCheck size={14} /> Ir para Acessos
-          </button>
-          <Link to="/entrega" className="btn-ghost border border-white/15">
-            <ExternalLink size={14} /> Abrir Minha área
-          </Link>
+        <div className="admin-card p-5">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-heading font-semibold text-sm">Admin logado</h3>
+            <span className={`admin-badge ${selfHasAccess ? "admin-badge-success" : "admin-badge-warning"}`}>
+              {selfHasAccess ? "Acesso ativo" : "Sem acesso"}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3 break-all">
+            {adminEmail ?? "Sessão admin não detectada."}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={() => onGoTo("acessos")} className="btn-primary">
+              <ShieldCheck size={14} /> Ir para Acessos
+            </button>
+            <Link to="/entrega" className="btn-ghost border border-white/15">
+              <ExternalLink size={14} /> Abrir Minha área
+            </Link>
+          </div>
         </div>
       </div>
 
