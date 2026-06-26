@@ -135,6 +135,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
   const [fAccess, setFAccess] = useState<string>("all");
   const [fSource, setFSource] = useState<string>("all");
   const [fPeriod, setFPeriod] = useState<string>("all");
+  const [confirmRevoke, setConfirmRevoke] = useState<ConsolidatedBuyer | null>(null);
 
   const load = async () => {
     setLoading(true);
