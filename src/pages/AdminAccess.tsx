@@ -278,8 +278,40 @@ function AdminAccessInner() {
   }
 
   if (authError) {
-    return <AdminRouteErrorFallback error={new Error(authError)} />;
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-md w-full glass-strong p-8 text-center space-y-4">
+          <AlertTriangle className="mx-auto text-amber-300" size={28} />
+          <div>
+            <h1 className="text-xl font-heading font-bold mb-1">Não foi possível carregar o painel admin</h1>
+            <p className="text-sm text-muted-foreground">
+              {authError.includes("Tempo esgotado") || authError.toLowerCase().includes("timeout")
+                ? "Tempo esgotado ao carregar a sessão. Verifique sua conexão e tente novamente."
+                : authError}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <button
+              onClick={() => setAuthAttempt((n) => n + 1)}
+              className="btn-primary text-xs"
+            >
+              Tentar novamente
+            </button>
+            <button
+              onClick={async () => {
+                try { await supabase.auth.signOut(); } catch { /* ignore */ }
+                navigate("/login", { replace: true });
+              }}
+              className="btn-ghost border border-white/15 text-xs"
+            >
+              Sair e entrar novamente
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
+
 
   if (!isAdmin) {
     return (
