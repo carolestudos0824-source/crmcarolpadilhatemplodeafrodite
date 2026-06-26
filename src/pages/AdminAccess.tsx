@@ -35,6 +35,7 @@ import { AccessLogs } from "@/components/admin/AccessLogs";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
 import { AdminErrorBoundary } from "@/components/admin/AdminErrorBoundary";
 import { SupportInbox } from "@/components/admin/SupportInbox";
+import ProgramMetricsPanel from "@/components/admin/ProgramMetricsPanel";
 import { SalesPanel } from "@/components/admin/SalesPanel";
 import { withTimeout } from "@/lib/promiseTimeout";
 
