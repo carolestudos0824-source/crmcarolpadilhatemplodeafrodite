@@ -76,9 +76,9 @@ export function AdminShell({
   };
 
   return (
-    <div className="min-h-screen bg-[#05070D] text-foreground flex overflow-x-hidden">
+    <div className="min-h-screen bg-[hsl(var(--admin-surface-1))] text-foreground flex overflow-x-hidden">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 border-r border-white/10 bg-[#0B1020] flex-col sticky top-0 h-screen">
+      <aside className="hidden lg:flex w-64 shrink-0 border-r border-[hsl(var(--admin-border-subtle))] bg-[hsl(var(--admin-surface-2))] flex-col sticky top-0 h-screen">
         <SidebarInner active={active} onNav={handleNav} />
       </aside>
 
@@ -86,11 +86,11 @@ export function AdminShell({
       {mobileOpen && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/70 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
-          <aside className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#0B1020] border-r border-white/10 lg:hidden flex flex-col">
+          <aside className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[hsl(var(--admin-surface-2))] border-r border-[hsl(var(--admin-border-subtle))] lg:hidden flex flex-col">
             <SidebarInner active={active} onNav={handleNav} onClose={() => setMobileOpen(false)} />
           </aside>
         </>
@@ -98,11 +98,11 @@ export function AdminShell({
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-30 bg-[#05070D]/90 backdrop-blur border-b border-white/10">
+        <header className="sticky top-0 z-30 bg-[hsl(var(--admin-surface-1))]/85 backdrop-blur-md border-b border-[hsl(var(--admin-border-subtle))]">
           <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 lg:px-8 h-14">
             <button
               type="button"
-              className="lg:hidden p-2 -ml-1 rounded-lg hover:bg-white/5 active:bg-white/10"
+              className="lg:hidden p-2 -ml-1 rounded-lg hover:bg-white/5 active:bg-white/10 transition"
               onClick={() => setMobileOpen(true)}
               aria-label="Abrir menu admin"
             >
@@ -115,13 +115,13 @@ export function AdminShell({
               <div className="text-sm font-heading font-semibold truncate">{current.label}</div>
               <div className="text-[10px] text-muted-foreground truncate sm:hidden">{adminEmail ?? "—"}</div>
             </div>
-            <div className="hidden sm:flex flex-col items-end leading-tight min-w-0">
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Logado</span>
-              <span className="text-xs text-foreground/85 truncate max-w-[180px]">{adminEmail ?? "—"}</span>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[hsl(var(--admin-surface-2))] border border-[hsl(var(--admin-border-subtle))] min-w-0">
+              <span className="size-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_hsl(152_64%_48%_/_0.7)]" aria-hidden />
+              <span className="text-xs text-foreground/85 truncate max-w-[200px]">{adminEmail ?? "—"}</span>
             </div>
             <Link
               to="/entrega"
-              className="hidden md:inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-white/15 hover:bg-white/5"
+              className="hidden md:inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-[hsl(var(--admin-border-strong))] bg-[hsl(var(--admin-surface-2))] hover:bg-[hsl(var(--admin-surface-3))] hover:border-accent/40 transition"
             >
               <ExternalLink size={12} /> Minha área
             </Link>
@@ -129,7 +129,7 @@ export function AdminShell({
               type="button"
               onClick={onLogout}
               aria-label="Sair"
-              className="inline-flex items-center gap-1.5 text-xs px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-lg border border-red-500/30 text-red-200 hover:bg-red-500/10"
+              className="inline-flex items-center gap-1.5 text-xs px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-lg border border-red-500/30 text-red-200 hover:bg-red-500/10 hover:border-red-500/50 transition"
             >
               <LogOut size={14} /> <span className="hidden sm:inline">Sair</span>
             </button>
@@ -138,9 +138,12 @@ export function AdminShell({
 
         <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6">
           <div className="max-w-5xl mx-auto">
-            <div className="mb-5">
+            <div className="mb-6 pb-4 border-b border-[hsl(var(--admin-border-subtle))]">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-accent/80 font-semibold mb-1.5">
+                Painel Admin
+              </div>
               <h1 className="text-xl md:text-2xl font-heading font-bold mb-1">{current.title}</h1>
-              <p className="text-sm text-muted-foreground">{current.subtitle}</p>
+              <p className="text-sm text-muted-foreground max-w-2xl">{current.subtitle}</p>
             </div>
             {children}
           </div>
