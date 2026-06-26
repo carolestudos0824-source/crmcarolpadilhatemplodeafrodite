@@ -53,6 +53,7 @@ import {
 import { Logo } from "@/components/Logo";
 import { GlassCard } from "@/components/GlassCard";
 import { FabricaLegalReminder } from "@/components/FabricaLegalReminder";
+import { PainelProntidaoModule } from "@/components/entrega/PainelProntidaoModule";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
