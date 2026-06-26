@@ -147,7 +147,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
           </div>
         ) : isOAuth ? (
           <div className="space-y-3 py-2">
-            <div className="flex items-start gap-2 p-3 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm">
+            <div className="flex items-start gap-2 p-3 rounded-lg admin-badge admin-badge-warning text-sm">
               <AlertTriangle size={16} className="mt-0.5 shrink-0" />
               <div>
                 Sua conta entra via <strong>{provider}</strong>. A senha é gerenciada pelo provedor externo — altere-a diretamente na conta {provider}.
