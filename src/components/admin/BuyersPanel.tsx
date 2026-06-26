@@ -5,6 +5,14 @@ import { toast } from "sonner";
 import { withTimeout } from "@/lib/promiseTimeout";
 import { BuyerDetailsDrawer, MSG_FIRST_LOGIN } from "./BuyerDetailsDrawer";
 import type { Buyer } from "./BuyersList";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 type ManualSale = {
   id: string;
