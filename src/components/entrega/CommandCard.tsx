@@ -33,6 +33,8 @@ type Props = {
   agentPrompt?: string;
   correctionPrompt?: string;
   advanceCriteria?: string;
+  /** Quando true, todas as EditablePromptBox iniciam recolhidas (apenas prévia + "Ver prompt completo"). */
+  collapsiblePrompts?: boolean;
 };
 
 
@@ -53,6 +55,7 @@ export const CommandCard = ({
   agentPrompt,
   correctionPrompt,
   advanceCriteria,
+  collapsiblePrompts = false,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -238,6 +241,7 @@ export const CommandCard = ({
               hideCopyButton
               saveTitle={title}
               saveSourceModule={moduleId}
+              collapsible={collapsiblePrompts}
             />
 
             <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
@@ -399,6 +403,7 @@ export const CommandCard = ({
                   hideCopyButton
                   saveTitle={title}
                   saveSourceModule={moduleId}
+                  collapsible={collapsiblePrompts}
                 />
 
                 <div className="mt-2 flex flex-col items-stretch sm:items-end gap-2">
@@ -482,6 +487,7 @@ export const CommandCard = ({
                     hideCopyButton
                     saveTitle={`${title} — Agente`}
                     saveSourceModule={moduleId}
+                    collapsible={collapsiblePrompts}
                   />
 
                   <div className="mt-2 flex flex-col items-end gap-1">
@@ -540,6 +546,7 @@ export const CommandCard = ({
                     hideCopyButton
                     saveTitle={`${title} — Correção`}
                     saveSourceModule={moduleId}
+                    collapsible={collapsiblePrompts}
                   />
                   <div className="mt-2 flex flex-col items-end gap-1">
                     <button
