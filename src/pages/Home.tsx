@@ -60,17 +60,16 @@ const mockups = [
 ];
 
 const beneficios = [
-  "Programa completo",
+  "Programa completo, pagamento único",
   "Método guiado passo a passo",
-  "Prompts por etapa para o Lovable",
-  "Checklists de avanço em cada módulo",
   "30 ideias de aplicativos",
-  "Acesso ao Agente Arquiteto via ChatGPT",
+  "Prompts por etapa para o Lovable",
+  "Checklists de MVP em cada módulo",
+  "Agente Arquiteto via ChatGPT",
   "Área interna organizada",
-  "Próximo passo recomendado",
-  "Jornada para começar do zero",
-  "Jornada para construir por versões",
-  "Jornada para auditar app existente",
+  "Módulos de construção, correção, segurança e venda",
+  "Próximo passo recomendado em cada etapa",
+  "Garantia de 7 dias",
 ];
 
 const naoIncluso = [
