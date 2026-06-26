@@ -197,6 +197,9 @@ export default function Home() {
           <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
             Com a Fábrica você aprende <span className="text-accent">o que pedir, em qual ordem construir e o que evitar</span>, reduzindo o risco de escopo gigante, app quebrado ou prompts soltos sem objetivo.
           </p>
+          <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+            E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> entra como copiloto para te ajudar a transformar dúvida em comando melhor antes de gastar prompt no Lovable.
+          </p>
         </div>
       </Section>
 
