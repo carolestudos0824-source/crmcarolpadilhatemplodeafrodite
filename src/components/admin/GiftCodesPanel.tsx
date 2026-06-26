@@ -376,20 +376,20 @@ export function GiftCodesPanel() {
       </div>
 
       {/* Redemptions */}
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <div className="mb-3">
           <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
             <History size={14} className="text-accent" /> Últimos resgates
           </h3>
-          <p className="text-[11px] text-muted-foreground mt-0.5">
+          <p className="admin-help mt-0.5">
             Mostra os 20 resgates mais recentes. Apenas user_id é exibido por segurança.
           </p>
         </div>
         {redemptions.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
-            <History size={18} className="mx-auto text-muted-foreground/60 mb-2" />
-            <p className="text-sm text-foreground/80">Nenhum resgate registrado ainda.</p>
-            <p className="text-xs text-muted-foreground mt-1">
+          <div className="admin-empty">
+            <History size={20} className="text-muted-foreground/70" />
+            <p className="admin-empty-title">Nenhum resgate registrado ainda.</p>
+            <p className="admin-empty-hint">
               Os resgates aparecem aqui quando um comprador utilizar um código. Para identificar o comprador, use a busca por e-mail na seção Acessos.
             </p>
           </div>
