@@ -19,7 +19,10 @@ import {
   Bot,
   FileText,
   ExternalLink,
+  KeyRound,
 } from "lucide-react";
+import { ChangePasswordDialog } from "@/components/admin/ChangePasswordDialog";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -1148,11 +1151,27 @@ function ConfigSection() {
     },
   ];
 
+  const [pwdOpen, setPwdOpen] = useState(false);
+
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">
         Somente leitura. Valores vêm de <code className="text-foreground/80">APP_CONFIG</code>. Para alterar, edite <code className="text-foreground/80">src/config/appConfig.ts</code>.
       </p>
+
+      <div className="glass-strong p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="text-accent mt-0.5"><KeyRound size={16} /></div>
+          <div>
+            <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground mb-1">Segurança da conta</h4>
+            <p className="text-xs text-muted-foreground">Altere a senha da conta admin logada.</p>
+          </div>
+        </div>
+        <Button type="button" variant="outline" size="sm" onClick={() => setPwdOpen(true)}>
+          Alterar senha
+        </Button>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {items.map((it) => (
           <div key={it.title} className="glass-strong p-4">
@@ -1175,9 +1194,12 @@ function ConfigSection() {
           </div>
         ))}
       </div>
+
+      <ChangePasswordDialog open={pwdOpen} onOpenChange={setPwdOpen} />
     </div>
   );
 }
+
 
 /* ============================== Building blocks ============================== */
 
