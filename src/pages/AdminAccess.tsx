@@ -426,6 +426,7 @@ function AdminAccessInner() {
 
         {section === "vendas" && <SalesPanel />}
         {section === "codigos" && <GiftCodesPanel />}
+        {section === "metricas" && <ProgramMetricsPanel />}
         {section === "pendencias" && <PendenciasSection />}
         {section === "mensagens" && <MensagensSection />}
         {section === "inbox" && <SupportInbox />}
