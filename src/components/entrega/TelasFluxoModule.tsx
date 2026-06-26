@@ -544,6 +544,7 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
                 correctionPrompt={e.tabs.corrigir}
                 advanceCriteria={journey ? `${e.criterio} ${JOURNEY_TELAS_GUIDE[journey].advanceHint}` : e.criterio}
                 defaultOpen={e.n === firstPendingEtapa}
+                collapsiblePrompts
               />
             </div>
           );
