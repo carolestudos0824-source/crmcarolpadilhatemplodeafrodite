@@ -23,7 +23,8 @@ import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
-import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
+import { ResumoPublicacaoCard } from "./ResumoPublicacaoCard";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso publicar do jeito certo. Me ajude a entender a diferença entre preview e produção, como testar o link público, o que revisar antes de divulgar, como pensar domínio, favicon, imagem social e como fazer um checklist final de publicação.`;
