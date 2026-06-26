@@ -436,8 +436,8 @@ function StatCard({
   const toneCls =
     tone === "ok" ? "text-emerald-300" : tone === "warn" ? "text-amber-200" : "text-foreground";
   return (
-    <div className="glass-strong p-4">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{label}</div>
+    <div className="admin-card-muted">
+      <div className="admin-label mb-1">{label}</div>
       <div className={`text-2xl font-heading font-bold ${toneCls}`}>{value}</div>
     </div>
   );
