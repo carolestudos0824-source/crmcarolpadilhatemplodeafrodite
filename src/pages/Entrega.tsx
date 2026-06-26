@@ -2596,6 +2596,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
 
     return (
       <section>
+        <FabricaLegalReminder text="Antes de vender seu app, explique preço, reembolso, entrega, suporte e acesso. A Fábrica de Apps com IA também possui seus próprios documentos:" />
         <CheckoutIntro />
         <EntregaResumoCard />
         <ModuleHeader
