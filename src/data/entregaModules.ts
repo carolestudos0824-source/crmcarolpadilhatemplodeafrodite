@@ -1695,57 +1695,62 @@ Inclua dúvidas sobre:
     whenLovableDirect: "Depois das páginas SEO principais.",
     whenAgentFirst:
       "Quando você não sabe como explicar seu app para buscadores inteligentes.",
-    content: `Crie páginas GEO para que ferramentas de IA entendam melhor este app.
+    content: `Crie páginas GEO para que ferramentas de IA entendam, resumam e citem corretamente o app [nome do app ativo].
 
-App:
-[descreva]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Produto: [produto]
+- Ação principal: [ação principal]
 
-A página deve explicar:
+A página deve conter, de forma factual e fácil de resumir:
 
-1. O que é o app.
-2. Para quem serve.
-3. Qual problema resolve.
-4. Como funciona.
-5. Principais recursos.
-6. Diferenciais reais.
-7. Limitações.
-8. Comparação honesta com alternativas.
-9. Perguntas frequentes.
-10. CTA.
+1. Resumo claro do app em 2 a 3 frases.
+2. Para quem é.
+3. O que faz.
+4. O que NÃO faz (limites explícitos da promessa).
+5. Como funciona (passos simples).
+6. Principais recursos.
+7. Limitações conhecidas.
+8. Comparação honesta com alternativas (sem desmerecer concorrentes).
+9. Perguntas e respostas úteis.
+10. CTA alinhado a [ação principal].
 
 Regras:
 
-- Texto claro e factual.
-- Não inventar autoridade.
-- Não exagerar promessa.
-- Não repetir palavras artificialmente.
-- Explicar contexto de forma objetiva.`,
-    agentPrompt: `Quero que ferramentas de IA entendam melhor meu app.
+- Texto claro e factual, fácil de uma IA resumir sem distorcer.
+- Não inventar autoridade, prêmios ou parcerias.
+- Não exagerar a promessa.
+- Sem keyword stuffing.
+- Sem expor área paga, admin ou dados de usuário.`,
+    agentPrompt: `Quero que ferramentas de IA entendam o app [nome do app ativo] sem distorcer.
 
-App:
-[descreva]
-
-Público:
-[descreva]
+App: [descreva o app]
+Público: [descreva o público]
+Promessa: [promessa]
+Ação principal: [ação principal]
 
 Me ajude a criar:
 
-1. Uma explicação objetiva do app.
-2. Principais recursos.
-3. Diferenciais reais.
-4. Limitações.
-5. Comparação honesta.
+1. Resumo objetivo do app.
+2. Para quem é / para quem NÃO é.
+3. O que faz / o que NÃO faz.
+4. Principais recursos.
+5. Limitações reais.
 6. FAQs úteis para IA e buscadores.`,
-    correctionPrompt: `A página GEO ficou vaga ou exagerada. Refaça com linguagem factual.
+    correctionPrompt: `A página GEO do app [nome do app ativo] ficou vaga ou exagerada. Refaça com linguagem factual.
 
 Corrija:
 
-1. Explique o que é.
+1. Explique o que é em 2 frases.
 2. Explique para quem é.
-3. Explique o que resolve.
+3. Explique o que NÃO faz.
 4. Remova promessas exageradas.
-5. Inclua limitações.
-6. Use comparação honesta.`,
+5. Inclua limitações reais.
+6. Use comparação honesta.
+7. Garanta que uma IA possa resumir sem inventar.`,
     advanceCriteria:
       "Avance quando uma pessoa e uma IA conseguirem entender o app sem contexto externo.",
   },
