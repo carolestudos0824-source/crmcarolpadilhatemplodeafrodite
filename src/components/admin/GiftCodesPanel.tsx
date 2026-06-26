@@ -219,10 +219,16 @@ export function GiftCodesPanel() {
       </div>
 
       {/* Create form */}
-      <form onSubmit={createCode} className="glass-strong p-5 space-y-3">
-        <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
-          <Plus size={14} className="text-accent" /> Novo código
-        </h3>
+      <form onSubmit={createCode} className="glass-strong p-5 space-y-4">
+        <div>
+          <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
+            <Plus size={14} className="text-accent" /> Novo código
+          </h3>
+          <p className="text-[11px] text-muted-foreground mt-1">
+            O código será normalizado em minúsculas. Compartilhe apenas com compradores autorizados.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Field label="Código">
             <input
