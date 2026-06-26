@@ -631,8 +631,14 @@ export default function Login() {
               <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-1">
                 Acessar a Fábrica de Apps com IA
               </h1>
-              <p className="text-sm text-muted-foreground mb-6">
+              <p className="text-sm text-muted-foreground mb-3">
                 Use o mesmo e-mail informado na compra.
+              </p>
+              <p className="text-[11px] text-muted-foreground/80 mb-6 leading-relaxed">
+                Ao acessar a Fábrica de Apps com IA, você concorda com os{" "}
+                <a href="/termos-de-uso" className="text-accent hover:underline">Termos de Uso</a>{" "}
+                e a{" "}
+                <a href="/politica-de-privacidade" className="text-accent hover:underline">Política de Privacidade</a>.
               </p>
 
               {/* Tabs */}
