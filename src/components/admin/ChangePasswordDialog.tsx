@@ -160,7 +160,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3" autoComplete="off">
             <div className="space-y-1.5">
-              <label htmlFor="cp-current" className="text-xs text-muted-foreground">Senha atual</label>
+              <label htmlFor="cp-current" className="admin-label">Senha atual</label>
               <Input
                 id="cp-current"
                 type="password"
