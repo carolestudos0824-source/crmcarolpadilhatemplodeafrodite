@@ -55,6 +55,7 @@ export const CommandCard = ({
   agentPrompt,
   correctionPrompt,
   advanceCriteria,
+  collapsiblePrompts = false,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
