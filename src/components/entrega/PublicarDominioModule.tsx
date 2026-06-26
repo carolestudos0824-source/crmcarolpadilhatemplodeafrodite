@@ -415,10 +415,11 @@ export function PublicarDominioModule() {
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            App em preview ainda não é app pronto para vender. Antes de mandar o link
-            para pessoas reais, confirme se ele abre corretamente, se está em produção,
-            se funciona no celular e se a experiência de compartilhamento está
-            profissional.
+            <strong className="text-foreground">Publique somente depois de testar o app como visitante, como comprador e no celular.</strong>{" "}
+            App em preview ainda não é app pronto para divulgar. Confirme que ele
+            abre fora do editor, que áreas privadas continuam protegidas e que a
+            experiência de compartilhamento (favicon, título, descrição, imagem)
+            está profissional antes de mandar o link para alguém.
           </p>
         </div>
       </GlassCard>
