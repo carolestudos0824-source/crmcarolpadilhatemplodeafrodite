@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info, ShieldCheck } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -88,6 +88,19 @@ export const CommandCard = ({
   const storageVersion = moduleId === "criativos" ? "__criativos_v2" : "";
   const invalidateSavedPrompt =
     moduleId === "criativos" ? hasRawCriativosPlaceholder : undefined;
+
+  useEffect(() => {
+    if (moduleId !== "criativos" || typeof window === "undefined") return;
+    const legacyKeys = ["main", "guided", "agent", "fix"].map(
+      (kind) => `cmdcard__${completedKey}__${projectScope}__${kind}`,
+    );
+    legacyKeys.forEach((key) => {
+      const saved = window.localStorage.getItem(key);
+      if (saved && hasRawCriativosPlaceholder(saved)) {
+        window.localStorage.removeItem(key);
+      }
+    });
+  }, [completedKey, moduleId, projectScope]);
 
   const handleRevisarComAgente = (key: string) => {
     setCopiedKey(key);
