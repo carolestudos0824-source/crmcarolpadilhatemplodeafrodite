@@ -1069,12 +1069,15 @@ function EntregaInner() {
               const blockPlanejar = isPlanejar && !hasChosenIdea;
               const blockMvp = isMvp && !hasChosenIdea;
               const blocked = blockIdeias || blockPlanejar || blockMvp;
+              const isChecklist = active === "checklist";
               const customLabel = isIdeias
                 ? hasChosenIdea
                   ? "Próximo passo: Planejar o App"
                   : "Escolha uma ideia para avançar"
                 : (isPlanejar || isMvp) && !hasChosenIdea
                 ? "Escolha um app para avançar"
+                : isChecklist
+                ? "Finalizar guia — voltar ao início"
                 : null;
 
               const handleClick = () => {
