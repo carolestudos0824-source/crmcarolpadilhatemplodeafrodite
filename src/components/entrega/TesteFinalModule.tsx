@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   ShieldCheck,
+  AlertTriangle,
   Bug,
   Eye,
   Lock,
