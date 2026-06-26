@@ -127,6 +127,7 @@ type SelfAccessResult = {
 function loadAdminSessionUser(timeoutMs = ADMIN_SESSION_TIMEOUT_MS): Promise<User | null> {
   return new Promise((resolve, reject) => {
     let settled = false;
+    let initialSessionChecked = false;
     let unsubscribe: (() => void) | null = null;
 
     const finish = (user: User | null) => {
@@ -150,13 +151,15 @@ function loadAdminSessionUser(timeoutMs = ADMIN_SESSION_TIMEOUT_MS): Promise<Use
     }, timeoutMs);
 
     const listener = supabase.auth.onAuthStateChange((_event, session) => {
-      finish(session?.user ?? null);
+      if (session?.user) finish(session.user);
+      if (initialSessionChecked) finish(null);
     });
     unsubscribe = () => listener.data.subscription.unsubscribe();
     if (settled) unsubscribe();
 
     supabase.auth.getSession()
       .then(({ data, error }) => {
+        initialSessionChecked = true;
         if (error) {
           fail(error);
           return;
