@@ -450,10 +450,10 @@ function OverviewSection({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
-        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+      <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 text-sky-100 text-sm px-4 py-3 flex items-start gap-2">
+        <CreditCard size={16} className="shrink-0 mt-0.5" />
         <span>
-          Vendas automáticas ainda não conectadas. Os dados abaixo vêm das vendas manuais registradas no admin.
+          Operação manual ativa. Os dados abaixo vêm das vendas registradas no admin enquanto o checkout automático não está conectado.
         </span>
       </div>
 
@@ -510,9 +510,13 @@ function OverviewSection({
         <StatusCard
           icon={<CreditCard size={16} />}
           title="Status do checkout"
-          badge={checkoutPending ? "Pendente" : "Configurado"}
-          tone={checkoutPending ? "warn" : "ok"}
-          text={checkoutPending ? "Checkout real pendente." : "Checkout configurado."}
+          badge={checkoutPending ? "Manual" : "Configurado"}
+          tone={checkoutPending ? "muted" : "ok"}
+          text={
+            checkoutPending
+              ? "Checkout automático ainda não conectado. As vendas atuais são registradas manualmente."
+              : "Checkout configurado."
+          }
         />
       </div>
 
