@@ -69,6 +69,7 @@ import { TesteFinalModule } from "@/components/entrega/TesteFinalModule";
 import { LegalConfiancaModule } from "@/components/entrega/LegalConfiancaModule";
 import { SegurancaAppModule } from "@/components/entrega/SegurancaAppModule";
 import { ModuleReviewCard } from "@/components/entrega/ModuleReviewCard";
+import { OfertaResumoCard } from "@/components/entrega/OfertaResumoCard";
 import { GpsDoAppCard } from "@/components/entrega/GpsDoAppCard";
 import { ArquitetoMelhoriasCard } from "@/components/entrega/ArquitetoMelhoriasCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
