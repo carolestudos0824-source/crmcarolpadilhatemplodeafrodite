@@ -1626,58 +1626,60 @@ Regras:
     objective: "Responder dúvidas reais que podem aparecer no Google e na landing.",
     whenLovableDirect: "Depois das páginas principais.",
     whenAgentFirst: "Quando você não sabe quais perguntas o público faria.",
-    content: `Crie uma seção de FAQ otimizada para busca.
+    content: `Crie um FAQ de busca para o app [nome do app ativo].
 
-Tema:
-[descreva o produto ou app]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa: [promessa]
+- Produto: [produto]
+- Modelo de cobrança: [modelo de cobrança]
+- Ação principal: [ação principal]
 
-Liste 12 perguntas reais que pessoas pesquisariam no Google sobre esse tema.
+Liste 12 perguntas reais que esse público pesquisaria no Google, distribuídas entre:
+
+- Dúvidas antes da compra.
+- Dúvidas sobre funcionamento.
+- Dúvidas sobre pagamento e [modelo de cobrança].
+- Dúvidas sobre entrega/acesso.
+- Dúvidas sobre privacidade e dados.
+- Dúvidas sobre limites da promessa.
 
 Para cada pergunta:
 
-1. Escreva uma resposta curta.
-2. Seja direto.
-3. Não use hype.
-4. Não prometa resultado garantido.
-5. Inclua CTA suave quando fizer sentido.
+1. Resposta curta, clara e responsável.
+2. Sem hype.
+3. Sem prometer resultado garantido.
+4. Deixar claro o que o app NÃO faz quando fizer sentido.
+5. CTA suave para [ação principal] apenas quando ajudar a pessoa.`,
+    agentPrompt: `Preciso criar FAQs reais para o app [nome do app ativo].
 
-As perguntas devem cobrir:
-
-- O que é.
-- Para quem é.
-- Como funciona.
-- Investimento.
-- Segurança.
-- Acesso.
-- Limitações.
-- Suporte.`,
-    agentPrompt: `Preciso criar FAQs para busca.
-
-Produto:
-[descreva]
-
-Público:
-[descreva]
+App: [descreva o app]
+Público: [descreva o público]
+Dor: [descreva a dor]
+Promessa: [promessa]
 
 Me ajude a listar:
 
-1. Perguntas que as pessoas pesquisam.
+1. Perguntas que essas pessoas realmente pesquisam.
 2. Objeções antes da compra.
 3. Dúvidas de uso.
-4. Perguntas que aumentam confiança.
-5. Respostas curtas e honestas.`,
-    correctionPrompt: `O FAQ ficou genérico. Refaça com perguntas reais e respostas úteis.
+4. Dúvidas sobre privacidade.
+5. Dúvidas sobre limites da promessa.
+6. Respostas curtas, claras e honestas.`,
+    correctionPrompt: `O FAQ do app [nome do app ativo] ficou genérico. Refaça com perguntas reais.
 
 Inclua dúvidas sobre:
 
 1. Como funciona.
 2. Para quem é.
-3. Preço ou investimento.
-4. Acesso.
-5. Segurança.
-6. Limitações.
-7. Suporte.
-8. Próximo passo.`,
+3. Pagamento e [modelo de cobrança].
+4. Entrega/acesso.
+5. Privacidade.
+6. Limites da promessa.
+7. O que o app NÃO faz.
+8. Próximo passo seguro.`,
     advanceCriteria:
       "Avance quando o FAQ responder dúvidas reais do usuário antes de comprar ou usar.",
   },
