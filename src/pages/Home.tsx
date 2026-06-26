@@ -131,7 +131,7 @@ export default function Home() {
               Da ideia ao app no Lovable: um programa completo para construir com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, 30 ideias de aplicativos, prompts por etapa, checklists e um Agente Arquiteto via ChatGPT para te ajudar quando você travar.
+              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, 30 ideias de aplicativos, prompts por etapa e checklists. E quando você travar, conta com um Agente Arquiteto via ChatGPT para ajudar a pensar o próximo comando antes de usar no Lovable.
             </p>
             <p className="text-sm text-accent/90 italic max-w-xl">
               A própria Fábrica de Apps com IA foi construída no Lovable seguindo a lógica que o programa ensina: planejar, pedir, revisar, corrigir e avançar por etapas.
@@ -227,7 +227,7 @@ export default function Home() {
       <Section
         eyebrow="Inspiração inclusa"
         title="30 ideias de aplicativos para você não começar do zero"
-        subtitle="O programa inclui 30 modelos de apps simples para inspirar seu projeto — vários tipos de MVPs prontos para adaptar ao seu serviço, método, conteúdo ou produto digital."
+        subtitle="Você não começa do zero olhando para uma tela em branco. O programa traz 30 ideias de aplicativos simples para inspirar e adaptar ao seu serviço, método, conteúdo ou produto digital — sem prometer que qualquer app complexo será criado facilmente."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
           <ul className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -261,7 +261,7 @@ export default function Home() {
       <Section
         eyebrow="Diferencial do programa"
         title="Um Agente Arquiteto treinado para te ajudar quando você travar"
-        subtitle="Dentro da área interna você encontra um botão que abre o Agente Arquiteto direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar o que você vai pedir — antes de gastar prompt no Lovable."
+        subtitle="O Agente Arquiteto é acessado dentro da área interna da Fábrica, por um botão que abre direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar comandos — antes de gastar prompt no Lovable. Ele não substitui o Lovable e não cria o app sozinho."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
           <div className="flex items-start gap-4 mb-6">
@@ -301,7 +301,7 @@ export default function Home() {
       <Section
         id="incluso"
         eyebrow="O que você terá ao final"
-        title="No final, você sai com isso pronto"
+        title="Ao seguir o programa, você constrói com mais clareza"
         subtitle="Sem promessa de app perfeito, sem garantia de venda. O que você ganha é caminho claro para sair da ideia e avançar no Lovable."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
@@ -382,21 +382,22 @@ export default function Home() {
 
       {/* VÍDEO DEMONSTRATIVO — placeholder */}
       <Section
-        eyebrow="Demonstração"
-        title="Veja a Fábrica funcionando dentro do Lovable"
+        eyebrow="Prova de realidade"
+        title="A própria Fábrica foi construída no Lovable"
       >
         <div className="max-w-3xl mx-auto glass-strong p-8 md:p-12 text-center">
           <div className="mx-auto w-16 h-16 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-4">
             <PlayCircle size={32} className="text-accent" />
           </div>
           <p className="text-base text-foreground/90 leading-relaxed mb-2">
-            Em breve, você verá em poucos minutos como a Fábrica transforma contexto, projeto em foco e próximo passo em um prompt pronto para colar no Lovable.
+            Esta página, a área interna e o painel administrativo foram construídos no Lovable seguindo a mesma lógica que o programa ensina: <span className="text-accent">planejar, pedir, revisar, corrigir e avançar por etapas</span>. Não é promessa de que todo aluno terá o mesmo resultado — é a prova de que o método é executável na prática.
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70 mt-4">
             Vídeo demonstrativo em breve
           </p>
         </div>
       </Section>
+
 
       {/* PREÇO */}
       <Section
