@@ -466,11 +466,8 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
       </GlassCard>
 
       <CopyCommandWarning />
-      <p className="text-xs text-muted-foreground mb-2">
-        Em cada etapa, comece pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada — só faz sentido na Etapa 5.
-      </p>
-      <p className="text-[11px] text-amber-200/90 mb-4 italic">
-        Copiar prompt não conclui a etapa. Só marque como concluído quando o Mapa estiver completo.
+      <p className="text-xs text-muted-foreground mb-4">
+        Comece sempre pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. O Lovable entra só na Etapa 5. Copiar prompt não conclui a etapa.
       </p>
 
       {/* Aviso: jornada não escolhida */}
@@ -500,21 +497,21 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
             Prévia bloqueada. Crie ou selecione um Projeto em foco acima para destravar as etapas, prompts contextualizados e a marcação de conclusão.
           </div>
         )}
+        {activeProject && (
+          <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
+            <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+            <span>
+              {journey
+                ? JOURNEY_TELAS_GUIDE[journey].preservationNote
+                : "Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nas etapas 1 a 4, comece pelo Agente."}
+            </span>
+          </div>
+        )}
         {ETAPAS.map((e) => {
           const isFinal = e.n === 5;
           const journeyGuide = journey ? JOURNEY_TELAS_GUIDE[journey] : null;
           return (
             <div key={e.n}>
-              {!isFinal && activeProject && (
-                <div className="mb-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
-                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
-                  <span>
-                    {journeyGuide
-                      ? journeyGuide.preservationNote
-                      : "Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nesta etapa, comece pelo Agente."}
-                  </span>
-                </div>
-              )}
               {isFinal && activeProject && journeyGuide && (
                 <div className="mb-2 rounded-lg border border-cyan-400/30 bg-cyan-400/[0.06] p-2.5 text-[12px] text-cyan-100 flex items-start gap-2">
                   <AlertTriangle size={13} className="shrink-0 mt-0.5" />
@@ -575,26 +572,29 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         />
       </GlassCard>
 
-      <GlassCard className="p-5 mb-6">
-        <div className="flex items-center gap-2 mb-3">
+      <details className="mb-6 rounded-xl border border-white/10 bg-white/[0.03]">
+        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-heading font-semibold text-foreground/85 hover:text-foreground flex items-center gap-2">
           <HelpCircle size={16} className="text-accent" />
-          <h3 className="font-heading font-semibold text-base">Não entendi uma palavra</h3>
+          Ferramentas extras — use só se estiver travado
+        </summary>
+        <div className="px-4 pb-4">
+          <p className="text-xs text-muted-foreground mb-3">Glossário rápido: abra se alguma palavra acima não estiver clara.</p>
+          <dl className="grid sm:grid-cols-2 gap-3">
+            {GLOSSARIO.map((g) => (
+              <div key={g.termo} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                <dt className="text-sm font-semibold text-accent">{g.termo}</dt>
+                <dd className="text-xs text-muted-foreground mt-1">{g.def}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className="grid sm:grid-cols-2 gap-3">
-          {GLOSSARIO.map((g) => (
-            <div key={g.termo} className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <dt className="text-sm font-semibold text-accent">{g.termo}</dt>
-              <dd className="text-xs text-muted-foreground mt-1">{g.def}</dd>
-            </div>
-          ))}
-        </dl>
-      </GlassCard>
+      </details>
 
       {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Mapa de Telas e Fluxo — checklist final</h3>
+          <h3 className="font-heading font-semibold text-base">Checklist final — use depois de concluir as etapas acima</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
           Marque cada item só depois que estiver claro de verdade no seu Mapa. Copiar prompt não conta.
