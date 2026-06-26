@@ -115,6 +115,9 @@ const naoEParaQuem = [
 
 const faqs = [
   { q: "Preciso saber programar?", a: "Não. A Fábrica foi criada para pessoas não técnicas organizarem a construção e gerarem comandos melhores para o Lovable." },
+  { q: "O que é o Agente Arquiteto?", a: "É um agente treinado, acessado por um botão dentro da área interna, que abre no ChatGPT. Ele ajuda você a planejar o app, definir MVP, organizar telas, melhorar prompts, corrigir erros, revisar segurança básica e decidir os próximos passos antes de pedir ao Lovable." },
+  { q: "Ele cria o app por mim?", a: "Não. O Agente Arquiteto orienta, organiza e revisa. A construção do app continua sendo feita por você dentro do Lovable. Ele não substitui o Lovable nem garante app perfeito ou segurança 100%." },
+  { q: "Preciso ter conta no ChatGPT?", a: "Sim. O Agente Arquiteto abre dentro do ChatGPT, então você precisa ter sua própria conta. O uso do ChatGPT e do Lovable pode depender da sua própria conta, plano ou limites dessas plataformas externas." },
   { q: "Preciso ter conta no Lovable?", a: "Sim. O programa orienta a criação no Lovable, então você precisa ter sua própria conta na plataforma." },
   { q: "O Lovable está incluso no preço?", a: "Não. O Lovable é uma plataforma externa, com plano e regras próprias. Você usa sua conta separadamente." },
   { q: "Os créditos do Lovable estão inclusos?", a: "Não. Créditos do Lovable são contratados diretamente com o Lovable. A Fábrica ajuda a usar melhor o que você tem, mas não fornece créditos." },
