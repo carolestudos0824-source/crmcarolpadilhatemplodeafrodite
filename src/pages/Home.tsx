@@ -140,7 +140,7 @@ export default function Home() {
               <button className="btn-primary" onClick={goCheckout}>
                 Quero acessar o programa por R$197 <ChevronRight size={18} />
               </button>
-              <a href="#incluso" className="btn-ghost">Ver o que está incluso</a>
+              <button onClick={goCheckout} className="btn-ghost">Quero parar de gastar créditos no escuro</button>
             </div>
             <p className="text-sm text-muted-foreground/80">
               Programa completo · Pagamento único de R$197 · Sem mensalidade · Garantia de 7 dias.
@@ -171,6 +171,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAIXA FINANCEIRA — economia de créditos */}
+      <section className="pb-12">
+        <div className="container">
+          <div className="max-w-4xl mx-auto glass-strong p-6 md:p-8 border-accent/30 neon-shadow">
+            <p className="text-base md:text-lg text-foreground/90 leading-relaxed text-center">
+              Antes de gastar <span className="text-accent font-semibold">de R$100 a R$500 em créditos</span>, testes e prompts no escuro, entre na Fábrica e siga um método que mostra <span className="text-accent">o que pedir, em qual ordem e o que revisar</span> antes de avançar no Lovable.
+            </p>
+            <p className="text-xs text-muted-foreground/80 text-center mt-3">
+              Sem promessa de economia garantida — o programa ajuda a usar seus créditos com mais intenção e reduzir tentativa e erro.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ARQUITETO vs PEDREIRO */}
       <Section
         eyebrow="Por que a Fábrica existe"
@@ -182,6 +196,9 @@ export default function Home() {
           </p>
           <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
             Com a Fábrica você aprende <span className="text-accent">o que pedir, em qual ordem construir e o que evitar</span>, reduzindo o risco de escopo gigante, app quebrado ou prompts soltos sem objetivo.
+          </p>
+          <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+            Quando você pede sem plano, pode gastar créditos construindo, desfazendo e corrigindo. A Fábrica ajuda você a <span className="text-accent">pensar antes de pedir</span>.
           </p>
           <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
             E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> entra como copiloto para te ajudar a transformar dúvida em comando melhor antes de gastar prompt no Lovable.
@@ -469,6 +486,9 @@ export default function Home() {
           <button className="btn-primary mx-auto" onClick={goCheckout}>
             Quero acessar o programa por R$197 <ChevronRight size={18} />
           </button>
+          <p className="text-sm text-foreground/80 leading-relaxed text-center mt-4">
+            O acesso ao programa custa <span className="font-semibold">R$197 em pagamento único</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
+          </p>
           <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
             <ShieldCheck size={20} className="text-accent shrink-0 mt-0.5" />
             <p className="text-sm text-foreground/90 leading-relaxed">
