@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import {
-  Sparkles, Layers, Database, Rocket, Brain, Target, ChevronRight,
+  Sparkles, Layers, Database, Brain, Target, ChevronRight,
   Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
   Lightbulb, Check, ShieldCheck, PlayCircle, Bot,
 } from "lucide-react";
@@ -44,38 +44,23 @@ const centralVendas = [
   { icon: <ListChecks size={20} />, t: "Checklist antes do lançamento" },
 ];
 
-const mockups = [
-  { icon: <Brain size={22} />, t: "Ideia e MVP", d: "Estruture ideia, público, dor e promessa antes de mandar o Lovable construir." },
-  { icon: <Lightbulb size={22} />, t: "30 ideias de aplicativos", d: "Inspire-se em 30 modelos de apps simples — agendamento, checklist, catálogo, área de membros e mais." },
-  { icon: <Wand2 size={22} />, t: "Prompts para Lovable", d: "Comandos por etapa, com objetivo claro e o que testar depois de cada prompt." },
-  { icon: <Workflow size={22} />, t: "Telas e fluxo", d: "Mapeie telas principais e fluxo do usuário em ordem de construção." },
-  { icon: <Database size={22} />, t: "Login e banco", d: "Planeje auth, banco e permissões com prompts revisados antes de aplicar." },
-  { icon: <Layers size={22} />, t: "Área paga e Admin", d: "Estruture área interna e painel administrativo do seu app sem improviso." },
-  { icon: <ShieldCheck size={22} />, t: "Segurança básica", d: "Revise riscos comuns, RLS e pontos sensíveis antes de publicar." },
-  { icon: <Rocket size={22} />, t: "Checkout e entrega", d: "Conecte oferta, checkout manual e entrega do acesso sem quebrar o fluxo." },
-  { icon: <Megaphone size={22} />, t: "Página de venda", d: "Estruture a comunicação de valor da sua oferta com etapas claras." },
-  { icon: <ListChecks size={22} />, t: "Correção de erros", d: "Audite o app, identifique o que quebrou e evolua por versões pequenas." },
-  { icon: <LineChart size={22} />, t: "Checklist final", d: "Revise tudo antes de publicar: login, banco, checkout, segurança e copy." },
-  { icon: <Sparkles size={22} />, t: "Estado atual do projeto", d: "Veja contexto, progresso e próximo passo recomendado em cada módulo." },
-];
 
 const beneficios = [
-  "Programa completo",
+  "Programa completo, pagamento único",
   "Método guiado passo a passo",
-  "Prompts por etapa para o Lovable",
-  "Checklists de avanço em cada módulo",
   "30 ideias de aplicativos",
-  "Acesso ao Agente Arquiteto via ChatGPT",
+  "Prompts por etapa para o Lovable",
+  "Checklists de MVP em cada módulo",
+  "Agente Arquiteto via ChatGPT",
   "Área interna organizada",
-  "Próximo passo recomendado",
-  "Jornada para começar do zero",
-  "Jornada para construir por versões",
-  "Jornada para auditar app existente",
+  "Módulos de construção, correção, segurança e venda",
+  "Próximo passo recomendado em cada etapa",
+  "Garantia de 7 dias",
 ];
 
 const naoIncluso = [
-  "Créditos do Lovable não inclusos",
-  "Conta ou plano pago do Lovable não inclusos",
+  "Conta, plano e créditos do Lovable não inclusos",
+  "Conta, plano e limites do ChatGPT não inclusos",
   "Domínio próprio não incluso",
   "Hospedagem e ferramentas externas não inclusas",
   "App feito por mim ou desenvolvimento personalizado não incluso",
@@ -146,10 +131,10 @@ export default function Home() {
               Da ideia ao app no Lovable: um programa completo para construir com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, prompts por etapa, checklists e 30 ideias de aplicativos para você construir no Lovable com mais clareza e menos tentativa e erro.
+              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, 30 ideias de aplicativos, prompts por etapa, checklists e um Agente Arquiteto via ChatGPT para te ajudar quando você travar.
             </p>
             <p className="text-sm text-accent/90 italic max-w-xl">
-              Criado no Lovable usando o mesmo método que você vai acessar.
+              A própria Fábrica de Apps com IA foi construída no Lovable seguindo a lógica que o programa ensina: planejar, pedir, revisar, corrigir e avançar por etapas.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
@@ -167,6 +152,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 4 PILARES — faixa rápida */}
+      <section className="pb-8">
+        <div className="container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { icon: <Lightbulb size={20} />, t: "30 ideias de aplicativos" },
+              { icon: <Wand2 size={20} />, t: "Prompts por etapa" },
+              { icon: <ListChecks size={20} />, t: "Checklists de MVP" },
+              { icon: <Bot size={20} />, t: "Agente Arquiteto via ChatGPT" },
+            ].map((p) => (
+              <div key={p.t} className="glass flex items-center gap-3 px-4 py-3 border-accent/20">
+                <span className="text-accent shrink-0">{p.icon}</span>
+                <span className="text-sm md:text-base font-medium text-foreground/90">{p.t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ARQUITETO vs PEDREIRO */}
       <Section
         eyebrow="Por que a Fábrica existe"
@@ -178,6 +182,9 @@ export default function Home() {
           </p>
           <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
             Com a Fábrica você aprende <span className="text-accent">o que pedir, em qual ordem construir e o que evitar</span>, reduzindo o risco de escopo gigante, app quebrado ou prompts soltos sem objetivo.
+          </p>
+          <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+            E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> entra como copiloto para te ajudar a transformar dúvida em comando melhor antes de gastar prompt no Lovable.
           </p>
         </div>
       </Section>
@@ -253,7 +260,7 @@ export default function Home() {
       {/* AGENTE ARQUITETO */}
       <Section
         eyebrow="Diferencial do programa"
-        title="Agente Arquiteto: seu copiloto antes de pedir ao Lovable"
+        title="Um Agente Arquiteto treinado para te ajudar quando você travar"
         subtitle="Dentro da área interna você encontra um botão que abre o Agente Arquiteto direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar o que você vai pedir — antes de gastar prompt no Lovable."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
@@ -325,38 +332,53 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* MÓDULOS */}
+      {/* MÓDULOS — 4 blocos agrupados */}
       <Section
         eyebrow="Por dentro do programa"
-        title="Veja o que você encontra por dentro"
-        subtitle="Módulos práticos por etapa, com contexto do projeto em foco e próximo passo recomendado."
+        title="Tudo organizado em 4 blocos práticos"
+        subtitle="Cada bloco reúne os módulos da etapa, com contexto do projeto em foco e próximo passo recomendado."
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockups.map((m) => (
-            <GlassCard key={m.t} className="space-y-4">
-              <div className="rounded-lg border border-border/60 bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4 h-36 flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="text-accent">{m.icon}</div>
-                  <div className="h-2 w-24 rounded bg-foreground/20" />
-                </div>
-                <div className="space-y-1.5 mt-1">
-                  <div className="h-1.5 w-full rounded bg-foreground/15" />
-                  <div className="h-1.5 w-5/6 rounded bg-foreground/15" />
-                  <div className="h-1.5 w-4/6 rounded bg-foreground/10" />
-                </div>
-                <div className="mt-auto flex gap-1.5">
-                  <div className="h-5 w-16 rounded bg-primary/40" />
-                  <div className="h-5 w-12 rounded bg-accent/30" />
-                </div>
+        <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          {[
+            {
+              icon: <Brain size={22} />,
+              t: "1. Planejamento do app",
+              items: ["Ideia, público e dor", "MVP enxuto", "Telas principais", "Fluxo do usuário", "30 ideias de aplicativos para inspirar"],
+            },
+            {
+              icon: <Database size={22} />,
+              t: "2. Construção no Lovable",
+              items: ["Prompts por etapa", "Login e autenticação", "Banco de dados", "Área paga e Admin", "Checkout e entrega"],
+            },
+            {
+              icon: <ShieldCheck size={22} />,
+              t: "3. Correção e segurança",
+              items: ["Correção de erros e quebras", "Revisão por versões", "Noções de RLS", "Rotas e dados sensíveis", "Riscos comuns antes de publicar"],
+            },
+            {
+              icon: <Megaphone size={22} />,
+              t: "4. Venda e validação",
+              items: ["Estrutura de oferta", "Página de venda", "Preço e checkout", "Comunicação de valor", "Próximos passos para publicar"],
+            },
+          ].map((b) => (
+            <GlassCard key={b.t} className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0">{b.icon}</span>
+                <p className="font-heading font-bold text-lg text-foreground">{b.t}</p>
               </div>
-              <div>
-                <p className="font-semibold text-base mb-1">{m.t}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{m.d}</p>
-              </div>
+              <ul className="space-y-2">
+                {b.items.map((i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
+                    <Check size={16} className="text-accent shrink-0 mt-1" />
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
             </GlassCard>
           ))}
         </div>
       </Section>
+
 
       {/* VÍDEO DEMONSTRATIVO — placeholder */}
       <Section
