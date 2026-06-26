@@ -313,21 +313,20 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* PLANO EXECUTÁVEL — pilares rápidos */}
-      <Section
-        eyebrow="O que você acessa por dentro"
-        title="Tudo organizado em um único acesso"
-        subtitle="Área interna, método passo a passo, prompts por etapa, checklists, próximos comandos, orientação de MVP e preparação para venda e validação."
-      >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {planoExecutavel.map((p) => (
-            <GlassCard key={p.t} className="flex items-start gap-3">
-              <div className="text-accent shrink-0 mt-1">{p.icon}</div>
-              <p className="text-base text-foreground/90">{p.t}</p>
-            </GlassCard>
-          ))}
+      {/* CTA INTERMEDIÁRIO — antes das 30 ideias */}
+      <section className="pb-12">
+        <div className="container">
+          <div className="max-w-3xl mx-auto glass-strong p-6 md:p-8 text-center neon-shadow">
+            <button className="btn-primary mx-auto" onClick={goCheckout}>
+              Quero acessar o programa por R$197 <ChevronRight size={18} />
+            </button>
+            <p className="text-sm text-foreground/80 leading-relaxed mt-4">
+              Pagamento único. Método, 30 ideias, prompts, checklists, área interna e Agente Arquiteto via ChatGPT.
+            </p>
+          </div>
         </div>
-      </Section>
+      </section>
+
 
 
       {/* 30 IDEIAS */}
@@ -403,6 +402,44 @@ export default function Home() {
           </p>
         </div>
       </Section>
+
+      {/* PREÇO — antecipado logo após o Agente Arquiteto */}
+      <Section
+        eyebrow="Oferta atual"
+        title="Acesso completo à Fábrica de Apps com IA"
+        subtitle="Programa completo, pagamento único, sem mensalidade. Tudo o que você precisa para sair da ideia e avançar no Lovable."
+      >
+        <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
+          <div className="text-center mb-6">
+            <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Programa completo</p>
+            <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$197</div>
+            <p className="text-base text-foreground/90 mt-2 font-medium">pagamento único</p>
+            <p className="text-sm text-muted-foreground mt-1">ou 12x de R$19,70</p>
+            <p className="text-xs text-muted-foreground/80 mt-3">Acesso liberado após confirmação do pagamento</p>
+          </div>
+          <ul className="grid sm:grid-cols-2 gap-2.5 mb-8">
+            {beneficios.map((b) => (
+              <li key={b} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
+                <Check size={16} className="text-accent shrink-0 mt-1" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+          <button className="btn-primary mx-auto" onClick={goCheckout}>
+            Quero acessar o programa por R$197 <ChevronRight size={18} />
+          </button>
+          <p className="text-sm text-foreground/80 leading-relaxed text-center mt-4">
+            O acesso ao programa custa <span className="font-semibold">R$197 em pagamento único</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
+          </p>
+          <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
+            <ShieldCheck size={20} className="text-accent shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              <span className="font-semibold">Garantia de 7 dias:</span> entre, veja o programa por dentro e, se perceber que ele não é para você, solicite o reembolso dentro do prazo.
+            </p>
+          </div>
+        </div>
+      </Section>
+
 
       {/* ENTREGAS FINAIS */}
       <Section
@@ -505,43 +542,6 @@ export default function Home() {
         </div>
       </Section>
 
-
-      {/* PREÇO */}
-      <Section
-        eyebrow="Oferta atual"
-        title="Acesso completo à Fábrica de Apps com IA"
-        subtitle="Programa completo, pagamento único, sem mensalidade. Tudo o que você precisa para sair da ideia e avançar no Lovable."
-      >
-        <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
-          <div className="text-center mb-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Programa completo</p>
-            <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$197</div>
-            <p className="text-base text-foreground/90 mt-2 font-medium">pagamento único</p>
-            <p className="text-sm text-muted-foreground mt-1">ou 12x de R$19,70</p>
-            <p className="text-xs text-muted-foreground/80 mt-3">Acesso liberado após confirmação do pagamento</p>
-          </div>
-          <ul className="grid sm:grid-cols-2 gap-2.5 mb-8">
-            {beneficios.map((b) => (
-              <li key={b} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
-                <Check size={16} className="text-accent shrink-0 mt-1" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-          <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Quero acessar o programa por R$197 <ChevronRight size={18} />
-          </button>
-          <p className="text-sm text-foreground/80 leading-relaxed text-center mt-4">
-            O acesso ao programa custa <span className="font-semibold">R$197 em pagamento único</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
-          </p>
-          <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
-            <ShieldCheck size={20} className="text-accent shrink-0 mt-0.5" />
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              <span className="font-semibold">Garantia de 7 dias:</span> entre, veja o programa por dentro e, se perceber que ele não é para você, solicite o reembolso dentro do prazo.
-            </p>
-          </div>
-        </div>
-      </Section>
 
       {/* PARA QUEM É / NÃO É */}
       <Section eyebrow="Audiência" title="Para quem é e para quem não é">
