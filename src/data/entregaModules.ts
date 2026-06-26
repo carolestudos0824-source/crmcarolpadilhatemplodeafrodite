@@ -1357,18 +1357,23 @@ Problemas possíveis:
     whenLovableDirect: "Quando existe login ou área restrita.",
     whenAgentFirst:
       "Quando você não sabe qual recuperação faz sentido para seu produto.",
-    content: `Crie o fluxo de recuperação de acesso.
+    content: `Crie o fluxo de recuperação de acesso do app [nome do app ativo].
 
 Requisitos:
 
-1. Recuperação por e-mail, se houver login.
-2. Mensagem clara para quem esqueceu senha.
-3. Botão de suporte.
-4. Página de ajuda com instruções.
-5. Redirecionamento correto após recuperar acesso.
-6. Evitar expor materiais protegidos durante recuperação.
+1. Busca por e-mail do comprador.
+2. Reenvio de link ou instrução de acesso para o e-mail cadastrado.
+3. Mensagem clara de suporte (com contato) se a busca não encontrar o e-mail.
+4. Recuperação de senha por e-mail quando houver login.
+5. Página de ajuda curta com instruções passo a passo.
+6. Redirecionamento correto após o comprador voltar a entrar.
 
-Não crie fluxo complexo se o MVP só precisa de suporte manual.`,
+Regras de privacidade:
+
+- NÃO revelar dados de outros compradores em nenhuma mensagem.
+- NÃO informar se um e-mail "existe" ou "não existe" de forma que facilite enumeração — usar mensagem neutra.
+- NÃO expor materiais protegidos durante o fluxo de recuperação.
+- Não criar fluxo complexo se o MVP só precisa de suporte manual.`,
     agentPrompt: `Meu comprador pode perder o acesso ao produto.
 
 Produto:
