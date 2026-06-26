@@ -470,16 +470,24 @@ export function TesteFinalModule() {
         </p>
       </header>
 
-      <GlassCard className="p-5 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+      <GlassCard className="p-5 mb-4 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            Um app bonito ainda pode estar quebrado. O teste final existe para encontrar
-            erros antes que outras pessoas encontrem. Antes de divulgar, você precisa agir
-            como quem compra, visitante e pessoa usuária real.
+            <strong className="text-foreground">Antes de divulgar, teste o app como visitante, usuário logado, comprador e no celular.</strong>{" "}
+            App bonito ainda pode estar quebrado. O teste final existe para
+            encontrar erros antes que outras pessoas encontrem.
           </p>
         </div>
       </GlassCard>
+
+      <div className="mb-6 rounded-xl border border-rose-400/30 bg-rose-400/10 p-4 text-[13px] text-rose-100 flex items-start gap-2">
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <p>
+          <strong>Se login, checkout, entrega, botão principal ou mobile falharem, não divulgue ainda.</strong>{" "}
+          Corrija o bloqueador, refaça o teste e só depois libere o link.
+        </p>
+      </div>
 
       <GlassCard className="p-5 mb-6">
         <div className="text-[11px] uppercase tracking-wider text-accent mb-2">
