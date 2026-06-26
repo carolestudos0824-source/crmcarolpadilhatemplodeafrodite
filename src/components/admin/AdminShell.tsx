@@ -164,10 +164,12 @@ function SidebarInner({
 }) {
   return (
     <>
-      <div className="px-5 py-5 border-b border-white/10 flex items-start justify-between gap-2">
+      <div className="px-5 py-5 border-b border-[hsl(var(--admin-border-subtle))] flex items-start justify-between gap-2">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <ShieldAlert size={16} className="text-accent" />
+            <span className="inline-flex items-center justify-center size-7 rounded-lg bg-accent/15 border border-accent/30 text-accent">
+              <ShieldAlert size={14} />
+            </span>
             <span className="text-base font-heading font-bold tracking-tight">Admin</span>
           </div>
           <p className="text-[11px] text-muted-foreground leading-snug">Fábrica de Apps com IA</p>
@@ -176,7 +178,7 @@ function SidebarInner({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-white/5"
+            className="p-1.5 rounded-lg hover:bg-white/5 transition"
             aria-label="Fechar menu admin"
           >
             <X size={16} />
@@ -184,7 +186,7 @@ function SidebarInner({
         )}
       </div>
       <nav className="flex-1 overflow-y-auto py-3">
-        <ul className="space-y-0.5 px-2">
+        <ul className="space-y-1 px-3">
           {ADMIN_SECTIONS.map((s) => {
             const Icon = s.icon;
             const isActive = active === s.key;
@@ -193,23 +195,27 @@ function SidebarInner({
                 <button
                   type="button"
                   onClick={() => onNav(s.key)}
-                  className={`w-full text-left flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
+                  className={`group relative w-full text-left flex items-center gap-3 pl-3 pr-3 py-2.5 rounded-lg text-sm transition-all ${
                     isActive
-                      ? "bg-accent/15 text-accent border border-accent/30"
-                      : "text-foreground/80 hover:bg-white/5 border border-transparent"
+                      ? "bg-accent/10 text-accent font-medium shadow-[inset_2px_0_0_hsl(var(--admin-accent))]"
+                      : "text-foreground/75 hover:bg-white/[0.04] hover:text-foreground"
                   }`}
                   aria-current={isActive ? "page" : undefined}
                 >
-                  <Icon size={15} className={isActive ? "text-accent" : "text-muted-foreground"} />
-                  <span>{s.label}</span>
+                  <Icon
+                    size={16}
+                    className={isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground/80 transition"}
+                  />
+                  <span className="truncate">{s.label}</span>
                 </button>
               </li>
             );
           })}
         </ul>
       </nav>
-      <div className="px-5 py-3 border-t border-white/10 text-[10px] text-muted-foreground">
-        v1 · Admin interno
+      <div className="px-5 py-3 border-t border-[hsl(var(--admin-border-subtle))] text-[10px] text-muted-foreground flex items-center justify-between">
+        <span>v1 · Admin interno</span>
+        <span className="size-1.5 rounded-full bg-emerald-400/80" aria-hidden />
       </div>
     </>
   );
