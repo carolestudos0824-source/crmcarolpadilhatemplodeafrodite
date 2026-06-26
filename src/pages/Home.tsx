@@ -250,6 +250,46 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* AGENTE ARQUITETO */}
+      <Section
+        eyebrow="Diferencial do programa"
+        title="Agente Arquiteto: seu copiloto antes de pedir ao Lovable"
+        subtitle="Dentro da área interna você encontra um botão que abre o Agente Arquiteto direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar o que você vai pedir — antes de gastar prompt no Lovable."
+      >
+        <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
+              <Bot size={24} className="text-accent" />
+            </div>
+            <div>
+              <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+                Ele não substitui o Lovable e não constrói o app sozinho. Ele organiza sua cabeça e melhora o que sai do seu teclado.
+              </p>
+            </div>
+          </div>
+          <ul className="grid sm:grid-cols-2 gap-3">
+            {[
+              "Planejar o app com ideia, público e dor",
+              "Definir o MVP enxuto",
+              "Organizar telas e fluxo do usuário",
+              "Melhorar os prompts antes de colar no Lovable",
+              "Apoiar na correção de erros e quebras",
+              "Revisar pontos básicos de segurança",
+              "Decidir os próximos passos no Lovable",
+              "Evitar pedidos vagos que gastam crédito à toa",
+            ].map((i) => (
+              <li key={i} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
+                <Check size={16} className="text-accent shrink-0 mt-1" />
+                <span>{i}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted-foreground/80 mt-6">
+            O Agente Arquiteto abre no ChatGPT. O uso do ChatGPT e do Lovable pode depender da sua própria conta, plano ou limites dessas plataformas externas.
+          </p>
+        </div>
+      </Section>
+
       {/* ENTREGAS FINAIS */}
       <Section
         id="incluso"
