@@ -2499,11 +2499,30 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <VendaIntro />
+        <OfertaResumoCard />
         <ModuleHeader
           title="Siga as etapas de venda"
-          subtitle="Comece pela Etapa 1. Só avance quando uma pessoa leiga entender sua oferta em segundos."
+          subtitle="Primeiro defina a oferta, depois crie a landing page. O checkout só entra na próxima etapa."
         />
         <CommandList commands={COMMANDS_VENDA} moduleKey="venda" />
+        <ChecklistBlock
+          title="Checklist final da Página de venda"
+          items={[
+            "Sei para quem a página vende",
+            "Sei qual dor ela resolve",
+            "Tenho uma promessa segura, sem garantia absoluta",
+            "Tenho uma oferta principal definida",
+            "Tenho um CTA claro",
+            "Tenho preço ou faixa de teste",
+            "Tenho FAQ respondendo objeções reais",
+            "Tenho uma seção de confiança honesta, sem depoimentos inventados",
+            "Não prometo resultado garantido",
+            "Não configurei checkout antes da etapa correta",
+          ]}
+          checklist={checklist}
+          setChecklist={setChecklist}
+          phase="venda"
+        />
       </section>
     );
   }
