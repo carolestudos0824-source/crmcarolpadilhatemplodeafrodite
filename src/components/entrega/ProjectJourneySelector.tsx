@@ -107,7 +107,31 @@ export const ProjectJourneySelector = ({ onGoToModule, variant = "full" }: Props
     );
   }
 
-  // Bloco completo — escolha pendente
+  // Páginas avançadas — sem jornada: apenas aviso pequeno e discreto.
+  if (variant === "compact") {
+    return (
+      <section
+        aria-label="Jornada não definida"
+        className="mb-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground"
+      >
+        <Compass size={12} className="text-accent shrink-0" />
+        <span>
+          Jornada não definida. Escolha em <strong className="text-foreground/90">Comece Aqui</strong> para melhorar as recomendações.
+        </span>
+        <button
+          type="button"
+          onClick={() => onGoToModule("comece" as ModuleId)}
+          className="ml-auto inline-flex items-center gap-1 rounded-md border border-white/15 bg-white/5 px-2 py-1 text-[11px] text-foreground/85 hover:bg-white/10 transition"
+        >
+          Escolher jornada
+          <ArrowRight size={11} />
+        </button>
+      </section>
+    );
+  }
+
+  // Bloco completo — escolha pendente (apenas em "Comece Aqui")
+
   return (
     <section
       aria-label="Escolha como você quer usar a Fábrica"
