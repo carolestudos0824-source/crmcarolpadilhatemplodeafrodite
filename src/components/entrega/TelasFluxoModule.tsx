@@ -572,26 +572,29 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         />
       </GlassCard>
 
-      <GlassCard className="p-5 mb-6">
-        <div className="flex items-center gap-2 mb-3">
+      <details className="mb-6 rounded-xl border border-white/10 bg-white/[0.03]">
+        <summary className="cursor-pointer select-none px-4 py-3 text-sm font-heading font-semibold text-foreground/85 hover:text-foreground flex items-center gap-2">
           <HelpCircle size={16} className="text-accent" />
-          <h3 className="font-heading font-semibold text-base">Não entendi uma palavra</h3>
+          Ferramentas extras — use só se estiver travado
+        </summary>
+        <div className="px-4 pb-4">
+          <p className="text-xs text-muted-foreground mb-3">Glossário rápido: abra se alguma palavra acima não estiver clara.</p>
+          <dl className="grid sm:grid-cols-2 gap-3">
+            {GLOSSARIO.map((g) => (
+              <div key={g.termo} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                <dt className="text-sm font-semibold text-accent">{g.termo}</dt>
+                <dd className="text-xs text-muted-foreground mt-1">{g.def}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <dl className="grid sm:grid-cols-2 gap-3">
-          {GLOSSARIO.map((g) => (
-            <div key={g.termo} className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <dt className="text-sm font-semibold text-accent">{g.termo}</dt>
-              <dd className="text-xs text-muted-foreground mt-1">{g.def}</dd>
-            </div>
-          ))}
-        </dl>
-      </GlassCard>
+      </details>
 
       {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
-          <h3 className="font-heading font-semibold text-base">Mapa de Telas e Fluxo — checklist final</h3>
+          <h3 className="font-heading font-semibold text-base">Checklist final — use depois de concluir as etapas acima</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-3">
           Marque cada item só depois que estiver claro de verdade no seu Mapa. Copiar prompt não conta.
