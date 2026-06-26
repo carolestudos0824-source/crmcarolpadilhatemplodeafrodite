@@ -486,6 +486,9 @@ export default function Home() {
           <button className="btn-primary mx-auto" onClick={goCheckout}>
             Quero acessar o programa por R$197 <ChevronRight size={18} />
           </button>
+          <p className="text-sm text-foreground/80 leading-relaxed text-center mt-4">
+            O acesso ao programa custa <span className="font-semibold">R$197 em pagamento único</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
+          </p>
           <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
             <ShieldCheck size={20} className="text-accent shrink-0 mt-0.5" />
             <p className="text-sm text-foreground/90 leading-relaxed">
