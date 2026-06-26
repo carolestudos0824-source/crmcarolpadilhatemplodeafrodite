@@ -912,6 +912,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activity_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          module: string | null
+          route: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          module?: string | null
+          route: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          module?: string | null
+          route?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_app_project_prompts: {
         Row: {
           created_at: string
@@ -1073,6 +1100,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_presence: {
+        Row: {
+          last_module: string | null
+          last_route: string | null
+          last_seen_at: string
+          session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          last_module?: string | null
+          last_route?: string | null
+          last_seen_at?: string
+          session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          last_module?: string | null
+          last_route?: string | null
+          last_seen_at?: string
+          session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_progress: {
         Row: {
           badges: Json
@@ -1204,6 +1258,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _sanitize_route: { Args: { _route: string }; Returns: string }
       admin_create_gift_code: {
         Args: {
           _code: string
@@ -1227,6 +1282,7 @@ export type Database = {
         Returns: Json
       }
       admin_get_manual_sale: { Args: { _sale_id: string }; Returns: Json }
+      admin_get_program_metrics: { Args: never; Returns: Json }
       admin_grant_access_from_sale: {
         Args: { _sale_id: string }
         Returns: Json
@@ -1334,6 +1390,28 @@ export type Database = {
           updated_at: string
         }[]
       }
+      admin_list_online_users: {
+        Args: { _limit?: number; _window_minutes?: number }
+        Returns: {
+          email: string
+          last_module: string
+          last_route: string
+          last_seen_at: string
+          user_id: string
+        }[]
+      }
+      admin_list_recent_activity: {
+        Args: { _limit?: number; _module?: string }
+        Returns: {
+          created_at: string
+          email: string
+          event_type: string
+          id: string
+          module: string
+          route: string
+          user_id: string
+        }[]
+      }
       admin_lookup_user: {
         Args: { _email: string }
         Returns: {
@@ -1356,6 +1434,13 @@ export type Database = {
       admin_set_gift_code_active: {
         Args: { _code_id: string; _is_active: boolean }
         Returns: Json
+      }
+      admin_top_modules: {
+        Args: { _limit?: number; _period_days?: number }
+        Returns: {
+          module: string
+          total: number
+        }[]
       }
       admin_update_manual_sale: {
         Args: {
@@ -1382,6 +1467,14 @@ export type Database = {
         | { Args: { _user_id: string }; Returns: boolean }
       redeem_gift_code: {
         Args: { _code: string; _user_id?: string }
+        Returns: Json
+      }
+      track_user_activity: {
+        Args: { _event_type: string; _module: string; _route: string }
+        Returns: Json
+      }
+      update_user_presence: {
+        Args: { _module: string; _route: string; _session_id?: string }
         Returns: Json
       }
     }
