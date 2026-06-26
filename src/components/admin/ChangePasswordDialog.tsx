@@ -172,7 +172,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="cp-new" className="text-xs text-muted-foreground">Nova senha (mín. 8 caracteres)</label>
+              <label htmlFor="cp-new" className="admin-label">Nova senha (mín. 8 caracteres)</label>
               <Input
                 id="cp-new"
                 type="password"
