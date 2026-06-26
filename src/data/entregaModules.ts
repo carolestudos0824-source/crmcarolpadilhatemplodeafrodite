@@ -1988,16 +1988,16 @@ export const COMMANDS_CRIATIVOS: Command[] = [
     content: `Crie 5 conceitos de criativo estático para divulgar este app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Canal:
 [Instagram, WhatsApp, Meta Ads, LinkedIn ou outro]
@@ -2021,16 +2021,16 @@ Regras:
     agentPrompt: `Quero criar criativos estáticos para divulgar meu app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Me ajude a definir:
 
@@ -2066,16 +2066,16 @@ Remova clichês, frases vagas e promessas exageradas.`,
     content: `Crie 5 roteiros de vídeo curto para divulgar este app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Canal:
 [Reels, TikTok, Shorts, Stories ou outro]
@@ -2100,16 +2100,16 @@ Regras:
     agentPrompt: `Quero criar roteiros de vídeo curto para meu app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Me ajude a criar:
 
@@ -2133,30 +2133,30 @@ Remova enrolação, frases difíceis e promessas irreais.`,
   },
   {
     n: 3,
-    title: "Criar anúncio para Meta Ads",
-    purpose: "Criar textos de anúncio para Facebook e Instagram.",
-    when: "Quando a oferta já foi testada organicamente.",
+    title: "Criar anúncio para Meta Ads (opcional — usar depois)",
+    purpose: "Criar textos de anúncio para Facebook e Instagram. Use somente depois de validar criativos orgânicos e oferta clara. Não crie campanha paga real nesta etapa.",
+    when: "Somente depois de validar criativos orgânicos e ter oferta clara.",
     where: "Cole no Lovable.",
     result: "5 anúncios prontos para teste, sem promessas exageradas.",
-    objective: "Criar textos de anúncio para Facebook e Instagram.",
-    whenLovableDirect: "Quando a oferta já foi testada organicamente.",
+    objective: "Criar textos de anúncio para Facebook e Instagram (etapa opcional).",
+    whenLovableDirect: "Somente depois de validar criativos orgânicos e ter oferta clara.",
     whenAgentFirst: "Quando você ainda não validou a oferta ou não sabe se deve investir em anúncio.",
     content: `Crie 5 anúncios para Meta Ads para este app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Oferta:
-[descreva]
+[produto]
 
 Para cada anúncio, entregue:
 
@@ -2179,13 +2179,13 @@ Regras:
     agentPrompt: `Estou pensando em anunciar meu app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Oferta:
-[descreva]
+[produto]
 
 Público:
-[descreva]
+[descreva o público]
 
 Resultados orgânicos:
 [descreva ou escreva "ainda não testei"]
@@ -2223,16 +2223,16 @@ Remova hype, promessa garantida e frases vagas.`,
     content: `Crie 10 posts para Instagram sobre este app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Para cada post, entregue:
 
@@ -2253,16 +2253,16 @@ Regras:
     agentPrompt: `Quero criar conteúdo para divulgar meu app no Instagram.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Oferta:
-[descreva]
+[produto]
 
 Me ajude a criar:
 
@@ -2296,16 +2296,16 @@ Inclua:
     content: `Crie uma sequência de stories para divulgar este app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Crie 8 stories com:
 
@@ -2324,13 +2324,13 @@ Regras:
     agentPrompt: `Quero criar stories para divulgar meu app sem parecer forçado.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Me ajude a criar:
 
@@ -2364,16 +2364,16 @@ Inclua:
     content: `Crie 10 ideias de vídeos curtos para divulgar este app.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Dor:
-[descreva]
+[descreva a dor]
 
 Promessa:
-[descreva]
+[promessa]
 
 Para cada vídeo, entregue:
 
@@ -2393,10 +2393,10 @@ Regras:
     agentPrompt: `Quero divulgar meu app com vídeos curtos.
 
 App:
-[descreva]
+[nome do app ativo] — [descreva o app]
 
 Público:
-[descreva]
+[descreva o público]
 
 Canal:
 [Reels, TikTok, Shorts]
