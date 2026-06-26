@@ -443,7 +443,14 @@ function EntregaInner() {
 
   const currentIdx = MODULE_ORDER.indexOf(active);
   const prevModule = currentIdx > 0 ? MODULE_ORDER[currentIdx - 1] : null;
-  const nextModule = currentIdx < MODULE_ORDER.length - 1 ? MODULE_ORDER[currentIdx + 1] : null;
+  // Exceções pontuais de navegação para manter coerência com o menu lateral
+  // sem alterar a ordem global de MODULE_ORDER (preserva páginas aprovadas).
+  const NEXT_OVERRIDE: Partial<Record<ModuleId, ModuleId>> = {
+    checklist: "ativar",
+  };
+  const nextModule =
+    NEXT_OVERRIDE[active] ??
+    (currentIdx < MODULE_ORDER.length - 1 ? MODULE_ORDER[currentIdx + 1] : null);
 
   return (
     <div className="min-h-screen flex flex-col">
