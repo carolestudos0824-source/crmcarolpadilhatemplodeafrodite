@@ -369,7 +369,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
           <div className="relative md:col-span-2">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
-              className={inputCls + " pl-8"}
+              className="admin-input pl-8"
               placeholder="Buscar por e-mail ou nome"
               value={q}
               onChange={(e) => setQ(e.target.value)}

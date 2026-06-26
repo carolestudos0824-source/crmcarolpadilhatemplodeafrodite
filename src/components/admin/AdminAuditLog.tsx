@@ -149,7 +149,7 @@ export function AdminAuditLog({ refreshKey = 0 }: { refreshKey?: number }) {
         <div className="relative flex-1">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
-            className={inputCls + " pl-8"}
+            className="admin-input pl-8"
             placeholder="Filtrar por ação, admin ou alvo"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

@@ -253,7 +253,7 @@ export function SalesPanel() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por e-mail ou nome"
-              className={inputCls + " pl-9"}
+              className="admin-input pl-9"
             />
           </div>
           <button
@@ -574,7 +574,7 @@ function CreateSaleDrawer({
           <input value={paymentReference} onChange={(e) => setPaymentReference(e.target.value)} className="admin-input" placeholder="ID da transação, código do comprovante…" />
         </Field>
         <Field label="Observação interna">
-          <textarea value={adminNotes} onChange={(e) => setAdminNotes(e.target.value)} className={inputCls + " min-h-[80px]"} placeholder="Notas internas (não visíveis ao comprador)" />
+          <textarea value={adminNotes} onChange={(e) => setAdminNotes(e.target.value)} className="admin-input min-h-[80px]" placeholder="Notas internas (não visíveis ao comprador)" />
         </Field>
         <label className="flex items-center gap-2 text-sm pt-1">
           <input type="checkbox" checked={grantAfter} onChange={(e) => setGrantAfter(e.target.checked)} />
