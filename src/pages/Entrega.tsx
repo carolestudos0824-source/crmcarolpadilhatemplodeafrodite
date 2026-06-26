@@ -174,7 +174,7 @@ const SIDEBAR_GROUPS: { title: string; modules: ModuleId[] }[] = [
   { title: "Comece aqui", modules: ["comece", "ideias", "planejar", "mvp", "telas"] },
   { title: "Construir", modules: ["fundamentos", "construir", "login", "seguranca", "teste", "erros"] },
   { title: "Validar e vender", modules: ["validacao", "monetizacao", "venda", "checkout", "legal", "publicar"] },
-  { title: "Crescer", modules: ["seo", "campanhas", "criativos", "metricas", "melhorias", "checklist", "ativar"] },
+  { title: "Crescer", modules: ["seo", "campanhas", "criativos", "metricas", "melhorias", "checklist"] },
 ];
 
 const SIDEBAR_STATUS_LABEL: Record<string, string> = {
