@@ -286,11 +286,11 @@ export function GiftCodesPanel() {
       </form>
 
       {/* List */}
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <div className="flex items-center justify-between mb-3 gap-3">
           <div className="min-w-0">
             <h3 className="font-heading font-semibold text-sm">Códigos cadastrados</h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Mostra os 200 códigos mais recentes.</p>
+            <p className="admin-help mt-0.5">Mostra os 200 códigos mais recentes.</p>
           </div>
           <button onClick={load} className="text-[11px] text-muted-foreground hover:text-foreground shrink-0">
             Atualizar
@@ -301,10 +301,10 @@ export function GiftCodesPanel() {
             <Loader2 size={14} className="animate-spin" /> Carregando…
           </div>
         ) : codes.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
-            <KeyRound size={18} className="mx-auto text-muted-foreground/60 mb-2" />
-            <p className="text-sm text-foreground/80">Nenhum código cadastrado ainda.</p>
-            <p className="text-xs text-muted-foreground mt-1">
+          <div className="admin-empty">
+            <KeyRound size={20} className="text-muted-foreground/70" />
+            <p className="admin-empty-title">Nenhum código cadastrado ainda.</p>
+            <p className="admin-empty-hint">
               Crie um código acima para liberar ou estender o acesso de um comprador.
             </p>
           </div>
@@ -312,12 +312,12 @@ export function GiftCodesPanel() {
           <ul className="space-y-2">
             {codes.map((c) => {
               const st = statusOf(c);
-              const toneCls =
+              const badgeCls =
                 st.tone === "ok"
-                  ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+                  ? "admin-badge admin-badge-success"
                   : st.tone === "warn"
-                    ? "bg-amber-500/15 text-amber-200 border-amber-500/30"
-                    : "bg-white/10 text-muted-foreground border-white/15";
+                    ? "admin-badge admin-badge-warning"
+                    : "admin-badge admin-badge-muted";
               const revealed = !!reveal[c.id];
               return (
                 <li key={c.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
