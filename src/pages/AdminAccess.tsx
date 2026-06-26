@@ -347,7 +347,7 @@ function AdminAccessInner() {
   if (authError) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md w-full glass-strong p-8 text-center space-y-4">
+        <div className="max-w-md w-full admin-card p-8 text-center space-y-4">
           <AlertTriangle className="mx-auto text-amber-300" size={28} />
           <div>
             <h1 className="text-xl font-heading font-bold mb-1">Não foi possível carregar o painel admin</h1>
@@ -383,7 +383,7 @@ function AdminAccessInner() {
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md w-full glass-strong p-8 text-center">
+        <div className="max-w-md w-full admin-card p-8 text-center">
           <AlertTriangle className="mx-auto text-red-400 mb-3" size={28} />
           <h1 className="text-xl font-heading font-bold mb-2">Acesso negado</h1>
           <p className="text-sm text-muted-foreground mb-4">
@@ -994,7 +994,7 @@ function CompradoresSection({
     <div className="space-y-4">
       <BuyersList onView={onViewBuyer} onSetAccess={onSetBuyerAccess} />
 
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <h3 className="font-heading font-semibold text-sm mb-1">Busca operacional</h3>
         <p className="text-xs text-muted-foreground mb-4">
           A busca por comprador depende de o usuário já ter criado conta na área interna. Use o mesmo e-mail informado na compra.
@@ -1030,7 +1030,7 @@ function CompradoresSection({
         )}
       </div>
 
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <h3 className="font-heading font-semibold text-sm mb-1">Observação</h3>
         <p className="text-xs text-muted-foreground">
           Para liberar, revogar ou ver detalhes do acesso, use a seção <button onClick={onGoToAcessos} className="text-accent underline">Acessos</button>.
@@ -1388,7 +1388,7 @@ function SelfGrant({ onChanged }: { onChanged?: (hasAccess: boolean) => void }) 
     onChanged?.(true);
   };
   return (
-    <div className="glass-strong p-6">
+    <div className="admin-card">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="font-heading font-semibold text-sm mb-1">Teste admin</h2>

@@ -102,7 +102,7 @@ export function BuyersList({
   };
 
   return (
-    <div className="glass-strong p-5">
+    <div className="admin-card">
       <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
         <div>
           <h3 className="font-heading font-semibold text-sm">Últimos compradores e usuários</h3>
