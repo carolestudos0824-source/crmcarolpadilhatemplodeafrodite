@@ -780,7 +780,7 @@ function AcessosSection({
       </div>
 
       {/* Flow */}
-      <div className="glass-strong p-5">
+      <div className="admin-card p-5">
         <div className="flex items-center gap-2 mb-2">
           <LayoutGrid size={16} className="text-accent" />
           <h2 className="font-heading font-semibold text-sm">Liberar acesso manualmente</h2>
@@ -809,7 +809,7 @@ function AcessosSection({
       <SelfGrant onChanged={onSelfChanged} />
 
       {/* Search */}
-      <div className="glass-strong p-6">
+      <div className="admin-card p-6">
         <form onSubmit={onSearch} className="space-y-3">
           <label className="text-xs text-muted-foreground block font-semibold">E-mail do comprador</label>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -833,8 +833,10 @@ function AcessosSection({
       </div>
 
       {status.kind === "not_found" && (
-        <div className="glass-strong p-6 text-center text-muted-foreground text-sm">
-          Nenhum usuário encontrado com este e-mail. Verifique se o comprador já criou conta.
+        <div className="admin-empty">
+          <Search className="text-muted-foreground" size={24} />
+          <p className="admin-empty-title">Nenhum usuário encontrado com este e-mail</p>
+          <p className="admin-empty-hint">Verifique se o comprador já criou conta entrando uma vez com o mesmo e-mail da compra.</p>
         </div>
       )}
 
@@ -851,7 +853,7 @@ function AcessosSection({
             {status.message}
           </div>
           {status.action === "grant" && (
-            <div className="glass-strong p-5">
+            <div className="admin-card p-5">
               <h3 className="font-heading font-semibold text-sm mb-1">Próximo passo</h3>
               <p className="text-xs text-muted-foreground mb-3">
                 Oriente o comprador a acessar Minha área com o mesmo e-mail do cadastro.
@@ -859,7 +861,7 @@ function AcessosSection({
               <div className="flex flex-col sm:flex-row gap-2">
                 <Link
                   to="/entrega"
-                  className="text-xs px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center justify-center gap-2 font-semibold"
+                  className="text-xs px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 inline-flex items-center justify-center gap-2 font-semibold transition"
                 >
                   Ir para Minha área <ArrowRight size={12} />
                 </Link>
