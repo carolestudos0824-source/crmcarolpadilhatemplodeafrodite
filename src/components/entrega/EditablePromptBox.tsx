@@ -88,6 +88,70 @@ export function EditablePromptBox({
   const [copied, setCopied] = useState(false);
   const taRef = useRef<HTMLTextAreaElement>(null);
 
+  // Baselines used to detect (a) project switch via storageKey change and
+  // (b) context updates that change originalPrompt. Without these refs the
+  // textarea keeps the first value forever and never reflects the current
+  // contexto do projeto em foco quando o usuário troca de app.
+  const baselineRef = useRef(originalPrompt);
+  const storageKeyRef = useRef(storageKey);
+  const valueRef = useRef(value);
+  useEffect(() => {
+    valueRef.current = value;
+  }, [value]);
+
+  useEffect(() => {
+    const storageKeyChanged = storageKeyRef.current !== storageKey;
+    const originalChanged = baselineRef.current !== originalPrompt;
+    if (!storageKeyChanged && !originalChanged) return;
+
+    const prevBaseline = baselineRef.current;
+    baselineRef.current = originalPrompt;
+    storageKeyRef.current = storageKey;
+
+    // Carrega valor persistido para a (possivelmente nova) storageKey.
+    let saved: string | null = null;
+    if (storageKey && typeof window !== "undefined") {
+      saved = window.localStorage.getItem(storageKey);
+      if (saved !== null && expectedSignature && !saved.includes(expectedSignature)) {
+        try {
+          window.localStorage.removeItem(storageKey);
+        } catch {
+          /* noop */
+        }
+        saved = null;
+      }
+    }
+
+    if (storageKeyChanged) {
+      const next = saved ?? originalPrompt;
+      setValue(next);
+      onChange?.(next);
+      return;
+    }
+
+    // Apenas o originalPrompt mudou (contexto do projeto foi atualizado).
+    // Se o usuário NÃO editou (valor atual == baseline anterior), sincroniza
+    // silenciosamente. Se editou, pede confirmação antes de sobrescrever.
+    const current = valueRef.current;
+    if (current === prevBaseline) {
+      setValue(originalPrompt);
+      onChange?.(originalPrompt);
+      return;
+    }
+    const wantsOverwrite =
+      typeof window !== "undefined" &&
+      window.confirm(
+        "O contexto do projeto em foco mudou. Atualizar este prompt com o novo contexto? Suas edições serão substituídas.",
+      );
+    if (wantsOverwrite) {
+      setValue(originalPrompt);
+      onChange?.(originalPrompt);
+    }
+    // onChange é referencial e estável o suficiente; evitamos colocá-lo nas
+    // deps para não disparar este efeito a cada render do pai.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originalPrompt, storageKey, expectedSignature]);
+
   useEffect(() => {
     if (!expanded) return;
     const ta = taRef.current;
