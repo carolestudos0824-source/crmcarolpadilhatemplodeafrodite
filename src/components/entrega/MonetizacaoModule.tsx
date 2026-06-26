@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Sparkles,
   DollarSign,
@@ -13,10 +13,12 @@ import {
   Briefcase,
   Calculator,
   Coins,
+  Wand2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { GlassCard } from "@/components/GlassCard";
 import { APP_CONFIG } from "@/config/appConfig";
+import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
 
 const AGENT_PROMPT = `Estou criando um app e preciso definir como monetizar. Me ajude a escolher o melhor modelo de cobrança. Faça perguntas sobre: público, dor resolvida, entrega principal, frequência de uso, valor percebido, concorrentes, formato de acesso e se faz mais sentido venda única, assinatura, freemium, plano beta ou licença.`;
 
@@ -158,6 +160,102 @@ const INITIAL_CALC: CalcState = {
   estagio: "",
 };
 
+type CalcSuggestion = Partial<CalcState>;
+
+const matches = (haystack: string, terms: string[]) => {
+  const h = haystack.toLowerCase();
+  return terms.some((t) => h.includes(t));
+};
+
+function suggestFromContext(ctx: ProjectContext): CalcSuggestion {
+  const blob = [
+    ctx.appName,
+    ctx.appDoes,
+    ctx.audience,
+    ctx.problem,
+    ctx.promise,
+    ctx.mainAction,
+    ctx.productSold,
+    ctx.notes,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (!blob.trim()) return {};
+
+  const isJogoAmor = matches(blob, ["jogo do amor", "amor", "relacionamento", "casal", "casais", "paquera", "namoro"]);
+  const isQuiz = matches(blob, ["quiz", "jogo", "teste interativo", "perguntas"]);
+  const isDiagnostico = matches(blob, ["diagnóstico", "diagnostico", "análise", "analise", "relatório", "relatorio"]);
+  const isProfissional = matches(blob, ["terapeuta", "consultor", "mentor", "coach", "clínica", "clinica", "profissional", "social media", "atende clientes"]);
+  const isRecorrente = matches(blob, ["assinatura", "mensal", "diário", "diario", "todo dia", "rotina", "planner", "acompanhamento"]);
+
+  const sug: CalcSuggestion = {};
+
+  // Tipo
+  if (isJogoAmor && isQuiz) sug.tipo = "jogo/quiz interativo de relacionamento";
+  else if (isQuiz) sug.tipo = "quiz interativo";
+  else if (isDiagnostico) sug.tipo = "ferramenta de diagnóstico";
+  else if (ctx.appDoes.trim()) sug.tipo = ctx.appDoes.trim().slice(0, 80);
+
+  // Público
+  if (isJogoAmor) sug.publico = "pessoas interessadas em autoconhecimento amoroso, solteiros ou casais";
+  else if (ctx.audience.trim()) sug.publico = ctx.audience.trim().slice(0, 120);
+
+  // Dor
+  if (isJogoAmor) sug.dor = "falta de clareza sobre relacionamento, compatibilidade ou dinâmica amorosa";
+  else if (ctx.problem.trim()) sug.dor = ctx.problem.trim().slice(0, 160);
+
+  // Resultado
+  if (isJogoAmor) sug.resultado = "diagnóstico, reflexão ou recomendação personalizada";
+  else if (ctx.promise.trim()) sug.resultado = ctx.promise.trim().slice(0, 160);
+  else if (isDiagnostico) sug.resultado = "relatório personalizado com sugestões";
+
+  // Frequência
+  if (isRecorrente) sug.frequencia = "recorrente";
+  else if (isJogoAmor || isQuiz || isDiagnostico) sug.frequencia = "pontual";
+
+  // Urgência (conservadora)
+  sug.urgencia = isJogoAmor ? "media" : "media";
+
+  // Economia
+  if (isProfissional) sug.economia = "dinheiro";
+  else if (matches(blob, ["tempo", "rápido", "rapido", "automatiza"])) sug.economia = "tempo";
+  else sug.economia = "esforco";
+
+  // Suporte / atualização — conservadores
+  if (ctx.needsPaidArea === "sim" || isProfissional) sug.suporte = "sim";
+  if (isRecorrente) sug.atualizacao = "sim";
+
+  // Estágio — MVP por padrão (programa começa do zero)
+  sug.estagio = "mvp";
+
+  return sug;
+}
+
+const isEmpty = (v: string) => !v || v.trim().length === 0;
+
+function applySuggestion(
+  current: CalcState,
+  suggestion: CalcSuggestion,
+  mode: "fill-empty" | "overwrite",
+): { next: CalcState; changed: number } {
+  let changed = 0;
+  const next = { ...current };
+  (Object.keys(suggestion) as (keyof CalcState)[]).forEach((k) => {
+    const sv = suggestion[k];
+    if (!sv) return;
+    const cv = current[k] as string;
+    if (mode === "overwrite" || isEmpty(cv)) {
+      if (cv !== sv) {
+        (next[k] as string) = sv;
+        changed += 1;
+      }
+    }
+  });
+  return { next, changed };
+}
+
 function recommend(state: CalcState):
   | { model: string; range: string; reason: string; next: string }
   | null {
@@ -216,10 +314,55 @@ const copyToClipboard = async (text: string, successMsg: string) => {
 export const MonetizacaoIntro = () => {
   const [showGlossary, setShowGlossary] = useState(false);
   const [calc, setCalc] = useState<CalcState>(INITIAL_CALC);
+  const { context: projectCtx, isFilled: hasProjectContext } = useProjectContext();
+  const suggestion = useMemo(() => suggestFromContext(projectCtx), [projectCtx]);
+  const autoFilledRef = useRef(false);
+  const [autoFilledNotice, setAutoFilledNotice] = useState(false);
   const reco = useMemo(() => recommend(calc), [calc]);
 
   const setField = <K extends keyof CalcState>(k: K, v: CalcState[K]) =>
     setCalc((p) => ({ ...p, [k]: v }));
+
+  // Preenche automaticamente apenas campos vazios na primeira renderização
+  useEffect(() => {
+    if (autoFilledRef.current) return;
+    if (!hasProjectContext) return;
+    if (Object.keys(suggestion).length === 0) return;
+    autoFilledRef.current = true;
+    setCalc((prev) => {
+      const { next, changed } = applySuggestion(prev, suggestion, "fill-empty");
+      if (changed > 0) setAutoFilledNotice(true);
+      return next;
+    });
+  }, [hasProjectContext, suggestion]);
+
+  const handleApplyContext = () => {
+    const hasAnyFilled = Object.values(calc).some((v) => !isEmpty(v));
+    const wouldOverwrite = (Object.keys(suggestion) as (keyof CalcState)[]).some(
+      (k) => suggestion[k] && !isEmpty(calc[k] as string) && calc[k] !== suggestion[k],
+    );
+
+    if (!hasProjectContext || Object.keys(suggestion).length === 0) {
+      toast.info("Preencha o Contexto do seu app para gerar sugestões.");
+      return;
+    }
+
+    let mode: "fill-empty" | "overwrite" = "fill-empty";
+    if (hasAnyFilled && wouldOverwrite) {
+      const ok = window.confirm(
+        "Alguns campos já foram preenchidos por você. Deseja substituir pelos dados do contexto do projeto?",
+      );
+      mode = ok ? "overwrite" : "fill-empty";
+    }
+
+    setCalc((prev) => {
+      const { next, changed } = applySuggestion(prev, suggestion, mode);
+      if (changed === 0) toast.info("Nada novo para preencher.");
+      else toast.success(`Atualizamos ${changed} campo${changed > 1 ? "s" : ""} com base no contexto do projeto.`);
+      return next;
+    });
+  };
+
 
   return (
     <section className="mb-8 space-y-6">
@@ -385,10 +528,25 @@ export const MonetizacaoIntro = () => {
           </h3>
         </div>
         <GlassCard className="p-5 space-y-4">
-          <p className="text-[12px] text-muted-foreground">
-            Preencha o que souber. A recomendação é um ponto de partida, não uma
-            regra. Sempre teste com pessoas reais.
-          </p>
+          {hasProjectContext && autoFilledNotice && (
+            <div className="rounded-lg border border-accent/25 bg-accent/5 px-3 py-2 text-[12px] text-accent/90">
+              Preenchemos sugestões com base no contexto do seu projeto. Revise antes de usar.
+            </div>
+          )}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-[12px] text-muted-foreground">
+              Preencha o que souber. A recomendação é um ponto de partida, não uma
+              regra. Sempre teste com pessoas reais.
+            </p>
+            <button
+              type="button"
+              onClick={handleApplyContext}
+              className="inline-flex items-center gap-2 text-[12px] px-3 py-1.5 min-h-[36px] rounded-lg border border-accent/30 bg-accent/5 text-accent hover:bg-accent/10"
+            >
+              <Wand2 size={12} /> Atualizar com contexto do projeto
+            </button>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-3">
             <CalcInput
               label="Tipo de app"
