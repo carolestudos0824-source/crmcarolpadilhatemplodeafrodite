@@ -35,6 +35,8 @@ type Props = {
    * different module) and discarded in favor of the freshly built originalPrompt.
    */
   expectedSignature?: string;
+  /** Treat a persisted prompt as stale/invalid and replace it with originalPrompt. */
+  shouldInvalidateSavedValue?: (saved: string) => boolean;
 };
 
 
@@ -57,6 +59,7 @@ export function EditablePromptBox({
   hideSaveButton,
   collapsible = false,
   expectedSignature,
+  shouldInvalidateSavedValue,
 }: Props) {
   const { openPromptStudio } = usePromptStudio();
   const auth = useAuthState();
@@ -72,7 +75,10 @@ export function EditablePromptBox({
         // Discard contaminated values that don't belong to the current context
         // (e.g. prompts saved before a module switch or with the wrong module
         // title baked in). The next persistence effect will clean the key.
-        if (expectedSignature && !saved.includes(expectedSignature)) {
+        if (
+          (expectedSignature && !saved.includes(expectedSignature)) ||
+          shouldInvalidateSavedValue?.(saved)
+        ) {
           try {
             window.localStorage.removeItem(storageKey);
           } catch {
@@ -95,9 +101,20 @@ export function EditablePromptBox({
   const baselineRef = useRef(originalPrompt);
   const storageKeyRef = useRef(storageKey);
   const valueRef = useRef(value);
+  const didSyncInitialValueRef = useRef(false);
   useEffect(() => {
     valueRef.current = value;
   }, [value]);
+
+  useEffect(() => {
+    if (didSyncInitialValueRef.current) return;
+    didSyncInitialValueRef.current = true;
+    onChange?.(valueRef.current);
+    // Sincroniza o valor inicial resolvido (incluindo localStorage válido) com
+    // o componente pai. Sem isso, a prévia poderia mostrar um texto salvo e o
+    // botão externo copiar outro texto.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const storageKeyChanged = storageKeyRef.current !== storageKey;
@@ -112,7 +129,11 @@ export function EditablePromptBox({
     let saved: string | null = null;
     if (storageKey && typeof window !== "undefined") {
       saved = window.localStorage.getItem(storageKey);
-      if (saved !== null && expectedSignature && !saved.includes(expectedSignature)) {
+      if (
+        saved !== null &&
+        ((expectedSignature && !saved.includes(expectedSignature)) ||
+          shouldInvalidateSavedValue?.(saved))
+      ) {
         try {
           window.localStorage.removeItem(storageKey);
         } catch {
@@ -133,6 +154,11 @@ export function EditablePromptBox({
     // Se o usuário NÃO editou (valor atual == baseline anterior), sincroniza
     // silenciosamente. Se editou, pede confirmação antes de sobrescrever.
     const current = valueRef.current;
+    if (shouldInvalidateSavedValue?.(current)) {
+      setValue(originalPrompt);
+      onChange?.(originalPrompt);
+      return;
+    }
     if (current === prevBaseline) {
       setValue(originalPrompt);
       onChange?.(originalPrompt);
@@ -150,7 +176,7 @@ export function EditablePromptBox({
     // onChange é referencial e estável o suficiente; evitamos colocá-lo nas
     // deps para não disparar este efeito a cada render do pai.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [originalPrompt, storageKey, expectedSignature]);
+  }, [originalPrompt, storageKey, expectedSignature, shouldInvalidateSavedValue]);
 
   useEffect(() => {
     if (!expanded) return;

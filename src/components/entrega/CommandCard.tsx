@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Check, ChevronDown, Sparkles, Wrench, Target, Compass, Bot, Code2, ExternalLink, FileText, Info, ShieldCheck } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { APP_CONFIG } from "@/config/appConfig";
@@ -13,6 +13,12 @@ import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 import { AgentClipboardFallback } from "@/components/entrega/AgentClipboardFallback";
 import { useAgentChat } from "@/components/entrega/AgentChatProvider";
 import { useAppProjects } from "@/hooks/useAppProjects";
+
+const RAW_CRIATIVOS_PLACEHOLDER_PATTERN =
+  /\[(?:nome do app ativo|descreva o app|descreva o público|descreva a dor|promessa|produto|modelo de cobrança|ação principal|descreva|liste|cole ou descreva|descreva ou escreva "ainda não testei"|clique, cadastro, compra, resposta, visualização ou outro|Instagram, WhatsApp, Meta Ads, LinkedIn ou outro|Reels, TikTok, Shorts(?:, Stories ou outro)?)\]/i;
+
+const hasRawCriativosPlaceholder = (text: string) =>
+  RAW_CRIATIVOS_PLACEHOLDER_PATTERN.test(text);
 
 
 type Props = {
@@ -79,6 +85,21 @@ export const CommandCard = ({
   // EditablePromptBox monta com novo originalPrompt sem reaproveitar
   // edição de outro projeto.
   const projectScope = activeProject?.id ?? "no-project";
+  const invalidateSavedPrompt =
+    moduleId === "criativos" ? hasRawCriativosPlaceholder : undefined;
+
+  useEffect(() => {
+    if (moduleId !== "criativos" || typeof window === "undefined") return;
+    const legacyKeys = ["main", "guided", "agent", "fix"].map(
+      (kind) => `cmdcard__${completedKey}__${projectScope}__${kind}`,
+    );
+    legacyKeys.forEach((key) => {
+      const saved = window.localStorage.getItem(key);
+      if (saved && hasRawCriativosPlaceholder(saved)) {
+        window.localStorage.removeItem(key);
+      }
+    });
+  }, [completedKey, moduleId, projectScope]);
 
   const handleRevisarComAgente = (key: string) => {
     setCopiedKey(key);
@@ -238,6 +259,7 @@ export const CommandCard = ({
               originalPrompt={displayCommand}
               storageKey={`cmdcard__${completedKey}__${projectScope}__main`}
               onChange={setEditedCommand}
+              shouldInvalidateSavedValue={invalidateSavedPrompt}
               hideCopyButton
               saveTitle={title}
               saveSourceModule={moduleId}
@@ -394,12 +416,15 @@ export const CommandCard = ({
                   <Sparkles size={12} /> Texto pronto para colar no Lovable
                 </div>
                 <div className="text-[11px] text-amber-200/90 bg-amber-400/5 border border-amber-400/20 rounded-md px-3 py-2 mb-2">
-                  Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
+                  {isFilled
+                    ? "Este prompt já usa o contexto do projeto em foco. Revise antes de copiar."
+                    : "Preencha o Contexto do projeto para substituir os campos automaticamente."}
                 </div>
                 <EditablePromptBox
                   originalPrompt={displayCommand}
                   storageKey={`cmdcard__${completedKey}__${projectScope}__guided`}
                   onChange={setEditedCommand}
+                  shouldInvalidateSavedValue={invalidateSavedPrompt}
                   hideCopyButton
                   saveTitle={title}
                   saveSourceModule={moduleId}
@@ -484,6 +509,7 @@ export const CommandCard = ({
                     originalPrompt={displayAgent}
                     storageKey={`cmdcard__${completedKey}__${projectScope}__agent`}
                     onChange={setEditedAgent}
+                    shouldInvalidateSavedValue={invalidateSavedPrompt}
                     hideCopyButton
                     saveTitle={`${title} — Agente`}
                     saveSourceModule={moduleId}
@@ -543,6 +569,7 @@ export const CommandCard = ({
                     originalPrompt={displayCorrection}
                     storageKey={`cmdcard__${completedKey}__${projectScope}__fix`}
                     onChange={setEditedCorrection}
+                    shouldInvalidateSavedValue={invalidateSavedPrompt}
                     hideCopyButton
                     saveTitle={`${title} — Correção`}
                     saveSourceModule={moduleId}
@@ -637,7 +664,7 @@ export const CommandCard = ({
       onClose={() => setReviewOpen(false)}
       stepName={title}
       stepObjective={objective ?? description}
-      command={commandText}
+      command={editedCommand || displayCommand}
       moduleId={moduleId}
       initialMode="agent"
     />
