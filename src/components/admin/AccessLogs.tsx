@@ -179,17 +179,13 @@ export function AccessLogs({ refreshKey = 0 }: { refreshKey?: number }) {
               const label = ACTION_LABEL[r.action] ?? ACTION_LABEL.unknown;
               const tone =
                 r.action === "revoke_access"
-                  ? "bg-rose-500/10 text-rose-300 border-rose-500/30"
-                  : "bg-emerald-500/10 text-emerald-300 border-emerald-500/30";
+                  ? "admin-badge admin-badge-danger"
+                  : "admin-badge admin-badge-success";
               return (
                 <li key={r.id} className="py-3 flex items-start gap-3 flex-wrap">
                   <div className="flex-1 min-w-[220px]">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={`text-[10px] px-1.5 py-0.5 rounded border ${tone}`}
-                      >
-                        {label}
-                      </span>
+                      <span className={tone}>{label}</span>
                       <span className="text-sm text-foreground font-medium truncate">
                         {r.target_email ?? "—"}
                       </span>
