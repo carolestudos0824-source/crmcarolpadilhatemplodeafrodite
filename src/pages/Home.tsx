@@ -44,20 +44,6 @@ const centralVendas = [
   { icon: <ListChecks size={20} />, t: "Checklist antes do lançamento" },
 ];
 
-const mockups = [
-  { icon: <Brain size={22} />, t: "Ideia e MVP", d: "Estruture ideia, público, dor e promessa antes de mandar o Lovable construir." },
-  { icon: <Lightbulb size={22} />, t: "30 ideias de aplicativos", d: "Inspire-se em 30 modelos de apps simples — agendamento, checklist, catálogo, área de membros e mais." },
-  { icon: <Wand2 size={22} />, t: "Prompts para Lovable", d: "Comandos por etapa, com objetivo claro e o que testar depois de cada prompt." },
-  { icon: <Workflow size={22} />, t: "Telas e fluxo", d: "Mapeie telas principais e fluxo do usuário em ordem de construção." },
-  { icon: <Database size={22} />, t: "Login e banco", d: "Planeje auth, banco e permissões com prompts revisados antes de aplicar." },
-  { icon: <Layers size={22} />, t: "Área paga e Admin", d: "Estruture área interna e painel administrativo do seu app sem improviso." },
-  { icon: <ShieldCheck size={22} />, t: "Segurança básica", d: "Revise riscos comuns, RLS e pontos sensíveis antes de publicar." },
-  { icon: <Rocket size={22} />, t: "Checkout e entrega", d: "Conecte oferta, checkout manual e entrega do acesso sem quebrar o fluxo." },
-  { icon: <Megaphone size={22} />, t: "Página de venda", d: "Estruture a comunicação de valor da sua oferta com etapas claras." },
-  { icon: <ListChecks size={22} />, t: "Correção de erros", d: "Audite o app, identifique o que quebrou e evolua por versões pequenas." },
-  { icon: <LineChart size={22} />, t: "Checklist final", d: "Revise tudo antes de publicar: login, banco, checkout, segurança e copy." },
-  { icon: <Sparkles size={22} />, t: "Estado atual do projeto", d: "Veja contexto, progresso e próximo passo recomendado em cada módulo." },
-];
 
 const beneficios = [
   "Programa completo, pagamento único",
