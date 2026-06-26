@@ -61,6 +61,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <ScrollToTop />
+      <PresenceTracker />
       <Toaster position="top-center" theme="dark" richColors />
       <PromptStudioProvider>
       <Layout>
