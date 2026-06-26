@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Copy, Check, RotateCcw, Settings2, Bookmark } from "lucide-react";
+import { Copy, Check, RotateCcw, Settings2, Bookmark, ChevronDown } from "lucide-react";
 import { usePromptStudio, type PromptStudioOptions } from "./PromptStudioProvider";
 import { useAuthState } from "@/hooks/useAuthState";
 import { savePromptForUser } from "@/lib/savePrompt";
@@ -186,14 +186,16 @@ export function EditablePromptBox({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="w-full text-left rounded-xl border border-white/10 bg-black/30 hover:bg-black/40 hover:border-accent/30 transition p-3 group"
+          aria-expanded={false}
+          className="w-full text-left rounded-xl border border-accent/25 bg-black/30 hover:bg-black/40 hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 transition p-3 group"
         >
           <p className="text-[12px] font-mono leading-relaxed text-foreground/70 line-clamp-2">
             {value.trim().slice(0, 220)}
             {value.trim().length > 220 ? "…" : ""}
           </p>
-          <span className="inline-block mt-2 text-[11px] text-accent group-hover:underline">
+          <span className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-accent/40 bg-accent/15 px-2.5 py-1 text-[12px] font-semibold text-accent group-hover:bg-accent/25 group-hover:border-accent/70 transition">
             Ver prompt completo
+            <ChevronDown size={13} className="transition-transform group-hover:translate-y-0.5" />
           </span>
         </button>
       )}
