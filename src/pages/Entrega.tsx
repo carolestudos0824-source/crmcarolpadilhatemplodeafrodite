@@ -3461,15 +3461,21 @@ Regras:
   return (
     <GlassCard id="gerador-criativo" className="mt-2 mb-6 p-5 md:p-6 border-accent/30">
       <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
-        <h3 className="font-heading font-semibold">Gerador rápido de criativo</h3>
+        <h3 className="font-heading font-semibold">Gerador rápido de criativo para tráfego</h3>
         <span className="text-[11px] uppercase tracking-wider text-accent px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20">
           Comece por aqui
         </span>
       </div>
-      <p className="text-sm text-muted-foreground mb-4">
-        Os campos abaixo já vêm preenchidos com o contexto do projeto em foco
-        quando disponível. Ajuste o que quiser e gere um comando pronto para o
-        Lovable.
+      <p className="text-sm text-muted-foreground mb-2">
+        Os campos abaixo usam o contexto do projeto em foco para gerar um
+        comando pronto para o Lovable criar textos, variações e estruturas de
+        criativos. Depois, você pode usar esses criativos em campanhas
+        orgânicas ou pagas, como Instagram, WhatsApp, Reels, Stories, Meta Ads
+        ou Google Ads.
+      </p>
+      <p className="text-xs text-amber-300/90 bg-amber-500/10 border border-amber-500/20 rounded-md px-3 py-2 mb-4">
+        Este gerador não cria campanha real, não compra mídia e não garante
+        resultado.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
         <Input label="Nome do app" value={f.name} onChange={updateField("name")} />
