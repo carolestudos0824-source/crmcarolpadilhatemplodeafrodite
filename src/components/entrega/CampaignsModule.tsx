@@ -25,6 +25,9 @@ import {
 import { GlassCard } from "@/components/GlassCard";
 import { APP_CONFIG } from "@/config/appConfig";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
+import { ResumoCampanhaCard } from "@/components/entrega/ResumoCampanhaCard";
+import { useProjectContext } from "@/hooks/useProjectContext";
+import { applyContextPlaceholders } from "@/lib/promptBuilder";
 
 type Checklist = Record<string, boolean>;
 type SetChecklist = (v: Checklist | ((p: Checklist) => Checklist)) => void;
@@ -53,17 +56,21 @@ const TABS: { id: TabId; label: string; icon: typeof Target }[] = [
 const GLOSSARIO: { termo: string; def: string }[] = [
   { termo: "Aquisição", def: "Trazer pessoas para conhecer seu app." },
   { termo: "Campanha", def: "Conjunto de mensagens para divulgar uma oferta." },
+  { termo: "Campanha orgânica", def: "Divulgação sem anúncio pago (posts, stories, direct, lista, grupos)." },
+  { termo: "Campanha paga", def: "Divulgação com investimento em anúncios." },
+  { termo: "Teste pequeno", def: "Rodar a campanha com pouca verba e poucas pessoas para aprender antes de escalar." },
+  { termo: "Escala", def: "Aumentar a divulgação depois que a campanha mostrou sinais reais de funcionar." },
   { termo: "Canal", def: "Lugar onde você divulga: Instagram, WhatsApp, TikTok, e-mail, comunidade." },
-  { termo: "Criativo", def: "Imagem, vídeo ou texto usado na divulgação." },
-  { termo: "Lead", def: "Pessoa interessada." },
-  { termo: "CTA", def: "Chamada para ação, como 'testar agora' ou 'comprar'." },
-  { termo: "Conversão", def: "Quando a pessoa faz a ação desejada." },
+  { termo: "Criativo", def: "Imagem, vídeo ou story usado na divulgação." },
+  { termo: "Copy", def: "Texto da mensagem, post, anúncio ou página." },
+  { termo: "Lead", def: "Pessoa interessada que deixou contato ou demonstrou interesse." },
+  { termo: "Clique", def: "Cada vez que alguém clica no seu link ou CTA." },
+  { termo: "CTA", def: "Chamada para ação (ex.: 'testar agora', 'ver meu resultado')." },
+  { termo: "Conversão", def: "Quando a pessoa faz a ação desejada (clicar, virar lead, comprar)." },
+  { termo: "Custo por resultado", def: "Quanto você paga, em média, por cada lead, clique ou venda." },
   { termo: "Métrica", def: "Número usado para medir resultado." },
   { termo: "Tráfego", def: "Pessoas chegando até sua página ou app." },
-  { termo: "Validação", def: "Teste para saber se existe interesse real." },
-  { termo: "Escalar", def: "Aumentar a divulgação depois que a campanha já mostrou sinais de funcionar." },
-  { termo: "Orgânico", def: "Divulgação sem anúncio pago." },
-  { termo: "Pago", def: "Divulgação com investimento em anúncios." },
+  { termo: "Validação", def: "Teste para saber se existe interesse real antes de investir mais." },
 ];
 
 // ===== utils =====
@@ -207,44 +214,38 @@ function VisualCheck({ items }: { items: string[] }) {
 // ===== Conteúdo de cada bloco =====
 
 function BlocoDiagnostico() {
-  const command = `Analise a oferta do meu app e deixe ela mais clara para vender.
+  const { context } = useProjectContext();
+  const rawCommand = `Analise a oferta do app [nome do app ativo] e deixe ela mais clara antes da campanha.
 
-App:
-[descreva o app]
+Contexto:
+- App: [descreva o app]
+- Público: [descreva o público]
+- Dor que resolve: [descreva a dor]
+- Promessa: [promessa]
+- Produto vendido: [produto]
+- Modelo de cobrança: [modelo de cobrança]
+- Ação principal do usuário: [ação principal]
 
-Público:
-[quem vai usar]
+Entregue:
 
-Problema:
-[qual dor resolve]
-
-Solução:
-[o que o app faz]
-
-Preço ou modelo de venda:
-[informe ou escreva "ainda não definido"]
-
-Página atual ou descrição:
-[cole aqui o texto da página, se tiver]
-
-Quero que você entregue:
-1. Diagnóstico da oferta
-2. O que está confuso
-3. Promessa principal melhorada
-4. Público ideal
-5. Dor mais forte
-6. Benefício principal
-7. Headline melhor
-8. CTA melhor
-9. O que remover da página
-10. O que testar primeiro
+1. Diagnóstico da oferta atual.
+2. O que está confuso ou exagerado.
+3. Promessa principal melhorada (segura, sem garantir resultado).
+4. Público ideal real.
+5. Dor mais forte do público.
+6. Benefício principal claro.
+7. Headline melhor.
+8. CTA melhor para [ação principal].
+9. O que remover da página.
+10. O que testar primeiro com pouca gente.
 
 Regras:
 - Seja direto.
-- Não prometa resultado garantido.
-- Melhore a clareza.
-- Foque em conversão.
+- Não prometa vendas, ROI ou resultado garantido.
+- Sem copy agressiva ou enganosa.
+- Foque em clareza, não em hype.
 - Explique como se fosse para um iniciante.`;
+  const command = applyContextPlaceholders(rawCommand, context);
   return (
     <div className="space-y-4">
       <div>
@@ -258,19 +259,22 @@ Regras:
       <GlassCard className="p-5">
         <VisualCheck
           items={[
-            "O app resolve uma dor clara?",
-            "O público está definido?",
-            "A promessa é fácil de entender?",
-            "Existe uma ação principal?",
-            "A página explica o que o usuário recebe?",
-            "Existe CTA claro?",
-            "Existe preço ou próximo passo?",
-            "O usuário entende sem tutorial?",
+            "O app resolve uma dor clara",
+            "Público definido",
+            "Promessa segura (sem garantir resultado)",
+            "Oferta principal definida",
+            "Preço ou próximo passo claro",
+            "A página explica o que a pessoa recebe",
+            "CTA claro",
+            "Checkout ou link de pagamento testado",
+            "Entrega protegida funcionando",
+            "Suporte ou próximo passo explicado",
           ]}
         />
       </GlassCard>
       <p className="text-xs text-muted-foreground">
-        Copie este comando e cole no Lovable.
+        Copie este comando e cole no Lovable. O texto já é montado com o
+        contexto do projeto em foco.
       </p>
       <CommandBox text={command} />
       <CopyBtn text={command} label="Copiar comando para melhorar minha oferta" />
@@ -1332,16 +1336,21 @@ Regras:
 // ===== Checklist persistente do módulo =====
 
 const CAMPANHAS_CHECK_ITEMS = [
-  "Minha promessa está clara",
-  "Escolhi um canal principal",
-  "Criei uma campanha orgânica",
-  "Criei mensagens de WhatsApp ou direct",
-  "Criei pelo menos 3 criativos",
-  "Criei plano de 7 dias",
-  "Chamei 10 pessoas reais",
-  "Medi respostas, cliques, leads ou cadastros",
-  "Anotei dúvidas e objeções",
-  "Melhorei a campanha antes de escalar",
+  "Promessa clara (sem garantir resultado)",
+  "Público definido",
+  "Canal principal escolhido",
+  "Campanha orgânica criada",
+  "Mensagens de WhatsApp ou direct criadas",
+  "Pelo menos 3 criativos simples criados",
+  "Plano de 7 dias criado",
+  "Link público testado (abre em mobile e desktop)",
+  "Checkout ou próximo passo testado",
+  "Métricas principais definidas",
+  "Cliques medidos",
+  "Respostas medidas",
+  "Leads ou compras medidos",
+  "Objeções e dúvidas repetidas anotadas",
+  "Campanha melhorada antes de escalar",
 ];
 
 function ChecklistCampanhas({
@@ -1445,6 +1454,8 @@ export function CampaignsModule({
       </header>
 
       <CopyCommandWarning variant="agent" />
+
+      <ResumoCampanhaCard />
 
       <GlassCard className="p-5 mb-5 border-accent/20 bg-accent/5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
