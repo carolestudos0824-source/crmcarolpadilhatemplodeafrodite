@@ -148,6 +148,7 @@ export function SalesPanel() {
   const reload = () => setReloadKey((k) => k + 1);
 
   const grantAccess = async (sale: ManualSale) => {
+    if (!confirm(`Tem certeza que deseja liberar o acesso desta venda (${sale.buyer_email})? O comprador poderá entrar na área do aluno.`)) return;
     const { data, error } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: sale.id });
     if (error) {
       if (isNoUserError(error.message)) return toast.warning(FRIENDLY_NO_USER_MSG, { duration: 8000 });
@@ -177,10 +178,10 @@ export function SalesPanel() {
   return (
     <div className="space-y-4">
       {/* Honest banner */}
-      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
-        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+      <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 text-sky-100 text-sm px-4 py-3 flex items-start gap-2">
+        <ShoppingCart size={16} className="shrink-0 mt-0.5" />
         <span>
-          Vendas automáticas ainda não conectadas. Registre manualmente vendas confirmadas até conectar checkout/webhook.
+          Operação manual ativa. Registre aqui as vendas confirmadas até o checkout automático ser conectado.
         </span>
       </div>
 
