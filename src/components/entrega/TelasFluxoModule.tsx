@@ -497,21 +497,21 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
             Prévia bloqueada. Crie ou selecione um Projeto em foco acima para destravar as etapas, prompts contextualizados e a marcação de conclusão.
           </div>
         )}
+        {activeProject && (
+          <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
+            <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+            <span>
+              {journey
+                ? JOURNEY_TELAS_GUIDE[journey].preservationNote
+                : "Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nas etapas 1 a 4, comece pelo Agente."}
+            </span>
+          </div>
+        )}
         {ETAPAS.map((e) => {
           const isFinal = e.n === 5;
           const journeyGuide = journey ? JOURNEY_TELAS_GUIDE[journey] : null;
           return (
             <div key={e.n}>
-              {!isFinal && activeProject && (
-                <div className="mb-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-2.5 text-[12px] text-amber-100 flex items-start gap-2">
-                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
-                  <span>
-                    {journeyGuide
-                      ? journeyGuide.preservationNote
-                      : "Use o Lovable apenas depois que o Mapa de Telas e Fluxo estiver claro. Nesta etapa, comece pelo Agente."}
-                  </span>
-                </div>
-              )}
               {isFinal && activeProject && journeyGuide && (
                 <div className="mb-2 rounded-lg border border-cyan-400/30 bg-cyan-400/[0.06] p-2.5 text-[12px] text-cyan-100 flex items-start gap-2">
                   <AlertTriangle size={13} className="shrink-0 mt-0.5" />
