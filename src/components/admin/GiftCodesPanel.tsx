@@ -334,7 +334,7 @@ export function GiftCodesPanel() {
                         >
                           {revealed ? "Ocultar" : "Ver"}
                         </button>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${toneCls}`}>
+                        <span className={badgeCls}>
                           {st.label}
                         </span>
                       </div>
