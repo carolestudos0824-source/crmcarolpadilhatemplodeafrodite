@@ -1878,17 +1878,26 @@ const SeoIntro = () => {
   ];
 
   const glossary: [string, string][] = [
-    ["SEO", "otimização para buscadores, como Google."],
-    ["GEO", "organização de conteúdo para ferramentas de IA entenderem melhor seu app."],
+    ["SEO", "ajuda buscadores como o Google a entenderem e exibirem suas páginas."],
+    ["GEO", "ajuda ferramentas de IA a entenderem, resumirem e citarem seu app corretamente."],
     ["Palavra-chave", "termo que uma pessoa digita para procurar algo."],
-    ["Intenção de busca", "o motivo por trás da pesquisa da pessoa."],
-    ["FAQ", "perguntas frequentes."],
-    ["Schema", "marcação invisível que ajuda buscadores a entenderem a página."],
-    ["FAQPage", "schema para perguntas e respostas."],
-    ["SoftwareApplication", "schema que explica que seu produto é um app ou software."],
-    ["JSON-LD", "formato usado para inserir schema no site."],
-    ["Keyword stuffing", "repetição exagerada de palavras-chave, prejudica a qualidade."],
-    ["LLM", "modelo de linguagem usado por ferramentas de IA."],
+    ["Intenção de busca", "o motivo real por trás da pesquisa (saber, comparar, comprar, resolver)."],
+    ["Meta title", "título que aparece na aba do navegador e no resultado de busca."],
+    ["Meta description", "resumo curto exibido abaixo do título no resultado de busca."],
+    ["H1", "título principal visível dentro da página; só um por página."],
+    ["FAQ", "perguntas e respostas reais e úteis para pessoas, não só para máquina."],
+    ["Schema", "marcação invisível que ajuda máquinas a entenderem o conteúdo da página."],
+    ["FAQPage", "schema usado quando a página realmente exibe perguntas e respostas."],
+    ["SoftwareApplication", "schema que descreve seu produto como app/software (nome, categoria, URL, preço)."],
+    ["Indexação", "quando uma página pode aparecer em buscadores."],
+    ["Noindex", "marca uma página para não aparecer em buscadores (ex.: área paga, admin)."],
+    ["Sitemap", "lista das páginas públicas do seu site para buscadores encontrarem."],
+    ["Robots", "arquivo que diz a buscadores o que podem ou não rastrear."],
+    ["Conteúdo duplicado", "páginas quase iguais que confundem buscadores e usuários."],
+    ["Página de nicho", "página focada em um público ou caso de uso específico."],
+    ["Conteúdo útil", "texto que responde uma dúvida real do público de forma clara."],
+    ["Snippet", "trecho exibido pelo Google ou IA como resumo da página."],
+    ["Open Graph", "tags que controlam como o link aparece quando compartilhado em redes sociais."],
   ];
 
   return (
