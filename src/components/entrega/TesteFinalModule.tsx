@@ -653,6 +653,22 @@ export function TesteFinalModule() {
                 </div>
               )}
 
+              <div className="mt-5 rounded-lg border border-white/10 bg-white/5 p-3 text-[13px] text-foreground/85 space-y-1.5">
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 size={14} className="text-emerald-300 shrink-0 mt-0.5" />
+                  <span>
+                    <strong className="text-emerald-200">Pode avançar</strong> se todos os testes críticos passaram (visitante, login, CTA, checkout, entrega, mobile).
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <AlertTriangle size={14} className="text-rose-300 shrink-0 mt-0.5" />
+                  <span>
+                    <strong className="text-rose-200">Não avance</strong> se login, checkout, entrega, CTA principal ou mobile ainda falham. Corrija primeiro.
+                  </span>
+                </div>
+              </div>
+
+
               <div className="mt-5 flex items-center justify-between gap-3 flex-wrap">
                 <p className="text-[11px] text-muted-foreground">
                   Quando todos os testes estiverem marcados, esta etapa será
