@@ -77,6 +77,7 @@ import { GpsDoAppCard } from "@/components/entrega/GpsDoAppCard";
 import { ArquitetoMelhoriasCard } from "@/components/entrega/ArquitetoMelhoriasCard";
 import { MetricasAppModule } from "@/components/entrega/MetricasAppModule";
 import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesModule";
+import { ValidacaoModule } from "@/components/entrega/ValidacaoModule";
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
