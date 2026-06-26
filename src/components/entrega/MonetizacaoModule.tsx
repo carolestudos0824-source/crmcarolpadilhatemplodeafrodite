@@ -160,6 +160,102 @@ const INITIAL_CALC: CalcState = {
   estagio: "",
 };
 
+type CalcSuggestion = Partial<CalcState>;
+
+const matches = (haystack: string, terms: string[]) => {
+  const h = haystack.toLowerCase();
+  return terms.some((t) => h.includes(t));
+};
+
+function suggestFromContext(ctx: ProjectContext): CalcSuggestion {
+  const blob = [
+    ctx.appName,
+    ctx.appDoes,
+    ctx.audience,
+    ctx.problem,
+    ctx.promise,
+    ctx.mainAction,
+    ctx.productSold,
+    ctx.notes,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (!blob.trim()) return {};
+
+  const isJogoAmor = matches(blob, ["jogo do amor", "amor", "relacionamento", "casal", "casais", "paquera", "namoro"]);
+  const isQuiz = matches(blob, ["quiz", "jogo", "teste interativo", "perguntas"]);
+  const isDiagnostico = matches(blob, ["diagnóstico", "diagnostico", "análise", "analise", "relatório", "relatorio"]);
+  const isProfissional = matches(blob, ["terapeuta", "consultor", "mentor", "coach", "clínica", "clinica", "profissional", "social media", "atende clientes"]);
+  const isRecorrente = matches(blob, ["assinatura", "mensal", "diário", "diario", "todo dia", "rotina", "planner", "acompanhamento"]);
+
+  const sug: CalcSuggestion = {};
+
+  // Tipo
+  if (isJogoAmor && isQuiz) sug.tipo = "jogo/quiz interativo de relacionamento";
+  else if (isQuiz) sug.tipo = "quiz interativo";
+  else if (isDiagnostico) sug.tipo = "ferramenta de diagnóstico";
+  else if (ctx.appDoes.trim()) sug.tipo = ctx.appDoes.trim().slice(0, 80);
+
+  // Público
+  if (isJogoAmor) sug.publico = "pessoas interessadas em autoconhecimento amoroso, solteiros ou casais";
+  else if (ctx.audience.trim()) sug.publico = ctx.audience.trim().slice(0, 120);
+
+  // Dor
+  if (isJogoAmor) sug.dor = "falta de clareza sobre relacionamento, compatibilidade ou dinâmica amorosa";
+  else if (ctx.problem.trim()) sug.dor = ctx.problem.trim().slice(0, 160);
+
+  // Resultado
+  if (isJogoAmor) sug.resultado = "diagnóstico, reflexão ou recomendação personalizada";
+  else if (ctx.promise.trim()) sug.resultado = ctx.promise.trim().slice(0, 160);
+  else if (isDiagnostico) sug.resultado = "relatório personalizado com sugestões";
+
+  // Frequência
+  if (isRecorrente) sug.frequencia = "recorrente";
+  else if (isJogoAmor || isQuiz || isDiagnostico) sug.frequencia = "pontual";
+
+  // Urgência (conservadora)
+  sug.urgencia = isJogoAmor ? "media" : "media";
+
+  // Economia
+  if (isProfissional) sug.economia = "dinheiro";
+  else if (matches(blob, ["tempo", "rápido", "rapido", "automatiza"])) sug.economia = "tempo";
+  else sug.economia = "esforco";
+
+  // Suporte / atualização — conservadores
+  if (ctx.needsPaidArea === "sim" || isProfissional) sug.suporte = "sim";
+  if (isRecorrente) sug.atualizacao = "sim";
+
+  // Estágio — MVP por padrão (programa começa do zero)
+  sug.estagio = "mvp";
+
+  return sug;
+}
+
+const isEmpty = (v: string) => !v || v.trim().length === 0;
+
+function applySuggestion(
+  current: CalcState,
+  suggestion: CalcSuggestion,
+  mode: "fill-empty" | "overwrite",
+): { next: CalcState; changed: number } {
+  let changed = 0;
+  const next = { ...current };
+  (Object.keys(suggestion) as (keyof CalcState)[]).forEach((k) => {
+    const sv = suggestion[k];
+    if (!sv) return;
+    const cv = current[k] as string;
+    if (mode === "overwrite" || isEmpty(cv)) {
+      if (cv !== sv) {
+        (next[k] as string) = sv;
+        changed += 1;
+      }
+    }
+  });
+  return { next, changed };
+}
+
 function recommend(state: CalcState):
   | { model: string; range: string; reason: string; next: string }
   | null {
