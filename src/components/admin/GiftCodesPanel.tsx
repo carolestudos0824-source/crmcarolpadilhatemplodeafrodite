@@ -280,16 +280,19 @@ export function GiftCodesPanel() {
             Ativo no momento da criação
           </label>
         </div>
-        <button type="submit" disabled={creating} className="btn-primary">
+        <button type="submit" disabled={creating} className="btn-primary w-full sm:w-auto px-5 shadow-lg shadow-accent/10">
           {creating ? <Loader2 size={16} className="animate-spin" /> : <><Plus size={16} /> Criar código</>}
         </button>
       </form>
 
       {/* List */}
       <div className="glass-strong p-5">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-heading font-semibold text-sm">Códigos cadastrados</h3>
-          <button onClick={load} className="text-[11px] text-muted-foreground hover:text-foreground">
+        <div className="flex items-center justify-between mb-3 gap-3">
+          <div className="min-w-0">
+            <h3 className="font-heading font-semibold text-sm">Códigos cadastrados</h3>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Mostra os 200 códigos mais recentes.</p>
+          </div>
+          <button onClick={load} className="text-[11px] text-muted-foreground hover:text-foreground shrink-0">
             Atualizar
           </button>
         </div>
@@ -298,7 +301,13 @@ export function GiftCodesPanel() {
             <Loader2 size={14} className="animate-spin" /> Carregando…
           </div>
         ) : codes.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhum código cadastrado ainda.</p>
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
+            <KeyRound size={18} className="mx-auto text-muted-foreground/60 mb-2" />
+            <p className="text-sm text-foreground/80">Nenhum código cadastrado ainda.</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Crie um código acima para liberar ou estender o acesso de um comprador.
+            </p>
+          </div>
         ) : (
           <ul className="space-y-2">
             {codes.map((c) => {
