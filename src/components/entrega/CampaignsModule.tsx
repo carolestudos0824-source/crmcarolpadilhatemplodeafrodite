@@ -1336,16 +1336,21 @@ Regras:
 // ===== Checklist persistente do módulo =====
 
 const CAMPANHAS_CHECK_ITEMS = [
-  "Minha promessa está clara",
-  "Escolhi um canal principal",
-  "Criei uma campanha orgânica",
-  "Criei mensagens de WhatsApp ou direct",
-  "Criei pelo menos 3 criativos",
-  "Criei plano de 7 dias",
-  "Chamei 10 pessoas reais",
-  "Medi respostas, cliques, leads ou cadastros",
-  "Anotei dúvidas e objeções",
-  "Melhorei a campanha antes de escalar",
+  "Promessa clara (sem garantir resultado)",
+  "Público definido",
+  "Canal principal escolhido",
+  "Campanha orgânica criada",
+  "Mensagens de WhatsApp ou direct criadas",
+  "Pelo menos 3 criativos simples criados",
+  "Plano de 7 dias criado",
+  "Link público testado (abre em mobile e desktop)",
+  "Checkout ou próximo passo testado",
+  "Métricas principais definidas",
+  "Cliques medidos",
+  "Respostas medidas",
+  "Leads ou compras medidos",
+  "Objeções e dúvidas repetidas anotadas",
+  "Campanha melhorada antes de escalar",
 ];
 
 function ChecklistCampanhas({
