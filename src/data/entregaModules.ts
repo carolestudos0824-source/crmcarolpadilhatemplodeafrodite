@@ -1999,6 +1999,12 @@ Dor:
 Promessa:
 [promessa]
 
+Oferta:
+[produto]
+
+CTA principal:
+[ação principal]
+
 Canal:
 Instagram, WhatsApp, Meta Ads, LinkedIn ou outro canal escolhido.
 
@@ -2031,6 +2037,12 @@ Dor:
 
 Promessa:
 [promessa]
+
+Oferta:
+[produto]
+
+CTA principal:
+[ação principal]
 
 Me ajude a definir:
 
