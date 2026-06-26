@@ -1064,12 +1064,12 @@ function PendenciasSection() {
   const done = PENDENCIAS_ITEMS.filter((i) => checks[i.id]).length;
   return (
     <div className="space-y-4">
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <h3 className="font-heading font-semibold text-sm mb-1">Prontidão para venda pública</h3>
-        <p className="text-xs text-muted-foreground mb-3">
+        <p className="admin-help mb-3">
           Salvo apenas no seu navegador. Não interfere no acesso nem no progresso de quem compra. {done}/{PENDENCIAS_ITEMS.length} concluídos.
         </p>
-        <p className="text-[11px] text-muted-foreground/80 mb-4 rounded-md border border-white/10 bg-white/5 px-3 py-2">
+        <p className="admin-help mb-4 rounded-md border border-[hsl(var(--admin-border-subtle))] bg-white/5 px-3 py-2">
           Marque os itens manualmente conforme forem concluídos. O único bloqueio real para venda pública agora é a URL real do checkout.
         </p>
         <ul className="space-y-1">
