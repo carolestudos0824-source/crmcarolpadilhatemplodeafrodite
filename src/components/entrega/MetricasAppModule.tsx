@@ -249,6 +249,7 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
           saveSourceModule="metricas"
           key={`${etapa.n}-${tab}`}
           originalPrompt={resolvedPrompt}
+          shouldInvalidateSavedValue={invalidateSavedPrompt}
           storageKey={`${CHECKLIST_PREFIX}prompt__${etapa.n}__${tab}`}
           transformOnCopy={
             tab === "agente"
