@@ -1112,7 +1112,7 @@ function MensagensSection() {
         Mensagens prontas para responder clientes. Use os botões para copiar o texto puro ou com link.
       </p>
       {SUPPORT_MESSAGES.map((m) => (
-        <div key={m.title} className="glass-strong p-5">
+        <div key={m.title} className="admin-card">
           <div className="flex items-start justify-between gap-3 mb-2">
             <h3 className="text-sm font-heading font-semibold text-foreground">{m.title}</h3>
           </div>
