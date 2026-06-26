@@ -101,8 +101,8 @@ export const MODULES: ModuleMeta[] = [
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
   { id: "seguranca", label: "Segurança do App", icon: "ShieldCheck" },
-  { id: "venda", label: "Página de venda", icon: "Megaphone" },
   { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
+  { id: "venda", label: "Página de venda", icon: "Megaphone" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
   { id: "legal", label: "Legal e Confiança", icon: "Scale" },
   { id: "publicar", label: "Publicar e Domínio", icon: "Globe" },
@@ -722,13 +722,17 @@ export const COMMANDS_VENDA: Command[] = [
       "Quando você ainda não sabe explicar por que alguém compraria seu app.",
     content: `Primeiro confirme a oferta antes de criar a landing.
 
+App: [nome do app ativo]
+Sobre: [descreva o app]
+
 Oferta:
-- Público: [descreva]
-- Dor: [descreva]
-- Promessa segura (sem garantia absoluta): [descreva]
-- Oferta principal: [descreva o que a pessoa recebe]
-- Preço ou faixa de teste: [informe]
-- CTA principal: [ex.: "Começar agora", "Ver meu resultado"]
+- Público: [descreva o público]
+- Dor: [descreva a dor]
+- Promessa segura (sem garantia absoluta): [promessa]
+- Oferta principal (o que a pessoa recebe): [produto]
+- Preço ou faixa de teste: [modelo de cobrança]
+- CTA principal: [ação principal]
+
 
 Depois, crie a landing page com as seções obrigatórias, nesta ordem:
 
