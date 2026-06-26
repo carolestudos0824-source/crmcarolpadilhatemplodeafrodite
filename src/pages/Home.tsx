@@ -145,10 +145,10 @@ export default function Home() {
               Da ideia ao app no Lovable: um programa completo para construir com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, prompts por etapa, checklists e 30 ideias de aplicativos para você construir no Lovable com mais clareza e menos tentativa e erro.
+              A Fábrica de Apps com IA te guia da ideia ao MVP com método passo a passo, 30 ideias de aplicativos, prompts por etapa, checklists e um Agente Arquiteto via ChatGPT para te ajudar quando você travar.
             </p>
             <p className="text-sm text-accent/90 italic max-w-xl">
-              Criado no Lovable usando o mesmo método que você vai acessar.
+              A própria Fábrica de Apps com IA foi construída no Lovable seguindo a lógica que o programa ensina: planejar, pedir, revisar, corrigir e avançar por etapas.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
@@ -162,6 +162,25 @@ export default function Home() {
           </div>
           <div className="order-first lg:order-last">
             <HeroVisual />
+          </div>
+        </div>
+      </section>
+
+      {/* 4 PILARES — faixa rápida */}
+      <section className="pb-8">
+        <div className="container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { icon: <Lightbulb size={20} />, t: "30 ideias de aplicativos" },
+              { icon: <Wand2 size={20} />, t: "Prompts por etapa" },
+              { icon: <ListChecks size={20} />, t: "Checklists de MVP" },
+              { icon: <Bot size={20} />, t: "Agente Arquiteto via ChatGPT" },
+            ].map((p) => (
+              <div key={p.t} className="glass flex items-center gap-3 px-4 py-3 border-accent/20">
+                <span className="text-accent shrink-0">{p.icon}</span>
+                <span className="text-sm md:text-base font-medium text-foreground/90">{p.t}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
