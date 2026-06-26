@@ -28,7 +28,7 @@ import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
 import { BuyersPanel } from "@/components/admin/BuyersPanel";
 import { AccessLogs } from "@/components/admin/AccessLogs";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
-import { AdminErrorBoundary, AdminRouteErrorFallback } from "@/components/admin/AdminErrorBoundary";
+import { AdminErrorBoundary } from "@/components/admin/AdminErrorBoundary";
 import { SupportInbox } from "@/components/admin/SupportInbox";
 import { SalesPanel } from "@/components/admin/SalesPanel";
 import { withTimeout } from "@/lib/promiseTimeout";
@@ -129,6 +129,7 @@ function AdminAccessInner() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [authChecked, setAuthChecked] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [authAttempt, setAuthAttempt] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminEmail, setAdminEmail] = useState<string | null>(null);
   const [selfHasAccess, setSelfHasAccess] = useState<boolean | null>(null);
@@ -163,34 +164,51 @@ function AdminAccessInner() {
 
   useEffect(() => {
     let mounted = true;
+    setAuthChecked(false);
+    setAuthError(null);
     (async () => {
       try {
-        const { data: userData } = await withTimeout(
-          supabase.auth.getUser(),
-          10000,
+        // Use getSession (reads from local storage, no network round-trip)
+        // instead of getUser to avoid hangs when the auth network call stalls.
+        const { data: sessionData } = await withTimeout(
+          supabase.auth.getSession(),
+          15000,
           "sessão admin",
         );
-        if (!userData?.user) {
+        const sessionUser = sessionData?.session?.user ?? null;
+        if (!sessionUser) {
+          if (!mounted) return;
           navigate("/login", { replace: true });
           return;
         }
-        const uid = userData.user.id;
-        const [adminRes, accessRes] = await withTimeout(Promise.all([
-          supabase.rpc("is_admin").then(
-            (r) => r,
-            (e) => ({ data: false, error: e }),
+        const uid = sessionUser.id;
+        // Run checks independently so a slow user_access query does not
+        // block the admin guard. is_admin() is the only one that gates UI.
+        const adminPromise = supabase.rpc("is_admin").then(
+          (r) => r,
+          (e) => ({ data: false, error: e }),
+        );
+        const accessPromise = supabase
+          .from("user_access")
+          .select("has_access")
+          .eq("user_id", uid)
+          .maybeSingle()
+          .then((r) => r, (e) => ({ data: null, error: e }));
+
+        const adminRes = await withTimeout(adminPromise, 15000, "permissão admin");
+        // user_access is non-blocking metadata; tolerate slowness/failures.
+        const accessRes = await Promise.race([
+          accessPromise,
+          new Promise<{ data: null; error: Error }>((resolve) =>
+            setTimeout(() => resolve({ data: null, error: new Error("slow") }), 8000),
           ),
-          supabase
-            .from("user_access")
-            .select("has_access")
-            .eq("user_id", uid)
-            .maybeSingle()
-            .then((r) => r, (e) => ({ data: null, error: e })),
-        ]), 10000, "permissão admin");
+        ]);
         if (!mounted) return;
-        setIsAdmin(Boolean(adminRes.data));
-        setAdminEmail(userData.user.email ?? null);
-        setSelfHasAccess(accessRes.data?.has_access ?? false);
+        setIsAdmin(Boolean((adminRes as { data?: unknown }).data));
+        setAdminEmail(sessionUser.email ?? null);
+        setSelfHasAccess(
+          (accessRes as { data?: { has_access?: boolean } | null }).data?.has_access ?? false,
+        );
         setAuthChecked(true);
       } catch (e) {
         if (!mounted) return;
@@ -202,7 +220,8 @@ function AdminAccessInner() {
     return () => {
       mounted = false;
     };
-  }, [navigate]);
+  }, [navigate, authAttempt]);
+
 
   const onSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -259,8 +278,40 @@ function AdminAccessInner() {
   }
 
   if (authError) {
-    return <AdminRouteErrorFallback error={new Error(authError)} />;
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-md w-full glass-strong p-8 text-center space-y-4">
+          <AlertTriangle className="mx-auto text-amber-300" size={28} />
+          <div>
+            <h1 className="text-xl font-heading font-bold mb-1">Não foi possível carregar o painel admin</h1>
+            <p className="text-sm text-muted-foreground">
+              {authError.includes("Tempo esgotado") || authError.toLowerCase().includes("timeout")
+                ? "Tempo esgotado ao carregar a sessão. Verifique sua conexão e tente novamente."
+                : authError}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <button
+              onClick={() => setAuthAttempt((n) => n + 1)}
+              className="btn-primary text-xs"
+            >
+              Tentar novamente
+            </button>
+            <button
+              onClick={async () => {
+                try { await supabase.auth.signOut(); } catch { /* ignore */ }
+                navigate("/login", { replace: true });
+              }}
+              className="btn-ghost border border-white/15 text-xs"
+            >
+              Sair e entrar novamente
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
+
 
   if (!isAdmin) {
     return (
