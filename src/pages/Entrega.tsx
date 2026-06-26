@@ -762,9 +762,13 @@ function EntregaInner() {
             </p>
           ) : (
             <div className={!appProjects.activeProject ? "opacity-75" : undefined}>
-              <ProjectJourneySelector onGoToModule={(id) => setActive(id)} />
+              <ProjectJourneySelector
+                onGoToModule={(id) => setActive(id)}
+                variant={active === "comece" ? "full" : "compact"}
+              />
             </div>
           )}
+
 
           {/* Boas-vindas: Agente Arquiteto como guia central */}
           {active === "comece" && (

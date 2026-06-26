@@ -10,7 +10,15 @@ import type { ModuleId } from "@/data/entregaModules";
 
 type Props = {
   onGoToModule: (id: ModuleId) => void;
+  /**
+   * "full" (default): mostra o bloco grande de escolha quando jornada vazia.
+   *   Use apenas em "Comece Aqui" ou tela inicial.
+   * "compact": em páginas avançadas — se já houver jornada, mostra a pílula;
+   *   se vazia, mostra apenas aviso discreto com botão "Escolher jornada".
+   */
+  variant?: "full" | "compact";
 };
+
 
 type JourneyCard = {
   id: JourneyId;
@@ -50,9 +58,10 @@ const CARDS: JourneyCard[] = [
  * validada em `@/lib/journey` (persistência por projectId). Não toca em
  * progresso, MODULE_ORDER, GPS, Arquiteto ou promptBuilder.
  */
-export const ProjectJourneySelector = ({ onGoToModule }: Props) => {
+export const ProjectJourneySelector = ({ onGoToModule, variant = "full" }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
   const [journey, setJourneyValue] = useProjectJourney(activeProject?.id ?? null);
+
 
   const handlePick = (card: JourneyCard) => {
     if (!activeProject?.id) {
@@ -98,7 +107,31 @@ export const ProjectJourneySelector = ({ onGoToModule }: Props) => {
     );
   }
 
-  // Bloco completo — escolha pendente
+  // Páginas avançadas — sem jornada: apenas aviso pequeno e discreto.
+  if (variant === "compact") {
+    return (
+      <section
+        aria-label="Jornada não definida"
+        className="mb-3 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground"
+      >
+        <Compass size={12} className="text-accent shrink-0" />
+        <span>
+          Jornada não definida. Escolha em <strong className="text-foreground/90">Comece Aqui</strong> para melhorar as recomendações.
+        </span>
+        <button
+          type="button"
+          onClick={() => onGoToModule("comece" as ModuleId)}
+          className="ml-auto inline-flex items-center gap-1 rounded-md border border-white/15 bg-white/5 px-2 py-1 text-[11px] text-foreground/85 hover:bg-white/10 transition"
+        >
+          Escolher jornada
+          <ArrowRight size={11} />
+        </button>
+      </section>
+    );
+  }
+
+  // Bloco completo — escolha pendente (apenas em "Comece Aqui")
+
   return (
     <section
       aria-label="Escolha como você quer usar a Fábrica"
