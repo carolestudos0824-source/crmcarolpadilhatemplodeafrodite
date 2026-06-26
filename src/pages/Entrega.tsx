@@ -55,6 +55,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
+import { ResumoSeoGeoCard } from "@/components/entrega/ResumoSeoGeoCard";
 import { CopyCommandWarning, BeforeAdvanceTip } from "@/components/entrega/CopyCommandWarning";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { IdeiasProntasModule } from "@/components/entrega/IdeiasProntasModule";
