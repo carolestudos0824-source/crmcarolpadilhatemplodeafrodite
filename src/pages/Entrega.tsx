@@ -3318,11 +3318,98 @@ Entregue:
 }
 
 function CreativeGenerator() {
+  const { context } = useProjectContext();
+
+  // Sugestões derivadas do contexto do projeto em foco. Heurística leve para
+  // "Jogo do Amor" (mesmo padrão dos demais módulos). Sem sobrescrever campos
+  // manuais sem confirmação.
+  const isJogoAmor = useMemo(() => {
+    const hay = `${context.appName} ${context.appDoes} ${context.audience} ${context.problem}`.toLowerCase();
+    return /jogo do amor|amor|relacionament|casal|namor/.test(hay);
+  }, [context]);
+
+  const ctxSuggestions = useMemo(() => {
+    if (isJogoAmor) {
+      return {
+        name: context.appName?.trim() || "Jogo do Amor",
+        audience:
+          context.audience?.trim() ||
+          "pessoas interessadas em relacionamento e autoconhecimento amoroso",
+        pain:
+          context.problem?.trim() ||
+          "falta de clareza ou desejo de refletir sobre a vida amorosa",
+        promise:
+          context.promise?.trim() ||
+          "experiência simbólica, reflexiva e divertida",
+        format: "story",
+        channel: "Instagram",
+        tone: "emocional",
+      };
+    }
+    return {
+      name: context.appName?.trim() || "",
+      audience: context.audience?.trim() || "",
+      pain: context.problem?.trim() || "",
+      promise: context.promise?.trim() || "",
+      format: "imagem",
+      channel: "Instagram",
+      tone: "direto",
+    };
+  }, [context, isJogoAmor]);
+
   const [f, setF] = useState({
     name: "", audience: "", pain: "", promise: "",
     format: "imagem", tone: "direto", channel: "Instagram",
   });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [generated, setGenerated] = useState("");
+  const [prefilledOnce, setPrefilledOnce] = useState(false);
+
+  // Preenche campos VAZIOS no primeiro carregamento — nunca sobrescreve manual.
+  useEffect(() => {
+    if (prefilledOnce) return;
+    if (!ctxSuggestions.name && !ctxSuggestions.audience && !ctxSuggestions.pain && !ctxSuggestions.promise) return;
+    setF((prev) => ({
+      name: prev.name || ctxSuggestions.name,
+      audience: prev.audience || ctxSuggestions.audience,
+      pain: prev.pain || ctxSuggestions.pain,
+      promise: prev.promise || ctxSuggestions.promise,
+      format: prev.format || ctxSuggestions.format,
+      channel: prev.channel || ctxSuggestions.channel,
+      tone: prev.tone || ctxSuggestions.tone,
+    }));
+    setPrefilledOnce(true);
+  }, [ctxSuggestions, prefilledOnce]);
+
+  const updateField = (key: keyof typeof f) => (v: string) => {
+    setTouched((t) => ({ ...t, [key]: true }));
+    setF((prev) => ({ ...prev, [key]: v }));
+  };
+
+  const applyContext = () => {
+    // Preenche vazios. Para campos editados, pede confirmação antes de sobrescrever.
+    const editedNonEmpty = (Object.keys(touched) as (keyof typeof f)[]).filter(
+      (k) => touched[k] && f[k]?.trim() && f[k] !== (ctxSuggestions as Record<string, string>)[k],
+    );
+    let overwrite = false;
+    if (editedNonEmpty.length > 0) {
+      overwrite = window.confirm(
+        `Você já editou: ${editedNonEmpty.join(", ")}.\n\nSobrescrever esses campos com o contexto do projeto em foco?`,
+      );
+    }
+    setF((prev) => {
+      const next = { ...prev };
+      (Object.keys(ctxSuggestions) as (keyof typeof f)[]).forEach((k) => {
+        const sugg = (ctxSuggestions as Record<string, string>)[k];
+        if (!sugg) return;
+        if (!prev[k] || (overwrite && touched[k])) {
+          next[k] = sugg;
+        }
+      });
+      return next;
+    });
+    toast.success("Campos vazios preenchidos com o contexto do projeto.");
+  };
 
   const generate = () => {
     const text = `Crie um criativo para divulgar este app.
@@ -3337,16 +3424,18 @@ Tom: ${f.tone}
 
 Entregue:
 1. Gancho.
-2. Texto principal.
-3. Ideia visual.
-4. CTA.
-5. Variações (pelo menos 2 ângulos diferentes).
-6. Métrica para testar.
+2. Texto principal (copy).
+3. Headline.
+4. Ideia visual.
+5. CTA claro.
+6. 2 variações com ângulos diferentes.
+7. Métrica principal para testar.
 
 Regras:
-- Não usar promessa exagerada.
-- Não usar clichês.
-- Focar em clareza, dor, promessa e ação.`;
+- Não usar promessa de resultado garantido.
+- Não usar medo, manipulação ou clichê.
+- Não inventar depoimento ou prova social.
+- Focar em clareza, dor real, promessa honesta e ação.`;
     setGenerated(text);
   };
 
@@ -3368,35 +3457,47 @@ Regras:
         </span>
       </div>
       <p className="text-sm text-muted-foreground mb-4">
-        Preencha e gere um comando pronto para o Lovable. Onde tiver texto entre colchetes, apague e escreva as informações do seu app.
+        Os campos abaixo já vêm preenchidos com o contexto do projeto em foco
+        quando disponível. Ajuste o que quiser e gere um comando pronto para o
+        Lovable.
       </p>
       <div className="grid sm:grid-cols-2 gap-3">
-        <Input label="Nome do app" value={f.name} onChange={(v) => setF({ ...f, name: v })} />
-        <Input label="Público" value={f.audience} onChange={(v) => setF({ ...f, audience: v })} />
-        <Input label="Dor" value={f.pain} onChange={(v) => setF({ ...f, pain: v })} />
-        <Input label="Promessa" value={f.promise} onChange={(v) => setF({ ...f, promise: v })} />
+        <Input label="Nome do app" value={f.name} onChange={updateField("name")} />
+        <Input label="Público" value={f.audience} onChange={updateField("audience")} />
+        <Input label="Dor" value={f.pain} onChange={updateField("pain")} />
+        <Input label="Promessa" value={f.promise} onChange={updateField("promise")} />
         <Select
           label="Formato"
           value={f.format}
-          onChange={(v) => setF({ ...f, format: v })}
+          onChange={updateField("format")}
           options={["imagem", "vídeo", "reels", "story", "anúncio"]}
         />
         <Select
           label="Canal (opcional)"
           value={f.channel}
-          onChange={(v) => setF({ ...f, channel: v })}
+          onChange={updateField("channel")}
           options={["Instagram", "Stories", "Reels", "TikTok", "WhatsApp", "Meta Ads", "LinkedIn", "Outro"]}
         />
         <Select
           label="Tom"
           value={f.tone}
-          onChange={(v) => setF({ ...f, tone: v })}
-          options={["direto", "emocional", "educativo", "comparativo", "urgente"]}
+          onChange={updateField("tone")}
+          options={["direto", "curioso", "leve", "emocional", "educativo", "comparativo", "urgente"]}
         />
       </div>
-      <button onClick={generate} className="btn-primary mt-4 text-sm">
-        <Sparkles size={14} /> Gerar comando de criativo
-      </button>
+      <div className="flex flex-wrap gap-2 mt-4">
+        <button onClick={generate} className="btn-primary text-sm">
+          <Sparkles size={14} /> Gerar comando de criativo
+        </button>
+        <button
+          type="button"
+          onClick={applyContext}
+          className="text-sm px-3 py-2 rounded-lg border border-accent/40 bg-accent/5 text-accent hover:bg-accent/10 inline-flex items-center gap-2"
+          title="Preenche campos vazios com o contexto do projeto em foco. Pede confirmação antes de sobrescrever campos editados."
+        >
+          <Sparkles size={14} /> Atualizar com contexto do projeto
+        </button>
+      </div>
 
       {generated && (
         <div className="mt-5">
