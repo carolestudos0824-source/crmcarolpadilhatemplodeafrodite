@@ -174,7 +174,7 @@ const SIDEBAR_GROUPS: { title: string; modules: ModuleId[] }[] = [
   { title: "Comece aqui", modules: ["comece", "ideias", "planejar", "mvp", "telas"] },
   { title: "Construir", modules: ["fundamentos", "construir", "login", "seguranca", "teste", "erros"] },
   { title: "Validar e vender", modules: ["validacao", "monetizacao", "venda", "checkout", "legal", "publicar"] },
-  { title: "Crescer", modules: ["seo", "campanhas", "criativos", "metricas", "melhorias", "checklist", "ativar"] },
+  { title: "Crescer", modules: ["seo", "campanhas", "criativos", "metricas", "melhorias", "checklist"] },
 ];
 
 const SIDEBAR_STATUS_LABEL: Record<string, string> = {
@@ -445,8 +445,11 @@ function EntregaInner() {
   const prevModule = currentIdx > 0 ? MODULE_ORDER[currentIdx - 1] : null;
   // Exceções pontuais de navegação para manter coerência com o menu lateral
   // sem alterar a ordem global de MODULE_ORDER (preserva páginas aprovadas).
+  // "ativar" saiu do fluxo pedagógico (pertence ao admin / resgate de código),
+  // então o Painel de Prontidão é o último passo do guia da aluna e o
+  // "Próximo passo" volta ao início do guia.
   const NEXT_OVERRIDE: Partial<Record<ModuleId, ModuleId>> = {
-    checklist: "ativar",
+    checklist: "comece",
   };
   const nextModule =
     NEXT_OVERRIDE[active] ??
@@ -1066,12 +1069,15 @@ function EntregaInner() {
               const blockPlanejar = isPlanejar && !hasChosenIdea;
               const blockMvp = isMvp && !hasChosenIdea;
               const blocked = blockIdeias || blockPlanejar || blockMvp;
+              const isChecklist = active === "checklist";
               const customLabel = isIdeias
                 ? hasChosenIdea
                   ? "Próximo passo: Planejar o App"
                   : "Escolha uma ideia para avançar"
                 : (isPlanejar || isMvp) && !hasChosenIdea
                 ? "Escolha um app para avançar"
+                : isChecklist
+                ? "Finalizar guia — voltar ao início"
                 : null;
 
               const handleClick = () => {
