@@ -1256,10 +1256,12 @@ function OverviewCard({
   tone?: "default" | "ok";
 }) {
   return (
-    <div className="glass-strong p-4">
+    <div className="admin-card p-4">
       <div className={`flex items-center gap-2 mb-1.5 ${tone === "ok" ? "text-emerald-300" : "text-accent"}`}>
-        {icon}
-        <h3 className="text-xs font-heading font-semibold uppercase tracking-wider">{title}</h3>
+        <span className="inline-flex items-center justify-center size-7 rounded-lg bg-accent/10 border border-accent/20">
+          {icon}
+        </span>
+        <h3 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground/90">{title}</h3>
       </div>
       <p className="text-xs text-muted-foreground leading-snug">{text}</p>
     </div>
@@ -1279,24 +1281,27 @@ function StatusCard({
   badge: string;
   tone: "ok" | "warn" | "muted";
 }) {
-  const toneCls =
+  const badgeCls =
     tone === "ok"
-      ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+      ? "admin-badge admin-badge-success"
       : tone === "warn"
-        ? "bg-amber-500/15 text-amber-200 border-amber-500/30"
-        : "bg-white/10 text-muted-foreground border-white/15";
+        ? "admin-badge admin-badge-warning"
+        : "admin-badge admin-badge-muted";
   return (
-    <div className="glass-strong p-4">
-      <div className="flex items-center justify-between gap-2 mb-2">
-        <div className="flex items-center gap-2 text-accent">
-          {icon}
-          <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground">
-            {title}
-          </h4>
+    <div className="admin-kpi">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center justify-center size-7 rounded-lg bg-accent/10 border border-accent/20 text-accent">
+            {icon}
+          </span>
+          <h4 className="admin-kpi-label">{title}</h4>
         </div>
-        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${toneCls}`}>{badge}</span>
       </div>
-      <p className="text-xs text-muted-foreground leading-snug break-words">{text}</p>
+      <div className="flex items-baseline justify-between gap-2 mt-1">
+        <span className="admin-kpi-value leading-none">{badge}</span>
+        <span className={badgeCls}>{tone === "ok" ? "OK" : tone === "warn" ? "Atenção" : "—"}</span>
+      </div>
+      <p className="text-xs text-muted-foreground leading-snug break-words mt-1">{text}</p>
     </div>
   );
 }
