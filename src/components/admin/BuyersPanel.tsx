@@ -62,6 +62,7 @@ export type ConsolidatedBuyer = {
   is_admin: boolean;
   sales_count: number;
   origin: string;
+  total_paid_confirmed: number;
 };
 
 const PAYMENT_LABELS: Record<string, string> = {
@@ -156,6 +157,7 @@ function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
     is_admin: false,
     sales_count: r.sales_count,
     origin: r.origin,
+    total_paid_confirmed: Number(r.total_paid_confirmed ?? 0),
   };
 }
 
@@ -439,6 +441,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                   <tr className="border-b border-white/10">
                     <th className="text-left px-2 py-2">E-mail / Nome</th>
                     <th className="text-left px-2 py-2">Vendas</th>
+                    <th className="text-right px-2 py-2">Total pago</th>
                     <th className="text-left px-2 py-2">Última venda</th>
                     <th className="text-left px-2 py-2">Acesso</th>
                     <th className="text-left px-2 py-2">Origem</th>
@@ -460,6 +463,9 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px]">
                           {c.sales_count} venda{c.sales_count === 1 ? "" : "s"}
                         </span>
+                      </td>
+                      <td className="px-2 py-2 text-right whitespace-nowrap tabular-nums">
+                        {c.total_paid_confirmed > 0 ? fmtMoney(c.total_paid_confirmed, c.currency) : "—"}
                       </td>
                       <td className="px-2 py-2">{c.payment_status_label}</td>
                       <td className="px-2 py-2">{c.access_status_label}</td>
