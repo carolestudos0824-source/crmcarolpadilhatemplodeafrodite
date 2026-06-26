@@ -55,6 +55,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
+import { ResumoSeoGeoCard } from "@/components/entrega/ResumoSeoGeoCard";
 import { CopyCommandWarning, BeforeAdvanceTip } from "@/components/entrega/CopyCommandWarning";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
 import { IdeiasProntasModule } from "@/components/entrega/IdeiasProntasModule";
@@ -1878,17 +1879,26 @@ const SeoIntro = () => {
   ];
 
   const glossary: [string, string][] = [
-    ["SEO", "otimização para buscadores, como Google."],
-    ["GEO", "organização de conteúdo para ferramentas de IA entenderem melhor seu app."],
+    ["SEO", "ajuda buscadores como o Google a entenderem e exibirem suas páginas."],
+    ["GEO", "ajuda ferramentas de IA a entenderem, resumirem e citarem seu app corretamente."],
     ["Palavra-chave", "termo que uma pessoa digita para procurar algo."],
-    ["Intenção de busca", "o motivo por trás da pesquisa da pessoa."],
-    ["FAQ", "perguntas frequentes."],
-    ["Schema", "marcação invisível que ajuda buscadores a entenderem a página."],
-    ["FAQPage", "schema para perguntas e respostas."],
-    ["SoftwareApplication", "schema que explica que seu produto é um app ou software."],
-    ["JSON-LD", "formato usado para inserir schema no site."],
-    ["Keyword stuffing", "repetição exagerada de palavras-chave, prejudica a qualidade."],
-    ["LLM", "modelo de linguagem usado por ferramentas de IA."],
+    ["Intenção de busca", "o motivo real por trás da pesquisa (saber, comparar, comprar, resolver)."],
+    ["Meta title", "título que aparece na aba do navegador e no resultado de busca."],
+    ["Meta description", "resumo curto exibido abaixo do título no resultado de busca."],
+    ["H1", "título principal visível dentro da página; só um por página."],
+    ["FAQ", "perguntas e respostas reais e úteis para pessoas, não só para máquina."],
+    ["Schema", "marcação invisível que ajuda máquinas a entenderem o conteúdo da página."],
+    ["FAQPage", "schema usado quando a página realmente exibe perguntas e respostas."],
+    ["SoftwareApplication", "schema que descreve seu produto como app/software (nome, categoria, URL, preço)."],
+    ["Indexação", "quando uma página pode aparecer em buscadores."],
+    ["Noindex", "marca uma página para não aparecer em buscadores (ex.: área paga, admin)."],
+    ["Sitemap", "lista das páginas públicas do seu site para buscadores encontrarem."],
+    ["Robots", "arquivo que diz a buscadores o que podem ou não rastrear."],
+    ["Conteúdo duplicado", "páginas quase iguais que confundem buscadores e usuários."],
+    ["Página de nicho", "página focada em um público ou caso de uso específico."],
+    ["Conteúdo útil", "texto que responde uma dúvida real do público de forma clara."],
+    ["Snippet", "trecho exibido pelo Google ou IA como resumo da página."],
+    ["Open Graph", "tags que controlam como o link aparece quando compartilhado em redes sociais."],
   ];
 
   return (
@@ -2600,6 +2610,42 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <SeoIntro />
+        <ResumoSeoGeoCard />
+
+        <GlassCard className="mb-6 p-4 md:p-5 border-white/10">
+          <h3 className="text-sm font-heading font-semibold text-foreground mb-3">
+            Diferencie antes de criar página
+          </h3>
+          <dl className="grid sm:grid-cols-2 gap-2 text-[13px]">
+            {[
+              ["SEO", "ajudar buscadores a entenderem e exibirem seu app."],
+              ["GEO", "ajudar ferramentas de IA a entenderem, resumirem e citarem seu app corretamente."],
+              ["FAQ", "perguntas e respostas úteis para pessoas reais."],
+              ["Schema / markup", "dados estruturados que ajudam máquinas a entenderem a página."],
+              ["Indexação", "quais páginas podem aparecer em buscadores."],
+              ["Noindex", "páginas que não devem aparecer publicamente (área paga, admin, entrega)."],
+            ].map(([term, def]) => (
+              <div key={term} className="rounded-lg border border-white/10 bg-white/5 p-2.5">
+                <dt className="text-[11px] uppercase tracking-wider text-accent/90 mb-0.5">{term}</dt>
+                <dd className="text-foreground/85 leading-snug">{def}</dd>
+              </div>
+            ))}
+          </dl>
+        </GlassCard>
+
+        <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-[13px] text-amber-100 flex items-start gap-3">
+          <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+          <div>
+            <div className="font-semibold mb-1">Indexação segura</div>
+            <ul className="list-disc list-inside space-y-0.5">
+              <li>Apenas páginas públicas e úteis devem ser indexadas.</li>
+              <li>Área paga, entrega, admin e checkout interno devem estar fora da indexação.</li>
+              <li>Não exponha conteúdo pago em páginas públicas (SEO, sitemap ou markup).</li>
+              <li>Não exponha dados de usuário em SEO, schema ou páginas estáticas.</li>
+            </ul>
+          </div>
+        </div>
+
         <ModuleHeader
           title="Siga as etapas de SEO e GEO"
           subtitle="Comece pela Etapa 1. Só avance quando cada página tiver motivo claro para existir."
@@ -2608,15 +2654,24 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <ChecklistBlock
           title="Revisão da etapa"
           items={[
-            "Palavras-chave principais definidas",
-            "Páginas SEO criadas",
-            "FAQ útil publicado",
-            "Páginas GEO explicam o app com clareza",
-            "Páginas de nicho não estão duplicadas",
-            "Schema FAQPage usa conteúdo real",
-            "Schema SoftwareApplication não inventa dados",
-            "Não há keyword stuffing",
+            "Palavras principais definidas",
+            "Intenção de busca definida",
+            "Páginas públicas criadas",
+            "Títulos e descrições revisados",
+            "H1 claro em cada página",
+            "FAQ real publicado",
+            "Páginas para IA com resumo claro (o que faz, para quem, o que não faz)",
+            "Páginas de nicho sem duplicação artificial",
+            "FAQPage aplicado somente onde existe FAQ visível",
+            "SoftwareApplication sem dados inventados",
+            "Sitemap e robots revisados (quando aplicável)",
+            "Páginas privadas fora da indexação",
+            "Área paga não indexada",
+            "Admin não indexado",
+            "Conteúdo pago não exposto em página pública",
             "Nenhuma promessa de resultado garantido",
+            "Nenhum review, nota ou depoimento inventado",
+            "Conteúdo claro para pessoa real, não só para máquina",
           ]}
           checklist={checklist}
           setChecklist={setChecklist}
