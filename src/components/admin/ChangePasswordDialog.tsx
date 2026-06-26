@@ -147,7 +147,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
           </div>
         ) : isOAuth ? (
           <div className="space-y-3 py-2">
-            <div className="flex items-start gap-2 p-3 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm">
+            <div className="flex items-start gap-2 p-3 rounded-lg admin-badge admin-badge-warning text-sm">
               <AlertTriangle size={16} className="mt-0.5 shrink-0" />
               <div>
                 Sua conta entra via <strong>{provider}</strong>. A senha é gerenciada pelo provedor externo — altere-a diretamente na conta {provider}.
@@ -160,7 +160,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3" autoComplete="off">
             <div className="space-y-1.5">
-              <label htmlFor="cp-current" className="text-xs text-muted-foreground">Senha atual</label>
+              <label htmlFor="cp-current" className="admin-label">Senha atual</label>
               <Input
                 id="cp-current"
                 type="password"
@@ -172,7 +172,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="cp-new" className="text-xs text-muted-foreground">Nova senha (mín. 8 caracteres)</label>
+              <label htmlFor="cp-new" className="admin-label">Nova senha (mín. 8 caracteres)</label>
               <Input
                 id="cp-new"
                 type="password"
@@ -185,7 +185,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="cp-confirm" className="text-xs text-muted-foreground">Confirmar nova senha</label>
+              <label htmlFor="cp-confirm" className="admin-label">Confirmar nova senha</label>
               <Input
                 id="cp-confirm"
                 type="password"

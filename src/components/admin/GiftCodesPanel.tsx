@@ -201,7 +201,7 @@ export function GiftCodesPanel() {
 
 
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3 flex items-start gap-2">
+        <div className="admin-card border-[hsl(var(--admin-destructive)/0.4)] bg-[hsl(var(--admin-destructive)/0.08)] text-red-200 text-sm flex items-start gap-2">
           <AlertTriangle size={16} className="shrink-0 mt-0.5" />
           <div>
             Não foi possível carregar os códigos. Verifique se você tem papel admin em user_roles.
@@ -219,7 +219,7 @@ export function GiftCodesPanel() {
       </div>
 
       {/* Create form */}
-      <form onSubmit={createCode} className="glass-strong p-5 space-y-4">
+      <form onSubmit={createCode} className="admin-card space-y-4">
         <div>
           <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
             <Plus size={14} className="text-accent" /> Novo código
@@ -286,11 +286,11 @@ export function GiftCodesPanel() {
       </form>
 
       {/* List */}
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <div className="flex items-center justify-between mb-3 gap-3">
           <div className="min-w-0">
             <h3 className="font-heading font-semibold text-sm">Códigos cadastrados</h3>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Mostra os 200 códigos mais recentes.</p>
+            <p className="admin-help mt-0.5">Mostra os 200 códigos mais recentes.</p>
           </div>
           <button onClick={load} className="text-[11px] text-muted-foreground hover:text-foreground shrink-0">
             Atualizar
@@ -301,10 +301,10 @@ export function GiftCodesPanel() {
             <Loader2 size={14} className="animate-spin" /> Carregando…
           </div>
         ) : codes.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
-            <KeyRound size={18} className="mx-auto text-muted-foreground/60 mb-2" />
-            <p className="text-sm text-foreground/80">Nenhum código cadastrado ainda.</p>
-            <p className="text-xs text-muted-foreground mt-1">
+          <div className="admin-empty">
+            <KeyRound size={20} className="text-muted-foreground/70" />
+            <p className="admin-empty-title">Nenhum código cadastrado ainda.</p>
+            <p className="admin-empty-hint">
               Crie um código acima para liberar ou estender o acesso de um comprador.
             </p>
           </div>
@@ -312,12 +312,12 @@ export function GiftCodesPanel() {
           <ul className="space-y-2">
             {codes.map((c) => {
               const st = statusOf(c);
-              const toneCls =
+              const badgeCls =
                 st.tone === "ok"
-                  ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+                  ? "admin-badge admin-badge-success"
                   : st.tone === "warn"
-                    ? "bg-amber-500/15 text-amber-200 border-amber-500/30"
-                    : "bg-white/10 text-muted-foreground border-white/15";
+                    ? "admin-badge admin-badge-warning"
+                    : "admin-badge admin-badge-muted";
               const revealed = !!reveal[c.id];
               return (
                 <li key={c.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
@@ -334,7 +334,7 @@ export function GiftCodesPanel() {
                         >
                           {revealed ? "Ocultar" : "Ver"}
                         </button>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${toneCls}`}>
+                        <span className={badgeCls}>
                           {st.label}
                         </span>
                       </div>
@@ -376,20 +376,20 @@ export function GiftCodesPanel() {
       </div>
 
       {/* Redemptions */}
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <div className="mb-3">
           <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
             <History size={14} className="text-accent" /> Últimos resgates
           </h3>
-          <p className="text-[11px] text-muted-foreground mt-0.5">
+          <p className="admin-help mt-0.5">
             Mostra os 20 resgates mais recentes. Apenas user_id é exibido por segurança.
           </p>
         </div>
         {redemptions.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
-            <History size={18} className="mx-auto text-muted-foreground/60 mb-2" />
-            <p className="text-sm text-foreground/80">Nenhum resgate registrado ainda.</p>
-            <p className="text-xs text-muted-foreground mt-1">
+          <div className="admin-empty">
+            <History size={20} className="text-muted-foreground/70" />
+            <p className="admin-empty-title">Nenhum resgate registrado ainda.</p>
+            <p className="admin-empty-hint">
               Os resgates aparecem aqui quando um comprador utilizar um código. Para identificar o comprador, use a busca por e-mail na seção Acessos.
             </p>
           </div>
@@ -436,8 +436,8 @@ function StatCard({
   const toneCls =
     tone === "ok" ? "text-emerald-300" : tone === "warn" ? "text-amber-200" : "text-foreground";
   return (
-    <div className="glass-strong p-4">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{label}</div>
+    <div className="admin-card-muted">
+      <div className="admin-label mb-1">{label}</div>
       <div className={`text-2xl font-heading font-bold ${toneCls}`}>{value}</div>
     </div>
   );

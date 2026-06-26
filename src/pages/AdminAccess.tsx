@@ -1064,12 +1064,12 @@ function PendenciasSection() {
   const done = PENDENCIAS_ITEMS.filter((i) => checks[i.id]).length;
   return (
     <div className="space-y-4">
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <h3 className="font-heading font-semibold text-sm mb-1">Prontidão para venda pública</h3>
-        <p className="text-xs text-muted-foreground mb-3">
+        <p className="admin-help mb-3">
           Salvo apenas no seu navegador. Não interfere no acesso nem no progresso de quem compra. {done}/{PENDENCIAS_ITEMS.length} concluídos.
         </p>
-        <p className="text-[11px] text-muted-foreground/80 mb-4 rounded-md border border-white/10 bg-white/5 px-3 py-2">
+        <p className="admin-help mb-4 rounded-md border border-[hsl(var(--admin-border-subtle))] bg-white/5 px-3 py-2">
           Marque os itens manualmente conforme forem concluídos. O único bloqueio real para venda pública agora é a URL real do checkout.
         </p>
         <ul className="space-y-1">
@@ -1112,7 +1112,7 @@ function MensagensSection() {
         Mensagens prontas para responder clientes. Use os botões para copiar o texto puro ou com link.
       </p>
       {SUPPORT_MESSAGES.map((m) => (
-        <div key={m.title} className="glass-strong p-5">
+        <div key={m.title} className="admin-card">
           <div className="flex items-start justify-between gap-3 mb-2">
             <h3 className="text-sm font-heading font-semibold text-foreground">{m.title}</h3>
           </div>
@@ -1207,7 +1207,7 @@ function ConfigSection() {
         Somente leitura. Valores vêm de <code className="text-foreground/80">APP_CONFIG</code>. Para alterar, edite <code className="text-foreground/80">src/config/appConfig.ts</code>.
       </p>
 
-      <div className="glass-strong p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="admin-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="text-accent mt-0.5"><KeyRound size={16} /></div>
           <div>
@@ -1222,19 +1222,13 @@ function ConfigSection() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {items.map((it) => (
-          <div key={it.title} className="glass-strong p-4">
+          <div key={it.title} className="admin-card">
             <div className="flex items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2 text-accent">
                 {it.icon}
                 <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground">{it.title}</h4>
               </div>
-              <span
-                className={`text-[10px] px-2 py-0.5 rounded-full border ${
-                  it.ok
-                    ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
-                    : "bg-amber-500/15 text-amber-200 border-amber-500/30"
-                }`}
-              >
+              <span className={it.ok ? "admin-badge admin-badge-success" : "admin-badge admin-badge-warning"}>
                 {it.ok ? "Configurado" : "Pendente"}
               </span>
             </div>

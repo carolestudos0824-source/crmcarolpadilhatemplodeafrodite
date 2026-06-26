@@ -68,7 +68,7 @@ export function SupportInbox() {
 
   if (loading) {
     return (
-      <div className="glass-strong p-8 text-center text-muted-foreground text-sm inline-flex items-center justify-center gap-2 w-full">
+      <div className="admin-card text-center text-muted-foreground text-sm inline-flex items-center justify-center gap-2 w-full">
         <Loader2 size={16} className="animate-spin" /> Carregando mensagens recebidas...
       </div>
     );
@@ -76,9 +76,9 @@ export function SupportInbox() {
 
   if (error) {
     return (
-      <div className="glass-strong p-6 text-sm">
+      <div className="admin-card text-sm">
         <p className="text-red-300 mb-3">Erro ao carregar: {error}</p>
-        <button type="button" onClick={() => void load()} className="btn-ghost border border-white/15 inline-flex items-center gap-2">
+        <button type="button" onClick={() => void load()} className="btn-ghost border border-[hsl(var(--admin-border-strong))] inline-flex items-center gap-2">
           <RefreshCw size={14} /> Tentar novamente
         </button>
       </div>
@@ -87,10 +87,10 @@ export function SupportInbox() {
 
   if (messages.length === 0) {
     return (
-      <div className="glass-strong p-10 text-center">
-        <InboxIcon className="mx-auto mb-3 text-muted-foreground" size={28} />
-        <h3 className="font-heading font-semibold mb-1">Nenhuma mensagem recebida ainda</h3>
-        <p className="text-sm text-muted-foreground">
+      <div className="admin-empty">
+        <InboxIcon className="text-muted-foreground/70" size={24} />
+        <h3 className="admin-empty-title">Nenhuma mensagem recebida ainda</h3>
+        <p className="admin-empty-hint">
           Quando alguém enviar uma mensagem pelo formulário em /suporte, ela aparece aqui.
         </p>
       </div>
@@ -106,7 +106,7 @@ export function SupportInbox() {
         <button
           type="button"
           onClick={() => void load()}
-          className="text-xs inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-white/15 hover:bg-white/5"
+          className="text-xs inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[hsl(var(--admin-border-strong))] hover:bg-white/5"
         >
           <RefreshCw size={12} /> Atualizar
         </button>
@@ -115,20 +115,14 @@ export function SupportInbox() {
       {messages.map((m) => {
         const isResolved = m.status === "resolvido";
         return (
-          <div key={m.id} className="glass-strong p-4 sm:p-5 space-y-3">
+          <div key={m.id} className="admin-card space-y-3">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="min-w-0">
                 <div className="font-heading font-semibold text-sm">{m.name}</div>
                 <div className="text-xs text-muted-foreground break-all">{m.email}</div>
               </div>
               <div className="flex items-center gap-2">
-                <span
-                  className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded-md border ${
-                    isResolved
-                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
-                      : "border-amber-500/30 bg-amber-500/10 text-amber-200"
-                  }`}
-                >
+                <span className={isResolved ? "admin-badge admin-badge-success" : "admin-badge admin-badge-warning"}>
                   {m.status}
                 </span>
                 <span className="text-[10px] text-muted-foreground">
@@ -137,7 +131,7 @@ export function SupportInbox() {
               </div>
             </div>
 
-            <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed bg-white/5 border border-white/10 rounded-lg p-3">
+            <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed bg-white/5 border border-[hsl(var(--admin-border-subtle))] rounded-lg p-3">
               {m.message}
             </p>
 
