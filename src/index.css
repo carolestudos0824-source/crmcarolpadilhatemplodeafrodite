@@ -141,3 +141,183 @@
   }
 }
 
+
+/* =========================================================================
+   ADMIN DESIGN SYSTEM — Fase 1
+   Tokens e classes utilitárias reutilizáveis. Não altera telas existentes.
+   Pode ser opt-in: classes antigas (glass-strong, btn-primary, etc.) seguem
+   funcionando normalmente.
+   ========================================================================= */
+@layer base {
+  :root {
+    /* Superfícies (HSL) — três níveis de profundidade para dark premium */
+    --admin-surface-1: 222 32% 6%;     /* fundo da página */
+    --admin-surface-2: 222 28% 9%;     /* cards principais */
+    --admin-surface-3: 222 24% 13%;    /* hover / zebra de tabela */
+
+    /* Bordas */
+    --admin-border-subtle: 220 20% 18%;
+    --admin-border-strong: 220 22% 26%;
+
+    /* Tons funcionais (par soft para badges/banners) */
+    --admin-success: 152 64% 48%;
+    --admin-success-soft: 152 64% 48% / 0.12;
+    --admin-warning: 38 92% 58%;
+    --admin-warning-soft: 38 92% 58% / 0.12;
+    --admin-destructive: 0 72% 56%;
+    --admin-destructive-soft: 0 72% 56% / 0.12;
+    --admin-info: 210 90% 60%;
+    --admin-info-soft: 210 90% 60% / 0.12;
+
+    /* Brand admin */
+    --admin-accent: 210 100% 56%;            /* #1E88FF */
+    --admin-accent-glow: 190 100% 50%;       /* #00C2FF */
+    --admin-gold: 41 56% 60%;                /* #D7B45A */
+
+    /* Sombras */
+    --admin-shadow-card: 0 1px 2px hsl(0 0% 0% / 0.25), 0 4px 12px hsl(0 0% 0% / 0.18);
+    --admin-shadow-elevated: 0 8px 24px hsl(0 0% 0% / 0.35), 0 2px 6px hsl(0 0% 0% / 0.25);
+    --admin-shadow-accent-glow: 0 0 0 1px hsl(var(--admin-accent) / 0.35), 0 8px 28px hsl(var(--admin-accent) / 0.25);
+
+    /* Raio padrão */
+    --admin-radius: 0.875rem; /* 14px */
+  }
+}
+
+@layer components {
+  /* ---------- Containers / seção ---------- */
+  .admin-section {
+    @apply space-y-6;
+  }
+
+  .admin-card {
+    background: hsl(var(--admin-surface-2));
+    border: 1px solid hsl(var(--admin-border-subtle));
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow-card);
+    @apply p-5;
+  }
+
+  .admin-card-muted {
+    background: hsl(var(--admin-surface-1));
+    border: 1px solid hsl(var(--admin-border-subtle));
+    border-radius: var(--admin-radius);
+    @apply p-5;
+  }
+
+  .admin-card-elevated {
+    background: hsl(var(--admin-surface-2));
+    border: 1px solid hsl(var(--admin-border-strong));
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow-elevated);
+    @apply p-5;
+  }
+
+  /* ---------- KPI ---------- */
+  .admin-kpi {
+    background: hsl(var(--admin-surface-2));
+    border: 1px solid hsl(var(--admin-border-subtle));
+    border-radius: var(--admin-radius);
+    @apply p-4 flex flex-col gap-1;
+  }
+  .admin-kpi-label {
+    @apply text-[10px] uppercase tracking-wider text-muted-foreground;
+  }
+  .admin-kpi-value {
+    @apply text-2xl font-heading font-bold text-foreground;
+  }
+
+  /* ---------- Tabela ---------- */
+  .admin-table-wrapper {
+    background: hsl(var(--admin-surface-2));
+    border: 1px solid hsl(var(--admin-border-subtle));
+    border-radius: var(--admin-radius);
+    @apply overflow-hidden;
+  }
+  .admin-table {
+    @apply w-full text-sm border-collapse;
+  }
+  .admin-table thead th {
+    background: hsl(var(--admin-surface-3));
+    @apply text-[11px] uppercase tracking-wider text-muted-foreground font-semibold text-left px-4 py-2.5 border-b;
+    border-color: hsl(var(--admin-border-subtle));
+  }
+  .admin-table tbody td {
+    @apply px-4 py-3 border-b text-foreground/90;
+    border-color: hsl(var(--admin-border-subtle) / 0.6);
+  }
+  .admin-table tbody tr {
+    transition: background 120ms ease;
+  }
+  .admin-table tbody tr:hover {
+    background: hsl(var(--admin-surface-3) / 0.6);
+  }
+  .admin-table tbody tr:last-child td { border-bottom: 0; }
+
+  /* ---------- Estado vazio ---------- */
+  .admin-empty {
+    background: hsl(var(--admin-surface-1) / 0.6);
+    border: 1px dashed hsl(var(--admin-border-strong));
+    border-radius: var(--admin-radius);
+    @apply px-4 py-8 text-center flex flex-col items-center gap-2;
+  }
+  .admin-empty-title { @apply text-sm text-foreground/85 font-medium; }
+  .admin-empty-hint  { @apply text-xs text-muted-foreground max-w-md; }
+
+  /* ---------- Badges ---------- */
+  .admin-badge {
+    @apply inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border;
+  }
+  .admin-badge-success {
+    background: hsl(var(--admin-success-soft));
+    color: hsl(var(--admin-success));
+    border-color: hsl(var(--admin-success) / 0.35);
+  }
+  .admin-badge-warning {
+    background: hsl(var(--admin-warning-soft));
+    color: hsl(var(--admin-warning));
+    border-color: hsl(var(--admin-warning) / 0.35);
+  }
+  .admin-badge-danger {
+    background: hsl(var(--admin-destructive-soft));
+    color: hsl(var(--admin-destructive));
+    border-color: hsl(var(--admin-destructive) / 0.35);
+  }
+  .admin-badge-info {
+    background: hsl(var(--admin-info-soft));
+    color: hsl(var(--admin-info));
+    border-color: hsl(var(--admin-info) / 0.35);
+  }
+  .admin-badge-muted {
+    background: hsl(var(--admin-surface-3));
+    color: hsl(var(--muted-foreground));
+    border-color: hsl(var(--admin-border-subtle));
+  }
+  .admin-badge-premium {
+    background: hsl(var(--admin-gold) / 0.12);
+    color: hsl(var(--admin-gold));
+    border-color: hsl(var(--admin-gold) / 0.4);
+  }
+
+  /* ---------- Ação destrutiva padrão ---------- */
+  .admin-danger-action {
+    background: hsl(var(--admin-destructive));
+    color: hsl(0 0% 100%);
+    border: 1px solid hsl(var(--admin-destructive) / 0.7);
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition;
+  }
+  .admin-danger-action:hover { background: hsl(var(--admin-destructive) / 0.9); }
+  .admin-danger-action:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ---------- Form helpers ---------- */
+  .admin-label {
+    @apply text-[11px] uppercase tracking-wider text-muted-foreground font-semibold;
+  }
+  .admin-help {
+    @apply text-[11px] text-muted-foreground;
+  }
+  .admin-divider {
+    border-top: 1px solid hsl(var(--admin-border-subtle));
+    @apply my-4;
+  }
+}
