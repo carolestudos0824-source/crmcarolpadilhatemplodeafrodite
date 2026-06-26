@@ -549,7 +549,7 @@ function OverviewSection({
   if (metrics.error && metrics.salesConfirmed === 0 && !metrics.loading) {
     return (
       <div className="space-y-4">
-        <div className="glass-strong p-6 text-center">
+        <div className="admin-card p-6 text-center">
           <AlertTriangle className="mx-auto text-amber-300 mb-2" size={24} />
           <h3 className="font-heading font-semibold text-sm mb-1">Não foi possível carregar esta área</h3>
           <p className="text-xs text-muted-foreground mb-4">{metrics.error}</p>
@@ -567,7 +567,7 @@ function OverviewSection({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 text-sky-100 text-sm px-4 py-3 flex items-start gap-2">
         <CreditCard size={16} className="shrink-0 mt-0.5" />
         <span>
@@ -577,56 +577,56 @@ function OverviewSection({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <StatusCard
-          icon={<CreditCard size={16} />}
+          icon={<CreditCard size={14} />}
           title="Receita manual confirmada"
           badge={metrics.loading ? "…" : fmtBRL(metrics.revenueConfirmed)}
           tone={metrics.revenueConfirmed > 0 ? "ok" : "muted"}
           text="Soma de vendas manuais com pagamento confirmado."
         />
         <StatusCard
-          icon={<UserCheck size={16} />}
+          icon={<UserCheck size={14} />}
           title="Vendas confirmadas"
           badge={dash(metrics.salesConfirmed)}
           tone={metrics.salesConfirmed > 0 ? "ok" : "muted"}
           text="Vendas com pagamento confirmado em manual_sales."
         />
         <StatusCard
-          icon={<AlertTriangle size={16} />}
+          icon={<AlertTriangle size={14} />}
           title="Aguardando liberação"
           badge={dash(metrics.pendingAccess)}
           tone={metrics.pendingAccess > 0 ? "warn" : "muted"}
           text="Aguardando primeiro login/liberação do comprador."
         />
         <StatusCard
-          icon={<ShieldCheck size={16} />}
+          icon={<ShieldCheck size={14} />}
           title="Acessos liberados"
           badge={dash(metrics.accessGranted)}
           tone={metrics.accessGranted > 0 ? "ok" : "muted"}
           text="Vendas marcadas como acesso liberado."
         />
         <StatusCard
-          icon={<ShieldOff size={16} />}
+          icon={<ShieldOff size={14} />}
           title="Acessos revogados"
           badge={dash(metrics.accessRevoked)}
           tone={metrics.accessRevoked > 0 ? "warn" : "muted"}
           text="Vendas marcadas como acesso revogado."
         />
         <StatusCard
-          icon={<Bot size={16} />}
+          icon={<Bot size={14} />}
           title="Códigos premium usados"
           badge={dash(metrics.giftRedemptions)}
           tone="muted"
           text="Total de resgates registrados."
         />
         <StatusCard
-          icon={<Mail size={16} />}
+          icon={<Mail size={14} />}
           title="Mensagens recebidas"
           badge={dash(metrics.supportMessages)}
           tone="muted"
           text="Suporte recebido pela área interna."
         />
         <StatusCard
-          icon={<CreditCard size={16} />}
+          icon={<CreditCard size={14} />}
           title="Status do checkout"
           badge={checkoutPending ? "Manual" : "Configurado"}
           tone={checkoutPending ? "muted" : "ok"}
@@ -638,8 +638,9 @@ function OverviewSection({
         />
       </div>
 
-      <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-3">Próximas ações</h3>
+      <div className="admin-card p-5">
+        <h3 className="font-heading font-semibold text-sm mb-1">Próximas ações</h3>
+        <p className="text-xs text-muted-foreground mb-3">Atalhos para as tarefas mais frequentes do admin.</p>
         <div className="flex flex-wrap gap-2">
           <button onClick={() => onGoTo("vendas")} className="btn-primary text-xs">
             <ShoppingCartIcon /> Registrar venda manual
@@ -659,25 +660,35 @@ function OverviewSection({
         </div>
       </div>
 
-      <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-1">Automação de pagamento</h3>
-        <p className="text-xs text-muted-foreground">
-          Webhook: não configurado. Webhook de pagamento é uma etapa futura — por enquanto todos os acessos são confirmados manualmente.
-        </p>
-      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="admin-card p-5">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-heading font-semibold text-sm">Automação de pagamento</h3>
+            <span className="admin-badge admin-badge-muted">Pendente</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Webhook não configurado. Esta é uma etapa futura — por enquanto todos os acessos são confirmados manualmente.
+          </p>
+        </div>
 
-      <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm mb-1">Admin logado</h3>
-        <p className="text-xs text-muted-foreground mb-3">
-          {adminEmail ?? "Sessão admin não detectada."} · Acesso interno: {selfHasAccess ? "ativo" : "inativo"}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => onGoTo("acessos")} className="btn-primary">
-            <ShieldCheck size={14} /> Ir para Acessos
-          </button>
-          <Link to="/entrega" className="btn-ghost border border-white/15">
-            <ExternalLink size={14} /> Abrir Minha área
-          </Link>
+        <div className="admin-card p-5">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-heading font-semibold text-sm">Admin logado</h3>
+            <span className={`admin-badge ${selfHasAccess ? "admin-badge-success" : "admin-badge-warning"}`}>
+              {selfHasAccess ? "Acesso ativo" : "Sem acesso"}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3 break-all">
+            {adminEmail ?? "Sessão admin não detectada."}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={() => onGoTo("acessos")} className="btn-primary">
+              <ShieldCheck size={14} /> Ir para Acessos
+            </button>
+            <Link to="/entrega" className="btn-ghost border border-white/15">
+              <ExternalLink size={14} /> Abrir Minha área
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -1256,10 +1267,12 @@ function OverviewCard({
   tone?: "default" | "ok";
 }) {
   return (
-    <div className="glass-strong p-4">
+    <div className="admin-card p-4">
       <div className={`flex items-center gap-2 mb-1.5 ${tone === "ok" ? "text-emerald-300" : "text-accent"}`}>
-        {icon}
-        <h3 className="text-xs font-heading font-semibold uppercase tracking-wider">{title}</h3>
+        <span className="inline-flex items-center justify-center size-7 rounded-lg bg-accent/10 border border-accent/20">
+          {icon}
+        </span>
+        <h3 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground/90">{title}</h3>
       </div>
       <p className="text-xs text-muted-foreground leading-snug">{text}</p>
     </div>
@@ -1279,24 +1292,27 @@ function StatusCard({
   badge: string;
   tone: "ok" | "warn" | "muted";
 }) {
-  const toneCls =
+  const badgeCls =
     tone === "ok"
-      ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+      ? "admin-badge admin-badge-success"
       : tone === "warn"
-        ? "bg-amber-500/15 text-amber-200 border-amber-500/30"
-        : "bg-white/10 text-muted-foreground border-white/15";
+        ? "admin-badge admin-badge-warning"
+        : "admin-badge admin-badge-muted";
   return (
-    <div className="glass-strong p-4">
-      <div className="flex items-center justify-between gap-2 mb-2">
-        <div className="flex items-center gap-2 text-accent">
-          {icon}
-          <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground">
-            {title}
-          </h4>
+    <div className="admin-kpi">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center justify-center size-7 rounded-lg bg-accent/10 border border-accent/20 text-accent">
+            {icon}
+          </span>
+          <h4 className="admin-kpi-label">{title}</h4>
         </div>
-        <span className={`text-[10px] px-2 py-0.5 rounded-full border ${toneCls}`}>{badge}</span>
       </div>
-      <p className="text-xs text-muted-foreground leading-snug break-words">{text}</p>
+      <div className="flex items-baseline justify-between gap-2 mt-1">
+        <span className="admin-kpi-value leading-none">{badge}</span>
+        <span className={badgeCls}>{tone === "ok" ? "OK" : tone === "warn" ? "Atenção" : "—"}</span>
+      </div>
+      <p className="text-xs text-muted-foreground leading-snug break-words mt-1">{text}</p>
     </div>
   );
 }
