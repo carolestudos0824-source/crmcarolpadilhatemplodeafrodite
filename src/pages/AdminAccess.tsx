@@ -28,7 +28,7 @@ import { BuyersList, type Buyer } from "@/components/admin/BuyersList";
 import { BuyersPanel } from "@/components/admin/BuyersPanel";
 import { AccessLogs } from "@/components/admin/AccessLogs";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
-import { AdminErrorBoundary, AdminRouteErrorFallback } from "@/components/admin/AdminErrorBoundary";
+import { AdminErrorBoundary } from "@/components/admin/AdminErrorBoundary";
 import { SupportInbox } from "@/components/admin/SupportInbox";
 import { SalesPanel } from "@/components/admin/SalesPanel";
 import { withTimeout } from "@/lib/promiseTimeout";
