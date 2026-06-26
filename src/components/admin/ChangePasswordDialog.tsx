@@ -185,7 +185,7 @@ export function ChangePasswordDialog({ open, onOpenChange }: Props) {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="cp-confirm" className="text-xs text-muted-foreground">Confirmar nova senha</label>
+              <label htmlFor="cp-confirm" className="admin-label">Confirmar nova senha</label>
               <Input
                 id="cp-confirm"
                 type="password"
