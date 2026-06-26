@@ -2036,6 +2036,8 @@ const SeoIntro = () => {
 const CriativosIntro = () => {
   const [showZero, setShowZero] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
+  const { activeProject } = useAppProjects();
+  const projectName = activeProject?.name?.trim();
 
   const tutorialSteps = [
     "Escolha a dor",
