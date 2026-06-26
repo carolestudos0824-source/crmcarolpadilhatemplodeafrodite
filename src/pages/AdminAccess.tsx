@@ -873,19 +873,13 @@ function AcessosSection({
       )}
 
       {row && (
-        <div className="glass-strong p-6 space-y-4">
+        <div className="admin-card p-6 space-y-4">
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-2">
               <UserCheck size={18} className="text-accent" />
               <h2 className="font-heading font-semibold">Comprador encontrado</h2>
             </div>
-            <span
-              className={`text-[11px] px-2.5 py-1 rounded-full border ${
-                row.access_exists && row.has_access
-                  ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
-                  : "bg-white/10 text-muted-foreground border-white/15"
-              }`}
-            >
+            <span className={`admin-badge ${row.access_exists && row.has_access ? "admin-badge-success" : "admin-badge-muted"}`}>
               {row.access_exists && row.has_access ? "Acesso ativo" : "Sem acesso"}
             </span>
           </div>
