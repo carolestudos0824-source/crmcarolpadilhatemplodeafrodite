@@ -1877,57 +1877,50 @@ Verifique:
     whenLovableDirect: "Na home ou landing principal do app.",
     whenAgentFirst:
       "Quando você não sabe quais dados reais do app pode informar.",
-    content: `Adicione schema SoftwareApplication na home e na landing principal.
+    content: `Adicione schema SoftwareApplication (ou estrutura equivalente) na home e na landing principal do app [nome do app ativo].
 
-Inclua apenas dados reais:
+Use APENAS dados reais:
 
-1. Nome do app.
-2. Descrição.
-3. Categoria.
-4. Sistema operacional, se aplicável.
-5. URL.
-6. Preço, se estiver definido.
-7. Autor ou organização, se existir.
-8. Política ou termos, se existirem.
+- name: [nome do app ativo]
+- description: [descreva o app]
+- applicationCategory: defina a categoria real (ex.: GameApplication, BusinessApplication, HealthApplication) com base em [descreva o app]
+- audience: [descreva o público]
+- url: a URL real da landing principal
+- offers / price: usar somente se [modelo de cobrança] estiver definido (ex.: preço, "free", assinatura). Se não estiver, omitir o campo.
+- image / logo: incluir apenas se existir um arquivo real publicado.
+- author / publisher: incluir apenas se houver autor/organização real.
 
 Regras:
 
-- Não inventar avaliações.
-- Não inventar reviews.
-- Não inventar preço se não estiver definido.
-- Não inventar empresa.
-- Usar JSON-LD válido.
-- Inserir no head da página.`,
-    agentPrompt: `Quero adicionar schema SoftwareApplication no meu app.
+- NÃO inventar avaliações (aggregateRating), reviews, número de downloads ou prêmios.
+- NÃO inventar preço, empresa ou parceria inexistente.
+- Usar JSON-LD válido no head da página.
+- Não expor área paga, admin ou dados de usuário no schema.`,
+    agentPrompt: `Quero adicionar schema SoftwareApplication no app [nome do app ativo].
 
-Dados atuais:
-Nome:
-[preencha]
-
-Descrição:
-[preencha]
-
-Preço:
-[preencha ou não definido]
-
-Empresa ou responsável:
-[preencha ou não definido]
+Dados disponíveis:
+- Nome: [nome do app ativo]
+- Descrição: [descreva o app]
+- Público: [descreva o público]
+- Produto: [produto]
+- Modelo de cobrança: [modelo de cobrança]
 
 Me ajude a decidir:
 
-1. Quais campos posso usar.
-2. Quais campos não devo inventar.
-3. O que falta antes de publicar.`,
-    correctionPrompt: `O schema SoftwareApplication está usando dados inventados ou incorretos. Corrija.
+1. Quais campos posso preencher com dado real.
+2. Quais campos NÃO devo preencher (para não inventar).
+3. Que applicationCategory usar.
+4. O que falta antes de publicar a marcação.`,
+    correctionPrompt: `O schema SoftwareApplication do app [nome do app ativo] está usando dados inventados ou incorretos. Corrija.
 
 Regras:
 
-1. Remova avaliações falsas.
-2. Remova reviews inventados.
-3. Remova empresa inexistente.
-4. Use apenas dados reais.
-5. Valide JSON-LD.
-6. Insira apenas nas páginas corretas.`,
+1. Remova aggregateRating, reviews e contagens inventadas.
+2. Remova empresa, prêmios ou parcerias inexistentes.
+3. Remova preço se [modelo de cobrança] não estiver definido.
+4. Use apenas dados reais e verificáveis.
+5. Valide o JSON-LD.
+6. Aplicar somente nas páginas corretas (home/landing), nunca em área paga, admin ou checkout interno.`,
     advanceCriteria:
       "Avance quando a marcação usar apenas dados reais e estiver tecnicamente válida.",
   },
