@@ -2134,7 +2134,7 @@ Remova enrolação, frases difíceis e promessas irreais.`,
   {
     n: 3,
     title: "Criar criativo para Meta Ads",
-    purpose: "Criar textos e peças para anúncios pagos simples. Use para preparar anúncios pagos simples. Não crie campanha real nesta etapa. Comece com baixa verba e só escale depois de sinais mínimos.",
+    purpose: "Use este comando para preparar criativos pagos simples. A campanha real deve ser configurada na plataforma de anúncios, com baixa verba inicial e métricas definidas.",
     when: "Quando oferta, página, checkout e entrega já estão prontos e a oferta foi minimamente validada organicamente.",
     where: "Cole no Lovable.",
     result: "5 criativos prontos para anúncio pago simples, sem promessas exageradas.",
