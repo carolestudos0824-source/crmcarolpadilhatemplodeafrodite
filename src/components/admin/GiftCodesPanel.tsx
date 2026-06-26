@@ -377,11 +377,22 @@ export function GiftCodesPanel() {
 
       {/* Redemptions */}
       <div className="glass-strong p-5">
-        <h3 className="font-heading font-semibold text-sm flex items-center gap-2 mb-3">
-          <History size={14} className="text-accent" /> Últimos resgates
-        </h3>
+        <div className="mb-3">
+          <h3 className="font-heading font-semibold text-sm flex items-center gap-2">
+            <History size={14} className="text-accent" /> Últimos resgates
+          </h3>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            Mostra os 20 resgates mais recentes. Apenas user_id é exibido por segurança.
+          </p>
+        </div>
         {redemptions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhum resgate registrado ainda.</p>
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-4 py-6 text-center">
+            <History size={18} className="mx-auto text-muted-foreground/60 mb-2" />
+            <p className="text-sm text-foreground/80">Nenhum resgate registrado ainda.</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Os resgates aparecem aqui quando um comprador utilizar um código. Para identificar o comprador, use a busca por e-mail na seção Acessos.
+            </p>
+          </div>
         ) : (
           <ul className="space-y-1.5 text-xs">
             {redemptions.map((r) => {
@@ -408,9 +419,6 @@ export function GiftCodesPanel() {
             })}
           </ul>
         )}
-        <p className="text-[11px] text-muted-foreground mt-3">
-          O histórico mostra user_id por motivo de segurança. Para identificar o comprador, use o painel de busca por e-mail acima.
-        </p>
       </div>
     </section>
   );
