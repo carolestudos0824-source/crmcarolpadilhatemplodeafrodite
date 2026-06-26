@@ -2133,13 +2133,13 @@ Remova enrolação, frases difíceis e promessas irreais.`,
   },
   {
     n: 3,
-    title: "Criar anúncio para Meta Ads",
-    purpose: "Criar textos de anúncio para Facebook e Instagram.",
-    when: "Quando a oferta já foi testada organicamente.",
+    title: "Criar anúncio para Meta Ads (opcional — usar depois)",
+    purpose: "Criar textos de anúncio para Facebook e Instagram. Use somente depois de validar criativos orgânicos e oferta clara. Não crie campanha paga real nesta etapa.",
+    when: "Somente depois de validar criativos orgânicos e ter oferta clara.",
     where: "Cole no Lovable.",
     result: "5 anúncios prontos para teste, sem promessas exageradas.",
-    objective: "Criar textos de anúncio para Facebook e Instagram.",
-    whenLovableDirect: "Quando a oferta já foi testada organicamente.",
+    objective: "Criar textos de anúncio para Facebook e Instagram (etapa opcional).",
+    whenLovableDirect: "Somente depois de validar criativos orgânicos e ter oferta clara.",
     whenAgentFirst: "Quando você ainda não validou a oferta ou não sabe se deve investir em anúncio.",
     content: `Crie 5 anúncios para Meta Ads para este app.
 
