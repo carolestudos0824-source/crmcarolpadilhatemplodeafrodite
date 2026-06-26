@@ -43,11 +43,37 @@ const ETAPAS: Etapa[] = [
     title: "Criar termos de uso",
     tabs: {
       lovable:
-        "Revise meu app e crie ou melhore uma página de Termos de Uso simples e clara. Ela deve explicar regras de uso, acesso, responsabilidades do usuário, limites do serviço, pagamento, entrega, suporte e condições básicas. Não use juridiquês exagerado e não prometa resultado garantido.",
+        `Crie ou melhore a página de Termos de Uso do app [nome do app ativo].
+
+App: [descreva o app]
+Público: [descreva o público]
+Produto: [produto]
+Modelo de cobrança: [modelo de cobrança]
+
+Cubra de forma simples e clara:
+
+1. Quem pode usar o app (idade mínima, restrições).
+2. O que o app faz: [descreva o app].
+3. O que o app NÃO garante (resultado, cura, ganho, salvação, previsão).
+4. Regras de uso (uso pessoal, proibições, conteúdo do usuário).
+5. Responsabilidade do usuário.
+6. Limitações do serviço (disponibilidade, manutenção, indisponibilidades).
+7. Pagamento, acesso e cancelamento, quando aplicável.
+8. Suporte e canal de contato.
+9. Atualização dos termos (como e quando podem ser revisados).
+
+Não use juridiquês exagerado. Não prometa resultado garantido. Não diga que o app substitui profissional.`,
       agente:
-        "Me ajude a estruturar os Termos de Uso do meu app de forma simples, clara e responsável. Quero saber quais tópicos não podem faltar para passar confiança sem ficar complexo demais.",
+        `Me ajude a estruturar os Termos de Uso do app [nome do app ativo].
+
+O que o app faz: [descreva o app]
+Público: [descreva o público]
+Promessa: [promessa]
+Produto: [produto]
+
+Quero uma estrutura simples, responsável e clara para leigos, cobrindo: quem pode usar, o que o app faz, o que não garante, regras, responsabilidades, limitações, pagamento/acesso, suporte e atualização dos termos.`,
       corrigir:
-        "Minha página de Termos de Uso está confusa, longa ou técnica demais. Reescreva com linguagem simples, organizada por seções e mantendo um tom profissional.",
+        `Minha página de Termos de Uso do app [nome do app ativo] está confusa, longa ou técnica demais. Reescreva com linguagem simples, organizada por seções, sem promessa exagerada e sem dizer que o app substitui profissional.`,
       avancar:
         "Avance quando o app tiver uma página de Termos de Uso clara, acessível e sem promessa exagerada.",
     },
@@ -58,11 +84,37 @@ const ETAPAS: Etapa[] = [
     title: "Criar política de privacidade",
     tabs: {
       lovable:
-        "Revise meu app e crie ou melhore uma página de Política de Privacidade simples e clara. Ela deve explicar quais dados podem ser coletados, para que são usados, como o usuário pode entrar em contato e como o app trata informações de login, pagamento, progresso ou formulários, se existirem.",
+        `Crie ou melhore a Política de Privacidade do app [nome do app ativo].
+
+App: [descreva o app]
+Público: [descreva o público]
+Ação principal do usuário: [ação principal]
+
+Cubra em linguagem simples:
+
+1. Quais dados são coletados (ex.: nome, e-mail, respostas, progresso, dados de pagamento quando houver checkout externo).
+2. Por que esses dados são coletados.
+3. Como esses dados são usados.
+4. Se há compartilhamento com ferramentas externas (gateway de pagamento, e-mail, analytics) — citar quais.
+5. Como o usuário pode solicitar acesso, correção ou exclusão de seus dados.
+6. Como entrar em contato sobre privacidade.
+7. Cookies, analytics ou pixels, se existirem.
+8. Retenção e segurança em linguagem simples.
+
+Regra obrigatória: NÃO prometer segurança 100%. Use frase como:
+"Adotamos medidas razoáveis de proteção, mas nenhum sistema é totalmente imune a riscos."
+
+Não copie modelos de outros sites sem adaptar ao que o app realmente faz.`,
       agente:
-        "Me ajude a pensar quais dados meu app coleta e como explicar isso em uma Política de Privacidade simples, transparente e adequada para usuários reais.",
+        `Me ajude a pensar quais dados o app [nome do app ativo] coleta e como explicar isso em uma Política de Privacidade simples, transparente e responsável.
+
+O que o app faz: [descreva o app]
+Público: [descreva o público]
+Ação principal: [ação principal]
+
+Quero cobrir: dados coletados, finalidade, uso, compartilhamento com terceiros, direitos do titular, contato, cookies/analytics, retenção e segurança — sem prometer segurança 100%.`,
       corrigir:
-        "Minha Política de Privacidade está genérica ou não combina com o app. Revise o texto para refletir melhor login, pagamento, formulários, progresso, suporte e dados do usuário, se existirem.",
+        `Minha Política de Privacidade do app [nome do app ativo] está genérica ou não combina com o app. Revise para refletir login, pagamento, formulários, progresso, suporte e dados realmente coletados. Não prometa segurança 100%.`,
       avancar:
         "Avance quando a Política de Privacidade estiver clara, acessível no app e coerente com os dados usados.",
     },
@@ -73,13 +125,35 @@ const ETAPAS: Etapa[] = [
     title: "Explicar pagamento e entrega",
     tabs: {
       lovable:
-        "Revise as telas de venda, checkout, obrigado e entrega do meu app. Garanta que o usuário entenda o que compra, como recebe acesso, quanto tempo pode levar, o que fazer se não conseguir entrar e onde pedir suporte. Não altere integrações de pagamento sem necessidade.",
+        `Revise/clareie as telas de venda, checkout, obrigado e entrega do app [nome do app ativo].
+
+Produto: [produto]
+Modelo de cobrança: [modelo de cobrança]
+Promessa: [promessa]
+
+Garanta que o comprador veja, em linguagem simples:
+
+1. Preço.
+2. Forma de pagamento.
+3. Quando o acesso é liberado (imediato, manual, em até X horas).
+4. O que acontece em pagamento pendente ou recusado.
+5. Como recuperar acesso (e-mail, link, suporte).
+6. O que está incluso na compra.
+7. O que NÃO está incluso.
+8. Política de reembolso ou cancelamento (prazo, condições, como solicitar).
+
+Não altere integrações de pagamento sem necessidade. Não prometa acesso automático se a liberação ainda é manual.`,
       agente:
-        "Me ajude a deixar claro o fluxo de pagamento e entrega do meu app. Quero reduzir dúvidas de compradores sobre acesso, liberação, login, suporte e o que acontece depois da compra.",
+        `Me ajude a deixar claro o fluxo de pagamento e entrega do app [nome do app ativo].
+
+Produto: [produto]
+Modelo: [modelo de cobrança]
+
+Quero cobrir: preço, forma de pagamento, momento da liberação, pendência, recuperação de acesso, o que está e o que não está incluso, e política de reembolso/cancelamento.`,
       corrigir:
-        "O fluxo de pagamento e entrega está gerando dúvida. Reescreva as mensagens da página de venda, checkout, obrigado e entrega para explicar o próximo passo de forma objetiva.",
+        `O fluxo de pagamento e entrega do app [nome do app ativo] está gerando dúvida. Reescreva as mensagens da venda, checkout, obrigado e entrega cobrindo preço, liberação, pendência, recuperação, incluso/não incluso e reembolso.`,
       avancar:
-        "Avance quando o comprador conseguir entender o que acontece antes e depois do pagamento.",
+        "Avance quando o comprador entender preço, liberação, pendência, recuperação e reembolso sem precisar de suporte.",
     },
   },
   {
@@ -88,13 +162,31 @@ const ETAPAS: Etapa[] = [
     title: "Criar suporte claro",
     tabs: {
       lovable:
-        "Revise ou crie uma área de Suporte simples para meu app. Ela deve explicar como pedir ajuda, qual e-mail ou canal usar, problemas comuns de acesso, compra, login, código ou entrega, e o prazo de resposta se houver. Não invente canal que não exista.",
+        `Crie ou melhore a página de Suporte do app [nome do app ativo].
+
+App: [descreva o app]
+Produto: [produto]
+
+Inclua, em linguagem simples:
+
+1. Canal de suporte (e-mail, WhatsApp ou formulário — escolher um).
+2. Prazo estimado de resposta (ex.: até 24h em dias úteis).
+3. Horário de atendimento, se houver.
+4. Tipo de problema atendido (acesso, login, compra, conteúdo, bug).
+5. O que o suporte NÃO cobre (orientação clínica, jurídica, financeira individual; resultado garantido; questões fora do escopo do app).
+6. Caminho claro para problemas de pagamento ou acesso (passo a passo).
+
+Não invente canal que não exista. Não prometa atendimento imediato 24/7 se não for verdade.`,
       agente:
-        "Me ajude a criar uma página de suporte objetiva para meu app. Quero reduzir mensagens repetidas e orientar o usuário sobre problemas de login, acesso, compra, entrega e dúvidas comuns.",
+        `Me ajude a estruturar uma página de suporte objetiva para o app [nome do app ativo].
+
+O que o app faz: [descreva o app]
+
+Quero cobrir: canal de contato, prazo, horário, escopo atendido, escopo NÃO atendido e fluxo para problemas de pagamento/acesso.`,
       corrigir:
-        "A página de suporte está fraca ou incompleta. Organize por perguntas frequentes, problemas comuns e canal de contato, usando linguagem simples e direta.",
+        `A página de suporte do app [nome do app ativo] está fraca ou incompleta. Organize por canal, prazo, horário, escopo, escopo NÃO coberto e fluxo de pagamento/acesso, em linguagem simples.`,
       avancar:
-        "Avance quando o usuário souber onde pedir ajuda e o que fazer em caso de problema.",
+        "Avance quando o usuário souber onde pedir ajuda, em quanto tempo é respondido e o que está fora do suporte.",
     },
   },
   {
@@ -103,11 +195,31 @@ const ETAPAS: Etapa[] = [
     title: "Revisar promessa e confiança",
     tabs: {
       lovable:
-        "Revise todos os textos principais do meu app, especialmente home, página de venda, checkout, obrigado e entrega. Remova promessas exageradas, garantias irreais ou frases que possam parecer enganosas. Reforce clareza, benefício, segurança, suporte e transparência.",
+        `Revise todos os textos principais do app [nome do app ativo] (home, página de venda, checkout, obrigado, entrega).
+
+Promessa atual: [promessa]
+Público: [descreva o público]
+Dor que resolve: [descreva a dor]
+
+Verifique e ajuste para que:
+
+1. A promessa esteja realista e coerente com o que o app entrega.
+2. NÃO exista garantia absoluta (cura, salvação, ganho, previsão, encontrar amor).
+3. NÃO exista promessa enganosa ou exagerada.
+4. O usuário entenda os limites do app (o que ele faz e o que ele NÃO faz).
+5. Exista uma seção de confiança (sobre, suporte, política, contato).
+6. Exista um FAQ com dúvidas sensíveis (privacidade, reembolso, garantia, suporte).
+7. A linguagem seja clara para leigos.
+
+Mantenha força comercial, mas substitua exagero por clareza, utilidade e transparência.`,
       agente:
-        "Me ajude a revisar a promessa do meu app. Quero vender com força, mas sem prometer resultado garantido, sem exagero e sem gerar desconfiança.",
+        `Me ajude a revisar a promessa do app [nome do app ativo]. Quero vender com força, mas sem prometer resultado garantido, sem exagero e sem gerar desconfiança.
+
+Promessa atual: [promessa]
+Público: [descreva o público]
+Dor: [descreva a dor]`,
       corrigir:
-        "Os textos do meu app estão exagerados ou pouco confiáveis. Reescreva para manter força comercial, mas com promessa responsável, clareza e confiança.",
+        `Os textos do app [nome do app ativo] estão exagerados ou pouco confiáveis. Reescreva mantendo força comercial, mas com promessa responsável, limites claros, FAQ honesto e linguagem para leigos.`,
       avancar:
         "Avance quando o app vender com clareza, sem promessas irreais e com páginas de confiança acessíveis.",
     },
