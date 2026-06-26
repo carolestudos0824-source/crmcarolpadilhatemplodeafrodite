@@ -2075,10 +2075,16 @@ const CriativosIntro = () => {
           Nesta etapa, você transforma sua oferta em imagens, vídeos, posts,
           stories e anúncios para testar o interesse real do público.
         </p>
-        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-5">
+        <p className="text-[13px] md:text-sm text-accent/90 max-w-3xl mb-3">
           Criativo não é só arte bonita. É uma mensagem visual com dor,
           promessa e chamada para ação.
         </p>
+        {projectName && (
+          <p className="text-[13px] md:text-sm text-foreground/80 max-w-3xl mb-5 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2">
+            Projeto em foco: <span className="font-semibold text-accent">{projectName}</span>. Use o contexto do projeto em foco para criar criativos mais específicos.
+          </p>
+        )}
+
 
         <div className="rounded-xl border border-white/10 bg-white/5 p-4 mb-5">
           <div className="flex flex-wrap items-center gap-2 md:gap-3">
