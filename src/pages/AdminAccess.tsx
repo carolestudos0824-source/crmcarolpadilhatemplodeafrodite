@@ -223,16 +223,12 @@ function AdminAccessInner() {
     let mounted = true;
     setAuthChecked(false);
     setAuthError(null);
+    setIsAdmin(false);
+    setAdminEmail(null);
+    setSelfHasAccess(null);
     (async () => {
       try {
-        // Use getSession (reads from local storage, no network round-trip)
-        // instead of getUser to avoid hangs when the auth network call stalls.
-        const { data: sessionData } = await withTimeout(
-          supabase.auth.getSession(),
-          15000,
-          "sessão admin",
-        );
-        const sessionUser = sessionData?.session?.user ?? null;
+        const sessionUser = await loadAdminSessionUser();
         if (!sessionUser) {
           if (!mounted) return;
           navigate("/login", { replace: true });
@@ -242,29 +238,36 @@ function AdminAccessInner() {
         // Run checks independently so a slow user_access query does not
         // block the admin guard. is_admin() is the only one that gates UI.
         const adminPromise = supabase.rpc("is_admin").then(
-          (r) => r,
-          (e) => ({ data: false, error: e }),
+          (r): AdminPermissionResult => ({ data: Boolean(r.data), error: r.error }),
+          (e): AdminPermissionResult => ({ data: false, error: e }),
         );
         const accessPromise = supabase
           .from("user_access")
           .select("has_access")
           .eq("user_id", uid)
           .maybeSingle()
-          .then((r) => r, (e) => ({ data: null, error: e }));
+          .then(
+            (r): SelfAccessResult => ({ data: r.data, error: r.error }),
+            (e): SelfAccessResult => ({ data: null, error: e }),
+          );
 
-        const adminRes = await withTimeout(adminPromise, 15000, "permissão admin");
+        const adminRes = await withTimeout(adminPromise, ADMIN_PERMISSION_TIMEOUT_MS, "permissão admin");
+        if (adminRes.error) throw new Error(adminRes.error.message ?? "Não foi possível validar a permissão admin.");
         // user_access is non-blocking metadata; tolerate slowness/failures.
         const accessRes = await Promise.race([
           accessPromise,
-          new Promise<{ data: null; error: Error }>((resolve) =>
-            setTimeout(() => resolve({ data: null, error: new Error("slow") }), 8000),
+          new Promise<SelfAccessResult>((resolve) =>
+            setTimeout(
+              () => resolve({ data: null, error: new Error("slow") }),
+              ADMIN_ACCESS_METADATA_TIMEOUT_MS,
+            ),
           ),
         ]);
         if (!mounted) return;
-        setIsAdmin(Boolean((adminRes as { data?: unknown }).data));
+        setIsAdmin(Boolean(adminRes.data));
         setAdminEmail(sessionUser.email ?? null);
         setSelfHasAccess(
-          (accessRes as { data?: { has_access?: boolean } | null }).data?.has_access ?? false,
+          accessRes.data?.has_access ?? false,
         );
         setAuthChecked(true);
       } catch (e) {
