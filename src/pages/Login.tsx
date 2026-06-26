@@ -920,7 +920,7 @@ export default function Login() {
                 Ainda não comprou?
               </h3>
               <p className="text-xs text-muted-foreground mb-3">
-                Garanta a Fábrica de Apps com IA por R$47, pagamento único.
+                Garanta a Fábrica de Apps com IA por R$197 à vista ou 12x de R$19,70.
               </p>
               <button
                 type="button"

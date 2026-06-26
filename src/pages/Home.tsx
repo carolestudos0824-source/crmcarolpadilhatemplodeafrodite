@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import {
-  Sparkles, Layers, Database, DollarSign, Rocket, Brain, Target, ChevronRight,
-  FileText, Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
-  Calendar, Lightbulb, Palette, Code2, Check,
+  Sparkles, Layers, Database, Rocket, Brain, Target, ChevronRight,
+  Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
+  Calendar, Lightbulb, Check, ShieldCheck, PlayCircle,
 } from "lucide-react";
 import { Section } from "@/components/Section";
 import { GlassCard } from "@/components/GlassCard";
@@ -12,98 +12,107 @@ import { FAQItem } from "@/components/FAQItem";
 const planoExecutavel = [
   { icon: <Brain size={20} />, t: "Diagnóstico da ideia" },
   { icon: <Layers size={20} />, t: "MVP enxuto" },
-  { icon: <Workflow size={20} />, t: "Arquitetura do app" },
-  { icon: <Database size={20} />, t: "Banco de dados e telas" },
-  { icon: <Wand2 size={20} />, t: "Prompts para IA" },
-  { icon: <Megaphone size={20} />, t: "Campanha de lançamento" },
-  { icon: <LineChart size={20} />, t: "Métricas para validar" },
+  { icon: <Workflow size={20} />, t: "Arquitetura e telas" },
+  { icon: <Database size={20} />, t: "Login, banco e Supabase" },
+  { icon: <Wand2 size={20} />, t: "Prompts estruturados para o Lovable" },
+  { icon: <ShieldCheck size={20} />, t: "Auditoria antes de corrigir" },
+  { icon: <ListChecks size={20} />, t: "Checklist de próximo passo" },
 ];
 
 const entregasFinais = [
-  "Diagnóstico estratégico da ideia",
-  "MVP com no máximo 5 funcionalidades",
-  "Arquitetura do aplicativo",
-  "Fluxo do usuário",
-  "Stack recomendada",
-  "Modelo de banco de dados",
-  "Estrutura de páginas",
-  "Design recomendado",
-  "Plano de monetização",
-  "Plano de lançamento",
-  "Prompt mestre para Lovable, Cursor, Claude Code, Gemini, Replit, Supabase, Firebase, Vercel ou Netlify",
-  "Campanha pronta para divulgar",
-  "Métricas para acompanhar",
+  "Ideia organizada com público, dor e promessa definidos",
+  "MVP enxuto com funcionalidades priorizadas",
+  "Telas principais e fluxo do usuário mapeados",
+  "Plano de login, banco de dados e Supabase",
+  "Plano de monetização e área paga",
+  "Caminho de checkout e publicação",
+  "Auditoria de melhorias do app existente",
+  "Prompts estruturados prontos para colar no Lovable",
+  "Checklist para avançar sem quebrar o que funciona",
+  "Próximo comando recomendado em cada etapa",
 ];
 
 const centralVendas = [
-  { icon: <Target size={20} />, t: "Diagnóstico da campanha" },
-  { icon: <Wand2 size={20} />, t: "Gerador de campanha" },
-  { icon: <Lightbulb size={20} />, t: "Campanhas prontas" },
-  { icon: <ImageIcon size={20} />, t: "Criativos e textos" },
-  { icon: <Calendar size={20} />, t: "Plano de 7 dias" },
-  { icon: <LineChart size={20} />, t: "Calculadora de métricas" },
-  { icon: <Sparkles size={20} />, t: "Melhorias sugeridas" },
-  { icon: <Megaphone size={20} />, t: "Campanha pronta para copiar" },
+  { icon: <Target size={20} />, t: "Definição de oferta" },
+  { icon: <Wand2 size={20} />, t: "Página de venda" },
+  { icon: <Lightbulb size={20} />, t: "Checkout e entrega" },
+  { icon: <ImageIcon size={20} />, t: "Área paga estruturada" },
+  { icon: <Calendar size={20} />, t: "Comunicação de valor" },
+  { icon: <LineChart size={20} />, t: "Métricas para acompanhar" },
+  { icon: <Sparkles size={20} />, t: "Próximos passos de publicação" },
+  { icon: <Megaphone size={20} />, t: "Material pronto para revisar" },
 ];
 
 const mockups = [
-  { icon: <Brain size={22} />, t: "Diagnóstico do app", d: "Análise do potencial, público e formato ideal da sua ideia." },
-  { icon: <Wand2 size={22} />, t: "Prompt mestre", d: "Comando completo para colar em Lovable, Cursor, Claude ou Gemini." },
-  { icon: <Megaphone size={22} />, t: "Central de Vendas", d: "Sete módulos para criar uma campanha sem travar." },
-  { icon: <Rocket size={22} />, t: "Campanha pronta", d: "Texto, criativo, oferta e canal — tudo consolidado pra publicar." },
-  { icon: <LineChart size={22} />, t: "Calculadora de métricas", d: "CPC, CPA, ROAS e diagnóstico automático do resultado." },
-  { icon: <ListChecks size={22} />, t: "Checklist de progresso", d: "Acompanhe a execução etapa por etapa, salvo no seu acesso." },
+  { icon: <Brain size={22} />, t: "Planejamento do app", d: "Estruture ideia, público, dor e promessa antes de mandar o Lovable construir." },
+  { icon: <Layers size={22} />, t: "MVP e Arquitetura", d: "Defina o mínimo funcional e a arquitetura para evitar app inchado." },
+  { icon: <Workflow size={22} />, t: "Telas e Fluxo", d: "Mapeie telas principais e fluxo do usuário em ordem de construção." },
+  { icon: <Database size={22} />, t: "Login e Banco", d: "Planeje auth, Supabase, banco e permissões com prompts seguros." },
+  { icon: <Rocket size={22} />, t: "Monetização e Checkout", d: "Estruture oferta, checkout, entrega e área paga sem improviso." },
+  { icon: <ShieldCheck size={22} />, t: "Auditoria de Segurança", d: "Revise riscos, RLS, login e pontos sensíveis antes de publicar." },
+  { icon: <ListChecks size={22} />, t: "Melhorias e Versões", d: "Audite o app existente e evolua por versões sem quebrar o que funciona." },
+  { icon: <Wand2 size={22} />, t: "Prompts recomendados", d: "Receba comandos estruturados para colar direto no Lovable." },
+  { icon: <LineChart size={22} />, t: "Estado Atual do Projeto", d: "Veja contexto, progresso e próximo passo recomendado em cada módulo." },
 ];
 
 const beneficios = [
-  "Análise da ideia", "MVP enxuto", "Arquitetura do app", "Banco de dados",
-  "Telas e fluxo do usuário", "Monetização", "Plano de lançamento",
-  "Prompt mestre para construir", "Central de Vendas e Aquisição",
-  "Campanhas e criativos", "Métricas de validação", "Checklist de execução",
+  "Acesso à plataforma guiada",
+  "Projeto em foco",
+  "Contexto personalizado",
+  "Próximo passo recomendado",
+  "Prompts estruturados para o Lovable",
+  "Checklists de avanço",
+  "Jornada para começar do zero",
+  "Jornada para construir por versões",
+  "Jornada para auditar app existente",
+  "Orientações para MVP, telas, banco, login, checkout e melhorias",
 ];
 
 const naoIncluso = [
-  "Não desenvolvemos o app por você",
-  "Não prometemos venda nem resultado garantido",
-  "Não substitui validação com usuários reais",
-  "Não inclui tráfego pago ou gestão de anúncios",
-  "Não inclui suporte individual ilimitado",
+  "Não inclui desenvolvimento humano sob demanda",
+  "Não inclui garantia de aprovação, vendas ou faturamento",
+  "Não inclui promessa de app perfeito ou segurança 100%",
+  "Não inclui suporte técnico ilimitado",
+  "Não substitui validação, testes e revisão do usuário",
+  "Não garante economia de créditos no Lovable",
 ];
 
 const dores = [
-  "Não saber por onde começar",
-  "Copiar prompt genérico e receber app quebrado",
-  "Ter tela bonita, mas sem login, banco, segurança ou venda",
-  "Medo de publicar e o primeiro usuário encontrar erro",
-  "Medo de alguém acessar área paga sem permissão",
-  "Medo de gastar créditos sem chegar em um app funcional",
+  "Chega de copiar prompts aleatórios sem saber se está na etapa certa",
+  "Chega de tentar corrigir um botão e quebrar outras 3 telas",
+  "Chega de gastar créditos do Lovable em comandos vagos",
+  "Chega de criar um app inchado antes do MVP funcionar",
+  "Chega de se perder entre telas, Supabase, login, checkout e publicação",
+  "Chega de entrar em loop de correções sem chegar em um app funcional",
 ];
 
 const paraQuemE = [
-  "Pessoas empreendedoras com uma ideia para tirar do papel",
-  "Criadores de conteúdo que querem transformar audiência em produto",
-  "Terapeutas, mentores e profissionais digitais",
-  "Prestadores de serviço e pequenos negócios",
-  "Infoprodutores que querem um app próprio",
-  "Iniciantes que querem criar sem depender de programação",
+  "Quem quer criar um app no Lovable sem programar",
+  "Quem tem uma ideia e não sabe transformar em MVP",
+  "Quem já começou um app e se perdeu",
+  "Quem quer reduzir retrabalho com prompts melhores",
+  "Quem precisa organizar telas, banco, login, checkout e monetização",
+  "Quem quer seguir uma ordem clara antes de pedir tudo ao Lovable",
 ];
 
 const naoEParaQuem = [
-  "Quem quer promessa de dinheiro fácil",
-  "Quem quer app pronto sem pensar nem revisar",
-  "Quem espera resultado garantido",
-  "Quem quer pular segurança, teste e revisão",
+  "Quem quer garantia de resultado sem executar",
+  "Quem quer que a plataforma faça tudo sozinha sem decisões",
+  "Quem quer criar qualquer app complexo de uma vez",
+  "Quem procura promessa de app perfeito ou segurança 100%",
+  "Quem não pretende testar, validar ou seguir etapas",
 ];
 
 const faqs = [
-  { q: "Eu recebo só um plano ou também prompts?", a: "Você recebe o plano completo do app E os prompts prontos: prompt mestre para construir, prompts de landing, checkout, monetização e lançamento — além da Central de Vendas e Aquisição." },
-  { q: "Isso serve para quem vai usar Lovable ou Cursor?", a: "Sim. O prompt mestre foi escrito para funcionar em Lovable, Cursor, Claude Code, Gemini, Replit e ferramentas similares com Supabase, Firebase, Vercel ou Netlify." },
-  { q: "O programa me ajuda a lançar a ideia?", a: "Sim. Além do plano técnico, você tem o plano de lançamento e a Central de Vendas, com campanhas prontas, criativos, plano de 7 dias e calculadora de métricas." },
-  { q: "A Central de Vendas está inclusa?", a: "Sim. Está inclusa no mesmo acesso, sem custo adicional." },
-  { q: "O pagamento é único?", a: "Sim. R$47 de pagamento único, sem mensalidade nem cobrança recorrente. O acesso à área do aluno é liberado após a confirmação do pagamento." },
-  { q: "Preciso saber programar?", a: "Não. A Fábrica foi feita para quem não programa e quer usar IA para tirar a ideia do papel." },
-  { q: "Recebo um app pronto?", a: "Não. Você recebe o plano executável e os prompts. Quem constrói o app é você, com a IA da sua preferência." },
-  { q: "Preciso ter conta no ChatGPT?", a: "Sim, para usar o Agente Arquiteto Supremo. O produto não inclui assinatura de ChatGPT nem de outras ferramentas externas." },
+  { q: "Preciso saber programar?", a: "Não. A Fábrica foi criada para ajudar pessoas não técnicas a organizar a construção e gerar comandos melhores para o Lovable." },
+  { q: "Isso funciona com Lovable?", a: "Sim. A Fábrica foi pensada para guiar a criação de apps no Lovable, com prompts estruturados, etapas e checklists." },
+  { q: "A Fábrica cria o app por mim?", a: "Não automaticamente. Ela guia você com contexto, módulos e prompts para aplicar no Lovable com mais clareza." },
+  { q: "Posso usar se já comecei meu app?", a: "Sim. Existe uma jornada para quem já tem app, com auditoria, correções, melhorias e preservação do que já funciona." },
+  { q: "Isso ajuda com Supabase, login e banco?", a: "Sim. A Fábrica ajuda a planejar e revisar pontos como login, banco, área paga, checkout, permissões e riscos." },
+  { q: "Vou economizar créditos no Lovable?", a: "A Fábrica não promete economia garantida, mas ajuda a reduzir prompts vagos, retrabalho e tentativas sem direção." },
+  { q: "É curso, PDF ou plataforma?", a: "É uma plataforma guiada com módulos, contexto do projeto, prompts, checklists e próximo passo recomendado." },
+  { q: "Qual é o preço?", a: "A oferta de lançamento é R$197 à vista ou 12x de R$19,70, se disponível no checkout." },
+  { q: "Tem garantia?", a: "Sim. Você tem 7 dias para acessar, conhecer a plataforma e solicitar reembolso se perceber que ela não é para você." },
 ];
 
 export default function Home() {
@@ -112,7 +121,7 @@ export default function Home() {
 
   return (
     <>
-      {/* HERO */}
+      {/* HERO — cubo preservado integralmente */}
       <section className="relative pt-12 md:pt-20 pb-16">
         <div className="container grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 animate-fade-up">
@@ -121,16 +130,19 @@ export default function Home() {
               Crie seu app do zero com IA, mesmo sem saber programar
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              Siga uma jornada guiada com 24 etapas, comandos prontos para o Lovable, revisão dentro do app e um Agente Arquiteto para ajudar você a pensar cada decisão.
+              Siga uma jornada guiada para sair da ideia, organizar seu MVP, criar prompts melhores e construir no Lovable com mais clareza e menos retrabalho.
+            </p>
+            <p className="text-sm text-accent/90 italic max-w-xl">
+              Criado no Lovable usando o mesmo método que você vai acessar.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
-                Quero criar meu plano por R$47 <ChevronRight size={18} />
+                Quero acessar por R$197 <ChevronRight size={18} />
               </button>
-              <a href="#incluso" className="btn-ghost">Ver o que está incluso</a>
+              <a href="#incluso" className="btn-ghost">Ver como funciona</a>
             </div>
             <p className="text-sm text-muted-foreground/80">
-              Sem precisar programar. Use o plano em Lovable, Cursor, Claude, Gemini ou Replit.
+              Oferta de lançamento: R$197 à vista ou 12x de R$19,70. Pagamento único, sem mensalidade.
             </p>
           </div>
           <div className="order-first lg:order-last">
@@ -138,6 +150,18 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ARQUITETO vs PEDREIRO */}
+      <Section
+        eyebrow="Por que a Fábrica existe"
+        title="O Lovable é o pedreiro. A Fábrica é o arquiteto."
+      >
+        <div className="max-w-3xl mx-auto glass-strong p-6 md:p-10">
+          <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
+            O Lovable constrói rápido. Mas se você não entregar uma planta clara, ele pode criar telas fora de ordem, banco confuso, fluxos quebrados e funcionalidades demais. A Fábrica de Apps com IA organiza a planta antes da construção: <span className="text-accent">ideia, MVP, telas, banco, login, monetização, auditoria e próximos comandos</span>.
+          </p>
+        </div>
+      </Section>
 
       {/* DOR */}
       <Section
@@ -157,11 +181,11 @@ export default function Home() {
         </div>
       </Section>
 
-
       {/* PLANO EXECUTÁVEL */}
       <Section
         eyebrow="Mais do que um PDF"
-        title="Você não recebe só um PDF. Você recebe um plano executável."
+        title="Você não recebe só um PDF. Você recebe uma plataforma guiada."
+        subtitle="Você não compra uma lista de prompts. Você acessa uma plataforma que guia sua construção: escolhe o projeto, preenche o contexto, vê o próximo passo e copia o comando certo para o Lovable."
       >
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {planoExecutavel.map((p) => (
@@ -178,7 +202,7 @@ export default function Home() {
         id="incluso"
         eyebrow="Entrega completa"
         title="No final, você sai com isso pronto"
-        subtitle="Tudo organizado, em um único acesso, pronto pra colar nas ferramentas que você já usa."
+        subtitle="Tudo organizado em um único acesso, pronto para colar no Lovable e nas ferramentas que você já usa."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
           <ul className="grid md:grid-cols-2 gap-3">
@@ -192,11 +216,11 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* CENTRAL DE VENDAS */}
+      {/* DEPOIS DO PLANO — VENDA */}
       <Section
-        eyebrow="Central de Vendas e Aquisição"
+        eyebrow="Depois da construção"
         title="Depois do plano, você também prepara a venda"
-        subtitle="Use a Central de Vendas e Aquisição para transformar sua ideia em uma campanha simples, copiável e mensurável."
+        subtitle="Estruture oferta, página de venda, checkout, entrega, área paga e comunicação de valor — com etapas claras e sem prometer resultado garantido."
       >
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {centralVendas.map((c) => (
@@ -208,16 +232,15 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* MOCKUPS / DENTRO DO PRODUTO */}
+      {/* MÓDULOS */}
       <Section
-        eyebrow="Por dentro do produto"
+        eyebrow="Por dentro da plataforma"
         title="Veja o que você encontra por dentro"
-        subtitle="Uma jornada guiada da ideia ao lançamento, com checklists e blocos prontos pra copiar."
+        subtitle="Módulos práticos por etapa, com contexto do projeto em foco e próximo passo recomendado."
       >
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {mockups.map((m) => (
             <GlassCard key={m.t} className="space-y-4">
-              {/* Mockup visual */}
               <div className="rounded-lg border border-border/60 bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4 h-36 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <div className="text-accent">{m.icon}</div>
@@ -242,16 +265,37 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* VÍDEO DEMONSTRATIVO — placeholder */}
+      <Section
+        eyebrow="Demonstração"
+        title="Veja a Fábrica funcionando dentro do Lovable"
+      >
+        <div className="max-w-3xl mx-auto glass-strong p-8 md:p-12 text-center">
+          <div className="mx-auto w-16 h-16 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-4">
+            <PlayCircle size={32} className="text-accent" />
+          </div>
+          <p className="text-base text-foreground/90 leading-relaxed mb-2">
+            Em breve, você verá em poucos minutos como a Fábrica transforma contexto, projeto em foco e próximo passo em um prompt pronto para colar no Lovable.
+          </p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70 mt-4">
+            Vídeo demonstrativo em breve
+          </p>
+        </div>
+      </Section>
+
       {/* PREÇO */}
       <Section
         eyebrow="Oferta de lançamento"
-        title="Acesso completo por R$47"
-        subtitle="Pagamento único. Acesso liberado após confirmação. Sem mensalidade."
+        title="Acesso completo à Fábrica de Apps com IA"
+        subtitle="Um app mal planejado pode consumir créditos, tempo e retrabalho. A Fábrica ajuda você a chegar no Lovable com mais clareza antes de mandar construir."
       >
         <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
           <div className="text-center mb-6">
-            <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$47</div>
-            <p className="text-sm text-muted-foreground mt-2">Pagamento único · Acesso liberado após confirmação</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Oferta de lançamento</p>
+            <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$197</div>
+            <p className="text-base text-foreground/90 mt-2 font-medium">à vista</p>
+            <p className="text-sm text-muted-foreground mt-1">ou 12x de R$19,70</p>
+            <p className="text-xs text-muted-foreground/80 mt-3">Oferta de lançamento por tempo limitado · Acesso liberado após confirmação</p>
           </div>
           <ul className="grid sm:grid-cols-2 gap-2.5 mb-8">
             {beneficios.map((b) => (
@@ -262,15 +306,18 @@ export default function Home() {
             ))}
           </ul>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Acessar agora por R$47 <ChevronRight size={18} />
+            Quero acessar por R$197 <ChevronRight size={18} />
           </button>
-          <p className="text-xs md:text-sm text-muted-foreground/80 mt-4 text-center">
-            Preço de lançamento enquanto o produto está em fase inicial.
-          </p>
+          <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
+            <ShieldCheck size={20} className="text-accent shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              <span className="font-semibold">Garantia de 7 dias:</span> entre, veja a plataforma por dentro e, se perceber que ela não é para você, solicite o reembolso dentro do prazo.
+            </p>
+          </div>
         </div>
       </Section>
 
-      {/* PARA QUEM É / NÃO É PARA QUEM */}
+      {/* PARA QUEM É / NÃO É */}
       <Section eyebrow="Audiência" title="Para quem é e para quem não é">
         <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
           <div className="glass-strong p-6 md:p-8">
@@ -311,7 +358,6 @@ export default function Home() {
         </div>
       </Section>
 
-
       {/* FAQ */}
       <Section eyebrow="Dúvidas" title="Perguntas frequentes">
         <div className="max-w-3xl mx-auto space-y-3">
@@ -323,16 +369,16 @@ export default function Home() {
       <Section>
         <div className="glass-strong p-10 md:p-16 text-center max-w-4xl mx-auto neon-shadow">
           <h2 className="text-3xl md:text-5xl font-heading font-bold text-gradient mb-4">
-            Da ideia ao lançamento, no mesmo acesso
+            Da ideia ao Lovable, com a planta pronta
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Plano, prompts e campanha — tudo pronto pra você executar com IA.
+            Plataforma guiada, contexto do projeto, prompts estruturados e próximo passo em cada etapa.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Garantir acesso por R$47 <ChevronRight size={18} />
+            Quero acessar por R$197 <ChevronRight size={18} />
           </button>
           <p className="text-sm text-muted-foreground/80 mt-4">
-            Pagamento único. Sem mensalidade.
+            R$197 à vista ou 12x de R$19,70. Pagamento único, sem mensalidade. Garantia de 7 dias.
           </p>
         </div>
       </Section>
