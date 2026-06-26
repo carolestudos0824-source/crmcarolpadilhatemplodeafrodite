@@ -53,7 +53,7 @@ export class AdminErrorBoundary extends Component<Props, State> {
     }
 
     return (
-      <div className="glass-strong p-6">
+      <div className="admin-card">
         <div className="flex items-start gap-3">
           <AlertTriangle size={20} className="text-amber-300 shrink-0 mt-0.5" />
           <div className="min-w-0 flex-1">
@@ -94,7 +94,7 @@ export function AdminRouteErrorFallback({
 
   return (
     <div className="min-h-screen bg-[#05070D] text-foreground flex items-center justify-center px-4">
-      <div className="max-w-lg w-full glass-strong p-8">
+      <div className="max-w-lg w-full admin-card p-8">
         <AlertTriangle className="text-amber-300 mb-4" size={30} />
         <h1 className="text-xl font-heading font-bold mb-2">
           Não foi possível carregar o painel admin

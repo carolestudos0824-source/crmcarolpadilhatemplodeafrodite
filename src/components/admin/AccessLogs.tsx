@@ -18,9 +18,6 @@ export type AccessLog = {
 
 type Filter = "all" | "grants" | "revokes" | "mine" | "today";
 
-const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
-
 const ACTION_LABEL: Record<string, string> = {
   grant_access: "Acesso liberado",
   revoke_access: "Acesso revogado",
@@ -128,7 +125,7 @@ export function AccessLogs({ refreshKey = 0 }: { refreshKey?: number }) {
         <div className="relative flex-1">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
-            className={inputCls + " pl-8"}
+            className="admin-input pl-8"
             placeholder="Filtrar por e-mail"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -164,7 +161,7 @@ export function AccessLogs({ refreshKey = 0 }: { refreshKey?: number }) {
             <Loader2 size={16} className="animate-spin" /> Carregando histórico...
           </div>
         ) : error ? (
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-200 text-sm px-4 py-3">
+          <div className="admin-alert admin-alert-warning">
             {error.msg}
           </div>
         ) : filtered.length === 0 ? (

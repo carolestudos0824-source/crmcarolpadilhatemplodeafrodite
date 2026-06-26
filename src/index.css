@@ -320,4 +320,43 @@
     border-top: 1px solid hsl(var(--admin-border-subtle));
     @apply my-4;
   }
+
+  /* ---------- Input padrão admin ---------- */
+  .admin-input {
+    background: hsl(var(--admin-surface-1));
+    border: 1px solid hsl(var(--admin-border-subtle));
+    color: hsl(var(--foreground));
+    @apply w-full rounded-lg px-3 py-2 text-sm placeholder:text-muted-foreground/50 transition outline-none;
+  }
+  .admin-input:focus {
+    border-color: hsl(var(--admin-accent) / 0.6);
+    box-shadow: 0 0 0 2px hsl(var(--admin-accent) / 0.2);
+  }
+  .admin-input:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ---------- Alertas inline ---------- */
+  .admin-alert {
+    @apply flex items-start gap-2 rounded-xl border px-4 py-3 text-sm;
+  }
+  .admin-alert-success {
+    background: hsl(var(--admin-success-soft));
+    color: hsl(var(--admin-success));
+    border-color: hsl(var(--admin-success) / 0.35);
+  }
+  .admin-alert-warning {
+    background: hsl(var(--admin-warning-soft));
+    color: hsl(var(--admin-warning));
+    border-color: hsl(var(--admin-warning) / 0.35);
+  }
+  .admin-alert-danger {
+    background: hsl(var(--admin-destructive-soft));
+    color: hsl(var(--admin-destructive));
+    border-color: hsl(var(--admin-destructive) / 0.35);
+  }
+  .admin-alert-info {
+    background: hsl(var(--admin-info-soft));
+    color: hsl(var(--admin-info));
+    border-color: hsl(var(--admin-info) / 0.35);
+  }
 }
+

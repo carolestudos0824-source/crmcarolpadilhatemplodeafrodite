@@ -38,9 +38,6 @@ import { SupportInbox } from "@/components/admin/SupportInbox";
 import { SalesPanel } from "@/components/admin/SalesPanel";
 import { withTimeout } from "@/lib/promiseTimeout";
 
-const inputCls =
-  "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent/60 focus:ring-2 focus:ring-accent/20 transition";
-
 const PENDENCIAS_KEY = "fabrica_admin_prelaunch_checklist_v1";
 
 const PENDENCIAS_ITEMS = [
@@ -347,7 +344,7 @@ function AdminAccessInner() {
   if (authError) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md w-full glass-strong p-8 text-center space-y-4">
+        <div className="max-w-md w-full admin-card p-8 text-center space-y-4">
           <AlertTriangle className="mx-auto text-amber-300" size={28} />
           <div>
             <h1 className="text-xl font-heading font-bold mb-1">Não foi possível carregar o painel admin</h1>
@@ -383,7 +380,7 @@ function AdminAccessInner() {
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md w-full glass-strong p-8 text-center">
+        <div className="max-w-md w-full admin-card p-8 text-center">
           <AlertTriangle className="mx-auto text-red-400 mb-3" size={28} />
           <h1 className="text-xl font-heading font-bold mb-2">Acesso negado</h1>
           <p className="text-sm text-muted-foreground mb-4">
@@ -772,7 +769,7 @@ function AcessosSection({
         />
       </div>
 
-      <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-100 text-sm px-4 py-3 flex items-start gap-2">
+      <div className="admin-alert admin-alert-warning flex items-start gap-2">
         <AlertTriangle size={16} className="shrink-0 mt-0.5" />
         <span>
           Libere acesso apenas após confirmar o pagamento. Esta tela é exclusiva para administradores.
@@ -814,7 +811,7 @@ function AcessosSection({
           <label className="text-xs text-muted-foreground block font-semibold">E-mail do comprador</label>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
-              className={inputCls}
+              className="admin-input"
               type="email"
               placeholder="comprador@email.com"
               value={email}
@@ -841,7 +838,7 @@ function AcessosSection({
       )}
 
       {status.kind === "error" && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+        <div className="admin-alert admin-alert-danger">
           Não foi possível concluir a ação. Verifique sua permissão de admin.
           <div className="text-[11px] text-red-200/70 mt-1">Detalhe: {status.message}</div>
         </div>
@@ -849,7 +846,7 @@ function AcessosSection({
 
       {status.kind === "success" && (
         <div className="space-y-3">
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+          <div className="admin-alert admin-alert-success">
             {status.message}
           </div>
           {status.action === "grant" && (
@@ -994,7 +991,7 @@ function CompradoresSection({
     <div className="space-y-4">
       <BuyersList onView={onViewBuyer} onSetAccess={onSetBuyerAccess} />
 
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <h3 className="font-heading font-semibold text-sm mb-1">Busca operacional</h3>
         <p className="text-xs text-muted-foreground mb-4">
           A busca por comprador depende de o usuário já ter criado conta na área interna. Use o mesmo e-mail informado na compra.
@@ -1003,7 +1000,7 @@ function CompradoresSection({
           <label className="text-xs text-muted-foreground block font-semibold">E-mail do comprador</label>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
-              className={inputCls}
+              className="admin-input"
               type="email"
               placeholder="comprador@email.com"
               value={email}
@@ -1016,7 +1013,7 @@ function CompradoresSection({
           </div>
         </form>
         {status.kind === "found" && (
-          <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+          <div className="mt-4 admin-alert admin-alert-success flex items-center justify-between gap-3 flex-wrap">
             <span>Comprador localizado: {status.row.email}</span>
             <button onClick={onGoToAcessos} className="text-xs underline">
               Abrir em Acessos →
@@ -1030,7 +1027,7 @@ function CompradoresSection({
         )}
       </div>
 
-      <div className="glass-strong p-5">
+      <div className="admin-card">
         <h3 className="font-heading font-semibold text-sm mb-1">Observação</h3>
         <p className="text-xs text-muted-foreground">
           Para liberar, revogar ou ver detalhes do acesso, use a seção <button onClick={onGoToAcessos} className="text-accent underline">Acessos</button>.
@@ -1388,7 +1385,7 @@ function SelfGrant({ onChanged }: { onChanged?: (hasAccess: boolean) => void }) 
     onChanged?.(true);
   };
   return (
-    <div className="glass-strong p-6">
+    <div className="admin-card">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="font-heading font-semibold text-sm mb-1">Teste admin</h2>
