@@ -912,7 +912,7 @@ function AcessosSection({
               )}
             </button>
             <button
-              onClick={() => setAccess(row.user_id, false)}
+              onClick={() => setConfirmRevoke({ userId: row.user_id, email: row.email })}
               disabled={acting || !row.access_exists || row.has_access === false}
               className="btn-ghost flex-1 border border-red-500/30 text-red-200 hover:bg-red-500/10"
             >
@@ -921,6 +921,45 @@ function AcessosSection({
           </div>
         </div>
       )}
+
+      <Dialog open={!!confirmRevoke} onOpenChange={(v) => { if (!v) setConfirmRevoke(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ShieldOff size={16} className="text-red-300" />
+              Revogar acesso geral deste usuário?
+            </DialogTitle>
+            <DialogDescription className="space-y-2 pt-2 text-left">
+              {confirmRevoke?.email && (
+                <span className="block text-foreground font-medium">{confirmRevoke.email}</span>
+              )}
+              <span className="block">Esta ação remove o acesso geral deste usuário à área paga.</span>
+              <span className="block">Mesmo que existam vendas ativas vinculadas a este e-mail, o acesso geral será removido.</span>
+              <span className="block">Para revogar apenas uma venda específica preservando o acesso quando houver outra venda ativa, use a seção Vendas.</span>
+              <span className="block">Deseja continuar?</span>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button type="button" variant="outline" onClick={() => setConfirmRevoke(null)} disabled={acting}>
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                if (!confirmRevoke) return;
+                const id = confirmRevoke.userId;
+                setConfirmRevoke(null);
+                setAccess(id, false);
+              }}
+              disabled={acting}
+              className="bg-red-500/90 hover:bg-red-500 text-white border border-red-500/50"
+            >
+              {acting && <Loader2 size={14} className="animate-spin mr-2" />}
+              Revogar acesso geral
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <AccessLogs refreshKey={logsRefresh} />
     </div>
