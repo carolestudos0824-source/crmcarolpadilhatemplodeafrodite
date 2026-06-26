@@ -301,7 +301,7 @@ export default function Home() {
       <Section
         id="incluso"
         eyebrow="O que você terá ao final"
-        title="No final, você sai com isso pronto"
+        title="Ao seguir o programa, você constrói com mais clareza"
         subtitle="Sem promessa de app perfeito, sem garantia de venda. O que você ganha é caminho claro para sair da ideia e avançar no Lovable."
       >
         <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
