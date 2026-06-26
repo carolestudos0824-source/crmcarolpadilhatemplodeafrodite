@@ -140,7 +140,7 @@ export default function Home() {
               <button className="btn-primary" onClick={goCheckout}>
                 Quero acessar o programa por R$197 <ChevronRight size={18} />
               </button>
-              <a href="#incluso" className="btn-ghost">Ver o que está incluso</a>
+              <button onClick={goCheckout} className="btn-ghost">Quero parar de gastar créditos no escuro</button>
             </div>
             <p className="text-sm text-muted-foreground/80">
               Programa completo · Pagamento único de R$197 · Sem mensalidade · Garantia de 7 dias.
