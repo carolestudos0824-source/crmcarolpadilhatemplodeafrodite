@@ -101,7 +101,7 @@ export const TECHNICAL_GLOSSARY: TechnicalTerm[] = [
     whyItMatters: "Sem banco, o app esquece tudo entre cliques. Toda informação importante vive ali.",
     whenItEnters: "Já no começo, quando você precisa salvar conta de usuária ou conteúdo.",
     worryNow: "agora",
-    relatedModuleId: "login_banco",
+    relatedModuleId: "login",
   },
   {
     slug: "embedded-database",
