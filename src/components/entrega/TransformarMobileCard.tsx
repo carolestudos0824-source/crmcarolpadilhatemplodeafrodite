@@ -57,7 +57,7 @@ const PROMPTS = [
 export function TransformarMobileCard() {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState<Record<number, boolean>>({});
-  const { toast } = useToast();
+  
 
   const toggle = (i: number) =>
     setChecked((p) => ({ ...p, [i]: !p[i] }));
