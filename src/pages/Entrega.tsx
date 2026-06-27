@@ -83,6 +83,7 @@ import { ValidacaoModule } from "@/components/entrega/ValidacaoModule";
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
 import { TransformarMobileCard } from "@/components/entrega/TransformarMobileCard";
+import { TechnicalGlossaryDrawer } from "@/components/entrega/TechnicalGlossaryDrawer";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
@@ -492,6 +493,7 @@ function EntregaInner() {
               <span className="hidden sm:inline">Falar com o Agente</span>
             </button>
             <MyAppsHeaderButton />
+            <TechnicalGlossaryDrawer goTo={goTo} />
             <ContextHeaderButton />
             <FontSizeControl />
             {auth.isAdmin && (
