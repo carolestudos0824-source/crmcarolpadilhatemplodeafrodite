@@ -12,7 +12,7 @@ import {
   Apple,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 /**
  * Card educativo OPCIONAL — "Transformar em App Mobile".
