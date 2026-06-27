@@ -537,7 +537,7 @@ export default function Home() {
             Esta página, a área interna e o painel administrativo foram construídos no Lovable seguindo a mesma lógica que o programa ensina: <span className="text-accent">planejar, pedir, revisar, corrigir e avançar por etapas</span>. Não é promessa de que todo aluno terá o mesmo resultado — é a prova de que o método é executável na prática.
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70 mt-4">
-            Vídeo demonstrativo em breve
+            Demonstração prática será adicionada em breve.
           </p>
         </div>
       </Section>
