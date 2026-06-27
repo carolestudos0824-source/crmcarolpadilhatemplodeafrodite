@@ -51,8 +51,8 @@ export function TechnicalGlossaryDrawer({ goTo }: Props) {
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <button
           type="button"
           className="px-3 py-1.5 rounded-full border border-white/15 bg-white/[0.04] text-foreground/90 hover:bg-white/[0.08] inline-flex items-center gap-1.5 text-xs"
@@ -62,20 +62,20 @@ export function TechnicalGlossaryDrawer({ goTo }: Props) {
           <BookOpen size={12} />
           <span className="hidden sm:inline">Glossário</span>
         </button>
-      </SheetTrigger>
-      <SheetContent
+      </DialogTrigger>
+      <DialogContent
         side="right"
         className="w-full sm:max-w-xl bg-background border-l border-white/10 overflow-y-auto"
       >
-        <SheetHeader>
-          <SheetTitle className="font-heading flex items-center gap-2">
+        <DialogHeader>
+          <DialogTitle className="font-heading flex items-center gap-2">
             <BookOpen size={18} className="text-accent" />
             Glossário Técnico do App
-          </SheetTitle>
-          <SheetDescription className="text-xs">
+          </DialogTitle>
+          <DialogDescription className="text-xs">
             Consulta opcional. Use quando encontrar um termo técnico ou quiser entender uma decisão.
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         {/* Aviso */}
         <div className="mt-4 rounded-lg border border-amber-400/30 bg-amber-400/[0.06] p-3 flex gap-2">
@@ -176,8 +176,8 @@ export function TechnicalGlossaryDrawer({ goTo }: Props) {
             );
           })}
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
 
