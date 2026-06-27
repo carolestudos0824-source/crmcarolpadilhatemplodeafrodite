@@ -2499,6 +2499,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       <section>
         <FabricaLegalReminder text="Antes de publicar, confirme que seu app possui Termos de Uso, Política de Privacidade e contato visível. A Fábrica de Apps com IA tem documentos próprios:" />
         <PublicarDominioModule />
+        <TransformarMobileCard />
       </section>
     );
   }
