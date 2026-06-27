@@ -64,8 +64,7 @@ export function TechnicalGlossaryDrawer({ goTo }: Props) {
         </button>
       </DialogTrigger>
       <DialogContent
-        side="right"
-        className="w-full sm:max-w-xl bg-background border-l border-white/10 overflow-y-auto"
+        className="w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-background border border-white/10"
       >
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2">
