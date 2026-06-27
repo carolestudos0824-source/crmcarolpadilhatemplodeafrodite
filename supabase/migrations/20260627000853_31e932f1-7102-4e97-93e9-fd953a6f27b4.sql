@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.admin_list_manual_sales(integer, text, text, text, timestamptz, uuid) FROM PUBLIC, anon;
