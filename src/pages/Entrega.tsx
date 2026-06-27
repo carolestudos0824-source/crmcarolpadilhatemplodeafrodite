@@ -493,6 +493,7 @@ function EntregaInner() {
               <span className="hidden sm:inline">Falar com o Agente</span>
             </button>
             <MyAppsHeaderButton />
+            <TechnicalGlossaryDrawer goTo={goTo} />
             <ContextHeaderButton />
             <FontSizeControl />
             {auth.isAdmin && (
