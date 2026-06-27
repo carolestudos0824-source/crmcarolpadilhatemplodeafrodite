@@ -82,6 +82,7 @@ import { MelhoriasVersoesModule } from "@/components/entrega/MelhoriasVersoesMod
 import { ValidacaoModule } from "@/components/entrega/ValidacaoModule";
 import { ViabilityAnalysisCard } from "@/components/entrega/ViabilityAnalysisCard";
 import { JourneyStartGuide } from "@/components/entrega/JourneyStartGuide";
+import { TransformarMobileCard } from "@/components/entrega/TransformarMobileCard";
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
@@ -2499,6 +2500,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
       <section>
         <FabricaLegalReminder text="Antes de publicar, confirme que seu app possui Termos de Uso, Política de Privacidade e contato visível. A Fábrica de Apps com IA tem documentos próprios:" />
         <PublicarDominioModule />
+        <TransformarMobileCard />
       </section>
     );
   }
