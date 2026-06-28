@@ -88,6 +88,7 @@ import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { openAgenteArquiteto, copyPromptAndOpenAgent, AGENTE_ARQUITETO_URL } from "@/lib/agenteArquiteto";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { Bot } from "lucide-react";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
