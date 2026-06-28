@@ -314,25 +314,29 @@ export const AppProjectsProvider = ({ children }: { children: ReactNode }) => {
   }, [context]);
 
   /**
-   * Aplica o contexto de um projeto preservando dados já preenchidos.
-   * - Se o contexto do projeto tiver dados úteis, ele é aplicado integralmente
-   *   (o projeto "dono" do contexto manda).
-   * - Se vier praticamente vazio, mesclamos: campos preenchidos do projeto
-   *   substituem; campos vazios NÃO apagam o que já estava em memória.
-   * Isso evita que abrir/trocar para um projeto sem contexto faça os prompts
-   * voltarem ao modo genérico.
+   * SUBSTITUI o runtime context pelo contexto do projeto destino — SEM merge
+   * com dados do projeto anterior. Isto é obrigatório para impedir vazamento
+   * de contexto entre projetos (ex.: appName/audience/promise do projeto A
+   * contaminando prompts do projeto B).
+   *
+   * Regras:
+   * - se `incoming` tiver qualquer dado útil, aplica integralmente;
+   * - caso contrário, aplica EMPTY_PROJECT_CONTEXT (prompts mostram "[a definir]");
+   * - nunca preserva campos do `liveContextRef.current` (projeto anterior).
    */
   const applyProjectContextSafely = useCallback(
     (incoming: ProjectContext) => {
       if (hasUsefulProjectContext(incoming)) {
         setRuntimeContext(incoming);
+        liveContextRef.current = incoming;
         return;
       }
-      const merged = mergePreservingFilled(liveContextRef.current, incoming);
-      setRuntimeContext(merged);
+      setRuntimeContext(EMPTY_PROJECT_CONTEXT);
+      liveContextRef.current = EMPTY_PROJECT_CONTEXT;
     },
     [setRuntimeContext],
   );
+
 
   // Auth bootstrap
   useEffect(() => {
