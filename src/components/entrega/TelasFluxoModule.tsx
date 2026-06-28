@@ -412,58 +412,8 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         </GlassCard>
       )}
 
-      {/* Hero do Agente — ação principal */}
-      <GlassCard className="p-5 md:p-6 mb-6 border-accent/40 bg-gradient-to-br from-accent/[0.12] via-accent/[0.04] to-transparent shadow-[0_0_30px_-18px_rgba(0,194,255,0.6)]">
-        <div className="flex items-start gap-3 mb-3">
-          <div className="shrink-0 w-10 h-10 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
-            <Bot size={18} />
-          </div>
-          <div className="min-w-0">
-            <div className="text-[11px] uppercase tracking-wider text-accent/90 mb-1">
-              Comece por aqui
-            </div>
-            <h2 className="text-lg md:text-2xl font-heading font-bold leading-tight">
-              Mapear telas com o Agente Arquiteto
-            </h2>
-            <p className="text-sm md:text-base text-foreground/90 mt-1.5 leading-relaxed">
-              {journey
-                ? JOURNEY_TELAS_GUIDE[journey].heroSubtitle
-                : "Use o Agente para pensar telas, fluxo, CTAs e dados antes de pedir qualquer coisa ao Lovable. O Lovable entra só na Etapa 5, depois que o Mapa estiver claro."}
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2 mt-4">
-          <button
-            onClick={copyHeroAgent}
-            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-5 rounded-xl bg-accent text-accent-foreground hover:bg-accent/90 text-sm font-semibold transition"
-          >
-            <Bot size={14} /> Mapear telas com o Agente Arquiteto
-          </button>
-          {!activeProject && (
-            <button
-              onClick={openDrawer}
-              className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-4 rounded-xl border border-accent/40 bg-accent/10 text-accent hover:bg-accent/15 text-sm font-semibold transition"
-            >
-              <Sparkles size={14} /> Criar ou selecionar app primeiro
-            </button>
-          )}
-        </div>
-        <details className="mt-4 rounded-lg border border-white/10 bg-black/30">
-          <summary className="cursor-pointer select-none px-3 py-2 text-xs text-foreground/80 hover:text-foreground">
-            Ver e editar o prompt do Mapa antes de copiar
-          </summary>
-          <div className="p-3 pt-0">
-            <EditablePromptBox
-              key={`telas-hero-${activeProject?.id ?? "no-project"}-${journey ?? "no-journey"}`}
-              saveSourceModule="telas"
-              originalPrompt={heroAgentPrompt}
-              storageKey={`telas_agent_hero__${activeProject?.id ?? "no-project"}`}
-              copyLabel="Copiar prompt para o Agente"
-              helperText="Cole no Agente Arquiteto, não no Lovable."
-            />
-          </div>
-        </details>
-      </GlassCard>
+      {/* Hero local "Mapear telas com o Agente Arquiteto" removido — substituído pelo AgentArchitectCard contextual (variant="compact" no fim do módulo) para evitar duplicidade. */}
+
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-4">
