@@ -58,6 +58,29 @@ export const EMPTY_PROJECT_CONTEXT: ProjectContext = {
 const STORAGE_KEY = "fabrica_apps_project_context";
 const LEGACY_STORAGE_KEY = "fabrica_project_context";
 const SAVED_MARKER_KEY = "fabrica_apps_project_context_saved_at";
+const ACTIVE_PROJECT_ID_KEY = "fabrica_apps_active_project_id";
+const PROJECT_CONTEXT_KEY_PREFIX = "fabrica_apps_project_context:";
+const PROJECT_SAVED_MARKER_PREFIX = "fabrica_apps_project_context_saved_at:";
+
+/**
+ * Gera a chave de localStorage de contexto isolada por projeto.
+ * Garante que o contexto do Projeto A nunca seja lido como fallback do Projeto B.
+ */
+export const getProjectContextStorageKey = (projectId: string) =>
+  `${PROJECT_CONTEXT_KEY_PREFIX}${projectId}`;
+
+const getProjectSavedMarkerKey = (projectId: string) =>
+  `${PROJECT_SAVED_MARKER_PREFIX}${projectId}`;
+
+const readActiveProjectIdFromStorage = (): string | null => {
+  try {
+    const raw = localStorage.getItem(ACTIVE_PROJECT_ID_KEY);
+    return raw && raw.trim().length > 0 ? raw : null;
+  } catch {
+    return null;
+  }
+};
+
 const TEMPORARY_CONTEXT_KEYS = [
   STORAGE_KEY,
   LEGACY_STORAGE_KEY,
@@ -68,6 +91,7 @@ const TEMPORARY_CONTEXT_KEYS = [
   "fabrica_apps_saved_context",
   "fabrica_apps_app_context",
 ];
+
 
 const DEMO_APP_NAMES = new Set([["jogo", "do", "amor"].join(" ")]);
 
