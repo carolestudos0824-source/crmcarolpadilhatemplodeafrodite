@@ -180,8 +180,21 @@ export function PainelProntidaoModule({ goTo }: Props) {
 
   return (
     <section>
+      <AgentArchitectCard
+        className="mb-5"
+        variant="compact"
+        eyebrow={AGENT_MODULE_GUIDANCE.prontidao.eyebrow}
+        title={AGENT_MODULE_GUIDANCE.prontidao.title}
+        subtitle={AGENT_MODULE_GUIDANCE.prontidao.subtitle}
+        ctaLabel={AGENT_MODULE_GUIDANCE.prontidao.ctaLabel}
+        prompt={AGENT_MODULE_GUIDANCE.prontidao.prompt}
+        successMessage={AGENT_MODULE_GUIDANCE.prontidao.successMessage}
+      />
+
       {/* Resumo de prontidão */}
       <GlassCard className="p-5 md:p-6 mb-5 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+        <div className="flex items-start gap-3 mb-3">
+
         <div className="flex items-start gap-3 mb-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-1" />
           <div>
