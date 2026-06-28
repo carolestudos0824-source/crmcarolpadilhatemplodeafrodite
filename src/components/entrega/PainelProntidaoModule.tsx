@@ -195,7 +195,6 @@ export function PainelProntidaoModule({ goTo }: Props) {
       <GlassCard className="p-5 md:p-6 mb-5 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3 mb-3">
 
-        <div className="flex items-start gap-3 mb-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-1" />
           <div>
             <div className="text-[11px] uppercase tracking-wider text-accent/80 mb-1">
