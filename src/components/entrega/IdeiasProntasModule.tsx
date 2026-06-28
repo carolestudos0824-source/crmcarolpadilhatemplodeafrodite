@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react";
 import { Search, ArrowRight, Compass } from "lucide-react";
 import { AppModelCard } from "@/components/entrega/AppModelCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { IDEAS_LIBRARY, IDEAS_CATEGORIES, isMostSellable } from "@/data/ideiasProntas";
 import { useAppProjects } from "@/hooks/useAppProjects";
+
 
 type Props = {
   onAnalisarViabilidade: () => void;
