@@ -19,6 +19,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
@@ -297,6 +299,16 @@ export function SegurancaAppModule() {
           banco, chaves secretas e painel admin.
         </p>
       </header>
+
+      <AgentArchitectCard
+        className="mb-4"
+        variant="compact"
+        title={AGENT_MODULE_GUIDANCE.seguranca.title}
+        subtitle={AGENT_MODULE_GUIDANCE.seguranca.subtitle}
+        ctaLabel={AGENT_MODULE_GUIDANCE.seguranca.ctaLabel}
+        prompt={AGENT_MODULE_GUIDANCE.seguranca.prompt}
+        successMessage={AGENT_MODULE_GUIDANCE.seguranca.successMessage}
+      />
 
       <GlassCard className="p-5 mb-4 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">

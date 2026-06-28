@@ -10,6 +10,8 @@ import {
   ArrowUp,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { useAppProjects } from "@/hooks/useAppProjects";
@@ -162,6 +164,17 @@ export function ComeceAquiModule({ goTo }: Props) {
           )}
         </div>
       </header>
+
+      <AgentArchitectCard
+        className="mb-6"
+        variant="hero"
+        eyebrow={AGENT_MODULE_GUIDANCE.comece.eyebrow}
+        title={AGENT_MODULE_GUIDANCE.comece.title}
+        subtitle={AGENT_MODULE_GUIDANCE.comece.subtitle}
+        ctaLabel={AGENT_MODULE_GUIDANCE.comece.ctaLabel}
+        prompt={AGENT_MODULE_GUIDANCE.comece.prompt}
+        successMessage={AGENT_MODULE_GUIDANCE.comece.successMessage}
+      />
 
       {/* Nota compacta sobre o seletor global de jornada */}
       <div className="mb-6 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">

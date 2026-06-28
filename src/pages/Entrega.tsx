@@ -88,6 +88,7 @@ import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { openAgenteArquiteto, copyPromptAndOpenAgent, AGENTE_ARQUITETO_URL } from "@/lib/agenteArquiteto";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { Bot } from "lucide-react";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
@@ -2535,6 +2536,15 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <LoginIntro />
+        <AgentArchitectCard
+          className="mb-4"
+          variant="compact"
+          title={AGENT_MODULE_GUIDANCE.login.title}
+          subtitle={AGENT_MODULE_GUIDANCE.login.subtitle}
+          ctaLabel={AGENT_MODULE_GUIDANCE.login.ctaLabel}
+          prompt={AGENT_MODULE_GUIDANCE.login.prompt}
+          successMessage={AGENT_MODULE_GUIDANCE.login.successMessage}
+        />
         <ModuleHeader
           title="Siga as etapas de login e banco"
           subtitle="Comece pela Etapa 1. Só avance quando o usuário conseguir entrar, sair e acessar a área correta."
@@ -2621,6 +2631,15 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <FabricaLegalReminder text="Antes de vender seu app, explique preço, reembolso, entrega, suporte e acesso. A Fábrica de Apps com IA também possui seus próprios documentos:" />
         <CheckoutIntro />
         <EntregaResumoCard />
+        <AgentArchitectCard
+          className="mb-4"
+          variant="compact"
+          title={AGENT_MODULE_GUIDANCE.checkout.title}
+          subtitle={AGENT_MODULE_GUIDANCE.checkout.subtitle}
+          ctaLabel={AGENT_MODULE_GUIDANCE.checkout.ctaLabel}
+          prompt={AGENT_MODULE_GUIDANCE.checkout.prompt}
+          successMessage={AGENT_MODULE_GUIDANCE.checkout.successMessage}
+        />
         <ModuleHeader
           title="Siga as etapas de checkout e entrega"
           subtitle="Crie um fluxo simples para receber pagamento, confirmar a compra, orientar o comprador e liberar o acesso certo sem expor material pago."

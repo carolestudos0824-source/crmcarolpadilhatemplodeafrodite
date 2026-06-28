@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 
 import { GlassCard } from "@/components/GlassCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
@@ -487,6 +489,18 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           Copie um comando por vez e avance só quando a etapa estiver clara.
         </p>
       </header>
+
+      <AgentArchitectCard
+        className="mb-6"
+        variant="hero"
+        eyebrow={AGENT_MODULE_GUIDANCE.planejar.eyebrow}
+        title={AGENT_MODULE_GUIDANCE.planejar.title}
+        subtitle={AGENT_MODULE_GUIDANCE.planejar.subtitle}
+        ctaLabel={AGENT_MODULE_GUIDANCE.planejar.ctaLabel}
+        prompt={AGENT_MODULE_GUIDANCE.planejar.prompt}
+        successMessage={AGENT_MODULE_GUIDANCE.planejar.successMessage}
+      />
+
 
       {!activeProject && (
         <GlassCard className="p-5 md:p-6 mb-6 border-amber-400/50 bg-gradient-to-br from-amber-400/10 via-accent/[0.05] to-transparent shadow-[0_0_30px_-18px_rgba(251,191,36,0.5)]">
