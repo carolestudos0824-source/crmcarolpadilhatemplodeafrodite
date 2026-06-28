@@ -2536,6 +2536,15 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <LoginIntro />
+        <AgentArchitectCard
+          className="mb-4"
+          variant="compact"
+          title={AGENT_MODULE_GUIDANCE.login.title}
+          subtitle={AGENT_MODULE_GUIDANCE.login.subtitle}
+          ctaLabel={AGENT_MODULE_GUIDANCE.login.ctaLabel}
+          prompt={AGENT_MODULE_GUIDANCE.login.prompt}
+          successMessage={AGENT_MODULE_GUIDANCE.login.successMessage}
+        />
         <ModuleHeader
           title="Siga as etapas de login e banco"
           subtitle="Comece pela Etapa 1. Só avance quando o usuário conseguir entrar, sair e acessar a área correta."
