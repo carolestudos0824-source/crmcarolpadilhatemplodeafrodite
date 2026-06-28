@@ -48,7 +48,19 @@ export const IdeiasProntasModule = ({ onAnalisarViabilidade, onProximoPasso }: P
         </p>
       </header>
 
+      <AgentArchitectCard
+        className="mb-4"
+        variant="compact"
+        eyebrow={AGENT_MODULE_GUIDANCE.ideias.eyebrow}
+        title={AGENT_MODULE_GUIDANCE.ideias.title}
+        subtitle={AGENT_MODULE_GUIDANCE.ideias.subtitle}
+        ctaLabel={AGENT_MODULE_GUIDANCE.ideias.ctaLabel}
+        prompt={AGENT_MODULE_GUIDANCE.ideias.prompt}
+        successMessage={AGENT_MODULE_GUIDANCE.ideias.successMessage}
+      />
+
       {/* Bloco de viabilidade — foco em decisão */}
+
       <div className="rounded-xl border border-amber-400/30 bg-amber-400/[0.06] p-4 mb-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
         <div className="min-w-0">
           <h3 className="text-sm font-heading font-bold text-foreground/95">
