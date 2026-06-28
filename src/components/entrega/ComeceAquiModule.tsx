@@ -10,6 +10,8 @@ import {
   ArrowUp,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { useAppProjects } from "@/hooks/useAppProjects";
