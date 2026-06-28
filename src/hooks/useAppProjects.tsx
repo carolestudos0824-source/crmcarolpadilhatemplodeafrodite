@@ -24,6 +24,7 @@ import {
  */
 export const hasUsefulProjectContext = (c: ProjectContext): boolean => {
   const keys: (keyof ProjectContext)[] = [
+    "appName",
     "appDoes",
     "audience",
     "problem",
@@ -37,9 +38,10 @@ export const hasUsefulProjectContext = (c: ProjectContext): boolean => {
 };
 
 /**
- * Mescla preservando campos preenchidos: valores não-vazios de `incoming`
- * substituem `current`; valores vazios de `incoming` NÃO apagam campos
- * preenchidos em `current`. Não cria dados fictícios.
+ * @deprecated Mantida por compatibilidade. Não usar em troca de projeto:
+ * a troca DEVE substituir o contexto (ver `applyProjectContextStrict`).
+ * Esta função pode preservar campos do projeto anterior — risco de vazamento
+ * entre projetos. Use apenas em fluxos de migração de rascunho pré-projeto.
  */
 const mergePreservingFilled = (
   current: ProjectContext,
@@ -54,6 +56,7 @@ const mergePreservingFilled = (
   });
   return out;
 };
+
 
 /**
  * "Meus Apps em Construção" — fonte real agora é Supabase (RLS por auth.uid()).
