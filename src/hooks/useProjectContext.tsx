@@ -58,6 +58,29 @@ export const EMPTY_PROJECT_CONTEXT: ProjectContext = {
 const STORAGE_KEY = "fabrica_apps_project_context";
 const LEGACY_STORAGE_KEY = "fabrica_project_context";
 const SAVED_MARKER_KEY = "fabrica_apps_project_context_saved_at";
+const ACTIVE_PROJECT_ID_KEY = "fabrica_apps_active_project_id";
+const PROJECT_CONTEXT_KEY_PREFIX = "fabrica_apps_project_context:";
+const PROJECT_SAVED_MARKER_PREFIX = "fabrica_apps_project_context_saved_at:";
+
+/**
+ * Gera a chave de localStorage de contexto isolada por projeto.
+ * Garante que o contexto do Projeto A nunca seja lido como fallback do Projeto B.
+ */
+export const getProjectContextStorageKey = (projectId: string) =>
+  `${PROJECT_CONTEXT_KEY_PREFIX}${projectId}`;
+
+const getProjectSavedMarkerKey = (projectId: string) =>
+  `${PROJECT_SAVED_MARKER_PREFIX}${projectId}`;
+
+const readActiveProjectIdFromStorage = (): string | null => {
+  try {
+    const raw = localStorage.getItem(ACTIVE_PROJECT_ID_KEY);
+    return raw && raw.trim().length > 0 ? raw : null;
+  } catch {
+    return null;
+  }
+};
+
 const TEMPORARY_CONTEXT_KEYS = [
   STORAGE_KEY,
   LEGACY_STORAGE_KEY,
@@ -68,6 +91,7 @@ const TEMPORARY_CONTEXT_KEYS = [
   "fabrica_apps_saved_context",
   "fabrica_apps_app_context",
 ];
+
 
 const DEMO_APP_NAMES = new Set([["jogo", "do", "amor"].join(" ")]);
 
@@ -126,8 +150,24 @@ const parseStoredContext = (raw: string | null, hasSavedMarker: boolean) => {
   }
 };
 
-const readStored = (): ProjectContext => {
+/**
+ * Lê o contexto persistido para o projeto ativo (chave por projectId).
+ * Se houver projectId, NUNCA cai na chave global — projetos não compartilham
+ * contexto entre si. Sem projeto ativo, a chave global é usada apenas como
+ * rascunho temporário pré-projeto.
+ */
+const readStoredForProject = (projectId: string | null): ProjectContext => {
   try {
+    if (projectId) {
+      const perProjectKey = getProjectContextStorageKey(projectId);
+      const savedMarker = Boolean(localStorage.getItem(getProjectSavedMarkerKey(projectId)));
+      const perProject = parseStoredContext(localStorage.getItem(perProjectKey), savedMarker);
+      if (perProject) return perProject;
+      // Sem fallback para chave global: contexto de outro projeto não pode vazar.
+      return EMPTY_PROJECT_CONTEXT;
+    }
+
+    // Sem projeto ativo: chave global atua como rascunho pré-projeto.
     const hasSavedMarker = Boolean(localStorage.getItem(SAVED_MARKER_KEY));
     const current = parseStoredContext(localStorage.getItem(STORAGE_KEY), hasSavedMarker);
     if (current) return current;
@@ -158,14 +198,24 @@ export const ProjectContextProvider = ({ children }: { children: ReactNode }) =>
   const [isEditorOpen, setEditorOpen] = useState(false);
 
   useEffect(() => {
-    setContextState(readStored());
+    // No bootstrap, respeita o projeto ativo (se houver) para evitar
+    // que a chave global de um projeto anterior contamine o atual.
+    setContextState(readStoredForProject(readActiveProjectIdFromStorage()));
   }, []);
 
   const setContext = useCallback((next: ProjectContext) => {
     setContextState(next);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      localStorage.setItem(SAVED_MARKER_KEY, new Date().toISOString());
+      const activeId = readActiveProjectIdFromStorage();
+      if (activeId) {
+        // Projeto ativo: grava SOMENTE na chave do projeto, nunca na global.
+        localStorage.setItem(getProjectContextStorageKey(activeId), JSON.stringify(next));
+        localStorage.setItem(getProjectSavedMarkerKey(activeId), new Date().toISOString());
+      } else {
+        // Sem projeto ativo: chave global como rascunho temporário.
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        localStorage.setItem(SAVED_MARKER_KEY, new Date().toISOString());
+      }
       localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch {
       /* ignore quota errors */
@@ -182,10 +232,12 @@ export const ProjectContextProvider = ({ children }: { children: ReactNode }) =>
   }, []);
 
   const restoreTemporaryContext = useCallback(() => {
-    const next = readStored();
+    const next = readStoredForProject(readActiveProjectIdFromStorage());
     setContextState(next);
     return next;
   }, []);
+
+
 
   const value = useMemo<Ctx>(
     () => ({
