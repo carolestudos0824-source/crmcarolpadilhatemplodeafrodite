@@ -13,9 +13,12 @@ import {
   Target,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { CHECKLIST_PHASES, type ModuleId } from "@/data/entregaModules";
+
 
 
 type Props = {
