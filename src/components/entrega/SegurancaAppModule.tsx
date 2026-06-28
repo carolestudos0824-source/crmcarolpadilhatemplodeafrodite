@@ -300,6 +300,16 @@ export function SegurancaAppModule() {
         </p>
       </header>
 
+      <AgentArchitectCard
+        className="mb-4"
+        variant="compact"
+        title={AGENT_MODULE_GUIDANCE.seguranca.title}
+        subtitle={AGENT_MODULE_GUIDANCE.seguranca.subtitle}
+        ctaLabel={AGENT_MODULE_GUIDANCE.seguranca.ctaLabel}
+        prompt={AGENT_MODULE_GUIDANCE.seguranca.prompt}
+        successMessage={AGENT_MODULE_GUIDANCE.seguranca.successMessage}
+      />
+
       <GlassCard className="p-5 mb-4 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
         <div className="flex items-start gap-3">
           <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
