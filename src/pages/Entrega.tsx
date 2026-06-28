@@ -87,7 +87,7 @@ import { TechnicalGlossaryDrawer } from "@/components/entrega/TechnicalGlossaryD
 import { PainSearchNextStep } from "@/components/entrega/PainSearchNextStep";
 import { FirstAppOnboarding } from "@/components/entrega/FirstAppOnboarding";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
-import { openAgenteArquiteto, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { openAgenteArquiteto, copyPromptAndOpenAgent, AGENTE_ARQUITETO_URL } from "@/lib/agenteArquiteto";
 import { Bot } from "lucide-react";
 import { clearSession } from "@/lib/auth";
 import { useAuthState } from "@/hooks/useAuthState";
@@ -1298,7 +1298,7 @@ const ConstruirIntro = () => {
             <Sparkles size={14} /> Estou começando do zero
           </button>
           <a
-            href={APP_CONFIG.GPT_AGENT_URL}
+            href={AGENTE_ARQUITETO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
@@ -1550,7 +1550,7 @@ const LoginIntro = () => {
             <Sparkles size={14} /> Não entendo login e banco
           </button>
           <a
-            href={APP_CONFIG.GPT_AGENT_URL}
+            href={AGENTE_ARQUITETO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
@@ -1690,7 +1690,7 @@ const VendaIntro = () => {
             <Sparkles size={14} /> Não sei vender meu app
           </button>
           <a
-            href={APP_CONFIG.GPT_AGENT_URL}
+            href={AGENTE_ARQUITETO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
@@ -1826,7 +1826,7 @@ const CheckoutIntro = () => {
             <Sparkles size={14} /> Não entendo checkout e entrega
           </button>
           <a
-            href={APP_CONFIG.GPT_AGENT_URL}
+            href={AGENTE_ARQUITETO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
@@ -1992,7 +1992,7 @@ const SeoIntro = () => {
             <Sparkles size={14} /> Não entendo SEO e GEO
           </button>
           <a
-            href={APP_CONFIG.GPT_AGENT_URL}
+            href={AGENTE_ARQUITETO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
@@ -2140,7 +2140,7 @@ const CriativosIntro = () => {
             <Sparkles size={14} /> Não sei criar criativos
           </button>
           <a
-            href={APP_CONFIG.GPT_AGENT_URL}
+            href={AGENTE_ARQUITETO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm px-4 py-2.5 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
@@ -3019,9 +3019,9 @@ function ErrorsModule() {
           >
             <Copy size={14} /> Copiar diagnóstico geral
           </button>
-          {APP_CONFIG.GPT_AGENT_URL && (
+          {AGENTE_ARQUITETO_URL && (
             <a
-              href={APP_CONFIG.GPT_AGENT_URL}
+              href={AGENTE_ARQUITETO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 inline-flex items-center gap-2 text-sm"

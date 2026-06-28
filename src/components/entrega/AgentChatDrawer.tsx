@@ -95,7 +95,7 @@ export const AgentChatDrawer = () => {
   const chatBusy = sending || loadingHistory;
 
   return (
-    <div className="fixed inset-0 z-[80] flex" role="dialog" aria-modal="true" aria-label="Chat com o Agente Arquiteto">
+    <div className="fixed inset-0 z-[80] flex" role="dialog" aria-modal="true" aria-label="Assistente rápido da Fábrica">
       <button
         type="button"
         aria-label="Fechar"
@@ -110,8 +110,8 @@ export const AgentChatDrawer = () => {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-heading font-semibold">Agente Arquiteto</h2>
-              <span className="text-[10px] uppercase tracking-wider text-accent/80">Copiloto do projeto</span>
+              <h2 className="text-sm font-heading font-semibold">Assistente rápido da Fábrica</h2>
+              <span className="text-[10px] uppercase tracking-wider text-accent/80">Apoio rápido · não substitui o Agente Arquiteto</span>
             </div>
             {activeProject ? (
               <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
@@ -121,6 +121,9 @@ export const AgentChatDrawer = () => {
             ) : (
               <p className="text-[11px] text-amber-300/90 mt-0.5">Nenhum projeto ativo selecionado.</p>
             )}
+            <p className="text-[10px] text-muted-foreground/80 mt-1 leading-snug">
+              Use este assistente para dúvidas rápidas dentro da Fábrica. Para revisar estratégia, prompts, erros e decisões do app, use o Agente Arquiteto oficial.
+            </p>
           </div>
           <button
             type="button"
