@@ -2631,6 +2631,15 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
         <FabricaLegalReminder text="Antes de vender seu app, explique preço, reembolso, entrega, suporte e acesso. A Fábrica de Apps com IA também possui seus próprios documentos:" />
         <CheckoutIntro />
         <EntregaResumoCard />
+        <AgentArchitectCard
+          className="mb-4"
+          variant="compact"
+          title={AGENT_MODULE_GUIDANCE.checkout.title}
+          subtitle={AGENT_MODULE_GUIDANCE.checkout.subtitle}
+          ctaLabel={AGENT_MODULE_GUIDANCE.checkout.ctaLabel}
+          prompt={AGENT_MODULE_GUIDANCE.checkout.prompt}
+          successMessage={AGENT_MODULE_GUIDANCE.checkout.successMessage}
+        />
         <ModuleHeader
           title="Siga as etapas de checkout e entrega"
           subtitle="Crie um fluxo simples para receber pagamento, confirmar a compra, orientar o comprador e liberar o acesso certo sem expor material pago."
