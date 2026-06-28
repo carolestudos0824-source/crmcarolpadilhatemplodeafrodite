@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 
 import { GlassCard } from "@/components/GlassCard";
+import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
