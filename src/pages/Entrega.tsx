@@ -777,29 +777,15 @@ function EntregaInner() {
           )}
 
 
-          {/* Boas-vindas: Agente Arquiteto como guia central */}
-          {active === "comece" && (
-            <div className="mb-6 space-y-3">
-              {!appProjects.activeProject && (
-                <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 text-[12px] text-amber-100 flex items-start gap-2">
-                  <AlertTriangle size={13} className="shrink-0 mt-0.5" />
-                  <span>
-                    Antes de usar o Agente com contexto, crie ou selecione um Projeto em foco. Sem projeto, o Agente é apoio — não a primeira ação.
-                  </span>
-                </div>
-              )}
-              <AgentArchitectCard
-                eyebrow="Não sabe por onde começar?"
-                title="O Agente Arquiteto é seu guia"
-                subtitle="Use ele para revisar ideias, entender os prompts, simplificar a primeira versão funcional ou auditar um app já existente dentro da Fábrica de Apps com IA."
-                description="Recomendado para iniciantes antes de copiar qualquer prompt para o Lovable. Tire dúvidas, valide sua ideia e só então construa."
-                benefits={[
-                  "Entenda o que construir primeiro",
-                  "Evite criar um app inchado",
-                  "Tire dúvidas sobre telas, dados e funcionalidades",
-                ]}
-                ctaLabel="Abrir Agente Arquiteto"
-              />
+          {/* Boas-vindas: aviso de Projeto em foco (card do Agente Arquiteto agora vive em ComeceAquiModule via AGENT_MODULE_GUIDANCE.comece — sem duplicidade) */}
+          {active === "comece" && !appProjects.activeProject && (
+            <div className="mb-6">
+              <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 text-[12px] text-amber-100 flex items-start gap-2">
+                <AlertTriangle size={13} className="shrink-0 mt-0.5" />
+                <span>
+                  Antes de usar o Agente com contexto, crie ou selecione um Projeto em foco. Sem projeto, o Agente é apoio — não a primeira ação.
+                </span>
+              </div>
             </div>
           )}
 
