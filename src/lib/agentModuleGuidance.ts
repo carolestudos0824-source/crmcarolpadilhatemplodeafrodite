@@ -70,6 +70,27 @@ export const AGENT_MODULE_GUIDANCE = {
     successMessage:
       "Prompt copiado. Abra o Agente Arquiteto oficial e cole antes de configurar checkout.",
   },
+  ideias: {
+    eyebrow: "Ideias prontas · antes de escolher",
+    title: "Não sabe qual ideia escolher? Pergunte ao Agente",
+    subtitle:
+      "O Agente te ajuda a comparar ideias por público, dor, esforço e potencial antes de você abrir um modelo no Lovable.",
+    ctaLabel: "Escolher ideia com o Agente",
+    prompt: `Estou olhando ideias prontas na Fábrica de Apps com IA e não sei qual escolher. Me ajude a comparar 2 ou 3 ideias por público-alvo, dor resolvida, esforço de execução e potencial de uso. Faça perguntas curtas e me entregue uma recomendação fundamentada, sem prometer sucesso garantido.`,
+    successMessage:
+      "Prompt copiado. Abra o Agente Arquiteto oficial e cole para escolher a ideia.",
+  },
+  prontidao: {
+    eyebrow: "Painel de Prontidão · leitura assistida",
+    title: "Está pronto para avançar? Revise com o Agente",
+    subtitle:
+      "O Agente interpreta seus bloqueadores de publicação, venda, segurança e testes e diz onde focar primeiro.",
+    ctaLabel: "Interpretar prontidão com o Agente",
+    prompt: `Quero avaliar se meu app está pronto para avançar. Vou colar o resumo do meu Painel de Prontidão. Me ajude a interpretar bloqueadores de publicação, venda, segurança e testes, e me diga em qual ordem resolver. Não prometa app perfeito nem venda garantida.`,
+    successMessage:
+      "Prompt copiado. Abra o Agente Arquiteto oficial e cole o resumo do seu Painel de Prontidão.",
+  },
 } as const satisfies Record<string, AgentModuleGuidance>;
+
 
 export type AgentModuleKey = keyof typeof AGENT_MODULE_GUIDANCE;
