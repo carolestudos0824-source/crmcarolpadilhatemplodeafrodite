@@ -608,20 +608,20 @@ function EntregaInner() {
         <aside
           className={`${
             menuOpen ? "fixed inset-0 z-30 bg-background/95 backdrop-blur-md pt-16 px-4 overflow-y-auto scrollbar-sidebar" : "hidden"
-          } lg:static lg:block lg:w-72 lg:shrink-0 lg:h-auto lg:max-h-none lg:overflow-visible lg:p-4 lg:mr-6 lg:bg-white/[0.02] lg:backdrop-blur-sm lg:border-r lg:border-cyan-400/15 lg:shadow-[8px_0_30px_-12px_rgba(0,194,255,0.08)]`}
+          } lg:static lg:block lg:w-72 lg:shrink-0 lg:h-auto lg:max-h-none lg:overflow-visible lg:p-5 lg:mr-6 lg:rounded-2xl lg:bg-slate-950/40 lg:backdrop-blur-md lg:border lg:border-cyan-400/10 lg:shadow-[0_8px_40px_-16px_rgba(0,194,255,0.12)]`}
         >
-          <div className="lg:pr-2">
+          <div className="lg:pr-1">
             {/* App ativo + atalhos */}
-            <div className="mb-4 rounded-xl border border-accent/25 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent p-3">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+            <div className="mb-5 rounded-xl border border-cyan-400/20 bg-gradient-to-br from-cyan-500/[0.08] via-white/[0.025] to-transparent p-3.5">
+              <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground/80 mb-1.5 font-medium">
                 Projeto em foco
               </div>
               {appProjects.activeProject ? (
                 <>
-                  <div className="text-sm font-medium text-foreground truncate" title={appProjects.activeProject.name}>
+                  <div className="text-sm font-semibold text-foreground truncate leading-tight" title={appProjects.activeProject.name}>
                     {appProjects.activeProject.name}
                   </div>
-                  <div className="text-[11px] text-muted-foreground truncate">
+                  <div className="text-[11px] text-muted-foreground truncate mt-0.5">
                     {SIDEBAR_STATUS_LABEL[appProjects.activeProject.status] ?? appProjects.activeProject.status}
                     {appProjects.activeProject.currentModuleId && (
                       <>
@@ -634,9 +634,9 @@ function EntregaInner() {
                   <button
                     type="button"
                     onClick={appProjects.openDrawer}
-                    className="mt-2 text-[11px] inline-flex items-center gap-1 px-2 py-1 rounded-md border border-white/15 hover:bg-white/5"
+                    className="mt-2.5 text-[11px] inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/5 hover:border-white/20 transition-colors"
                   >
-                    <Repeat size={12} /> Trocar app
+                    <Repeat size={11} /> Trocar app
                   </button>
                 </>
               ) : (
@@ -656,16 +656,15 @@ function EntregaInner() {
               )}
             </div>
 
-
             <div
-              className="mb-4 text-[11px] text-muted-foreground px-2 leading-snug"
+              className="mb-5 text-[11px] text-muted-foreground/90 px-1 leading-relaxed"
               title="Construa em ordem"
             >
               Construa em ordem. Escolha seu app, siga a etapa atual, use o Estúdio de Prompt e revise antes de avançar.
             </div>
 
             {/* Agente Arquiteto — ferramenta central do programa */}
-            <div className="mb-4">
+            <div className="mb-5">
               <button
                 type="button"
                 onClick={() => {
@@ -674,46 +673,46 @@ function EntregaInner() {
                     "Agente Arquiteto aberto. Use ele para revisar ideias, tirar dúvidas e decidir o próximo passo.",
                   );
                 }}
-                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left border border-cyan-400/40 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-cyan-200 hover:from-cyan-500/15 hover:to-blue-500/15 transition shadow-[0_0_24px_-12px_rgba(34,211,238,0.6)]"
+                className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-sm text-left border border-cyan-400/30 bg-gradient-to-r from-cyan-500/[0.08] to-blue-500/[0.08] text-cyan-200 hover:from-cyan-500/15 hover:to-blue-500/15 hover:border-cyan-400/50 transition-all duration-200 shadow-[0_0_24px_-14px_rgba(34,211,238,0.5)]"
                 aria-label="Abrir Agente Arquiteto"
               >
                 <Bot size={16} className="shrink-0 text-cyan-300" />
                 <span className="flex-1 leading-tight font-semibold">Agente Arquiteto</span>
                 <ExternalLink size={12} className="shrink-0 opacity-70" />
               </button>
-              <p className="text-[10px] text-muted-foreground mt-1.5 px-1 leading-snug">
+              <p className="text-[10px] text-muted-foreground/80 mt-2 px-1 leading-relaxed">
                 Use o Agente Arquiteto para pensar, revisar erros e decidir o próximo passo antes de mexer no Lovable.
               </p>
             </div>
 
             {/* Central do Projeto */}
-            <div className="mb-4">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 px-2">
+            <div className="mb-5 pb-5 border-b border-white/[0.06]">
+              <div className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground/80 mb-2.5 px-1 font-medium">
                 Central do Projeto
               </div>
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 <button
                   type="button"
                   onClick={appProjects.openDrawer}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left text-foreground/80 hover:text-foreground hover:bg-white/[0.04] transition-colors"
                 >
-                  <FolderKanban size={16} className="shrink-0" />
+                  <FolderKanban size={15} className="shrink-0 opacity-70" />
                   <span className="flex-1 leading-tight">Projetos em construção</span>
                 </button>
                 <button
                   type="button"
                   onClick={projectCtx.openEditor}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left text-foreground/80 hover:text-foreground hover:bg-white/[0.04] transition-colors"
                 >
-                  <ClipboardList size={16} className="shrink-0" />
+                  <ClipboardList size={15} className="shrink-0 opacity-70" />
                   <span className="flex-1 leading-tight">Contexto do projeto em foco</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSavedPromptsOpen(true)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-transparent hover:bg-white/5 text-foreground/85"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left text-foreground/80 hover:text-foreground hover:bg-white/[0.04] transition-colors"
                 >
-                  <Bookmark size={16} className="shrink-0" />
+                  <Bookmark size={15} className="shrink-0 opacity-70" />
                   <span className="flex-1 leading-tight">Prompts salvos</span>
                 </button>
                 <button
@@ -726,10 +725,10 @@ function EntregaInner() {
                     const target = (appProjects.activeProject.currentModuleId as ModuleId | undefined) ?? active;
                     goTo(target);
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left border border-accent/30 bg-accent/10 text-accent hover:bg-accent/15"
+                  className="mt-1.5 w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left border border-accent/30 bg-accent/10 text-accent hover:bg-accent/15 hover:border-accent/40 transition-colors"
                 >
-                  <Compass size={16} className="shrink-0" />
-                  <span className="flex-1 leading-tight">
+                  <Compass size={15} className="shrink-0" />
+                  <span className="flex-1 leading-tight font-medium">
                     {appProjects.activeProject?.currentModuleId
                       ? `Continuar: ${
                           MODULES.find((m) => m.id === appProjects.activeProject!.currentModuleId)?.label ?? "etapa atual"
@@ -742,13 +741,13 @@ function EntregaInner() {
             </div>
 
             {/* Módulos por fase */}
-            <nav className="space-y-4">
-              {SIDEBAR_GROUPS.map((group) => (
-                <div key={group.title}>
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 px-2">
+            <nav className="space-y-5">
+              {SIDEBAR_GROUPS.map((group, gi) => (
+                <div key={group.title} className={gi > 0 ? "pt-1" : undefined}>
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground/70 mb-2.5 px-1 font-semibold">
                     {group.title}
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     {group.modules.map((id) => {
                       const m = MODULES.find((x) => x.id === id);
                       if (!m) return null;
@@ -760,20 +759,20 @@ function EntregaInner() {
                           key={m.id}
                           onClick={() => goTo(m.id)}
                           aria-current={isActive ? "step" : undefined}
-                          className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left transition border ${
+                          className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-left transition-all duration-150 border ${
                             isActive
-                              ? "bg-accent/15 border-accent/50 text-accent shadow-[0_0_0_1px_rgba(0,194,255,0.25)]"
-                              : "border-transparent hover:bg-white/5 text-foreground/85"
+                              ? "bg-cyan-400/[0.12] border-cyan-400/40 text-cyan-100 font-medium shadow-[0_0_20px_-10px_rgba(34,211,238,0.5),inset_0_1px_0_0_rgba(34,211,238,0.15)]"
+                              : "border-transparent text-foreground/75 hover:text-foreground hover:bg-cyan-400/[0.04] hover:border-cyan-400/10"
                           }`}
                         >
-                          <Icon size={16} className="shrink-0" />
+                          <Icon size={16} className={`shrink-0 ${isActive ? "text-cyan-300" : "opacity-70"}`} />
                           <span className="flex-1 leading-tight">{m.label}</span>
                           {isDone ? (
                             <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
                           ) : isActive ? (
-                            <span className="h-2 w-2 rounded-full bg-accent shrink-0 shadow-[0_0_8px_rgba(0,194,255,0.8)]" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-cyan-300 shrink-0 shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
                           ) : (
-                            <Circle size={14} className="text-muted-foreground/40 shrink-0" />
+                            <Circle size={13} className="text-muted-foreground/30 shrink-0" />
                           )}
                         </button>
                       );
@@ -784,6 +783,7 @@ function EntregaInner() {
             </nav>
             {/* Progresso geral removido — métricas internas geravam ruído sem ajudar na próxima ação. */}
           </div>
+
 
 
         </aside>
