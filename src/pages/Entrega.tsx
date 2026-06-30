@@ -148,7 +148,7 @@ const ICONS: Record<string, typeof Sparkles> = {
   Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3, GitBranch, ClipboardCheck,
 };
 
-// Módulos contabilizados no progresso global. Inclui os 23 módulos da jornada
+// Módulos contabilizados no progresso global. Inclui os 24 módulos da jornada
 // oficial — os 8 módulos novos (planejar, mvp, telas, legal, publicar, teste,
 // metricas, melhorias) também contam e são marcados como concluídos
 // automaticamente quando todos os itens do checklist interno do módulo são
