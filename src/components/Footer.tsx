@@ -24,7 +24,7 @@ export const Footer = () => {
           
           <Link to="/termos-de-uso" className="text-muted-foreground hover:text-foreground">Termos de Uso</Link>
           <Link to="/politica-de-privacidade" className="text-muted-foreground hover:text-foreground">Política de Privacidade</Link>
-          <Link to="/legal" className="text-muted-foreground hover:text-foreground">Legal</Link>
+          <Link to="/legal" className="text-muted-foreground hover:text-foreground">Avisos legais</Link>
         </div>
       </div>
       <div className="container py-4 text-xs text-muted-foreground/60 border-t border-white/5">
