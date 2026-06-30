@@ -21,7 +21,7 @@ export const Footer = () => {
         <div className="flex flex-wrap gap-6 md:justify-end items-start text-sm">
           <Link to="/precos" className="text-muted-foreground hover:text-foreground">Preço único</Link>
           <Link to={restrictedLink.to} className="text-muted-foreground hover:text-foreground">{restrictedLink.label}</Link>
-          <Link to="/suporte" className="text-muted-foreground hover:text-foreground">Suporte</Link>
+          
           <Link to="/termos-de-uso" className="text-muted-foreground hover:text-foreground">Termos de Uso</Link>
           <Link to="/politica-de-privacidade" className="text-muted-foreground hover:text-foreground">Política de Privacidade</Link>
           <Link to="/legal" className="text-muted-foreground hover:text-foreground">Legal</Link>
