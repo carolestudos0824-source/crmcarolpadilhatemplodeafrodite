@@ -131,7 +131,7 @@ export default function Suporte() {
         <div className="glass-strong p-6 md:p-8">
           <h2 className="text-xl font-heading font-bold mb-2">Ou envie pelo formulário</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            Preencha abaixo e responderemos pelo e-mail informado.
+            O formulário registra sua solicitação para o canal de suporte do programa. A resposta é feita por e-mail, em dias úteis, no endereço que você informar.
           </p>
 
           {sent && (
