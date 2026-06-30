@@ -314,6 +314,7 @@ function EntregaInner() {
   const checklist = progress.checklist;
   const setChecklist = progress.setChecklist;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerMoreOpen, setHeaderMoreOpen] = useState(false);
   const [savedPromptsOpen, setSavedPromptsOpen] = useState(false);
 
   const allChecklistItems = useMemo(
