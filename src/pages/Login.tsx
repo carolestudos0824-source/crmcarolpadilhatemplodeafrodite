@@ -131,10 +131,11 @@ export default function Login() {
   // ============ Tabs + password sub-accordion ============
   const initialTab: "entrar" | "criar" = (() => {
     const t = new URLSearchParams(location.search).get("tab");
-    if (t === "login" || t === "entrar") return "entrar";
-    return "criar";
+    if (t === "signup" || t === "criar") return "criar";
+    return "entrar";
   })();
   const [authTab, setAuthTab] = useState<"entrar" | "criar">(initialTab);
+  const [magicOpen, setMagicOpen] = useState(false);
 
   useEffect(() => {
     const t = new URLSearchParams(location.search).get("tab");
