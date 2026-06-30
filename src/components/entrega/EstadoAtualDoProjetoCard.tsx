@@ -11,7 +11,7 @@ import {
   MODULE_PROMPT_INTENTS,
 } from "@/lib/promptBuilder";
 import { MODULES, MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
-import { useProjectJourney, JOURNEY_LABELS } from "@/lib/journey";
+import { useProjectJourney, JOURNEY_LABELS, JOURNEY_PHASE_LABELS } from "@/lib/journey";
 import { ProjectLogoPicker } from "./ProjectLogoPicker";
 
 /**
