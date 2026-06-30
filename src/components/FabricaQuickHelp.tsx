@@ -175,8 +175,17 @@ export const FabricaQuickHelp = () => {
               moduleLabel: moduleLabelById.get(group.mod),
               copyContent: c.content,
               action: () => {
-                navigate(`/entrega?modulo=${encodeURIComponent(group.mod)}`);
+                const targetHash = `cmd-${group.mod}-${c.n}`;
+                navigate(`/entrega?modulo=${encodeURIComponent(group.mod)}#${targetHash}`);
                 setOpen(false);
+                // Garante o foco/abertura mesmo quando já estamos no módulo
+                // (mesmo hash não dispara hashchange por si só).
+                setTimeout(() => {
+                  if (typeof window === "undefined") return;
+                  if (window.location.hash.replace(/^#/, "") === targetHash) {
+                    window.dispatchEvent(new HashChangeEvent("hashchange"));
+                  }
+                }, 80);
               },
             });
           }
@@ -185,11 +194,14 @@ export const FabricaQuickHelp = () => {
       for (const g of TECHNICAL_GLOSSARY) {
         const hay = norm([g.name, g.simple, g.whyItMatters].join(" "));
         if (hay.includes(term)) {
+          const fullExcerpt = g.whyItMatters
+            ? `${g.simple} — ${g.whyItMatters}`
+            : g.simple;
           out.push({
             id: `glos-${g.slug}`,
             kind: "glossario",
             title: g.name,
-            excerpt: g.simple,
+            excerpt: fullExcerpt,
             moduleLabel: g.relatedModuleId ? moduleLabelById.get(g.relatedModuleId) : undefined,
             action: () => {
               navigate(`/entrega?modulo=${encodeURIComponent(g.relatedModuleId ?? "fundamentos")}`);
@@ -199,6 +211,7 @@ export const FabricaQuickHelp = () => {
         }
       }
     }
+
 
     // 3) No-access — restrict to purchase/access/support topics
     if (scope === "no-access") {
