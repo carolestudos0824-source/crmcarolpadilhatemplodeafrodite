@@ -230,8 +230,8 @@ export const FabricaQuickHelp = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Ajuda rápida da Fábrica"
-        title="Ajuda rápida da Fábrica (atalho: ?)"
+        aria-label="Entenda o programa"
+        title="Entenda o programa — dúvidas frequentes (atalho: ?)"
         className="fixed z-[70] bottom-4 right-4 md:bottom-6 md:right-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-background/90 backdrop-blur-md px-4 py-3 min-h-[48px] text-sm font-medium text-foreground shadow-lg hover:bg-white/5 transition"
       >
         <HelpCircle size={18} />
