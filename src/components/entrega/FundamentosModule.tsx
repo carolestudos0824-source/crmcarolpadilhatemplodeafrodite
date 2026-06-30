@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   ArrowRight,
   Clock,
+  Repeat,
+  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
