@@ -44,7 +44,7 @@ A Fábrica de Apps com IA não é o app final da pessoa. Ela é a esteira guiada
 
 ## 6. Principais recursos
 
-- Trilha guiada com 23 módulos.
+- Trilha guiada com 24 módulos.
 - Prompts completos e contextualizáveis.
 - Dois caminhos oficiais: Lovable direto ou Agente Arquiteto.
 - Checklist por etapa com progresso global.
