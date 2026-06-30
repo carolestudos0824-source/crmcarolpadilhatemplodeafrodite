@@ -66,7 +66,7 @@ export const AgentArchitectCard = ({
   onCopyFail,
 }: AgentArchitectCardProps) => {
   const hasPrompt = !!prompt && prompt.trim().length > 0;
-  const finalCta = ctaLabel ?? (hasPrompt ? "Revisar com o Agente Arquiteto" : "Abrir Agente Arquiteto");
+  const finalCta = ctaLabel ?? (hasPrompt ? "Copiar prompt e abrir Agente Arquiteto" : "Abrir Agente Arquiteto");
   const finalDescription =
     description ??
     (hasPrompt
