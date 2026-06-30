@@ -230,12 +230,12 @@ export const FabricaQuickHelp = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Ajuda rápida da Fábrica"
-        title="Ajuda rápida da Fábrica (atalho: ?)"
+        aria-label="Entenda o programa"
+        title="Entenda o programa — dúvidas frequentes (atalho: ?)"
         className="fixed z-[70] bottom-4 right-4 md:bottom-6 md:right-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-background/90 backdrop-blur-md px-4 py-3 min-h-[48px] text-sm font-medium text-foreground shadow-lg hover:bg-white/5 transition"
       >
         <HelpCircle size={18} />
-        <span className="hidden sm:inline">Ajuda rápida</span>
+        <span className="hidden sm:inline">Entenda o programa</span>
       </button>
 
       {open && (
@@ -246,13 +246,13 @@ export const FabricaQuickHelp = () => {
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Ajuda rápida da Fábrica"
+            aria-label="Entenda o programa"
             className="w-full sm:max-w-2xl bg-background border border-white/10 sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col max-h-[92vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3 p-4 border-b border-white/10">
               <div className="min-w-0">
-                <h2 className="font-heading font-bold text-base sm:text-lg">Ajuda rápida da Fábrica</h2>
+                <h2 className="font-heading font-bold text-base sm:text-lg">Entenda o programa</h2>
                 <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 leading-snug">
                   Use primeiro para encontrar respostas dentro do programa. Para revisar estratégia, prompts, erros ou decisões do app, abra o Agente Arquiteto.
                   <br />
