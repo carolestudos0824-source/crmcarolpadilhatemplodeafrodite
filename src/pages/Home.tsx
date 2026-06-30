@@ -54,7 +54,7 @@ const naoIncluso = [
   "Domínio próprio, hospedagem e ferramentas externas não inclusos",
   "App feito por mim ou desenvolvimento personalizado não incluso",
   "Mentoria individual não inclusa",
-  "Suporte técnico ilimitado não incluso",
+  
   "Garantia de vendas ou faturamento não inclusa",
   "Promessa de app perfeito ou segurança 100% não inclusa",
   "Promessa de compatibilidade automática com qualquer IA não inclusa",
