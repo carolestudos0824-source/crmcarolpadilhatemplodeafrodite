@@ -512,21 +512,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Suporte visível */}
-          <div className="mt-4 flex items-start gap-3">
-            <Mail size={20} className="text-accent shrink-0 mt-0.5" />
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              <span className="font-semibold">Dúvidas antes de comprar?</span>{" "}
-              Escreva para{" "}
-              <a
-                href="mailto:fabricadeappscomia@outlook.com"
-                className="text-accent underline underline-offset-4 hover:text-accent/80 break-all"
-              >
-                fabricadeappscomia@outlook.com
-              </a>
-              .
-            </p>
-          </div>
         </div>
       </Section>
 
