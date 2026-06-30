@@ -35,7 +35,7 @@ export const PLANS: Plan[] = [
       "Módulos: Planejamento, MVP, Telas e Fluxo, Login e Banco",
       "Módulos: Monetização, Checkout, Auditoria de Segurança",
       "Módulo Melhorias e Versões + Estado Atual do Projeto",
-      "Agente Arquiteto Supremo de Aplicativos",
+      "Agente Arquiteto de Aplicativos",
       "Garantia de 7 dias para conhecer por dentro",
     ],
     cta: "Quero acessar por R$197",
