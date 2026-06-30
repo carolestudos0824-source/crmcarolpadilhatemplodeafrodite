@@ -39,7 +39,7 @@ Não prometer liberação automática enquanto isso não estiver implementado.
 
 ## Jornada interna
 
-A área interna possui 23 módulos:
+A área interna possui 24 módulos:
 
 1. Comece pelo Lovable
 2. Comece aqui
@@ -70,7 +70,7 @@ A área interna possui 23 módulos:
 `TOTAL_COMMANDS` deve continuar 54.
 Os 54 comandos vêm dos 9 arrays antigos.
 Não criar novos arrays `COMMANDS_*` sem rodada específica.
-Os 23 módulos contam no progresso global.
+Os 24 módulos contam no progresso global.
 Os 8 módulos novos concluem automaticamente quando todos os itens de seus checklists são marcados.
 
 ## Segurança

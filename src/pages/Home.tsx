@@ -37,7 +37,7 @@ const centralVendas = [
 const beneficios = [
   "Programa completo, pagamento único",
   "Método guiado passo a passo",
-  "23 módulos guiados · 54 comandos prontos",
+  "24 módulos guiados · 54 comandos prontos",
   "30 ideias de aplicativos",
   "Prompts prontos para o Lovable (lógica adaptável a outras IAs)",
   "Agente Arquiteto via ChatGPT",
@@ -127,7 +127,7 @@ const jornadas = [
 ];
 
 const faixaValor = [
-  { icon: <Layers size={18} />, t: "23 módulos guiados" },
+  { icon: <Layers size={18} />, t: "24 módulos guiados" },
   { icon: <Wand2 size={18} />, t: "54 comandos prontos" },
   { icon: <Lightbulb size={18} />, t: "30 ideias de apps" },
   { icon: <Bot size={18} />, t: "Agente Arquiteto" },
@@ -347,7 +347,7 @@ export default function Home() {
             {[
               { t: "Prompt solto", d: "Te dá uma frase. Sem ordem, sem contexto, sem próximo passo. É fácil gastar créditos testando no escuro.", neg: true },
               { t: "Curso longo", d: "Te dá horas de vídeo para assistir passivamente. Quando termina, ainda falta saber por onde começar de verdade.", neg: true },
-              { t: "Fábrica de Apps com IA", d: "Te dá uma sequência completa: método, 23 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.", neg: false },
+              { t: "Fábrica de Apps com IA", d: "Te dá uma sequência completa: método, 24 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.", neg: false },
             ].map((c) => (
               <div
                 key={c.t}
@@ -374,7 +374,7 @@ export default function Home() {
               E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> ajuda a transformar sua dúvida em um comando mais claro antes de mandar para a ferramenta de criação.
             </p>
             <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
-              Por <span className="font-semibold">R$197</span>, você acessa o programa completo: 23 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.
+              Por <span className="font-semibold">R$197</span>, você acessa o programa completo: 24 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.
             </p>
           </div>
         </div>
@@ -388,7 +388,7 @@ export default function Home() {
               Quero acessar o programa por R$197 <ChevronRight size={18} />
             </button>
             <p className="text-sm text-foreground/80 leading-relaxed mt-4">
-              Pagamento único. 23 módulos, 54 comandos, 30 ideias, área interna, GPS do App e Agente Arquiteto via ChatGPT.
+              Pagamento único. 24 módulos, 54 comandos, 30 ideias, área interna, GPS do App e Agente Arquiteto via ChatGPT.
             </p>
           </div>
         </div>
@@ -499,7 +499,7 @@ export default function Home() {
           </div>
 
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed text-center mb-4 max-w-2xl mx-auto">
-            Você recebe acesso ao programa-guia com 23 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
+            Você recebe acesso ao programa-guia com 24 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
             Quero acessar o programa por R$197 <ChevronRight size={18} />
@@ -677,7 +677,7 @@ export default function Home() {
             Da ideia ao app, com a planta pronta
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Programa completo, método guiado, 23 módulos, 54 comandos prontos, 30 ideias de apps, GPS do App e Agente Arquiteto.
+            Programa completo, método guiado, 24 módulos, 54 comandos prontos, 30 ideias de apps, GPS do App e Agente Arquiteto.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
             Quero acessar o programa por R$197 <ChevronRight size={18} />
