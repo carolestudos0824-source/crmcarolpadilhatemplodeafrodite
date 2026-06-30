@@ -222,7 +222,7 @@ const MyAppsHeaderButton = () => {
     <button
       type="button"
       onClick={openDrawer}
-      className="px-3 py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[220px]"
+      className="px-3 min-h-[40px] py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[140px] sm:max-w-[180px] lg:max-w-[220px]"
       title="Projetos em construção"
     >
       <span className="truncate">{label}</span>
@@ -314,6 +314,7 @@ function EntregaInner() {
   const checklist = progress.checklist;
   const setChecklist = progress.setChecklist;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerMoreOpen, setHeaderMoreOpen] = useState(false);
   const [savedPromptsOpen, setSavedPromptsOpen] = useState(false);
 
   const allChecklistItems = useMemo(
@@ -507,44 +508,97 @@ function EntregaInner() {
           <span className="hidden md:inline text-sm text-muted-foreground">
             Fábrica de Apps com IA
           </span>
-          <div className="ml-auto flex items-center gap-2 text-xs flex-wrap">
+          <div className="ml-auto flex items-center gap-2 text-xs">
             {email && (
-              <span className="hidden sm:inline px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground">
+              <span className="hidden xl:inline px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground">
                 {email}
               </span>
             )}
+
+            {/* Agente Arquiteto: visível no mobile como ação principal */}
             <button
               type="button"
               onClick={() => {
                 openAgenteArquiteto();
                 toast.success("Agente Arquiteto aberto. Use ele para pensar antes de mexer no Lovable.");
               }}
-              className="lg:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/15"
+              className="lg:hidden inline-flex items-center justify-center min-w-[40px] min-h-[40px] rounded-full border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/15"
               aria-label="Falar com o Agente Arquiteto"
               title="Falar com o Agente Arquiteto"
             >
-              <Bot size={12} />
-              <span className="hidden sm:inline">Falar com o Agente Arquiteto</span>
+              <Bot size={16} />
             </button>
+
             <MyAppsHeaderButton />
-            <TechnicalGlossaryDrawer goTo={goTo} />
-            <ContextHeaderButton />
-            <FontSizeControl />
-            {auth.isAdmin && (
+
+            {/* Ações secundárias: visíveis apenas no desktop (>= lg) */}
+            <div className="hidden lg:contents">
+              <TechnicalGlossaryDrawer goTo={goTo} />
+              <ContextHeaderButton />
+              <FontSizeControl />
+              {auth.isAdmin && (
+                <button
+                  onClick={() => navigate("/admin/acessos")}
+                  className="px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent inline-flex items-center gap-1"
+                >
+                  <ShieldCheck size={12} /> Admin
+                </button>
+              )}
               <button
-                onClick={() => navigate("/admin/acessos")}
-                className="px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent inline-flex items-center gap-1"
+                onClick={logout}
+                className="px-3 py-1.5 rounded-full border border-white/10 hover:bg-white/5 inline-flex items-center gap-1"
               >
-                <ShieldCheck size={12} /> Admin
+                <LogOut size={12} /> Sair
               </button>
-            )}
-            <button
-              onClick={logout}
-              className="px-3 py-1.5 rounded-full border border-white/10 hover:bg-white/5 inline-flex items-center gap-1"
-            >
-              <LogOut size={12} /> Sair
-            </button>
+            </div>
+
+            {/* Mobile: botão "Mais" abre dropdown com ações secundárias */}
+            <div className="lg:hidden relative">
+              <button
+                type="button"
+                onClick={() => setHeaderMoreOpen((o) => !o)}
+                aria-label="Mais ações"
+                aria-expanded={headerMoreOpen}
+                className="inline-flex items-center gap-1 min-h-[40px] px-3 rounded-full border border-white/10 hover:bg-white/5 text-muted-foreground"
+              >
+                Mais <ChevronDown size={14} className={headerMoreOpen ? "rotate-180 transition-transform" : "transition-transform"} />
+              </button>
+              {headerMoreOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-30"
+                    onClick={() => setHeaderMoreOpen(false)}
+                    aria-hidden="true"
+                  />
+                  <div className="absolute right-0 mt-2 z-40 w-60 rounded-xl border border-white/10 bg-background/95 backdrop-blur-md shadow-xl p-2 flex flex-col gap-1.5">
+                    <div onClick={() => setHeaderMoreOpen(false)} className="flex flex-col gap-1.5 [&_button]:w-full [&_button]:justify-start [&_button]:min-h-[40px]">
+                      <TechnicalGlossaryDrawer goTo={goTo} />
+                      <ContextHeaderButton />
+                      <div className="flex items-center justify-between px-2 py-1 rounded-lg border border-white/10">
+                        <span className="text-[11px] text-muted-foreground">Tamanho do texto</span>
+                        <FontSizeControl />
+                      </div>
+                      {auth.isAdmin && (
+                        <button
+                          onClick={() => { setHeaderMoreOpen(false); navigate("/admin/acessos"); }}
+                          className="px-3 py-2 rounded-lg bg-accent/15 border border-accent/30 text-accent inline-flex items-center gap-1.5"
+                        >
+                          <ShieldCheck size={14} /> Admin
+                        </button>
+                      )}
+                      <button
+                        onClick={() => { setHeaderMoreOpen(false); logout(); }}
+                        className="px-3 py-2 rounded-lg border border-white/10 hover:bg-white/5 inline-flex items-center gap-1.5"
+                      >
+                        <LogOut size={14} /> Sair
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
+
         </div>
       </header>
 
