@@ -157,10 +157,11 @@ export function SupportInbox() {
 
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {Overview}
+      <div className="flex items-center justify-between pt-2">
         <p className="text-xs text-muted-foreground">
-          {messages.length} mensagem{messages.length === 1 ? "" : "s"} · ordenadas da mais recente para a mais antiga
+          {messages.length} solicitaç{messages.length === 1 ? "ão" : "ões"} registrada{messages.length === 1 ? "" : "s"} · responda pelo e-mail oficial
         </p>
         <button
           type="button"
