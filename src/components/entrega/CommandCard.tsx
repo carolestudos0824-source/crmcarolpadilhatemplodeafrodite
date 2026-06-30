@@ -547,7 +547,7 @@ export const CommandCard = ({
                       </a>
                     </div>
                     <span className="text-[11px] text-muted-foreground/80 max-w-[420px] text-right">
-                      Copie o prompt primeiro. Depois abra o Agente e cole com Ctrl+V (Cmd+V no Mac).
+                      Copie o prompt primeiro. Depois abra o Agente Arquiteto e cole com Ctrl+V (Cmd+V no Mac).
                     </span>
                   </div>
 
