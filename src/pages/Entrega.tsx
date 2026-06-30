@@ -493,8 +493,9 @@ function EntregaInner() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* HEADER */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-background/85 backdrop-blur-md">
-        <div className="max-w-[1400px] mx-auto px-4 h-14 flex items-center gap-3">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-background/85 backdrop-blur-md pt-[max(env(safe-area-inset-top),0.5rem)] md:pt-0">
+        <div className="max-w-[1400px] mx-auto px-4 min-h-14 py-2 md:py-0 md:h-14 flex items-center gap-3">
+
           <button
             onClick={() => setMenuOpen((o) => !o)}
             className="lg:hidden p-2 rounded-lg border border-white/10 hover:bg-white/5"
