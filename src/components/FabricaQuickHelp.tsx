@@ -370,7 +370,7 @@ export const FabricaQuickHelp = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-2 min-h-[40px] rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
               >
-                Não resolveu? Abrir Agente Arquiteto <ExternalLink size={12} />
+                Precisa revisar com estratégia? Abrir Agente Arquiteto <ExternalLink size={12} />
               </a>
             </div>
           </div>
