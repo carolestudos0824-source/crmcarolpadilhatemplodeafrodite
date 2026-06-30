@@ -1,5 +1,6 @@
 import { Bot } from "lucide-react";
-import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { toast } from "sonner";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 
 /**
  * Card reutilizável do Agente Arquiteto.
@@ -65,7 +66,7 @@ export const AgentArchitectCard = ({
   onCopyFail,
 }: AgentArchitectCardProps) => {
   const hasPrompt = !!prompt && prompt.trim().length > 0;
-  const finalCta = ctaLabel ?? (hasPrompt ? "Revisar com o Agente Arquiteto" : "Abrir Agente Arquiteto");
+  const finalCta = ctaLabel ?? (hasPrompt ? "Copiar prompt e abrir Agente Arquiteto" : "Abrir Agente Arquiteto");
   const finalDescription =
     description ??
     (hasPrompt
@@ -78,11 +79,35 @@ export const AgentArchitectCard = ({
       await onClick();
       return;
     }
+    // Abrir o Agente Arquiteto SÍNCRONO no clique (preserva user gesture
+    // e evita bloqueio de popup). A cópia acontece em seguida.
+    const win =
+      typeof window !== "undefined"
+        ? window.open(AGENTE_ARQUITETO_URL, "_blank", "noopener,noreferrer")
+        : null;
+    const popupBlocked = typeof window !== "undefined" && win === null;
+
     await copyPromptAndOpenAgent({
       prompt,
-      successMessage,
+      successMessage:
+        successMessage ??
+        (hasPrompt
+          ? "Prompt copiado. Cole no Agente Arquiteto para continuar."
+          : undefined),
       onClipboardFail: onCopyFail,
     });
+
+    if (popupBlocked) {
+      toast.message("Abrir Agente Arquiteto", {
+        description:
+          "Seu navegador bloqueou a nova aba. O prompt já está copiado — clique para abrir.",
+        action: {
+          label: "Abrir",
+          onClick: () =>
+            window.open(AGENTE_ARQUITETO_URL, "_blank", "noopener,noreferrer"),
+        },
+      });
+    }
   };
 
   if (variant === "compact") {

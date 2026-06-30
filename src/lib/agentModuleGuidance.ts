@@ -25,7 +25,7 @@ export const AGENT_MODULE_GUIDANCE = {
     title: "Comece pelo Agente Arquiteto se estiver em dúvida",
     subtitle:
       "O Agente te ajuda a entender a Fábrica, escolher sua rota e decidir se você começa por ideia, planejamento ou app existente.",
-    ctaLabel: "Abrir Agente Arquiteto",
+    ctaLabel: "Copiar prompt e abrir Agente Arquiteto",
     prompt: `Estou começando na Fábrica de Apps com IA e preciso de ajuda para entender minha melhor rota. Me ajude a decidir se devo começar por ideias prontas, planejamento do app ou diagnóstico de um app que já existe. Faça perguntas simples e me entregue um próximo passo claro.`,
     successMessage:
       "Prompt copiado. Abra o Agente Arquiteto oficial e cole para começar.",
