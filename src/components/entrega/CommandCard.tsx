@@ -495,7 +495,7 @@ export const CommandCard = ({
               {whenAgentFirst && (
                 <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3">
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1">
-                    <Bot size={12} /> Usar o Agente antes quando
+                    <Bot size={12} /> Usar o Agente Arquiteto antes quando
                   </div>
                   <p className="text-[13px] text-foreground/85 leading-snug">{whenAgentFirst}</p>
                 </div>
