@@ -517,6 +517,10 @@ export default function Home() {
             </p>
           </div>
 
+          <p className="text-xs text-muted-foreground/80 leading-relaxed text-center mt-4">
+            Suporte por e-mail para acesso, navegação e uso do programa · <a href="mailto:fabricadeappscomia@outlook.com" className="text-accent hover:underline">fabricadeappscomia@outlook.com</a>
+          </p>
+
         </div>
       </Section>
 
