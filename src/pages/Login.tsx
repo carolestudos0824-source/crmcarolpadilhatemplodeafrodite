@@ -914,36 +914,11 @@ export default function Login() {
           {/* ============== Sidebar ============== */}
           <aside className="space-y-5">
             <div className={cardCls}>
-              <div className="flex items-center gap-2 mb-4">
-                <ShieldCheck size={18} className="text-accent" />
-                <h2 className="font-heading font-semibold text-lg">Primeiro acesso?</h2>
-              </div>
-              <ol className="space-y-3 text-sm text-muted-foreground">
-                {[
-                  "Clique em \u201CCriar conta\u201D.",
-                  "Continue com Google ou use o e-mail da compra.",
-                  "Crie seu acesso e entre no programa.",
-
-                ].map((step, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
-                      {i + 1}
-                    </span>
-                    <span className="pt-0.5">{step}</span>
-                  </li>
-                ))}
-              </ol>
-              <p className="text-[11px] text-muted-foreground/70 mt-4">
-                Se você já criou uma conta, use a aba Entrar.
-              </p>
-            </div>
-
-            <div className={cardCls}>
               <h3 className="font-heading font-semibold text-base mb-2">
                 Ainda não comprou?
               </h3>
-              <p className="text-xs text-muted-foreground mb-3">
-                Garanta a Fábrica de Apps com IA por R$197 à vista ou 12x de R$19,70.
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Garanta seu acesso à Fábrica de Apps com IA por R$197 à vista ou 12x de R$19,70.
               </p>
               <button
                 type="button"
@@ -955,15 +930,25 @@ export default function Login() {
             </div>
 
             <div className={cardCls}>
-              <button
-                type="button"
-                onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                className="w-full min-h-12 px-4 rounded-xl border border-white/15 hover:bg-white/5 text-sm flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition"
+              <div className="flex items-center gap-2 mb-2">
+                <LifeBuoy size={16} className="text-accent" />
+                <h3 className="font-heading font-semibold text-base">Problemas com acesso?</h3>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                O suporte oficial é feito por e-mail para dúvidas de acesso, login e uso do programa.
+              </p>
+              <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground/90 break-all mb-3">
+                {APP_CONFIG.SUPORTE_EMAIL}
+              </div>
+              <a
+                href={`mailto:${APP_CONFIG.SUPORTE_EMAIL}`}
+                className="w-full min-h-12 px-4 rounded-xl border border-accent/40 bg-accent/10 hover:bg-accent/15 text-accent text-sm font-medium flex items-center justify-center gap-2 transition"
               >
-                <LifeBuoy size={14} /> Falar com suporte
-              </button>
+                <Mail size={14} /> Enviar e-mail
+              </a>
             </div>
           </aside>
+
         </div>
       </div>
     </Section>
