@@ -178,9 +178,26 @@ export const CommandCard = ({
     !!correctionPrompt ||
     !!advanceCriteria;
 
+  // Abrir automaticamente este card quando a URL incluir o hash correspondente
+  // (ex.: ?modulo=checkout#cmd-checkout-2 — disparado pela Ajuda rápida da Fábrica).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const targetId = `cmd-${moduleId}-${number}`;
+    const tryFocus = () => {
+      if (window.location.hash.replace(/^#/, "") !== targetId) return;
+      setOpen(true);
+      const el = document.getElementById(targetId);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    tryFocus();
+    window.addEventListener("hashchange", tryFocus);
+    return () => window.removeEventListener("hashchange", tryFocus);
+  }, [moduleId, number]);
+
   return (
     <>
-    <GlassCard className="p-5 md:p-6 space-y-4 scroll-mt-24">
+    <GlassCard id={`cmd-${moduleId}-${number}`} className="p-5 md:p-6 space-y-4 scroll-mt-24">
+
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
