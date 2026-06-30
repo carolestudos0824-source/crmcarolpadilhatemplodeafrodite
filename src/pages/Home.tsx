@@ -498,6 +498,9 @@ export default function Home() {
             </span>
           </div>
 
+          <p className="text-sm md:text-base text-foreground/90 leading-relaxed text-center mb-4 max-w-2xl mx-auto">
+            Você recebe acesso ao programa-guia com 23 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
+          </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
             Quero acessar o programa por R$197 <ChevronRight size={18} />
           </button>
