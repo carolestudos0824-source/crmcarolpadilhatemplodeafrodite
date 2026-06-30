@@ -1,5 +1,6 @@
 import { Bot } from "lucide-react";
-import { copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
+import { toast } from "sonner";
+import { AGENTE_ARQUITETO_URL, copyPromptAndOpenAgent } from "@/lib/agenteArquiteto";
 
 /**
  * Card reutilizável do Agente Arquiteto.
