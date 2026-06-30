@@ -24,7 +24,7 @@ export const AGENT_MODULE_GUIDANCE = {
     eyebrow: "Comece aqui · guia inicial",
     title: "Comece pelo Agente Arquiteto se estiver em dúvida",
     subtitle:
-      "O Agente te ajuda a entender a Fábrica, escolher sua rota e decidir se você começa por ideia, planejamento ou app existente.",
+      "O Agente Arquiteto te ajuda a entender a Fábrica, escolher sua rota e decidir se você começa por ideia, planejamento ou app existente.",
     ctaLabel: "Copiar prompt e abrir Agente Arquiteto",
     prompt: `Estou começando na Fábrica de Apps com IA e preciso de ajuda para entender minha melhor rota. Me ajude a decidir se devo começar por ideias prontas, planejamento do app ou diagnóstico de um app que já existe. Faça perguntas simples e me entregue um próximo passo claro.`,
     successMessage:
@@ -32,9 +32,9 @@ export const AGENT_MODULE_GUIDANCE = {
   },
   planejar: {
     eyebrow: "Planejar o App · antes do Lovable",
-    title: "Planeje seu app com o Agente antes de gerar prompt",
+    title: "Planeje seu app com o Agente Arquiteto antes de gerar prompt",
     subtitle:
-      "O Agente ajuda a transformar ideia solta em problema, público, promessa, ação principal, funcionalidades e escopo seguro.",
+      "O Agente Arquiteto ajuda a transformar ideia solta em problema, público, promessa, ação principal, funcionalidades e escopo seguro.",
     ctaLabel: "Planejar com o Agente Arquiteto",
     prompt: `Quero planejar meu aplicativo antes de pedir qualquer coisa ao Lovable. Me ajude a definir público-alvo, problema, promessa principal, ação principal do usuário, funcionalidades essenciais, o que cortar agora e qual deve ser o próximo passo.`,
     successMessage:
@@ -42,9 +42,9 @@ export const AGENT_MODULE_GUIDANCE = {
   },
   login: {
     eyebrow: "Login e Banco · ação crítica",
-    title: "Revise login e dados com o Agente antes de mexer no app",
+    title: "Revise login e dados com o Agente Arquiteto antes de mexer no app",
     subtitle:
-      "O Agente ajuda a pensar em cadastro, login, logout, dados por usuário, tabelas, permissões e riscos antes de pedir alterações ao Lovable.",
+      "O Agente Arquiteto ajuda a pensar em cadastro, login, logout, dados por usuário, tabelas, permissões e riscos antes de pedir alterações ao Lovable.",
     ctaLabel: "Revisar com o Agente Arquiteto",
     prompt: `Vou trabalhar em login e banco de dados do meu app. Antes de pedir alterações ao Lovable, me ajude a revisar o que preciso preservar, quais dados são por usuário, quais tabelas podem existir, quais permissões preciso considerar e quais riscos devo evitar.`,
     successMessage:
@@ -52,9 +52,9 @@ export const AGENT_MODULE_GUIDANCE = {
   },
   seguranca: {
     eyebrow: "Segurança do App · revise antes de alterar",
-    title: "Antes de mexer em segurança, pergunte ao Agente",
+    title: "Antes de mexer em segurança, pergunte ao Agente Arquiteto",
     subtitle:
-      "O Agente ajuda a revisar rotas privadas, área paga, admin, RLS, policies, dados sensíveis e possíveis formas de burlar acesso.",
+      "O Agente Arquiteto ajuda a revisar rotas privadas, área paga, admin, RLS, policies, dados sensíveis e possíveis formas de burlar acesso.",
     ctaLabel: "Revisar segurança com o Agente Arquiteto",
     prompt: `Quero revisar a segurança do meu app antes de pedir mudanças ao Lovable. Me ajude a analisar rotas públicas e privadas, dados sensíveis, login, área paga, admin, RLS, policies, permissões e riscos de acesso indevido. Não prometa segurança 100%, apenas me ajude a reduzir riscos.`,
     successMessage:
@@ -62,9 +62,9 @@ export const AGENT_MODULE_GUIDANCE = {
   },
   checkout: {
     eyebrow: "Checkout e Entrega · antes de configurar pagamento",
-    title: "Revise seu fluxo de checkout com o Agente",
+    title: "Revise seu fluxo de checkout com o Agente Arquiteto",
     subtitle:
-      "O Agente ajuda a revisar pagamento, confirmação, liberação de acesso, página de obrigado e entrega do produto sem quebrar o que já funciona.",
+      "O Agente Arquiteto ajuda a revisar pagamento, confirmação, liberação de acesso, página de obrigado e entrega do produto sem quebrar o que já funciona.",
     ctaLabel: "Revisar checkout com o Agente Arquiteto",
     prompt: `Quero revisar o fluxo de checkout e entrega do meu app antes de pedir alterações ao Lovable. Me ajude a pensar em pagamento, confirmação, liberação de acesso, área paga, página de obrigado, e-mails ou mensagens pós-compra, riscos e o que não devo alterar agora.`,
     successMessage:
@@ -72,20 +72,20 @@ export const AGENT_MODULE_GUIDANCE = {
   },
   ideias: {
     eyebrow: "Ideias prontas · antes de escolher",
-    title: "Não sabe qual ideia escolher? Pergunte ao Agente",
+    title: "Não sabe qual ideia escolher? Pergunte ao Agente Arquiteto",
     subtitle:
-      "O Agente te ajuda a comparar ideias por público, dor, esforço e potencial antes de você abrir um modelo no Lovable.",
-    ctaLabel: "Escolher ideia com o Agente",
+      "O Agente Arquiteto te ajuda a comparar ideias por público, dor, esforço e potencial antes de você abrir um modelo no Lovable.",
+    ctaLabel: "Escolher ideia com o Agente Arquiteto",
     prompt: `Estou olhando ideias prontas na Fábrica de Apps com IA e não sei qual escolher. Me ajude a comparar 2 ou 3 ideias por público-alvo, dor resolvida, esforço de execução e potencial de uso. Faça perguntas curtas e me entregue uma recomendação fundamentada, sem prometer sucesso garantido.`,
     successMessage:
       "Prompt copiado. Abra o Agente Arquiteto oficial e cole para escolher a ideia.",
   },
   prontidao: {
     eyebrow: "Painel de Prontidão · leitura assistida",
-    title: "Está pronto para avançar? Revise com o Agente",
+    title: "Está pronto para avançar? Revise com o Agente Arquiteto",
     subtitle:
-      "O Agente interpreta seus bloqueadores de publicação, venda, segurança e testes e diz onde focar primeiro.",
-    ctaLabel: "Interpretar prontidão com o Agente",
+      "O Agente Arquiteto interpreta seus bloqueadores de publicação, venda, segurança e testes e diz onde focar primeiro.",
+    ctaLabel: "Interpretar prontidão com o Agente Arquiteto",
     prompt: `Quero avaliar se meu app está pronto para avançar. Vou colar o resumo do meu Painel de Prontidão. Me ajude a interpretar bloqueadores de publicação, venda, segurança e testes, e me diga em qual ordem resolver. Não prometa app perfeito nem venda garantida.`,
     successMessage:
       "Prompt copiado. Abra o Agente Arquiteto oficial e cole o resumo do seu Painel de Prontidão.",

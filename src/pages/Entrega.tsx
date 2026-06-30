@@ -519,11 +519,11 @@ function EntregaInner() {
                 toast.success("Agente Arquiteto aberto. Use ele para pensar antes de mexer no Lovable.");
               }}
               className="lg:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-cyan-400/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500/15"
-              aria-label="Falar com o Agente"
-              title="Falar com o Agente"
+              aria-label="Falar com o Agente Arquiteto"
+              title="Falar com o Agente Arquiteto"
             >
               <Bot size={12} />
-              <span className="hidden sm:inline">Falar com o Agente</span>
+              <span className="hidden sm:inline">Falar com o Agente Arquiteto</span>
             </button>
             <MyAppsHeaderButton />
             <TechnicalGlossaryDrawer goTo={goTo} />
@@ -627,7 +627,7 @@ function EntregaInner() {
                 <ExternalLink size={12} className="shrink-0 opacity-70" />
               </button>
               <p className="text-[10px] text-muted-foreground mt-1.5 px-1 leading-snug">
-                Use o Agente para pensar, revisar erros e decidir o próximo passo antes de mexer no Lovable.
+                Use o Agente Arquiteto para pensar, revisar erros e decidir o próximo passo antes de mexer no Lovable.
               </p>
             </div>
 
@@ -740,7 +740,7 @@ function EntregaInner() {
               de forma discreta dentro do EstadoAtualDoProjetoCard. */}
           <EstadoAtualDoProjetoCard onGoToModule={(id) => setActive(id)} />
 
-          {/* Sem Projeto em foco: bloco prioritário acima de jornada/Agente */}
+          {/* Sem Projeto em foco: bloco prioritário acima de jornada/Agente Arquiteto */}
           {!appProjects.activeProject && active !== "ideias" && (
             <section
               aria-label="Primeiro passo — escolher app"
@@ -753,7 +753,7 @@ function EntregaInner() {
                 Primeiro, escolha o app que a Fábrica vai guiar
               </h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-                O Projeto em foco é o app que receberá contexto, jornada, prompts, progresso, GPS e orientação do Agente.
+                O Projeto em foco é o app que receberá contexto, jornada, prompts, progresso, GPS e orientação do Agente Arquiteto.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <button
@@ -815,7 +815,7 @@ function EntregaInner() {
               <div className="rounded-lg border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 text-[12px] text-amber-100 flex items-start gap-2">
                 <AlertTriangle size={13} className="shrink-0 mt-0.5" />
                 <span>
-                  Antes de usar o Agente com contexto, crie ou selecione um Projeto em foco. Sem projeto, o Agente é apoio — não a primeira ação.
+                  Antes de usar o Agente Arquiteto com contexto, crie ou selecione um Projeto em foco. Sem projeto, o Agente Arquiteto é apoio — não a primeira ação.
                 </span>
               </div>
             </div>
@@ -1239,7 +1239,7 @@ const ConstruirIntro = () => {
       text: "Use este caminho se você tem apenas uma ideia e quer seguir o passo a passo simples.",
     },
     {
-      title: "Conversar com o Agente",
+      title: "Conversar com o Agente Arquiteto",
       tone: "amber",
       text: "Use este caminho se quer pensar melhor sobre o app antes de pedir para o Lovable construir.",
     },
@@ -2385,7 +2385,7 @@ const ValidacaoIntro = () => {
             onClick={reviewInviteWithAgent}
             className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 text-sm font-semibold min-h-[44px]"
           >
-            <Sparkles size={14} /> Revisar convite com o Agente
+            <Sparkles size={14} /> Revisar convite com o Agente Arquiteto
           </button>
         </div>
       </div>
@@ -2413,7 +2413,7 @@ const ValidacaoIntro = () => {
             onClick={explainStepWithAgent}
             className="inline-flex items-center gap-2 text-xs px-3 py-2 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15 min-h-[40px]"
           >
-            <Sparkles size={12} /> Explicar esta etapa com o Agente
+            <Sparkles size={12} /> Explicar esta etapa com o Agente Arquiteto
           </button>
         </div>
         {showGlossary && (
@@ -3068,7 +3068,7 @@ function ErrorsModule() {
           )}
         </div>
         <p className="text-xs text-muted-foreground mt-3">
-          Se você não sabe explicar o erro, converse com o Agente antes de corrigir no Lovable.
+          Se você não sabe explicar o erro, converse com o Agente Arquiteto antes de corrigir no Lovable.
         </p>
       </GlassCard>
 

@@ -75,7 +75,7 @@ const RULES: Rule[] = [
       moduleLabel: "Monetização",
       action: "decidir o modelo de cobrança antes de mexer no checkout",
       button: "agent",
-      buttonLabel: "Planejar com o Agente",
+      buttonLabel: "Planejar com o Agente Arquiteto",
       why: "Definir preço e modelo (único, assinatura ou freemium) é decisão estratégica. Errar aqui custa caro depois.",
       avoid: "Implementar Stripe ou página de venda antes de fechar o modelo de cobrança.",
       prompt:
@@ -101,7 +101,7 @@ const RULES: Rule[] = [
       moduleLabel: "Segurança do App",
       action: "auditar autenticação, RLS e permissões antes de qualquer outra mudança",
       button: "agent",
-      buttonLabel: "Planejar com o Agente",
+      buttonLabel: "Planejar com o Agente Arquiteto",
       why: "Falha de segurança expõe dados de usuários e quebra confiança. Precisa diagnóstico antes de aplicar correção.",
       avoid: "Aplicar correções amplas de RLS sem entender o impacto em login, admin e checkout.",
       prompt:
@@ -126,7 +126,7 @@ const RULES: Rule[] = [
       moduleLabel: "Página de venda",
       action: "planejar a mudança visual ou de copy antes de aplicar",
       button: "agent",
-      buttonLabel: "Planejar com o Agente",
+      buttonLabel: "Planejar com o Agente Arquiteto",
       why: "Mexer em tela sem plano gera retrabalho e quebra layout. Decidir antes economiza créditos.",
       avoid: "Refatorar layout inteiro ou trocar fontes/cores sem aprovar o plano.",
       prompt:
@@ -151,7 +151,7 @@ const RULES: Rule[] = [
       moduleLabel: "Erros comuns",
       action: "diagnosticar a causa antes de pedir correção ao Lovable",
       button: "agent",
-      buttonLabel: "Planejar com o Agente",
+      buttonLabel: "Planejar com o Agente Arquiteto",
       why: "Pedir correção sem diagnóstico costuma piorar o bug. Diagnosticar primeiro economiza créditos.",
       avoid: "Mandar 'conserta isso' direto para o Lovable sem descrever sintoma, console e passo a passo.",
       prompt:
@@ -176,18 +176,18 @@ const RULES: Rule[] = [
       pain: "dúvida de próximo passo",
       moduleId: "planejar",
       moduleLabel: "Próximo Passo",
-      action: "deixar o Agente analisar o estado do app e decidir a etapa correta",
+      action: "deixar o Agente Arquiteto analisar o estado do app e decidir a etapa correta",
       button: "agent",
-      buttonLabel: "Planejar com o Agente",
+      buttonLabel: "Planejar com o Agente Arquiteto",
       why: "Antes de executar, o sistema precisa decidir qual é a próxima etapa mais importante do seu app.",
       avoid: "Sair copiando prompts sem saber em que fase do app você está.",
       prompt:
-        "Analisar o estado atual do app ativo (o que já existe, o que falta, o que está bloqueando venda) e recomendar a próxima ação mais importante. Indicar qual módulo abrir e se deve usar o Agente ou o Lovable. Não implementar agora.",
+        "Analisar o estado atual do app ativo (o que já existe, o que falta, o que está bloqueando venda) e recomendar a próxima ação mais importante. Indicar qual módulo abrir e se deve usar o Agente Arquiteto ou o Lovable. Não implementar agora.",
       checklist: [
         "Tenho um app ativo selecionado em Meus Apps",
         "Sei descrever em uma frase o que o app faz hoje",
         "Sei o que ainda não funciona ou não existe",
-        "Estou disposto a seguir a recomendação do Agente antes de executar",
+        "Estou disposto a seguir a recomendação do Agente Arquiteto antes de executar",
       ],
     }),
   },
