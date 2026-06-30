@@ -49,7 +49,7 @@ export const TwoPathsExplainer = () => {
               revisar antes de enviar ao Lovable.
             </p>
             <span className="inline-block mt-2 text-[11px] px-2 py-1 rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-200">
-              Revisar com o Agente
+              Revisar com o Agente Arquiteto
             </span>
           </div>
         </div>
