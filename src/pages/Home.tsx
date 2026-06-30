@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Sparkles, Layers, Database, Brain, Target, ChevronRight,
   Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
-  Lightbulb, Check, ShieldCheck, PlayCircle, Bot, Mail, Compass, Rocket,
+  Lightbulb, Check, ShieldCheck, PlayCircle, Bot, Compass, Rocket,
   RefreshCw, MapPin,
 } from "lucide-react";
 import { Section } from "@/components/Section";
@@ -54,7 +54,7 @@ const naoIncluso = [
   "Domínio próprio, hospedagem e ferramentas externas não inclusos",
   "App feito por mim ou desenvolvimento personalizado não incluso",
   "Mentoria individual não inclusa",
-  "Suporte técnico ilimitado não incluso",
+  
   "Garantia de vendas ou faturamento não inclusa",
   "Promessa de app perfeito ou segurança 100% não inclusa",
   "Promessa de compatibilidade automática com qualquer IA não inclusa",
@@ -81,7 +81,7 @@ const paraQuemE = [
 const naoEParaQuem = [
   "Quem espera que a IA faça tudo sozinha, sem revisar, testar ou tomar decisões",
   "Quem quer garantia de vendas, faturamento ou aprovação",
-  "Quem espera suporte individual ilimitado",
+  
   "Quem não pretende usar nenhuma ferramenta de IA para criar apps",
   "Quem quer um app gigante e complexo já na primeira versão",
   "Quem busca um app pronto entregue por terceiros, sem participar da execução",
@@ -103,7 +103,7 @@ const faqs = [
   { q: "O que são as 30 ideias de aplicativos?", a: "São 30 modelos de aplicativos prontos para inspirar o seu projeto, com formato, público e estrutura sugerida, para você não começar do zero." },
   { q: "Vou sair com o app pronto?", a: "Você sai com clareza, estrutura do MVP, prompts e próximos passos para construir. O ritmo da construção depende da sua execução." },
   { q: "É curso, mentoria ou prompt pack?", a: "É um programa completo com método guiado, área interna, prompts por etapa, checklists e 30 ideias. Não é só PDF, não é prompt pack solto e não é mentoria individual." },
-  { q: "Tem suporte?", a: "Existe canal de suporte por e-mail (fabricadeappscomia@outlook.com) para dúvidas sobre o uso da plataforma. Não é suporte técnico ilimitado nem desenvolvimento sob demanda." },
+  { q: "Como funciona o acompanhamento dentro do programa?", a: "A Fábrica é um programa-guia entregue por módulos, prompts e checklists. O caminho é autoguiado: você avança pelas etapas, usa os prompts prontos e segue a sequência sugerida dentro da área interna." },
   { q: "Tem garantia?", a: "Sim. Você tem 7 dias para acessar, conhecer o programa por dentro e solicitar reembolso integral se perceber que não é para você." },
   { q: "Como recebo acesso depois da compra?", a: "Após a confirmação do pagamento, o acesso à área interna é liberado para o e-mail informado no checkout." },
 ];
@@ -512,21 +512,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Suporte visível */}
-          <div className="mt-4 flex items-start gap-3">
-            <Mail size={20} className="text-accent shrink-0 mt-0.5" />
-            <p className="text-sm text-foreground/90 leading-relaxed">
-              <span className="font-semibold">Dúvidas antes de comprar?</span>{" "}
-              Escreva para{" "}
-              <a
-                href="mailto:fabricadeappscomia@outlook.com"
-                className="text-accent underline underline-offset-4 hover:text-accent/80 break-all"
-              >
-                fabricadeappscomia@outlook.com
-              </a>
-              .
-            </p>
-          </div>
         </div>
       </Section>
 
