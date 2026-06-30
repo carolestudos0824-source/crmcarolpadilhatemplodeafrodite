@@ -53,7 +53,7 @@ export default function Checkout() {
             Pagamento processado em ambiente externo. Nenhum dado de pagamento é armazenado neste site.
           </div>
           <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
-            Suporte por e-mail apenas para dúvidas de acesso ao material.
+            Suporte por e-mail para acesso, navegação e uso da área de entrega.
           </p>
         </div>
       </div>

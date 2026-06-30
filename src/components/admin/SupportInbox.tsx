@@ -91,7 +91,7 @@ export function SupportInbox() {
         <InboxIcon className="text-muted-foreground/70" size={24} />
         <h3 className="admin-empty-title">Nenhuma mensagem recebida ainda</h3>
         <p className="admin-empty-hint">
-          Quando alguém enviar uma mensagem pelo formulário em /suporte, ela aparece aqui.
+          Mensagens enviadas por participantes pelo canal de suporte do programa aparecem aqui. O suporte oficial é por e-mail.
         </p>
       </div>
     );
