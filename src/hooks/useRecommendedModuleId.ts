@@ -41,7 +41,7 @@ export const useRecommendedModuleId = (): ModuleId | null => {
     }
 
 
-    const activeModuleId = (activeProject.currentModuleId ?? active) as ModuleId | null;
+    const activeModuleId = (active ?? activeProject.currentModuleId ?? null) as ModuleId | null;
     const activeIdx = activeModuleId ? MODULE_ORDER.indexOf(activeModuleId) : -1;
     const idxOf = (id: ModuleId) => MODULE_ORDER.indexOf(id);
 
