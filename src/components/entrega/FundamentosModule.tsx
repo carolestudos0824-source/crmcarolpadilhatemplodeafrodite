@@ -147,58 +147,102 @@ export function FundamentosModule({ goTo }: Props = {}) {
         </div>
       </GlassCard>
 
-      {/* Como usar a Fábrica junto com o Lovable */}
+      {/* Você pode usar a Fábrica de dois jeitos */}
       <GlassCard className="p-5 md:p-6 mb-6">
         <div className="flex items-start gap-4 mb-4">
           <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
             <Repeat size={20} />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
-                Como usar a Fábrica junto com o Lovable
-              </h2>
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-200">
-                Fluxo essencial
-              </span>
-            </div>
+            <h2 className="text-lg md:text-xl font-heading font-bold leading-tight mb-1">
+              Você pode usar a Fábrica de dois jeitos
+            </h2>
             <p className="text-sm text-foreground/85 leading-relaxed">
-              A Fábrica é o painel de orientação. O Lovable é onde você executa os comandos. Use os dois juntos, sempre em ciclos curtos.
+              A Fábrica guia o caminho. O Lovable executa a construção. O Agente Arquiteto ajuda você a pensar melhor antes de colar comandos e a revisar o resultado antes de avançar.
             </p>
           </div>
         </div>
 
-        <ol className="grid sm:grid-cols-2 gap-2 text-sm">
-          {[
-            "Abra a etapa atual na Fábrica.",
-            "Leia o objetivo da etapa.",
-            "Copie apenas um comando.",
-            "Cole no Lovable.",
-            "Espere o Lovable terminar.",
-            "Teste o que apareceu no app.",
-            "Volte para a Fábrica.",
-            "Revise com o checklist da etapa.",
-            "Corrija erros antes de avançar.",
-            "Só depois marque a etapa como concluída.",
-          ].map((step, i) => (
-            <li
-              key={i}
-              className="flex gap-3 items-start rounded-lg border border-white/10 bg-white/5 p-2.5"
-            >
-              <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
-                {i + 1}
+        <div className="grid md:grid-cols-2 gap-3">
+          {/* Card 1 — Caminho rápido */}
+          <div className="rounded-xl border border-cyan-400/30 bg-cyan-400/[0.06] p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200">
+                Direto
               </span>
-              <span className="pt-0.5 text-foreground/90">{step}</span>
-            </li>
-          ))}
-        </ol>
+              <h3 className="text-sm md:text-base font-heading font-bold leading-tight">
+                Caminho rápido: Fábrica → Lovable
+              </h3>
+            </div>
+            <p className="text-xs md:text-sm text-foreground/80 leading-relaxed mb-3">
+              Use quando o prompt já estiver claro. Copie um comando da Fábrica, cole no Lovable, espere terminar, teste o resultado e volte para marcar a etapa.
+            </p>
+            <ol className="space-y-1.5 text-xs md:text-sm">
+              {[
+                "Abra a etapa na Fábrica.",
+                "Copie um comando.",
+                "Cole no Lovable.",
+                "Espere o Lovable terminar.",
+                "Teste o resultado.",
+                "Volte para a Fábrica e revise antes de avançar.",
+              ].map((s, i) => (
+                <li key={i} className="flex gap-2 items-start">
+                  <span className="shrink-0 w-5 h-5 rounded-full bg-cyan-400/15 border border-cyan-400/30 text-cyan-200 text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5 text-foreground/90">{s}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Card 2 — Caminho seguro */}
+          <div className="rounded-xl border border-amber-400/30 bg-amber-400/[0.06] p-4">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-200">
+                Recomendado
+              </span>
+              <h3 className="text-sm md:text-base font-heading font-bold leading-tight">
+                Caminho seguro: Fábrica → Agente → Lovable → Agente → Fábrica
+              </h3>
+            </div>
+            <p className="text-xs md:text-sm text-foreground/80 leading-relaxed mb-3">
+              Use quando tiver dúvida, quiser adaptar o prompt ao seu app ou revisar o que o Lovable entregou. O Agente ajuda você a pensar, melhorar o comando e conferir se o resultado faz sentido.
+            </p>
+            <ol className="space-y-1.5 text-xs md:text-sm">
+              {[
+                "Abra a etapa na Fábrica.",
+                "Copie o prompt ou explique sua dúvida ao Agente Arquiteto.",
+                "Peça para o Agente revisar, adaptar ou melhorar o comando.",
+                "Copie o prompt refinado.",
+                "Cole no Lovable.",
+                "Espere o Lovable terminar.",
+                "Teste o resultado.",
+                "Cole no Agente o que o Lovable entregou, se precisar revisar.",
+                "Corrija antes de avançar.",
+                "Volte para a Fábrica e marque a etapa quando estiver funcionando.",
+              ].map((s, i) => (
+                <li key={i} className="flex gap-2 items-start">
+                  <span className="shrink-0 w-5 h-5 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-200 text-[10px] font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5 text-foreground/90">{s}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
 
         <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-400/30 bg-amber-400/5 p-3">
           <AlertTriangle size={14} className="text-amber-300 shrink-0 mt-0.5" />
           <p className="text-xs md:text-sm text-amber-100/90 leading-relaxed">
-            Não avance só porque o comando foi copiado. Avance quando o resultado estiver funcionando.
+            Não avance só porque copiou o prompt. Avance quando o resultado estiver funcionando e fizer sentido para o seu app.
           </p>
         </div>
+
+        <p className="text-[11px] md:text-xs text-muted-foreground mt-3 leading-relaxed">
+          O Agente Arquiteto não substitui o Lovable e não altera seu projeto diretamente. Ele ajuda você a pensar melhor antes de pedir e revisar melhor depois que o Lovable responde.
+        </p>
       </GlassCard>
 
       {/* Aulas */}
