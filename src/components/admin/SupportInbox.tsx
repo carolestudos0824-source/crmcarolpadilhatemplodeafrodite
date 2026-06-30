@@ -66,42 +66,102 @@ export function SupportInbox() {
     setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, status: next } : m)));
   };
 
+  const OFFICIAL_EMAIL = "fabricadeappscomia@outlook.com";
+
+  const Overview = (
+    <div className="space-y-4">
+      <div className="admin-card p-5 text-center">
+        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">Canal oficial</p>
+        <a
+          href={`mailto:${OFFICIAL_EMAIL}`}
+          className="text-lg md:text-xl font-heading font-bold text-accent hover:underline break-all"
+        >
+          {OFFICIAL_EMAIL}
+        </a>
+        <p className="text-sm text-muted-foreground mt-3">
+          O suporte oficial da Fábrica de Apps com IA é feito por e-mail.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="admin-card p-5">
+          <h3 className="font-heading font-semibold text-sm mb-2">O suporte cobre</h3>
+          <ul className="space-y-1 text-xs text-foreground/90 list-disc pl-4">
+            <li>Acesso ao programa</li>
+            <li>Login</li>
+            <li>Liberação de acesso</li>
+            <li>Navegação na área de entrega</li>
+            <li>Dúvidas sobre uso dos módulos</li>
+            <li>Problemas técnicos do próprio programa</li>
+            <li>Garantia, compra e acesso</li>
+          </ul>
+        </div>
+        <div className="admin-card p-5">
+          <h3 className="font-heading font-semibold text-sm mb-2">O suporte não cobre</h3>
+          <ul className="space-y-1 text-xs text-muted-foreground list-disc pl-4">
+            <li>Construção do app pelo participante</li>
+            <li>Consultoria individual</li>
+            <li>Revisão completa ou ilimitada de projetos</li>
+            <li>Desenvolvimento sob demanda</li>
+            <li>Correção direta em Lovable, Replit, Cursor, Bolt ou ferramentas externas</li>
+            <li>Suporte 24h</li>
+            <li>Garantia de vendas</li>
+            <li>Garantia de app perfeito</li>
+            <li>Garantia de segurança 100%</li>
+            <li>Suporte oficial de ferramentas externas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+
   if (loading) {
     return (
-      <div className="admin-card text-center text-muted-foreground text-sm inline-flex items-center justify-center gap-2 w-full">
-        <Loader2 size={16} className="animate-spin" /> Carregando mensagens recebidas...
+      <div className="space-y-4">
+        {Overview}
+        <div className="admin-card text-center text-muted-foreground text-sm inline-flex items-center justify-center gap-2 w-full">
+          <Loader2 size={16} className="animate-spin" /> Carregando solicitações registradas...
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="admin-card text-sm">
-        <p className="text-red-300 mb-3">Erro ao carregar: {error}</p>
-        <button type="button" onClick={() => void load()} className="btn-ghost border border-[hsl(var(--admin-border-strong))] inline-flex items-center gap-2">
-          <RefreshCw size={14} /> Tentar novamente
-        </button>
+      <div className="space-y-4">
+        {Overview}
+        <div className="admin-card text-sm">
+          <p className="text-red-300 mb-3">Erro ao carregar: {error}</p>
+          <button type="button" onClick={() => void load()} className="btn-ghost border border-[hsl(var(--admin-border-strong))] inline-flex items-center gap-2">
+            <RefreshCw size={14} /> Tentar novamente
+          </button>
+        </div>
       </div>
     );
   }
 
   if (messages.length === 0) {
     return (
-      <div className="admin-empty">
-        <InboxIcon className="text-muted-foreground/70" size={24} />
-        <h3 className="admin-empty-title">Nenhuma mensagem recebida ainda</h3>
-        <p className="admin-empty-hint">
-          Mensagens enviadas por participantes pelo canal de suporte do programa aparecem aqui. O suporte oficial é por e-mail.
-        </p>
+      <div className="space-y-4">
+        {Overview}
+        <div className="admin-empty">
+          <InboxIcon className="text-muted-foreground/70" size={24} />
+          <h3 className="admin-empty-title">Nenhuma solicitação registrada</h3>
+          <p className="admin-empty-hint">
+            Responda diretamente pelo e-mail oficial: {OFFICIAL_EMAIL}.
+          </p>
+        </div>
       </div>
     );
   }
 
+
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {Overview}
+      <div className="flex items-center justify-between pt-2">
         <p className="text-xs text-muted-foreground">
-          {messages.length} mensagem{messages.length === 1 ? "" : "s"} · ordenadas da mais recente para a mais antiga
+          {messages.length} solicitaç{messages.length === 1 ? "ão" : "ões"} registrada{messages.length === 1 ? "" : "s"} · responda pelo e-mail oficial
         </p>
         <button
           type="button"

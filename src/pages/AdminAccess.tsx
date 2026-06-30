@@ -620,10 +620,10 @@ function OverviewSection({
         />
         <StatusCard
           icon={<Mail size={14} />}
-          title="Mensagens recebidas"
+          title="Suporte por e-mail"
           badge={dash(metrics.supportMessages)}
           tone="muted"
-          text="Mensagens enviadas por participantes pelo canal de suporte do programa."
+          text="Canal oficial de suporte do programa Fábrica de Apps com IA."
         />
         <StatusCard
           icon={<CreditCard size={14} />}
@@ -652,7 +652,7 @@ function OverviewSection({
             <ShieldCheck size={14} /> Liberar acesso
           </button>
           <button onClick={() => onGoTo("inbox")} className="btn-ghost border border-white/15 text-xs">
-            <Mail size={14} /> Ver mensagens
+            <Mail size={14} /> Suporte por e-mail
           </button>
           <button onClick={() => onGoTo("pendencias")} className="btn-ghost border border-white/15 text-xs">
             Prontidão para venda pública
@@ -1109,7 +1109,7 @@ function MensagensSection() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        Mensagens prontas para responder clientes. Use os botões para copiar o texto puro ou com link.
+        Modelos de resposta para copiar e usar manualmente no e-mail oficial de suporte (fabricadeappscomia@outlook.com). Não é chat, atendimento automático nem suporte ilimitado.
       </p>
       {SUPPORT_MESSAGES.map((m) => (
         <div key={m.title} className="admin-card">
