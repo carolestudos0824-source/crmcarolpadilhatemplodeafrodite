@@ -495,7 +495,7 @@ export const CommandCard = ({
               {whenAgentFirst && (
                 <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3">
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1">
-                    <Bot size={12} /> Usar o Agente antes quando
+                    <Bot size={12} /> Usar o Agente Arquiteto antes quando
                   </div>
                   <p className="text-[13px] text-foreground/85 leading-snug">{whenAgentFirst}</p>
                 </div>
@@ -503,7 +503,7 @@ export const CommandCard = ({
               {agentPrompt ? (
                 <div>
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
-                    <Bot size={12} /> Texto pronto para conversar com o Agente
+                    <Bot size={12} /> Texto pronto para conversar com o Agente Arquiteto
                   </div>
                   <EditablePromptBox
                     originalPrompt={displayAgent}
@@ -535,7 +535,7 @@ export const CommandCard = ({
                         className="text-sm inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-xl border border-amber-400/40 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15"
                       >
                         {copiedKey === "agent" ? <Check size={16} /> : <Copy size={16} />}
-                        {copiedKey === "agent" ? "Copiado" : "Copiar prompt para o Agente"}
+                        {copiedKey === "agent" ? "Copiado" : "Copiar prompt para o Agente Arquiteto"}
                       </button>
                       <a
                         href={APP_CONFIG.GPT_AGENT_URL}
@@ -547,7 +547,7 @@ export const CommandCard = ({
                       </a>
                     </div>
                     <span className="text-[11px] text-muted-foreground/80 max-w-[420px] text-right">
-                      Copie o prompt primeiro. Depois abra o Agente e cole com Ctrl+V (Cmd+V no Mac).
+                      Copie o prompt primeiro. Depois abra o Agente Arquiteto e cole com Ctrl+V (Cmd+V no Mac).
                     </span>
                   </div>
 
