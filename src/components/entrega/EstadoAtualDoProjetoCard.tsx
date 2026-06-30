@@ -277,7 +277,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
 
 
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
         <InfoField
           icon={<FolderKanban size={12} />}
           label="Projeto em foco"
