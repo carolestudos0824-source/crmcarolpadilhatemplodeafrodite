@@ -623,7 +623,7 @@ function OverviewSection({
           title="Mensagens recebidas"
           badge={dash(metrics.supportMessages)}
           tone="muted"
-          text="Suporte recebido pela área interna."
+          text="Mensagens enviadas por participantes pelo canal de suporte do programa."
         />
         <StatusCard
           icon={<CreditCard size={14} />}
