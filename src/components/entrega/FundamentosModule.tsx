@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   ArrowRight,
   Clock,
+  Repeat,
+  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -142,6 +144,60 @@ export function FundamentosModule({ goTo }: Props = {}) {
               Copie um comando por vez. Espere o Lovable terminar. Revise o resultado. Só depois avance.
             </p>
           </div>
+        </div>
+      </GlassCard>
+
+      {/* Como usar a Fábrica junto com o Lovable */}
+      <GlassCard className="p-5 md:p-6 mb-6">
+        <div className="flex items-start gap-4 mb-4">
+          <div className="shrink-0 w-11 h-11 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
+            <Repeat size={20} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <h2 className="text-lg md:text-xl font-heading font-bold leading-tight">
+                Como usar a Fábrica junto com o Lovable
+              </h2>
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-200">
+                Fluxo essencial
+              </span>
+            </div>
+            <p className="text-sm text-foreground/85 leading-relaxed">
+              A Fábrica é o painel de orientação. O Lovable é onde você executa os comandos. Use os dois juntos, sempre em ciclos curtos.
+            </p>
+          </div>
+        </div>
+
+        <ol className="grid sm:grid-cols-2 gap-2 text-sm">
+          {[
+            "Abra a etapa atual na Fábrica.",
+            "Leia o objetivo da etapa.",
+            "Copie apenas um comando.",
+            "Cole no Lovable.",
+            "Espere o Lovable terminar.",
+            "Teste o que apareceu no app.",
+            "Volte para a Fábrica.",
+            "Revise com o checklist da etapa.",
+            "Corrija erros antes de avançar.",
+            "Só depois marque a etapa como concluída.",
+          ].map((step, i) => (
+            <li
+              key={i}
+              className="flex gap-3 items-start rounded-lg border border-white/10 bg-white/5 p-2.5"
+            >
+              <span className="shrink-0 w-6 h-6 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-bold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <span className="pt-0.5 text-foreground/90">{step}</span>
+            </li>
+          ))}
+        </ol>
+
+        <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-400/30 bg-amber-400/5 p-3">
+          <AlertTriangle size={14} className="text-amber-300 shrink-0 mt-0.5" />
+          <p className="text-xs md:text-sm text-amber-100/90 leading-relaxed">
+            Não avance só porque o comando foi copiado. Avance quando o resultado estiver funcionando.
+          </p>
         </div>
       </GlassCard>
 
