@@ -22,6 +22,7 @@ import {
   KeyRound,
 } from "lucide-react";
 import { ChangePasswordDialog } from "@/components/admin/ChangePasswordDialog";
+import { AdminAccountSettings } from "@/components/admin/AdminAccountSettings";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
