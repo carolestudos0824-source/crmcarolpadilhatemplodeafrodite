@@ -503,7 +503,7 @@ export const CommandCard = ({
               {agentPrompt ? (
                 <div>
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
-                    <Bot size={12} /> Texto pronto para conversar com o Agente
+                    <Bot size={12} /> Texto pronto para conversar com o Agente Arquiteto
                   </div>
                   <EditablePromptBox
                     originalPrompt={displayAgent}
