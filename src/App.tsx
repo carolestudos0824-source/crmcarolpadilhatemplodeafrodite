@@ -13,7 +13,6 @@ import AuthCallback from "@/pages/AuthCallback";
 import ResetPassword from "@/pages/ResetPassword";
 import Entrega from "@/pages/Entrega";
 import AdminAccess from "@/pages/AdminAccess";
-import Suporte from "@/pages/Suporte";
 import Termos from "@/pages/Termos";
 import Privacidade from "@/pages/Privacidade";
 import Confianca from "@/pages/Confianca";
@@ -82,7 +81,7 @@ const App = () => (
           <Route path="/dashboard" element={<Navigate to="/entrega" replace />} />
           <Route path="/admin" element={<AdminAccess />} />
           <Route path="/admin/acessos" element={<AdminAccess />} />
-          <Route path="/suporte" element={<Suporte />} />
+          <Route path="/suporte" element={<Navigate to="/#perguntas-frequentes" replace />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/termos-de-uso" element={<Termos />} />
           <Route path="/privacidade" element={<Privacidade />} />
