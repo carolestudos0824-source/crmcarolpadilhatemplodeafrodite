@@ -157,13 +157,30 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
       )}
 
       {recommendation && (
-        <div className="mt-4 rounded-xl border border-accent/40 bg-background/60 p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={15} className="text-accent" />
-            <h3 className="text-sm font-semibold text-foreground">
-              Próximo passo recomendado
-            </h3>
+        <div
+          className={`mt-4 rounded-xl border bg-background/60 p-4 transition ${
+            isStale ? "border-yellow-500/40 opacity-60" : "border-accent/40"
+          }`}
+          aria-live="polite"
+        >
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles size={15} className="text-accent" />
+              <h3 className="text-sm font-semibold text-foreground">
+                Próximo passo recomendado
+              </h3>
+            </div>
+            {isStale && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-yellow-200">
+                <AlertCircle size={11} /> Desatualizada
+              </span>
+            )}
           </div>
+          {isStale && (
+            <p className="-mt-1 mb-3 text-[11px] text-yellow-200/90">
+              Você alterou o texto. Clique em <strong>Atualizar recomendação</strong> para gerar de novo.
+            </p>
+          )}
 
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <Field label="Dor detectada" value={recommendation.pain} />
