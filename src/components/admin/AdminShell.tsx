@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BrandName } from "@/components/BrandName";
 import {
   LayoutGrid,
   Users,
