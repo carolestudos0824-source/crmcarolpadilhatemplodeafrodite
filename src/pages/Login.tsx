@@ -8,7 +8,7 @@ import {
   LifeBuoy,
   Gift,
   ArrowLeft,
-  ShieldCheck,
+  
   ArrowRight,
   Eye,
   EyeOff,
@@ -131,10 +131,11 @@ export default function Login() {
   // ============ Tabs + password sub-accordion ============
   const initialTab: "entrar" | "criar" = (() => {
     const t = new URLSearchParams(location.search).get("tab");
-    if (t === "login" || t === "entrar") return "entrar";
-    return "criar";
+    if (t === "signup" || t === "criar") return "criar";
+    return "entrar";
   })();
   const [authTab, setAuthTab] = useState<"entrar" | "criar">(initialTab);
+  const [magicOpen, setMagicOpen] = useState(false);
 
   useEffect(() => {
     const t = new URLSearchParams(location.search).get("tab");
@@ -629,10 +630,10 @@ export default function Login() {
             {/* ===== Card principal com tabs ===== */}
             <div className={cardCls}>
               <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-1">
-                Acessar a Fábrica de Apps com IA
+                Entrar na minha área
               </h1>
               <p className="text-sm text-muted-foreground mb-3">
-                Use o mesmo e-mail informado na compra.
+                Acesse o programa com sua conta cadastrada.
               </p>
               <p className="text-[11px] text-muted-foreground/80 mb-6 leading-relaxed">
                 Ao acessar a Fábrica de Apps com IA, você concorda com os{" "}
@@ -744,56 +745,72 @@ export default function Login() {
                     </div>
                   </form>
 
-                  {/* Entrada sem senha (alternativa secundária) */}
+                  {/* Entrada sem senha (alternativa secundária, recolhida) */}
                   <div className="mt-8 pt-6 border-t border-white/10">
-                    <h3 className="text-sm font-medium text-foreground mb-1">Entrada sem senha</h3>
-                    <p className="text-[11px] text-muted-foreground/80 mb-3">
-                      Use esta opção apenas se preferir receber um link de acesso no e-mail.
+                    <button
+                      type="button"
+                      onClick={() => setMagicOpen((v) => !v)}
+                      aria-expanded={magicOpen}
+                      className="w-full flex items-center justify-between text-left text-sm font-medium text-foreground/90 hover:text-foreground transition"
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <Mail size={14} className="text-muted-foreground" />
+                        Entrar por link no e-mail
+                      </span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {magicOpen ? "Ocultar" : "Mostrar"}
+                      </span>
+                    </button>
+                    <p className="text-[11px] text-muted-foreground/80 mt-2">
+                      Use esta opção se preferir receber um link de acesso no endereço da compra.
                     </p>
 
-                    <form onSubmit={onMagicLink} className="space-y-3">
-                      <div>
-                        <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
-                          E-mail da compra
-                        </label>
-                        <input
-                          id="magic-email"
-                          className={inputCls}
-                          type="email"
-                          placeholder="seu@email.com"
-                          autoComplete="email"
-                          value={magicEmail}
-                          onChange={(e) => setMagicEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-
-                      {magicError && (
-                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                          {magicError}
+                    {magicOpen && (
+                      <form onSubmit={onMagicLink} className="space-y-3 mt-4">
+                        <div>
+                          <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
+                            E-mail da compra
+                          </label>
+                          <input
+                            id="magic-email"
+                            className={inputCls}
+                            type="email"
+                            placeholder="seu@email.com"
+                            autoComplete="email"
+                            value={magicEmail}
+                            onChange={(e) => setMagicEmail(e.target.value)}
+                            required
+                          />
                         </div>
-                      )}
-                      {magicInfo && (
-                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                          {magicInfo}
-                        </div>
-                      )}
 
-                      <button
-                        type="submit"
-                        disabled={magicLoading}
-                        className="w-full min-h-12 rounded-xl border border-white/15 hover:bg-white/5 text-sm font-medium text-foreground transition disabled:opacity-60 flex items-center justify-center gap-2"
-                      >
-                        {magicLoading ? (
-                          <>
-                            <Loader2 size={16} className="animate-spin" /> Enviando link…
-                          </>
-                        ) : (
-                          "Receber link por e-mail"
+                        {magicError && (
+                          <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                            {magicError}
+                          </div>
                         )}
-                      </button>
-                    </form>
+                        {magicInfo && (
+                          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                            {magicInfo}
+                          </div>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={magicLoading}
+                          className="w-full min-h-12 rounded-xl border border-white/15 hover:bg-white/5 text-sm font-medium text-foreground transition disabled:opacity-60 flex items-center justify-center gap-2"
+                        >
+                          {magicLoading ? (
+                            <>
+                              <Loader2 size={16} className="animate-spin" /> Enviando link…
+                            </>
+                          ) : (
+                            "Receber link por e-mail"
+                          )}
+                        </button>
+                      </form>
+                    )}
                   </div>
+
                 </div>
               )}
 
@@ -897,36 +914,11 @@ export default function Login() {
           {/* ============== Sidebar ============== */}
           <aside className="space-y-5">
             <div className={cardCls}>
-              <div className="flex items-center gap-2 mb-4">
-                <ShieldCheck size={18} className="text-accent" />
-                <h2 className="font-heading font-semibold text-lg">Primeiro acesso?</h2>
-              </div>
-              <ol className="space-y-3 text-sm text-muted-foreground">
-                {[
-                  "Clique em \u201CCriar conta\u201D.",
-                  "Continue com Google ou use o e-mail da compra.",
-                  "Crie seu acesso e entre no programa.",
-
-                ].map((step, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold flex items-center justify-center">
-                      {i + 1}
-                    </span>
-                    <span className="pt-0.5">{step}</span>
-                  </li>
-                ))}
-              </ol>
-              <p className="text-[11px] text-muted-foreground/70 mt-4">
-                Se você já criou uma conta, use a aba Entrar.
-              </p>
-            </div>
-
-            <div className={cardCls}>
               <h3 className="font-heading font-semibold text-base mb-2">
                 Ainda não comprou?
               </h3>
-              <p className="text-xs text-muted-foreground mb-3">
-                Garanta a Fábrica de Apps com IA por R$197 à vista ou 12x de R$19,70.
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Garanta seu acesso à Fábrica de Apps com IA por R$197 à vista ou 12x de R$19,70.
               </p>
               <button
                 type="button"
@@ -938,15 +930,25 @@ export default function Login() {
             </div>
 
             <div className={cardCls}>
-              <button
-                type="button"
-                onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}
-                className="w-full min-h-12 px-4 rounded-xl border border-white/15 hover:bg-white/5 text-sm flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition"
+              <div className="flex items-center gap-2 mb-2">
+                <LifeBuoy size={16} className="text-accent" />
+                <h3 className="font-heading font-semibold text-base">Problemas com acesso?</h3>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                O suporte oficial é feito por e-mail para dúvidas de acesso, login e uso do programa.
+              </p>
+              <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-foreground/90 break-all mb-3">
+                {APP_CONFIG.SUPORTE_EMAIL}
+              </div>
+              <a
+                href={`mailto:${APP_CONFIG.SUPORTE_EMAIL}`}
+                className="w-full min-h-12 px-4 rounded-xl border border-accent/40 bg-accent/10 hover:bg-accent/15 text-accent text-sm font-medium flex items-center justify-center gap-2 transition"
               >
-                <LifeBuoy size={14} /> Falar com suporte
-              </button>
+                <Mail size={14} /> Enviar e-mail
+              </a>
             </div>
           </aside>
+
         </div>
       </div>
     </Section>
