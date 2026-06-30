@@ -8,7 +8,7 @@ import {
   LifeBuoy,
   Gift,
   ArrowLeft,
-  ShieldCheck,
+  
   ArrowRight,
   Eye,
   EyeOff,
