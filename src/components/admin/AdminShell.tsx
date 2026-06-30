@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BrandName } from "@/components/BrandName";
 import {
   LayoutGrid,
   Users,
@@ -175,7 +176,8 @@ function SidebarInner({
             </span>
             <span className="text-base font-heading font-bold tracking-tight">Admin</span>
           </div>
-          <p className="text-[11px] text-muted-foreground leading-snug">Fábrica de Apps com IA</p>
+          <BrandName className="text-[11px] font-heading leading-snug" baseClassName="text-muted-foreground" />
+
         </div>
         {onClose && (
           <button

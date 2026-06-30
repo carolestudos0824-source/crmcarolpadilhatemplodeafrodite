@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { BrandName } from "@/components/BrandName";
+
 
 type LogoSize = "sm" | "md" | "lg" | "xl" | "hero";
 
@@ -32,9 +34,7 @@ export const Logo = ({ size = "md", showText = false, asLink = true, className =
     <span className={`flex items-center gap-3 group ${className}`}>
       {img}
       {showText && (
-        <span className="font-heading font-semibold text-sm sm:text-base text-foreground whitespace-nowrap">
-          Fábrica de Apps <span className="text-gold">com IA</span>
-        </span>
+        <BrandName className="font-heading font-semibold text-sm sm:text-base" />
       )}
     </span>
   );

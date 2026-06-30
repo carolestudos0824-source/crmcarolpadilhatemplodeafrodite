@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import { BrandName } from "@/components/BrandName";
 import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
 import {
   getJourneyGuidance,
@@ -505,9 +506,8 @@ function EntregaInner() {
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
           <Logo size="sm" />
-          <span className="hidden md:inline text-sm text-muted-foreground">
-            Fábrica de Apps com IA
-          </span>
+          <BrandName className="hidden md:inline text-sm font-heading font-semibold" baseClassName="text-foreground/90" />
+
           <div className="ml-auto flex items-center gap-2 text-xs">
             {email && (
               <span className="hidden xl:inline px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-muted-foreground">
