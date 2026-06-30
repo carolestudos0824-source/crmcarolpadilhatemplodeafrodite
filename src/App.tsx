@@ -22,6 +22,7 @@ import Legal from "@/pages/Legal";
 import NotFound from "@/pages/NotFound";
 
 import ScrollToTop from "@/components/ScrollToTop";
+import { FabricaQuickHelp } from "@/components/FabricaQuickHelp";
 import { PromptStudioProvider } from "@/components/entrega/PromptStudioProvider";
 import { usePresenceHeartbeat } from "@/hooks/usePresenceHeartbeat";
 
@@ -95,6 +96,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
+      <FabricaQuickHelp />
       </PromptStudioProvider>
     </BrowserRouter>
   </QueryClientProvider>
