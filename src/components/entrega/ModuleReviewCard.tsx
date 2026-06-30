@@ -34,7 +34,7 @@ export function ModuleReviewCard({
     void copyPromptAndOpenAgent({
       prompt: agentText,
       successMessage:
-        "Prompt copiado para o Agente. O Agente foi aberto. Cole com Ctrl+V para revisar esta etapa.",
+        "Prompt copiado. Abra o Agente Arquiteto e cole com Ctrl+V para revisar esta etapa.",
       onClipboardFail: (p) => setAgentFallback(p),
     });
   };
