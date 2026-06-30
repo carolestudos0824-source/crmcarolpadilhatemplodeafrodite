@@ -1189,7 +1189,9 @@ export type Database = {
           active_module: string | null
           checklist: Json
           commands_done: Json
+          id: string
           modules_done: Json
+          project_id: string | null
           updated_at: string
           user_id: string
         }
@@ -1197,7 +1199,9 @@ export type Database = {
           active_module?: string | null
           checklist?: Json
           commands_done?: Json
+          id?: string
           modules_done?: Json
+          project_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -1205,11 +1209,21 @@ export type Database = {
           active_module?: string | null
           checklist?: Json
           commands_done?: Json
+          id?: string
           modules_done?: Json
+          project_id?: string | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_state_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "user_app_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

@@ -10,12 +10,16 @@ import {
 } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthState } from "@/hooks/useAuthState";
+import { useAppProjects } from "@/hooks/useAppProjects";
 
 /**
- * Centralizes the student's progress, persisted in `public.user_progress_state`.
+ * Centralizes the student's progress, persisted in `public.user_progress_state`
+ * scoped by (user_id, project_id). Each project has its own independent
+ * progress row — no leakage between projects.
+ *
  * Any DB or network failure is swallowed (only `console.warn`) so the UI never
- * breaks for the student. While auth is loading or the initial DB read is in
- * flight, `loading` is true and consumers should show a skeleton.
+ * breaks for the student. While auth/projects are loading or the initial DB
+ * read is in flight, `loading` is true and consumers should show a skeleton.
  */
 
 type ProgressSnapshot = {
@@ -68,38 +72,65 @@ const cleanupLegacyKeys = () => {
 
 export const UserProgressProvider = ({ children }: { children: ReactNode }) => {
   const auth = useAuthState();
+  const { activeId: activeProjectId, loading: projectsLoading } = useAppProjects();
   const [state, setState] = useState<ProgressSnapshot>(EMPTY);
   const [loading, setLoading] = useState(true);
   const stateRef = useRef(state);
   stateRef.current = state;
   const timerRef = useRef<number | null>(null);
 
+  // Hydration flag: only saves are allowed AFTER initial fetch for the
+  // current project completes. Prevents the empty reset on project switch
+  // from upserting a wipe back to the database.
+  const hydratedProjectRef = useRef<string | null>(null);
+  // Tracks the project_id of the currently in-flight fetch, so a slow fetch
+  // from project A landing after a switch to project B is dropped.
+  const fetchTokenRef = useRef<string | null>(null);
+
   const userId = auth.status === "authed" ? auth.userId : null;
 
-  // Initial load when user becomes authed
+  // Initial / per-project load
   useEffect(() => {
     let cancelled = false;
-    if (auth.status === "loading") {
+    if (auth.status === "loading" || projectsLoading) {
       setLoading(true);
       return;
     }
     if (!userId) {
+      hydratedProjectRef.current = null;
+      fetchTokenRef.current = null;
       setState(EMPTY);
       setLoading(false);
       return;
     }
+    // Reset to EMPTY immediately on project switch so the UI doesn't flicker
+    // with previous project's progress. Mark as un-hydrated to block saves.
+    hydratedProjectRef.current = null;
+    setState(EMPTY);
+
+    if (!activeProjectId) {
+      // Logged-in user with no active project yet — show empty without I/O.
+      fetchTokenRef.current = null;
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     cleanupLegacyKeys();
+    const token = activeProjectId;
+    fetchTokenRef.current = token;
     (async () => {
       try {
         const { data, error } = await supabase
           .from("user_progress_state")
           .select("active_module, modules_done, checklist, commands_done")
           .eq("user_id", userId)
+          .eq("project_id", token)
           .maybeSingle();
-        if (cancelled) return;
+        if (cancelled || fetchTokenRef.current !== token) return;
         if (error) {
           console.warn("[useUserProgress] load error", error);
+          setState(EMPTY);
         } else if (data) {
           setState({
             active_module: data.active_module ?? null,
@@ -113,16 +144,20 @@ export const UserProgressProvider = ({ children }: { children: ReactNode }) => {
         } else {
           setState(EMPTY);
         }
+        hydratedProjectRef.current = token;
       } catch (e) {
-        console.warn("[useUserProgress] load failed", e);
+        if (!cancelled && fetchTokenRef.current === token) {
+          console.warn("[useUserProgress] load failed", e);
+          hydratedProjectRef.current = token;
+        }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled && fetchTokenRef.current === token) setLoading(false);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [auth.status, userId]);
+  }, [auth.status, userId, activeProjectId, projectsLoading]);
 
   const scheduleUpsert = useCallback(() => {
     if (timerRef.current) window.clearTimeout(timerRef.current);
@@ -131,23 +166,29 @@ export const UserProgressProvider = ({ children }: { children: ReactNode }) => {
         const { data: sess } = await supabase.auth.getSession();
         const uid = sess.session?.user?.id;
         if (!uid) return;
+        const pid = activeProjectId;
+        // Block saves if no active project OR if hydration hasn't completed
+        // for this project yet (prevents empty-state overwrite on switch).
+        if (!pid) return;
+        if (hydratedProjectRef.current !== pid) return;
         const snap = stateRef.current;
         const { error } = await supabase.from("user_progress_state").upsert(
           {
             user_id: uid,
+            project_id: pid,
             active_module: snap.active_module,
             modules_done: snap.modules_done,
             checklist: snap.checklist,
             commands_done: snap.commands_done,
           },
-          { onConflict: "user_id" },
+          { onConflict: "user_id,project_id" },
         );
         if (error) console.warn("[useUserProgress] upsert error", error);
       } catch (e) {
         console.warn("[useUserProgress] upsert failed", e);
       }
     }, 400);
-  }, []);
+  }, [activeProjectId]);
 
   const setActive = useCallback(
     (v: string | null) => {
@@ -208,7 +249,7 @@ export const UserProgressProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const value: Ctx = {
-    loading: loading || auth.status === "loading",
+    loading: loading || auth.status === "loading" || projectsLoading,
     active: state.active_module,
     setActive,
     moduleDone: state.modules_done,
