@@ -103,9 +103,9 @@ const faqs = [
   { q: "O que são as 30 ideias de aplicativos?", a: "São 30 modelos de aplicativos prontos para inspirar o seu projeto, com formato, público e estrutura sugerida, para você não começar do zero." },
   { q: "Vou sair com o app pronto?", a: "Você sai com clareza, estrutura do MVP, prompts e próximos passos para construir. O ritmo da construção depende da sua execução." },
   { q: "É curso, mentoria ou prompt pack?", a: "É um programa completo com método guiado, área interna, prompts por etapa, checklists e 30 ideias. Não é só PDF, não é prompt pack solto e não é mentoria individual." },
-  { q: "Como funciona o acompanhamento dentro do programa?", a: "A Fábrica é um programa-guia entregue por módulos, prompts e checklists. O caminho é autoguiado: você avança pelas etapas, usa os prompts prontos e segue a sequência sugerida dentro da área interna." },
+  { q: "Como funciona o avanço pelos módulos?", a: "A Fábrica é um programa-guia entregue por módulos, prompts e checklists. O caminho é autoguiado: você avança pelas etapas, usa os prompts prontos e segue a sequência sugerida dentro da área interna." },
   { q: "Tem garantia?", a: "Sim. Você tem 7 dias para acessar, conhecer o programa por dentro e solicitar reembolso integral se perceber que não é para você." },
-  { q: "Como recebo acesso depois da compra?", a: "Após a confirmação do pagamento, o acesso à área interna é liberado para o e-mail informado no checkout." },
+  { q: "Como recebo acesso depois da compra?", a: "Após a confirmação do pagamento, o acesso à área interna é liberado para o endereço informado no checkout." },
 ];
 
 const jornadas = [
