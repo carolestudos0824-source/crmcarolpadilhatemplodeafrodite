@@ -259,6 +259,7 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
           stepObjective={recommendation.action}
           command={recommendation.prompt}
           moduleId={recommendation.moduleId}
+          initialMode={dialogMode}
         />
       )}
     </section>
