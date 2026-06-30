@@ -608,7 +608,7 @@ function EntregaInner() {
         <aside
           className={`${
             menuOpen ? "fixed inset-0 z-30 bg-background/95 backdrop-blur-md pt-16 px-4 overflow-y-auto scrollbar-sidebar" : "hidden"
-          } lg:static lg:block lg:w-72 lg:shrink-0 lg:h-auto lg:max-h-none lg:overflow-visible lg:p-4 lg:bg-transparent`}
+          } lg:static lg:block lg:w-72 lg:shrink-0 lg:h-auto lg:max-h-none lg:overflow-visible lg:p-4 lg:mr-6 lg:bg-white/[0.02] lg:backdrop-blur-sm lg:border-r lg:border-cyan-400/15 lg:shadow-[8px_0_30px_-12px_rgba(0,194,255,0.08)]`}
         >
           <div className="lg:pr-2">
             {/* App ativo + atalhos */}
