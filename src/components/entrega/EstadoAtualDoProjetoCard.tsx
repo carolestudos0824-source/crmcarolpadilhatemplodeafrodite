@@ -84,14 +84,18 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     isAdmin && !!activeProject && isFabricaSelfProject(activeProject.context);
   const mode = adminOnSelf ? "Admin (Fábrica)" : isAdmin ? "Admin" : "Usuário";
 
+  // FONTE ÚNICA DA VERDADE da fase: jornada escolhida no projeto ativo.
+  // Sem jornada salva, caímos no heurístico antigo (status + módulo atual)
+  // apenas como fallback — nunca sobrescreve uma jornada já escolhida.
   const phase = useMemo(() => {
     if (!activeProject) return "Sem projeto selecionado";
+    if (journey) return JOURNEY_PHASE_LABELS[journey];
     const s = activeProject.status;
     if (["publicado", "vendendo", "escalando"].includes(s)) return "Já tenho um app";
     const mod = activeProject.currentModuleId ?? "";
     if (["comece", "ideias", "validacao"].includes(mod)) return "Começando do zero";
     return "Construindo por versões";
-  }, [activeProject]);
+  }, [activeProject, journey]);
 
   const completedIds = activeProject?.completedModuleIds ?? [];
   const doneCount = MODULE_ORDER.filter(
@@ -100,8 +104,12 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const totalCount = MODULE_ORDER.length;
   const percent = Math.round((doneCount / totalCount) * 100);
 
-  const activeModuleId = (activeProject?.currentModuleId ?? active) as ModuleId | null;
+  // Módulo ativo: prioriza o módulo da URL/progresso global (reativo a
+  // navegação) e só usa o salvo no projeto como fallback. Evita lag entre
+  // mudar de aba e ver o card refletindo.
+  const activeModuleId = (active ?? activeProject?.currentModuleId ?? null) as ModuleId | null;
   const activeModuleLabel = activeModuleId ? MODULE_LABEL[activeModuleId] ?? "—" : "—";
+
 
   const lastActionText = useMemo(
     () => resolveLastAction(commands, moduleDone, MODULE_LABEL),
