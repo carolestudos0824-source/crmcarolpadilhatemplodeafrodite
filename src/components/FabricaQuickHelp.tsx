@@ -282,9 +282,19 @@ export const FabricaQuickHelp = () => {
                 </p>
               ) : results.length === 0 ? (
                 <div className="p-4 text-sm text-muted-foreground space-y-2">
-                  <p>Nada encontrado por aqui.</p>
+                  <p>Nenhum resultado encontrado.</p>
                   <p className="text-xs">
-                    Tente termos como: <span className="text-foreground/80">login, banco, RLS, checkout, domínio, campanha, prompt, publicar</span>.
+                    Tente buscar por{" "}
+                    <span className="text-foreground/80">
+                      {scope === "public"
+                        ? "preço, garantia, login ou suporte"
+                        : scope === "no-access"
+                        ? "comprar, acesso, garantia ou suporte"
+                        : scope === "admin"
+                        ? "login, checkout, domínio, RLS, prompt, publicar, segurança ou acesso"
+                        : "login, checkout, domínio, RLS, prompt, publicar ou segurança"}
+                    </span>
+                    .
                   </p>
                 </div>
               ) : (
