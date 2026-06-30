@@ -29,11 +29,30 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
     [submitted],
   );
 
+  // Sinaliza que o texto foi alterado depois da última recomendação,
+  // para que o botão e o bloco de resultado mostrem claramente que a
+  // recomendação atual está desatualizada.
+  const trimmedText = text.trim();
+  const isStale =
+    submitted !== null && trimmedText.length >= 3 && trimmedText !== submitted;
+
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
-    const v = text.trim();
+    const v = trimmedText;
+    if (v.length === 0) {
+      toast.info("Escreva sua dúvida em uma frase para receber um próximo passo.");
+      return;
+    }
     if (v.length < 3) {
       toast.error("Descreva sua dor em pelo menos uma frase.");
+      return;
+    }
+    // Força recomputação mesmo quando o texto é igual ao anterior:
+    // limpamos o estado e reaplicamos no próximo tick para garantir
+    // que o useMemo dependa de uma nova referência.
+    if (v === submitted) {
+      setSubmitted(null);
+      queueMicrotask(() => setSubmitted(v));
       return;
     }
     setSubmitted(v);
@@ -98,7 +117,9 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
           type="submit"
           className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:opacity-90 transition min-h-[44px]"
         >
-          Encontrar meu próximo passo
+          {submitted && isStale
+            ? "Atualizar recomendação"
+            : "Encontrar meu próximo passo"}
           <ArrowRight size={14} />
         </button>
       </form>
@@ -136,13 +157,30 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
       )}
 
       {recommendation && (
-        <div className="mt-4 rounded-xl border border-accent/40 bg-background/60 p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={15} className="text-accent" />
-            <h3 className="text-sm font-semibold text-foreground">
-              Próximo passo recomendado
-            </h3>
+        <div
+          className={`mt-4 rounded-xl border bg-background/60 p-4 transition ${
+            isStale ? "border-yellow-500/40 opacity-60" : "border-accent/40"
+          }`}
+          aria-live="polite"
+        >
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles size={15} className="text-accent" />
+              <h3 className="text-sm font-semibold text-foreground">
+                Próximo passo recomendado
+              </h3>
+            </div>
+            {isStale && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-yellow-200">
+                <AlertCircle size={11} /> Desatualizada
+              </span>
+            )}
           </div>
+          {isStale && (
+            <p className="-mt-1 mb-3 text-[11px] text-yellow-200/90">
+              Você alterou o texto. Clique em <strong>Atualizar recomendação</strong> para gerar de novo.
+            </p>
+          )}
 
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <Field label="Dor detectada" value={recommendation.pain} />
