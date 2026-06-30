@@ -327,7 +327,7 @@ export const FabricaQuickHelp = () => {
                           )}
                         </div>
                         <h3 className="text-sm font-semibold text-foreground truncate">{r.title}</h3>
-                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{r.excerpt}</p>
+                        <p className={`text-xs text-muted-foreground mt-1 ${r.kind === "glossario" ? "" : "line-clamp-2"}`}>{r.excerpt}</p>
                       </div>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-2">
