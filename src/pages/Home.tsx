@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Sparkles, Layers, Database, Brain, Target, ChevronRight,
   Workflow, Wand2, Megaphone, LineChart, ListChecks, Image as ImageIcon,
-  Lightbulb, Check, ShieldCheck, PlayCircle, Bot, Mail, Compass, Rocket,
+  Lightbulb, Check, ShieldCheck, PlayCircle, Bot, Compass, Rocket,
   RefreshCw, MapPin,
 } from "lucide-react";
 import { Section } from "@/components/Section";
