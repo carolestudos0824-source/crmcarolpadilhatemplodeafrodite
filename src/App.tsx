@@ -96,6 +96,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
+      <FabricaQuickHelp />
       </PromptStudioProvider>
     </BrowserRouter>
   </QueryClientProvider>
