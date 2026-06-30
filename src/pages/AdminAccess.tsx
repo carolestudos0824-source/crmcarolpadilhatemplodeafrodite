@@ -652,7 +652,7 @@ function OverviewSection({
             <ShieldCheck size={14} /> Liberar acesso
           </button>
           <button onClick={() => onGoTo("inbox")} className="btn-ghost border border-white/15 text-xs">
-            <Mail size={14} /> Ver mensagens
+            <Mail size={14} /> Suporte por e-mail
           </button>
           <button onClick={() => onGoTo("pendencias")} className="btn-ghost border border-white/15 text-xs">
             Prontidão para venda pública
