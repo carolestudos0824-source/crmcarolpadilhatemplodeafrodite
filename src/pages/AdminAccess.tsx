@@ -620,10 +620,10 @@ function OverviewSection({
         />
         <StatusCard
           icon={<Mail size={14} />}
-          title="Mensagens recebidas"
+          title="Suporte por e-mail"
           badge={dash(metrics.supportMessages)}
           tone="muted"
-          text="Mensagens enviadas por participantes pelo canal de suporte do programa."
+          text="Canal oficial de suporte do programa Fábrica de Apps com IA."
         />
         <StatusCard
           icon={<CreditCard size={14} />}
