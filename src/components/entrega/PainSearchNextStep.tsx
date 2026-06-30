@@ -117,7 +117,9 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
           type="submit"
           className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:opacity-90 transition min-h-[44px]"
         >
-          Encontrar meu próximo passo
+          {submitted && isStale
+            ? "Atualizar recomendação"
+            : "Encontrar meu próximo passo"}
           <ArrowRight size={14} />
         </button>
       </form>
