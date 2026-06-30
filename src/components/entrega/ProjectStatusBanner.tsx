@@ -41,7 +41,7 @@ export const ProjectStatusBanner = () => {
       aria-label="Estado conceitual do programa"
       className="mb-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
     >
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
         <Field
           icon={<Factory size={12} />}
           label="Produto principal"
