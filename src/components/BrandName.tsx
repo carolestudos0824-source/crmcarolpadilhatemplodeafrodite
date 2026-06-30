@@ -19,7 +19,7 @@ export const BrandName = ({
   baseClassName = "text-foreground",
 }: BrandNameProps) => (
   <span className={`whitespace-nowrap ${className}`}>
-    <span className={baseClassName}>Fábrica de Apps com </span>
-    <span className="text-gold font-semibold">IA</span>
+    <span className={baseClassName}>Fábrica de Apps</span>
+    <span className="text-gold font-semibold"> com IA</span>
   </span>
 );
