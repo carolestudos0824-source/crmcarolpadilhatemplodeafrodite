@@ -222,7 +222,7 @@ const MyAppsHeaderButton = () => {
     <button
       type="button"
       onClick={openDrawer}
-      className="px-3 py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[220px]"
+      className="px-3 min-h-[40px] py-1.5 rounded-full border border-accent/40 bg-accent/10 text-accent inline-flex items-center gap-1 max-w-[140px] sm:max-w-[180px] lg:max-w-[220px]"
       title="Projetos em construção"
     >
       <span className="truncate">{label}</span>
