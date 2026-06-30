@@ -22,6 +22,7 @@ import {
   KeyRound,
 } from "lucide-react";
 import { ChangePasswordDialog } from "@/components/admin/ChangePasswordDialog";
+import { AdminAccountSettings } from "@/components/admin/AdminAccountSettings";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
@@ -1198,45 +1199,37 @@ function ConfigSection() {
     },
   ];
 
-  const [pwdOpen, setPwdOpen] = useState(false);
-
   return (
-    <div className="space-y-4">
-      <p className="text-xs text-muted-foreground">
-        Somente leitura. Valores vêm de <code className="text-foreground/80">APP_CONFIG</code>. Para alterar, edite <code className="text-foreground/80">src/config/appConfig.ts</code>.
-      </p>
+    <div className="space-y-6">
+      <AdminAccountSettings />
 
-      <div className="admin-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-start gap-3">
-          <div className="text-accent mt-0.5"><KeyRound size={16} /></div>
-          <div>
-            <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground mb-1">Segurança da conta</h4>
-            <p className="text-xs text-muted-foreground">Altere a senha da conta admin logada.</p>
-          </div>
+      <div className="space-y-3">
+        <div>
+          <h3 className="text-sm font-heading font-semibold uppercase tracking-wider text-foreground">
+            Status do sistema
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">
+            Somente leitura. Valores vêm de <code className="text-foreground/80">APP_CONFIG</code>. Para alterar, edite <code className="text-foreground/80">src/config/appConfig.ts</code>.
+          </p>
         </div>
-        <Button type="button" variant="outline" size="sm" onClick={() => setPwdOpen(true)}>
-          Alterar senha
-        </Button>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {items.map((it) => (
-          <div key={it.title} className="admin-card">
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2 text-accent">
-                {it.icon}
-                <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground">{it.title}</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {items.map((it) => (
+            <div key={it.title} className="admin-card">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2 text-accent">
+                  {it.icon}
+                  <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-foreground">{it.title}</h4>
+                </div>
+                <span className={it.ok ? "admin-badge admin-badge-success" : "admin-badge admin-badge-warning"}>
+                  {it.ok ? "Configurado" : "Pendente"}
+                </span>
               </div>
-              <span className={it.ok ? "admin-badge admin-badge-success" : "admin-badge admin-badge-warning"}>
-                {it.ok ? "Configurado" : "Pendente"}
-              </span>
+              <p className="text-xs text-muted-foreground break-words">{it.text}</p>
             </div>
-            <p className="text-xs text-muted-foreground break-words">{it.text}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-
-      <ChangePasswordDialog open={pwdOpen} onOpenChange={setPwdOpen} />
     </div>
   );
 }
