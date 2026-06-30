@@ -1298,7 +1298,7 @@ const ConstruirIntro = () => {
 
         <p className="mb-3 text-[11px] text-muted-foreground/80 max-w-2xl">
           Comece pelo CommandCard da Etapa 1 abaixo — o caminho recomendado é{" "}
-          <span className="text-amber-200">Revisar com o Agente primeiro</span>.{" "}
+          <span className="text-amber-200">Revisar com o Agente Arquiteto primeiro</span>.{" "}
           <button
             type="button"
             onClick={copyFirst}

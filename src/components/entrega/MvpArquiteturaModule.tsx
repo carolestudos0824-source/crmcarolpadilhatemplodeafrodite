@@ -463,7 +463,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-2">
-        Em cada etapa, comece pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada — só faz sentido na Etapa 5.
+        Em cada etapa, comece pela aba <strong className="text-foreground/90">Revisar com o Agente Arquiteto primeiro</strong>. A aba <strong className="text-foreground/90">Implementar no Lovable</strong> é avançada — só faz sentido na Etapa 5.
       </p>
       <p className="text-[11px] text-amber-200/90 mb-4 italic">
         Copiar prompt não conclui a etapa. Só marque como concluído quando o Blueprint estiver completo.

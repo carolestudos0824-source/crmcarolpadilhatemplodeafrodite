@@ -141,7 +141,7 @@ export function ModuleReviewCard({
             }`}
           >
             {okAgent ? <Check size={14} /> : <Bot size={14} />}
-            {okAgent ? "Copiado!" : "Revisar com o Agente primeiro"}
+            {okAgent ? "Copiado!" : "Revisar com o Agente Arquiteto primeiro"}
           </button>
           <button
             onClick={() => copyTo(lovableText, setOkLovable, "Lovable")}
@@ -160,7 +160,7 @@ export function ModuleReviewCard({
           <strong className="font-semibold text-cyan-100">Somente auditoria.</strong> Não implemente nada. Use quando quiser que o Lovable analise antes de alterar seu app.
         </p>
         <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
-          Está começando? Revise com o Agente primeiro. Esta etapa é uma revisão, então o Lovable apenas analisa — não altera o app.
+          Está começando? Revise com o Agente Arquiteto primeiro. Esta etapa é uma revisão, então o Lovable apenas analisa — não altera o app.
         </p>
 
       </GlassCard>
