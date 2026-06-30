@@ -29,11 +29,30 @@ export const PainSearchNextStep = ({ goTo }: Props) => {
     [submitted],
   );
 
+  // Sinaliza que o texto foi alterado depois da última recomendação,
+  // para que o botão e o bloco de resultado mostrem claramente que a
+  // recomendação atual está desatualizada.
+  const trimmedText = text.trim();
+  const isStale =
+    submitted !== null && trimmedText.length >= 3 && trimmedText !== submitted;
+
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
-    const v = text.trim();
+    const v = trimmedText;
+    if (v.length === 0) {
+      toast.info("Escreva sua dúvida em uma frase para receber um próximo passo.");
+      return;
+    }
     if (v.length < 3) {
       toast.error("Descreva sua dor em pelo menos uma frase.");
+      return;
+    }
+    // Força recomputação mesmo quando o texto é igual ao anterior:
+    // limpamos o estado e reaplicamos no próximo tick para garantir
+    // que o useMemo dependa de uma nova referência.
+    if (v === submitted) {
+      setSubmitted(null);
+      queueMicrotask(() => setSubmitted(v));
       return;
     }
     setSubmitted(v);
