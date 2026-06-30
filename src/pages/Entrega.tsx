@@ -608,7 +608,7 @@ function EntregaInner() {
         <aside
           className={`${
             menuOpen ? "fixed inset-0 z-30 bg-background/95 backdrop-blur-md pt-16 px-4 overflow-y-auto scrollbar-sidebar" : "hidden"
-          } lg:static lg:block lg:w-72 lg:shrink-0 lg:h-auto lg:max-h-none lg:overflow-visible lg:p-5 lg:mr-6 lg:rounded-2xl lg:bg-slate-950/40 lg:backdrop-blur-md lg:border lg:border-cyan-400/10 lg:shadow-[0_8px_40px_-16px_rgba(0,194,255,0.12)]`}
+          } lg:static lg:block lg:w-80 xl:w-[20rem] lg:shrink-0 lg:h-auto lg:max-h-none lg:overflow-visible lg:p-6 lg:mr-6 lg:rounded-2xl lg:bg-slate-950/40 lg:backdrop-blur-md lg:border lg:border-cyan-400/10 lg:shadow-[0_8px_40px_-16px_rgba(0,194,255,0.12)]`}
         >
           <div className="lg:pr-1">
             {/* App ativo + atalhos */}
@@ -741,13 +741,13 @@ function EntregaInner() {
             </div>
 
             {/* Módulos por fase */}
-            <nav className="space-y-5">
+            <nav className="space-y-7">
               {SIDEBAR_GROUPS.map((group, gi) => (
                 <div key={group.title} className={gi > 0 ? "pt-1" : undefined}>
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground/70 mb-2.5 px-1 font-semibold">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground/80 mb-3 px-1 font-semibold">
                     {group.title}
                   </div>
-                  <div className="space-y-0.5">
+                  <div className="space-y-1">
                     {group.modules.map((id) => {
                       const m = MODULES.find((x) => x.id === id);
                       if (!m) return null;
@@ -759,14 +759,14 @@ function EntregaInner() {
                           key={m.id}
                           onClick={() => goTo(m.id)}
                           aria-current={isActive ? "step" : undefined}
-                          className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-left transition-all duration-150 border ${
+                          className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[0.9375rem] leading-snug text-left transition-all duration-150 border ${
                             isActive
                               ? "bg-cyan-400/[0.12] border-cyan-400/40 text-cyan-100 font-medium shadow-[0_0_20px_-10px_rgba(34,211,238,0.5),inset_0_1px_0_0_rgba(34,211,238,0.15)]"
-                              : "border-transparent text-foreground/75 hover:text-foreground hover:bg-cyan-400/[0.04] hover:border-cyan-400/10"
+                              : "border-transparent text-foreground/85 hover:text-foreground hover:bg-cyan-400/[0.04] hover:border-cyan-400/10"
                           }`}
                         >
-                          <Icon size={16} className={`shrink-0 ${isActive ? "text-cyan-300" : "opacity-70"}`} />
-                          <span className="flex-1 leading-tight">{m.label}</span>
+                          <Icon size={16} className={`shrink-0 ${isActive ? "text-cyan-300" : "opacity-75"}`} />
+                          <span className="flex-1 leading-snug">{m.label}</span>
                           {isDone ? (
                             <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
                           ) : isActive ? (
