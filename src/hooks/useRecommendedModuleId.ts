@@ -1,22 +1,25 @@
 import { useMemo } from "react";
 import { useAppProjects, hasUsefulProjectContext } from "@/hooks/useAppProjects";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import { useProjectJourney, JOURNEY_TO_PHASE } from "@/lib/journey";
 import { MODULE_ORDER, type ModuleId } from "@/data/entregaModules";
 
 /**
  * Replica determinística do "próximo passo recomendado" do
  * EstadoAtualDoProjetoCard, restrita ao caso de navegar para um módulo.
  *
+ * Fonte única da fase: jornada salva no projeto ativo. Heurístico antigo
+ * só roda como fallback quando a jornada ainda não foi escolhida.
+ *
  * - Sem projeto em foco OU sem contexto útil → retorna null (não competir
  *   com o alerta do Estado Atual, conforme regra do produto).
- * - Quando o próximo passo é uma ação de UI (abrir drawer / preencher
- *   contexto), também retorna null.
  *
  * Não altera progresso, prompts, módulos ou IDs.
  */
 export const useRecommendedModuleId = (): ModuleId | null => {
   const { activeProject } = useAppProjects();
   const { moduleDone, active } = useUserProgress();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
 
   return useMemo<ModuleId | null>(() => {
     if (!activeProject) return null;
@@ -26,14 +29,19 @@ export const useRecommendedModuleId = (): ModuleId | null => {
     const isDone = (id: ModuleId) =>
       completedIds.includes(id) || !!moduleDone[id];
 
-    const s = activeProject.status;
-    const mod = activeProject.currentModuleId ?? "";
     let phase: "ready" | "scratch" | "versioning";
-    if (["publicado", "vendendo", "escalando"].includes(s)) phase = "ready";
-    else if (["comece", "ideias", "validacao"].includes(mod)) phase = "scratch";
-    else phase = "versioning";
+    if (journey) {
+      phase = JOURNEY_TO_PHASE[journey];
+    } else {
+      const s = activeProject.status;
+      const mod = activeProject.currentModuleId ?? "";
+      if (["publicado", "vendendo", "escalando"].includes(s)) phase = "ready";
+      else if (["comece", "ideias", "validacao"].includes(mod)) phase = "scratch";
+      else phase = "versioning";
+    }
 
-    const activeModuleId = (activeProject.currentModuleId ?? active) as ModuleId | null;
+
+    const activeModuleId = (active ?? activeProject.currentModuleId ?? null) as ModuleId | null;
     const activeIdx = activeModuleId ? MODULE_ORDER.indexOf(activeModuleId) : -1;
     const idxOf = (id: ModuleId) => MODULE_ORDER.indexOf(id);
 
@@ -60,5 +68,5 @@ export const useRecommendedModuleId = (): ModuleId | null => {
 
     const nextPending = MODULE_ORDER.find((id) => !isDone(id));
     return nextPending ?? null;
-  }, [activeProject, moduleDone, active]);
+  }, [activeProject, moduleDone, active, journey]);
 };

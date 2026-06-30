@@ -18,6 +18,29 @@ export const JOURNEY_LABELS: Record<JourneyId, string> = {
 };
 
 /**
+ * Rótulo da "Fase atual" exibida nos cards de Estado do Projeto.
+ * Fonte ÚNICA de verdade: jornada escolhida pelo usuário no projeto ativo.
+ * Quando não houver jornada salva, o chamador pode aplicar seu fallback.
+ */
+export const JOURNEY_PHASE_LABELS: Record<JourneyId, string> = {
+  comecando_do_zero: "Começando do zero",
+  app_completo_por_versoes: "Construindo por versões",
+  ja_tenho_um_app: "Já tenho um app",
+};
+
+/**
+ * Tipo de "fase" usado internamente por recomendadores (sem string PT-BR).
+ */
+export type JourneyPhase = "scratch" | "versioning" | "ready";
+
+export const JOURNEY_TO_PHASE: Record<JourneyId, JourneyPhase> = {
+  comecando_do_zero: "scratch",
+  app_completo_por_versoes: "versioning",
+  ja_tenho_um_app: "ready",
+};
+
+
+/**
  * Orientação curta injetada nos prompts de GPS e Arquiteto.
  * Mantém o foco do prompt do módulo intacto — apenas adiciona contexto de perfil.
  */

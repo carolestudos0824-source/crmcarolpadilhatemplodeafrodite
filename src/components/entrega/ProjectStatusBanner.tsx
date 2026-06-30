@@ -2,13 +2,15 @@ import { Factory, UserCog, FolderKanban, Compass } from "lucide-react";
 import { useAppProjects } from "@/hooks/useAppProjects";
 import { useAuthState } from "@/hooks/useAuthState";
 import { isFabricaSelfProject } from "@/lib/promptBuilder";
+import { useProjectJourney, JOURNEY_PHASE_LABELS } from "@/lib/journey";
 
 /**
  * Indicação visual conceitual da Fábrica de Apps com IA:
  * - Produto principal (sempre): Fábrica de Apps com IA
  * - Modo atual: Admin (quando isAdmin e Projeto em foco é a própria Fábrica) ou Usuário
  * - Projeto em foco: nome do projeto ativo (ou "nenhum")
- * - Fase atual: começando do zero / construindo por versões / já tenho um app
+ * - Fase atual: derivada da JORNADA escolhida no projeto ativo (fonte única).
+ *   Fallback heurístico apenas quando a jornada ainda não foi escolhida.
  *
  * Não altera nenhuma lógica de auth, banco, progresso ou prompts — apenas
  * mostra a separação conceitual entre PRODUTO PRINCIPAL e PROJETO EM FOCO.
@@ -16,6 +18,7 @@ import { isFabricaSelfProject } from "@/lib/promptBuilder";
 export const ProjectStatusBanner = () => {
   const { activeProject } = useAppProjects();
   const auth = useAuthState();
+  const [journey] = useProjectJourney(activeProject?.id ?? null);
 
   const isAdmin = auth.status === "authed" && auth.isAdmin;
   const adminOnSelf =
@@ -24,12 +27,14 @@ export const ProjectStatusBanner = () => {
 
   const phase = (() => {
     if (!activeProject) return "Sem projeto selecionado";
+    if (journey) return JOURNEY_PHASE_LABELS[journey];
     const s = activeProject.status;
     if (["publicado", "vendendo", "escalando"].includes(s)) return "Já tenho um app";
     const mod = activeProject.currentModuleId ?? "";
     if (["comece", "ideias", "validacao"].includes(mod)) return "Começando do zero";
     return "Construindo por versões";
   })();
+
 
   return (
     <section
