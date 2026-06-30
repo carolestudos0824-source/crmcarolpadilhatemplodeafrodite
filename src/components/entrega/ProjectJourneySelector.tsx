@@ -108,7 +108,10 @@ export const ProjectJourneySelector = ({ onGoToModule, variant = "full" }: Props
   }
 
   // Páginas avançadas — sem jornada: apenas aviso pequeno e discreto.
+  // Se não há projeto ativo ainda, não exibe o aviso (evita flash enganoso
+  // de "Jornada não definida" antes do projeto carregar).
   if (variant === "compact") {
+    if (!activeProject?.id) return null;
     return (
       <section
         aria-label="Jornada não definida"
@@ -129,6 +132,7 @@ export const ProjectJourneySelector = ({ onGoToModule, variant = "full" }: Props
       </section>
     );
   }
+
 
   // Bloco completo — escolha pendente (apenas em "Comece Aqui")
 
