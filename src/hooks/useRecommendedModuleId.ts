@@ -68,5 +68,5 @@ export const useRecommendedModuleId = (): ModuleId | null => {
 
     const nextPending = MODULE_ORDER.find((id) => !isDone(id));
     return nextPending ?? null;
-  }, [activeProject, moduleDone, active]);
+  }, [activeProject, moduleDone, active, journey]);
 };
