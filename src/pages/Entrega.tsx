@@ -372,13 +372,45 @@ function EntregaInner() {
   };
 
   // ===== Estados de auth =====
-  if (auth.status === "loading" || progress.loading) {
+  // Skeleton neutro enquanto auth (status/hasAccess/isAdmin) e progresso resolvem.
+  // Nenhum conteúdo pago, módulos, comandos ou progresso é renderizado antes da decisão.
+  const isResolvingAccess =
+    auth.status === "loading" ||
+    (auth.status === "authed" && progress.loading);
 
+  if (isResolvingAccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="animate-spin text-accent mx-auto mb-3" size={28} />
-          <p className="text-sm text-muted-foreground">Carregando sua área...</p>
+      <div
+        className="min-h-screen flex flex-col"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        <span className="sr-only">Carregando sua área restrita…</span>
+        {/* Topbar */}
+        <div className="border-b border-border/40 px-4 py-3 flex items-center gap-3">
+          <div className="h-8 w-8 rounded-md bg-muted/40 animate-pulse" />
+          <div className="h-4 w-40 rounded bg-muted/40 animate-pulse" />
+          <div className="ml-auto h-8 w-24 rounded-md bg-muted/30 animate-pulse" />
+        </div>
+        <div className="flex-1 flex">
+          {/* Sidebar */}
+          <aside className="hidden md:flex flex-col gap-2 w-64 border-r border-border/40 p-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-8 w-full rounded bg-muted/30 animate-pulse" />
+            ))}
+          </aside>
+          {/* Main */}
+          <main className="flex-1 p-6 flex flex-col gap-4 max-w-3xl">
+            <div className="h-6 w-2/3 rounded bg-muted/40 animate-pulse" />
+            <div className="h-4 w-1/2 rounded bg-muted/30 animate-pulse" />
+            <div className="h-40 w-full rounded-xl bg-muted/20 animate-pulse mt-4" />
+            <div className="h-24 w-full rounded-xl bg-muted/20 animate-pulse" />
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-2">
+              <Loader2 className="animate-spin" size={16} />
+              <span>Verificando seu acesso…</span>
+            </div>
+          </main>
         </div>
       </div>
     );
