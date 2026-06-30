@@ -105,7 +105,7 @@ const faqs = [
   { q: "É curso, mentoria ou prompt pack?", a: "É um programa completo com método guiado, área interna, prompts por etapa, checklists e 30 ideias. Não é só PDF, não é prompt pack solto e não é mentoria individual." },
   { q: "Como funciona o avanço pelos módulos?", a: "A Fábrica é um programa-guia entregue por módulos, prompts e checklists. O caminho é autoguiado: você avança pelas etapas, usa os prompts prontos e segue a sequência sugerida dentro da área interna." },
   { q: "Tem garantia?", a: "Sim. Você tem 7 dias para acessar, conhecer o programa por dentro e solicitar reembolso integral se perceber que não é para você." },
-  { q: "Como recebo acesso depois da compra?", a: "Após a confirmação do pagamento, o acesso à área interna é liberado para o e-mail informado no checkout." },
+  { q: "Como recebo acesso depois da compra?", a: "Após a confirmação do pagamento, o acesso à área interna é liberado para o endereço informado no checkout." },
 ];
 
 const jornadas = [
