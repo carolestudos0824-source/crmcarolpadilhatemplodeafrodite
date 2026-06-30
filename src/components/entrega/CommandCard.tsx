@@ -272,7 +272,7 @@ export const CommandCard = ({
                 revise este prompt com o Agente Arquiteto antes de colar no Lovable.
               </p>
               <p className="w-full text-[11px] text-muted-foreground/85 text-left sm:text-right leading-snug">
-                Fluxo: pense com o Agente, execute no Lovable, volte com o resultado para o Agente analisar e só então marque como concluído.
+                Revise com o Assistente da Fábrica antes de copiar. Para uma análise mais profunda, abra o Agente Arquiteto.
               </p>
               <div className="flex flex-wrap justify-stretch sm:justify-end gap-2 w-full">
                 <button
@@ -281,7 +281,7 @@ export const CommandCard = ({
                   className="text-sm font-medium min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-amber-400/60 bg-amber-400/15 text-amber-100 hover:bg-amber-400/25 shadow-[0_0_0_1px_rgba(251,191,36,0.15)]"
                 >
                   {copiedKey === "agent-rev" ? <Check size={14} /> : <Bot size={14} />}
-                  Revisar com o Agente primeiro
+                  Revisar com Assistente da Fábrica
                 </button>
                 <button
                   onClick={() =>
