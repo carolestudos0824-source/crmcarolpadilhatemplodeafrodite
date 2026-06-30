@@ -81,7 +81,7 @@ const paraQuemE = [
 const naoEParaQuem = [
   "Quem espera que a IA faça tudo sozinha, sem revisar, testar ou tomar decisões",
   "Quem quer garantia de vendas, faturamento ou aprovação",
-  "Quem espera suporte individual ilimitado",
+  
   "Quem não pretende usar nenhuma ferramenta de IA para criar apps",
   "Quem quer um app gigante e complexo já na primeira versão",
   "Quem busca um app pronto entregue por terceiros, sem participar da execução",
