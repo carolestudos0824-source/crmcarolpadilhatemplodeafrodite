@@ -232,12 +232,12 @@ export const FabricaQuickHelp = () => {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Entenda o programa"
-        title="Entenda o programa — dúvidas frequentes (atalho: ?)"
+        aria-label="Ajuda do Programa"
+        title="Ajuda do Programa — dúvidas frequentes (atalho: ?)"
         className="fixed z-[70] bottom-4 right-4 md:bottom-6 md:right-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-background/90 backdrop-blur-md px-4 py-3 min-h-[48px] text-sm font-medium text-foreground shadow-lg hover:bg-white/5 transition"
       >
         <HelpCircle size={18} />
-        <span className="hidden sm:inline">Entenda o programa</span>
+        <span className="hidden sm:inline">Ajuda do Programa</span>
       </button>
 
       {open && (
@@ -248,13 +248,13 @@ export const FabricaQuickHelp = () => {
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Entenda o programa"
+            aria-label="Ajuda do Programa"
             className="w-full sm:max-w-2xl bg-background border border-white/10 sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col max-h-[92vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3 p-4 border-b border-white/10">
               <div className="min-w-0">
-                <h2 className="font-heading font-bold text-base sm:text-lg">Entenda o programa</h2>
+                <h2 className="font-heading font-bold text-base sm:text-lg">Ajuda do Programa</h2>
                 <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 leading-snug">
                   Use primeiro para encontrar respostas dentro do programa. Para revisar estratégia, prompts, erros ou decisões do app, abra o Agente Arquiteto.
                   <br />
@@ -370,7 +370,7 @@ export const FabricaQuickHelp = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-3 py-2 min-h-[40px] rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
               >
-                Não resolveu? Abrir Agente Arquiteto <ExternalLink size={12} />
+                Precisa revisar com estratégia? Abrir Agente Arquiteto <ExternalLink size={12} />
               </a>
             </div>
           </div>
