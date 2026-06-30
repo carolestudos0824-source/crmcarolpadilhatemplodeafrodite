@@ -223,6 +223,8 @@ export const FabricaQuickHelp = () => {
     return out.slice(0, 30);
   }, [q, scope, navigate, moduleLabelById]);
 
+  // Mostrar apenas dentro da área logada de entrega (ferramenta interna).
+  if (!pathname.startsWith("/entrega")) return null;
   if (HIDDEN_ON.includes(pathname)) return null;
 
   return (
