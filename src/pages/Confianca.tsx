@@ -71,7 +71,7 @@ export default function Confianca() {
         <div>
           <h3 className="text-foreground font-heading">Responsabilidade compartilhada</h3>
           <p>
-            O uso do Agente Arquiteto Supremo exige que você esteja logado em uma conta
+            O uso do Agente Arquiteto exige que você esteja logado em uma conta
             ChatGPT própria. Você é responsável pela segurança da sua conta ChatGPT e pelo
             uso que faz dos planos gerados.
           </p>
