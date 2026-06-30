@@ -95,7 +95,7 @@ export const AgentChatDrawer = () => {
   const chatBusy = sending || loadingHistory;
 
   return (
-    <div className="fixed inset-0 z-[80] flex" role="dialog" aria-modal="true" aria-label="Assistente rápido da Fábrica">
+    <div className="fixed inset-0 z-[80] flex" role="dialog" aria-modal="true" aria-label="Assistente da Fábrica">
       <button
         type="button"
         aria-label="Fechar"
@@ -110,7 +110,7 @@ export const AgentChatDrawer = () => {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-heading font-semibold">Assistente rápido da Fábrica</h2>
+              <h2 className="text-sm font-heading font-semibold">Assistente da Fábrica</h2>
               <span className="text-[10px] uppercase tracking-wider text-accent/80">Apoio rápido · não substitui o Agente Arquiteto</span>
             </div>
             {activeProject ? (
@@ -326,7 +326,7 @@ export const AgentChatDrawer = () => {
 
           {sending && (
             <div className="text-xs text-muted-foreground flex items-center gap-2">
-              <Loader2 size={14} className="animate-spin" /> Agente pensando...
+              <Loader2 size={14} className="animate-spin" /> Assistente pensando...
             </div>
           )}
         </div>
