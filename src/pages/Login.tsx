@@ -630,10 +630,10 @@ export default function Login() {
             {/* ===== Card principal com tabs ===== */}
             <div className={cardCls}>
               <h1 className="text-2xl sm:text-3xl font-heading font-bold mb-1">
-                Acessar a Fábrica de Apps com IA
+                Entrar na minha área
               </h1>
               <p className="text-sm text-muted-foreground mb-3">
-                Use o mesmo e-mail informado na compra.
+                Acesse o programa com sua conta cadastrada.
               </p>
               <p className="text-[11px] text-muted-foreground/80 mb-6 leading-relaxed">
                 Ao acessar a Fábrica de Apps com IA, você concorda com os{" "}
