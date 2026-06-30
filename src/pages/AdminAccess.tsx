@@ -1109,7 +1109,7 @@ function MensagensSection() {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        Mensagens prontas para responder clientes. Use os botões para copiar o texto puro ou com link.
+        Modelos de resposta para copiar e usar manualmente no e-mail oficial de suporte (fabricadeappscomia@outlook.com). Não é chat, atendimento automático nem suporte ilimitado.
       </p>
       {SUPPORT_MESSAGES.map((m) => (
         <div key={m.title} className="admin-card">
