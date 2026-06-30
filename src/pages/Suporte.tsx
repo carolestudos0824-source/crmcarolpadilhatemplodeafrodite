@@ -65,46 +65,54 @@ export default function Suporte() {
         <div className="glass-strong p-10 text-center">
           <div className="flex justify-center mb-6"><Logo size="lg" asLink={false} /></div>
           <h1 className="text-3xl md:text-4xl font-heading font-bold text-gradient mb-3">Suporte por e-mail</h1>
-          <p className="text-base text-muted-foreground mb-4">
-            O suporte da Fábrica de Apps com IA é feito <strong className="text-foreground">exclusivamente por e-mail</strong>, no canal oficial abaixo. Não há WhatsApp, chat ao vivo, chamada de voz/vídeo nem consultoria individual inclusa.
+          <p className="text-base text-muted-foreground">
+            Canal oficial de suporte do programa Fábrica de Apps com IA.
           </p>
-          <p className="text-sm text-muted-foreground/90 bg-white/5 border border-white/10 rounded-xl p-4 leading-relaxed mb-8 text-left">
-            Canal oficial: <a className="text-accent" href={`mailto:${APP_CONFIG.SUPORTE_EMAIL}`}>{APP_CONFIG.SUPORTE_EMAIL}</a>. Respondemos em dias úteis. Use este canal para dúvidas de acesso, login, liberação de compra, navegação na área de entrega e problemas técnicos do próprio programa.
-          </p>
-          <div className="flex justify-center">
-            <button className="btn-primary" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
-              <Mail size={16} /> Enviar e-mail para o suporte
-            </button>
+        </div>
+
+        <div className="glass-strong p-6 md:p-8 space-y-6">
+          <div className="rounded-xl border border-accent/30 bg-accent/10 p-5 text-center">
+            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">E-mail oficial</p>
+            <a
+              className="text-lg md:text-xl font-heading font-bold text-accent hover:underline break-all"
+              href={`mailto:${APP_CONFIG.SUPORTE_EMAIL}`}
+            >
+              {APP_CONFIG.SUPORTE_EMAIL}
+            </a>
+            <div className="mt-4 flex justify-center">
+              <button className="btn-primary" onClick={() => openSupportEmail(APP_CONFIG.SUPORTE_EMAIL)}>
+                <Mail size={16} /> Enviar e-mail para o suporte
+              </button>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h2 className="text-lg font-heading font-bold mb-3">O suporte cobre</h2>
+              <ul className="space-y-1.5 text-sm text-foreground/90 list-disc pl-5">
+                <li>Acesso ao programa</li>
+                <li>Login</li>
+                <li>Liberação de acesso</li>
+                <li>Navegação na área de entrega</li>
+                <li>Dúvidas sobre uso dos módulos</li>
+                <li>Problemas técnicos do próprio programa</li>
+                <li>Garantia, compra e acesso</li>
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-lg font-heading font-bold mb-3">O suporte não cobre</h2>
+              <ul className="space-y-1.5 text-sm text-muted-foreground list-disc pl-5">
+                <li>Construção do app pelo participante</li>
+                <li>Consultoria individual</li>
+                <li>Revisão ilimitada de projetos</li>
+                <li>Suporte 24h</li>
+                <li>Suporte técnico oficial de Lovable, Replit, Cursor ou ferramentas externas</li>
+                <li>Garantia de vendas</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div className="glass-strong p-6 md:p-8 grid md:grid-cols-2 gap-6">
-          <div>
-            <h2 className="text-lg font-heading font-bold mb-3">O suporte cobre</h2>
-            <ul className="space-y-1.5 text-sm text-foreground/90 list-disc pl-5">
-              <li>Dúvidas sobre acesso ao programa</li>
-              <li>Problemas de login</li>
-              <li>Liberação de acesso após a compra</li>
-              <li>Dúvidas sobre uso da área de entrega</li>
-              <li>Onde encontrar módulos, prompts e checklists</li>
-              <li>Problemas técnicos do próprio programa</li>
-              <li>Dúvidas sobre garantia, compra e acesso</li>
-            </ul>
-          </div>
-          <div>
-            <h2 className="text-lg font-heading font-bold mb-3">O suporte não cobre</h2>
-            <ul className="space-y-1.5 text-sm text-muted-foreground list-disc pl-5">
-              <li>Construção do app pelo participante</li>
-              <li>Consultoria individual ou revisão completa de projetos</li>
-              <li>Desenvolvimento sob demanda</li>
-              <li>Correção direta em Lovable, Replit, Cursor, Bolt ou outras ferramentas externas</li>
-              <li>Acesso à conta externa do participante</li>
-              <li>Atendimento 24h, WhatsApp, chat ao vivo ou chamada</li>
-              <li>Garantia de vendas, app perfeito ou segurança 100%</li>
-              <li>Suporte oficial de ferramentas externas</li>
-            </ul>
-          </div>
-        </div>
 
         <div className="glass-strong p-6 md:p-8">
           <h2 className="text-xl font-heading font-bold mb-4">Dúvidas mais comuns</h2>
