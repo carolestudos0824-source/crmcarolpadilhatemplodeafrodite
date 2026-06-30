@@ -745,56 +745,72 @@ export default function Login() {
                     </div>
                   </form>
 
-                  {/* Entrada sem senha (alternativa secundária) */}
+                  {/* Entrada sem senha (alternativa secundária, recolhida) */}
                   <div className="mt-8 pt-6 border-t border-white/10">
-                    <h3 className="text-sm font-medium text-foreground mb-1">Entrada sem senha</h3>
-                    <p className="text-[11px] text-muted-foreground/80 mb-3">
-                      Use esta opção apenas se preferir receber um link de acesso no e-mail.
+                    <button
+                      type="button"
+                      onClick={() => setMagicOpen((v) => !v)}
+                      aria-expanded={magicOpen}
+                      className="w-full flex items-center justify-between text-left text-sm font-medium text-foreground/90 hover:text-foreground transition"
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <Mail size={14} className="text-muted-foreground" />
+                        Entrar por link no e-mail
+                      </span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {magicOpen ? "Ocultar" : "Mostrar"}
+                      </span>
+                    </button>
+                    <p className="text-[11px] text-muted-foreground/80 mt-2">
+                      Use esta opção se preferir receber um link de acesso no endereço da compra.
                     </p>
 
-                    <form onSubmit={onMagicLink} className="space-y-3">
-                      <div>
-                        <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
-                          E-mail da compra
-                        </label>
-                        <input
-                          id="magic-email"
-                          className={inputCls}
-                          type="email"
-                          placeholder="seu@email.com"
-                          autoComplete="email"
-                          value={magicEmail}
-                          onChange={(e) => setMagicEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-
-                      {magicError && (
-                        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
-                          {magicError}
+                    {magicOpen && (
+                      <form onSubmit={onMagicLink} className="space-y-3 mt-4">
+                        <div>
+                          <label htmlFor="magic-email" className="text-xs text-muted-foreground mb-1 block">
+                            E-mail da compra
+                          </label>
+                          <input
+                            id="magic-email"
+                            className={inputCls}
+                            type="email"
+                            placeholder="seu@email.com"
+                            autoComplete="email"
+                            value={magicEmail}
+                            onChange={(e) => setMagicEmail(e.target.value)}
+                            required
+                          />
                         </div>
-                      )}
-                      {magicInfo && (
-                        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
-                          {magicInfo}
-                        </div>
-                      )}
 
-                      <button
-                        type="submit"
-                        disabled={magicLoading}
-                        className="w-full min-h-12 rounded-xl border border-white/15 hover:bg-white/5 text-sm font-medium text-foreground transition disabled:opacity-60 flex items-center justify-center gap-2"
-                      >
-                        {magicLoading ? (
-                          <>
-                            <Loader2 size={16} className="animate-spin" /> Enviando link…
-                          </>
-                        ) : (
-                          "Receber link por e-mail"
+                        {magicError && (
+                          <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-sm px-4 py-3">
+                            {magicError}
+                          </div>
                         )}
-                      </button>
-                    </form>
+                        {magicInfo && (
+                          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-200 text-sm px-4 py-3">
+                            {magicInfo}
+                          </div>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={magicLoading}
+                          className="w-full min-h-12 rounded-xl border border-white/15 hover:bg-white/5 text-sm font-medium text-foreground transition disabled:opacity-60 flex items-center justify-center gap-2"
+                        >
+                          {magicLoading ? (
+                            <>
+                              <Loader2 size={16} className="animate-spin" /> Enviando link…
+                            </>
+                          ) : (
+                            "Receber link por e-mail"
+                          )}
+                        </button>
+                      </form>
+                    )}
                   </div>
+
                 </div>
               )}
 
