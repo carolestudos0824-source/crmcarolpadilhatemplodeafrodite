@@ -44,6 +44,7 @@ const beneficios = [
   "GPS do App e contexto do projeto em foco",
   "Módulos de planejamento, construção, segurança, venda e evolução",
   "Próximo passo recomendado em cada etapa",
+  "Suporte por e-mail do programa",
   "Garantia de 7 dias · reembolso integral",
 ];
 
