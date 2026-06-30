@@ -935,7 +935,12 @@ function EntregaInner() {
           </div>
 
 
-          {!((active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject) && (
+          {(active === "fundamentos" || active === "comece") ? (
+            <ModuleUnderstandingCard
+              moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
+              moduleId={active}
+            />
+          ) : !((active === "ideias" || active === "planejar" || active === "mvp" || active === "telas") && !appProjects.activeProject) && (
             <ModuleReviewCard
               moduleName={MODULES.find((m) => m.id === active)?.label ?? active}
               isSecurity={active === "seguranca"}
