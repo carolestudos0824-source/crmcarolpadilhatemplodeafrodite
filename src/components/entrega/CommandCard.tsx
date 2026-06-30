@@ -102,28 +102,28 @@ export const CommandCard = ({
   }, [completedKey, moduleId, projectScope]);
 
   const handleRevisarComAgente = (key: string) => {
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1200);
-    // Caminho preferido: abrir chat contextual nativo se houver projeto ativo.
-    if (activeProject) {
-      const draft = `Revise a etapa "${title}" do módulo atual considerando o que já está salvo no projeto. ${
-        objective ? `Objetivo: ${objective}.` : ""
-      } ${advanceCriteria ? `Critério de avanço: ${advanceCriteria}.` : ""}`.trim();
-      agentChat.open({
-        moduleKey: moduleId ?? null,
-        stepKey: completedKey,
-        stepTitle: title,
-        initialDraft: draft,
-      });
+    // A1 — Sem projeto ativo: NÃO trocar silenciosamente para fluxo
+    // externo/copy-only. Pedir explicitamente para escolher/criar projeto.
+    if (!activeProject) {
+      toast.info(
+        "Escolha ou crie um projeto antes de revisar com o Assistente da Fábrica.",
+        {
+          description:
+            "Selecione um app em Meus Apps para que o Assistente revise esta etapa com o contexto certo.",
+        },
+      );
       return;
     }
-    // Fallback: copiar prompt e abrir Agente externo (comportamento anterior).
-    const prompt = enrichedAgent();
-    void copyPromptAndOpenAgent({
-      prompt,
-      successMessage:
-        "Prompt copiado para o Agente. O Agente foi aberto. Cole com Ctrl+V para revisar antes de continuar.",
-      onClipboardFail: (p) => setAgentFallback(p),
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1200);
+    const draft = `Revise a etapa "${title}" do módulo atual considerando o que já está salvo no projeto. ${
+      objective ? `Objetivo: ${objective}.` : ""
+    } ${advanceCriteria ? `Critério de avanço: ${advanceCriteria}.` : ""}`.trim();
+    agentChat.open({
+      moduleKey: moduleId ?? null,
+      stepKey: completedKey,
+      stepTitle: title,
+      initialDraft: draft,
     });
   };
   const [editedCommand, setEditedCommand] = useState(displayCommand);

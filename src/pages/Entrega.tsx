@@ -734,7 +734,7 @@ function EntregaInner() {
         </aside>
 
         {/* MAIN */}
-        <main className="flex-1 min-w-0 p-4 md:p-8">
+        <main className="flex-1 min-w-0 p-4 md:p-8 pb-24 md:pb-24">
           {/* ProjectStatusBanner removido para evitar duplicidade com o EstadoAtualDoProjetoCard.
               A informação conceitual "Produto principal: Fábrica de Apps com IA" agora aparece
               de forma discreta dentro do EstadoAtualDoProjetoCard. */}
