@@ -164,7 +164,7 @@ const CHECKLIST_ITEMS = [
 
 const TAB_META: { id: TabId; label: string; icon: typeof Users }[] = [
   { id: "lovable", label: "Implementar no Lovable", icon: Wrench },
-  { id: "agente", label: "Revisar com o Agente primeiro", icon: Bot },
+  { id: "agente", label: "Revisar com o Agente Arquiteto primeiro", icon: Bot },
   { id: "corrigir", label: "Corrigir erro", icon: HelpCircle },
   { id: "avancar", label: "Quando avançar", icon: ArrowRight },
 ];
@@ -350,7 +350,7 @@ export function ValidacaoModule() {
       <p className="text-xs text-muted-foreground mb-4">
         Use a aba <strong className="text-foreground/90">Implementar no Lovable</strong> quando
         quiser aplicar no app. Use a aba{" "}
-        <strong className="text-foreground/90">Revisar com o Agente primeiro</strong> quando
+        <strong className="text-foreground/90">Revisar com o Agente Arquiteto primeiro</strong> quando
         quiser ajuda para decidir antes de construir.
       </p>
 

@@ -69,8 +69,8 @@ describe("PlanejarModule", () => {
     expect(
       screen.getByText(/Crie uma seção de planejamento para meu app/i),
     ).toBeInTheDocument();
-    // Click "Revisar com o Agente primeiro" on etapa 1
-    const agentBtns = screen.getAllByRole("button", { name: /Revisar com o Agente primeiro/i });
+    // Click "Revisar com o Agente Arquiteto primeiro" on etapa 1
+    const agentBtns = screen.getAllByRole("button", { name: /Revisar com o Agente Arquiteto primeiro/i });
     fireEvent.click(agentBtns[0]);
     expect(
       screen.getByText(/Me ajude a definir o problema e o público do meu app/i),

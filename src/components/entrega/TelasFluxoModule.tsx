@@ -417,7 +417,7 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
 
       <CopyCommandWarning />
       <p className="text-xs text-muted-foreground mb-4">
-        Comece sempre pela aba <strong className="text-foreground/90">Revisar com o Agente primeiro</strong>. O Lovable entra só na Etapa 5. Copiar prompt não conclui a etapa.
+        Comece sempre pela aba <strong className="text-foreground/90">Revisar com o Agente Arquiteto primeiro</strong>. O Lovable entra só na Etapa 5. Copiar prompt não conclui a etapa.
       </p>
 
       {/* Aviso: jornada não escolhida */}
