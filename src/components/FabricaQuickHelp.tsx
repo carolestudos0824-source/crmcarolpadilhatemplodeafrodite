@@ -248,13 +248,13 @@ export const FabricaQuickHelp = () => {
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Entenda o programa"
+            aria-label="Ajuda do Programa"
             className="w-full sm:max-w-2xl bg-background border border-white/10 sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col max-h-[92vh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3 p-4 border-b border-white/10">
               <div className="min-w-0">
-                <h2 className="font-heading font-bold text-base sm:text-lg">Entenda o programa</h2>
+                <h2 className="font-heading font-bold text-base sm:text-lg">Ajuda do Programa</h2>
                 <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5 leading-snug">
                   Use primeiro para encontrar respostas dentro do programa. Para revisar estratégia, prompts, erros ou decisões do app, abra o Agente Arquiteto.
                   <br />
