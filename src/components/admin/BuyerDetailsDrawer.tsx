@@ -82,7 +82,8 @@ export function BuyerDetailsDrawer({
 
   if (!buyer) return null;
 
-  const canGrant = !!buyer.user_id && !buyer.has_access;
+  const canGrant = !!buyer.user_id && (!buyer.has_access || buyer.expiry_status === "expired");
+  const canRenew = !!buyer.user_id && buyer.has_access;
   const canRevoke = !!buyer.user_id && !!buyer.has_access;
 
   return (
