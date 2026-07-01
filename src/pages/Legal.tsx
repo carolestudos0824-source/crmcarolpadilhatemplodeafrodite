@@ -28,7 +28,7 @@ const ITENS: Item[] = [
     to: "/politica-de-privacidade",
     icon: ShieldCheck,
     title: "Política de Privacidade",
-    desc: "Quais dados coletamos, como tratamos e direitos da pessoa usuária pela LGPD.",
+    desc: "Quais dados coletamos, como tratamos e direitos de quem usa o programa pela LGPD.",
   },
   {
     to: "/suporte",

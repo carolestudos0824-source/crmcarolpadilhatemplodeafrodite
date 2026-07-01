@@ -49,9 +49,9 @@ export default function Termos() {
 
         <h3 className="text-foreground font-heading">4. Uso de IA</h3>
         <p>
-          Os recursos de IA geram sugestões automatizadas que devem ser revisadas pela pessoa usuária. A
+          Os recursos de IA geram sugestões automatizadas que devem ser revisadas por quem utiliza o programa. A
           Fábrica de Apps com IA não substitui aconselhamento profissional jurídico, financeiro,
-          médico, terapêutico ou técnico. A pessoa usuária é responsável por revisar, validar e decidir
+          médico, terapêutico ou técnico. A pessoa contratante é responsável por revisar, validar e decidir
           como utilizar os prompts, materiais e aplicativos criados com apoio da plataforma.
         </p>
 
@@ -60,13 +60,13 @@ export default function Termos() {
           A Fábrica de Apps com IA não garante vendas, faturamento, ranqueamento, aprovação de
           mercado, segurança absoluta ou ausência total de erros. O resultado depende de fatores
           fora do controle do programa, como nicho, execução, oferta, divulgação, preço e
-          comportamento do público da pessoa usuária.
+          comportamento do público de quem utiliza o programa.
         </p>
 
         <h3 className="text-foreground font-heading">6. Segurança</h3>
         <p>
           A Fábrica de Apps com IA adota medidas razoáveis de proteção, mas nenhum sistema é
-          totalmente imune a riscos. A pessoa usuária deve manter sua senha em segurança e comunicar
+          totalmente imune a riscos. O cliente deve manter sua senha em segurança e comunicar
           imediatamente qualquer suspeita de uso indevido.
         </p>
 

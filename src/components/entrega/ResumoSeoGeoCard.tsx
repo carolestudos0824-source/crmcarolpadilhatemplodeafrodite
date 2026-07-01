@@ -5,7 +5,7 @@ import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContex
 
 /**
  * Resumo SEO e GEO baseado no Contexto do Projeto em foco. Orienta a
- * aluna a preparar páginas, perguntas e marcações que ajudem pessoas,
+ * pessoa participante a preparar páginas, perguntas e marcações que ajudem pessoas,
  * buscadores e ferramentas de IA a entenderem o APP DELA — sem prometer
  * ranqueamento, tráfego ou vendas garantidas. Não altera SEO real da
  * Fábrica de Apps.
