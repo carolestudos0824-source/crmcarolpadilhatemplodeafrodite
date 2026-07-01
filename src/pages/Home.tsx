@@ -422,33 +422,81 @@ export default function Home() {
       <Section
         eyebrow="Inspiração inclusa"
         title="30 ideias de aplicativos para você não começar do zero"
-        subtitle="Você não começa do zero olhando para uma tela em branco. O programa traz 30 ideias de aplicativos simples para inspirar e adaptar ao seu serviço, método, conteúdo ou produto digital — sem prometer que qualquer app complexo será criado facilmente."
+        subtitle="Escolha uma ideia pronta, adapte ao seu serviço, método, conteúdo ou produto digital e transforme em um projeto dentro da Fábrica."
       >
-        <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
-          <ul className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-            {[
-              "App de agendamento",
-              "App de diagnóstico",
-              "App de checklist",
-              "App de área de membros",
-              "App de catálogo",
-              "App de acompanhamento de clientes",
-              "App de conteúdo pago",
-              "App de calculadora",
-              "App de comunidade simples",
-              "App de entrega de método",
-              "App para mentoria ou terapia",
-              "App para consultoria ou serviço",
-            ].map((i) => (
-              <li key={i} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
-                <Lightbulb size={16} className="text-accent shrink-0 mt-1" />
-                <span>{i}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="text-xs text-muted-foreground/80 mt-6 text-center">
-            E mais ideias prontas para servir de ponto de partida — focadas em vários tipos de MVPs e aplicativos simples.
+        <p className="max-w-3xl mx-auto text-center text-sm md:text-base text-muted-foreground/90 -mt-6 mb-10">
+          As ideias servem como ponto de partida para diferentes tipos de aplicativos — desde versões iniciais até projetos que podem evoluir por etapas.
+        </p>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
+          {[
+            {
+              icon: <MapPin size={18} />,
+              title: "Atendimento e agenda",
+              examples: ["App de agendamento", "App para consultoria ou serviço", "App para mentoria ou terapia"],
+              copy: "Organiza horários, clientes e retornos em um fluxo simples.",
+            },
+            {
+              icon: <Layers size={18} />,
+              title: "Conteúdo e membros",
+              examples: ["App de área de membros", "App de conteúdo pago", "App de entrega de método"],
+              copy: "Entrega seu método ou conteúdo em uma área organizada.",
+            },
+            {
+              icon: <ListChecks size={18} />,
+              title: "Diagnóstico e acompanhamento",
+              examples: ["App de diagnóstico", "App de checklist", "App de acompanhamento de clientes"],
+              copy: "Guia o cliente por etapas claras e mensuráveis.",
+            },
+            {
+              icon: <Sparkles size={18} />,
+              title: "Comunidade e relacionamento",
+              examples: ["App de comunidade simples", "App de acompanhamento de alunos", "App para grupos e desafios"],
+              copy: "Cria espaço próprio para engajar quem já é seu público.",
+            },
+            {
+              icon: <Workflow size={18} />,
+              title: "Catálogo e ferramentas",
+              examples: ["App de catálogo", "App de calculadora", "App de comparador ou simulador"],
+              copy: "Transforma um material ou planilha em ferramenta viva.",
+            },
+            {
+              icon: <Rocket size={18} />,
+              title: "Ideias adaptáveis",
+              examples: ["Apps para prestadores de serviço", "Apps para criadores de conteúdo", "Apps para produtos digitais"],
+              copy: "Base para adaptar ao seu nicho, público e formato.",
+            },
+          ].map((cat) => (
+            <div key={cat.title} className="glass-strong p-6 flex flex-col gap-4 transition-all hover:border-white/20 hover:-translate-y-1">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                  {cat.icon}
+                </div>
+                <h3 className="font-heading font-semibold text-base md:text-lg">{cat.title}</h3>
+              </div>
+              <ul className="flex flex-col gap-2">
+                {cat.examples.map((ex) => (
+                  <li key={ex} className="flex items-start gap-2 text-sm text-foreground/90">
+                    <Lightbulb size={14} className="text-accent shrink-0 mt-1" />
+                    <span>{ex}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-muted-foreground/80 mt-auto">{cat.copy}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="max-w-3xl mx-auto mt-10 glass p-6 md:p-8 text-center">
+          <p className="text-sm md:text-base text-foreground/90 mb-2">
+            Dentro da Fábrica, você encontra a lista completa com <span className="text-accent font-semibold">30 ideias</span> para escolher, adaptar e transformar em projeto.
           </p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-6">
+            Você não precisa começar olhando para uma tela em branco. A Fábrica te ajuda a escolher uma ideia, adaptar ao seu contexto e transformar em projeto com próximos passos claros.
+          </p>
+          <button onClick={goCheckout} className="btn-primary">
+            Acessar as ideias dentro da Fábrica
+          </button>
         </div>
       </Section>
 
