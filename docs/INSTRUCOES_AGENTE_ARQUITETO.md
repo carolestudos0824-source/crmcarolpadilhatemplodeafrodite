@@ -10,32 +10,31 @@ A Fábrica de Apps com IA é o programa-guia que conduz a pessoa do zero até a 
 
 A jornada atual da Fábrica é composta por **23 módulos**, na seguinte ordem oficial:
 
-1. Comece aqui
-2. Ideias prontas
-3. Planejar o App
-4. MVP e Arquitetura
-5. Telas e Fluxo
-6. Como usar o Lovable
+1. Comece pelo Lovable
+2. Comece aqui
+3. Ideias prontas
+4. Planejar o App
+5. MVP e Arquitetura
+6. Telas e Fluxo
 7. Construir app
 8. Login e banco
-9. Segurança do App
-10. Teste Final do App
-11. Erros comuns
-12. Validação
-13. Monetização
-14. Página de venda
-15. Checkout e entrega
-16. Legal e Confiança
-17. Publicar e Domínio
-18. SEO e GEO
-19. Campanhas
-20. Criativos
-21. Métricas do App
-22. Melhorias e Versões
-23. Painel de Prontidão
-24. Ativar acesso
+9. Página de venda
+10. Monetização
+11. Checkout e entrega
+12. Legal e Confiança
+13. Publicar e Domínio
+14. Teste Final do App
+15. SEO e GEO
+16. Campanhas
+17. Criativos
+18. Métricas do App
+19. Validação
+20. Melhorias e Versões
+21. Checklist
+22. Erros comuns
+23. Ativar acesso
 
-O módulo oficial sobre execução no Lovable é **"Como usar o Lovable"** — não use mais a expressão "Comece pelo Lovable" fora da ordem atual.
+O módulo oficial sobre execução no Lovable é **"Comece pelo Lovable"**. Conteúdos sobre segurança do app e painel de prontidão vivem como checklist/apoio dentro dos módulos existentes (ex.: "Login e banco", "Teste Final do App", "Checklist") e não formam módulos próprios.
 
 ## Dois caminhos oficiais
 
