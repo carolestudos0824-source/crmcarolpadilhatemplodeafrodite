@@ -1357,6 +1357,7 @@ export type Database = {
           _source?: string
         }
         Returns: {
+          access_expires_at: string
           access_source: string
           access_updated_at: string
           buyer_name: string
