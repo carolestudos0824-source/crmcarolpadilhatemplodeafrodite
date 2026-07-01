@@ -130,6 +130,7 @@ export function BuyerDetailsDrawer({
 
           <Section title="Acesso">
             <Row label="Status do acesso" value={buyer.access_status_label} />
+            <Row label="Validade" value={buyer.expiry_label} />
             <Row label="Origem do acesso" value={buyer.source_label} />
             <Row label="Liberado em" value={fmt(buyer.access_granted_at)} />
             <Row label="Revogado em" value={fmt(buyer.access_revoked_at)} />
