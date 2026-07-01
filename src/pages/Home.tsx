@@ -293,52 +293,70 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* 5 MOTIVOS */}
+      {/* O QUE VOCÊ RECEBE */}
       <Section
         eyebrow="Por que vale R$197"
         title="O que você recebe por R$197"
-        subtitle="A Fábrica não é PDF solto, prompt pack avulso nem curso longo para assistir passivamente. É uma plataforma guiada, com entregas concretas para construir seu app no Lovable com mais direção."
+        subtitle="Não é PDF solto, prompt pack avulso nem curso passivo. É uma plataforma guiada para construir, revisar e evoluir seu app com mais direção."
       >
-        <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+        {/* Linha-resumo de entregas */}
+        <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-2 mb-10">
+          {[
+            "23 módulos guiados",
+            "54 comandos prontos",
+            "Agente Arquiteto",
+            "GPS do App",
+            "30 ideias prontas",
+          ].map((chip) => (
+            <span
+              key={chip}
+              className="glass px-3 py-1.5 text-xs md:text-sm text-foreground/90 border-accent/20"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+
+        {/* 4 cards curtos */}
+        <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
           {[
             {
-              icon: <ListChecks size={22} />,
-              t: "1. 23 módulos guiados",
-              d: "Uma sequência completa em etapas — do planejamento à publicação e melhorias — para você seguir com método arquiteto, sem ficar preso em tentativa e erro. Cada módulo tem objetivo, contexto, prompt e próximo passo.",
+              icon: <ListChecks size={20} />,
+              t: "23 módulos guiados",
+              d: "Uma jornada organizada para planejar, construir, revisar, publicar e evoluir seu app sem se perder no processo.",
             },
             {
-              icon: <Wand2 size={22} />,
-              t: "2. 54 comandos prontos para Lovable",
-              d: "Prompts estruturados, contextualizados e revisáveis para colar direto na ferramenta de criação. Você não parte do zero em cada etapa: recebe o comando certo, na ordem certa, com o que preservar e o que testar depois.",
+              icon: <Wand2 size={20} />,
+              t: "54 comandos prontos para Lovable",
+              d: "Prompts estruturados para pedir, revisar, corrigir e melhorar seu app com mais clareza e menos improviso.",
             },
             {
-              icon: <Bot size={22} />,
-              t: "3. Agente Arquiteto para pensar antes de pedir",
-              d: "Acessado pela área interna, abre no ChatGPT e ajuda a planejar, revisar comandos, decidir próximo passo e adaptar prompts ao seu projeto antes de mandar para o Lovable. Não substitui a ferramenta e depende da sua conta e limites do ChatGPT.",
+              icon: <Bot size={20} />,
+              t: "Agente Arquiteto + GPS do App",
+              d: "O Agente ajuda você a pensar antes de pedir. O GPS mostra projeto em foco, etapa atual e próximo passo recomendado.",
             },
             {
-              icon: <MapPin size={22} />,
-              t: "4. GPS do App com projeto em foco",
-              d: "Uma área interna que mostra qual projeto está em foco, em qual etapa você está e qual próximo passo recomendado seguir. Menos abas abertas, menos dúvida sobre o que fazer agora — mais clareza para avançar por versões.",
-            },
-            {
-              icon: <Lightbulb size={22} />,
-              t: "5. 30 ideias de apps prontas para começar",
-              d: "Para quem ainda não sabe por onde começar, um catálogo com 30 ideias de apps já pensadas dentro do método: nicho, problema, MVP possível e como encaixar na Fábrica. Um empurrão para sair da folha em branco.",
+              icon: <Lightbulb size={20} />,
+              t: "30 ideias para começar ou adaptar",
+              d: "Para quem ainda não sabe qual app criar, a Fábrica traz ideias prontas para escolher, adaptar e transformar em projeto.",
             },
           ].map((m) => (
-            <GlassCard key={m.t} className="space-y-3">
+            <GlassCard key={m.t} className="space-y-2 h-full">
               <div className="flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0">{m.icon}</span>
-                <p className="font-heading font-bold text-lg text-foreground">{m.t}</p>
+                <span className="w-9 h-9 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent shrink-0">{m.icon}</span>
+                <p className="font-heading font-bold text-base md:text-lg text-foreground">{m.t}</p>
               </div>
-              <p className="text-sm md:text-base text-foreground/90 leading-relaxed">{m.d}</p>
+              <p className="text-sm text-foreground/85 leading-relaxed">{m.d}</p>
             </GlassCard>
           ))}
         </div>
-        <p className="max-w-3xl mx-auto text-center text-base md:text-lg text-foreground/85 leading-relaxed mt-8">
-          Por <span className="font-semibold text-accent">R$197</span>, você não está comprando apenas informação. Você está entrando em um sistema guiado para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
-        </p>
+
+        {/* Faixa de fechamento */}
+        <div className="max-w-3xl mx-auto mt-10 glass px-5 py-5 md:px-6 md:py-6 text-center">
+          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+            Por <span className="font-semibold text-accent">R$197</span>, você não compra apenas informação. Você entra em uma plataforma guiada para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
+          </p>
+        </div>
       </Section>
 
       {/* DIFERENCIAÇÃO */}
