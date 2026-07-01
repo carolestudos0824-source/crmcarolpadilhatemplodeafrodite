@@ -6,7 +6,7 @@
 - **Status:** Pronta para publicar
 
 ## Resumo
-Esta versão consolida a Fábrica de Apps com IA como programa-guia completo para criação, organização, revisão, publicação, venda, validação e evolução de aplicativos com IA, com **24 módulos** internos guiados.
+Esta versão consolida a Fábrica de Apps com IA como programa-guia completo para criação, organização, revisão, publicação, venda, validação e evolução de aplicativos com IA, com **23 módulos** internos guiados.
 
 ## Mudanças
 - Reposicionamento da landing.
@@ -27,9 +27,9 @@ Esta versão consolida a Fábrica de Apps com IA como programa-guia completo par
   - **sem scroll interno no desktop** (página inteira rola pelo navegador);
   - **scroll interno mantido apenas no mobile/drawer**;
   - separação visual premium entre sidebar e conteúdo (fundo glass, borda ciano discreta, sombra suave e respiro lateral);
-  - exibe todos os **24 módulos**, terminando em **"Ativar acesso"**;
+  - exibe todos os **23 módulos**, terminando em **"Ativar acesso"**;
   - destaque correto do módulo ativo, incluindo **SEO e GEO**.
-- Comunicação pública alinhada de "23 módulos" para **"24 módulos"** em landing e documentos públicos (`docs/LLMS_TXT_BASE.md`, `docs/ENTENDIMENTO_IA.md`, `docs/ESTADO_ATUAL_PROJETO.md`).
+- Comunicação pública alinhada de "23 módulos" para **"23 módulos"** em landing e documentos públicos (`docs/LLMS_TXT_BASE.md`, `docs/ENTENDIMENTO_IA.md`, `docs/ESTADO_ATUAL_PROJETO.md`).
 - **Nenhum módulo foi criado ou removido.** `MODULES` continua com 24 entradas (mesmos IDs e ordem).
 - **`TOTAL_COMMANDS` preservado.**
 - Preservação de preço (R$197), checkout (`/checkout?plano=fabrica`), garantia (7 dias), login, banco, RLS, admin, área paga, módulos, prompts, IDs, TOTAL_COMMANDS, progresso e cubo visual.

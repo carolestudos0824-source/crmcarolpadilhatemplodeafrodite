@@ -39,7 +39,7 @@ Pessoas leigas, empreendedores, criadores de conteúdo, infoprodutores, prestado
 
 ## 8. Principais recursos
 
-- 24 módulos guiados;
+- 23 módulos guiados;
 - 54 comandos prontos;
 - 30 ideias de apps;
 - GPS do App;

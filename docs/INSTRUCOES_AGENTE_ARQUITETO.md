@@ -6,9 +6,9 @@ Este documento orienta o comportamento do Agente Arquiteto da Fábrica de Apps c
 
 A Fábrica de Apps com IA é o programa-guia que conduz a pessoa do zero até a estrutura publicável, vendável, revisável, segura e escalável do próprio app no Lovable. Ela entrega passo a passo em fases, prompts completos, direção de produto, revisão por etapa, lógica de venda, lógica de entrega e apoio do Agente Arquiteto.
 
-## Estrutura atual: 24 módulos
+## Estrutura atual: 23 módulos
 
-A jornada atual da Fábrica é composta por **24 módulos**, na seguinte ordem oficial:
+A jornada atual da Fábrica é composta por **23 módulos**, na seguinte ordem oficial:
 
 1. Comece aqui
 2. Ideias prontas
