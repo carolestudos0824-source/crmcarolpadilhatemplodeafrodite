@@ -54,12 +54,12 @@ export const checkProgramAccess = async (userId: string): Promise<ProgramAccess>
   // Segurança: se a RPC falhar, NÃO liberamos acesso por padrão.
   const canEnter = !rpcResult.error && !!rpcResult.data;
   const isAdmin = !adminResult.error && !!adminResult.data;
-  // hasAccess representa o acesso do usuário comum (sem contar admin), preservando
-  // o contrato antigo para consumidores que diferenciam admin de comprador.
-  const hasAccess = canEnter && !isAdmin ? true : canEnter && isAdmin ? canEnter : false;
+  // hasAccess reflete o acesso do programa (comprador ou admin), preservando
+  // o contrato antigo em que canEnter = hasAccess || isAdmin.
+  const hasAccess = canEnter;
 
   return {
-    hasAccess: canEnter ? (isAdmin ? hasAccess : true) : false,
+    hasAccess,
     isAdmin,
     canEnter,
   };
