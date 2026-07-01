@@ -37,6 +37,8 @@ type BuyerOverviewRow = {
   sort_at: string;
 };
 
+export type ExpiryStatus = "perpetual" | "active" | "expired" | "none";
+
 export type ConsolidatedBuyer = {
   key: string;
   email: string | null;
@@ -52,6 +54,9 @@ export type ConsolidatedBuyer = {
   payment_status_label: string;
   access_status: string | null;
   access_status_label: string;
+  access_expires_at: string | null;
+  expiry_status: ExpiryStatus;
+  expiry_label: string;
   payment_method: string | null;
   payment_reference: string | null;
   admin_notes: string | null;
