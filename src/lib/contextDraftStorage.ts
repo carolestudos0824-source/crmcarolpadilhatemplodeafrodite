@@ -5,7 +5,7 @@ import { EMPTY_PROJECT_CONTEXT, type ProjectContext, type YesNo } from "@/hooks/
  *
  * Esta camada vive APENAS dentro do ProjectContextDrawer. Não substitui o
  * contexto oficial (`fabrica_apps_project_context`) nem grava em banco.
- * Serve apenas para que a usuária não perca o que digitou se fechar o painel
+ * Serve apenas para que a pessoa usuária não perca o que digitou se fechar o painel
  * sem clicar em "Salvar contexto" ou "Salvar como novo app".
  */
 

@@ -5,7 +5,7 @@ import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContex
 
 /**
  * Resumo de teste final baseado no Contexto do Projeto em foco. Orienta
- * a aluna a testar o APP DELA antes da divulgação: fluxo principal,
+ * a pessoa a testar o APP DELA antes da divulgação: fluxo principal,
  * perfis (visitante, logado, comprador, admin), rotas públicas e
  * protegidas, pontos críticos e bloqueadores. Não altera login, banco,
  * checkout, entrega real, área paga ou admin.

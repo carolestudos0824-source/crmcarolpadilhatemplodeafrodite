@@ -9,7 +9,7 @@ type Props = {
 
 /**
  * Aviso curto que aparece dentro de módulos da área logada para lembrar que:
- * - o módulo trata do app da aluna,
+ * - o módulo trata do app da pessoa,
  * - a Fábrica de Apps com IA também tem os SEUS próprios documentos oficiais.
  *
  * Não substitui os documentos oficiais nem coleta nada.

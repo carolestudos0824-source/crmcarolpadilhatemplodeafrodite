@@ -6,7 +6,7 @@ import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContex
 /**
  * Resumo seguro de Legal e Confiança baseado no Contexto do Projeto em
  * foco. Não altera login, banco, área paga, admin ou checkout. Apenas
- * exibe orientações para a aluna preparar termos, privacidade, suporte e
+ * exibe orientações para a pessoa preparar termos, privacidade, suporte e
  * reembolso do APP DELA. Não substitui revisão jurídica.
  */
 

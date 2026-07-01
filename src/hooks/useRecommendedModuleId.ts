@@ -46,7 +46,7 @@ export const useRecommendedModuleId = (): ModuleId | null => {
     const idxOf = (id: ModuleId) => MODULE_ORDER.indexOf(id);
 
     // Só recomenda um passo "anterior" da jornada se a pessoa ainda não
-    // avançou além dele. Evita mostrar "Planejar o App" quando a usuária
+    // avançou além dele. Evita mostrar "Planejar o App" quando a pessoa usuária
     // está em módulos posteriores como Página de venda.
     const suggestIfNotPast = (id: ModuleId) =>
       !isDone(id) && (activeIdx === -1 || activeIdx <= idxOf(id)) ? id : null;
