@@ -51,7 +51,7 @@ export function BuyerDetailsDrawer({
 }: {
   buyer: ConsolidatedBuyer | null;
   onClose: () => void;
-  onGrant: (b: ConsolidatedBuyer) => Promise<void> | void;
+  onGrant: (b: ConsolidatedBuyer, durationDays?: number | null) => Promise<void> | void;
   onRevoke: (b: ConsolidatedBuyer) => Promise<void> | void;
   onViewSale?: (saleId: string) => void;
   acting?: boolean;
