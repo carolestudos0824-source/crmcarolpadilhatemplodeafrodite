@@ -28,7 +28,7 @@ export default function Termos() {
         <h3 className="text-foreground font-heading">1. Aceite</h3>
         <p>
           Ao acessar, criar conta, comprar, fazer login ou utilizar qualquer recurso da Fábrica de
-          Apps com IA, a usuária declara que leu, entendeu e concorda integralmente com estes Termos
+          Apps com IA, a pessoa usuária declara que leu, entendeu e concorda integralmente com estes Termos
           e com a Política de Privacidade.
         </p>
 
@@ -37,7 +37,7 @@ export default function Termos() {
           O produto é digital e inclui acesso a módulos guiados, prompts, comandos prontos,
           checklists, materiais de apoio e a um agente de IA orientador. Não há entrega de software,
           serviço de programação, consultoria personalizada nem garantia de funcionamento de
-          aplicativos criados pela usuária.
+          aplicativos criados pela pessoa usuária.
         </p>
 
         <h3 className="text-foreground font-heading">3. Acesso e conta</h3>
@@ -49,9 +49,9 @@ export default function Termos() {
 
         <h3 className="text-foreground font-heading">4. Uso de IA</h3>
         <p>
-          Os recursos de IA geram sugestões automatizadas que devem ser revisadas pela usuária. A
+          Os recursos de IA geram sugestões automatizadas que devem ser revisadas pela pessoa usuária. A
           Fábrica de Apps com IA não substitui aconselhamento profissional jurídico, financeiro,
-          médico, terapêutico ou técnico. A usuária é responsável por revisar, validar e decidir
+          médico, terapêutico ou técnico. A pessoa usuária é responsável por revisar, validar e decidir
           como utilizar os prompts, materiais e aplicativos criados com apoio da plataforma.
         </p>
 
@@ -60,13 +60,13 @@ export default function Termos() {
           A Fábrica de Apps com IA não garante vendas, faturamento, ranqueamento, aprovação de
           mercado, segurança absoluta ou ausência total de erros. O resultado depende de fatores
           fora do controle do programa, como nicho, execução, oferta, divulgação, preço e
-          comportamento do público da usuária.
+          comportamento do público da pessoa usuária.
         </p>
 
         <h3 className="text-foreground font-heading">6. Segurança</h3>
         <p>
           A Fábrica de Apps com IA adota medidas razoáveis de proteção, mas nenhum sistema é
-          totalmente imune a riscos. A usuária deve manter sua senha em segurança e comunicar
+          totalmente imune a riscos. A pessoa usuária deve manter sua senha em segurança e comunicar
           imediatamente qualquer suspeita de uso indevido.
         </p>
 
@@ -78,13 +78,13 @@ export default function Termos() {
           titular.
         </p>
 
-        <h3 className="text-foreground font-heading">8. Apps criados pelas alunas</h3>
+        <h3 className="text-foreground font-heading">8. Apps criados pelas pessoas participantes</h3>
         <p>
           Os documentos oficiais da Fábrica de Apps com IA regulam o uso deste programa. Cada app
-          criado pela aluna deve ter seus próprios Termos de Uso e Política de Privacidade,
+          criado pelo participante deve ter seus próprios Termos de Uso e Política de Privacidade,
           adaptados ao produto, público, dados coletados, pagamento e entrega do seu próprio
           aplicativo. A Fábrica não responde por aplicativos, ofertas, promessas, dados ou
-          obrigações dos apps publicados pelas alunas.
+          obrigações dos apps publicados pelas pessoas participantes.
         </p>
 
         <h3 className="text-foreground font-heading">9. Pagamento e reembolso</h3>

@@ -27,14 +27,14 @@ export default function Privacidade() {
         <h3 className="text-foreground font-heading">1. Dados coletados</h3>
         <p>
           Coletamos apenas o necessário para entregar o programa: nome, e-mail de cadastro, dados
-          de autenticação (via Google OAuth quando utilizado), contexto do projeto que a usuária
+          de autenticação (via Google OAuth quando utilizado), contexto do projeto que a pessoa usuária
           decide salvar (nome do app, público, promessa, etapas), progresso na jornada, prompts
           editados e mensagens enviadas ao suporte. Não coletamos dados sensíveis sem necessidade.
         </p>
 
         <h3 className="text-foreground font-heading">2. Uso dos dados</h3>
         <p>
-          Os dados são utilizados para liberar e manter o acesso, salvar o progresso da usuária,
+          Os dados são utilizados para liberar e manter o acesso, salvar o progresso da pessoa usuária,
           personalizar prompts e recomendações, prestar suporte, prevenir fraudes e melhorar a
           experiência da plataforma. Não vendemos dados pessoais.
         </p>
@@ -62,7 +62,7 @@ export default function Privacidade() {
         <h3 className="text-foreground font-heading">6. Cookies e medição</h3>
         <p>
           Podemos utilizar cookies próprios e de terceiros para autenticação, segurança, medição
-          de uso e melhoria do site. A usuária pode gerenciar cookies no seu navegador.
+          de uso e melhoria do site. A pessoa usuária pode gerenciar cookies no seu navegador.
         </p>
 
         <h3 className="text-foreground font-heading">7. Compartilhamento</h3>
@@ -72,9 +72,9 @@ export default function Privacidade() {
           serviço. Não há compartilhamento para fins de venda de dados.
         </p>
 
-        <h3 className="text-foreground font-heading">8. Direitos da usuária</h3>
+        <h3 className="text-foreground font-heading">8. Direitos da pessoa usuária</h3>
         <p>
-          Conforme a LGPD, a usuária pode solicitar confirmação de tratamento, acesso, correção,
+          Conforme a LGPD, a pessoa usuária pode solicitar confirmação de tratamento, acesso, correção,
           anonimização, portabilidade, exclusão de dados e informações sobre compartilhamento,
           pelo e-mail oficial. Importante: a exclusão da conta encerra o acesso ao programa.
         </p>
@@ -88,17 +88,17 @@ export default function Privacidade() {
 
         <h3 className="text-foreground font-heading">10. IA e conteúdo gerado</h3>
         <p>
-          Os recursos de IA da plataforma podem usar o contexto que a usuária digita para gerar
+          Os recursos de IA da plataforma podem usar o contexto que a pessoa usuária digita para gerar
           sugestões. Não recomendamos inserir dados pessoais sensíveis, senhas ou informações
           confidenciais nos prompts e formulários do programa.
         </p>
 
-        <h3 className="text-foreground font-heading">11. Apps criados pelas alunas</h3>
+        <h3 className="text-foreground font-heading">11. Apps criados pelas pessoas participantes</h3>
         <p>
           Esta Política trata exclusivamente dos dados coletados pela Fábrica de Apps com IA. Os
-          aplicativos criados pelas alunas devem ter sua própria Política de Privacidade,
+          aplicativos criados pelas pessoas participantes devem ter sua própria Política de Privacidade,
           adaptada aos dados que coletam, ao público que atendem e ao tratamento que fazem. A
-          Fábrica não responde por práticas de privacidade dos apps publicados pelas alunas.
+          Fábrica não responde por práticas de privacidade dos apps publicados pelas pessoas participantes.
         </p>
 
         <h3 className="text-foreground font-heading">12. Segurança e incidentes</h3>

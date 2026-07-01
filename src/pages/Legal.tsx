@@ -28,7 +28,7 @@ const ITENS: Item[] = [
     to: "/politica-de-privacidade",
     icon: ShieldCheck,
     title: "Política de Privacidade",
-    desc: "Quais dados coletamos, como tratamos e direitos da usuária pela LGPD.",
+    desc: "Quais dados coletamos, como tratamos e direitos da pessoa usuária pela LGPD.",
   },
   {
     to: "/suporte",
@@ -51,8 +51,8 @@ export default function Legal() {
 
         <p className="text-sm text-muted-foreground leading-relaxed">
           Estes são os documentos oficiais que regulam o uso do programa Fábrica de Apps com IA.
-          Eles protegem a plataforma, a titular e a própria usuária. Não confunda estes documentos
-          com os Termos e a Política que cada aluna precisa criar para o seu próprio aplicativo.
+          Eles protegem a plataforma, a titular e a própria pessoa usuária. Não confunda estes documentos
+          com os Termos e a Política que cada participante precisa criar para o seu próprio aplicativo.
         </p>
 
         <div className="grid gap-4 sm:grid-cols-2">
