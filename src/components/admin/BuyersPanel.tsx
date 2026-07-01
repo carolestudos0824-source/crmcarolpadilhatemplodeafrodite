@@ -114,14 +114,29 @@ function fmtMoney(amount: number | null, currency = "BRL") {
 }
 
 function computeAccessLabel(r: BuyerOverviewRow): string {
-  if (r.has_access) return "Acesso liberado";
+  if (r.has_access) {
+    if (r.access_expires_at && new Date(r.access_expires_at) <= new Date()) return "Acesso expirado";
+    return "Acesso liberado";
+  }
   if (r.last_access_status === "access_revoked") return "Acesso revogado";
   if (r.paid_confirmed_count > 0 && !r.user_id) return "Aguardando primeiro login";
   if (r.paid_confirmed_count > 0) return "Aguardando liberação";
   return "Sem acesso";
 }
 
+function computeExpiry(r: BuyerOverviewRow): { status: ExpiryStatus; label: string } {
+  if (!r.has_access) return { status: "none", label: "—" };
+  if (!r.access_expires_at) return { status: "perpetual", label: "Sem expiração" };
+  const exp = new Date(r.access_expires_at);
+  if (Number.isNaN(exp.getTime())) return { status: "perpetual", label: "Sem expiração" };
+  if (exp <= new Date()) {
+    return { status: "expired", label: `Expirado em ${exp.toLocaleDateString("pt-BR")}` };
+  }
+  return { status: "active", label: `Válido até ${exp.toLocaleDateString("pt-BR")}` };
+}
+
 function computeNextStep(r: BuyerOverviewRow, label: string): string {
+  if (r.has_access && label === "Acesso expirado") return "Renovar acesso";
   if (r.has_access) return "Acesso já liberado";
   if (r.last_payment_status === "refunded" || r.last_payment_status === "cancelled") return "Verifique pagamento";
   if (label === "Acesso revogado") return "Acesso revogado";
@@ -135,6 +150,7 @@ function computeNextStep(r: BuyerOverviewRow, label: string): string {
 function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
   const key = r.email.toLowerCase();
   const accessLabel = computeAccessLabel(r);
+  const expiry = computeExpiry(r);
   return {
     key,
     email: r.email,
@@ -152,6 +168,9 @@ function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
       : "Não registrado",
     access_status: r.last_access_status,
     access_status_label: accessLabel,
+    access_expires_at: r.access_expires_at,
+    expiry_status: expiry.status,
+    expiry_label: expiry.label,
     payment_method: null,
     payment_reference: null,
     admin_notes: null,
