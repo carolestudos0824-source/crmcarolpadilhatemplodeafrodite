@@ -310,7 +310,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
     [rows],
   );
 
-  const grant = async (b: ConsolidatedBuyer) => {
+  const grant = async (b: ConsolidatedBuyer, durationDays: number | null = null) => {
     if (!b.user_id) {
       toast.error("Sem login criado. Peça primeiro login com o mesmo e-mail.");
       return;
@@ -320,13 +320,30 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
       const { data, error } = await supabase.rpc("admin_set_access", {
         _user_id: b.user_id,
         _has_access: true,
+        _duration_days: durationDays,
       });
       if (error) throw new Error(error.message);
-      const r = data as { success?: boolean; error?: string } | null;
+      const r = data as { success?: boolean; error?: string; access_expires_at?: string | null } | null;
       if (!r?.success) throw new Error(r?.error ?? "Falha.");
-      toast.success("Acesso liberado.");
+      const successMsg = durationDays
+        ? `Acesso liberado por ${durationDays} dias.`
+        : "Acesso liberado sem expiração.";
+      toast.success(successMsg);
       await load("reset");
-      setSelected((s) => (s ? { ...s, has_access: true, access_status_label: "Acesso liberado" } : null));
+      setSelected((s) =>
+        s
+          ? {
+              ...s,
+              has_access: true,
+              access_status_label: "Acesso liberado",
+              access_expires_at: r.access_expires_at ?? null,
+              expiry_status: r.access_expires_at ? "active" : "perpetual",
+              expiry_label: r.access_expires_at
+                ? `Válido até ${new Date(r.access_expires_at).toLocaleDateString("pt-BR")}`
+                : "Sem expiração",
+            }
+          : null,
+      );
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Falha.");
     } finally {
