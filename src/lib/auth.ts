@@ -42,34 +42,26 @@ export type ProgramAccess = {
 };
 
 export const checkProgramAccess = async (userId: string): Promise<ProgramAccess> => {
-  const [{ data: user }, { data: access }, { data: adminFlag }] = await Promise.all([
-    supabase.auth.getUser(),
-    supabase
-      .from("user_access")
-      .select("has_access")
-      .eq("user_id", userId)
-      .maybeSingle(),
+  // Fonte principal: RPC segura has_program_access.
+  // Regra (definida na Rodada 1.1): retorna true para admin, ou para user_id com
+  // has_access=true e (access_expires_at IS NULL OR access_expires_at > now()).
+  // A RPC também autoriza o caller (só o próprio user, admin ou service_role).
+  const [rpcResult, adminResult] = await Promise.all([
+    supabase.rpc("has_program_access", { _user_id: userId }),
     supabase.rpc("is_admin"),
   ]);
 
-  const email = user.user?.email?.trim().toLowerCase();
-  let hasAccess = !!access?.has_access;
-
-  if (!hasAccess && email) {
-    const { data: emailAccess } = await supabase
-      .from("user_access")
-      .select("has_access")
-      .eq("email", email)
-      .maybeSingle();
-    hasAccess = !!emailAccess?.has_access;
-  }
-
-  const isAdmin = !!adminFlag;
+  // Segurança: se a RPC falhar, NÃO liberamos acesso por padrão.
+  const canEnter = !rpcResult.error && !!rpcResult.data;
+  const isAdmin = !adminResult.error && !!adminResult.data;
+  // hasAccess representa o acesso do usuário comum (sem contar admin), preservando
+  // o contrato antigo para consumidores que diferenciam admin de comprador.
+  const hasAccess = canEnter && !isAdmin ? true : canEnter && isAdmin ? canEnter : false;
 
   return {
-    hasAccess,
+    hasAccess: canEnter ? (isAdmin ? hasAccess : true) : false,
     isAdmin,
-    canEnter: hasAccess || isAdmin,
+    canEnter,
   };
 };
 
