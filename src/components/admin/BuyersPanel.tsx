@@ -21,6 +21,7 @@ type BuyerOverviewRow = {
   has_access: boolean;
   access_source: string | null;
   access_updated_at: string | null;
+  access_expires_at: string | null;
   user_created_at: string | null;
   origin: "sale_only" | "user_only" | "mixed";
   sales_count: number;
