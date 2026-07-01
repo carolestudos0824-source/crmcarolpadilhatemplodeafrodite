@@ -602,7 +602,7 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Programa completo</p>
             <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$197</div>
             <p className="text-base text-foreground/90 mt-2 font-medium">pagamento único</p>
-            <p className="text-sm text-muted-foreground mt-1">ou 12x de R$19,70</p>
+            <p className="text-sm text-muted-foreground mt-1">Parcelamento disponível no cartão</p>
             <p className="text-xs text-muted-foreground/80 mt-3">Acesso liberado após confirmação do pagamento</p>
           </div>
           <ul className="grid sm:grid-cols-2 gap-2.5 mb-6">

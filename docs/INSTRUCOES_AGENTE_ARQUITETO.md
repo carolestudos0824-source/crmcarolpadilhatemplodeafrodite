@@ -96,7 +96,7 @@ Use linguagem direta como: construir do zero, vender com estrutura, publicar com
 
 ## Preço, garantia e suporte
 
-- **Preço:** R$197 à vista ou 12x R$19,70.
+- **Preço:** R$197 à vista. Parcelamento disponível no cartão.
 - **Garantia:** 7 dias.
 - **Suporte oficial:** fabricadeappscomia@outlook.com
 
