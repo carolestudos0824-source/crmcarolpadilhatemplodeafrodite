@@ -5,7 +5,7 @@ import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContex
 
 /**
  * Resumo de publicação baseado no Contexto do Projeto em foco. Orienta a
- * aluna a publicar o APP DELA com segurança: link público, domínio,
+* pessoa participante a publicar o APP DELA com segurança: link público, domínio,
  * preview vs produção, favicon, imagem social e testes finais. Não
  * altera login, banco, área paga, admin ou a publicação real da
  * Fábrica de Apps.

@@ -5,7 +5,7 @@ import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContex
 
 /**
  * Resumo de campanha baseado no Contexto do Projeto em foco. Orienta a
- * aluna a rodar uma PRIMEIRA campanha pequena, segura e mensurável para
+* pessoa participante a rodar uma PRIMEIRA campanha pequena, segura e mensurável para
  * o APP DELA. Não cria campanha paga real, não integra Meta/Google Ads,
  * não altera checkout real da Fábrica de Apps.
  */
