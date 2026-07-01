@@ -632,17 +632,24 @@ export default function Home() {
         eyebrow="Prova de realidade"
         title="A própria Fábrica foi construída no Lovable"
       >
-        <div className="max-w-3xl mx-auto glass-strong p-8 md:p-12 text-center">
-          <div className="mx-auto w-16 h-16 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-4">
-            <PlayCircle size={32} className="text-accent" />
+        <div className="max-w-3xl mx-auto glass-strong p-4 md:p-6">
+          <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black/40" style={{ paddingBottom: "56.25%" }}>
+            <iframe
+              src="https://www.loom.com/embed/ac724b2e1a4941ab808d0b8b6a58a6f7"
+              title="A própria Fábrica foi construída no Lovable"
+              frameBorder={0}
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
           </div>
-          <p className="text-base text-foreground/90 leading-relaxed mb-2">
+          <p className="text-base text-foreground/90 leading-relaxed mt-6 text-center">
             Esta página, a área interna e o painel administrativo foram construídos no Lovable seguindo a mesma lógica que o programa ensina: <span className="text-accent">planejar, pedir, revisar, corrigir e avançar por etapas</span>. Não é promessa de que todo aluno terá o mesmo resultado — é a prova de que o método é executável na prática.
           </p>
-          <p className="text-xs text-muted-foreground/80 mt-4 leading-relaxed">
+          <p className="text-xs text-muted-foreground/80 mt-3 leading-relaxed text-center">
             O mesmo raciocínio pode ser adaptado para outras ferramentas de criação com IA, ajustando os comandos ao formato de cada plataforma.
           </p>
         </div>
+
       </Section>
 
       {/* PARA QUEM É / NÃO É */}
