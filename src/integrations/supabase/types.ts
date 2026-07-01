@@ -887,6 +887,7 @@ export type Database = {
       }
       user_access: {
         Row: {
+          access_expires_at: string | null
           created_at: string
           email: string
           has_access: boolean
@@ -895,6 +896,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          access_expires_at?: string | null
           created_at?: string
           email: string
           has_access?: boolean
@@ -903,6 +905,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          access_expires_at?: string | null
           created_at?: string
           email?: string
           has_access?: boolean
@@ -1469,6 +1472,7 @@ export type Database = {
         Returns: Json
       }
       apply_arcano_backfill: { Args: { _payload: Json }; Returns: Json }
+      has_program_access: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
