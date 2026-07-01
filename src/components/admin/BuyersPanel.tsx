@@ -21,6 +21,7 @@ type BuyerOverviewRow = {
   has_access: boolean;
   access_source: string | null;
   access_updated_at: string | null;
+  access_expires_at: string | null;
   user_created_at: string | null;
   origin: "sale_only" | "user_only" | "mixed";
   sales_count: number;
@@ -35,6 +36,8 @@ type BuyerOverviewRow = {
   last_access_status: string | null;
   sort_at: string;
 };
+
+export type ExpiryStatus = "perpetual" | "active" | "expired" | "none";
 
 export type ConsolidatedBuyer = {
   key: string;
@@ -51,6 +54,9 @@ export type ConsolidatedBuyer = {
   payment_status_label: string;
   access_status: string | null;
   access_status_label: string;
+  access_expires_at: string | null;
+  expiry_status: ExpiryStatus;
+  expiry_label: string;
   payment_method: string | null;
   payment_reference: string | null;
   admin_notes: string | null;
@@ -108,14 +114,29 @@ function fmtMoney(amount: number | null, currency = "BRL") {
 }
 
 function computeAccessLabel(r: BuyerOverviewRow): string {
-  if (r.has_access) return "Acesso liberado";
+  if (r.has_access) {
+    if (r.access_expires_at && new Date(r.access_expires_at) <= new Date()) return "Acesso expirado";
+    return "Acesso liberado";
+  }
   if (r.last_access_status === "access_revoked") return "Acesso revogado";
   if (r.paid_confirmed_count > 0 && !r.user_id) return "Aguardando primeiro login";
   if (r.paid_confirmed_count > 0) return "Aguardando liberação";
   return "Sem acesso";
 }
 
+function computeExpiry(r: BuyerOverviewRow): { status: ExpiryStatus; label: string } {
+  if (!r.has_access) return { status: "none", label: "—" };
+  if (!r.access_expires_at) return { status: "perpetual", label: "Sem expiração" };
+  const exp = new Date(r.access_expires_at);
+  if (Number.isNaN(exp.getTime())) return { status: "perpetual", label: "Sem expiração" };
+  if (exp <= new Date()) {
+    return { status: "expired", label: `Expirado em ${exp.toLocaleDateString("pt-BR")}` };
+  }
+  return { status: "active", label: `Válido até ${exp.toLocaleDateString("pt-BR")}` };
+}
+
 function computeNextStep(r: BuyerOverviewRow, label: string): string {
+  if (r.has_access && label === "Acesso expirado") return "Renovar acesso";
   if (r.has_access) return "Acesso já liberado";
   if (r.last_payment_status === "refunded" || r.last_payment_status === "cancelled") return "Verifique pagamento";
   if (label === "Acesso revogado") return "Acesso revogado";
@@ -129,6 +150,7 @@ function computeNextStep(r: BuyerOverviewRow, label: string): string {
 function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
   const key = r.email.toLowerCase();
   const accessLabel = computeAccessLabel(r);
+  const expiry = computeExpiry(r);
   return {
     key,
     email: r.email,
@@ -146,6 +168,9 @@ function rowToConsolidated(r: BuyerOverviewRow): ConsolidatedBuyer {
       : "Não registrado",
     access_status: r.last_access_status,
     access_status_label: accessLabel,
+    access_expires_at: r.access_expires_at,
+    expiry_status: expiry.status,
+    expiry_label: expiry.label,
     payment_method: null,
     payment_reference: null,
     admin_notes: null,
@@ -285,7 +310,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
     [rows],
   );
 
-  const grant = async (b: ConsolidatedBuyer) => {
+  const grant = async (b: ConsolidatedBuyer, durationDays: number | null = null) => {
     if (!b.user_id) {
       toast.error("Sem login criado. Peça primeiro login com o mesmo e-mail.");
       return;
@@ -295,13 +320,30 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
       const { data, error } = await supabase.rpc("admin_set_access", {
         _user_id: b.user_id,
         _has_access: true,
+        _duration_days: durationDays,
       });
       if (error) throw new Error(error.message);
-      const r = data as { success?: boolean; error?: string } | null;
+      const r = data as { success?: boolean; error?: string; access_expires_at?: string | null } | null;
       if (!r?.success) throw new Error(r?.error ?? "Falha.");
-      toast.success("Acesso liberado.");
+      const successMsg = durationDays
+        ? `Acesso liberado por ${durationDays} dias.`
+        : "Acesso liberado sem expiração.";
+      toast.success(successMsg);
       await load("reset");
-      setSelected((s) => (s ? { ...s, has_access: true, access_status_label: "Acesso liberado" } : null));
+      setSelected((s) =>
+        s
+          ? {
+              ...s,
+              has_access: true,
+              access_status_label: "Acesso liberado",
+              access_expires_at: r.access_expires_at ?? null,
+              expiry_status: r.access_expires_at ? "active" : "perpetual",
+              expiry_label: r.access_expires_at
+                ? `Válido até ${new Date(r.access_expires_at).toLocaleDateString("pt-BR")}`
+                : "Sem expiração",
+            }
+          : null,
+      );
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Falha.");
     } finally {
@@ -384,7 +426,8 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
           </select>
           <select className="admin-input" value={fAccess} onChange={(e) => setFAccess(e.target.value)}>
             <option value="all">Acesso: todos</option>
-            <option value="granted">Liberado</option>
+            <option value="granted">Liberado (ativo)</option>
+            <option value="expired">Expirado</option>
             <option value="awaiting_login">Aguardando 1º login</option>
             <option value="awaiting_grant">Aguardando liberação</option>
             <option value="revoked">Revogado</option>
@@ -444,6 +487,7 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                       <th className="text-right">Total pago</th>
                       <th>Última venda</th>
                       <th>Acesso</th>
+                      <th>Válido até</th>
                       <th>Origem</th>
                       <th>Data</th>
                       <th>Próximo passo</th>
@@ -477,11 +521,22 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                         </td>
                         <td>
                           <span className={`admin-badge ${
-                            c.has_access ? "admin-badge-success"
+                            c.expiry_status === "expired" ? "admin-badge-danger"
+                            : c.has_access ? "admin-badge-success"
                             : c.access_status_label === "Acesso revogado" ? "admin-badge-danger"
                             : c.access_status_label.startsWith("Aguardando") ? "admin-badge-warning"
                             : "admin-badge-muted"
-                          }`}>{c.access_status_label}</span>
+                          }`}>{c.expiry_status === "expired" ? "Acesso expirado" : c.access_status_label}</span>
+                        </td>
+                        <td className="whitespace-nowrap text-xs">
+                          <span className={
+                            c.expiry_status === "expired" ? "text-rose-300"
+                            : c.expiry_status === "active" ? "text-emerald-300"
+                            : c.expiry_status === "perpetual" ? "text-foreground"
+                            : "text-muted-foreground"
+                          }>
+                            {c.expiry_label}
+                          </span>
                         </td>
                         <td><span className="admin-badge admin-badge-info">{c.source_label}</span></td>
                         <td className="whitespace-nowrap text-xs text-muted-foreground">{fmtDate(c.sale_created_at ?? c.user_created_at)}</td>
@@ -509,14 +564,34 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                             >
                               <Copy size={12} />
                             </button>
-                            {c.user_id && !c.has_access && (
+                            {c.user_id && (!c.has_access || c.expiry_status === "expired") && (
+                              <>
+                                <button
+                                  onClick={() => grant(c, 365)}
+                                  disabled={acting}
+                                  className="px-2 py-1 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition text-[10px]"
+                                  title="Liberar acesso por 365 dias"
+                                >
+                                  1 ano
+                                </button>
+                                <button
+                                  onClick={() => grant(c, null)}
+                                  disabled={acting}
+                                  className="p-1.5 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition"
+                                  title="Liberar acesso sem expiração"
+                                >
+                                  <UserCheck size={12} />
+                                </button>
+                              </>
+                            )}
+                            {c.user_id && c.has_access && c.expiry_status !== "expired" && (
                               <button
-                                onClick={() => grant(c)}
+                                onClick={() => grant(c, 365)}
                                 disabled={acting}
-                                className="p-1.5 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition"
-                                title="Liberar acesso"
+                                className="px-2 py-1 rounded-lg border border-accent/40 text-accent hover:bg-accent/10 transition text-[10px]"
+                                title="Renovar por +365 dias a partir de agora"
                               >
-                                <UserCheck size={12} />
+                                +1 ano
                               </button>
                             )}
                             {c.user_id && c.has_access && (

@@ -51,7 +51,7 @@ export function BuyerDetailsDrawer({
 }: {
   buyer: ConsolidatedBuyer | null;
   onClose: () => void;
-  onGrant: (b: ConsolidatedBuyer) => Promise<void> | void;
+  onGrant: (b: ConsolidatedBuyer, durationDays?: number | null) => Promise<void> | void;
   onRevoke: (b: ConsolidatedBuyer) => Promise<void> | void;
   onViewSale?: (saleId: string) => void;
   acting?: boolean;
@@ -82,7 +82,8 @@ export function BuyerDetailsDrawer({
 
   if (!buyer) return null;
 
-  const canGrant = !!buyer.user_id && !buyer.has_access;
+  const canGrant = !!buyer.user_id && (!buyer.has_access || buyer.expiry_status === "expired");
+  const canRenew = !!buyer.user_id && buyer.has_access;
   const canRevoke = !!buyer.user_id && !!buyer.has_access;
 
   return (
@@ -130,6 +131,7 @@ export function BuyerDetailsDrawer({
 
           <Section title="Acesso">
             <Row label="Status do acesso" value={buyer.access_status_label} />
+            <Row label="Validade" value={buyer.expiry_label} />
             <Row label="Origem do acesso" value={buyer.source_label} />
             <Row label="Liberado em" value={fmt(buyer.access_granted_at)} />
             <Row label="Revogado em" value={fmt(buyer.access_revoked_at)} />
@@ -186,10 +188,27 @@ export function BuyerDetailsDrawer({
             <div className="flex gap-2 flex-wrap">
               <button
                 disabled={!canGrant || acting}
-                onClick={() => onGrant(buyer)}
+                onClick={() => onGrant(buyer, 365)}
                 className="btn-primary text-xs !px-3 !py-2 disabled:opacity-40"
+                title="Liberar acesso válido por 365 dias"
               >
-                <UserCheck size={14} /> Liberar acesso
+                <UserCheck size={14} /> Liberar 1 ano
+              </button>
+              <button
+                disabled={!canGrant || acting}
+                onClick={() => onGrant(buyer, null)}
+                className="px-3 py-2 rounded-xl border border-emerald-500/40 text-emerald-200 hover:bg-emerald-500/10 text-xs inline-flex items-center gap-1.5 disabled:opacity-40"
+                title="Liberar acesso sem data de expiração"
+              >
+                <UserCheck size={14} /> Sem expiração
+              </button>
+              <button
+                disabled={!canRenew || acting}
+                onClick={() => onGrant(buyer, 365)}
+                className="px-3 py-2 rounded-xl border border-accent/40 text-accent hover:bg-accent/10 text-xs inline-flex items-center gap-1.5 disabled:opacity-40"
+                title="Renovar por +365 dias a partir de agora"
+              >
+                <UserCheck size={14} /> Renovar +1 ano
               </button>
               <button
                 disabled={!canRevoke || acting}
