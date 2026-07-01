@@ -426,7 +426,8 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
           </select>
           <select className="admin-input" value={fAccess} onChange={(e) => setFAccess(e.target.value)}>
             <option value="all">Acesso: todos</option>
-            <option value="granted">Liberado</option>
+            <option value="granted">Liberado (ativo)</option>
+            <option value="expired">Expirado</option>
             <option value="awaiting_login">Aguardando 1º login</option>
             <option value="awaiting_grant">Aguardando liberação</option>
             <option value="revoked">Revogado</option>
