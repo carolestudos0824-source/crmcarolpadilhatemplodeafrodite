@@ -18,6 +18,7 @@ import {
   type ModuleId,
 } from "@/data/entregaModules";
 import { TECHNICAL_GLOSSARY } from "@/data/technicalGlossary";
+import { useProjectContext } from "@/hooks/useProjectContext";
 import { AGENTE_ARQUITETO_URL } from "@/lib/agenteArquiteto";
 
 type Scope = "public" | "no-access" | "buyer" | "admin";
@@ -89,6 +90,7 @@ export const FabricaQuickHelp = () => {
   const auth = useAuthState();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { isEditorOpen: isContextEditorOpen } = useProjectContext();
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
 
@@ -226,19 +228,25 @@ export const FabricaQuickHelp = () => {
   // Mostrar apenas dentro da área logada de entrega (ferramenta interna).
   if (!pathname.startsWith("/entrega")) return null;
   if (HIDDEN_ON.includes(pathname)) return null;
+  // Ocultar o FAB enquanto o drawer "Contexto do projeto em foco" estiver aberto,
+  // para não sobrepor a barra fixa de ações (Limpar / Salvar como novo app / Salvar contexto).
+  // O dialog de ajuda (quando já aberto) continua acessível por atalho "?" ou "Esc" para fechar.
+  const hideFab = isContextEditorOpen;
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Ajuda do Programa"
-        title="Ajuda do Programa — dúvidas frequentes (atalho: ?)"
-        className="fixed z-[70] bottom-4 right-4 md:bottom-6 md:right-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-background/90 backdrop-blur-md px-4 py-3 min-h-[48px] text-sm font-medium text-foreground shadow-lg hover:bg-white/5 transition"
-      >
-        <HelpCircle size={18} />
-        <span className="hidden sm:inline">Ajuda do Programa</span>
-      </button>
+      {!hideFab && (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Ajuda do Programa"
+          title="Ajuda do Programa — dúvidas frequentes (atalho: ?)"
+          className="fixed z-[70] bottom-4 right-4 md:bottom-6 md:right-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-background/90 backdrop-blur-md px-4 py-3 min-h-[48px] text-sm font-medium text-foreground shadow-lg hover:bg-white/5 transition"
+        >
+          <HelpCircle size={18} />
+          <span className="hidden sm:inline">Ajuda do Programa</span>
+        </button>
+      )}
 
       {open && (
         <div
