@@ -520,11 +520,22 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                         </td>
                         <td>
                           <span className={`admin-badge ${
-                            c.has_access ? "admin-badge-success"
+                            c.expiry_status === "expired" ? "admin-badge-danger"
+                            : c.has_access ? "admin-badge-success"
                             : c.access_status_label === "Acesso revogado" ? "admin-badge-danger"
                             : c.access_status_label.startsWith("Aguardando") ? "admin-badge-warning"
                             : "admin-badge-muted"
-                          }`}>{c.access_status_label}</span>
+                          }`}>{c.expiry_status === "expired" ? "Acesso expirado" : c.access_status_label}</span>
+                        </td>
+                        <td className="whitespace-nowrap text-xs">
+                          <span className={
+                            c.expiry_status === "expired" ? "text-rose-300"
+                            : c.expiry_status === "active" ? "text-emerald-300"
+                            : c.expiry_status === "perpetual" ? "text-foreground"
+                            : "text-muted-foreground"
+                          }>
+                            {c.expiry_label}
+                          </span>
                         </td>
                         <td><span className="admin-badge admin-badge-info">{c.source_label}</span></td>
                         <td className="whitespace-nowrap text-xs text-muted-foreground">{fmtDate(c.sale_created_at ?? c.user_created_at)}</td>
@@ -552,14 +563,34 @@ export function BuyersPanel({ onGoToSales }: { onGoToSales?: (saleId?: string) =
                             >
                               <Copy size={12} />
                             </button>
-                            {c.user_id && !c.has_access && (
+                            {c.user_id && (!c.has_access || c.expiry_status === "expired") && (
+                              <>
+                                <button
+                                  onClick={() => grant(c, 365)}
+                                  disabled={acting}
+                                  className="px-2 py-1 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition text-[10px]"
+                                  title="Liberar acesso por 365 dias"
+                                >
+                                  1 ano
+                                </button>
+                                <button
+                                  onClick={() => grant(c, null)}
+                                  disabled={acting}
+                                  className="p-1.5 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition"
+                                  title="Liberar acesso sem expiração"
+                                >
+                                  <UserCheck size={12} />
+                                </button>
+                              </>
+                            )}
+                            {c.user_id && c.has_access && c.expiry_status !== "expired" && (
                               <button
-                                onClick={() => grant(c)}
+                                onClick={() => grant(c, 365)}
                                 disabled={acting}
-                                className="p-1.5 rounded-lg border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 transition"
-                                title="Liberar acesso"
+                                className="px-2 py-1 rounded-lg border border-accent/40 text-accent hover:bg-accent/10 transition text-[10px]"
+                                title="Renovar por +365 dias a partir de agora"
                               >
-                                <UserCheck size={12} />
+                                +1 ano
                               </button>
                             )}
                             {c.user_id && c.has_access && (
