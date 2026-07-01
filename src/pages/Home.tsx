@@ -9,6 +9,7 @@ import { Section } from "@/components/Section";
 import { GlassCard } from "@/components/GlassCard";
 import { HeroVisual } from "@/components/HeroVisual";
 import { FAQItem } from "@/components/FAQItem";
+import fabricaDemoVideo from "@/assets/fabrica-demo.mp4.asset.json";
 
 const entregasFinais = [
   "Clareza para sair da ideia e começar a construir com IA",
@@ -633,14 +634,16 @@ export default function Home() {
         title="A própria Fábrica foi construída no Lovable"
       >
         <div className="max-w-3xl mx-auto glass-strong p-4 md:p-6">
-          <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black/40" style={{ paddingBottom: "56.25%" }}>
-            <iframe
-              src="https://www.loom.com/embed/ac724b2e1a4941ab808d0b8b6a58a6f7"
-              title="A própria Fábrica foi construída no Lovable"
-              frameBorder={0}
-              allowFullScreen
-              className="absolute inset-0 w-full h-full"
-            />
+          <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black/40 shadow-[0_0_40px_rgba(0,200,255,0.12)]">
+            <video
+              className="h-full w-full object-cover"
+              controls
+              preload="metadata"
+              playsInline
+            >
+              <source src={fabricaDemoVideo.url} type="video/mp4" />
+              Seu navegador não suporta vídeo HTML5.
+            </video>
           </div>
           <p className="text-base text-foreground/90 leading-relaxed mt-6 text-center">
             Esta página, a área interna e o painel administrativo foram construídos no Lovable seguindo a mesma lógica que o programa ensina: <span className="text-accent">planejar, pedir, revisar, corrigir e avançar por etapas</span>. Não é promessa de que todo aluno terá o mesmo resultado — é a prova de que o método é executável na prática.
