@@ -296,35 +296,35 @@ export default function Home() {
       {/* 5 MOTIVOS */}
       <Section
         eyebrow="Por que vale R$197"
-        title="5 motivos para entrar na Fábrica de Apps com IA"
-        subtitle="O que torna o programa diferente de prompt pack, PDF avulso ou curso longo para assistir passivamente."
+        title="O que você recebe por R$197"
+        subtitle="A Fábrica não é PDF solto, prompt pack avulso nem curso longo para assistir passivamente. É uma plataforma guiada, com entregas concretas para construir seu app no Lovable com mais direção."
       >
         <div className="grid md:grid-cols-2 gap-4 max-w-5xl mx-auto">
           {[
             {
-              icon: <Target size={22} />,
-              t: "1. Método arquiteto",
-              d: "A ferramenta de IA é o pedreiro: executa. A Fábrica é o arquiteto: organiza o que pedir, em qual ordem construir e o que evitar. Resultado: construção mais organizada, com menos retrabalho e mais clareza.",
+              icon: <ListChecks size={22} />,
+              t: "1. 23 módulos guiados",
+              d: "Uma sequência completa em etapas — do planejamento à publicação e melhorias — para você seguir com método arquiteto, sem ficar preso em tentativa e erro. Cada módulo tem objetivo, contexto, prompt e próximo passo.",
             },
             {
               icon: <Wand2 size={22} />,
-              t: "2. Menos tentativa e erro com seus créditos",
-              d: "Muita gente perde créditos testando prompts soltos sem ordem. O programa ajuda a usar seus créditos com mais intenção, evitando pedidos vagos que custam caro e quebram telas.",
-            },
-            {
-              icon: <ListChecks size={22} />,
-              t: "3. Plataforma guiada, não curso passivo",
-              d: "Não é PDF solto, não é prompt pack jogado, não é curso enorme para assistir. É uma área interna por etapas, com método, prompts por etapa, checklists e próximo passo para construir um app com direção.",
-            },
-            {
-              icon: <ShieldCheck size={22} />,
-              t: "4. Prova viva: construída no Lovable",
-              d: "A própria Fábrica de Apps com IA foi construída no Lovable seguindo a lógica que o programa ensina: planejar, pedir, revisar, corrigir e avançar por etapas. Não é promessa de resultado igual para todo aluno — é prova de que o método é executável.",
+              t: "2. 54 comandos prontos para Lovable",
+              d: "Prompts estruturados, contextualizados e revisáveis para colar direto na ferramenta de criação. Você não parte do zero em cada etapa: recebe o comando certo, na ordem certa, com o que preservar e o que testar depois.",
             },
             {
               icon: <Bot size={22} />,
-              t: "5. Agente Arquiteto via ChatGPT",
-              d: "Acessado pela área interna, abre direto no ChatGPT e ajuda a planejar, revisar, corrigir e melhorar comandos antes de usar na ferramenta de criação. Não substitui a ferramenta, não cria o app sozinho e pode depender da sua conta, plano e limites do ChatGPT.",
+              t: "3. Agente Arquiteto para pensar antes de pedir",
+              d: "Acessado pela área interna, abre no ChatGPT e ajuda a planejar, revisar comandos, decidir próximo passo e adaptar prompts ao seu projeto antes de mandar para o Lovable. Não substitui a ferramenta e depende da sua conta e limites do ChatGPT.",
+            },
+            {
+              icon: <MapPin size={22} />,
+              t: "4. GPS do App com projeto em foco",
+              d: "Uma área interna que mostra qual projeto está em foco, em qual etapa você está e qual próximo passo recomendado seguir. Menos abas abertas, menos dúvida sobre o que fazer agora — mais clareza para avançar por versões.",
+            },
+            {
+              icon: <Lightbulb size={22} />,
+              t: "5. 30 ideias de apps prontas para começar",
+              d: "Para quem ainda não sabe por onde começar, um catálogo com 30 ideias de apps já pensadas dentro do método: nicho, problema, MVP possível e como encaixar na Fábrica. Um empurrão para sair da folha em branco.",
             },
           ].map((m) => (
             <GlassCard key={m.t} className="space-y-3">
@@ -336,6 +336,9 @@ export default function Home() {
             </GlassCard>
           ))}
         </div>
+        <p className="max-w-3xl mx-auto text-center text-base md:text-lg text-foreground/85 leading-relaxed mt-8">
+          Por <span className="font-semibold text-accent">R$197</span>, você não está comprando apenas informação. Você está entrando em um sistema guiado para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
+        </p>
       </Section>
 
       {/* DIFERENCIAÇÃO */}
