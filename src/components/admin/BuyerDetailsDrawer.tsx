@@ -188,10 +188,27 @@ export function BuyerDetailsDrawer({
             <div className="flex gap-2 flex-wrap">
               <button
                 disabled={!canGrant || acting}
-                onClick={() => onGrant(buyer)}
+                onClick={() => onGrant(buyer, 365)}
                 className="btn-primary text-xs !px-3 !py-2 disabled:opacity-40"
+                title="Liberar acesso válido por 365 dias"
               >
-                <UserCheck size={14} /> Liberar acesso
+                <UserCheck size={14} /> Liberar 1 ano
+              </button>
+              <button
+                disabled={!canGrant || acting}
+                onClick={() => onGrant(buyer, null)}
+                className="px-3 py-2 rounded-xl border border-emerald-500/40 text-emerald-200 hover:bg-emerald-500/10 text-xs inline-flex items-center gap-1.5 disabled:opacity-40"
+                title="Liberar acesso sem data de expiração"
+              >
+                <UserCheck size={14} /> Sem expiração
+              </button>
+              <button
+                disabled={!canRenew || acting}
+                onClick={() => onGrant(buyer, 365)}
+                className="px-3 py-2 rounded-xl border border-accent/40 text-accent hover:bg-accent/10 text-xs inline-flex items-center gap-1.5 disabled:opacity-40"
+                title="Renovar por +365 dias a partir de agora"
+              >
+                <UserCheck size={14} /> Renovar +1 ano
               </button>
               <button
                 disabled={!canRevoke || acting}
