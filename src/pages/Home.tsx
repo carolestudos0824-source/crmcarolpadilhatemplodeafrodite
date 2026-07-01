@@ -140,7 +140,10 @@ const faixaValor = [
 
 export default function Home() {
   const navigate = useNavigate();
-  const goCheckout = () => navigate("/checkout?plano=fabrica");
+  const goCheckout = () => {
+    trackPixel("InitiateCheckout");
+    navigate("/checkout?plano=fabrica");
+  };
 
   return (
     <>
