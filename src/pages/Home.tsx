@@ -10,6 +10,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { HeroVisual } from "@/components/HeroVisual";
 import { FAQItem } from "@/components/FAQItem";
 import fabricaDemoVideo from "@/assets/fabrica-demo.mp4.asset.json";
+import { trackPixel } from "@/lib/metaPixel";
 
 const entregasFinais = [
   "Clareza para sair da ideia e começar a construir com IA",
@@ -140,7 +141,10 @@ const faixaValor = [
 
 export default function Home() {
   const navigate = useNavigate();
-  const goCheckout = () => navigate("/checkout?plano=fabrica");
+  const goCheckout = () => {
+    trackPixel("InitiateCheckout");
+    navigate("/checkout?plano=fabrica");
+  };
 
   return (
     <>
