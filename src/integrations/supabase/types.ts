@@ -1300,10 +1300,9 @@ export type Database = {
       }
       admin_get_manual_sale: { Args: { _sale_id: string }; Returns: Json }
       admin_get_program_metrics: { Args: never; Returns: Json }
-      admin_grant_access_from_sale: {
-        Args: { _sale_id: string }
-        Returns: Json
-      }
+      admin_grant_access_from_sale:
+        | { Args: { _sale_id: string }; Returns: Json }
+        | { Args: { _duration_days?: number; _sale_id: string }; Returns: Json }
       admin_list_access_logs: {
         Args: { _limit?: number }
         Returns: {
@@ -1444,10 +1443,16 @@ export type Database = {
         Args: { _sale_id: string }
         Returns: Json
       }
-      admin_set_access: {
-        Args: { _has_access: boolean; _user_id: string }
-        Returns: Json
-      }
+      admin_set_access:
+        | { Args: { _has_access: boolean; _user_id: string }; Returns: Json }
+        | {
+            Args: {
+              _duration_days?: number
+              _has_access: boolean
+              _user_id: string
+            }
+            Returns: Json
+          }
       admin_set_gift_code_active: {
         Args: { _code_id: string; _is_active: boolean }
         Returns: Json
