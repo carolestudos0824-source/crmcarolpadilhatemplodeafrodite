@@ -503,40 +503,87 @@ export default function Home() {
       {/* AGENTE ARQUITETO */}
       <Section
         eyebrow="Diferencial do programa"
-        title="Um Agente Arquiteto treinado para te ajudar quando você travar"
-        subtitle="O Agente Arquiteto é acessado dentro da área interna da Fábrica, por um botão que abre direto no ChatGPT. Ele te ajuda a pensar, planejar, revisar e melhorar comandos — antes de gastar prompt na ferramenta de criação. Ele não substitui a ferramenta e não cria o app sozinho."
+        title="Quando você travar, o Agente Arquiteto te ajuda a decidir o próximo passo"
+        subtitle="O Agente Arquiteto é o guia estratégico da Fábrica. Ele ajuda você a transformar dúvidas em próximos passos, revisar comandos antes de colar no Lovable e entender o que fazer quando algo quebra."
       >
-        <div className="max-w-4xl mx-auto glass-strong p-6 md:p-10">
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
-              <Bot size={24} className="text-accent" />
-            </div>
-            <div>
-              <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
-                Ele não substitui a ferramenta de IA e não constrói o app sozinho. Ele organiza sua cabeça e melhora o que sai do seu teclado.
-              </p>
-            </div>
-          </div>
-          <ul className="grid sm:grid-cols-2 gap-3">
+        <div className="max-w-6xl mx-auto">
+          {/* 4 cards de situações */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-10">
             {[
-              "Planejar o app com ideia, público e dor",
-              "Definir o MVP enxuto",
-              "Organizar telas e fluxo do usuário",
-              "Melhorar os prompts antes de colar na ferramenta",
-              "Apoiar na correção de erros e quebras",
-              "Revisar pontos básicos de segurança",
-              "Decidir os próximos passos na construção",
-              "Evitar pedidos vagos que gastam crédito à toa",
-            ].map((i) => (
-              <li key={i} className="flex items-start gap-2 text-sm md:text-base text-foreground/90">
-                <Check size={16} className="text-accent shrink-0 mt-1" />
-                <span>{i}</span>
-              </li>
+              {
+                icon: <Compass size={18} />,
+                title: "Quando você não sabe por onde começar",
+                copy: "O Agente ajuda a organizar sua ideia, escolher uma rota e transformar pensamento solto em plano de app.",
+              },
+              {
+                icon: <Wand2 size={18} />,
+                title: "Antes de colar no Lovable",
+                copy: "Ele revisa se o comando está claro, se está pedindo coisa demais e se preserva o que já funciona.",
+              },
+              {
+                icon: <RefreshCw size={18} />,
+                title: "Quando o app dá erro",
+                copy: "Você cola o erro ou o resultado do Lovable e o Agente ajuda a entender a causa provável e criar uma correção cirúrgica.",
+              },
+              {
+                icon: <Rocket size={18} />,
+                title: "Antes de avançar para a próxima etapa",
+                copy: "Ele ajuda a decidir se você pode seguir, se precisa testar melhor ou se ainda existe algo bloqueando.",
+              },
+            ].map((c) => (
+              <div key={c.title} className="glass-strong p-5 flex flex-col gap-3 transition-all hover:border-white/20 hover:-translate-y-1">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 border border-accent/20 flex items-center justify-center text-accent">
+                  {c.icon}
+                </div>
+                <h3 className="font-heading font-semibold text-sm md:text-base leading-snug">{c.title}</h3>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{c.copy}</p>
+              </div>
             ))}
-          </ul>
-          <p className="text-xs text-muted-foreground/80 mt-6">
-            O Agente Arquiteto abre no ChatGPT. O uso do ChatGPT, do Lovable e de outras IAs pode depender da sua própria conta, plano ou limites dessas plataformas externas.
-          </p>
+          </div>
+
+          {/* Ciclo Agente → Lovable → Agente → Fábrica */}
+          <div className="glass-strong p-6 md:p-8 neon-shadow">
+            <div className="flex items-start gap-4 mb-5">
+              <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center shrink-0">
+                <Bot size={24} className="text-accent" />
+              </div>
+              <div>
+                <h3 className="font-heading font-semibold text-lg md:text-xl mb-1">Use o Agente antes e depois do Lovable</h3>
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Pense com o Agente. Execute no Lovable. Volte com o resultado para o Agente analisar. Depois avance na Fábrica.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+              {[
+                { label: "Pense", sub: "Agente" },
+                { label: "Execute", sub: "Lovable" },
+                { label: "Analise", sub: "Agente" },
+                { label: "Avance", sub: "Fábrica" },
+              ].map((s, idx) => (
+                <div key={s.label} className="relative flex items-center">
+                  <div className="flex-1 rounded-xl border border-accent/20 bg-accent/5 px-3 py-3 text-center">
+                    <p className="text-sm md:text-base font-heading font-semibold text-foreground">{s.label}</p>
+                    <p className="text-xs text-accent mt-0.5">{s.sub}</p>
+                  </div>
+                  {idx < 3 && (
+                    <ChevronRight size={16} className="text-accent/60 hidden md:block absolute -right-2 top-1/2 -translate-y-1/2" />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <button onClick={goCheckout} className="btn-primary">
+                Entrar na Fábrica e usar o Agente
+              </button>
+            </div>
+
+            <p className="text-xs text-muted-foreground/80 mt-6 text-center">
+              O Agente não substitui o Lovable, não cria o app sozinho e depende da sua conta, acesso e limites das plataformas externas.
+            </p>
+          </div>
         </div>
       </Section>
 
