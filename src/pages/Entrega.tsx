@@ -150,7 +150,7 @@ const ICONS: Record<string, typeof Sparkles> = {
   Rocket, Image: ImageIcon, Users, ListChecks, AlertTriangle, Gift, DollarSign, BookOpen, ClipboardList, Workflow, Map: MapIcon, Globe, ShieldCheck, Scale, BarChart3, GitBranch, ClipboardCheck,
 };
 
-// Módulos contabilizados no progresso global. Inclui os 24 módulos da jornada
+// Módulos contabilizados no progresso global. Inclui os 23 módulos da jornada
 // oficial — os 8 módulos novos (planejar, mvp, telas, legal, publicar, teste,
 // metricas, melhorias) também contam e são marcados como concluídos
 // automaticamente quando todos os itens do checklist interno do módulo são
@@ -172,7 +172,7 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
   { id: "seguranca", prefix: "seguranca_step__", total: 12 },
 ];
 
-// Organização visual dos 24 módulos por fase da jornada. NÃO altera
+// Organização visual dos 23 módulos por fase da jornada. NÃO altera
 // MODULE_ORDER nem PROGRESS_MODULE_IDS (progresso global preservado), apenas
 // agrupa os módulos existentes no painel lateral.
 const SIDEBAR_GROUPS: { title: string; modules: ModuleId[] }[] = [
