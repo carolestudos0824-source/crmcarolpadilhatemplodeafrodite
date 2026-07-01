@@ -44,7 +44,7 @@ const PUBLIC_TOPICS: PublicTopic[] = [
   { id: "preco", title: "Preço e oferta", excerpt: "R$197 à vista ou 12x de R$19,70. Liberação após confirmação do pagamento.", keywords: ["preco", "preço", "valor", "quanto custa", "oferta", "promoção", "parcelar"], to: "/precos" },
   { id: "garantia", title: "Garantia", excerpt: "Veja a política de garantia e devolução na página de confiança.", keywords: ["garantia", "devolução", "reembolso", "arrependimento", "7 dias"], to: "/confianca" },
   { id: "suporte", title: "Suporte", excerpt: "Fale com a equipe pelo canal de suporte oficial.", keywords: ["suporte", "ajuda", "contato", "email", "fala"], to: "/suporte" },
-  { id: "login", title: "Entrar / criar conta", excerpt: "Acesse sua área de aluna ou crie uma conta.", keywords: ["login", "entrar", "conta", "cadastro", "criar conta", "senha", "esqueci"], to: "/login" },
+  { id: "login", title: "Entrar / criar conta", excerpt: "Acesse sua área da pessoa participante ou crie uma conta.", keywords: ["login", "entrar", "conta", "cadastro", "criar conta", "senha", "esqueci"], to: "/login" },
   { id: "comprar", title: "Como comprar", excerpt: "Garanta acesso pela página de checkout.", keywords: ["comprar", "checkout", "pagar", "pagamento", "acesso", "liberação"], to: "/checkout?plano=fabrica" },
   { id: "termos", title: "Termos de uso", excerpt: "Regras do programa.", keywords: ["termos", "uso", "regra", "contrato"], to: "/termos" },
   { id: "privacidade", title: "Privacidade", excerpt: "Como tratamos dados pessoais.", keywords: ["privacidade", "lgpd", "dados", "cookies"], to: "/privacidade" },

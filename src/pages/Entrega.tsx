@@ -484,7 +484,7 @@ function EntregaInner() {
   // Exceções pontuais de navegação para manter coerência com o menu lateral
   // sem alterar a ordem global de MODULE_ORDER (preserva páginas aprovadas).
   // "ativar" saiu do fluxo pedagógico (pertence ao admin / resgate de código),
-  // então o Painel de Prontidão é o último passo do guia da aluna e o
+  // então o Painel de Prontidão é o último passo do guia da pessoa e o
   // "Próximo passo" volta ao início do guia.
   const NEXT_OVERRIDE: Partial<Record<ModuleId, ModuleId>> = {
     checklist: "comece",
@@ -2893,7 +2893,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
           title="Painel de Prontidão do App"
           subtitle="Decida com clareza se você pode testar, vender ou divulgar — ou se precisa voltar e corrigir um bloqueador antes de seguir."
         />
-        <FabricaLegalReminder text="Os itens deste painel são do app criado pela aluna. A Fábrica de Apps com IA tem seus próprios documentos:" />
+        <FabricaLegalReminder text="Os itens deste painel são do app criado pela pessoa. A Fábrica de Apps com IA tem seus próprios documentos:" />
         <PainelProntidaoModule goTo={goTo} />
       </section>
     );

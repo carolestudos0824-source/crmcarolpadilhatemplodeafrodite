@@ -22,7 +22,7 @@ import {
  * (localStorage), via useProjectContext. Não toca em banco/auth.
  *
  * Camada adicional de RASCUNHO local (contextDraftStorage) garante que a
- * usuária não perca o que digitou se fechar o painel sem salvar.
+* pessoa usuária não perca o que digitou se fechar o painel sem salvar.
  */
 
 

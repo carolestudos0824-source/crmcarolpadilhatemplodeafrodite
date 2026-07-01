@@ -6,7 +6,7 @@ import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContex
 /**
  * Resumo seguro de checkout + entrega baseado no Contexto do Projeto em
  * foco. Não altera login, banco, área paga, admin ou o checkout real da
- * Fábrica de Apps. Apenas exibe sugestões para orientar a aluna a montar
+ * Fábrica de Apps. Apenas exibe sugestões para orientar a pessoa a montar
  * o fluxo de pagamento e entrega do APP DELA.
  */
 
@@ -49,7 +49,7 @@ function buildSuggestion(ctx: ProjectContext): Suggestion {
       produto: ctx.productSold?.trim() || "desbloqueio do resultado completo do Jogo do Amor",
       modelo: ctx.pricingModel?.trim() || "checkout externo simples ou link de pagamento (MVP)",
       preco: "R$ 17 a R$ 47 para teste inicial",
-      gatilho: "após a usuária ver uma prévia ou mini-leitura gratuita",
+      gatilho: "após a pessoa usuária ver uma prévia ou mini-leitura gratuita",
       entrega: "leitura amorosa completa, resultado completo ou diagnóstico simbólico personalizado",
       cta: ctx.mainAction?.trim() || "Desbloquear meu resultado completo",
       naoPrometer: [

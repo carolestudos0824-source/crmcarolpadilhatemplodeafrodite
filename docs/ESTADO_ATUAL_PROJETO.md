@@ -2,10 +2,10 @@
 
 ## Produto atual
 
-A Fábrica de Apps com IA é um programa guiado para ajudar a aluna a criar um app do zero usando IA, Lovable e comandos orientados.
+A Fábrica de Apps com IA é um programa guiado para ajudar a pessoa a criar um app do zero usando IA, Lovable e comandos orientados.
 
-A Fábrica de Apps não é o app final da aluna.
-Ela é a trilha guiada para a aluna construir o próprio app.
+A Fábrica de Apps não é o app final da pessoa.
+Ela é a trilha guiada para a pessoa construir o próprio app.
 
 ## Oferta atual
 
