@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -410,10 +411,12 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         )}
 
         <details className="group text-[11px] text-muted-foreground/80">
-          <summary className="cursor-pointer list-none inline-flex items-center gap-1.5 text-muted-foreground/70 hover:text-foreground/80 transition select-none">
-            <span className="inline-block h-1 w-1 rounded-full bg-muted-foreground/40" />
+          <summary className="cursor-pointer list-none inline-flex items-center gap-1.5 rounded-md px-2 py-1 -mx-2 text-[11px] font-medium text-muted-foreground/80 hover:text-foreground hover:bg-white/[0.03] transition select-none">
+            <ChevronRight
+              size={12}
+              className="text-accent/80 transition-transform duration-200 group-open:rotate-90"
+            />
             Ver detalhes do projeto
-            <span className="text-[9px] uppercase tracking-wider opacity-60 group-open:hidden">expandir</span>
           </summary>
           <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-lg border border-white/5 bg-white/[0.02] p-3">
             <MiniField icon={<FolderKanban size={11} />} label="Projeto em foco" value={activeProject?.name ?? "Nenhum"} />
