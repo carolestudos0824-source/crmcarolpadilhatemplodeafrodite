@@ -698,6 +698,10 @@ export function TesteFinalModule() {
         })()}
       </GlassCard>
 
+      <PwaLojaChecklist />
+
+
+
       <div className="mt-6">
         <AgentArchitectCard
           variant="compact"
