@@ -6,6 +6,7 @@ import {
   RefreshCw, MapPin,
 } from "lucide-react";
 import { Section } from "@/components/Section";
+import { JourneyNotification } from "@/components/JourneyNotification";
 import { GlassCard } from "@/components/GlassCard";
 import { HeroVisual } from "@/components/HeroVisual";
 import { FAQItem } from "@/components/FAQItem";
@@ -823,6 +824,7 @@ export default function Home() {
           </p>
         </div>
       </Section>
+      <JourneyNotification />
     </>
   );
 }
