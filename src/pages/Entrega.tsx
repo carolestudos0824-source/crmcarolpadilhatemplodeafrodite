@@ -856,14 +856,16 @@ function EntregaInner() {
             <p className="mb-4 text-[11px] text-muted-foreground">
               Depois de escolher uma ideia, você poderá confirmar a jornada do projeto.
             </p>
-          ) : (
+          ) : active === "comece" ? (
+            // Seletor completo apenas em "Comece Aqui" — nas demais páginas o GPS do Projeto
+            // já mostra a jornada e o botão de trocar, evitando duplicidade visual.
             <div className={!appProjects.activeProject ? "opacity-75" : undefined}>
               <ProjectJourneySelector
                 onGoToModule={(id) => setActive(id)}
-                variant={active === "comece" ? "full" : "compact"}
+                variant="full"
               />
             </div>
-          )}
+          ) : null}
 
 
           {/* Boas-vindas: aviso de Projeto em foco (card do Agente Arquiteto agora vive em ComeceAquiModule via AGENT_MODULE_GUIDANCE.comece — sem duplicidade) */}
