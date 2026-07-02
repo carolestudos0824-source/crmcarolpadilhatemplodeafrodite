@@ -360,7 +360,7 @@ export default function Home() {
         {/* Faixa de fechamento */}
         <div className="max-w-3xl mx-auto mt-10 glass px-5 py-5 md:px-6 md:py-6 text-center">
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            Por <span className="font-semibold text-accent">R$197</span>, você não compra apenas informação. Você entra em uma plataforma guiada para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
+            Por <span className="font-semibold text-accent">R$197</span>, você tem 1 ano de acesso a uma plataforma guiada para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
           </p>
         </div>
       </Section>
