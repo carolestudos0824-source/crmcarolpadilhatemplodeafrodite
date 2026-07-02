@@ -42,12 +42,12 @@ const journeySteps: [string, string][] = [
 const phaseMap: { title: string; mods: ModuleId[] }[] = [
   { title: "Fase 1 — Começar com clareza", mods: ["fundamentos", "comece", "ideias"] },
   { title: "Fase 2 — Planejar antes de construir", mods: ["planejar", "mvp", "telas"] },
-  { title: "Fase 3 — Construir a base", mods: ["construir", "login"] },
+  { title: "Fase 3 — Construir a base", mods: ["construir", "login", "seguranca"] },
   { title: "Fase 4 — Preparar venda e entrega", mods: ["venda", "monetizacao", "checkout", "legal"] },
   { title: "Fase 5 — Publicar e testar", mods: ["publicar", "teste"] },
   { title: "Fase 6 — Divulgar e ser encontrada", mods: ["seo", "campanhas", "criativos"] },
   { title: "Fase 7 — Medir, validar e melhorar", mods: ["metricas", "validacao", "melhorias"] },
-  { title: "Fase 8 — Revisar e resolver problemas", mods: ["checklist", "erros", "ativar"] },
+  { title: "Fase 8 — Revisar e resolver problemas", mods: ["checklist", "erros"] },
 ];
 
 const regrasAvancar = [

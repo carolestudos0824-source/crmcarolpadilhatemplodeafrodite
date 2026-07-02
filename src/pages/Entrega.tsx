@@ -178,10 +178,11 @@ const AUTO_MODULE_CHECKLIST: { id: ModuleId; prefix: string; total: number }[] =
 // MODULE_ORDER nem PROGRESS_MODULE_IDS (progresso global preservado), apenas
 // agrupa os módulos existentes no painel lateral.
 const SIDEBAR_GROUPS: { title: string; modules: ModuleId[] }[] = [
-  { title: "Comece aqui", modules: ["comece", "ideias", "planejar", "mvp", "telas"] },
-  { title: "Construir", modules: ["fundamentos", "construir", "login", "seguranca", "teste", "erros"] },
-  { title: "Validar e vender", modules: ["validacao", "monetizacao", "venda", "checkout", "legal", "publicar"] },
-  { title: "Crescer", modules: ["seo", "campanhas", "criativos", "metricas", "melhorias", "checklist", "ativar"] },
+  { title: "Comece aqui", modules: ["fundamentos", "comece", "ideias", "planejar", "mvp", "telas"] },
+  { title: "Construir", modules: ["construir", "login", "seguranca"] },
+  { title: "Validar e vender", modules: ["venda", "monetizacao", "checkout", "legal", "publicar", "teste"] },
+  { title: "Crescer", modules: ["seo", "campanhas", "criativos", "metricas", "validacao", "melhorias"] },
+  { title: "Revisar", modules: ["checklist", "erros"] },
 ];
 
 const SIDEBAR_STATUS_LABEL: Record<string, string> = {
@@ -483,13 +484,11 @@ function EntregaInner() {
 
   const currentIdx = MODULE_ORDER.indexOf(active);
   const prevModule = currentIdx > 0 ? MODULE_ORDER[currentIdx - 1] : null;
-  // Exceções pontuais de navegação para manter coerência com o menu lateral
-  // sem alterar a ordem global de MODULE_ORDER (preserva páginas aprovadas).
-  // "ativar" saiu do fluxo pedagógico (pertence ao admin / resgate de código),
-  // então o Painel de Prontidão é o último passo do guia da pessoa e o
+  // "ativar" saiu da jornada pedagógica (pertence ao admin / resgate de
+  // código). O último módulo da aluna é "Erros comuns". A partir dele o
   // "Próximo passo" volta ao início do guia.
   const NEXT_OVERRIDE: Partial<Record<ModuleId, ModuleId>> = {
-    checklist: "comece",
+    erros: "comece",
   };
   const nextModule =
     NEXT_OVERRIDE[active] ??
