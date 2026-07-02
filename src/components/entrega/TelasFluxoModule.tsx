@@ -20,6 +20,7 @@ import { CommandCard } from "@/components/entrega/CommandCard";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
 import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const orPlaceholder = (s: string | undefined | null) =>
   s && s.trim() ? s.trim() : "[a definir]";
