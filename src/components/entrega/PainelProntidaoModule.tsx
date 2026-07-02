@@ -11,6 +11,11 @@ import {
   ArrowRight,
   Sparkles,
   Target,
+  Globe,
+  Smartphone,
+  Store,
+  Apple,
+  Compass,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
@@ -468,12 +473,15 @@ export function PainelProntidaoModule({ goTo }: Props) {
         </ul>
       </GlassCard>
 
+      <CaminhoDecisao checklist={checklist} toggle={toggle} />
+
       <GlassCard className="p-5 border-sky-400/30 bg-sky-400/5">
         <div className="flex items-center gap-2 mb-2">
           <ShieldCheck size={16} className="text-sky-300" />
           <h3 className="font-heading font-semibold text-base">Lembrete final</h3>
         </div>
         <p className="text-sm text-foreground/90 leading-relaxed">
+
           Este painel é uma ferramenta de decisão, não uma promessa. Ele não garante app perfeito,
           segurança 100%, vendas ou validação. Avance com cautela e volte ao módulo correspondente
           sempre que algo crítico estiver pendente.
@@ -538,3 +546,249 @@ function BlocoLista({
     </GlassCard>
   );
 }
+
+const CAMINHO_PREFIX = "checklist_caminho__";
+
+const CAMINHOS: {
+  id: string;
+  icon: typeof Globe;
+  tag: string;
+  title: string;
+  tone: "info" | "accent" | "success" | "amber" | "violet";
+  items: string[];
+  recomendacao: string;
+}[] = [
+  {
+    id: "web",
+    icon: Globe,
+    tag: "Caminho 1",
+    title: "Continue como web app se…",
+    tone: "info",
+    items: [
+      "O app ainda está em validação",
+      "Você ainda não tem pessoas reais usando",
+      "A oferta ainda está sendo ajustada",
+      "O app funciona bem por link",
+      "Você ainda precisa corrigir bugs importantes",
+      "Você quer vender ou testar antes de investir em loja",
+    ],
+    recomendacao:
+      "Esse é o caminho mais seguro para a maioria das pessoas no começo.",
+  },
+  {
+    id: "pwa",
+    icon: Smartphone,
+    tag: "Caminho 2",
+    title: "Considere PWA se…",
+    tone: "accent",
+    items: [
+      "O app já funciona bem no celular",
+      "As pessoas acessam com frequência",
+      "Faz sentido ter ícone na tela inicial",
+      "Você quer uma experiência mais parecida com app instalado",
+      "Você ainda não quer passar pelo processo da App Store ou Google Play",
+    ],
+    recomendacao: "PWA pode ser o próximo passo antes de pensar em loja.",
+  },
+  {
+    id: "play",
+    icon: Store,
+    tag: "Caminho 3",
+    title: "Considere Google Play se…",
+    tone: "success",
+    items: [
+      "O app já foi validado",
+      "Existem pessoas reais usando",
+      "O público usa principalmente Android",
+      "Existe motivo claro para estar na loja",
+      "O app tem boa experiência mobile",
+      "Você já tem suporte, política de privacidade e estrutura mínima de manutenção",
+    ],
+    recomendacao:
+      "Google Play pode fazer sentido quando o app já tem validação e uso real.",
+  },
+  {
+    id: "appstore",
+    icon: Apple,
+    tag: "Caminho 4",
+    title: "Considere App Store se…",
+    tone: "amber",
+    items: [
+      "O app já está maduro",
+      "A experiência no celular está muito boa",
+      "O público usa iPhone",
+      "Existe política de privacidade",
+      "Existe suporte",
+      "O app oferece valor claro além de uma página simples",
+      "Você está preparada para análise, ajustes e possível reprovação",
+    ],
+    recomendacao:
+      "App Store é um caminho mais exigente e deve ser considerado com cautela.",
+  },
+  {
+    id: "nativo",
+    icon: Rocket,
+    tag: "Caminho 5",
+    title: "Considere nativo no futuro se…",
+    tone: "violet",
+    items: [
+      "O app já tem demanda real",
+      "Existem pessoas ativas usando",
+      "Existe receita ou estratégia clara",
+      "O app precisa de recursos avançados do celular",
+      "Performance, notificações, câmera, GPS ou integrações nativas são realmente importantes",
+      "Você está pronta para um projeto mais avançado",
+    ],
+    recomendacao:
+      "Nativo é uma evolução futura, não o primeiro passo obrigatório.",
+  },
+];
+
+const TONE_CLS: Record<string, string> = {
+  info: "border-sky-400/30 bg-sky-400/5",
+  accent: "border-accent/30 bg-accent/5",
+  success: "border-emerald-400/30 bg-emerald-500/5",
+  amber: "border-amber-400/30 bg-amber-400/5",
+  violet: "border-violet-400/30 bg-violet-400/5",
+};
+
+const TONE_ICON: Record<string, string> = {
+  info: "text-sky-300 bg-sky-400/15 border-sky-400/30",
+  accent: "text-accent bg-accent/15 border-accent/30",
+  success: "text-emerald-300 bg-emerald-500/15 border-emerald-400/30",
+  amber: "text-amber-300 bg-amber-400/15 border-amber-400/30",
+  violet: "text-violet-300 bg-violet-400/15 border-violet-400/30",
+};
+
+function CaminhoDecisao({
+  checklist,
+  toggle,
+}: {
+  checklist: Record<string, boolean>;
+  toggle: (key: string) => void;
+}) {
+  const scores = CAMINHOS.map((c) => {
+    const done = c.items.filter((it) => !!checklist[`${CAMINHO_PREFIX}${c.id}__${it}`]).length;
+    return { id: c.id, title: c.title, done, total: c.items.length };
+  });
+  const best = scores.reduce((a, b) => (b.done / b.total > a.done / a.total ? b : a), scores[0]);
+  const hasSignal = best && best.done >= Math.ceil(best.total / 2);
+
+  return (
+    <GlassCard className="p-5 md:p-6 mb-6 border-accent/30">
+      <div className="flex items-center gap-2 mb-3">
+        <Compass size={18} className="text-accent" />
+        <span className="text-[11px] uppercase tracking-wider text-accent">
+          Diagnóstico de próximo passo
+        </span>
+      </div>
+      <h2 className="text-xl md:text-2xl font-heading font-bold leading-tight mb-2">
+        Meu app está pronto para qual caminho?
+      </h2>
+      <p className="text-sm md:text-base text-foreground/85 leading-relaxed mb-5">
+        Depois de construir, publicar, testar e melhorar seu app, use esta checklist
+        para decidir o próximo passo. A melhor escolha não é sempre ir para loja —
+        é o caminho que combina com o estágio real do seu app.
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-3 mb-4">
+        {CAMINHOS.map((c) => {
+          const CIcon = c.icon;
+          const done = c.items.filter((it) => !!checklist[`${CAMINHO_PREFIX}${c.id}__${it}`]).length;
+          return (
+            <div
+              key={c.id}
+              className={`rounded-xl border p-4 ${TONE_CLS[c.tone]}`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-8 h-8 rounded-lg border flex items-center justify-center ${TONE_ICON[c.tone]}`}>
+                  <CIcon size={15} />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[10px] uppercase tracking-wider text-foreground/60 font-semibold">
+                    {c.tag}
+                  </div>
+                  <h4 className="font-heading font-semibold text-sm md:text-base leading-tight">
+                    {c.title}
+                  </h4>
+                </div>
+                <span className="ml-auto text-[10px] text-muted-foreground shrink-0">
+                  {done}/{c.items.length}
+                </span>
+              </div>
+              <ul className="space-y-1.5 mb-3">
+                {c.items.map((it) => {
+                  const key = `${CAMINHO_PREFIX}${c.id}__${it}`;
+                  const checked = !!checklist[key];
+                  return (
+                    <li key={it}>
+                      <label className="flex items-start gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggle(key)}
+                          className="accent-accent w-3.5 h-3.5 mt-0.5 shrink-0"
+                        />
+                        <span
+                          className={`text-xs md:text-[13px] leading-snug ${
+                            checked ? "line-through text-muted-foreground" : "text-foreground/85"
+                          }`}
+                        >
+                          {it}
+                        </span>
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="text-[11px] md:text-xs text-foreground/70 border-t border-white/10 pt-2 leading-relaxed">
+                <strong className="text-foreground/90">Recomendação: </strong>
+                {c.recomendacao}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="rounded-xl border border-white/10 bg-black/30 p-4 mb-3">
+        <div className="flex items-center gap-2 mb-2">
+          <Target size={15} className="text-accent" />
+          <h4 className="font-heading font-semibold text-sm md:text-base">
+            Resultado sugerido
+          </h4>
+        </div>
+        <ul className="space-y-1.5 text-xs md:text-sm text-foreground/85 mb-3">
+          <li>• Se ainda há dúvidas, bugs ou pouca validação: continue como web app.</li>
+          <li>• Se o app está bom no celular e precisa parecer instalado: considere PWA.</li>
+          <li>• Se há pessoas reais usando e motivo claro para loja: prepare Google Play ou App Store.</li>
+          <li>• Se há demanda avançada e estrutura para investir: considere nativo no futuro.</li>
+          <li>• Se a vontade de loja vem só por aparência ou vaidade: valide mais antes.</li>
+        </ul>
+        {hasSignal ? (
+          <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-3 text-xs md:text-sm text-emerald-100">
+            <strong>Sinal atual:</strong> você marcou mais itens em “{best.title.replace(/ se…$/, "")}”.
+            Considere esse caminho como próximo passo — mas valide com dados reais antes de investir.
+          </div>
+        ) : (
+          <div className="rounded-lg border border-sky-400/30 bg-sky-400/10 p-3 text-xs md:text-sm text-sky-100">
+            <strong>Ainda sem sinal claro:</strong> continue como web app e volte aqui quando tiver
+            mais uso real, feedback e experiência mobile validada.
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4">
+        <div className="flex items-center gap-2 mb-1.5">
+          <AlertTriangle size={15} className="text-amber-300" />
+          <h4 className="font-heading font-semibold text-sm text-amber-100">Alerta</h4>
+        </div>
+        <p className="text-xs md:text-sm text-foreground/85 leading-relaxed">
+          Estar na App Store ou Google Play não garante vendas, downloads, aprovação ou sucesso.
+          A loja é um canal possível, não uma garantia. A decisão mais segura é evoluir com base
+          em validação real.
+        </p>
+      </div>
+    </GlassCard>
+  );
+}
+
