@@ -392,6 +392,7 @@ export function ValidacaoModule() {
         </ul>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Revisão da etapa">
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -438,6 +439,7 @@ export function ValidacaoModule() {
           concluída na sua jornada.
         </p>
       </GlassCard>
+      </ChecklistDisclosure>
     </section>
   );
 }
