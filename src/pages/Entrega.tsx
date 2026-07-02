@@ -3227,7 +3227,10 @@ function ErrorsModule() {
           Quanto mais claro estiver o erro, mais rápido ele será resolvido.
         </p>
       </GlassCard>
+
+      <ErrosPosAppPronto />
     </section>
+
   );
 }
 
