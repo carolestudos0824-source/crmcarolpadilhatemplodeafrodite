@@ -817,10 +817,10 @@ export default function Home() {
             Programa completo, método guiado, 23 módulos, 54 comandos prontos, 30 ideias de apps, GPS do App e Agente Arquiteto.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Quero acessar o programa por R$197 <ChevronRight size={18} />
+            Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
           </button>
           <p className="text-sm text-muted-foreground/80 mt-4">
-            R$197 pagamento único · sem mensalidade · garantia de 7 dias.
+            R$197 por 1 ano de acesso · Parcelamento disponível no cartão · Garantia de 7 dias.
           </p>
         </div>
       </Section>
