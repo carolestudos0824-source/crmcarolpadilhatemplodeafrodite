@@ -28,6 +28,8 @@ import { useUserProgress } from "@/hooks/useUserProgress";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_PUBLICAR } from "@/data/promptsPosAppPronto";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoPublicacaoCard } from "./ResumoPublicacaoCard";
@@ -635,9 +637,10 @@ export function PublicarDominioModule() {
         </div>
       </GlassCard>
 
-
+      <PromptsExecutarEtapa prompts={PROMPTS_PUBLICAR} />
 
       <GlassCard className="p-5 mb-6">
+
         <div className="flex items-center gap-2 mb-3">
           <HelpCircle size={16} className="text-accent" />
           <h3 className="font-heading font-semibold text-base">Não entendi uma palavra</h3>

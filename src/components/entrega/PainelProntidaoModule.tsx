@@ -23,6 +23,8 @@ import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { CHECKLIST_PHASES, type ModuleId } from "@/data/entregaModules";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_CHECKLIST } from "@/data/promptsPosAppPronto";
 
 
 
@@ -475,7 +477,10 @@ export function PainelProntidaoModule({ goTo }: Props) {
 
       <CaminhoDecisao checklist={checklist} toggle={toggle} />
 
+      <PromptsExecutarEtapa prompts={PROMPTS_CHECKLIST} />
+
       <GlassCard className="p-5 border-sky-400/30 bg-sky-400/5">
+
         <div className="flex items-center gap-2 mb-2">
           <ShieldCheck size={16} className="text-sky-300" />
           <h3 className="font-heading font-semibold text-base">Lembrete final</h3>

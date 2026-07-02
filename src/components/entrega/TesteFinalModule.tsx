@@ -32,6 +32,8 @@ import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoTesteFinalCard } from "./ResumoTesteFinalCard";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_TESTE } from "@/data/promptsPosAppPronto";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso fazer um teste final antes de divulgar. Me ajude a criar um checklist completo para testar: desktop, mobile, login, formulários, botões, checkout, entrega, links, textos, imagens, erros, página branca, scroll horizontal e experiência do usuário.`;
@@ -555,7 +557,9 @@ function PwaLojaChecklist() {
   const pendentes = PWA_LOJA_TOTAL - doneCount;
 
   return (
+    <>
     <GlassCard className="p-5 md:p-6 mt-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+
       <div className="flex items-center gap-2 mb-2">
         <Rocket size={16} className="text-accent" />
         <span className="text-[11px] uppercase tracking-wider text-accent">
@@ -679,8 +683,11 @@ function PwaLojaChecklist() {
         </div>
       </div>
     </GlassCard>
+    <PromptsExecutarEtapa prompts={PROMPTS_TESTE} />
+    </>
   );
 }
+
 
 
 

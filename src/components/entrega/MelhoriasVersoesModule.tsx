@@ -31,6 +31,8 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { ResumoMelhoriasCard } from "@/components/entrega/ResumoMelhoriasCard";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_MELHORIAS } from "@/data/promptsPosAppPronto";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e já tenho métricas, testes ou feedbacks. Me ajude a decidir o que melhorar primeiro: bug crítico, ajuste pequeno, melhoria de conversão, melhoria de experiência, melhoria visual, nova funcionalidade ou versão maior. Quero priorizar com impacto, esforço, risco e evidência, sem quebrar o que já funciona em login, checkout, entrega ou dados.`;
 
@@ -513,7 +515,10 @@ export function MelhoriasVersoesModule() {
         </div>
       </GlassCard>
 
+      <PromptsExecutarEtapa prompts={PROMPTS_MELHORIAS} />
+
       <GlassCard className="p-5 mb-6">
+
 
         <div className="flex items-center gap-2 mb-3">
           <HelpCircle size={16} className="text-accent" />
