@@ -555,6 +555,17 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
         </dl>
       </GlassCard>
 
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu Blueprint está simples, vendável e pronto para construir."
+          ctaLabel="Revisar Blueprint com o Agente Arquiteto"
+        />
+      </div>
+
+      {/* Checklist opcional — recolhido por padrão, fica no final da página */}
+      <ChecklistDisclosure title="Checklist opcional — Blueprint do MVP">
       {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
@@ -615,15 +626,7 @@ export function MvpArquiteturaModule({ goTo }: { goTo?: (id: string) => void } =
           );
         })()}
       </GlassCard>
-
-      <div className="mt-6">
-        <AgentArchitectCard
-          variant="compact"
-          title="Quer revisar antes de seguir?"
-          subtitle="Use o Agente Arquiteto para validar se seu Blueprint está simples, vendável e pronto para construir."
-          ctaLabel="Revisar Blueprint com o Agente Arquiteto"
-        />
-      </div>
+      </ChecklistDisclosure>
     </section>
   );
 }
