@@ -28,6 +28,7 @@ import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { ResumoCampanhaCard } from "@/components/entrega/ResumoCampanhaCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders } from "@/lib/promptBuilder";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 type Checklist = Record<string, boolean>;
 type SetChecklist = (v: Checklist | ((p: Checklist) => Checklist)) => void;
