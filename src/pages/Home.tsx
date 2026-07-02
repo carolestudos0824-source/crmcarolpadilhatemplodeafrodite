@@ -302,7 +302,7 @@ export default function Home() {
       {/* O QUE VOCÊ RECEBE */}
       <Section
         eyebrow="Por que vale R$197"
-        title="O que você recebe por R$197"
+        title="O que você recebe por R$197 (1 ano de acesso)"
         subtitle="Não é PDF solto, prompt pack avulso nem curso passivo. É uma plataforma guiada para construir, revisar e evoluir seu app com mais direção."
       >
         {/* Linha-resumo de entregas */}
