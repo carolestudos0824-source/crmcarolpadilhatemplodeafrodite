@@ -268,15 +268,23 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
           {mode}
         </span>
         <div className="ml-auto flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 min-w-[140px]">
+          <div
+            className="hidden sm:flex items-center gap-2 min-w-[200px]"
+            title="Mostra quantos módulos você já concluiu na Fábrica."
+            aria-label={`Progresso do programa: ${doneCount} de ${totalCount} módulos concluídos (${percent}%)`}
+          >
+            <span className="text-[10px] font-medium tabular-nums text-muted-foreground whitespace-nowrap">
+              <span className="text-foreground/90">{doneCount} de {totalCount}</span>
+              <span className="text-muted-foreground/70"> módulos</span>
+            </span>
             <div className="h-1 flex-1 rounded-full bg-white/5 overflow-hidden">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-accent/70 to-accent transition-[width] duration-500"
                 style={{ width: `${percent}%` }}
               />
             </div>
-            <span className="text-[10px] tabular-nums text-muted-foreground/80">
-              {doneCount}/{totalCount} · {percent}%
+            <span className="text-[10px] tabular-nums text-accent/90 font-semibold">
+              {percent}%
             </span>
           </div>
         </div>
