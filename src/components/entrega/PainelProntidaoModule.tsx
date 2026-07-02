@@ -275,6 +275,11 @@ export function PainelProntidaoModule({ goTo }: Props) {
           />
         </div>
         <p className="text-sm leading-relaxed text-foreground/90">{readiness.message}</p>
+        {hasCriticalBlocker && (
+          <p className="text-xs mt-2 text-red-200/90">
+            Bloqueador crítico ativo: veredito travado em “Não pronto” até resolver.
+          </p>
+        )}
       </GlassCard>
 
       {/* Frase de orientação preservada */}
