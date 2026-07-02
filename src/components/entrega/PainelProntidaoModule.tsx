@@ -536,12 +536,20 @@ function BlocoLista({
   items,
   tone,
   note,
+  checkable,
+  checkedMap,
+  keyPrefix,
+  onToggle,
 }: {
   icon: typeof AlertTriangle;
   title: string;
   items: string[];
   tone: "danger" | "info" | "success" | "accent";
   note?: string;
+  checkable?: boolean;
+  checkedMap?: Record<string, boolean>;
+  keyPrefix?: string;
+  onToggle?: (key: string) => void;
 }) {
   const toneCls = {
     danger: "border-red-400/30 bg-red-500/5 text-red-200",
@@ -555,11 +563,33 @@ function BlocoLista({
         <Icon size={16} />
         <h3 className="font-heading font-semibold text-base text-foreground">{title}</h3>
       </div>
-      <ul className="space-y-1.5 text-sm text-foreground/90 list-disc list-inside">
-        {items.map((i) => (
-          <li key={i}>{i}</li>
-        ))}
-      </ul>
+      {checkable && keyPrefix && onToggle ? (
+        <ul className="space-y-1.5 text-sm text-foreground/90">
+          {items.map((i) => {
+            const key = `${keyPrefix}${i}`;
+            const checked = !!checkedMap?.[key];
+            return (
+              <li key={i}>
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="mt-1 accent-red-400"
+                    checked={checked}
+                    onChange={() => onToggle(key)}
+                  />
+                  <span className={checked ? "text-red-200 font-medium" : ""}>{i}</span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <ul className="space-y-1.5 text-sm text-foreground/90 list-disc list-inside">
+          {items.map((i) => (
+            <li key={i}>{i}</li>
+          ))}
+        </ul>
+      )}
       {note && (
         <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{note}</p>
       )}
