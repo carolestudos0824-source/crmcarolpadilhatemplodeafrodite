@@ -414,10 +414,10 @@ export default function Home() {
         <div className="container">
           <div className="max-w-3xl mx-auto glass-strong p-6 md:p-8 text-center neon-shadow">
             <button className="btn-primary mx-auto" onClick={goCheckout}>
-              Quero acessar o programa por R$197 <ChevronRight size={18} />
+              Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
             </button>
             <p className="text-sm text-foreground/80 leading-relaxed mt-4">
-              Pagamento único. 23 módulos, 54 comandos, 30 ideias, área interna, GPS do App e Agente Arquiteto via ChatGPT.
+              R$197 por 1 ano de acesso. Parcelamento disponível no cartão. 23 módulos, 54 comandos, 30 ideias, área interna, GPS do App e Agente Arquiteto via ChatGPT.
             </p>
           </div>
         </div>
