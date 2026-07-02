@@ -27,6 +27,7 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { buildLovablePrompt } from "@/lib/promptBuilder";
 import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
 import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const yn = (v: ProjectContext["needsLogin"]) =>
   v === "sim" ? "Sim" : v === "nao" ? "Não" : "[a definir]";
