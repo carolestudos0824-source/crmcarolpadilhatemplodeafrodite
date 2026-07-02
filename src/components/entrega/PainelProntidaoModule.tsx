@@ -70,6 +70,7 @@ function getReadiness(pct: number) {
   );
 }
 
+const BLOQUEADOR_PREFIX = "blocker__";
 const BLOQUEADORES = [
   "Login não funciona",
   "Checkout não foi testado",
@@ -174,7 +175,11 @@ export function PainelProntidaoModule({ goTo }: Props) {
   const overallDone = phasesStats.reduce((a, p) => a + p.done, 0);
   const overallTotal = phasesStats.reduce((a, p) => a + p.total, 0);
   const pct = overallTotal === 0 ? 0 : Math.round((overallDone / overallTotal) * 100);
-  const readiness = getReadiness(pct);
+  const hasCriticalBlocker = useMemo(
+    () => BLOQUEADORES.some((item) => !!checklist[`${BLOQUEADOR_PREFIX}${item}`]),
+    [checklist],
+  );
+  const readiness = hasCriticalBlocker ? READINESS_LEVELS[0] : getReadiness(pct);
 
   const firstIncompletePhase = phasesStats.find((p) => p.done < p.total);
   const nextAction = firstIncompletePhase
@@ -270,6 +275,11 @@ export function PainelProntidaoModule({ goTo }: Props) {
           />
         </div>
         <p className="text-sm leading-relaxed text-foreground/90">{readiness.message}</p>
+        {hasCriticalBlocker && (
+          <p className="text-xs mt-2 text-red-200/90">
+            Bloqueador crítico ativo: veredito travado em “Não pronto” até resolver.
+          </p>
+        )}
       </GlassCard>
 
       {/* Frase de orientação preservada */}
@@ -441,8 +451,13 @@ export function PainelProntidaoModule({ goTo }: Props) {
           title="Bloqueadores críticos"
           tone="danger"
           items={BLOQUEADORES}
-          note="Qualquer item acima ativo deve parar venda e divulgação até ser resolvido."
+          note="Marque qualquer item ativo. Enquanto houver um marcado, o veredito fica em “Não pronto”."
+          checkable
+          checkedMap={checklist}
+          keyPrefix={BLOQUEADOR_PREFIX}
+          onToggle={toggle}
         />
+
         <BlocoLista
           icon={TestTube2}
           title="Pode testar com pessoas reais se..."
@@ -521,12 +536,20 @@ function BlocoLista({
   items,
   tone,
   note,
+  checkable,
+  checkedMap,
+  keyPrefix,
+  onToggle,
 }: {
   icon: typeof AlertTriangle;
   title: string;
   items: string[];
   tone: "danger" | "info" | "success" | "accent";
   note?: string;
+  checkable?: boolean;
+  checkedMap?: Record<string, boolean>;
+  keyPrefix?: string;
+  onToggle?: (key: string) => void;
 }) {
   const toneCls = {
     danger: "border-red-400/30 bg-red-500/5 text-red-200",
@@ -540,11 +563,33 @@ function BlocoLista({
         <Icon size={16} />
         <h3 className="font-heading font-semibold text-base text-foreground">{title}</h3>
       </div>
-      <ul className="space-y-1.5 text-sm text-foreground/90 list-disc list-inside">
-        {items.map((i) => (
-          <li key={i}>{i}</li>
-        ))}
-      </ul>
+      {checkable && keyPrefix && onToggle ? (
+        <ul className="space-y-1.5 text-sm text-foreground/90">
+          {items.map((i) => {
+            const key = `${keyPrefix}${i}`;
+            const checked = !!checkedMap?.[key];
+            return (
+              <li key={i}>
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="mt-1 accent-red-400"
+                    checked={checked}
+                    onChange={() => onToggle(key)}
+                  />
+                  <span className={checked ? "text-red-200 font-medium" : ""}>{i}</span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <ul className="space-y-1.5 text-sm text-foreground/90 list-disc list-inside">
+          {items.map((i) => (
+            <li key={i}>{i}</li>
+          ))}
+        </ul>
+      )}
       {note && (
         <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">{note}</p>
       )}
