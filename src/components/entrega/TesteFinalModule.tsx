@@ -32,6 +32,8 @@ import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoTesteFinalCard } from "./ResumoTesteFinalCard";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_TESTE } from "@/data/promptsPosAppPronto";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso fazer um teste final antes de divulgar. Me ajude a criar um checklist completo para testar: desktop, mobile, login, formulários, botões, checkout, entrega, links, textos, imagens, erros, página branca, scroll horizontal e experiência do usuário.`;
