@@ -918,7 +918,7 @@ export default function Login() {
                 Ainda não comprou?
               </h3>
               <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                Garanta seu acesso à Fábrica de Apps com IA por R$197 à vista. Parcelamento disponível no cartão.
+                Garanta seu acesso à Fábrica de Apps com IA por R$197 (1 ano de acesso). Parcelamento disponível no cartão.
               </p>
               <button
                 type="button"

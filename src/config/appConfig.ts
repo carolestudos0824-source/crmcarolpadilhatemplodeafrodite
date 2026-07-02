@@ -14,8 +14,8 @@ export const APP_CONFIG = {
 
   // ====== Faixa de anúncio ======
   SHOW_ANNOUNCEMENT_BAR: true,
-  ANNOUNCEMENT_TEXT: "⚡ Oferta de lançamento ativa — Entre por R$197 à vista. Parcelamento disponível no cartão · Liberação após confirmação do pagamento",
-  ANNOUNCEMENT_CTA_TEXT: "Quero acessar por R$197 →",
+  ANNOUNCEMENT_TEXT: "⚡ Oferta de lançamento ativa — R$197 por 1 ano de acesso. Parcelamento disponível no cartão · Liberação após confirmação do pagamento",
+  ANNOUNCEMENT_CTA_TEXT: "Quero acessar por R$197 (1 ano) →",
   ANNOUNCEMENT_CTA_LINK: "/checkout?plano=fabrica",
   SUPPORT_EMAIL_SUBJECT: "Suporte — Fábrica de Apps com IA",
   CHECKOUT_INITIATED_FLAG: "fabrica_checkout_initiated",

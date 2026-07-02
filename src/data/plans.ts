@@ -19,9 +19,9 @@ export const PLANS: Plan[] = [
     id: "fabrica",
     name: "Fábrica de Apps com IA",
     price: "R$197",
-    priceNote: "à vista. Parcelamento no cartão.",
+    priceNote: "por 1 ano de acesso. Parcelamento disponível no cartão.",
     description:
-      "Acesso completo à plataforma guiada para sair da ideia, organizar o MVP, criar prompts melhores e construir no Lovable com mais clareza e menos retrabalho.",
+      "Inclui 1 ano de acesso à Fábrica de Apps com IA: plataforma guiada para sair da ideia, organizar o MVP, criar prompts melhores e construir no Lovable com mais clareza e menos retrabalho.",
     highlight: true,
     features: [
       "Acesso à plataforma guiada",
@@ -37,8 +37,9 @@ export const PLANS: Plan[] = [
       "Módulo Melhorias e Versões + Estado Atual do Projeto",
       "Agente Arquiteto de Aplicativos",
       "Garantia de 7 dias para conhecer por dentro",
+      "1 ano de acesso à Fábrica de Apps com IA",
     ],
-    cta: "Quero acessar por R$197",
+    cta: "Quero acessar por R$197 (1 ano)",
     checkoutUrl: () => APP_CONFIG.CHECKOUT_FABRICA_URL,
   },
 ];
