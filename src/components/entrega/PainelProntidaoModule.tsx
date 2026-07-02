@@ -175,7 +175,11 @@ export function PainelProntidaoModule({ goTo }: Props) {
   const overallDone = phasesStats.reduce((a, p) => a + p.done, 0);
   const overallTotal = phasesStats.reduce((a, p) => a + p.total, 0);
   const pct = overallTotal === 0 ? 0 : Math.round((overallDone / overallTotal) * 100);
-  const readiness = getReadiness(pct);
+  const hasCriticalBlocker = useMemo(
+    () => BLOQUEADORES.some((item) => !!checklist[`${BLOQUEADOR_PREFIX}${item}`]),
+    [checklist],
+  );
+  const readiness = hasCriticalBlocker ? READINESS_LEVELS[0] : getReadiness(pct);
 
   const firstIncompletePhase = phasesStats.find((p) => p.done < p.total);
   const nextAction = firstIncompletePhase
