@@ -37,8 +37,9 @@ export const PLANS: Plan[] = [
       "Módulo Melhorias e Versões + Estado Atual do Projeto",
       "Agente Arquiteto de Aplicativos",
       "Garantia de 7 dias para conhecer por dentro",
+      "1 ano de acesso à Fábrica de Apps com IA",
     ],
-    cta: "Quero acessar por R$197",
+    cta: "Quero acessar por R$197 (1 ano)",
     checkoutUrl: () => APP_CONFIG.CHECKOUT_FABRICA_URL,
   },
 ];
