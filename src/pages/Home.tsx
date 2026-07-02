@@ -403,7 +403,7 @@ export default function Home() {
               E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> ajuda a transformar sua dúvida em um comando mais claro antes de mandar para a ferramenta de criação.
             </p>
             <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
-              Por <span className="font-semibold">R$197</span>, você acessa o programa completo: 23 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.
+              Por <span className="font-semibold">R$197</span>, você tem 1 ano de acesso ao programa completo: 23 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.
             </p>
           </div>
         </div>
