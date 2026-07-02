@@ -166,7 +166,8 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
-                Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
+                Entrar na Fábrica agora <ChevronRight size={18} />
+
               </button>
               <button onClick={() => document.getElementById("jornadas")?.scrollIntoView({ behavior: "smooth" })} className="btn-ghost">
                 Ver como funciona
@@ -303,7 +304,7 @@ export default function Home() {
       {/* O QUE VOCÊ RECEBE */}
       <Section
         eyebrow="Por que vale R$197"
-        title="O que você recebe por R$197 (1 ano de acesso)"
+        title="O que você recebe por R$197"
         subtitle="Não é PDF solto, prompt pack avulso nem curso passivo. É uma plataforma guiada para construir, revisar e evoluir seu app com mais direção."
       >
         {/* Linha-resumo de entregas */}
@@ -361,7 +362,7 @@ export default function Home() {
         {/* Faixa de fechamento */}
         <div className="max-w-3xl mx-auto mt-10 glass px-5 py-5 md:px-6 md:py-6 text-center">
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
-            Por <span className="font-semibold text-accent">R$197</span>, você tem 1 ano de acesso a uma plataforma guiada para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
+            Por <span className="font-semibold text-accent">R$197</span>, você entra numa plataforma guiada para transformar ideias, projetos ou apps existentes em uma construção mais clara dentro do Lovable.
           </p>
         </div>
       </Section>
@@ -404,7 +405,7 @@ export default function Home() {
               E quando você travar, o <span className="text-accent">Agente Arquiteto via ChatGPT</span> ajuda a transformar sua dúvida em um comando mais claro antes de mandar para a ferramenta de criação.
             </p>
             <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
-              Por <span className="font-semibold">R$197</span>, você tem 1 ano de acesso ao programa completo: 23 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.
+              Por <span className="font-semibold">R$197</span>, você acessa o programa completo: 23 módulos, 54 comandos prontos, 30 ideias, área interna, GPS do App e Agente Arquiteto.
             </p>
           </div>
         </div>
@@ -415,10 +416,10 @@ export default function Home() {
         <div className="container">
           <div className="max-w-3xl mx-auto glass-strong p-6 md:p-8 text-center neon-shadow">
             <button className="btn-primary mx-auto" onClick={goCheckout}>
-              Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
+              Quero começar meu app <ChevronRight size={18} />
             </button>
             <p className="text-sm text-foreground/80 leading-relaxed mt-4">
-              R$197 por 1 ano de acesso. Parcelamento disponível no cartão. 23 módulos, 54 comandos, 30 ideias, área interna, GPS do App e Agente Arquiteto via ChatGPT.
+              R$197 · Parcelamento disponível no cartão. 23 módulos, 54 comandos, 30 ideias, área interna, GPS do App e Agente Arquiteto via ChatGPT.
             </p>
           </div>
         </div>
@@ -624,13 +625,13 @@ export default function Home() {
           </div>
 
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed text-center mb-4 max-w-2xl mx-auto">
-            Inclui 1 ano de acesso à Fábrica de Apps com IA: 23 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
+            Inclui acesso à Fábrica de Apps com IA: 23 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
+            Quero acessar por R$197 <ChevronRight size={18} />
           </button>
           <p className="text-sm text-foreground/80 leading-relaxed text-center mt-4">
-            O acesso ao programa custa <span className="font-semibold">R$197 por 1 ano</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
+            O acesso ao programa custa <span className="font-semibold">R$197</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
           </p>
 
           <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
@@ -818,7 +819,7 @@ export default function Home() {
             Programa completo, método guiado, 23 módulos, 54 comandos prontos, 30 ideias de apps, GPS do App e Agente Arquiteto.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
+            Acessar a Fábrica de Apps <ChevronRight size={18} />
           </button>
           <p className="text-sm text-muted-foreground/80 mt-4">
             R$197 por 1 ano de acesso · Parcelamento disponível no cartão · Garantia de 7 dias.
