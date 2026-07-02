@@ -28,6 +28,8 @@ import { useUserProgress } from "@/hooks/useUserProgress";
 import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_PUBLICAR } from "@/data/promptsPosAppPronto";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoPublicacaoCard } from "./ResumoPublicacaoCard";
