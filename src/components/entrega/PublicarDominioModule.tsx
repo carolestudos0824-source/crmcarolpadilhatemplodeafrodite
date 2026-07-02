@@ -635,9 +635,10 @@ export function PublicarDominioModule() {
         </div>
       </GlassCard>
 
-
+      <PromptsExecutarEtapa prompts={PROMPTS_PUBLICAR} />
 
       <GlassCard className="p-5 mb-6">
+
         <div className="flex items-center gap-2 mb-3">
           <HelpCircle size={16} className="text-accent" />
           <h3 className="font-heading font-semibold text-base">Não entendi uma palavra</h3>
