@@ -926,7 +926,7 @@ function EntregaInner() {
 
 
           <div id="modules-list">
-            <RecommendedModuleHint active={active} goTo={goTo} />
+            {/* RecommendedModuleHint foi absorvido no GPS do Projeto (EstadoAtualDoProjetoCard) para evitar duplicidade. */}
             <ModuleContent
               active={active}
               checklist={checklist}
