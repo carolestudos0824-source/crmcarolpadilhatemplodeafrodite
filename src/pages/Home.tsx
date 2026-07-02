@@ -111,6 +111,7 @@ const faqs = [
   { q: "Tem garantia?", a: "Sim. Você tem 7 dias para acessar, conhecer o programa por dentro e solicitar reembolso integral se perceber que não é para você." },
   { q: "O programa tem suporte?", a: "Sim. A Fábrica de Apps com IA oferece suporte por e-mail para acesso, login, navegação na área de entrega e uso do programa. O canal oficial é fabricadeappscomia@outlook.com. O suporte não inclui consultoria individual, construção do app pelo participante, revisão ilimitada de projetos, suporte 24h ou suporte técnico de ferramentas externas." },
   { q: "Como recebo acesso depois da compra?", a: "Após a confirmação do pagamento, o acesso à área interna é liberado para o endereço informado no checkout." },
+  { q: "O acesso é por quanto tempo?", a: "O acesso à Fábrica de Apps com IA é válido por 1 ano a partir da liberação. Durante esse período, você pode acessar os módulos, comandos, checklists e materiais disponíveis na área de entrega. Ao final do período, o acesso poderá ser renovado conforme as condições disponíveis no momento." },
 ];
 
 const jornadas = [
