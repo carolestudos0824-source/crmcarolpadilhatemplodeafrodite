@@ -38,7 +38,7 @@ const centralVendas = [
 ];
 
 const beneficios = [
-  "Programa completo, pagamento único",
+  "R$197 por 1 ano de acesso",
   "Método guiado passo a passo",
   "23 módulos guiados · 54 comandos prontos",
   "30 ideias de aplicativos",
