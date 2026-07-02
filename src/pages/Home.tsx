@@ -165,14 +165,14 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <button className="btn-primary" onClick={goCheckout}>
-                Quero acessar o programa por R$197 <ChevronRight size={18} />
+                Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
               </button>
               <button onClick={() => document.getElementById("jornadas")?.scrollIntoView({ behavior: "smooth" })} className="btn-ghost">
                 Ver como funciona
               </button>
             </div>
             <p className="text-sm text-muted-foreground/80">
-              Programa completo · Pagamento único de R$197 · Sem mensalidade · Garantia de 7 dias.
+              R$197 por 1 ano de acesso · Parcelamento disponível no cartão · Garantia de 7 dias.
             </p>
           </div>
           <div className="order-first lg:order-last">
