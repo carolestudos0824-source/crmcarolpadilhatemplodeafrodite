@@ -11,6 +11,11 @@ import {
   ArrowRight,
   Sparkles,
   Target,
+  Globe,
+  Smartphone,
+  Store,
+  Apple,
+  Compass,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { AgentArchitectCard } from "@/components/entrega/AgentArchitectCard";
