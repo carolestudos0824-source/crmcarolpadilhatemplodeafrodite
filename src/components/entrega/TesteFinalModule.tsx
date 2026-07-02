@@ -444,6 +444,246 @@ function EtapaCard({ etapa }: { etapa: Etapa }) {
   );
 }
 
+const PWA_LOJA_PREFIX = "teste_pwa__";
+
+const PWA_LOJA_GROUPS: {
+  title: string;
+  icon: typeof Smartphone;
+  items: string[];
+}[] = [
+  {
+    title: "Experiência mobile",
+    icon: Smartphone,
+    items: [
+      "O app abre bem no celular",
+      "Os botões são fáceis de tocar",
+      "Os textos estão legíveis",
+      "As telas não ficam cortadas",
+      "O menu funciona no mobile",
+      "O fluxo principal pode ser concluído pelo celular",
+    ],
+  },
+  {
+    title: "Login e acesso",
+    icon: Lock,
+    items: [
+      "O cadastro funciona",
+      "O login funciona",
+      "O logout funciona",
+      "Páginas privadas não aparecem para quem não está logada",
+      "Área paga, se existir, está protegida",
+      "Usuárias diferentes não acessam dados umas das outras",
+    ],
+  },
+  {
+    title: "Banco e dados",
+    icon: Database,
+    items: [
+      "As informações são salvas corretamente",
+      "As informações aparecem no lugar certo",
+      "Os dados não somem ao atualizar a página",
+      "Cada usuária vê apenas o que deveria ver",
+      "Não há dados sensíveis aparecendo na tela ou no console",
+    ],
+  },
+  {
+    title: "Segurança básica",
+    icon: Shield,
+    items: [
+      "RLS está ativo nas tabelas públicas",
+      "As policies respeitam o usuário autenticado quando necessário",
+      "Não há chaves secretas expostas no frontend",
+      "Não há service_role no frontend",
+      "Rotas privadas estão protegidas",
+      "A lógica de acesso pago não pode ser burlada facilmente",
+    ],
+  },
+  {
+    title: "Conteúdo e páginas obrigatórias",
+    icon: FileText,
+    items: [
+      "O app tem nome claro",
+      "O app tem descrição clara",
+      "Existe uma página ou link de suporte",
+      "Existe política de privacidade quando houver coleta de dados",
+      "Existem termos de uso quando necessário",
+      "Os textos não prometem resultado garantido",
+      "Os links principais funcionam",
+    ],
+  },
+  {
+    title: "Performance e bugs",
+    icon: Zap,
+    items: [
+      "O app carrega em tempo aceitável",
+      "Não há erros visíveis na tela",
+      "Não há botões sem função importante",
+      "Não há páginas quebradas",
+      "Não há fluxo principal travando",
+      "O app foi testado em mais de um tamanho de tela",
+    ],
+  },
+  {
+    title: "Prontidão para PWA ou loja",
+    icon: Rocket,
+    items: [
+      "O app já foi validado com usuárias reais",
+      "Existe motivo claro para ser instalável",
+      "As usuárias pediram acesso pelo celular",
+      "O app oferece mais do que uma página simples",
+      "A experiência mobile está boa o suficiente",
+      "Há estrutura para suporte e manutenção",
+    ],
+  },
+];
+
+const PWA_LOJA_TOTAL = PWA_LOJA_GROUPS.reduce((a, g) => a + g.items.length, 0);
+
+function PwaLojaChecklist() {
+  const { checklist, setChecklist } = useUserProgress();
+  const toggle = (item: string) => {
+    const key = `${PWA_LOJA_PREFIX}${item}`;
+    setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const doneCount = PWA_LOJA_GROUPS.reduce(
+    (acc, g) =>
+      acc + g.items.filter((it) => !!checklist[`${PWA_LOJA_PREFIX}${it}`]).length,
+    0,
+  );
+  const pct = Math.round((doneCount / PWA_LOJA_TOTAL) * 100);
+  const pendentes = PWA_LOJA_TOTAL - doneCount;
+
+  return (
+    <GlassCard className="p-5 md:p-6 mt-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+      <div className="flex items-center gap-2 mb-2">
+        <Rocket size={16} className="text-accent" />
+        <span className="text-[11px] uppercase tracking-wider text-accent">
+          Checklist complementar
+        </span>
+      </div>
+      <h2 className="text-xl md:text-2xl font-heading font-bold mb-2">
+        Antes de transformar em PWA ou pensar em lojas
+      </h2>
+      <p className="text-sm md:text-base text-foreground/85 leading-relaxed mb-5">
+        Antes de tentar transformar seu app em instalável, empacotar para
+        Android/iOS ou pensar em App Store e Google Play, faça um teste final
+        com calma. Um app com bugs, telas quebradas, login instável ou páginas
+        incompletas deve ser corrigido antes de qualquer evolução mobile.
+      </p>
+
+      <div className="mb-5 rounded-lg border border-white/10 bg-white/5 p-3">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-xs text-foreground/80">
+            {doneCount} de {PWA_LOJA_TOTAL} itens confirmados
+          </span>
+          <span className="text-[11px] text-muted-foreground tabular-nums">
+            {pct}%
+          </span>
+        </div>
+        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div
+            className="h-full bg-accent transition-all duration-500"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-5">
+        {PWA_LOJA_GROUPS.map((group) => {
+          const Icon = group.icon;
+          return (
+            <div
+              key={group.title}
+              className="rounded-xl border border-white/10 bg-white/5 p-4"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className="shrink-0 w-8 h-8 rounded-lg bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
+                  <Icon size={14} />
+                </div>
+                <h3 className="font-heading font-semibold text-sm md:text-base">
+                  {group.title}
+                </h3>
+              </div>
+              <ul className="space-y-2">
+                {group.items.map((item) => {
+                  const key = `${PWA_LOJA_PREFIX}${item}`;
+                  const done = !!checklist[key];
+                  return (
+                    <li key={item}>
+                      <label className="flex items-center gap-3 p-2 rounded-lg border border-white/5 bg-black/20 hover:bg-white/5 cursor-pointer transition">
+                        <input
+                          type="checkbox"
+                          checked={done}
+                          onChange={() => toggle(item)}
+                          className="accent-accent w-4 h-4 shrink-0"
+                        />
+                        <span
+                          className={`text-sm ${
+                            done ? "line-through text-muted-foreground" : ""
+                          }`}
+                        >
+                          {item}
+                        </span>
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        className={`mt-5 rounded-xl border p-4 ${
+          pendentes > 5
+            ? "border-rose-400/30 bg-rose-400/5"
+            : "border-emerald-400/30 bg-emerald-400/5"
+        }`}
+      >
+        <div className="text-[11px] uppercase tracking-wider mb-1 text-foreground/70">
+          Recomendação
+        </div>
+        <p className="text-sm text-foreground/90 leading-relaxed">
+          {pendentes > 5 ? (
+            <>
+              Muitos itens ainda estão pendentes. <strong>Não vá para loja agora.</strong>{" "}
+              Corrija, teste e valide primeiro. Publique como web app, valide
+              com pessoas reais, melhore a experiência mobile e só depois decida
+              se vale transformar em PWA, empacotar ou enviar para lojas.
+            </>
+          ) : (
+            <>
+              Boa parte do checklist está confirmada. Continue publicando como
+              web app, colete feedback real e só depois decida se vale
+              transformar em PWA, empacotar ou enviar para lojas.
+            </>
+          )}
+        </p>
+      </div>
+
+      <div className="mt-3 rounded-xl border border-amber-400/30 bg-amber-400/5 p-4">
+        <div className="flex items-start gap-2">
+          <AlertTriangle
+            size={16}
+            className="text-amber-300 shrink-0 mt-0.5"
+          />
+          <p className="text-xs md:text-sm text-foreground/85 leading-relaxed">
+            <strong className="text-amber-200">Aviso:</strong> esta checklist
+            ajuda a preparar o app com mais segurança, mas <strong>não garante
+            aprovação na App Store ou Google Play</strong>. As lojas possuem
+            regras próprias, custos, revisões e podem solicitar ajustes antes
+            da publicação.
+          </p>
+        </div>
+      </div>
+    </GlassCard>
+  );
+}
+
+
+
 export function TesteFinalModule() {
   const { checklist, setChecklist } = useUserProgress();
 
