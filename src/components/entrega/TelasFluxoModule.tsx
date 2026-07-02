@@ -543,7 +543,8 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         </div>
       </details>
 
-      {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
+      {/* Checklist crítico — recolhido por padrão, opcional para conferência */}
+      <ChecklistDisclosure title="Checklist opcional — Mapa de Telas e Fluxo">
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
