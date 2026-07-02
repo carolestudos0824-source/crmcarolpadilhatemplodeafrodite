@@ -13,6 +13,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 type Aula = {
   num: number;
