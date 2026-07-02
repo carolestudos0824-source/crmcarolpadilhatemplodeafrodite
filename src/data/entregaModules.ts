@@ -91,8 +91,12 @@ export type ModuleMeta = {
   icon: string; // lucide icon name
 };
 
+// Estrutura oficial da JORNADA DA ALUNA: 23 módulos pedagógicos.
+// "ativar" NÃO entra aqui — é tela operacional/admin acessível via
+// slug "/entrega?modulo=ativar-acesso" para resgate de código, sem
+// aparecer como módulo do programa.
 export const MODULES: ModuleMeta[] = [
-  { id: "fundamentos", label: "Como usar o Lovable", icon: "BookOpen" },
+  { id: "fundamentos", label: "Comece pelo Lovable", icon: "BookOpen" },
   { id: "comece", label: "Comece aqui", icon: "Sparkles" },
   { id: "ideias", label: "Ideias prontas", icon: "Lightbulb" },
   { id: "planejar", label: "Planejar o App", icon: "ClipboardList" },
@@ -101,8 +105,8 @@ export const MODULES: ModuleMeta[] = [
   { id: "construir", label: "Construir app", icon: "Hammer" },
   { id: "login", label: "Login e banco", icon: "Lock" },
   { id: "seguranca", label: "Segurança do App", icon: "ShieldCheck" },
-  { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
   { id: "venda", label: "Página de venda", icon: "Megaphone" },
+  { id: "monetizacao", label: "Monetização", icon: "DollarSign" },
   { id: "checkout", label: "Checkout e entrega", icon: "ShoppingCart" },
   { id: "legal", label: "Legal e Confiança", icon: "Scale" },
   { id: "publicar", label: "Publicar e Domínio", icon: "Globe" },
@@ -111,11 +115,10 @@ export const MODULES: ModuleMeta[] = [
   { id: "campanhas", label: "Campanhas", icon: "Rocket" },
   { id: "criativos", label: "Criativos", icon: "Image" },
   { id: "metricas", label: "Métricas do App", icon: "BarChart3" },
-  { id: "melhorias", label: "Melhorias e Versões", icon: "GitBranch" },
   { id: "validacao", label: "Validação", icon: "Users" },
-  { id: "checklist", label: "Painel de Prontidão", icon: "ListChecks" },
+  { id: "melhorias", label: "Melhorias e Versões", icon: "GitBranch" },
+  { id: "checklist", label: "Checklist", icon: "ListChecks" },
   { id: "erros", label: "Erros comuns", icon: "AlertTriangle" },
-  { id: "ativar", label: "Ativar acesso", icon: "Gift" },
 ];
 
 
