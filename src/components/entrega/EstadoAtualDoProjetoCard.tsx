@@ -197,10 +197,14 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const recommendedIntent = recommendedModuleId
     ? MODULE_PROMPT_INTENTS[recommendedModuleId] ?? null
     : null;
+  // Só permite copiar prompt quando o usuário está NO módulo recomendado.
+  // Evita copiar prompt de outro módulo (ex.: em "Comece pelo Lovable" copiar prompt de "Planejar o App").
   const canCopyPrompt =
     !!activeProject &&
     !!recommendedModuleId &&
     !!recommendedIntent &&
+    !!activeModuleId &&
+    activeModuleId === recommendedModuleId &&
     hasUsefulProjectContext(liveContext);
 
   const handleCopyPrompt = async () => {
