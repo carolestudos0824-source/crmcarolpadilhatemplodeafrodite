@@ -203,8 +203,8 @@ export function SalesPanel() {
 
 
   const grantAccess = async (sale: ManualSale) => {
-    if (!confirm(`Tem certeza que deseja liberar o acesso desta venda (${sale.buyer_email})? O comprador poderá entrar na área do aluno.`)) return;
-    const { data, error } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: sale.id });
+    if (!confirm(`Tem certeza que deseja liberar 1 ano de acesso desta venda (${sale.buyer_email})? O comprador poderá entrar na área do aluno.`)) return;
+    const { data, error } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: sale.id, _duration_days: 365 });
     if (error) {
       if (isNoUserError(error.message)) return toast.warning(FRIENDLY_NO_USER_MSG, { duration: 8000 });
       return toast.error("Não foi possível liberar acesso agora. Tente novamente em instantes.");
@@ -339,7 +339,7 @@ export function SalesPanel() {
                         <IconBtn title="Ver detalhes" onClick={() => setSelected(s)}><Eye size={14} /></IconBtn>
                         <IconBtn title="Copiar e-mail" onClick={() => copyText(s.buyer_email, "E-mail copiado")}><Copy size={14} /></IconBtn>
                         {s.access_status !== "access_granted" && (
-                          <IconBtn title="Liberar acesso" tone="ok" onClick={() => grantAccess(s)}><ShieldCheck size={14} /></IconBtn>
+                          <IconBtn title="Liberar 1 ano" tone="ok" onClick={() => grantAccess(s)}><ShieldCheck size={14} /></IconBtn>
                         )}
                         {s.access_status === "access_granted" && (
                           <IconBtn title="Revogar acesso" tone="danger" onClick={() => revokeAccess(s)}><ShieldOff size={14} /></IconBtn>
@@ -525,7 +525,7 @@ function CreateSaleDrawer({
       toast.success("Venda registrada.");
 
       if (alsoGrant) {
-        const { data: gData, error: gErr } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: res.id });
+        const { data: gData, error: gErr } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: res.id, _duration_days: 365 });
         if (gErr) {
           if (isNoUserError(gErr.message)) toast.warning(FRIENDLY_NO_USER_MSG, { duration: 9000 });
           else toast.error(`Venda criada, mas não foi possível liberar acesso agora.`);
@@ -578,7 +578,7 @@ function CreateSaleDrawer({
         </Field>
         <label className="flex items-center gap-2 text-sm pt-1">
           <input type="checkbox" checked={grantAfter} onChange={(e) => setGrantAfter(e.target.checked)} />
-          <span>Liberar acesso após registrar venda</span>
+          <span>Liberar 1 ano de acesso após registrar venda</span>
         </label>
         <p className="text-[11px] text-muted-foreground">
           Para liberar o acesso, o comprador precisa já ter feito login com este mesmo e-mail.
@@ -640,7 +640,7 @@ function SaleDetailDrawer({
         <div className="flex flex-wrap gap-2">
           {sale.access_status !== "access_granted" && (
             <button type="button" onClick={onGrant} className="btn-primary">
-              <ShieldCheck size={14} /> {isAwaitingFirstLogin(sale) ? "Tentar liberar novamente" : "Liberar acesso"}
+              <ShieldCheck size={14} /> {isAwaitingFirstLogin(sale) ? "Tentar liberar novamente" : "Liberar 1 ano"}
             </button>
           )}
           {sale.access_status === "access_granted" && (
