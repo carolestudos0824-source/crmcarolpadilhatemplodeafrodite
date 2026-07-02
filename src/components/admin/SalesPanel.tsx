@@ -525,7 +525,7 @@ function CreateSaleDrawer({
       toast.success("Venda registrada.");
 
       if (alsoGrant) {
-        const { data: gData, error: gErr } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: res.id });
+        const { data: gData, error: gErr } = await (supabase as any).rpc("admin_grant_access_from_sale", { _sale_id: res.id, _duration_days: 365 });
         if (gErr) {
           if (isNoUserError(gErr.message)) toast.warning(FRIENDLY_NO_USER_MSG, { duration: 9000 });
           else toast.error(`Venda criada, mas não foi possível liberar acesso agora.`);
