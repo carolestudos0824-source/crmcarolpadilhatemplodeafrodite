@@ -640,7 +640,7 @@ function SaleDetailDrawer({
         <div className="flex flex-wrap gap-2">
           {sale.access_status !== "access_granted" && (
             <button type="button" onClick={onGrant} className="btn-primary">
-              <ShieldCheck size={14} /> {isAwaitingFirstLogin(sale) ? "Tentar liberar novamente" : "Liberar acesso"}
+              <ShieldCheck size={14} /> {isAwaitingFirstLogin(sale) ? "Tentar liberar novamente" : "Liberar 1 ano"}
             </button>
           )}
           {sale.access_status === "access_granted" && (
