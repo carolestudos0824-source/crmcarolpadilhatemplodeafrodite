@@ -105,7 +105,7 @@ import { MyAppsDrawer } from "@/components/entrega/MyAppsDrawer";
 // ProjectStatusBanner desativado em /entrega para evitar duplicidade com o EstadoAtualDoProjetoCard.
 import { EstadoAtualDoProjetoCard } from "@/components/entrega/EstadoAtualDoProjetoCard";
 import { ProjectJourneySelector } from "@/components/entrega/ProjectJourneySelector";
-import { RecommendedModuleHint } from "@/components/entrega/RecommendedModuleHint";
+// RecommendedModuleHint absorvido no EstadoAtualDoProjetoCard como alerta contextual.
 import { AgentChatProvider } from "@/components/entrega/AgentChatProvider";
 import { AgentChatDrawer } from "@/components/entrega/AgentChatDrawer";
 import { ComeceAquiModule } from "@/components/entrega/ComeceAquiModule";
