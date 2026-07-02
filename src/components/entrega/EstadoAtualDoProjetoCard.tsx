@@ -1,4 +1,16 @@
-import { ArrowRight, ClipboardCopy, Compass, FolderKanban, ListChecks, Route, Sparkles, UserCog } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  ClipboardCopy,
+  Compass,
+  FolderKanban,
+  ImagePlus,
+  Info,
+  ListChecks,
+  Radar,
+  Route,
+  UserCog,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useAppProjects, hasUsefulProjectContext } from "@/hooks/useAppProjects";
@@ -15,11 +27,8 @@ import { useProjectJourney, JOURNEY_LABELS, JOURNEY_PHASE_LABELS } from "@/lib/j
 import { ProjectLogoPicker } from "./ProjectLogoPicker";
 
 /**
- * Deriva uma "última ação registrada" a partir do progresso já existente.
- * Não cria timestamp, não inventa horário, não muda estrutura de dados.
- * Estratégia: percorre commands_done e modules_done na ordem de inserção
- * do objeto (ordem natural do JS) e devolve a última entrada truthy,
- * mapeando o prefixo do key para um módulo conhecido quando possível.
+ * Deriva uma "última ação registrada" a partir do progresso existente.
+ * Não cria timestamp, não muda dados.
  */
 const resolveLastAction = (
   commandsDone: Record<string, boolean>,
@@ -32,31 +41,18 @@ const resolveLastAction = (
     const moduleId = MODULE_ORDER.find(
       (id) => lastKey === id || lastKey.startsWith(`${id}_`),
     );
-    if (moduleId) {
-      return `Você marcou uma etapa de ${moduleLabel[moduleId]} como concluída.`;
-    }
-    return "Você marcou uma etapa como concluída.";
+    if (moduleId) return `Etapa concluída em ${moduleLabel[moduleId]}.`;
+    return "Uma etapa foi marcada como concluída.";
   }
   const modKeys = Object.keys(modulesDone).filter((k) => modulesDone[k]);
   if (modKeys.length > 0) {
     const lastKey = modKeys[modKeys.length - 1] as ModuleId;
     const label = moduleLabel[lastKey];
-    if (label) return `Você concluiu o módulo ${label}.`;
+    if (label) return `Módulo concluído: ${label}.`;
   }
   return null;
 };
 
-/**
- * Card de leitura "Estado Atual do Projeto" — consolida, sem alterar dados:
- * - Produto principal (sempre Fábrica de Apps com IA)
- * - Modo atual (Admin/Usuário)
- * - Projeto em foco
- * - Fase atual
- * - Etapa/módulo ativo + progresso simples
- * - Próximo passo recomendado (regra determinística)
- *
- * Não cria tabelas, não altera schema, RLS, progresso, prompts ou checkout.
- */
 type NextStep = {
   kind: "fill-context" | "open-drawer" | "go-module";
   moduleId?: ModuleId;
@@ -70,6 +66,14 @@ type Props = {
   onGoToModule: (id: ModuleId) => void;
 };
 
+/**
+ * GPS do Projeto — painel premium unificado (3 áreas):
+ *  1. Cabeçalho compacto (onde estou)
+ *  2. Próximo passo (o que faço agora)
+ *  3. Alertas contextuais (o que preciso observar)
+ *
+ * Não altera lógica de próximo passo, prompts, progresso, IDs ou banco.
+ */
 export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const { activeProject, openDrawer } = useAppProjects();
   const [journey] = useProjectJourney(activeProject?.id ?? null);
@@ -84,9 +88,6 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     isAdmin && !!activeProject && isFabricaSelfProject(activeProject.context);
   const mode = adminOnSelf ? "Admin (Fábrica)" : isAdmin ? "Admin" : "Usuário";
 
-  // FONTE ÚNICA DA VERDADE da fase: jornada escolhida no projeto ativo.
-  // Sem jornada salva, caímos no heurístico antigo (status + módulo atual)
-  // apenas como fallback — nunca sobrescreve uma jornada já escolhida.
   const phase = useMemo(() => {
     if (!activeProject) return "Sem projeto selecionado";
     if (journey) return JOURNEY_PHASE_LABELS[journey];
@@ -104,12 +105,8 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
   const totalCount = MODULE_ORDER.length;
   const percent = Math.round((doneCount / totalCount) * 100);
 
-  // Módulo ativo: prioriza o módulo da URL/progresso global (reativo a
-  // navegação) e só usa o salvo no projeto como fallback. Evita lag entre
-  // mudar de aba e ver o card refletindo.
   const activeModuleId = (active ?? activeProject?.currentModuleId ?? null) as ModuleId | null;
   const activeModuleLabel = activeModuleId ? MODULE_LABEL[activeModuleId] ?? "—" : "—";
-
 
   const lastActionText = useMemo(
     () => resolveLastAction(commands, moduleDone, MODULE_LABEL),
@@ -134,10 +131,6 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
         helper: "Sem contexto, os prompts saem genéricos. Preencha para personalizar.",
       };
     }
-    // Hotfix: nunca recomendar um módulo anterior ao módulo ativo atual.
-    // Compara índice na MODULE_ORDER e só sugere o candidato se ele NÃO
-    // estiver antes do ponto onde a pessoa já chegou. Mesma proteção usada
-    // em useRecommendedModuleId (suggestIfNotPast).
     const activeIdx = activeModuleId ? MODULE_ORDER.indexOf(activeModuleId) : -1;
     const suggestIfNotPast = (id: ModuleId) =>
       !isDone(id) && (activeIdx === -1 || activeIdx <= MODULE_ORDER.indexOf(id));
@@ -186,7 +179,7 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     return {
       kind: "go-module",
       moduleId: "checklist",
-      label: "Abrir Painel de Prontidão",
+      label: "Abrir Checklist de Prontidão",
       helper: "Todos os módulos foram concluídos. Revisar a prontidão geral.",
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,9 +191,6 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     if (nextStep.moduleId) return onGoToModule(nextStep.moduleId);
   };
 
-  // Só copia prompt quando o próximo passo é um módulo real com intent segura
-  // no promptBuilder. Para ações de UI (fill-context / open-drawer) ou módulos
-  // sem intent definida, o botão não aparece — evita prompt genérico.
   const recommendedModuleId =
     nextStep.kind === "go-module" ? nextStep.moduleId ?? null : null;
   const recommendedIntent = recommendedModuleId
@@ -235,130 +225,286 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
     }
   };
 
+  // Alertas contextuais
+  const mismatchAlert =
+    recommendedModuleId &&
+    activeModuleId &&
+    recommendedModuleId !== activeModuleId &&
+    !isDone(activeModuleId)
+      ? {
+          currentLabel: MODULE_LABEL[activeModuleId],
+          recommendedLabel: MODULE_LABEL[recommendedModuleId],
+          recommendedId: recommendedModuleId,
+        }
+      : null;
+
+  const noJourney = !!activeProject && !journey;
+  const noContext =
+    !!activeProject && !hasUsefulProjectContext(activeProject.context);
+
   return (
     <section
-      aria-label="Estado atual do projeto"
-      className="mb-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset] p-4 md:p-5"
+      aria-label="GPS do projeto"
+      className="relative mb-4 overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-white/[0.05] via-white/[0.03] to-transparent backdrop-blur-xl shadow-[0_10px_40px_-20px_hsl(var(--accent)/0.35),0_0_0_1px_rgba(255,255,255,0.03)_inset]"
     >
-      <header className="flex items-center justify-between gap-3 mb-3">
+      {/* halo ciano sutil */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 -right-16 h-48 w-48 rounded-full bg-accent/10 blur-3xl"
+      />
+
+      {/* ÁREA 1 — CABEÇALHO COMPACTO */}
+      <header className="relative flex flex-wrap items-center gap-x-4 gap-y-2 px-4 md:px-5 pt-4 pb-3 border-b border-white/5">
         <div className="flex items-center gap-2 text-accent">
-          <Sparkles size={14} />
-          <h2 className="text-xs uppercase tracking-wider text-muted-foreground/90">
-            Estado atual do projeto
-          </h2>
+          <Radar size={14} />
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-accent/90">
+            GPS do projeto
+          </span>
         </div>
-        <span className="text-[10px] text-muted-foreground/70">
-          {doneCount}/{totalCount} módulos · {percent}%
+        <span className="text-[11px] text-muted-foreground/80">
+          <span className="text-foreground/90 font-medium">{activeProject?.name ?? "Nenhum projeto"}</span>
+          <span className="mx-1.5 text-muted-foreground/40">·</span>
+          {mode}
         </span>
+        <div className="ml-auto flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2 min-w-[140px]">
+            <div className="h-1 flex-1 rounded-full bg-white/5 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-accent/70 to-accent transition-[width] duration-500"
+                style={{ width: `${percent}%` }}
+              />
+            </div>
+            <span className="text-[10px] tabular-nums text-muted-foreground/80">
+              {doneCount}/{totalCount} · {percent}%
+            </span>
+          </div>
+        </div>
       </header>
 
-      <p className="mb-3 text-[11px] text-muted-foreground/70">
-        Você está usando a Fábrica de Apps com IA para guiar este projeto.
-      </p>
-
-      {activeProject && <ProjectLogoPicker />}
-
-      <div className="mt-3 mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[11px]">
-        <Route size={12} className="text-accent shrink-0" />
-        <span className="text-muted-foreground">Jornada escolhida:</span>
-        <span className="font-medium text-foreground">
-          {journey ? JOURNEY_LABELS[journey] : "Nenhuma — escolha em Comece Aqui"}
-        </span>
-        <button
-          type="button"
-          onClick={() => onGoToModule("comece")}
-          className="ml-auto inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-foreground/80 hover:bg-white/10 transition"
-          title="Trocar a jornada do projeto sem apagar progresso"
-        >
-          {journey ? "Trocar jornada" : "Escolher jornada"}
-          <ArrowRight size={10} />
-        </button>
-      </div>
-
-
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-[11px]">
-        <InfoField
-          icon={<FolderKanban size={12} />}
-          label="Projeto em foco"
-          value={activeProject?.name ?? "Nenhum"}
+      {/* Chips de contexto */}
+      <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-2 px-4 md:px-5 pt-3">
+        <Chip
+          icon={<Route size={12} />}
+          label="Jornada"
+          value={journey ? JOURNEY_LABELS[journey] : "Não escolhida"}
+          action={{
+            text: journey ? "Trocar" : "Escolher",
+            onClick: () => onGoToModule("comece"),
+          }}
         />
-        <InfoField
-          icon={<UserCog size={12} />}
-          label="Modo atual"
-          value={mode}
-        />
-        <InfoField
+        <Chip
           icon={<Compass size={12} />}
-          label="Fase atual"
+          label="Fase"
           value={phase}
         />
-        <InfoField
+        <Chip
           icon={<ListChecks size={12} />}
           label="Módulo ativo"
           value={activeModuleLabel}
         />
       </div>
 
-      <p
-        className="mt-2 text-[11px] text-muted-foreground/80"
-        aria-live="polite"
-      >
-        <span className="text-muted-foreground/60">Última ação registrada: </span>
-        {lastActionText ??
-          "Nenhuma ação concluída ainda. Comece pelo próximo passo recomendado."}
-      </p>
-
-
-
-      <div className="mt-4 flex flex-col md:flex-row md:items-center gap-3 rounded-xl border border-accent/20 bg-accent/[0.06] p-3">
-        <div className="flex-1 min-w-0">
-          <div className="text-[10px] uppercase tracking-wider text-accent">
-            Próximo passo recomendado
-          </div>
-          <div className="mt-0.5 text-sm font-medium text-foreground">
-            {nextStep.label}
-          </div>
-          <div className="text-xs text-muted-foreground mt-0.5">
-            {nextStep.helper}
-          </div>
+      {/* Progresso mobile */}
+      <div className="sm:hidden px-4 pt-2 flex items-center gap-2">
+        <div className="h-1 flex-1 rounded-full bg-white/5 overflow-hidden">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-accent/70 to-accent"
+            style={{ width: `${percent}%` }}
+          />
         </div>
-        <div className="flex flex-col sm:flex-row gap-2 shrink-0 w-full md:w-auto">
-          {canCopyPrompt && (
+        <span className="text-[10px] tabular-nums text-muted-foreground/80">
+          {doneCount}/{totalCount} · {percent}%
+        </span>
+      </div>
+
+      {/* ÁREA 2 — PRÓXIMO PASSO */}
+      <div className="relative mx-4 md:mx-5 mt-4 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.10] via-accent/[0.05] to-transparent p-4 shadow-[0_0_30px_-15px_hsl(var(--accent)/0.6)_inset]">
+        <div className="flex flex-col md:flex-row md:items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-accent">
+              Próximo passo recomendado
+            </div>
+            <div className="mt-1 text-base font-semibold text-foreground leading-snug">
+              {nextStep.label}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
+              {nextStep.helper}
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0 w-full md:w-auto">
             <button
               type="button"
-              onClick={handleCopyPrompt}
-              disabled={copying}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-accent/40 bg-accent/10 text-accent text-xs font-medium hover:bg-accent/15 transition disabled:opacity-60"
-              title="Copia um prompt seguro para colar no Lovable, usando o contexto do projeto em foco"
+              onClick={handleAction}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-accent text-accent-foreground text-xs font-semibold shadow-[0_8px_24px_-8px_hsl(var(--accent)/0.7)] hover:brightness-110 transition"
             >
-              <ClipboardCopy size={14} /> {copying ? "Copiando..." : "Copiar prompt recomendado"}
+              Ir para próximo passo <ArrowRight size={14} />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={handleAction}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:opacity-90 transition"
-          >
-            Ir para próximo passo <ArrowRight size={14} />
-          </button>
+            {canCopyPrompt && (
+              <button
+                type="button"
+                onClick={handleCopyPrompt}
+                disabled={copying}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-white/10 bg-white/[0.03] text-foreground/80 text-xs font-medium hover:bg-white/[0.06] hover:text-foreground transition disabled:opacity-60"
+                title="Copia um prompt seguro para colar no Lovable"
+              >
+                <ClipboardCopy size={13} /> {copying ? "Copiando..." : "Copiar prompt"}
+              </button>
+            )}
+          </div>
         </div>
-
         {copiedHint && canCopyPrompt && (
           <p
-            className="basis-full mt-1 text-[11px] text-muted-foreground/80 md:text-right"
+            className="mt-2 text-[11px] text-muted-foreground/80"
             role="status"
             aria-live="polite"
           >
-            Copiado. Agora cole no chat do Lovable como nova mensagem. Quando o Lovable terminar, volte aqui, teste o resultado e marque o módulo como concluído.
+            Copiado. Cole no chat do Lovable como nova mensagem, teste o resultado e volte para marcar o módulo como concluído.
           </p>
         )}
+      </div>
+
+      {/* ÁREA 3 — ALERTAS CONTEXTUAIS */}
+      <div className="relative px-4 md:px-5 pt-3 pb-4 space-y-2">
+        {noJourney && (
+          <AlertLine
+            tone="warn"
+            icon={<AlertTriangle size={12} />}
+            text={
+              <>
+                <span className="text-foreground/90">Jornada não definida.</span>{" "}
+                Escolha em Comece Aqui para receber o próximo passo certo.
+              </>
+            }
+            action={{ text: "Escolher jornada", onClick: () => onGoToModule("comece") }}
+          />
+        )}
+        {noContext && (
+          <AlertLine
+            tone="warn"
+            icon={<AlertTriangle size={12} />}
+            text={
+              <>
+                <span className="text-foreground/90">Contexto incompleto.</span>{" "}
+                Sem contexto, os prompts saem genéricos.
+              </>
+            }
+            action={{ text: "Preencher agora", onClick: () => openEditor() }}
+          />
+        )}
+        {mismatchAlert && (
+          <AlertLine
+            tone="info"
+            icon={<Info size={12} />}
+            text={
+              <>
+                Você está vendo{" "}
+                <span className="text-foreground/90">{mismatchAlert.currentLabel}</span>, mas o próximo passo recomendado é{" "}
+                <span className="text-accent">{mismatchAlert.recommendedLabel}</span>.
+              </>
+            }
+            action={{
+              text: "Ir agora",
+              onClick: () => onGoToModule(mismatchAlert.recommendedId),
+            }}
+          />
+        )}
+
+        <details className="group text-[11px] text-muted-foreground/80">
+          <summary className="cursor-pointer list-none inline-flex items-center gap-1.5 text-muted-foreground/70 hover:text-foreground/80 transition select-none">
+            <span className="inline-block h-1 w-1 rounded-full bg-muted-foreground/40" />
+            Ver detalhes do projeto
+            <span className="text-[9px] uppercase tracking-wider opacity-60 group-open:hidden">expandir</span>
+          </summary>
+          <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-lg border border-white/5 bg-white/[0.02] p-3">
+            <MiniField icon={<FolderKanban size={11} />} label="Projeto em foco" value={activeProject?.name ?? "Nenhum"} />
+            <MiniField icon={<UserCog size={11} />} label="Modo atual" value={mode} />
+            <div className="col-span-full text-[11px] text-muted-foreground/80">
+              <span className="text-muted-foreground/60">Última ação: </span>
+              {lastActionText ?? "Nenhuma ação concluída ainda."}
+            </div>
+            {activeProject && (
+              <div className="col-span-full pt-2 border-t border-white/5">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground/70 mb-2">
+                  <ImagePlus size={11} className="text-accent" />
+                  Editar logo do projeto
+                </div>
+                <ProjectLogoPicker />
+              </div>
+            )}
+          </div>
+        </details>
       </div>
     </section>
   );
 };
 
-const InfoField = ({
+/* ---------- Subcomponentes locais ---------- */
+
+const Chip = ({
+  icon,
+  label,
+  value,
+  action,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  action?: { text: string; onClick: () => void };
+}) => (
+  <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 min-w-0">
+    <span className="text-accent shrink-0">{icon}</span>
+    <div className="min-w-0 flex-1">
+      <div className="text-[9px] uppercase tracking-wider text-muted-foreground/70">{label}</div>
+      <div className="text-[12px] font-medium text-foreground truncate" title={value}>
+        {value}
+      </div>
+    </div>
+    {action && (
+      <button
+        type="button"
+        onClick={action.onClick}
+        className="shrink-0 inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-foreground/80 hover:bg-white/10 transition"
+      >
+        {action.text} <ArrowRight size={9} />
+      </button>
+    )}
+  </div>
+);
+
+const AlertLine = ({
+  tone,
+  icon,
+  text,
+  action,
+}: {
+  tone: "warn" | "info";
+  icon: React.ReactNode;
+  text: React.ReactNode;
+  action?: { text: string; onClick: () => void };
+}) => (
+  <div
+    role="note"
+    className={`flex items-start gap-2 rounded-lg border px-3 py-2 text-[11px] leading-relaxed ${
+      tone === "warn"
+        ? "border-amber-400/20 bg-amber-400/[0.04] text-amber-100/90"
+        : "border-accent/20 bg-accent/[0.05] text-foreground/85"
+    }`}
+  >
+    <span className={tone === "warn" ? "text-amber-300 mt-0.5" : "text-accent mt-0.5"}>{icon}</span>
+    <span className="flex-1">{text}</span>
+    {action && (
+      <button
+        type="button"
+        onClick={action.onClick}
+        className="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium text-accent hover:text-accent/80 transition"
+      >
+        {action.text} <ArrowRight size={11} />
+      </button>
+    )}
+  </div>
+);
+
+const MiniField = ({
   icon,
   label,
   value,
@@ -368,11 +514,11 @@ const InfoField = ({
   value: string;
 }) => (
   <div className="min-w-0">
-    <div className="flex items-center gap-1 uppercase tracking-wider text-muted-foreground/80">
+    <div className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground/70">
       <span className="text-accent">{icon}</span>
       <span>{label}</span>
     </div>
-    <div className="mt-0.5 text-sm font-medium text-foreground truncate" title={value}>
+    <div className="mt-0.5 text-[12px] font-medium text-foreground truncate" title={value}>
       {value}
     </div>
   </div>
