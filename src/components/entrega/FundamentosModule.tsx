@@ -116,7 +116,7 @@ export function FundamentosModule({ goTo }: Props = {}) {
     <section>
       <header className="mb-6">
         <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-3">
-          <BookOpen size={12} /> Como usar o Lovable
+          <BookOpen size={12} /> Comece pelo Lovable
         </span>
         <h1 className="text-2xl md:text-4xl font-heading font-bold leading-tight mb-2">
           Entenda o Lovable antes de construir
