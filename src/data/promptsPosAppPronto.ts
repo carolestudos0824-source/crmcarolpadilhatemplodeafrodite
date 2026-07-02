@@ -393,3 +393,188 @@ Quero que você gere:
 Não escreva código. Não peça secrets. Não oriente burlar login, pagamento, RLS ou regras de acesso.`,
   },
 ];
+
+export const PROMPTS_ERROS: PromptItem[] = [
+  {
+    id: "erros-p1-loja-cedo",
+    tipo: "agente",
+    titulo: "Revisar se estou indo para loja cedo demais",
+    descricao: "Analisa se faz sentido tentar App Store / Google Play agora ou se ainda é fase de web app.",
+    texto: `Analise se estou tentando publicar meu app em loja cedo demais.
+
+Contexto do meu app:
+- Nome:
+- Público:
+- O que o app faz:
+- Já publiquei como web app? Sim/Não
+- Já tenho domínio? Sim/Não
+- Já tenho usuárias reais? Sim/Não
+- Já validei a oferta? Sim/Não
+- Já recebi feedback real? Sim/Não
+- O app funciona bem no celular? Sim/Não
+- Existem bugs importantes? Sim/Não
+- Tenho política de privacidade? Sim/Não
+- Tenho suporte claro? Sim/Não
+- Quero ir para: Google Play, App Store ou ambas
+- Meu motivo para querer loja:
+
+Quero que você me diga:
+1. Se estou indo para loja cedo demais.
+2. O que preciso corrigir antes.
+3. Se devo continuar como web app por enquanto.
+4. Se PWA já resolveria meu momento.
+5. Quais riscos existem se eu tentar loja agora.
+6. Qual próximo passo mais seguro.
+
+Não prometa aprovação, vendas, downloads ou resultado financeiro.`,
+  },
+  {
+    id: "erros-p2-corrigir-bugs",
+    tipo: "lovable",
+    titulo: "Corrigir app quebrado antes de evoluir",
+    descricao: "Correção cirúrgica dos bugs principais antes de PWA, Android, iOS ou loja.",
+    texto: `CORREÇÃO CIRÚRGICA ANTES DE EVOLUIR PARA PWA OU LOJA
+
+Pedido direto:
+Corrija apenas os bugs principais do meu app antes de qualquer evolução para PWA, Android, iOS, App Store ou Google Play.
+
+Contexto:
+Meu app foi construído no Lovable e ainda apresenta problemas. Antes de transformar em PWA ou pensar em lojas, quero corrigir o que está quebrado.
+
+Problemas encontrados:
+1.
+2.
+3.
+
+Tarefa específica:
+Corrigir somente os problemas listados, preservando a estrutura atual do projeto.
+
+Faça obrigatoriamente:
+1. Corrigir apenas os bugs informados.
+2. Preservar o restante do app.
+3. Testar o fluxo afetado.
+4. Informar o que foi corrigido.
+5. Informar se há riscos restantes.
+
+Preserve:
+- estrutura atual do projeto
+- páginas aprovadas
+- identidade visual
+- login, banco, RLS, policies, checkout, admin, área paga e dados das usuárias
+
+Não faça:
+- não refaça o projeto inteiro
+- não crie funcionalidades novas
+- não altere checkout ou pagamento
+- não altere banco, RLS ou policies sem necessidade clara
+- não exponha secrets, tokens, senhas ou chaves
+- não use service_role no frontend
+- não publique em lojas
+- não transforme em PWA ainda
+
+Critério de aceite:
+Os bugs listados devem ser corrigidos sem quebrar login, banco, checkout, área paga, admin ou fluxos existentes.`,
+  },
+  {
+    id: "erros-p3-tipo-de-app",
+    tipo: "agente",
+    titulo: "Entender qual tipo de app eu tenho agora",
+    descricao: "Diferencia web app, PWA, app empacotado e nativo, e recomenda o caminho.",
+    texto: `Me ajude a entender qual tipo de app eu tenho agora e qual evolução faz sentido.
+
+Contexto:
+Criei meu app usando IA e quero entender se ele é web app, se pode virar PWA, se pode ser empacotado para loja ou se precisaria de uma versão nativa no futuro.
+
+Informações:
+- O app funciona por link? Sim/Não
+- Tem domínio? Sim/Não
+- Funciona bem no celular? Sim/Não
+- Tem login? Sim/Não
+- Tem banco de dados? Sim/Não
+- Tem checkout? Sim/Não
+- Precisa de câmera, GPS, notificações ou recursos nativos? Sim/Não
+- Já tenho usuárias reais? Sim/Não
+- Quero publicar em loja por qual motivo?
+
+Quero que você explique:
+1. Que tipo de app eu tenho hoje.
+2. O que seria uma PWA no meu caso.
+3. O que seria empacotar esse app.
+4. O que seria uma versão nativa.
+5. Qual caminho faz mais sentido agora.
+6. O que eu não devo fazer ainda.
+
+Seja simples, direto e não prometa aprovação, vendas ou resultado financeiro.`,
+  },
+  {
+    id: "erros-p4-paginas-confianca",
+    tipo: "lovable",
+    titulo: "Preparar páginas de confiança antes de loja",
+    descricao: "Revisão de política de privacidade, termos, suporte e transparência antes de PWA ou loja.",
+    texto: `PÁGINAS DE CONFIANÇA ANTES DE PENSAR EM LOJA
+
+Pedido direto:
+Revise se meu app possui páginas e informações mínimas de confiança antes de eu pensar em PWA, Google Play ou App Store.
+
+Contexto:
+Meu app pode ter login, coleta de dados, checkout, área paga ou informações de usuárias. Quero preparar a base de confiança antes de pensar em loja.
+
+Tarefa específica:
+Verificar e, se necessário, sugerir páginas ou links de confiança para o app.
+
+Faça obrigatoriamente:
+1. Verificar se existe política de privacidade quando houver coleta de dados.
+2. Verificar se existe termos de uso quando necessário.
+3. Verificar se existe contato de suporte.
+4. Verificar se links importantes funcionam.
+5. Verificar se o app explica claramente o que faz.
+6. Verificar se textos não prometem resultado garantido.
+7. Sugerir ajustes simples antes de criar ou alterar páginas.
+
+Preserve:
+- estrutura atual do projeto
+- identidade visual aprovada
+- login, banco, RLS, policies, checkout, admin, área paga e dados das usuárias
+
+Não faça:
+- não altere checkout ou pagamento
+- não mexa em RLS, policies ou banco
+- não exponha dados sensíveis
+- não invente CNPJ, depoimentos, métricas ou provas sociais
+- não prometa aprovação em loja
+- não prometa vendas ou resultados
+- não refaça o projeto inteiro
+
+Critério de aceite:
+O app deve ter uma base mínima de confiança revisada, com suporte, transparência e textos seguros antes de qualquer evolução para loja.`,
+  },
+  {
+    id: "erros-p5-nativo-futuro",
+    tipo: "agente",
+    titulo: "Decidir se nativo deve ficar para o futuro",
+    descricao: "Analisa se faz sentido pensar em app nativo agora ou deixar como evolução futura.",
+    texto: `Me ajude a decidir se uma versão nativa do meu app deve ficar para o futuro.
+
+Contexto do app:
+- Nome:
+- Público:
+- O que o app faz:
+- Já tenho usuárias reais? Sim/Não
+- Já tenho receita? Sim/Não
+- O app precisa de recursos avançados do celular? Sim/Não
+- Quais recursos:
+- A versão web atual está funcionando bem? Sim/Não
+- A experiência mobile está boa? Sim/Não
+- Meu motivo para querer nativo:
+
+Quero que você me diga:
+1. Se faz sentido pensar em nativo agora.
+2. Se devo continuar web app.
+3. Se PWA pode resolver antes.
+4. Se loja faz sentido antes do nativo.
+5. Quais riscos existem em ir para nativo cedo demais.
+6. Qual caminho mais seguro para os próximos 30 dias.
+
+Não escreva código. Não prometa resultado financeiro, aprovação em loja, vendas ou downloads.`,
+  },
+];
