@@ -513,7 +513,10 @@ export function MelhoriasVersoesModule() {
         </div>
       </GlassCard>
 
+      <PromptsExecutarEtapa prompts={PROMPTS_MELHORIAS} />
+
       <GlassCard className="p-5 mb-6">
+
 
         <div className="flex items-center gap-2 mb-3">
           <HelpCircle size={16} className="text-accent" />
