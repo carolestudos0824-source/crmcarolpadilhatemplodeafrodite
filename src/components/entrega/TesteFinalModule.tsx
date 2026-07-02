@@ -559,6 +559,7 @@ function PwaLojaChecklist() {
 
   return (
     <>
+    <ChecklistDisclosure title="Checklist opcional — Antes de PWA ou lojas">
     <GlassCard className="p-5 md:p-6 mt-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
 
       <div className="flex items-center gap-2 mb-2">
