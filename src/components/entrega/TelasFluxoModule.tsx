@@ -20,6 +20,7 @@ import { CommandCard } from "@/components/entrega/CommandCard";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
 import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const orPlaceholder = (s: string | undefined | null) =>
   s && s.trim() ? s.trim() : "[a definir]";
@@ -542,7 +543,17 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         </div>
       </details>
 
-      {/* Checklist crítico — controla conclusão do módulo via Entrega.tsx */}
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu Mapa de Telas e Fluxo está simples, claro e pronto para virar prompt do Lovable."
+          ctaLabel="Revisar Mapa com o Agente Arquiteto"
+        />
+      </div>
+
+      {/* Checklist opcional — recolhido por padrão, fica no final da página */}
+      <ChecklistDisclosure title="Checklist opcional — Mapa de Telas e Fluxo">
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -606,15 +617,7 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
           );
         })()}
       </GlassCard>
-
-      <div className="mt-6">
-        <AgentArchitectCard
-          variant="compact"
-          title="Quer revisar antes de seguir?"
-          subtitle="Use o Agente Arquiteto para validar se seu Mapa de Telas e Fluxo está simples, claro e pronto para virar prompt do Lovable."
-          ctaLabel="Revisar Mapa com o Agente Arquiteto"
-        />
-      </div>
+      </ChecklistDisclosure>
     </section>
   );
 }

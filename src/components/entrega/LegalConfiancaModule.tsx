@@ -24,6 +24,7 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoLegalCard } from "./ResumoLegalCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso preparar páginas de confiança antes de divulgar. Me ajude a organizar: termos de uso, política de privacidade, suporte, segurança, entrega, pagamento, acesso, limites da promessa e mensagens claras para reduzir dúvidas dos usuários. Não quero texto jurídico complexo, quero uma estrutura simples, clara e responsável.`;
 
@@ -497,6 +498,7 @@ export function LegalConfiancaModule() {
         </dl>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Revisão da etapa">
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -542,6 +544,7 @@ export function LegalConfiancaModule() {
           Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
+      </ChecklistDisclosure>
     </section>
   );
 }

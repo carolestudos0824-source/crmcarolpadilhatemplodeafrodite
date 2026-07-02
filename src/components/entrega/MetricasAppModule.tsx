@@ -25,6 +25,7 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoMetricasCard } from "@/components/entrega/ResumoMetricasCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso definir as métricas principais do meu app. Me ajude a escolher quais números acompanhar: visitas, cliques, início do fluxo, conclusão, CTA, lead, checkout, compra, entrega, abandono, suporte, objeções e custo por resultado quando houver tráfego pago. Quero métricas simples para tomar decisões reais sem me perder em números inúteis.`;
 
@@ -409,6 +410,7 @@ export function MetricasAppModule() {
         </ul>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Revisão da etapa">
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -454,6 +456,7 @@ export function MetricasAppModule() {
           Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
+      </ChecklistDisclosure>
     </section>
   );
 }

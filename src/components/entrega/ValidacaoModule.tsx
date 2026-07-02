@@ -24,6 +24,7 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { ResumoValidacaoCard } from "@/components/entrega/ResumoValidacaoCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso validar com 10 pessoas reais antes de ampliar divulgação. Me ajude a planejar o teste, escrever convite honesto, escolher perguntas que revelam comportamento, separar sinal forte de sinal fraco e decidir o que melhorar primeiro — sem prometer validação, vendas ou aceitação garantida.`;
 
@@ -391,6 +392,7 @@ export function ValidacaoModule() {
         </ul>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Revisão da etapa">
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -437,6 +439,7 @@ export function ValidacaoModule() {
           concluída na sua jornada.
         </p>
       </GlassCard>
+      </ChecklistDisclosure>
     </section>
   );
 }

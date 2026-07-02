@@ -34,6 +34,7 @@ import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilde
 import { ResumoTesteFinalCard } from "./ResumoTesteFinalCard";
 import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
 import { PROMPTS_TESTE } from "@/data/promptsPosAppPronto";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso fazer um teste final antes de divulgar. Me ajude a criar um checklist completo para testar: desktop, mobile, login, formulários, botões, checkout, entrega, links, textos, imagens, erros, página branca, scroll horizontal e experiência do usuário.`;
@@ -558,6 +559,7 @@ function PwaLojaChecklist() {
 
   return (
     <>
+    <ChecklistDisclosure title="Checklist opcional — Antes de PWA ou lojas">
     <GlassCard className="p-5 md:p-6 mt-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
 
       <div className="flex items-center gap-2 mb-2">
@@ -683,6 +685,7 @@ function PwaLojaChecklist() {
         </div>
       </div>
     </GlassCard>
+    </ChecklistDisclosure>
     <PromptsExecutarEtapa prompts={PROMPTS_TESTE} />
     </>
   );
@@ -813,6 +816,16 @@ export function TesteFinalModule() {
         </dl>
       </GlassCard>
 
+      <div className="mt-6 mb-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu app passou nos testes e está pronto para divulgar."
+          ctaLabel="Revisar teste final com o Agente Arquiteto"
+        />
+      </div>
+
+      <ChecklistDisclosure title="Checklist opcional — Checklist final de publicação">
       <GlassCard className="p-5">
         <div className="flex items-start gap-2 mb-1">
           <Bug size={16} className="text-emerald-300 mt-1" />
@@ -944,19 +957,9 @@ export function TesteFinalModule() {
           );
         })()}
       </GlassCard>
+      </ChecklistDisclosure>
 
       <PwaLojaChecklist />
-
-
-
-      <div className="mt-6">
-        <AgentArchitectCard
-          variant="compact"
-          title="Quer revisar antes de seguir?"
-          subtitle="Use o Agente Arquiteto para validar se seu app passou nos testes e está pronto para divulgar."
-          ctaLabel="Revisar teste final com o Agente Arquiteto"
-        />
-      </div>
     </section>
   );
 }

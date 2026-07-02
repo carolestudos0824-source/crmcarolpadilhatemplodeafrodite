@@ -27,6 +27,7 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { buildLovablePrompt } from "@/lib/promptBuilder";
 import { useProjectContext, type ProjectContext } from "@/hooks/useProjectContext";
 import { useProjectJourney, JOURNEY_LABELS, type JourneyId } from "@/lib/journey";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const yn = (v: ProjectContext["needsLogin"]) =>
   v === "sim" ? "Sim" : v === "nao" ? "Não" : "[a definir]";
@@ -682,6 +683,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </dl>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Resultado esperado deste planejamento">
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -759,6 +761,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           );
         })()}
       </GlassCard>
+      </ChecklistDisclosure>
 
     </section>
   );

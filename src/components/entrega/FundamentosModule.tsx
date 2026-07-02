@@ -13,6 +13,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 type Aula = {
   num: number;
@@ -306,14 +307,26 @@ export function FundamentosModule({ goTo }: Props = {}) {
         })}
       </div>
 
-      {/* Checklist */}
-      <p className="text-sm text-muted-foreground mt-6 mb-2">
-        Leia as 5 aulas, marque os pontos abaixo e avance para o primeiro passo da jornada.
-      </p>
+      {/* Pronto para começar */}
+      <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+        <strong className="block mb-1 text-emerald-100">Pronto para começar?</strong>
+        <p className="text-sm text-emerald-100/90 mb-3">
+          Agora siga para o módulo <em>Comece aqui</em> e inicie o primeiro passo da jornada.
+        </p>
+        {goTo && (
+          <button
+            onClick={() => goTo("comece")}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-emerald-400/40 bg-emerald-400/15 text-emerald-100 hover:bg-emerald-400/25 text-sm font-semibold"
+          >
+            Ir para Comece aqui <ArrowRight size={14} />
+          </button>
+        )}
+      </div>
+
+      {/* Checklist opcional — recolhido por padrão */}
+      <div className="mt-6">
+      <ChecklistDisclosure title="Checklist opcional — Antes de avançar, confirme que você entendeu">
       <GlassCard className="p-5 md:p-6">
-        <h3 className="text-base md:text-lg font-heading font-bold mb-3">
-          Antes de avançar, confirme que você entendeu:
-        </h3>
         <ul className="space-y-2">
           {CHECKLIST_ITEMS.map((item, i) => (
             <li key={item}>
@@ -342,22 +355,7 @@ export function FundamentosModule({ goTo }: Props = {}) {
           </div>
         )}
       </GlassCard>
-
-
-      {/* Pronto para começar */}
-      <div className="mt-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
-        <strong className="block mb-1 text-emerald-100">Pronto para começar?</strong>
-        <p className="text-sm text-emerald-100/90 mb-3">
-          Agora siga para o módulo <em>Comece aqui</em> e inicie o primeiro passo da jornada.
-        </p>
-        {goTo && (
-          <button
-            onClick={() => goTo("comece")}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-emerald-400/40 bg-emerald-400/15 text-emerald-100 hover:bg-emerald-400/25 text-sm font-semibold"
-          >
-            Ir para Comece aqui <ArrowRight size={14} />
-          </button>
-        )}
+      </ChecklistDisclosure>
       </div>
     </section>
   );

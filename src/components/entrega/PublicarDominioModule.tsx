@@ -33,6 +33,7 @@ import { PROMPTS_PUBLICAR } from "@/data/promptsPosAppPronto";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoPublicacaoCard } from "./ResumoPublicacaoCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso publicar do jeito certo. Me ajude a entender a diferença entre preview e produção, como testar o link público, o que revisar antes de divulgar, como pensar domínio, favicon, imagem social e como fazer um checklist final de publicação.`;
@@ -658,6 +659,16 @@ export function PublicarDominioModule() {
         </dl>
       </GlassCard>
 
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de publicar?"
+          subtitle="Use o Agente Arquiteto para validar se seu app está pronto para sair do preview e ir para divulgação."
+          ctaLabel="Revisar publicação com o Agente Arquiteto"
+        />
+      </div>
+
+      <ChecklistDisclosure title="Checklist opcional — Revisão da etapa">
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
@@ -703,15 +714,7 @@ export function PublicarDominioModule() {
           Quando todos os itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
-
-      <div className="mt-6">
-        <AgentArchitectCard
-          variant="compact"
-          title="Quer revisar antes de publicar?"
-          subtitle="Use o Agente Arquiteto para validar se seu app está pronto para sair do preview e ir para divulgação."
-          ctaLabel="Revisar publicação com o Agente Arquiteto"
-        />
-      </div>
+      </ChecklistDisclosure>
     </section>
   );
 }

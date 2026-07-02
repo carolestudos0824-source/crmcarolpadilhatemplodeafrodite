@@ -26,6 +26,7 @@ import { CopyCommandWarning } from "@/components/entrega/CopyCommandWarning";
 import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { buildLovablePrompt } from "@/lib/promptBuilder";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso revisar a segurança contra invasão. Me ajude a proteger rotas públicas, área restrita, área paga, painel admin, dados dos usuários, banco de dados, RLS, RPCs, chaves secretas, APIs, checkout e permissões. Quero saber o que pode ficar público, o que deve ficar privado e como testar se alguém consegue acessar o que não deveria.`;
@@ -399,6 +400,7 @@ export function SegurancaAppModule() {
         </dl>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Revisão da etapa">
       <GlassCard className="p-5">
         <div className="flex items-center gap-2 mb-3">
           <Eye size={16} className="text-emerald-300" />
@@ -444,6 +446,7 @@ export function SegurancaAppModule() {
           Quando todos os 12 itens estiverem marcados, esta etapa será considerada concluída na sua jornada.
         </p>
       </GlassCard>
+      </ChecklistDisclosure>
     </section>
   );
 }
