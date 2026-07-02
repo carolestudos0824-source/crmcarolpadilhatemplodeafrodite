@@ -2891,7 +2891,7 @@ function ModuleContent({ active, checklist, setChecklist, goTo }: ModuleContentP
     return (
       <section>
         <ModuleHeader
-          title="Painel de Prontidão do App"
+          title="Checklist de Prontidão do App"
           subtitle="Decida com clareza se você pode testar, vender ou divulgar — ou se precisa voltar e corrigir um bloqueador antes de seguir."
         />
         <FabricaLegalReminder text="Os itens deste painel são do app criado pela pessoa. A Fábrica de Apps com IA tem seus próprios documentos:" />
