@@ -16,6 +16,13 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  Globe,
+  Smartphone,
+  Store,
+  Rocket,
+  Layers,
+  AlertTriangle,
+  Lightbulb,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
