@@ -683,6 +683,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
         </dl>
       </GlassCard>
 
+      <ChecklistDisclosure title="Checklist opcional — Resultado esperado deste planejamento">
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle2 size={16} className="text-emerald-300" />
