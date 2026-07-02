@@ -16,6 +16,13 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  Globe,
+  Smartphone,
+  Store,
+  Rocket,
+  Layers,
+  AlertTriangle,
+  Lightbulb,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -387,7 +394,127 @@ export function MelhoriasVersoesModule() {
         ))}
       </div>
 
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/30">
+        <div className="flex items-center gap-2 mb-3">
+          <Layers size={18} className="text-accent" />
+          <span className="text-[11px] uppercase tracking-wider text-accent">
+            Seção complementar
+          </span>
+        </div>
+        <h2 className="text-xl md:text-2xl font-heading font-bold leading-tight mb-2">
+          Evolução do app: web, PWA, loja ou nativo futuro
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 leading-relaxed mb-5">
+          Depois que seu app está publicado, a próxima decisão não é fazer tudo de
+          uma vez. O caminho mais seguro é evoluir por versões: primeiro validar,
+          depois melhorar, depois pensar em instalação, loja ou versão nativa —
+          se isso fizer sentido para o projeto.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-3 mb-5">
+          {[
+            {
+              icon: Globe,
+              tag: "Versão 1",
+              title: "Web app publicado",
+              text: "A primeira versão pode começar como web app com domínio. É o caminho mais simples para testar a ideia, mostrar para pessoas reais, vender, receber feedback e corrigir o que for necessário.",
+            },
+            {
+              icon: Sparkles,
+              tag: "Versão 2",
+              title: "Melhoria com feedback real",
+              text: "Antes de transformar em PWA ou loja, observe o uso real. Veja onde as pessoas travam, quais telas precisam melhorar, quais funcionalidades faltam e quais partes não estão sendo usadas.",
+            },
+            {
+              icon: Smartphone,
+              tag: "Versão 3",
+              title: "PWA instalável",
+              text: "Depois que o app já estiver funcionando bem no celular, pode fazer sentido preparar uma versão PWA, com experiência mais próxima de app instalado. Um passo intermediário antes de pensar em loja.",
+            },
+            {
+              icon: Store,
+              tag: "Versão 4",
+              title: "Preparação para Google Play ou App Store",
+              text: "A publicação em loja pode fazer sentido quando o app já foi validado, tem pessoas reais usando, boa experiência mobile, suporte, política de privacidade e uma razão clara para estar como app instalado.",
+            },
+            {
+              icon: Rocket,
+              tag: "Versão futura",
+              title: "App nativo",
+              text: "Uma versão nativa pode ser considerada quando o app já tiver maturidade, demanda real, receita, necessidade de recursos avançados do celular ou uma estratégia mais robusta. Não é o primeiro passo para a maioria dos projetos.",
+            },
+          ].map((v) => {
+            const VIcon = v.icon;
+            return (
+              <div
+                key={v.tag}
+                className="rounded-xl border border-white/10 bg-white/5 p-4"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-accent/15 border border-accent/30 text-accent flex items-center justify-center">
+                    <VIcon size={15} />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-wider text-accent/80 font-semibold">
+                    {v.tag}
+                  </span>
+                </div>
+                <h4 className="font-heading font-semibold text-sm md:text-base mb-1.5">
+                  {v.title}
+                </h4>
+                <p className="text-xs md:text-sm text-foreground/80 leading-relaxed">
+                  {v.text}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="rounded-xl border border-sky-400/30 bg-sky-400/5 p-4 mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Lightbulb size={15} className="text-sky-300" />
+            <h4 className="font-heading font-semibold text-sm md:text-base text-sky-100">
+              Quando evoluir para o próximo nível?
+            </h4>
+          </div>
+          <ul className="space-y-1.5 text-xs md:text-sm text-foreground/85">
+            <li>• Evolua para PWA quando o app já funciona bem no celular e as pessoas precisam acessar com frequência.</li>
+            <li>• Pense em Google Play ou App Store quando já houver validação, pessoas reais usando e motivo claro para estar em loja.</li>
+            <li>• Considere nativo apenas quando houver necessidade real de recursos avançados, performance específica ou escala.</li>
+            <li>• Continue como web app se o projeto ainda está em validação, sem pessoas reais usando ou com ajustes importantes pendentes.</li>
+          </ul>
+        </div>
+
+        <div className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4 mb-3">
+          <div className="flex items-center gap-2 mb-1.5">
+            <AlertTriangle size={15} className="text-amber-300" />
+            <h4 className="font-heading font-semibold text-sm text-amber-100">
+              Cuidado com a evolução por vaidade
+            </h4>
+          </div>
+          <p className="text-xs md:text-sm text-foreground/85 leading-relaxed">
+            Estar na App Store ou Google Play não garante vendas, downloads ou
+            validação. Publicar cedo demais pode gerar custo, retrabalho,
+            rejeição, suporte desnecessário e manutenção antes da hora.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/5 p-4">
+          <div className="flex items-center gap-2 mb-1.5">
+            <CheckCircle2 size={15} className="text-emerald-300" />
+            <h4 className="font-heading font-semibold text-sm text-emerald-100">
+              Recomendação
+            </h4>
+          </div>
+          <p className="text-xs md:text-sm text-foreground/85 leading-relaxed">
+            A melhor evolução é aquela que acompanha o momento do app. Primeiro
+            publique, teste e valide. Depois melhore a experiência. Só então
+            decida se PWA, loja ou nativo fazem sentido.
+          </p>
+        </div>
+      </GlassCard>
+
       <GlassCard className="p-5 mb-6">
+
         <div className="flex items-center gap-2 mb-3">
           <HelpCircle size={16} className="text-accent" />
           <h3 className="font-heading font-semibold text-base">Não entendi uma palavra</h3>
