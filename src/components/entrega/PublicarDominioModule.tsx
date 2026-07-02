@@ -33,6 +33,7 @@ import { PROMPTS_PUBLICAR } from "@/data/promptsPosAppPronto";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoPublicacaoCard } from "./ResumoPublicacaoCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso publicar do jeito certo. Me ajude a entender a diferença entre preview e produção, como testar o link público, o que revisar antes de divulgar, como pensar domínio, favicon, imagem social e como fazer um checklist final de publicação.`;
