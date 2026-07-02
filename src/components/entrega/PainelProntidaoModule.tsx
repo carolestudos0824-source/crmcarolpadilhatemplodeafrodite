@@ -451,8 +451,13 @@ export function PainelProntidaoModule({ goTo }: Props) {
           title="Bloqueadores críticos"
           tone="danger"
           items={BLOQUEADORES}
-          note="Qualquer item acima ativo deve parar venda e divulgação até ser resolvido."
+          note="Marque qualquer item ativo. Enquanto houver um marcado, o veredito fica em “Não pronto”."
+          checkable
+          checkedMap={checklist}
+          keyPrefix={BLOQUEADOR_PREFIX}
+          onToggle={toggle}
         />
+
         <BlocoLista
           icon={TestTube2}
           title="Pode testar com pessoas reais se..."
