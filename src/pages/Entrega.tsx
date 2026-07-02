@@ -56,6 +56,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { FabricaLegalReminder } from "@/components/FabricaLegalReminder";
 import { FabricaQuickHelp } from "@/components/FabricaQuickHelp";
 import { PainelProntidaoModule } from "@/components/entrega/PainelProntidaoModule";
+import { ErrosPosAppPronto } from "@/components/entrega/ErrosPosAppPronto";
 import { GiftCodeRedemption } from "@/components/GiftCodeRedemption";
 import { FontSizeControl } from "@/components/FontSizeControl";
 import { CommandCard } from "@/components/entrega/CommandCard";
