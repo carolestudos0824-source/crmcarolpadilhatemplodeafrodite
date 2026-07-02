@@ -596,13 +596,13 @@ export default function Home() {
       <Section
         eyebrow="Oferta atual"
         title="Acesso completo à Fábrica de Apps com IA"
-        subtitle="Programa completo, pagamento único, sem mensalidade. Tudo o que você precisa para sair da ideia e construir, melhorar ou evoluir seu app com IA."
+        subtitle="R$197 por 1 ano de acesso. Parcelamento disponível no cartão. Tudo o que você precisa para sair da ideia e construir, melhorar ou evoluir seu app com IA."
       >
         <div className="max-w-2xl mx-auto glass-strong p-8 md:p-10 neon-shadow">
           <div className="text-center mb-6">
             <p className="text-xs uppercase tracking-[0.3em] text-accent mb-3">Programa completo</p>
             <div className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gradient">R$197</div>
-            <p className="text-base text-foreground/90 mt-2 font-medium">pagamento único</p>
+            <p className="text-base text-foreground/90 mt-2 font-medium">por 1 ano de acesso</p>
             <p className="text-sm text-muted-foreground mt-1">Parcelamento disponível no cartão</p>
             <p className="text-xs text-muted-foreground/80 mt-3">Acesso liberado após confirmação do pagamento</p>
           </div>
