@@ -25,6 +25,7 @@ import { EditablePromptBox } from "@/components/entrega/EditablePromptBox";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { applyContextPlaceholders, buildLovablePrompt } from "@/lib/promptBuilder";
 import { ResumoMetricasCard } from "@/components/entrega/ResumoMetricasCard";
+import { ChecklistDisclosure } from "@/components/entrega/ChecklistDisclosure";
 
 const AGENT_HELP_PROMPT = `Estou criando um aplicativo no Lovable e preciso definir as métricas principais do meu app. Me ajude a escolher quais números acompanhar: visitas, cliques, início do fluxo, conclusão, CTA, lead, checkout, compra, entrega, abandono, suporte, objeções e custo por resultado quando houver tráfego pago. Quero métricas simples para tomar decisões reais sem me perder em números inúteis.`;
 
