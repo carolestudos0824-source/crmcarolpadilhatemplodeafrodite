@@ -103,10 +103,13 @@ export function ErrosPosAppPronto() {
         </div>
       </GlassCard>
 
-      <PromptsExecutarEtapa
-        prompts={PROMPTS_ERROS}
-        titulo="Prompts para corrigir estes erros"
-      />
+      <div className="mt-6">
+        <h4 className="font-heading font-semibold text-sm md:text-base mb-2 text-foreground/90">
+          Prompts para corrigir estes erros
+        </h4>
+        <PromptsExecutarEtapa prompts={PROMPTS_ERROS} />
+      </div>
     </div>
   );
 }
+
