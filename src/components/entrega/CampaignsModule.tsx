@@ -1605,7 +1605,9 @@ export function CampaignsModule({
       </div>
 
 
-      <ChecklistCampanhas checklist={checklist} setChecklist={setChecklist} />
+      <ChecklistDisclosure title="Checklist opcional — Campanhas">
+        <ChecklistCampanhas checklist={checklist} setChecklist={setChecklist} />
+      </ChecklistDisclosure>
     </section>
   );
 }
