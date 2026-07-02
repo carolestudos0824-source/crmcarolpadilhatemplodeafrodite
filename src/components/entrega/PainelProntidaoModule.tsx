@@ -23,6 +23,8 @@ import { AGENT_MODULE_GUIDANCE } from "@/lib/agentModuleGuidance";
 import { useProjectContext } from "@/hooks/useProjectContext";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { CHECKLIST_PHASES, type ModuleId } from "@/data/entregaModules";
+import { PromptsExecutarEtapa } from "@/components/entrega/PromptsExecutarEtapa";
+import { PROMPTS_CHECKLIST } from "@/data/promptsPosAppPronto";
 
 
 
