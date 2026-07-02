@@ -18,6 +18,11 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  Database,
+  Shield,
+  FileText,
+  Zap,
+  Rocket,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
