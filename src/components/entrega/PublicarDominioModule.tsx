@@ -16,6 +16,12 @@ import {
   CheckCircle2,
   Circle,
   Sparkles,
+  Smartphone,
+  Store,
+  Apple,
+  Cpu,
+  Compass,
+  AlertTriangle,
 } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -477,6 +483,159 @@ export function PublicarDominioModule() {
           <EtapaCard key={e.n} etapa={e} />
         ))}
       </div>
+
+      <GlassCard className="p-5 md:p-6 mb-6 border-accent/30 bg-gradient-to-br from-accent/10 via-white/[0.03] to-transparent">
+        <div className="flex items-center gap-2 mb-2">
+          <Compass size={16} className="text-accent" />
+          <span className="text-[11px] uppercase tracking-wider text-accent">
+            Seção complementar
+          </span>
+        </div>
+        <h2 className="text-xl md:text-2xl font-heading font-bold mb-2">
+          App pronto, e agora?
+        </h2>
+        <p className="text-sm md:text-base text-foreground/85 leading-relaxed mb-5">
+          Depois que seu app está construído e publicado, você não precisa correr
+          direto para a App Store ou Google Play. Primeiro, entenda qual caminho faz
+          mais sentido para o seu momento. Um app pode começar como web app, evoluir
+          para PWA instalável, ser preparado para lojas ou, no futuro, virar uma
+          versão nativa mais avançada.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-3 mb-5">
+          {[
+            {
+              icon: Globe,
+              tag: "Recomendado para começar",
+              title: "Web app publicado",
+              desc: "Caminho mais simples e recomendado para começar. Seu app funciona por link, pode ter domínio próprio, login, banco, checkout, área de entrega e ser validado ou vendido para pessoas reais.",
+              accent: true,
+            },
+            {
+              icon: Smartphone,
+              tag: "Próximo passo natural",
+              title: "PWA instalável",
+              desc: "É quando o app web ganha experiência parecida com aplicativo e pode ser instalado na tela inicial do celular. Bom passo antes de investir em publicação nas lojas.",
+            },
+            {
+              icon: Cpu,
+              tag: "Requer mais preparação",
+              title: "App empacotado para Android/iOS",
+              desc: "É quando o app web é preparado para rodar dentro de uma estrutura mobile e, futuramente, ser enviado para Google Play ou App Store. Exige mais testes, configurações e cuidados.",
+            },
+            {
+              icon: Store,
+              tag: "Depois de validar",
+              title: "Google Play",
+              desc: "Pode fazer sentido quando o app já foi validado, tem pessoas usando, precisa estar disponível para Android ou faz parte de uma estratégia de distribuição. Antes disso, pode ser cedo demais.",
+            },
+            {
+              icon: Apple,
+              tag: "Mais exigente",
+              title: "App Store",
+              desc: "Caminho mais exigente. Pode fazer sentido quando o app tem maturidade, boa experiência mobile, política de privacidade, suporte, estabilidade e razão clara para estar no iPhone.",
+            },
+            {
+              icon: Rocket,
+              tag: "Avançado — não é primeiro passo",
+              title: "Versão nativa futura",
+              desc: "Uma versão nativa de verdade pode ser considerada no futuro, quando o app já tiver validação, pessoas usando, receita ou necessidade real de recursos avançados do celular.",
+            },
+          ].map((b) => {
+            const Icon = b.icon;
+            return (
+              <div
+                key={b.title}
+                className={`rounded-xl border p-4 ${
+                  b.accent
+                    ? "border-accent/40 bg-accent/10"
+                    : "border-white/10 bg-white/5"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center border ${
+                      b.accent
+                        ? "bg-accent/20 border-accent/40 text-accent"
+                        : "bg-white/5 border-white/10 text-foreground/80"
+                    }`}
+                  >
+                    <Icon size={16} />
+                  </div>
+                  <div className="min-w-0">
+                    <div
+                      className={`text-[10px] uppercase tracking-wider mb-1 ${
+                        b.accent ? "text-accent" : "text-muted-foreground"
+                      }`}
+                    >
+                      {b.tag}
+                    </div>
+                    <h4 className="font-heading font-semibold text-sm md:text-base leading-tight mb-1">
+                      {b.title}
+                    </h4>
+                    <p className="text-xs md:text-sm text-foreground/80 leading-relaxed">
+                      {b.desc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/5 p-4 mb-4">
+          <div className="text-[11px] uppercase tracking-wider text-emerald-300 mb-1">
+            Caminho recomendado para a maioria
+          </div>
+          <p className="text-sm text-foreground/90 leading-relaxed">
+            Publique como <strong>web app</strong>, valide com pessoas reais, melhore
+            o que precisar e só depois decida se vale ir para PWA, loja ou versão
+            nativa. Loja não é obrigatório para vender ou entregar valor.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-black/30 p-4 mb-4">
+          <h3 className="font-heading font-semibold text-base mb-3 flex items-center gap-2">
+            <Compass size={14} className="text-accent" />
+            Qual caminho escolher agora?
+          </h3>
+          <ul className="space-y-2 text-sm text-foreground/85">
+            {[
+              "Se o app ainda não foi validado: mantenha como web app.",
+              "Se o app já funciona bem no celular: considere transformar em PWA.",
+              "Se já existem pessoas pedindo app instalado: avalie Google Play ou App Store.",
+              "Se o app precisa de câmera, GPS, notificações ou recursos avançados: considere uma evolução mobile.",
+              "Se ainda há bugs, falta de clareza na oferta ou pouca validação: não vá para loja ainda.",
+            ].map((t, i) => (
+              <li key={i} className="flex gap-2">
+                <ArrowRight
+                  size={14}
+                  className="text-accent shrink-0 mt-1"
+                />
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4">
+          <div className="flex items-start gap-2">
+            <AlertTriangle
+              size={16}
+              className="text-amber-300 shrink-0 mt-0.5"
+            />
+            <div className="text-xs md:text-sm text-foreground/85 leading-relaxed">
+              <strong className="text-amber-200">Antes de mirar em loja:</strong>{" "}
+              Google Play e App Store possuem regras próprias, custos de conta de
+              desenvolvedor, análise, testes obrigatórios e possibilidade de
+              reprovação. Publicar em loja não garante aprovação, downloads nem
+              vendas. Trate como etapa avançada, não como meta inicial.
+            </div>
+          </div>
+        </div>
+      </GlassCard>
+
+
 
       <GlassCard className="p-5 mb-6">
         <div className="flex items-center gap-2 mb-3">
