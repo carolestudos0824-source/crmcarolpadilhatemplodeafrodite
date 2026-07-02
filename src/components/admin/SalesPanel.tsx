@@ -578,7 +578,7 @@ function CreateSaleDrawer({
         </Field>
         <label className="flex items-center gap-2 text-sm pt-1">
           <input type="checkbox" checked={grantAfter} onChange={(e) => setGrantAfter(e.target.checked)} />
-          <span>Liberar acesso após registrar venda</span>
+          <span>Liberar 1 ano de acesso após registrar venda</span>
         </label>
         <p className="text-[11px] text-muted-foreground">
           Para liberar o acesso, o comprador precisa já ter feito login com este mesmo e-mail.
