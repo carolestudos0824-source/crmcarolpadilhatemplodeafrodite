@@ -623,13 +623,13 @@ export default function Home() {
           </div>
 
           <p className="text-sm md:text-base text-foreground/90 leading-relaxed text-center mb-4 max-w-2xl mx-auto">
-            Você recebe acesso ao programa-guia com 23 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
+            Inclui 1 ano de acesso à Fábrica de Apps com IA: 23 módulos, 54 comandos, 30 ideias de apps, GPS do App e Agente Arquiteto para seguir sua jornada de criação com IA.
           </p>
           <button className="btn-primary mx-auto" onClick={goCheckout}>
-            Quero acessar o programa por R$197 <ChevronRight size={18} />
+            Quero acessar o programa por R$197 (1 ano) <ChevronRight size={18} />
           </button>
           <p className="text-sm text-foreground/80 leading-relaxed text-center mt-4">
-            O acesso ao programa custa <span className="font-semibold">R$197 em pagamento único</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
+            O acesso ao programa custa <span className="font-semibold">R$197 por 1 ano</span> — menos do que muita gente pode acabar gastando tentando prompts soltos sem método.
           </p>
 
           <div className="mt-6 pt-6 border-t border-white/5 flex items-start gap-3">
