@@ -473,12 +473,15 @@ export function PainelProntidaoModule({ goTo }: Props) {
         </ul>
       </GlassCard>
 
+      <CaminhoDecisao checklist={checklist} toggle={toggle} />
+
       <GlassCard className="p-5 border-sky-400/30 bg-sky-400/5">
         <div className="flex items-center gap-2 mb-2">
           <ShieldCheck size={16} className="text-sky-300" />
           <h3 className="font-heading font-semibold text-base">Lembrete final</h3>
         </div>
         <p className="text-sm text-foreground/90 leading-relaxed">
+
           Este painel é uma ferramenta de decisão, não uma promessa. Ele não garante app perfeito,
           segurança 100%, vendas ou validação. Avance com cautela e volte ao módulo correspondente
           sempre que algo crítico estiver pendente.
