@@ -70,6 +70,7 @@ function getReadiness(pct: number) {
   );
 }
 
+const BLOQUEADOR_PREFIX = "blocker__";
 const BLOQUEADORES = [
   "Login não funciona",
   "Checkout não foi testado",
