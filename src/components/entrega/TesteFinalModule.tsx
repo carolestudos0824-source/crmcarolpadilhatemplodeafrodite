@@ -816,6 +816,16 @@ export function TesteFinalModule() {
         </dl>
       </GlassCard>
 
+      <div className="mt-6 mb-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu app passou nos testes e está pronto para divulgar."
+          ctaLabel="Revisar teste final com o Agente Arquiteto"
+        />
+      </div>
+
+      <ChecklistDisclosure title="Checklist opcional — Checklist final de publicação">
       <GlassCard className="p-5">
         <div className="flex items-start gap-2 mb-1">
           <Bug size={16} className="text-emerald-300 mt-1" />
