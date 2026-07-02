@@ -761,6 +761,7 @@ export function PlanejarModule({ goTo }: { goTo?: (id: string) => void } = {}) {
           );
         })()}
       </GlassCard>
+      </ChecklistDisclosure>
 
     </section>
   );
