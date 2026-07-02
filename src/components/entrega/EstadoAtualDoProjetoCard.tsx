@@ -314,15 +314,22 @@ export const EstadoAtualDoProjetoCard = ({ onGoToModule }: Props) => {
       </div>
 
       {/* Progresso mobile */}
-      <div className="sm:hidden px-4 pt-2 flex items-center gap-2">
+      <div
+        className="sm:hidden px-4 pt-2 flex items-center gap-2"
+        title="Mostra quantos módulos você já concluiu na Fábrica."
+        aria-label={`Progresso: ${doneCount} de ${totalCount} módulos concluídos`}
+      >
+        <span className="text-[10px] font-medium tabular-nums text-foreground/90 whitespace-nowrap">
+          {doneCount} de {totalCount} módulos
+        </span>
         <div className="h-1 flex-1 rounded-full bg-white/5 overflow-hidden">
           <div
             className="h-full rounded-full bg-gradient-to-r from-accent/70 to-accent"
             style={{ width: `${percent}%` }}
           />
         </div>
-        <span className="text-[10px] tabular-nums text-muted-foreground/80">
-          {doneCount}/{totalCount} · {percent}%
+        <span className="text-[10px] tabular-nums text-accent/90 font-semibold">
+          {percent}%
         </span>
       </div>
 
