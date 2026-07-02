@@ -3216,7 +3216,10 @@ function ErrorsModule() {
       </div>
 
       <GlassCard className="p-5 mt-6">
-        <h3 className="font-heading font-semibold mb-3">Antes de chamar suporte</h3>
+        <h3 className="font-heading font-semibold mb-2">Antes de enviar uma dúvida</h3>
+        <p className="text-sm text-muted-foreground mb-3">
+          Antes de mandar uma mensagem, organize as informações abaixo. Isso ajuda você a explicar melhor o problema e encontrar o próximo passo com mais clareza.
+        </p>
         <ul className="space-y-1.5 text-sm text-muted-foreground list-disc list-inside mb-3">
           <li>Copiei o diagnóstico geral</li>
           <li>Colei no Lovable</li>
@@ -3225,10 +3228,11 @@ function ErrorsModule() {
           <li>Tenho print ou descrição do problema</li>
           <li>Sei em qual módulo o erro aconteceu</li>
         </ul>
-        <p className="text-xs text-muted-foreground">
-          Quanto mais claro estiver o erro, mais rápido ele será resolvido.
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          A Fábrica oferece orientação por módulos, prompts e Agente Arquiteto. O e-mail de contato é para dúvidas essenciais, acesso, compra e problemas do programa. Não inclui suporte técnico individual ilimitado para corrigir projetos no Lovable.
         </p>
       </GlassCard>
+
 
       <ErrosPosAppPronto />
     </section>
