@@ -339,7 +339,7 @@ export function SalesPanel() {
                         <IconBtn title="Ver detalhes" onClick={() => setSelected(s)}><Eye size={14} /></IconBtn>
                         <IconBtn title="Copiar e-mail" onClick={() => copyText(s.buyer_email, "E-mail copiado")}><Copy size={14} /></IconBtn>
                         {s.access_status !== "access_granted" && (
-                          <IconBtn title="Liberar acesso" tone="ok" onClick={() => grantAccess(s)}><ShieldCheck size={14} /></IconBtn>
+                          <IconBtn title="Liberar 1 ano" tone="ok" onClick={() => grantAccess(s)}><ShieldCheck size={14} /></IconBtn>
                         )}
                         {s.access_status === "access_granted" && (
                           <IconBtn title="Revogar acesso" tone="danger" onClick={() => revokeAccess(s)}><ShieldOff size={14} /></IconBtn>
