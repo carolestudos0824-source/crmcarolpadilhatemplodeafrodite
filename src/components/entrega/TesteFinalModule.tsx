@@ -957,19 +957,9 @@ export function TesteFinalModule() {
           );
         })()}
       </GlassCard>
+      </ChecklistDisclosure>
 
       <PwaLojaChecklist />
-
-
-
-      <div className="mt-6">
-        <AgentArchitectCard
-          variant="compact"
-          title="Quer revisar antes de seguir?"
-          subtitle="Use o Agente Arquiteto para validar se seu app passou nos testes e está pronto para divulgar."
-          ctaLabel="Revisar teste final com o Agente Arquiteto"
-        />
-      </div>
     </section>
   );
 }
