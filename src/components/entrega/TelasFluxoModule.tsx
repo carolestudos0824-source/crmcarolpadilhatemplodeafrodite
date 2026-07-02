@@ -543,7 +543,16 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
         </div>
       </details>
 
-      {/* Checklist crítico — recolhido por padrão, opcional para conferência */}
+      <div className="mt-6">
+        <AgentArchitectCard
+          variant="compact"
+          title="Quer revisar antes de seguir?"
+          subtitle="Use o Agente Arquiteto para validar se seu Mapa de Telas e Fluxo está simples, claro e pronto para virar prompt do Lovable."
+          ctaLabel="Revisar Mapa com o Agente Arquiteto"
+        />
+      </div>
+
+      {/* Checklist opcional — recolhido por padrão, fica no final da página */}
       <ChecklistDisclosure title="Checklist opcional — Mapa de Telas e Fluxo">
       <GlassCard className="p-5 border-emerald-500/30 bg-emerald-500/[0.04]">
         <div className="flex items-center gap-2 mb-3">
@@ -608,15 +617,7 @@ export function TelasFluxoModule({ goTo }: { goTo?: (id: string) => void } = {})
           );
         })()}
       </GlassCard>
-
-      <div className="mt-6">
-        <AgentArchitectCard
-          variant="compact"
-          title="Quer revisar antes de seguir?"
-          subtitle="Use o Agente Arquiteto para validar se seu Mapa de Telas e Fluxo está simples, claro e pronto para virar prompt do Lovable."
-          ctaLabel="Revisar Mapa com o Agente Arquiteto"
-        />
-      </div>
+      </ChecklistDisclosure>
     </section>
   );
 }
