@@ -685,6 +685,7 @@ function PwaLojaChecklist() {
         </div>
       </div>
     </GlassCard>
+    </ChecklistDisclosure>
     <PromptsExecutarEtapa prompts={PROMPTS_TESTE} />
     </>
   );
